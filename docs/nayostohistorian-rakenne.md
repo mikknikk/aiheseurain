@@ -6,7 +6,7 @@ Tämä ohje kuvaa tiedoston `data/naytosten-muutoshistoria.json` rakennetta ja p
 
 1. **Tapahtumaloki on vain lisäämällä ylläpidettävä.** Älä muokkaa tai poista aiempia `events`-tapahtumia. Jos aiempaan tapahtumaan jäi virhe, lisää uusi `correction`-tapahtuma ja selitä korjaus.
 2. **Nykytila ja historia ovat eri asioita.** `screenings` sisältää kunkin tunnetun näytöksen viimeisimmän tilan. `events` kertoo, mitä havaittiin ja milloin.
-3. **Tunniste säilyy muutoksissa.** Kun näytös siirtyy toiseen kellonaikaan tai saliin, päivitä saman `screening_id`-tietueen nykytila. Älä luo muutokselle uutta näytöstunnistetta.
+3. **Tunniste säilyy muutoksissa.** Anna uudelle näytökselle pysyvä `screening_id`, joka muodostetaan aluksi elokuvan, teatterin ja alkuperäisen näytösajan tunnistetiedoista. Kun näytös siirtyy toiseen kellonaikaan tai saliin, päivitä saman tunnisteen tietue; älä luo muutokselle uutta tunnistetta. Säilytä myös päättyneet, perutut ja ohjelmistosta poistuneet tietueet niiden tilamerkinnöillä, älä poista niitä historiasta.
 4. **Älä päättele peruutusta katoamisesta.** Jos näytös poistuu ohjelmistosta eikä peruutusta ole ilmoitettu, käytä tapahtumatyyppiä `removed_from_listing` ja tilaa `removed`. Käytä `cancelled` vain, kun lähde ilmoittaa peruutuksesta.
 5. **Säilytä ilmoituksen vahvistustaso.** Käytä täsmälleen yhtä arvoa: `TEATTERIN VAHVISTAMA`, `JÄRJESTÄJÄN ILMOITTAMA` tai `KOLMANNEN OSAPUOLEN ILMOITTAMA`. Älä nosta kolmannen osapuolen ilmoitusta vahvistetuksi.
 6. **Kaikki ajat ovat aikavyöhykkeellisiä ISO 8601 -aikoja.** Käytä `Europe/Helsinki`-aikaa ja offsetia, esimerkiksi `2026-11-18T19:45:00+02:00`.
@@ -34,7 +34,7 @@ Pakolliset kentät:
 - `source_claim_type`: tiedon vahvistustaso.
 - `sources`: vähintään yksi lähdetietue.
 
-Lisätiedot kuten `language`, `subtitles`, `booking_url`, `external_show_id` ja `notes` voidaan tallentaa, kun ne on lähteestä varmennettu. Älä päättele puuttuvia tietoja.
+Lisätiedot kuten `language`, `subtitles`, `booking_url`, `external_show_id` ja `notes` voidaan tallentaa, kun ne on lähteestä varmennettu. Älä päättele puuttuvia tietoja. Esimerkiksi pysyvä tunniste voi olla `ramayana-finnkino-itis-20261116-2015`; jos kellonaika myöhemmin muuttuu, tämä alkuperäinen tunniste säilytetään.
 
 Lähdetietue sisältää:
 - `publisher`: lähteen julkaisija.
