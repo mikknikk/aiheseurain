@@ -124,5 +124,5 @@ test("etusivun RSS-linkit nimeävät kohdesyötteen eikä lukija luo erillistä 
   assert.doesNotMatch(home, />Avaa RSS-syöte</);
   assert.ok(home.includes("Avaa J. R. R. Tolkienin RSS-syöte"));
   assert.match(home, /Avaa intialaisten elokuvien näytösseurannan RSS-syöte/);
-  assert.doesNotMatch(script, /Alkuperäinen lähde|sourceUrl|parsedFirstSafeLink/);
+  assert.doesNotMatch(script, /Alkuperäinen lähde|sourceUrl|parsedFirstSafeLink|reader-excerpt|article\.excerpt|plainText/);
 });
