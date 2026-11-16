@@ -2,6 +2,8 @@
 
 Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat hakujen lähtöpisteitä, eivät tyhjentävä tai ehdoton sallittujen lähteiden lista. Tarkista aina alkuperäinen julkaisu, päivämäärä, kirjoittaja/julkaisija ja väitteen sisältö.
 
+Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa `data/source-catalog.json`. Tehtäväkohtaiset `data/sources/{task_id}.json`-tiedostot viittaavat katalogin lähteisiin ja määrittävät vain kyseisen tehtävän kriittisyyden, tarkistushistorian ja käyttörajoitteet. Tämä dokumentti on toimituksellinen hakustrategia, ei koneellisen katalogin rinnakkaiskopio.
+
 ## Yleiset lähdeperiaatteet
 
 1. Suosi ensisijaisia lähteitä: viralliset tiedotteet, tekijöiden/organisaatioiden omat sivut, oikeudenhaltijat, viranomaiset ja tuomioistuimet.
