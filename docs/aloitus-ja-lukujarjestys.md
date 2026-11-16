@@ -125,7 +125,7 @@ Näitä dokumentteja ei tarvitse lukea kaikkia yleiskuvan saamiseksi. Ne ovat yk
 
 - [Näytösseurannan käsikirja](intialaisten-elokuvien-naytosseuranta.md) – erillisen päivittäisen näytösseurannan toimintatapa.
 - [Näytöshistorian tietomalli](naytoshistorian-rakenne.md) – näytösten nykytilan ja tapahtumahistorian rakenne.
-- `prompts/intialaisten-elokuvien-naytosseuranta.txt` – näytösvahdin käynnistyskehote.
+- `prompts/naytosvahti.txt` – näytösvahdin käynnistyskehote.
 
 ### Aihekohtainen intialaisen elokuvan uutisseuranta
 
