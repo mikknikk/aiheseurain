@@ -7,7 +7,7 @@ AJON ESITARKISTUS
 Lue GitHubista main-haarasta seuraavat tiedostot tässä järjestyksessä:
 1. README.md
 2. docs/intialaisten-elokuvien-naytosseuranta.md kokonaan
-3. docs/nayostohistorian-rakenne.md
+3. docs/naytoshistorian-rakenne.md
 4. schemas/naytosten-muutoshistoria.schema.json
 5. docs/saavutettavuus.md
 6. docs/intialaisen-elokuvan-ohje.md
