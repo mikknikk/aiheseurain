@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "intialaiset_elokuvat_uutiset",
   "updated_at": null,
   "notes": [
@@ -8,633 +8,244 @@
   ],
   "sources": [
     {
-      "id": "indian-express-regional",
-      "name": "The Indian Express – Regional",
-      "url": "https://indianexpress.com/section/entertainment/regional/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "indian-express-regional",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "india-today-regional",
-      "name": "India Today – Regional Cinema",
-      "url": "https://www.indiatoday.in/topic/regional-cinema",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "india-today-regional",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "telugucinema",
-      "name": "TeluguCinema.com",
-      "url": "https://telugucinema.com/news",
-      "language_regions": [
-        "te",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "telugucinema",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-AP",
-        "IN-TG",
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "cinema-express",
-      "name": "Cinema Express",
-      "url": "https://www.cinemaexpress.com/",
-      "language_regions": [
-        "ta",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "cinema-express",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-TN",
-        "IN-PY",
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "daily-thanthi",
-      "name": "Daily Thanthi Cinema",
-      "url": "https://www.dailythanthi.com/cinema/cinemanews",
-      "language_regions": [
-        "ta"
-      ],
-      "source_type": "editorial",
+      "source_id": "daily-thanthi",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-TN",
-        "IN-PY"
-      ]
+      "access_limit": null
     },
     {
-      "id": "cinisuddi",
-      "name": "Cini Suddi",
-      "url": "https://www.cinisuddi.com/",
-      "language_regions": [
-        "kn"
-      ],
-      "source_type": "editorial",
+      "source_id": "cinisuddi",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "simply-mollywood",
-      "name": "Simply Mollywood",
-      "url": "https://simplymollywood.com/",
-      "language_regions": [
-        "ml",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "simply-mollywood",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KL",
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "yle",
-      "name": "Yle",
-      "url": "https://yle.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "editorial",
+      "source_id": "yle",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "hs",
-      "name": "Helsingin Sanomat",
-      "url": "https://www.hs.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "editorial",
+      "source_id": "hs",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "the-hindu-cinema",
-      "name": "The Hindu – Cinema",
-      "url": "https://www.thehindu.com/entertainment/movies/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "the-hindu-cinema",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "times-of-india-entertainment",
-      "name": "The Times of India – Entertainment",
-      "url": "https://timesofindia.indiatimes.com/entertainment",
-      "language_regions": [
-        "en",
-        "hi"
-      ],
-      "source_type": "editorial",
+      "source_id": "times-of-india-entertainment",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "ndtv-entertainment",
-      "name": "NDTV – Entertainment",
-      "url": "https://www.ndtv.com/entertainment",
-      "language_regions": [
-        "en",
-        "hi"
-      ],
-      "source_type": "editorial",
+      "source_id": "ndtv-entertainment",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "bollywood-hungama",
-      "name": "Bollywood Hungama",
-      "url": "https://www.bollywoodhungama.com/",
-      "language_regions": [
-        "hi",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "bollywood-hungama",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "pinkvilla",
-      "name": "Pinkvilla",
-      "url": "https://www.pinkvilla.com/",
-      "language_regions": [
-        "hi",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "pinkvilla",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "eenadu-cinema",
-      "name": "Eenadu – Cinema",
-      "url": "https://www.eenadu.net/",
-      "language_regions": [
-        "te"
-      ],
-      "source_type": "editorial",
+      "source_id": "eenadu-cinema",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-AP",
-        "IN-TG"
-      ]
+      "access_limit": null
     },
     {
-      "id": "sakshi-telugu",
-      "name": "Sakshi",
-      "url": "https://www.sakshi.com/",
-      "language_regions": [
-        "te"
-      ],
-      "source_type": "editorial",
+      "source_id": "sakshi-telugu",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-AP",
-        "IN-TG"
-      ]
+      "access_limit": null
     },
     {
-      "id": "123telugu",
-      "name": "123telugu",
-      "url": "https://www.123telugu.com/",
-      "language_regions": [
-        "te",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "123telugu",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-AP",
-        "IN-TG",
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "hindu-tamil-thisai",
-      "name": "Hindu Tamil Thisai",
-      "url": "https://www.hindutamil.in/",
-      "language_regions": [
-        "ta"
-      ],
-      "source_type": "editorial",
+      "source_id": "hindu-tamil-thisai",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-TN",
-        "IN-PY"
-      ]
+      "access_limit": null
     },
     {
-      "id": "maalaimalar",
-      "name": "Maalai Malar",
-      "url": "https://www.maalaimalar.com/",
-      "language_regions": [
-        "ta"
-      ],
-      "source_type": "editorial",
+      "source_id": "maalaimalar",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-TN",
-        "IN-PY"
-      ]
+      "access_limit": null
     },
     {
-      "id": "dinamani",
-      "name": "Dinamani",
-      "url": "https://www.dinamani.com/",
-      "language_regions": [
-        "ta"
-      ],
-      "source_type": "editorial",
+      "source_id": "dinamani",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-TN",
-        "IN-PY"
-      ]
+      "access_limit": null
     },
     {
-      "id": "vijaya-karnataka",
-      "name": "Vijaya Karnataka",
-      "url": "https://vijaykarnataka.com/",
-      "language_regions": [
-        "kn"
-      ],
-      "source_type": "editorial",
+      "source_id": "vijaya-karnataka",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "prajavani",
-      "name": "Prajavani",
-      "url": "https://www.prajavani.net/",
-      "language_regions": [
-        "kn"
-      ],
-      "source_type": "editorial",
+      "source_id": "prajavani",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "kannada-prabha",
-      "name": "Kannada Prabha",
-      "url": "https://www.kannadaprabha.com/",
-      "language_regions": [
-        "kn"
-      ],
-      "source_type": "editorial",
+      "source_id": "kannada-prabha",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "onmanorama",
-      "name": "Onmanorama",
-      "url": "https://www.onmanorama.com/",
-      "language_regions": [
-        "ml",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "onmanorama",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KL",
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "mathrubhumi",
-      "name": "Mathrubhumi",
-      "url": "https://www.mathrubhumi.com/",
-      "language_regions": [
-        "ml",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "mathrubhumi",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KL",
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "manorama-online",
-      "name": "Manorama Online",
-      "url": "https://www.manoramaonline.com/",
-      "language_regions": [
-        "ml",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "manorama-online",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-KL",
-        "IN-NATIONAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "anandabazar",
-      "name": "Anandabazar Patrika",
-      "url": "https://www.anandabazar.com/",
-      "language_regions": [
-        "bn"
-      ],
-      "source_type": "editorial",
+      "source_id": "anandabazar",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-WB"
-      ]
+      "access_limit": null
     },
     {
-      "id": "sangbad-pratidin",
-      "name": "Sangbad Pratidin",
-      "url": "https://www.sangbadpratidin.in/",
-      "language_regions": [
-        "bn"
-      ],
-      "source_type": "editorial",
+      "source_id": "sangbad-pratidin",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-WB"
-      ]
+      "access_limit": null
     },
     {
-      "id": "lokmat",
-      "name": "Lokmat",
-      "url": "https://www.lokmat.com/",
-      "language_regions": [
-        "mr"
-      ],
-      "source_type": "editorial",
+      "source_id": "lokmat",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-MH"
-      ]
+      "access_limit": null
     },
     {
-      "id": "sakal",
-      "name": "Sakal",
-      "url": "https://www.esakal.com/",
-      "language_regions": [
-        "mr"
-      ],
-      "source_type": "editorial",
+      "source_id": "sakal",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-MH"
-      ]
+      "access_limit": null
     },
     {
-      "id": "loksatta",
-      "name": "Loksatta",
-      "url": "https://www.loksatta.com/",
-      "language_regions": [
-        "mr"
-      ],
-      "source_type": "editorial",
+      "source_id": "loksatta",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-MH"
-      ]
+      "access_limit": null
     },
     {
-      "id": "ajit-punjabi",
-      "name": "Ajit",
-      "url": "https://www.ajitjalandhar.com/",
-      "language_regions": [
-        "pa"
-      ],
-      "source_type": "editorial",
+      "source_id": "ajit-punjabi",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-PB"
-      ]
+      "access_limit": null
     },
     {
-      "id": "punjabi-tribune",
-      "name": "Punjabi Tribune",
-      "url": "https://www.punjabitribuneonline.com/",
-      "language_regions": [
-        "pa"
-      ],
-      "source_type": "editorial",
+      "source_id": "punjabi-tribune",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-PB"
-      ]
+      "access_limit": null
     },
     {
-      "id": "assam-tribune",
-      "name": "The Assam Tribune",
-      "url": "https://assamtribune.com/",
-      "language_regions": [
-        "en",
-        "as"
-      ],
-      "source_type": "editorial",
+      "source_id": "assam-tribune",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-NATIONAL",
-        "IN-AS"
-      ]
+      "access_limit": null
     },
     {
-      "id": "asomiya-pratidin",
-      "name": "Asomiya Pratidin",
-      "url": "https://www.asomiyapratidin.in/",
-      "language_regions": [
-        "as"
-      ],
-      "source_type": "editorial",
+      "source_id": "asomiya-pratidin",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-AS"
-      ]
+      "access_limit": null
     },
     {
-      "id": "sambad-odia",
-      "name": "Sambad",
-      "url": "https://sambad.in/",
-      "language_regions": [
-        "or"
-      ],
-      "source_type": "editorial",
+      "source_id": "sambad-odia",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-OD"
-      ]
+      "access_limit": null
     },
     {
-      "id": "dharitri",
-      "name": "Dharitri",
-      "url": "https://www.dharitri.com/",
-      "language_regions": [
-        "or"
-      ],
-      "source_type": "editorial",
+      "source_id": "dharitri",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "IN-OD"
-      ]
+      "access_limit": null
     },
     {
-      "id": "episodi",
-      "name": "Episodi",
-      "url": "https://www.episodi.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "editorial",
+      "source_id": "episodi",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "elokuvauutiset",
-      "name": "Elokuvauutiset.fi",
-      "url": "https://www.elokuvauutiset.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "editorial",
+      "source_id": "elokuvauutiset",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "film-o-holic",
-      "name": "Film-O-Holic",
-      "url": "https://www.film-o-holic.com/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "editorial",
+      "source_id": "film-o-holic",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     }
   ]
 }
