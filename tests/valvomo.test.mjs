@@ -42,7 +42,7 @@ test("seuraavan aiheen arvio huomioi kesäajan ja saman päivän tulevan ajovuor
 
 test("päivittäinen klo 12 säilyy paikallisena kellonaikana kesäaikaan siirryttäessä", () => {
   const tasks = Object.fromEntries(TASK_ORDER.map((id) => [id, { last_result: "not_recorded" }]));
-  const state = { updated_at: "2026-03-28T10:00:00+02:00", rotation: { next_task: "tolkien", tasks } };
+  const state = { updated_at: "2026-03-28T10:30:00+02:00", rotation: { next_task: "tolkien", tasks } };
   const estimates = estimateNextTaskUpdates(state, new Date("2026-03-28T09:00:00Z"));
   assert.equal(estimates[0].estimatedAt.toISOString(), "2026-03-28T10:00:00.000Z");
   assert.equal(estimates[1].estimatedAt.toISOString(), "2026-03-29T09:00:00.000Z");
