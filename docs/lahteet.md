@@ -2,7 +2,7 @@
 
 Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat hakujen lähtöpisteitä, eivät tyhjentävä tai ehdoton sallittujen lähteiden lista. Tarkista aina alkuperäinen julkaisu, päivämäärä, kirjoittaja/julkaisija ja väitteen sisältö.
 
-Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa `data/source-catalog.json`. Tehtäväkohtaiset `data/sources/{task_id}.json`-tiedostot viittaavat katalogin lähteisiin ja määrittävät vain kyseisen tehtävän kriittisyyden, tarkistushistorian ja käyttörajoitteet. Tämä dokumentti on toimituksellinen hakustrategia, ei koneellisen katalogin rinnakkaiskopio.
+Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa `data/source-catalog.json`. Tehtäväkohtaiset `data/sources/{task_id}.json`-tiedostot viittaavat katalogin lähteisiin ja määrittävät vain kyseisen tehtävän kriittisyyden, tarkistushistorian ja käyttörajoitteet. Yksityiskohtainen selitys JSON-tiedostojen suhteista, ajolokista ja tietojen kulusta on dokumentissa [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md). Tämä dokumentti on toimituksellinen hakustrategia, ei koneellisen katalogin rinnakkaiskopio.
 
 ## Yleiset lähdeperiaatteet
 
