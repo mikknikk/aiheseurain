@@ -86,6 +86,10 @@ Jokaisella seuraavalla ajolla vertaa lähteistä tarkistettua nykytilaa edellise
 
 Kun näytöstietue ja RSS julkaisu päivitetään samalla ajolla, tee muutokset yhtenä loogisena kokonaisuutena. Säilytä vanhat RSS-itemit ja GUIDit. RSS:ään lisätään uusi elokuvakohtainen versio vain, jos julkaistava tieto muuttui. Sisäiseen JSON-lokiin kirjataan jokainen olennainen muutos myös silloin, kun se ei yksin edellytä uutta RSS-versiota.
 
+## JSON Schema ja koneellinen validointi
+
+Tietomallin virallinen rakenteellinen määrittely on `schemas/naytosten-muutoshistoria.schema.json` (JSON Schema Draft 2020-12). Se määrittelee pakolliset kentät, tietotyypit, sallitut tilat ja tapahtumatyypit sekä lähdetietueiden ja tapahtumien rakenteet. `scripts/validate_feeds.py` validoi muutoshistorian ensin tätä skeemaa vasten ja tekee sen jälkeen lisäksi projektikohtaiset eheys- ja ristiriitatarkistukset. `jsonschema`-riippuvuus asennetaan `requirements.txt`-tiedostosta GitHub Actions -työnkulussa.
+
 ## Laatutarkistukset
 
-`scripts/validate_feeds.py` tarkistaa JSON-rakenteen, aikaleimojen aikavyöhykkeet, tunnisteiden yksilöllisyyden, sallitut tilat ja tapahtumatyypit sekä lähteiden URL-osoitteiden muodon. Automaattinen testi ei kuitenkaan pysty todistamaan, että lähde todella tukee väitettä tai että kaksi eri lähdettä ovat riippumattomia. Nämä tarkistetaan näytösvahdin työohjeen mukaisesti.
+`scripts/validate_feeds.py` tarkistaa JSON Schema -määrittelyn lisäksi aikaleimojen aikavyöhykkeet, tunnisteiden yksilöllisyyden, sallitut tilat ja tapahtumatyypit sekä lähteiden URL-osoitteiden muodon. Automaattinen testi ei kuitenkaan pysty todistamaan, että lähde todella tukee väitettä tai että kaksi eri lähdettä ovat riippumattomia. Nämä tarkistetaan näytösvahdin työohjeen mukaisesti.
