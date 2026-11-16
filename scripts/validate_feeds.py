@@ -590,6 +590,22 @@ def validate_docs(state):
         if required_section not in readme.lower():
             fail("README:stä puuttuu dokumentaation rakenteen kannalta keskeinen osio: " + required_section)
 
+    # Tarkistamme dokumenttien väliset lukumäärät ja tehtävärajaukset,
+    # koska ne vaikuttavat suoraan automaation tekemien hakujen laajuuteen.
+    if "kaikissa yhdeksässä aihekierroksen tehtävässä" not in readme.lower():
+        fail("README ei kuvaa maailmanlaajuisen haun kattavan kaikki yhdeksän kiertotehtävää")
+
+    indian_news_guide = ROOT / "docs/intialaisen-elokuvan-uutiset.md"
+    indian_overview = ROOT / "docs/intialaisen-elokuvan-ohje.md"
+    if not indian_news_guide.is_file() or not indian_overview.is_file():
+        fail("intialaisen elokuvan uutisohje tai yleisohje puuttuu")
+    indian_news_text = indian_news_guide.read_text(encoding="utf-8").lower()
+    indian_overview_text = indian_overview.read_text(encoding="utf-8").lower()
+    if "kymmenen seuratun henkilön ja kahdeksan projektin" not in indian_news_text:
+        fail("intialaisen elokuvan uutisohjeen seurattavien projektien lukumäärä ei vastaa kahdeksaa projektia")
+    if "## näytösseuranta samassa tehtävässä" in indian_overview_text:
+        fail("intialaisen elokuvan yleisohjeessa on vanhentunut näytösseurannan otsikko")
+
     # README:n pitää luetella kaikki kymmenen syötettä – myös erillinen näytösfeed.
     readme_feeds = set(re.findall(r"\]\((feeds/[^)]+\.xml)\)", readme))
     if readme_feeds != set(FEEDS):
