@@ -124,8 +124,8 @@
     "last_period_start": null,
     "last_period_end": "2026-11-16T15:24:00+02:00",
     "last_result": "success",
-    "published_items": 1,
-    "sources_checked": 15,
+    "published_items": 2,
+    "sources_checked": 17,
     "errors": [],
     "automation_instructions": {
       "document": "docs/intialaisten-elokuvien-naytosseuranta.md",
