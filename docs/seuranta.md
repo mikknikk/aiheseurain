@@ -17,7 +17,7 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 
 ## Pääautomaation ohjeversion seuranta
 
-- Pääautomaation täydellinen toimintakäsikirja on `docs/paautomaation-ohje.md`; sen versionumero on dokumentin alussa.
+- Pääautomaation täydellinen toimintakäsikirja on `docs/paaautomaation-ohje.md`; sen versionumero on dokumentin alussa.
 - `data/seurantatila.json`-tiedoston `automation_instructions.current_version` on käsikirjan nykyinen hyväksytty versio. Arvojen on täsmättävä ennen jokaista ajoa.
 - `last_successful_run_version` ja `last_successful_run_at` kertovat viimeisimmän onnistuneen ajon käyttämän version ja ajan. Ne päivitetään vain, kun koko ajo ja GitHub-kirjoitusten takaisinlukutarkistukset ovat onnistuneet.
 - Käsikirjaa muutettaessa päivitetään sen versionumero ja `current_version` samassa muutossarjassa. Viimeisimmän onnistuneen ajon kenttiä ei muuteta etukäteen. Erillinen näytösvahti säilyttää tämän versionhallintaosion muuttumattomana omissa JSON-päivityksissään.
