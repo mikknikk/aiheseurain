@@ -1,10 +1,10 @@
 # Valvomon tietomalli ja julkaisutapa
 
-**Tila:** suunnitteluratkaisu määritelty; käyttöliittymän ja ajotietojen laajennusten toteutus kuuluu myöhempiin tiketteihin  
+**Tila:** tietomalli hyväksytty; Valvomon vähimmäisnäkymä toteutettu tässä kehityshaarassa, jatkokehitys erillisissä tiketeissä  
 **Päivitetty:** 2026-11-16  
 **Liittyvät tehtävät:** [#29 – Pages-kartoitus ja tietomalli](https://github.com/mikknikk/uutiset/issues/29), [#30 – Valvomon vähimmäisversio](https://github.com/mikknikk/uutiset/issues/30)
 
-Tämä dokumentti määrittää Valvomon tietolähteet, julkaisutavan, tietojen tulkinnan ja julkistamisen rajat. Se ei tarkoita, että Valvomon käyttöliittymä tai kaikki tässä kuvatut näkymät olisivat jo toteutettuja.
+Tämä dokumentti määrittää Valvomon tietolähteet, julkaisutavan, tietojen tulkinnan ja julkistamisen rajat. Käyttöliittymän nykyinen toteutus ja sen tunnetut tietorajoitteet kuvataan luvussa 9.
 
 ## 1. Nykyinen GitHub Pages -julkaisu
 
@@ -110,3 +110,21 @@ Valvomon ensisijainen automaatiotila ei riipu GitHub Actions -APIsta, koska pä�
 - **#33:** lähderekisterin selaus ja kattavuuden laajennettu näkymä.
 
 Tämä jako pitää tietolähteet yksiselitteisinä ja estää käyttöliittymää muodostumasta toiseksi, käsin ylläpidettäväksi tilatietokannaksi.
+
+## 9. Valvomon ensimmäinen käyttöliittymä
+
+Valvomon ensimmäinen versio on repositorion juuren `index.html`-sivu, joka käyttää yhteistä Jekyll-sivustorunkoa (`_layouts/site.html` ja `_includes/`-osat). Tyylit ja selainlogiikka ovat `assets/`-hakemistossa. Sivusto pysyy staattisena eikä lisää palvelinta, tietokantaa tai selaimen GitHub-kirjoitusoikeuksia.
+
+Käyttöliittymä lukee seuraavat tiedot:
+
+- `data/seurantatila.json`: pääautomaation aihekohtaiset viimeisimmät onnistumiset ja seuraava vuoro, näytösvahdin tila sekä kolmen automaation ohjeversiot.
+- `data/lahdetarkistukset.json`: viimeisimmän aiheajon lähdetarkistuksen tulos, tarkistetut lähteet ja tarkistamatta jääneiden lähteiden syyt.
+- GitHub Actionsin julkinen API: viimeisimmät RSS-/dokumentaatiotestien, viikoittaisen linkkitarkistuksen ja Pages-julkaisun ajot sekä saatavilla olevat työnvaiheet.
+
+Automaatiokorttien tuoreusrajat ovat 36 tuntia päivittäisille automaatioille ja 10 vuorokautta viikoittaiselle laatutarkistukselle. Puuttuva aikaleima näytetään tuntemattomana. Viimeisin onnistuminen ei tarkoita, että uusi ajo olisi käynnissä.
+
+**Ajovaiheiden rajoite:** nykyiset koneelliset seurantatiedot eivät tallenna ChatGPT-automaation vaihekohtaista ajohistoriaa. Siksi Valvomo ilmoittaa tämän suoraan eikä keksi vaiheita tai päättele niitä GitHub Actions -ajoista. GitHub Actions -vaiheet näytetään vain erillisessä teknisten työnkulkujen osiossa.
+
+GitHub API:n tulokset välimuistitetaan välilehden istunnossa enintään viideksi minuutiksi. API-virhe näytetään erillään automaatioiden tilasta; se ei muuta JSON-tietojen perusteella muodostettua tilaa. Näkymä ei hae raakoja Actions-lokeja.
+
+Valvomon automaattiset JavaScript-testit suoritetaan komennolla `node --test tests/valvomo.test.mjs`. Sivun ja skriptin rakenne tarkistetaan CI-ajossa. Tämä ei korvaa manuaalista näppäimistö-, ruudunlukija-, suurennus- tai kontrastitestausta.
