@@ -367,7 +367,9 @@ def validate_screening_history():
         if screening["status"] not in allowed_statuses:
             fail(f"{label}.status on virheellinen")
 
-        timestamp(screening.get("starts_at"), label + ".starts_at")
+        starts_at = timestamp(screening.get("starts_at"), label + ".starts_at")
+        if starts_at is None:
+            fail(f"{label}.starts_at pitää olla aikavyöhykkeellinen ISO 8601 -aikaleima")
 
         if screening.get("source_claim_type") not in allowed_claim_types:
             fail(f"{label}.source_claim_type on virheellinen")
@@ -485,6 +487,29 @@ def validate_docs(state):
 
     queue = queue_path.read_text(encoding="utf-8")
     readme = readme_path.read_text(encoding="utf-8")
+
+    # Näytösten muutoshistorian rakenne ja käyttöohje ovat osa ylläpidettävää
+    # järjestelmää. Varmistamme, ettei uusi tietomalli jää irralliseksi tiedostoksi.
+    history_guide = ROOT / "docs/nayostohistorian-rakenne.md"
+    screening_guide = ROOT / "docs/intialaisten-elokuvien-naytosseuranta.md"
+    if not history_guide.is_file() or not screening_guide.is_file():
+        fail("näytösten muutoshistorian tai näytösvahdin dokumentti puuttuu")
+
+    if "docs/nayostohistorian-rakenne.md" not in readme:
+        fail("README ei linkitä näytösten muutoshistorian tietomalliin")
+
+    screening_instructions = screening_guide.read_text(encoding="utf-8")
+    for required_phrase in (
+        "data/naytosten-muutoshistoria.json",
+        "baseline_created",
+        "removed_from_listing",
+        "event_id",
+    ):
+        if required_phrase not in screening_instructions:
+            fail(
+                "näytösvahdin ohjeesta puuttuu muutoshistorian sääntö: "
+                + required_phrase
+            )
 
     # Poimimme tehtäväjonosta numeroidut rivit, joissa on myös RSS-syötteen polku.
     # Näin voimme verrata dokumentissa kuvattua järjestystä JSON-tiedostoon.
