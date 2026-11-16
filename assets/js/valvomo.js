@@ -32,6 +32,10 @@ const TASK_NAMES = {
 };
 
 const API_ROOT = "https://api.github.com/repos/mikknikk/uutiset";
+// Ratkaise JSON-tiedostot moduulin sijainnista, älä nykyisestä sivupolusta.
+// Näin /valvomo/-sivun alla ei yritetä hakea virheellisesti /valvomo/data/-osoitteita.
+const STATE_URL = new URL("../../data/seurantatila.json", import.meta.url).href;
+const SOURCE_LOG_URL = new URL("../../data/lahdetarkistukset.json", import.meta.url).href;
 const CACHE_TTL = 5 * 60 * 1000;
 
 export function classifyFreshness(timestamp, maxAgeHours, now = Date.now()) {
@@ -342,8 +346,8 @@ export async function loadDashboard() {
   button.textContent = "Päivitetään…";
   try {
     const [stateResponse, sourceResponse] = await Promise.allSettled([
-      fetch("data/seurantatila.json", { cache: "no-cache" }),
-      fetch("data/lahdetarkistukset.json", { cache: "no-cache" })
+      fetch(STATE_URL, { cache: "no-cache" }),
+      fetch(SOURCE_LOG_URL, { cache: "no-cache" })
     ]);
     if (stateResponse.status !== "fulfilled" || !stateResponse.value.ok) {
       throw new Error("Seurantatiedoston lataus epäonnistui.");
