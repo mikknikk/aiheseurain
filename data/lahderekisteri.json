@@ -21,7 +21,12 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
     },
     {
       "id": "tolkien-society",
@@ -36,7 +41,12 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
     },
     {
       "id": "taylor-swift-official",
@@ -51,7 +61,11 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
     },
     {
       "id": "gurmeet-courts",
@@ -67,7 +81,13 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "moomin-official",
@@ -85,7 +105,14 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
     },
     {
       "id": "wakaliwood-official",
@@ -100,7 +127,11 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
     },
     {
       "id": "ebu",
@@ -115,7 +146,12 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
     },
     {
       "id": "fide",
@@ -130,7 +166,13 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
     },
     {
       "id": "chesscom",
@@ -145,7 +187,13 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
     },
     {
       "id": "indian-express-regional",
@@ -160,7 +208,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "india-today-regional",
@@ -175,7 +226,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "telugucinema",
@@ -191,7 +245,12 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-AP",
+        "IN-TG",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "cinema-express",
@@ -207,7 +266,12 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-TN",
+        "IN-PY",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "daily-thanthi",
@@ -222,7 +286,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
     },
     {
       "id": "cinisuddi",
@@ -237,7 +305,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KA"
+      ]
     },
     {
       "id": "simply-mollywood",
@@ -253,7 +324,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "yle",
@@ -268,7 +343,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "hs",
@@ -283,7 +361,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "finnkino",
@@ -298,7 +379,10 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "biorex",
@@ -313,7 +397,10 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "kino-regina",
@@ -328,7 +415,10 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "cinema-orion",
@@ -343,7 +433,10 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "kino-myyri",
@@ -358,7 +451,10 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy."
+      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy.",
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "finbolly",
@@ -374,7 +470,10 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "fintamil",
@@ -390,7 +489,10 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "rasa-entertainment",
@@ -406,7 +508,10 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "harpercollins-tolkien",
@@ -421,7 +526,12 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
     },
     {
       "id": "warnerbros-newsroom",
@@ -436,7 +546,12 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
     },
     {
       "id": "tolkiengateway",
@@ -451,7 +566,12 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
     },
     {
       "id": "theguardian-books",
@@ -466,7 +586,12 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
     },
     {
       "id": "variety-film",
@@ -481,7 +606,12 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
     },
     {
       "id": "umg-news",
@@ -496,7 +626,11 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
     },
     {
       "id": "republic-records",
@@ -511,7 +645,11 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
     },
     {
       "id": "billboard",
@@ -526,7 +664,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
     },
     {
       "id": "ap-entertainment",
@@ -541,7 +683,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
     },
     {
       "id": "rolling-stone",
@@ -556,7 +702,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
     },
     {
       "id": "punjab-haryana-highcourt",
@@ -571,7 +721,13 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "cbi-india",
@@ -587,7 +743,13 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "the-hindu-india",
@@ -602,7 +764,13 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "hindustan-times",
@@ -618,7 +786,13 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "tribune-india",
@@ -634,7 +808,13 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "amar-ujala",
@@ -649,7 +829,13 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "moomin-museum",
@@ -665,7 +851,14 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
     },
     {
       "id": "moomin-characters-news",
@@ -683,7 +876,14 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
     },
     {
       "id": "tove-jansson-society",
@@ -700,7 +900,14 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
     },
     {
       "id": "yle-culture",
@@ -716,7 +923,14 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
     },
     {
       "id": "wakaliwood-supa-store",
@@ -731,7 +945,11 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
     },
     {
       "id": "new-vision-uganda",
@@ -746,7 +964,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
     },
     {
       "id": "daily-monitor-uganda",
@@ -761,7 +983,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
     },
     {
       "id": "ugandan-film-festival",
@@ -776,7 +1002,11 @@
       "source_type": "primary",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
     },
     {
       "id": "ebu-news",
@@ -791,7 +1021,12 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
     },
     {
       "id": "eurovision-asia",
@@ -813,7 +1048,12 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
     },
     {
       "id": "yle-euroviisut",
@@ -828,7 +1068,12 @@
       "source_type": "primary",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
     },
     {
       "id": "svt-melodifestivalen",
@@ -843,7 +1088,12 @@
       "source_type": "primary",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
     },
     {
       "id": "bbc-eurovision",
@@ -858,7 +1108,12 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
     },
     {
       "id": "escxtra",
@@ -873,7 +1128,12 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
     },
     {
       "id": "thai-film-archive",
@@ -889,7 +1149,10 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
     },
     {
       "id": "thai-film-archive-news",
@@ -905,7 +1168,10 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
     },
     {
       "id": "thai-pbs",
@@ -920,7 +1186,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
     },
     {
       "id": "nation-thailand",
@@ -936,7 +1205,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
     },
     {
       "id": "ultraman-official",
@@ -952,7 +1224,11 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "TH",
+        "JP"
+      ]
     },
     {
       "id": "eiga-com",
@@ -967,7 +1243,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "TH",
+        "JP"
+      ]
     },
     {
       "id": "chessbase",
@@ -983,7 +1263,13 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
     },
     {
       "id": "lichess-blog",
@@ -998,7 +1284,13 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
     },
     {
       "id": "us-chess",
@@ -1013,7 +1305,13 @@
       "source_type": "primary",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
     },
     {
       "id": "european-chess-union",
@@ -1028,7 +1326,13 @@
       "source_type": "primary",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
     },
     {
       "id": "finnish-chess",
@@ -1043,7 +1347,13 @@
       "source_type": "primary",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
     },
     {
       "id": "the-hindu-cinema",
@@ -1058,7 +1368,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "times-of-india-entertainment",
@@ -1074,7 +1387,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "ndtv-entertainment",
@@ -1090,7 +1406,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "bollywood-hungama",
@@ -1106,7 +1425,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "pinkvilla",
@@ -1122,7 +1444,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "eenadu-cinema",
@@ -1137,7 +1462,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-AP",
+        "IN-TG"
+      ]
     },
     {
       "id": "sakshi-telugu",
@@ -1152,7 +1481,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-AP",
+        "IN-TG"
+      ]
     },
     {
       "id": "123telugu",
@@ -1168,7 +1501,12 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-AP",
+        "IN-TG",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "hindu-tamil-thisai",
@@ -1183,7 +1521,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
     },
     {
       "id": "maalaimalar",
@@ -1198,7 +1540,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
     },
     {
       "id": "dinamani",
@@ -1213,7 +1559,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
     },
     {
       "id": "vijaya-karnataka",
@@ -1228,7 +1578,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KA"
+      ]
     },
     {
       "id": "prajavani",
@@ -1243,7 +1596,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KA"
+      ]
     },
     {
       "id": "kannada-prabha",
@@ -1258,7 +1614,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KA"
+      ]
     },
     {
       "id": "onmanorama",
@@ -1274,7 +1633,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "mathrubhumi",
@@ -1290,7 +1653,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "manorama-online",
@@ -1306,7 +1673,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
     },
     {
       "id": "anandabazar",
@@ -1321,7 +1692,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-WB"
+      ]
     },
     {
       "id": "sangbad-pratidin",
@@ -1336,7 +1710,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-WB"
+      ]
     },
     {
       "id": "lokmat",
@@ -1351,7 +1728,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-MH"
+      ]
     },
     {
       "id": "sakal",
@@ -1366,7 +1746,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-MH"
+      ]
     },
     {
       "id": "loksatta",
@@ -1381,7 +1764,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-MH"
+      ]
     },
     {
       "id": "ajit-punjabi",
@@ -1396,7 +1782,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-PB"
+      ]
     },
     {
       "id": "punjabi-tribune",
@@ -1411,7 +1800,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-PB"
+      ]
     },
     {
       "id": "assam-tribune",
@@ -1427,7 +1819,11 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-NATIONAL",
+        "IN-AS"
+      ]
     },
     {
       "id": "asomiya-pratidin",
@@ -1442,7 +1838,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-AS"
+      ]
     },
     {
       "id": "sambad-odia",
@@ -1457,7 +1856,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-OD"
+      ]
     },
     {
       "id": "dharitri",
@@ -1472,7 +1874,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "IN-OD"
+      ]
     },
     {
       "id": "episodi",
@@ -1487,7 +1892,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "elokuvauutiset",
@@ -1502,7 +1910,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "film-o-holic",
@@ -1517,7 +1928,10 @@
       "source_type": "editorial",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "finnish-film-foundation",
@@ -1532,7 +1946,10 @@
       "source_type": "primary",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "cinema-mondo",
@@ -1547,7 +1964,10 @@
       "source_type": "primary",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     },
     {
       "id": "filmikamari",
@@ -1562,7 +1982,10 @@
       "source_type": "other",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
     }
   ]
 }
