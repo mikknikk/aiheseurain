@@ -38,6 +38,14 @@ Tämä tiedosto on tehtäväjonon ainoa ensisijainen totuuslähde. Jonossa on yh
 - Päivitä tehtäväkohtainen viimeisin onnistunut tarkistus ja sen aikaleima dokumentaatioon.
 
 Intialaisen elokuvan uutisraportti on jonon yhdeksäs tehtävä. Intialaisten elokuvien näytösseuranta EI kuulu tähän jonoon: sitä hoitaa erillinen päivittäinen Intialaisten elokuvien näytösvahti -automaatio, joka käyttää samaa uutiset-repositoriota. Näytösvahti tarkistaa näytökset päivittäin eikä kuluta aihekierroksen vuoroa.
+## Skriptien kommentointi – pakollinen käytäntö
+
+- Jokainen uusi skripti kirjoitetaan alusta lähtien yhtä perusteellisesti kommentoiduksi kuin `scripts/validate_feeds.py`.
+- Kommentit ja docstring-kuvaukset kirjoitetaan suomeksi, ja niiden tulee auttaa myös Pythonin perusteet tuntevaa mutta projektia tuntematonta lukijaa.
+- Selitä tiedoston tarkoitus, tärkeät funktiot, keskeiset toimintavaiheet sekä ei-ilmeiset ratkaisut ja käsittelysäännöt. Kommentoi erityisesti monimutkaista logiikkaa, tiedostojen ja tietomuotojen käsittelyä, aikavyöhykkeitä, validointia ja virhetilanteita.
+- Pidä kommentit ajan tasalla aina, kun koodia muutetaan. Älä jätä vanhentuneita tai toiminnan kanssa ristiriitaisia kommentteja.
+- Tarkista ennen muutoksen valmistumista, että aloittelija pystyy seuraamaan koodin rakennetta ja tarkoitusta. Noudata kokonaisuudessaan tiedoston `docs/kehityskaytannot.md` ohjetta.
+
 ## Koneellinen seurantatila ja automaattiset testit
 
 - data/seurantatila.json on koneellisesti luettava rinnakkaistila. Sen rotation.next_task-arvon pitää vastata tämän tiedoston seuraava-tehtävä-merkintää.
