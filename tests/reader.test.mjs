@@ -37,6 +37,8 @@ function fakeElement(tag, attrs = {}, children = []) {
 test("sanitointi pudottaa aktiiviset elementit ja tapahtumankäsittelijät", () => {
   const tree = fakeElement("div", {}, [
     new FakeNode(3, "", "Turvallinen teksti "),
+    ...["h1", "h2", "h3", "h4", "h5", "h6"].map((tag) =>
+      fakeElement(tag, {}, [new FakeNode(3, "", "Otsikko " + tag)])),
     fakeElement("script", {}, [new FakeNode(3, "", "alert(1)")]),
     fakeElement("iframe", { src: "https://attacker.example/" }),
     fakeElement("p", { onclick: "alert(2)" }, [
@@ -68,6 +70,12 @@ test("sanitointi pudottaa aktiiviset elementit ja tapahtumankäsittelijät", () 
     const text = JSON.stringify(result, (key, value) => key === "parent" ? undefined : value);
     assert.doesNotMatch(text, /alert|attacker|javascript|onclick|style/);
     assert.match(text, /Turvallinen teksti/);
+    for (const tag of ["H2", "H3", "H4", "H5", "H6"]) {
+      assert.match(text, new RegExp('"tagName":"' + tag + '"'));
+    }
+    // H6 ei voi siirtyä tasolle H7, koska HTML ei tunne H7-elementtiä.
+    assert.equal((text.match(/"tagName":"H6"/g) || []).length, 2);
+    assert.doesNotMatch(text, /"tagName":"H1"|H7/);
     assert.match(text, /Turvallinen lähde/);
     assert.match(text, /https:\/\/example\.com\/source/);
     assert.equal(ALLOWED_TAGS.has("p"), true);
@@ -107,4 +115,14 @@ test("tyhjä RSS-syöte tuottaa tyhjän artikkelilistan", () => {
   } finally {
     globalThis.DOMParser = oldParser;
   }
+});
+
+
+test("etusivun RSS-linkit nimeävät kohdesyötteen ja lukijan lähdelinkki artikkelin", () => {
+  const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  const script = readFileSync(new URL("../assets/js/reader.js", import.meta.url), "utf8");
+  assert.doesNotMatch(home, />Avaa RSS-syöte</);
+  assert.ok(home.includes("Avaa J. R. R. Tolkienin RSS-syöte"));
+  assert.match(home, /Avaa intialaisten elokuvien näytösseurannan RSS-syöte/);
+  assert.ok(script.includes('element("a", "", "Alkuperäinen lähde: " + article.title)'));
 });

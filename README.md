@@ -143,7 +143,7 @@ Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Näytösvahti julkaisee v
 
 ## Saavutettavuus
 
-Tämän repositorion saavutettavuuden tavoitetaso on WCAG 2.2 AAA kaikilta soveltuvilta osin, kuten aiemmassa elokuvaraportti-repositoriossa. Tavoitetason saavuttamista ei väitetä ilman asianmukaista testausta. Yksityiskohtaiset vaatimukset ovat tiedostossa [docs/saavutettavuus.md](docs/saavutettavuus.md).
+Tämän repositorion saavutettavuuden tavoitetaso on WCAG 2.2 AAA kaikilta soveltuvilta osin, kuten aiemmassa elokuvaraportti-repositoriossa. Tavoitetason saavuttamista ei väitetä ilman asianmukaista testausta. Yksityiskohtaiset vaatimukset ovat tiedostossa [docs/saavutettavuus.md](docs/saavutettavuus.md). [17.11.2026 tehdyn saavutettavuuskatselmoinnin raportti](docs/saavutettavuuskatselmointi-2026-11-17.md) erottaa lähdekoodista tarkistetut asiat vielä tekemättömistä manuaalisista testeistä.
 
 ## RSS-itemien sisältö ja lähteet
 

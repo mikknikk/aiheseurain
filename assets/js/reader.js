@@ -12,7 +12,7 @@ const CATALOG_URL = new URL("../../data/feed-catalog.json", import.meta.url).hre
 // Artikkelisisällössä sallitaan vain tavalliset tekstin ja rakenteen elementit.
 // Kuvia, tyylejä, lomakkeita, upotuksia tai aktiivista sisältöä ei ladata.
 export const ALLOWED_TAGS = new Set([
-  "article", "section", "div", "p", "h1", "h2", "h3", "h4",
+  "article", "section", "div", "p", "h1", "h2", "h3", "h4", "h5", "h6",
   "ul", "ol", "li", "strong", "b", "em", "i", "blockquote",
   "br", "hr", "a", "table", "thead", "tbody", "tr", "th", "td",
   "dl", "dt", "dd", "sup", "sub", "small", "code", "pre"
@@ -74,7 +74,14 @@ export function sanitizeArticleHtml(html) {
       return;
     }
 
-    const clean = document.createElement(tag);
+    // Siirretään RSS-artikkelin kaikkia otsikoita yhden tason syvemmälle,
+    // jotta ne eivät kilpaile lukijasivun oman H1-otsikon kanssa. HTML:ssä
+    // ei ole H7-tasoa, joten alkuperäinen H6 säilyy H6-tasolla.
+    const headingLevel = /^h[1-6]$/.test(tag) ? Number(tag.slice(1)) : null;
+    const outputTag = headingLevel === null
+      ? tag
+      : "h" + Math.min(headingLevel + 1, 6);
+    const clean = document.createElement(outputTag);
     if (tag === "a") {
       const href = source.getAttribute("href");
       if (isSafeArticleUrl(href)) {
@@ -194,7 +201,7 @@ function renderArticles() {
     const body = element("div", "reader-article-body");
     if (article.sourceUrl) {
       const source = element("p", "reader-source");
-      const link = element("a", "", "Avaa alkuperäinen lähde");
+      const link = element("a", "", "Alkuperäinen lähde: " + article.title);
       link.href = article.sourceUrl;
       link.rel = "noopener noreferrer";
       source.appendChild(link);
