@@ -38,3 +38,11 @@ Tämä tiedosto on tehtäväjonon ainoa ensisijainen totuuslähde. Jonossa on yh
 - Päivitä tehtäväkohtainen viimeisin onnistunut tarkistus ja sen aikaleima dokumentaatioon.
 
 Intialaisen elokuvan uutisraportti on jonon yhdeksäs tehtävä. Intialaisten elokuvien näytösseuranta EI kuulu tähän jonoon: sitä hoitaa erillinen päivittäinen Intialaisten elokuvien näytösvahti -automaatio, joka käyttää samaa uutiset-repositoriota. Näytösvahti tarkistaa näytökset päivittäin eikä kuluta aihekierroksen vuoroa.
+## Koneellinen seurantatila ja automaattiset testit
+
+- data/seurantatila.json on koneellisesti luettava rinnakkaistila. Sen rotation.next_task-arvon pitää vastata tämän tiedoston seuraava-tehtävä-merkintää.
+- Päivitä kyseisen tehtävän last_successful_check, last_period_start, last_period_end, last_result, published_items ja sources_checked vasta, kun tarkistus on onnistunut ja kaikki tarvittavat GitHub-kirjoitukset on luettu takaisin.
+- Käytä ISO 8601 -aikaleimoja aikavyöhyketietoineen. Älä päättele vanhoja tarkkoja aikoja jälkikäteen. Tuntematon arvo säilyy null-arvona.
+- Erillisen näytösvahdin tila kirjataan JSON-tiedoston separate_screening_watch-osioon. Se ei muuta rotation.next_task-arvoa.
+- GitHub Actions ajaa scripts/validate_feeds.py-testin push- ja pull request -muutoksissa. Testi tarkistaa RSS/XML-rakenteet, GUIDit, item-linkkien kiellon, CDATA-descriptionit, lähdeluettelot ja seurantatilan JSONin.
+- Jos automaattinen testi epäonnistuu, korjaa virhe ennen julkaisun pitämistä valmiina. Testin läpäisy ei kuitenkaan todista uutisten faktatarkkuutta eikä WCAG AAA -vaatimusten täyttymistä.
