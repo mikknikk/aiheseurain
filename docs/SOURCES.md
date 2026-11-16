@@ -11,7 +11,7 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 5. Jos sivuston sisäinen haku ei toimi, tee hakukonehaku sivustorajauksella, esimerkiksi `site:yle.fi hakusanat`, `site:hs.fi hakusanat` tai vastaava.
 6. Älä käytä hakutuloskatkelmaa ainoana lähteenä. Avaa alkuperäinen juttu ja tarkista sisältö.
 7. Jos lähdettä ei voi avata tai väitettä ei voi varmistaa, älä esitä sitä vahvistettuna.
-8. Kirjaa lähteiden riippuvuudet ja mahdolliset ristiriidat `docs/TRACKING.md`-tiedostoon.
+8. Kirjaa lähteiden riippuvuudet ja mahdolliset ristiriidat `TRACKING.md`-tiedostoon.
 
 ## Tolkien
 
@@ -93,4 +93,4 @@ Kun lähde tuottaa olennaista uutistietoa, kirjaa tarvittaessa:
 
 ## Intialaisen elokuvan lähderekisteri
 
-Koko Intian elokuvateollisuuden uutis- ja Suomen näytöslähteiden laaja lähderekisteri on siirretty tiedostoon `docs/docs/INDIAN_FILM_SOURCES.md`. Käytä sitä päivittäisessä intialaisen elokuvan uutis- ja näytösseurannassa. Lähderekisteri on lähtökohta, ei suljettu lista.
+Koko Intian elokuvateollisuuden uutis- ja Suomen näytöslähteiden laaja lähderekisteri on siirretty tiedostoon `INDIAN_FILM_SOURCES.md`. Käytä sitä päivittäisessä intialaisen elokuvan uutis- ja näytösseurannassa. Lähderekisteri on lähtökohta, ei suljettu lista.
