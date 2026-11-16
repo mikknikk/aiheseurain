@@ -10,7 +10,8 @@
     "Näytösvahdin JSON-päivitysohje säilyttää automation_instructions-versionhallintaosion ennallaan.",
     "Näytösvahdin täydellinen tehtäväohje on versionhallittu tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md; sen onnistuneen ajon käyttämä ohjeversio ja aika kirjataan separate_screening_watch.automation_instructions-osioon.",
     "Viikoittaisen laatutarkistuksen käsikirja on versionhallittu tiedostossa docs/laatutarkistuksen-ohje.md; sen onnistuneen ajon käyttämä ohjeversio ja aika kirjataan quality_check_instructions-osioon. Laatutarkistus saa muuttaa vain näitä kahta seurantakenttää.",
-    "Näytösvahdin epäonnistunut tai osittainen ajo ei siirrä last_successful_check-tarkistuspistettä; seuraava ajo käsittelee koko välin edellisestä onnistumisesta."
+    "Näytösvahdin epäonnistunut tai osittainen ajo ei siirrä last_successful_check-tarkistuspistettä; seuraava ajo käsittelee koko välin edellisestä onnistumisesta.",
+    "Lähderekisteri on data/lahderekisteri.json ja tehtäväkohtainen ajoloki data/lahdetarkistukset.json; uutiskierron ja erillisen näytösvahdin intialaiset tehtävätunnisteet ovat erilliset."
   ],
   "rotation": {
     "next_task": "tolkien",
@@ -129,14 +130,14 @@
     "errors": [],
     "automation_instructions": {
       "document": "docs/intialaisten-elokuvien-naytosseuranta.md",
-      "current_version": "1.2.0",
+      "current_version": "1.3.0",
       "last_successful_run_version": "1.0.0",
       "last_successful_run_at": "2026-11-16T15:24:00+02:00"
     }
   },
   "automation_instructions": {
     "document": "docs/paaautomaation-ohje.md",
-    "current_version": "1.0.2",
+    "current_version": "1.0.3",
     "last_successful_run_version": null,
     "last_successful_run_at": null
   },
