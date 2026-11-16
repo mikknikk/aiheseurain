@@ -1,9 +1,7 @@
-# Uutisseurannan tilanne ja julkaisuhistoria
+# Uutisseurannan seurantaohje ja julkaisuhistoria
 
 Viimeksi alustettu: 2026-11-16.
 Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, kun tarkistuksissa tai uutisten tilassa tapahtuu merkityksellinen muutos.
-
-## Yleiset seurantamerkinnät
 
 ## Yleiset raportointisäännöt
 
