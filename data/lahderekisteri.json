@@ -3,7 +3,8 @@
   "updated_at": null,
   "notes": [
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
-    "Uutiskierron intialaisen elokuvan uutislähteet ja erillisen päivittäisen näytösvahdin lähteet ovat eri topic-tunnisteilla."
+    "Uutiskierron intialaisen elokuvan uutislähteet ja erillisen päivittäisen näytösvahdin lähteet ovat eri topic-tunnisteilla.",
+    "Kino Myyriä koskeva rekisterimerkintä osoittaa toistaiseksi kolmannen osapuolen teatterihakemistoon, ei teatterin omaan kanavaan."
   ],
   "sources": [
     {
@@ -345,18 +346,18 @@
     },
     {
       "id": "kino-myyri",
-      "name": "Kino Myyri",
-      "url": "https://kinomyyri.fi/",
+      "name": "Kinoon – Kino Myyrin teatterilistauksen lähde",
+      "url": "https://kinoon.fi/teatterit",
       "topics": [
         "intialaiset_elokuvat_naytokset"
       ],
       "language_regions": [
         "fi"
       ],
-      "source_type": "primary",
-      "critical": true,
+      "source_type": "other",
+      "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy."
     },
     {
       "id": "finbolly",
