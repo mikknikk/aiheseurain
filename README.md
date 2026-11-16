@@ -17,7 +17,7 @@ Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä aihekohtaista uu
 | Intialaisen elokuvan uutisraportti | [indian-films.xml](indian-films.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml |
 | Intialaisten elokuvien näytökset Suomessa | [indian-film-screenings.xml](indian-film-screenings.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-film-screenings.xml |
 
-Syötteet on alustettu tyhjinä RSS 2.0 -tiedostoina. Niihin lisätään vain tarkistetut, olennaiset uutiset; tyhjä syöte ei tarkoita virhettä eikä sinne lisätä keinotekoisia “ei uutisia” -artikkeleita.
+Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olennaisia uutisia ei löydy. Intialaisen elokuvan kaksi syötettä siirrettiin aiemmasta repositoriosta historiallisine itemeineen. Yhteenkään syötteeseen ei lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
 ## Ajon pakollinen esitietojen lukujärjestys ja aihekierto
 
@@ -25,8 +25,9 @@ Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sek
 
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
 2. `TRACKING.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
-3. `SOURCES.md` – lähdepolitiikka ja lähdehakujen lähtöpisteet.
-4. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml`, `indian-films.xml` ja `indian-film-screenings.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
+3. `SOURCES.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
+4. `INDIAN_FILM_GUIDE.md`, `INDIAN_FILM_NEWS.md`, `INDIAN_FILM_SCREENINGS.md`, `INDIAN_FILM_TRACKING.md` ja `INDIAN_FILM_SOURCES.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
+5. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml`, `indian-films.xml` ja `indian-film-screenings.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
 Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
@@ -66,7 +67,7 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku ei rajoitu englanninkieliseen mediaan: käytä aiheen kannalta olennaisia paikalliskieliä, alkuperäisiä kirjoitusasuja, translitterointeja ja alueellisia lähteitä. Tarkista myös Suomen media, viralliset suomalaiset järjestäjät, tapahtumapaikat, levittäjät ja kulttuuritoimijat. Nosta uutisissa selvästi esiin Suomeen liittyvät tapahtumat, suomalaiset toimijat ja Suomessa järjestettävät konsertit, elokuvanäytökset, kilpailut, fanitapahtumat tai muut tapahtumat. Jos tällaista Suomen-yhteyttä ei löydy, älä lisää raporttiin erillistä mainintaa sen puuttumisesta.
 
-Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kahdeksan RSS-tiedostoa sekä README.md, TRACKING.md ja SOURCES.md.
+Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, TRACKING.md, SOURCES.md ja kaikki viisi INDIAN_FILM_*.md-dokumenttia.
 
 
 ## Intialaisen elokuvan päivittäiset seurantamoduulit
