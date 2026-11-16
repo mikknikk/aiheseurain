@@ -37,6 +37,14 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 - Viimeksi onnistuneesti käytetty versio ja aikaleima päivitetään vain kattavan auditoinnin jälkeen. Laatutarkistus ei korjaa havaintoja eikä muuta muita repositoryn tiedostoja; ainoastaan nämä kaksi onnistuneen ajon metatietokenttää saa päivittää.
 - Jos käsikirjan ja JSONin versiot eivät täsmää, automaatio keskeyttää.
 
+## Lähdekattavuuden koneellinen seuranta
+
+- `data/lahderekisteri.json` määrittää lähteiden pysyvät tunnisteet ja tehtävä-, kieli-/alue- sekä lähdetyyppitiedot.
+- `data/lahdetarkistukset.json` säilyttää ajokohtaiset tarkistustulokset. Jokaisessa ajossa eritellään tarkistetut lähteet sekä tarkistamatta jääneet lähteet syineen. Osittainen tai epäonnistunut ajo ei saa näyttää täydelliseltä.
+- Tehtävätunnisteet `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset` ovat erilliset. Uutisautomaatio ei lisää näytöslähteiden tarkistuksia omaan ajoonsa.
+- `complete` on operatiivinen merkintä siitä, että tehtävän rekisteriin merkityt kriittiset lähteet on käsitelty. Se ei ole todiste täydellisestä maailmanlaajuisesta kattavuudesta. Kieli- ja aluepuutteet kirjataan `coverage_notes`-kenttään.
+- `data/seurantatila.json`-tiedoston `sources_checked` säilyy yhteenvetolukuna; lähdekohtaiset tiedot ovat ajolokissa.
+
 ## Koneellinen seurantatila ja automaattiset testit
 
 - `data/seurantatila.json` on koneellisesti luettava rinnakkaistila. Sen `rotation.next_task`-arvon pitää vastata [tehtäväjonon](tehtavajono.md) seuraava-tehtävä-merkintää.
