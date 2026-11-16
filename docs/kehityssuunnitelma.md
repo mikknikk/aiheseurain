@@ -17,7 +17,7 @@ Raporttiarkisto on mahdollinen myöhempi ominaisuus, ei oma ensisijainen osionsa
 
 Käyttöliittymä on staattinen GitHub Pages -sivusto. Se lukee automaatioiden tuottamia julkisia JSON-tiedostoja ja RSS-syötteitä, mutta ei tarvitse selaimessa GitHub-kirjoitusoikeuksia, salaisuuksia tai käyttäjätunnistusta. Automaatiot ja niiden tietojen keruu pysyvät erillään käyttöliittymästä.
 
-Sivuston juuri (`/`) toimii Aiheseuraimen etusivuna. Valvomolla on oma osoite `/valvomo/`; RSS-lukijalle ja Kehitysjonolle varataan omat reitit niiden valmistuessa. Kaikki sivut käyttävät samaa Jekyll-sivupohjaa ja navigaatiota. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
+Sivuston juuri (`/`) toimii Aiheseuraimen etusivuna. Valvomolla on oma osoite `/valvomo/` ja RSS-lukijalla `/lukija/`; Kehitysjonolle varataan oma reitti sen valmistuessa. Kaikki sivut käyttävät samaa Jekyll-sivupohjaa ja navigaatiota. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
 
 ## 2. Valvomo: seurannan tila
 
@@ -88,15 +88,15 @@ Myöhemmässä vaiheessa valvomoon voidaan lisätä lähderekisterin selain, jos
 
 ### 3.1 Perustoiminnot
 
-RSS-lukijan tulee lukea syötekatalogi koneellisesti ylläpidetystä luettelosta, yhdistää kaikkien valittujen syötteiden itemit yhdeksi aikajärjestykseen lajitelluksi virraksi ja näyttää oletuksena uusimmat artikkelit ensin.
+RSS-lukijan vähimmäisversio on toteutettu sivulle `/lukija/` omana päävalikon osionaan. Lukija lukee syötekatalogin `data/feed-catalog.json`, hakee kaikki kymmenen RSS-syötettä GitHub Pagesista ja yhdistää niiden itemit yhdeksi uusimmat ensin näyttäväksi artikkelivirraksi.
 
-Kustakin artikkelista näytetään otsikko, julkaisupäivä, aihe/syöte, ingressi tai kuvaus ja alkuperäisen artikkelin linkki. Kuva näytetään, jos RSS-itemissä on käyttökelpoinen kuva ja sen käyttö on turvallista. Lukutila tarjoaa artikkelin koko sisällön, kun RSS:n description sisältää koko HTML-artikkelin. Lähdelinkit säilytetään selkeinä ja alkuperäisen lähteen attribuutio pidetään näkyvissä.
+Artikkelikortissa näytetään otsikko, julkaisupäivä, syötteen nimi, tekstimuotoinen ingressi ja koko puhdistettu artikkeli avattavassa lukutilassa. Lähdelinkit säilyvät artikkelin sisällössä, ja ensimmäinen turvallinen lähdelinkki nostetaan lisäksi näkyviin alkuperäisen lähteen linkkinä. Käyttäjä voi valita kaikki syötteet tai yhden katalogissa määritellyn syötteen. Tyhjät syötteet eivät ole virhe eikä niihin lisätä keinotekoisia artikkeleita.
 
-Lukijan tulee tukea sekä yksittäisen syötteen että kaikkien syötteiden näkymää. Tyhjä syöte ei ole virhe eikä lukijaan lisätä keinotekoisia “ei uutisia” -artikkeleita.
+Ulkoisia kuvia ei ladata MVP-versiossa: näin lukija ei tee artikkelien avaamisen yhteydessä huomaamattomia kolmannen osapuolen verkkopyyntöjä. Kuvien hallittu näyttäminen voidaan arvioida myöhemmässä kehityksessä erikseen.
 
 ### 3.2 Suodatus ja henkilökohtainen lukutila
 
-Ensimmäisen tai myöhemmän kehitysvaiheen ominaisuuksia ovat aiheen/syötteen valinta, aikasuodattimet (esimerkiksi 24 tuntia, 7 päivää ja 30 päivää), otsikon ja artikkelisisällön tekstihaku, lukemattomien ja luettujen artikkeleiden erottelu, artikkelien tallentaminen myöhempää lukemista varten sekä lajittelu.
+Syötekohtainen suodatus kuuluu jo vähimmäisversioon. Myöhempiä ominaisuuksia ovat aikasuodattimet (esimerkiksi 24 tuntia, 7 päivää ja 30 päivää), otsikon ja artikkelisisällön tekstihaku, lukemattomien ja luettujen artikkeleiden erottelu, artikkelien tallentaminen myöhempää lukemista varten, lajittelun valinta ja käyttäjäkohtaiset asetukset.
 
 Luku- ja tallennustila voidaan aluksi säilyttää selaimen paikallisessa tallennustilassa. Tämä ei synkronoidu laitteiden välillä eikä ole käyttäjätiliin sidottu. Palvelinpuolen käyttäjätunnistusta tai tietokantaa ei lisätä ilman erillistä tarvetta ja suunnitelmaa.
 
@@ -106,12 +106,12 @@ Aihevalikoima johdetaan aina ajantasaisesta syötekatalogista, ei kovakoodatusta
 
 RSS:n description voi sisältää HTML:ää. Ulkoista HTML:ää ei saa renderöidä suoraan luotettuna sivun DOM-sisältönä.
 
-- Puhdista HTML sallittujen elementtien ja attribuuttien listalla ennen lukutilassa näyttämistä.
-- Estä skriptit, tapahtumankäsittelijät, vaaralliset URL-skeemat, lomakkeet ja mielivaltaiset upotukset.
-- Käsittele YouTube-upotukset erikseen rajatulla sallittujen verkkotunnusten ja upotusmuotojen listalla; tarjoa aina myös tavallinen linkki.
-- Tarkista kuvien ja linkkien URL-osoitteet sekä ulkoisen sisällön lataamisen yksityisyysvaikutukset.
+- Lukija jäsentää RSS:n XML:n passiivisesti ja rakentaa artikkelin HTML:n uudelleen sallittujen elementtien listasta. Alkuperäisiä elementtejä tai attribuutteja ei siirretä sivulle.
+- Skriptit, tyylit, tapahtumankäsittelijät, vaaralliset URL-skeemat, lomakkeet, SVG/MathML, mediaelementit ja mielivaltaiset upotukset poistetaan.
+- Linkeistä hyväksytään vain täydelliset HTTP- ja HTTPS-osoitteet ilman käyttäjätunnuksia tai salasanoja. Muut attribuutit hylätään; linkeille lisätään `rel="noopener noreferrer"`.
+- Ulkoisia kuvia, tyylejä tai upotuksia ei ladata MVP-versiossa, mikä vähentää seurantaa ja kolmansien osapuolten verkkopyyntöjä.
 - Säilytä lähteiden linkit, mutta älä anna lähdeartikkelin HTML:n muuttaa lukijan käyttöliittymää.
-- Näytä puhdistettu artikkeli ja tarjoa linkki alkuperäiseen julkaisuun.
+- Näytä puhdistettu artikkeli ja tarjoa turvallinen linkki alkuperäiseen julkaisuun.
 
 Sisältösuojaus ja sanitointi testataan erillisillä haitallisen HTML:n testitapauksilla. RSS-syötteen rakenteellinen validointi ei yksin riitä osoittamaan lukijan turvallisuutta.
 

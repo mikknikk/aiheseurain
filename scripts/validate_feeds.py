@@ -26,25 +26,58 @@ from validate_source_coverage import validate_source_coverage
 # kansiossa, sen yläpuolella oleva kansio on koko repository.
 ROOT = Path(__file__).resolve().parents[1]
 
-# Kaikki kymmenen julkaistavaa RSS-syötettä. Viimeinen on näytösvahti,
-# joka toimii erillään yhdeksän aiheen päivittäisestä tehtäväkierrosta.
-FEEDS = [
-    "feeds/tolkien.xml",
-    "feeds/taylor-swift.xml",
-    "feeds/gurmeet-ram-rahim-singh.xml",
-    "feeds/muumit.xml",
-    "feeds/wakaliwood.xml",
-    "feeds/euroviisut.xml",
-    "feeds/sompote-sands.xml",
-    "feeds/shakkidraamat.xml",
-    "feeds/intialaiset-elokuvat.xml",
-    "feeds/intialaisten-elokuvien-naytokset.xml",
-]
-ROTATION_FEEDS = FEEDS[:-1]
+# Syöteluettelo luetaan yhdestä katalogista, jota myös RSS-lukija käyttää.
+FEEDS = []
+ROTATION_FEEDS = []
+FEED_CATALOG = []
 
 # GitHub Pages on kaikkien RSS-syötteiden kanoninen julkinen jakelukanava.
 PAGES_BASE_URL = "https://mikknikk.github.io/aiheseurain"
 PAGES_SITE_URL = PAGES_BASE_URL + "/"
+
+def load_feed_catalog():
+    """Lataa ja tarkistaa RSS-lukijan ja validoinnin yhteisen syötekatalogin."""
+    global FEEDS, ROTATION_FEEDS, FEED_CATALOG
+
+    path = ROOT / "data/feed-catalog.json"
+    if not path.is_file():
+        fail("data/feed-catalog.json puuttuu")
+    try:
+        catalog = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        fail(f"syötekatalogin JSON on virheellinen: {exc}")
+
+    if not isinstance(catalog, dict) or catalog.get("schema_version") != 1:
+        fail("syötekatalogin pitää olla schema_version 1 -JSON-olio")
+    entries = catalog.get("feeds")
+    if not isinstance(entries, list) or len(entries) != 10:
+        fail("syötekatalogin pitää sisältää täsmälleen kymmenen syötettä")
+
+    ids, paths, topic_paths, screening_paths = [], [], [], []
+    for index, entry in enumerate(entries, 1):
+        label = f"data/feed-catalog.json feeds[{index}]"
+        if not isinstance(entry, dict):
+            fail(f"{label} ei ole olio")
+        for field in ("id", "title", "type", "path"):
+            if not isinstance(entry.get(field), str) or not entry[field].strip():
+                fail(f"{label}.{field} puuttuu")
+        if entry["type"] not in {"topic", "screening"}:
+            fail(f"{label}.type pitää olla topic tai screening")
+        feed_path = entry["path"]
+        if not re.fullmatch(r"feeds/[a-z0-9-]+\\.xml", feed_path):
+            fail(f"{label}.path ei ole kelvollinen RSS-polku: {feed_path}")
+        ids.append(entry["id"])
+        paths.append(feed_path)
+        (topic_paths if entry["type"] == "topic" else screening_paths).append(feed_path)
+        if not (ROOT / feed_path).is_file():
+            fail(f"syötekatalogissa määritelty RSS-tiedosto puuttuu: {feed_path}")
+
+    if len(set(ids)) != 10 or len(set(paths)) != 10:
+        fail("syötekatalogin tunnisteiden ja polkujen pitää olla yksilöllisiä")
+    if len(topic_paths) != 9 or len(screening_paths) != 1:
+        fail("syötekatalogissa pitää olla yhdeksän topic-syötettä ja yksi screening-syöte")
+    FEED_CATALOG, FEEDS, ROTATION_FEEDS = entries, paths, topic_paths
+    return entries
 
 # HTML:ssä on elementtejä, joilla ei ole erillistä sulkutagia.
 # Esimerkiksi <br> ja <img> ovat tällaisia. Muut elementit pitää sulkea.
@@ -860,6 +893,8 @@ def validate_docs(state):
 
     if "docs/seuranta.md" not in readme or "docs/kehityskaytannot.md" not in readme:
         fail("README ei ohjaa yleisiin seuranta- ja kehityskäytäntöihin")
+    if "data/feed-catalog.json" not in readme:
+        fail("README ei dokumentoi lukijan ja validoinnin yhteistä syötekatalogia")
 
     if "kahdeksan aihekohtaisen seurannan syötteet" in readme.lower():
         fail("README:n syötteiden lukumäärä on vanhentunut tai epäselvä")
@@ -1125,6 +1160,9 @@ def validate_startup_prompts(state):
 
 def main():
     """Ajaa kaikki tarkistukset oikeassa järjestyksessä."""
+    # Syötekatalogi ladataan ennen seurantatilan tarkistusta.
+    load_feed_catalog()
+
     # Ensin tarkistetaan seurantatila, jotta dokumentteja voidaan verrata siihen.
     state = validate_state()
 

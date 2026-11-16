@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "feeds": [
+    {"id":"tolkien","title":"J. R. R. Tolkien","type":"topic","path":"feeds/tolkien.xml"},
+    {"id":"taylor-swift","title":"Taylor Swift","type":"topic","path":"feeds/taylor-swift.xml"},
+    {"id":"gurmeet-ram-rahim-singh","title":"Saint Dr. Gurmeet Ram Rahim Singh Ji Insan","type":"topic","path":"feeds/gurmeet-ram-rahim-singh.xml"},
+    {"id":"muumit","title":"Muumit","type":"topic","path":"feeds/muumit.xml"},
+    {"id":"wakaliwood","title":"Wakaliwood","type":"topic","path":"feeds/wakaliwood.xml"},
+    {"id":"euroviisut","title":"Euroviisut ja kansalliset karsinnat","type":"topic","path":"feeds/euroviisut.xml"},
+    {"id":"sompote-sands","title":"Sompote Sands","type":"topic","path":"feeds/sompote-sands.xml"},
+    {"id":"shakkidraamat","title":"Shakkidraamat","type":"topic","path":"feeds/shakkidraamat.xml"},
+    {"id":"intialaiset-elokuvat","title":"Intialaisen elokuvan uutisraportti","type":"topic","path":"feeds/intialaiset-elokuvat.xml"},
+    {"id":"intialaisten-elokuvien-naytokset","title":"Intialaisten elokuvien näytökset Suomessa","type":"screening","path":"feeds/intialaisten-elokuvien-naytokset.xml"}
+  ]
+}

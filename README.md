@@ -2,15 +2,15 @@
 
 Aiheseurain on henkilökohtainen, moniaiheinen tiedonkeruu- ja seurantapalvelu. Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Yhdeksän tehtävän kierto tarkoittaa, että kukin aihe tarkistetaan normaalisti noin yhdeksän päivän välein. Intialaisen elokuvan uutisraportti on jonon tehtävä 9. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla.
 
-GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. Valvomo on vain luku -näkymä.
+GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) kokoaa kaikki kymmenen syötettä yhteen aikajärjestykseen ja mahdollistaa syötekohtaisen suodatuksen. Valvomo ja RSS-lukija ovat vain luku -näkymiä.
 
 ## Hakemistorakenne
 
-- `index.html` – Aiheseuraimen etusivu; `valvomo/index.html` – Valvomon oma sivu osoitteessa `/valvomo/`; `_layouts/`, `_includes/` ja `assets/` – yhteinen sivustorunko ja käyttöliittymän resurssit.
+- `index.html` – Aiheseuraimen etusivu; `valvomo/index.html` – Valvomon sivu osoitteessa `/valvomo/`; `lukija/index.html` – RSS-lukijan sivu osoitteessa `/lukija/`; `_layouts/`, `_includes/` ja `assets/` – yhteinen sivustorunko ja käyttöliittymän resurssit.
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
-- `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
+- `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
 - `schemas/` – koneellisten lähdetietojen ja näytöshistorian skeemat.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
@@ -106,6 +106,8 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/valvomon-tietomalli.md`: nykyinen GitHub Pages -julkaisutapa, Valvomon kanoniset tietolähteet, skeemat, julkistettavat kentät, ajantasaisuuden tulkinta ja API:n käyttöperiaatteet.
 - `index.html`: Aiheseuraimen etusivu.
 - `valvomo/index.html`: Valvomon käyttöliittymä osoitteessa `/valvomo/`.
+- `lukija/index.html` ja `assets/js/reader.js`: RSS-lukijan sivu ja selainpuolen RSS-jäsennys, syötesuodatus sekä HTML-sisällön sanitointi.
+- `data/feed-catalog.json`: kaikkien kymmenen RSS-syötteen kanoninen katalogi, jota lukija ja RSS-validointi käyttävät.
 - `_layouts/site.html`, `_includes/site-header.html`, `_includes/site-footer.html` ja `assets/`: sivujen yhteinen sivustorunko, navigaatio ja selaimen esityskoodi.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
 - `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/naytoshistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
@@ -160,6 +162,6 @@ Skriptien kommentointi- ja ylläpitovaatimukset on määritelty sitovasti tiedos
 
 ## Automaattiset laatutestit
 
-GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ja suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Sama työnkulku tarkistaa Valvomon JavaScriptin syntaksin ja suorittaa `node --test tests/valvomo.test.mjs` -testit. Erillinen `.github/workflows/check-links.yml` tarkistaa lähdekatalogin ja RSS-syötteiden linkit viikoittain sekä käsin käynnistettäessä; tulokset ovat ladattavissa työnkulun artefaktina. Näytöshistorian rakenteen tarkistus tehdään lisäksi virallista JSON Schema -määrittelyä vasten. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Erillinen linkkitarkistus raportoi osoitteiden HTTP-tilat muuttamatta julkaisuja. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
+GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ja suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Sama työnkulku tarkistaa Valvomon ja RSS-lukijan JavaScriptin syntaksin sekä suorittaa `node --test tests/valvomo.test.mjs tests/reader.test.mjs` -testit. Pythonin yksikkötestit tarkistavat lisäksi syötekatalogin rakenteen. Erillinen `.github/workflows/check-links.yml` tarkistaa lähdekatalogin ja RSS-syötteiden linkit viikoittain sekä käsin käynnistettäessä; tulokset ovat ladattavissa työnkulun artefaktina. Näytöshistorian rakenteen tarkistus tehdään lisäksi virallista JSON Schema -määrittelyä vasten. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Erillinen linkkitarkistus raportoi osoitteiden HTTP-tilat muuttamatta julkaisuja. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
 
 Automaattiset testit eivät todista uutisväitteiden paikkansapitävyyttä, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään erikseen. Lähde- ja RSS-linkkien verkkotarkistus on oma viikoittainen työnkulkunsa eikä kuulu julkaisua estävään rakennetestaukseen.
