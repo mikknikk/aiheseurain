@@ -1,6 +1,6 @@
-# Uutisseuranta – neljä aihekohtaista RSS-syötettä
+# Uutisseuranta – kahdeksan aihekohtaista RSS-syötettä
 
-Tämä repositorio ylläpitää neljää toisistaan erillistä, suomenkielistä uutisseurantaa. Päivittäinen ajo on ajastettu klo 12.00 aikavyöhykkeellä Europe/Helsinki.
+Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä, suomenkielistä uutisseurantaa. Päivittäinen ajo on ajastettu klo 12.00 aikavyöhykkeellä Europe/Helsinki.
 
 ## Syötteet
 
@@ -15,12 +15,12 @@ Syötteet on alustettu tyhjinä RSS 2.0 -tiedostoina. Niihin lisätään vain ta
 
 ## Ajon pakollinen esitietojen lukujärjestys
 
-Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien neljän RSS-syötteen nykyinen sisältö:
+Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kahdeksan RSS-syötteen nykyinen sisältö:
 
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
 2. `TRACKING.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
 3. `SOURCES.md` – lähdepolitiikka ja lähdehakujen lähtöpisteet.
-4. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml` – julkaistut uutiset ja GUID-tunnisteet.
+4. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml` – julkaistut uutiset ja GUID-tunnisteet.
 
 Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
@@ -42,3 +42,19 @@ Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellis
 - `TRACKING.md`: aihekohtainen uutisseurannan tila, aiemmin käsitellyt tapahtumat, luotettavuus, lähteet ja seuraava olennainen tarkistustarve.
 - `SOURCES.md`: lähdeluettelo ja hakustrategiat. Lista on lähtökohta, ei suljettu sallittujen lähteiden luettelo.
 - RSS-tiedostot: julkaistut uutisartikkelit.
+
+
+## Uudet seurattavat aiheet
+
+| Aihe | RSS-tiedosto | Raaka RSS-osoite |
+|---|---|---|
+| Wakaliwood | [wakaliwood.xml](wakaliwood.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/wakaliwood.xml |
+| Euroviisut ja kansalliset karsinnat | [euroviisut.xml](euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/euroviisut.xml |
+| Sompote Sands | [sompote-sands.xml](sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/sompote-sands.xml |
+| Shakkidraamat | [shakkidraamat.xml](shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/shakkidraamat.xml |
+
+## Laaja kansainvälinen haku ja Suomi-näkökulma
+
+Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku ei rajoitu englanninkieliseen mediaan: käytä aiheen kannalta olennaisia paikalliskieliä, alkuperäisiä kirjoitusasuja, translitterointeja ja alueellisia lähteitä. Tarkista myös Suomen media, viralliset suomalaiset järjestäjät, tapahtumapaikat, levittäjät ja kulttuuritoimijat. Nosta uutisissa selvästi esiin Suomeen liittyvät tapahtumat, suomalaiset toimijat ja Suomessa järjestettävät konsertit, elokuvanäytökset, kilpailut, fanitapahtumat tai muut tapahtumat. Jos tällaista Suomen-yhteyttä ei löydy, älä lisää raporttiin erillistä mainintaa sen puuttumisesta.
+
+Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kahdeksan RSS-tiedostoa sekä README.md, TRACKING.md ja SOURCES.md.
