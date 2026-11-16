@@ -39,7 +39,7 @@ KINOON-LÖYTÖJEN TEATTERILINKKIEN JÄLJITTÄMINEN
 
 
 MUUTOSHISTORIAN KONEELLINEN YLLÄPITO
-- Ylläpidä näytöskohtaista nykytilaa ja vain lisäämällä ylläpidettävää muutoslokia tiedostossa data/naytosten-muutoshistoria.json. Tietomallin yksityiskohdat ovat docs/nayostohistorian-rakenne.md-tiedostossa, ja koneellinen rakenne validoidaan tiedoston schemas/naytosten-muutoshistorian.schema.json JSON Schema -määrittelyä vasten.
+- Ylläpidä näytöskohtaista nykytilaa ja vain lisäämällä ylläpidettävää muutoslokia tiedostossa data/naytosten-muutoshistoria.json. Tietomallin yksityiskohdat ovat docs/nayostohistorian-rakenne.md-tiedostossa, ja koneellinen rakenne validoidaan tiedoston schemas/naytosten-muutoshistoria.schema.json JSON Schema -määrittelyä vasten.
 - Lue jokaisen ajon alussa koko muutoshistoria sekä näytös-RSS:n viimeisimmät julkaisuversiot. Vertaa uusia havaintoja JSON-tiedoston screenings-listan edelliseen tilaan.
 - Pidä screening_id pysyvänä, vaikka näytöksen kellonaika, päivämäärä tai paikka muuttuu. Älä luo muutokselle uutta tunnistetta.
 - Lisää jokaisesta todellisesta muutoksesta oma tapahtuma events-listaan. Tapahtumassa on yksilöllinen event_id, observed_at-aikaleima, tyyppi, näytöstunniste, previous- ja current-tilanne, lähteet sekä lyhyt selitys. Muodosta event_id deterministisesti, jotta saman ajon uusintakäsittely ei lisää duplikaattia.
