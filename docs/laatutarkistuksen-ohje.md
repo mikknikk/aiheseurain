@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.1
+Ohjeversion tunniste: 1.0.2
 
 ## 1. Tehtävä ja rajaus
 
@@ -8,7 +8,7 @@ Tämä on automaation **Viikoittainen järjestelmän laatutarkistus** täydellin
 
 Tarkista `mikknikk/uutiset` kerran viikossa ajon aikana luetun main-haaran ja GitHub Actions -ajojen perusteella. Älä nojaa vanhoihin keskusteluihin tai oletuksiin.
 
-Tämä on auditointi, ei korjaava ylläpito. Älä muuta RSS-syötteitä, dokumentaatiota, skriptejä, työnkulkuja, automaatioita tai asetuksia äläkä tee korjaavia committeja, issueita tai pull requesteja. Ainoa sallittu repository-kirjoitus on tämän käsikirjan version ja onnistuneen tarkistuksen aikaleiman kirjaaminen `data/seurantatila.json`-tiedoston `quality_check_instructions`-osioon kohdan 8 mukaisesti. Älä muuta saman JSONin muita kenttiä.
+Tämä on auditointi, ei korjaava ylläpito. Älä muuta RSS-syötteitä, skriptejä, työnkulkuja, automaatioita tai asetuksia äläkä tee korjaavia issueita tai pull requesteja. Älä korjaa löydöksiä itse. Sallitut repository-kirjoitukset ovat vain (1) tämän käsikirjan version ja onnistuneen tarkistuksen aikaleiman kirjaaminen `data/seurantatila.json`-tiedoston `quality_check_instructions`-osioon kohdan 8 mukaisesti sekä (2) auditointiraportin lisääminen `reports/laatutarkistukset/`-hakemistoon kohdan 5 mukaisesti. Älä muuta saman JSONin muita kenttiä.
 
 ## 2. Ajon alun esitarkistus
 
@@ -82,13 +82,30 @@ Toimita jokaisella viikoittaisella ajolla suomenkielinen raportti, myös silloin
 
 Jos ongelmia ei löydy, sano se selvästi ja kerro mitä tarkistettiin. Erota todellinen virhe, kehitysehdotus ja pääsyrajoite.
 
+### 5.1 Raporttien tallentaminen
+
+Tallenna jokaisen raportointivaiheeseen edenneen auditointiajon raportti repositorion hakemistoon `reports/laatutarkistukset/`. Raportti on Markdown-tiedosto, jonka nimi muodostetaan ajon paikallisesta alkamis-/valmistumisajasta muodossa `YYYY-MM-DDTHHMMSS+ZZZZ.md`, esimerkiksi `2026-11-16T204020+0200.md`. Käytä aikaleimaa `Europe/Helsinki`-aikavyöhykkeellä. Jos samalle aikaleimalle on jo tiedosto, älä ylikirjoita sitä: lisää tiedostonimeen juokseva järjestysnumero (`-02`, `-03` jne.).
+
+Jokaisessa raportissa on:
+- auditoinnin tila: onnistunut, keskeneräinen tai keskeytetty
+- päivämäärä, aikaleima ja käytetty käsikirjan versio
+- tarkastuksen kattavuus sekä tarkistetut ja tarkistamatta jääneet kohteet
+- läpäistyiksi todetut tarkistukset; älä päättele niitä pelkästä auditoinnin onnistumisesta
+- löydökset vakavuusjärjestyksessä sekä niiden tila (uusi, avoin, korjattu tai suljettu)
+- epävarmuudet, puuttuvat tiedot ja testauksen rajat
+- suositellut jatkotoimet sekä täsmälliset linkit, jos ne ovat tiedossa.
+
+Kirjaa vain ajon aikana todennetut tiedot. Jos tietoa ei ole saatavilla, sano se suoraan; älä täydennä raporttia arvaamalla. Merkitse ensimmäisessä raportissa löydökset uusiksi. Seuraavissa raporteissa seuraa aiempia löydöksiä niiden tunnisteen tai yksiselitteisen otsikon avulla. Älä muokkaa tai poista vanhoja raportteja jälkikäteen: korjaantuminen ja tilan muutos kirjataan seuraavaan raporttiin.
+
+Myös keskeneräinen tai keskeytynyt auditointi voidaan raportoida, jos raportointiin on riittävästi varmennettua tietoa. Tällaisen raportin tila on ilmoitettava selvästi, eikä se oikeuta onnistumistietojen päivittämiseen.
+
 ## 6. Onnistumisehto
 
 Auditointi on onnistunut, kun kaikki pakolliset kohteet on tarkastettu eikä mikään olennainen kohde jää pääsyrajoitteen vuoksi huomaamatta. Jos keskeinen lähde tai GitHub Actions -tulos jäi lukematta, auditointi on keskeneräinen eikä onnistumisaikaa päivitetä. Repositoryn löydökset eivät itsessään tee auditoinnista epäonnistunutta: kattavasti tehty auditointi on onnistunut suoritus, vaikka se löytäisi ongelmia.
 
 ## 7. Älä korjaa havaintoja
 
-Älä muuta repositoryn tiedostoja muuten kuin kohdan 8 rajatulla seurantamerkinnällä. Älä muuta automaatioita, ajastuksia, GitHub-asetuksia tai käyttöoikeuksia. Älä tee korjaavia committeja, issueita tai pull requesteja ilman erillistä pyyntöä.
+Älä muuta repositoryn tiedostoja muuten kuin kohdan 5.1 raportin lisäämisellä ja kohdan 8 rajatulla seurantamerkinnällä. Älä korjaa havaintoja, muuta automaatioita, ajastuksia, GitHub-asetuksia tai käyttöoikeuksia. Älä tee korjaavia issueita tai pull requesteja ilman erillistä pyyntöä.
 
 ## 8. Ohjeversion ja onnistuneen ajon seuranta
 
@@ -98,7 +115,7 @@ Auditointi on onnistunut, kun kaikki pakolliset kohteet on tarkastettu eikä mik
 - `last_successful_run_version`: viimeisimmän kattavan auditoinnin käyttämä versio
 - `last_successful_run_at`: saman auditoinnin ISO 8601 -aikaleima aikavyöhykkeineen.
 
-Vasta onnistuneen auditoinnin jälkeen päivitä kaksi viimeistä kenttää. Säilytä JSONin kaikki muut kentät täsmälleen ennallaan ja hae tiedosto takaisin GitHubista varmistaaksesi muutoksen. Keskeneräinen ajo ei muuta onnistumistietoja.
+Vasta onnistuneen auditoinnin jälkeen päivitä kaksi viimeistä kenttää. Säilytä JSONin kaikki muut kentät täsmälleen ennallaan ja hae tiedosto takaisin GitHubista varmistaaksesi muutoksen. Keskeneräinen tai keskeytynyt ajo ei muuta onnistumistietoja. Lisää raportti saman auditointiajon muutossarjaan; onnistuneen auditoinnin raportti ja onnistumistietojen päivitys julkaistaan yhdessä normaalin PR- ja CI-prosessin kautta. Raportti kirjataan sillä käsikirjan versiolla, jota auditoinnissa tosiasiassa käytettiin. Jos käsikirjan versio muuttuu raporttia laadittaessa, älä merkitse uutta versiota jo suoritetun auditoinnin käyttämäksi versioksi.
 
 Käsikirjan muutoksen yhteydessä kasvata versionumeroa semanttisesti ja päivitä `quality_check_instructions.current_version` samassa muutossarjassa. Älä muuta viimeisimmän onnistuneen ajon kenttiä etukäteen.
 
