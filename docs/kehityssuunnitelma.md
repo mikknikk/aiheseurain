@@ -350,8 +350,6 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 ## 10. Muutosloki
 
-- **2026-11-16:** Valvomo siirrettiin suunnitelman mukaisesti omalle `/valvomo/`-sivulle; juuriosoite varattiin Uutisvahdin etusivulle.
-
 - **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Uutisvahdin palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
 
 - **2026-11-16:** ensimmäinen tavoitekuvaus ja vaiheistettu kehityssuunnitelma kirjattu Valvomolle ja RSS-lukijalle.
