@@ -17,20 +17,19 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 - [x] **Dokumentaation ja seurantatilan yhdenmukaisuustestit.** Testi vertaa README:n syötetaulukkoa, tehtäväjonon yhdeksää tehtävää ja JSON-tilatiedoston kiertojärjestystä sekä tarkistaa seurantajaksojen aikaleimojen aikavyöhykkeet ja näytösvahdin erillisyyden.
 - [x] **Aloittelijaystävällinen skriptidokumentointi.** `scripts/validate_feeds.py` sisältää suomenkieliset docstring-kuvaukset ja kommentit, jotka selittävät myös Pythonia vähemmän osaavalle lukijalle keskeisen toiminnan.
 - [x] **Uusien skriptien kommentointisääntö.** `docs/kehityskaytannot.md`, README ja tämä kehityskohdelista edellyttävät, että kaikki uudet skriptit kommentoidaan vastaavalla perusteellisuudella ja kommentit pidetään ajan tasalla.
+- [x] **Näytösseurannan muutoshistorian tietomalli ja validointi.** `data/naytosten-muutoshistoria.json` erottaa näytösten nykytilan append-only-tapahtumalokista. `docs/nayostohistorian-rakenne.md` määrittelee tunnisteet, lähdetiedot, muutostyypit, peruutusten ja ohjelmistosta poistumisen eron sekä ensimmäisen lähtötilan muodostamisen. `scripts/validate_feeds.py` tarkistaa JSON-rakenteen, aikaleimat, tunnisteet, tilat, tapahtumatyypit ja lähdeosoitteet.
 
 ## Avoimet kehityskohteet
 
-### Prioriteetti 1 – näytösseurannan muutoshistoria
+### Käyttöönoton viimeistely – näytösseurannan muutoshistoria
 
-**Tavoite:** tehdä näytösten muutoksista jäljitettäviä ilman, että vanhoja RSS-itemeitä tarvitsee muokata tai poistaa huomaamatta.
+**Tietomalli, dokumentointi ja automaattinen rakennetarkistus on toteutettu.** Avoinna on enää ensimmäisen todellisen lähtötilanteen muodostaminen päivittäisen näytösvahdin seuraavassa onnistuneessa ajossa.
 
-- [ ] Suunnittele näytösseurannan erillinen muutosloki, joka erottaa uudet näytökset, aika- tai paikkamuutokset, peruutukset ja muut olennaiset tilamuutokset.
-- [ ] Tallenna jokaisesta muutoksesta havaintoaika, elokuva, näytöksen yksilöivä tunniste tai riittävät tunnistetiedot, vanha ja uusi tieto sekä lähde.
-- [ ] Säilytä ero teatterin vahvistaman, järjestäjän ilmoittaman ja kolmannen osapuolen ilmoittaman tiedon välillä.
-- [ ] Määritä, milloin muutos julkaistaan RSS:ssä uutena päivityksenä ja miten alkuperäisen näytösartikkelin historia säilyy.
-- [ ] Lisää muutoslokille rakennetarkistukset ja dokumentoi sen käyttö näytösvahdin ohjeeseen.
+- [ ] Muodosta ensimmäinen varmennettu screenings-nykytila vertaamalla ajantasaisia lähteitä ja nykyisen RSS-syötteen viimeisimpiä julkaisuversioita.
+- [ ] Lisää yksi baseline_created-tapahtuma ja aseta baseline_status arvoon active. Älä luo takautuvia muutostapahtumia, joiden tarkkaa havaintoaikaa tai sisältöä ei voida todentaa.
+- [ ] Varmista seuraavassa ajossa vähintään yhden todellisen muutostyypin tai muuttumattoman tilanteen oikea käsittely sekä GitHubiin kirjoituksen jälkeinen takaisinluku.
 
-**Valmistumiskriteeri:** muutos voidaan jäljittää lähteeseen ja havaintoaikaan, eikä peruutettu tai muuttunut näytös jää virheellisesti voimaan ilman selkeää päivitystä.
+**Valmistumiskriteeri:** lähtötilanne on lähteillä varmennettu, myöhemmät muutokset voidaan jäljittää tapahtumakohtaisesti ja RSS:n aiemmat julkaisuversiot säilyvät muuttumattomina.
 
 ### Prioriteetti 2 – lähteiden kattavuuden seuranta
 
