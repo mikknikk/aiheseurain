@@ -132,7 +132,7 @@ RSS-itemissä ei käytetä item-kohtaista `<link>`-elementtiä. Jokaisen itemin 
 
 ## Näytösseurannan muutoshistoria
 
-Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaan tiedostoon [data/naytosten-muutoshistoria.json](data/naytosten-muutoshistoria.json). Tietomalli ja käyttöönoton rajaukset on kuvattu tiedostossa [docs/nayostohistorian-rakenne.md](docs/nayostohistorian-rakenne.md), ja päivittäisen näytösvahdin on noudatettava [näytösseurannan työohjetta](docs/intialaisten-elokuvien-naytosseuranta.md). Ensimmäinen varmennettu lähtötilanne muodostetaan seuraavassa onnistuneessa näytösvahdin ajossa; vanhoista RSS-teksteistä ei arvata takautuvia tapahtumia.
+Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaan tiedostoon [data/naytosten-muutoshistoria.json](data/naytosten-muutoshistoria.json). Tietomalli ja käyttöönoton rajaukset on kuvattu tiedostossa [docs/nayostohistorian-rakenne.md](docs/nayostohistorian-rakenne.md), ja päivittäisen näytösvahdin on noudatettava [näytösseurannan työohjetta](docs/intialaisten-elokuvien-naytosseuranta.md). Ensimmäinen varmennettu lähtötilanne muodostettiin 16.11.2026 ja `baseline_status` on `active`; vanhoista RSS-teksteistä ei ole arvattu takautuvia tapahtumia.
 
 ## Koneellisesti luettava seurantatila
 
