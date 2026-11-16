@@ -2,10 +2,10 @@
 <rss version="2.0">
   <channel>
     <title>Intialaisen elokuvan uutiskooste</title>
-    <link>https://mikknikk.github.io/uutiset/</link>
+    <link>https://mikknikk.github.io/aiheseurain/</link>
     <description>Päivittäinen suomenkielinen uutisraportti intialaisesta elokuvasta eri kielialueilta, henkilöistä, projekteista ja genreistä.</description>
     <language>fi</language>
-    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/uutiset/feeds/intialaiset-elokuvat.xml" rel="self" type="application/rss+xml" />
+    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/aiheseurain/feeds/intialaiset-elokuvat.xml" rel="self" type="application/rss+xml" />
     <lastBuildDate>Mon, 16 Nov 2026 08:22:11 GMT</lastBuildDate>
         <item>
       <title>Intialaisen elokuvan uutisraportti 16.11.2026 klo 10.22: Varanasin kuvaukset päättyivät</title>
