@@ -555,7 +555,7 @@ def validate_docs(state):
     # Pääautomaation täysi ohjeistus on GitHubissa. Sen version on vastattava
     # koneelliseen seurantatilaan tallennettua nykyistä versiota, jotta automaatio
     # ei voi huomaamatta käyttää vanhaa tai väärää toimintakäsikirjaa.
-    automation_guide = ROOT / "docs/paautomaation-ohje.md"
+    automation_guide = ROOT / "docs/paaautomaation-ohje.md"
     automation_version = state.get("automation_instructions")
     if not automation_guide.is_file() or not isinstance(automation_version, dict):
         fail("pääautomaation ohjekäsikirja tai sen versionhallinnan tila puuttuu")
@@ -565,12 +565,12 @@ def validate_docs(state):
     if not version_match:
         fail("pääautomaation käsikirjasta puuttuu kelvollinen MAJOR.MINOR.PATCH-versio")
 
-    if "docs/paautomaation-ohje.md" not in readme:
+    if "docs/paaautomaation-ohje.md" not in readme:
         fail("README ei linkitä pääautomaation versionhallittua käsikirjaa")
     if "## pääautomaation lukujärjestys ja tehtäväkierto" not in readme.lower():
         fail("README:stä puuttuu pääautomaation lukujärjestys")
 
-    if automation_version.get("document") != "docs/paautomaation-ohje.md":
+    if automation_version.get("document") != "docs/paaautomaation-ohje.md":
         fail("seurantatilan pääautomaation käsikirjan polku on virheellinen")
     if automation_version.get("current_version") != version_match.group(1):
         fail("pääautomaation käsikirjan ja seurantatilan nykyiset ohjeversiot eivät täsmää")
