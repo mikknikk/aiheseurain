@@ -153,7 +153,7 @@ def validate_docs(state):
         fail(f"README:n feed-taulukko ei vastaa kymmentä feed-tiedostoa: puuttuu {sorted(set(FEEDS)-readme_feeds)}")
     if "yhdeksän" not in readme.lower() or "ei kuluta" not in readme.lower():
         fail("README ei kuvaa yhdeksän aiheen kiertoa ja erillistä näytösvahtia")
-    if "ei kuulu tähän jonoon" not in queue:
+    if "ei kuulu tähän jonoon" not in queue.lower():
         fail("tehtäväjono ei kuvaa näytösseurannan erillisyyttä")
     for feed in FEEDS:
         if not (ROOT/feed).is_file(): fail(f"RSS-syöte puuttuu: {feed}")
