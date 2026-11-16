@@ -273,15 +273,15 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 ### Vaihe 0 – nykytilan kartoitus, tikettien perustaminen ja tietomallin hyväksyntä
 
-- [ ] Tarkista nykyinen GitHub Pages -julkaisutyönkulku, sivuston juurihakemisto ja julkaisutapa.
+- [x] Kartoita nykyinen GitHub Pages -julkaisu, Jekyll-build ja repositorion työnkulut; Pages-asetuksen tarkka kansiovalinta on merkitty erikseen UI-varmistettavaksi.
 - [ ] Luo GitHubiin kanban-tilojen ja prioriteettien tunnisteet.
 - [ ] Siirrä aiemmissa keskusteluissa ja kehitysdokumenteissa olevat avoimet suunnitelmat GitHub Issues -backlogiin ja tarkista, ettei päällekkäisiä tikettejä synny.
 - [ ] Tarkista nykyiset RSS-syötteet, niiden URLit, kaikki automaatiotyönkulut ja koneelliset seurantatiedostot.
 - [ ] Päätä sivuston teknologia ja kansiorakenne nykyisen toteutuksen perusteella.
-- [ ] Määrittele ja dokumentoi overview.json, runs.json, sources.json, rotation.json ja feeds/index.json -skeemat.
-- [ ] Määrittele automaatioiden tiedonkeruun vastuut ja yhteinen julkaisuvaihe.
-- [ ] Valitse tilatietojen julkaisumalli (Pages-artifact, erillinen haara tai rajattu API-luku).
-- [ ] Määrittele tietojen säilytysajat, vanhentuneen tilan säännöt ja julkistettavien kenttien rajaus.
+- [x] Määrittele ja dokumentoi nykyisten kanonisten seurantatiedostojen tietomalli ja JSON Schema -validointi; vältä rinnakkaisia status- ja syötekatalogikopioita.
+- [x] Määrittele automaatioiden nykyiset tiedonkeruuvastuut ja julkaisutapa; vaihekohtaisen ajotiedon keruu jää Valvomon toteutusvaiheeseen.
+- [x] Valitse nykyisten JSON-tiedostojen lukeminen Pagesistä ja rajattu GitHub Actions API -luku workflow-tiloille; erillistä status-haaraa tai Pages-artifactia ei lisätä.
+- [x] Määrittele vanhentuneen ja puuttuvan tiedon esitystapa sekä julkisten kenttien rajaus. Ajohistorian säilytyksen laajennus ratkaistaan vasta, jos tietolähteisiin lisätään uutta historiatietoa.
 
 **Hyväksymiskriteeri:** backlog sisältää tunnisteelliset, taustoitettuja ja priorisoituja avoimia kehitystehtäviä; tietomalli ja julkaisupolku on kuvattu niin tarkasti, että toteutuksen voi tehdä ilman arvailua. Nykyiset automaatiot ja RSS-julkaisu eivät muutu tässä vaiheessa.
 
@@ -350,3 +350,4 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 - **2026-11-16:** ensimmäinen tavoitekuvaus ja vaiheistettu kehityssuunnitelma kirjattu Valvomolle ja RSS-lukijalle.
 - **2026-11-16:** kehitysjono lisätty kolmanneksi osioksi. GitHub Issues määritelty tikettien ensisijaiseksi tietolähteeksi; yksittäisten tikettien siirto backlogiin on seuraava työvaihe.
+- **2026-11-16:** nykyinen Pages-julkaisutapa ja Valvomon tietomalli kartoitettu. Kanoniset seurantatiedostot säilyvät tietolähteinä; erillisiä päällekkäisiä status-JSONeja ei luoda.
