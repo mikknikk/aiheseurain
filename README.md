@@ -2,7 +2,7 @@
 
 Aiheseurain on henkilökohtainen, moniaiheinen tiedonkeruu- ja seurantapalvelu. Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Yhdeksän tehtävän kierto tarkoittaa, että kukin aihe tarkistetaan normaalisti noin yhdeksän päivän välein. Intialaisen elokuvan uutisraportti on jonon tehtävä 9. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla.
 
-GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/uutiset/). [Valvomo](https://mikknikk.github.io/uutiset/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. Valvomo on vain luku -näkymä.
+GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. Valvomo on vain luku -näkymä.
 
 ## Hakemistorakenne
 
@@ -17,20 +17,20 @@ GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/uutiset/). [V
 
 ## Syötteet
 
-Kaikkien syötteiden ensisijainen julkinen jakeluosoite on GitHub Pages. Käytä RSS-lukijoissa ja automaatioiden julkaisemissa linkeissä `https://mikknikk.github.io/uutiset/feeds/{syötetiedosto}.xml`-osoitetta. `raw.githubusercontent.com` ei ole julkinen kanoninen RSS-osoite.
+Kaikkien syötteiden ensisijainen julkinen jakeluosoite on GitHub Pages. Käytä RSS-lukijoissa ja automaatioiden julkaisemissa linkeissä `https://mikknikk.github.io/aiheseurain/feeds/{syötetiedosto}.xml`-osoitetta. `raw.githubusercontent.com` ei ole julkinen kanoninen RSS-osoite.
 
 | Aihe | RSS-tiedosto | RSS-osoite (GitHub Pages) |
 |---|---|---|
-| J. R. R. Tolkien | [tolkien.xml](feeds/tolkien.xml) | https://mikknikk.github.io/uutiset/feeds/tolkien.xml |
-| Taylor Swift | [taylor-swift.xml](feeds/taylor-swift.xml) | https://mikknikk.github.io/uutiset/feeds/taylor-swift.xml |
-| Saint Dr. Gurmeet Ram Rahim Singh Ji Insan | [gurmeet-ram-rahim-singh.xml](feeds/gurmeet-ram-rahim-singh.xml) | https://mikknikk.github.io/uutiset/feeds/gurmeet-ram-rahim-singh.xml |
-| Muumit | [muumit.xml](feeds/muumit.xml) | https://mikknikk.github.io/uutiset/feeds/muumit.xml |
-| Wakaliwood | [wakaliwood.xml](feeds/wakaliwood.xml) | https://mikknikk.github.io/uutiset/feeds/wakaliwood.xml |
-| Euroviisut ja kansalliset karsinnat | [euroviisut.xml](feeds/euroviisut.xml) | https://mikknikk.github.io/uutiset/feeds/euroviisut.xml |
-| Sompote Sands | [sompote-sands.xml](feeds/sompote-sands.xml) | https://mikknikk.github.io/uutiset/feeds/sompote-sands.xml |
-| Shakkidraamat | [shakkidraamat.xml](feeds/shakkidraamat.xml) | https://mikknikk.github.io/uutiset/feeds/shakkidraamat.xml |
-| Intialaisen elokuvan uutisraportti | [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) | https://mikknikk.github.io/uutiset/feeds/intialaiset-elokuvat.xml |
-| Intialaisten elokuvien näytökset Suomessa | [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) | https://mikknikk.github.io/uutiset/feeds/intialaisten-elokuvien-naytokset.xml |
+| J. R. R. Tolkien | [tolkien.xml](feeds/tolkien.xml) | https://mikknikk.github.io/aiheseurain/feeds/tolkien.xml |
+| Taylor Swift | [taylor-swift.xml](feeds/taylor-swift.xml) | https://mikknikk.github.io/aiheseurain/feeds/taylor-swift.xml |
+| Saint Dr. Gurmeet Ram Rahim Singh Ji Insan | [gurmeet-ram-rahim-singh.xml](feeds/gurmeet-ram-rahim-singh.xml) | https://mikknikk.github.io/aiheseurain/feeds/gurmeet-ram-rahim-singh.xml |
+| Muumit | [muumit.xml](feeds/muumit.xml) | https://mikknikk.github.io/aiheseurain/feeds/muumit.xml |
+| Wakaliwood | [wakaliwood.xml](feeds/wakaliwood.xml) | https://mikknikk.github.io/aiheseurain/feeds/wakaliwood.xml |
+| Euroviisut ja kansalliset karsinnat | [euroviisut.xml](feeds/euroviisut.xml) | https://mikknikk.github.io/aiheseurain/feeds/euroviisut.xml |
+| Sompote Sands | [sompote-sands.xml](feeds/sompote-sands.xml) | https://mikknikk.github.io/aiheseurain/feeds/sompote-sands.xml |
+| Shakkidraamat | [shakkidraamat.xml](feeds/shakkidraamat.xml) | https://mikknikk.github.io/aiheseurain/feeds/shakkidraamat.xml |
+| Intialaisen elokuvan uutisraportti | [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) | https://mikknikk.github.io/aiheseurain/feeds/intialaiset-elokuvat.xml |
+| Intialaisten elokuvien näytökset Suomessa | [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) | https://mikknikk.github.io/aiheseurain/feeds/intialaisten-elokuvien-naytokset.xml |
 
 Kahdeksan muuta aihekierroksen syötettä voivat olla tyhjiä, jos uusia olennaisia uutisia ei löydy. Intialaisen elokuvan kaksi syötettä siirrettiin aiemmasta repositoriosta historiallisine itemeineen. Yhteenkään syötteeseen ei lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
@@ -129,8 +129,8 @@ Kun tehtäviä tai syötteitä lisätään tai poistetaan, päivitä syötetaulu
 
 Intialaisen elokuvan uutisraportti on tehtäväjonon tehtävä 9. Suomessa järjestettävien intialaisten elokuvien näytöksiä seuraa erillinen päivittäinen Intialaisten elokuvien näytösvahti, joka ei kuluta aihekierroksen vuoroa.
 
-- Uutisraportin RSS: [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) – https://mikknikk.github.io/uutiset/feeds/intialaiset-elokuvat.xml
-- Näytösten RSS: [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) – https://mikknikk.github.io/uutiset/feeds/intialaisten-elokuvien-naytokset.xml
+- Uutisraportin RSS: [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) – https://mikknikk.github.io/aiheseurain/feeds/intialaiset-elokuvat.xml
+- Näytösten RSS: [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) – https://mikknikk.github.io/aiheseurain/feeds/intialaisten-elokuvien-naytokset.xml
 - Ohjeet: `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md` ja `docs/intialaisten-elokuvien-naytosseuranta.md`.
 - Seurantaloki: `docs/intialaisen-elokuvan-seuranta.md`.
 - Lähderekisteri: `docs/intialaisen-elokuvan-lahteet.md`.

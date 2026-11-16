@@ -31,7 +31,7 @@ const TASK_NAMES = {
   intialaiset_elokuvat: "Intialaisen elokuvan uutisraportti"
 };
 
-const API_ROOT = "https://api.github.com/repos/mikknikk/uutiset";
+const API_ROOT = "https://api.github.com/repos/mikknikk/aiheseurain";
 // Ratkaise JSON-tiedostot moduulin sijainnista, älä nykyisestä sivupolusta.
 // Näin /valvomo/-sivun alla ei yritetä hakea virheellisesti /valvomo/data/-osoitteita.
 const STATE_URL = new URL("../../data/seurantatila.json", import.meta.url).href;
@@ -312,7 +312,7 @@ async function renderActions() {
     const cards = await Promise.all(selected.map(async ({ label, run }) => {
       if (!run) return `<article class="actions-card"><h3>${escapeHtml(label)}</h3><p>Yhtään ajoa ei löytynyt.</p></article>`;
       let steps = "";
-      if (typeof run.jobs_url === "string" && run.jobs_url.startsWith("https://api.github.com/repos/mikknikk/uutiset/actions/runs/")) {
+      if (typeof run.jobs_url === "string" && run.jobs_url.startsWith("https://api.github.com/repos/mikknikk/aiheseurain/actions/runs/")) {
         try {
           const jobsData = await cachedJson(run.jobs_url);
           const jobs = Array.isArray(jobsData.jobs) ? jobsData.jobs : [];
@@ -336,7 +336,7 @@ async function renderActions() {
     }));
     target.innerHTML = cards.join("");
   } catch {
-    target.innerHTML = '<p class="notice notice-warning">GitHub Actions -tilaa ei saatu haettua. Automaatioiden koneellinen seurantatieto toimii tästä rajapinnasta riippumatta. <a href="https://github.com/mikknikk/uutiset/actions">Avaa Actions GitHubissa</a>.</p>';
+    target.innerHTML = '<p class="notice notice-warning">GitHub Actions -tilaa ei saatu haettua. Automaatioiden koneellinen seurantatieto toimii tästä rajapinnasta riippumatta. <a href="https://github.com/mikknikk/aiheseurain/actions">Avaa Actions GitHubissa</a>.</p>';
   }
 }
 
