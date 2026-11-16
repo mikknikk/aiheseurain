@@ -10,6 +10,21 @@ Tämän repositorion saavutettavuuden tavoitetaso on WCAG 2.2 AAA kaikilta sovel
 - Informatiivisilla kuvilla on kuvaava alt-teksti, koristekuvilla tyhjä alt. Älä esitä olennaista tietoa vain kuvana.
 - Käytä taulukoita vain aidolle taulukkomuotoiselle tiedolle. Varmista näppäimistö- ja ruudunlukijakäyttö, näkyvä fokus ja looginen lukujärjestys.
 
+## Markdown-dokumentaatio
+
+Markdown-tiedostot ovat osa repositorion käyttöliittymää: niitä luetaan GitHubissa eri näytöillä ja myös ruudunlukijoilla. Niiden rakenteen tulee auttaa lukijaa hahmottamaan kokonaisuus ja siirtymään suoraan tarvittavaan kohtaan.
+
+- Käytä yhtä kuvaavaa H1-pääotsikkoa ja etene otsikkotasoissa loogisesti. Älä jätä otsikkotasoja väliin äläkä korvaa otsikoita pelkällä lihavoinnilla.
+- Nimeä otsikot sisällön mukaan. Pitkissä dokumenteissa käytä sisällysluetteloa tai muuta navigointia, kun se helpottaa olennaisesti selaamista.
+- Kirjoita lyhyitä, aiheeltaan yhtenäisiä kappaleita. Käytä numeroitua luetteloa järjestyksessä suoritettaviin vaiheisiin ja luettelomerkkejä rinnakkaisiin asioihin.
+- Käytä kuvaavia linkkitekstejä, jotka kertovat kohteesta myös irrallaan ympäröivästä tekstistä. Vältä epämääräisiä ilmauksia kuten "tästä".
+- Käytä taulukoissa selkeitä otsikkosoluja ja vältä tarpeettoman leveitä tai monimutkaisia taulukoita. Jos sisältö ei ole aidosti taulukkomuotoista, käytä luetteloa.
+- Merkitse tiedostonimet, polut, komennot, tunnisteet ja koodiesimerkit koodimuotoilulla. Älä käytä koodimuotoilua kokonaisille kappaleille.
+- Varmista, että pitkät koodiesimerkit ovat ymmärrettäviä myös tekstimuotoisina ja että niitä edeltää selitys niiden tarkoituksesta.
+- Tarkista GitHubin Markdown-esikatselussa, että otsikkorakenne, linkit, taulukot ja koodilohkot näkyvät oikein. Pelkkä visuaalinen tarkistus ei korvaa ruudunlukijan tai näppäimistön testausta silloin, kun ne ovat tarpeen.
+
+Automaation käynnistyskehotteet tallennetaan `prompts/`-hakemistoon `.txt`-tiedostoina, koska niiden sisältö kopioidaan sellaisenaan automaation asetuksiin. Niihin ei sovelleta Markdown-dokumenttien otsikointi- tai muotoiluvaatimuksia; niiden saavutettavuus perustuu selkeään raakatekstiin, yksiselitteisiin osioihin ja siihen, ettei kopioitavaan sisältöön lisätä koristeellista merkintää. Varsinaiset ylläpito-ohjeet ovat `prompts/README.md`:ssä.
+
 ## HTML ja verkkosivu
 - Käytä `lang="fi"`, kuvaavaa title-elementtiä sekä header-, nav-, main- ja footer-maamerkkejä. Tarjoa ohita navigaatio -linkki.
 - Linkit erottuvat muutenkin kuin hover-tilassa. Fokus näkyy selvästi.
