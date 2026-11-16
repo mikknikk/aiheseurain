@@ -120,18 +120,18 @@
     "name": "Intialaisten elokuvien näytösvahti",
     "feed": "feeds/intialaisten-elokuvien-naytokset.xml",
     "cadence": "daily",
-    "last_successful_check": null,
+    "last_successful_check": "2026-11-16T15:24:00+02:00",
     "last_period_start": null,
-    "last_period_end": null,
-    "last_result": "not_recorded",
-    "published_items": null,
-    "sources_checked": null,
+    "last_period_end": "2026-11-16T15:24:00+02:00",
+    "last_result": "success",
+    "published_items": 1,
+    "sources_checked": 15,
     "errors": [],
     "automation_instructions": {
       "document": "docs/intialaisten-elokuvien-naytosseuranta.md",
       "current_version": "1.0.0",
-      "last_successful_run_version": null,
-      "last_successful_run_at": null
+      "last_successful_run_version": "1.0.0",
+      "last_successful_run_at": "2026-11-16T15:24:00+02:00"
     }
   },
   "automation_instructions": {
