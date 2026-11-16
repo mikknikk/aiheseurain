@@ -206,3 +206,30 @@ p { max-width: 72ch; }
   }
 }
 
+
+/* RSS-lukijan suodatus ja artikkelivirta */
+.visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.reader-controls { display:flex; align-items:end; justify-content:space-between; gap:1rem; margin:1.5rem 0 1rem; padding:1.2rem 1.4rem; background:var(--surface); border:1px solid var(--border); border-radius:.65rem; }
+.reader-controls label { display:block; margin-bottom:.35rem; font-weight:750; }
+.reader-controls select { width:min(100%,32rem); min-height:2.9rem; padding:.55rem 2.4rem .55rem .75rem; border:2px solid var(--border); border-radius:.4rem; background:var(--surface); color:var(--text); font:inherit; }
+.reader-count { margin:0; color:var(--muted); font-weight:700; white-space:nowrap; }
+.reader-message { margin:1rem 0; padding:.9rem 1.1rem; background:var(--surface-muted); border-left:.3rem solid var(--link); border-radius:.35rem; }
+.reader-message-warning { border-left-color:var(--warn); }
+.reader-message ul { margin-bottom:0; }
+.reader-list { display:grid; gap:.85rem; }
+.reader-item { min-width:0; background:var(--surface); border:1px solid var(--border); border-radius:.65rem; }
+.reader-item details { padding:1rem 1.2rem; }
+.reader-item summary { display:flex; flex-direction:column; gap:.3rem; cursor:pointer; }
+.reader-item summary:focus-visible { outline:3px solid var(--focus); outline-offset:5px; }
+.reader-item-title { font-size:1.15rem; font-weight:800; line-height:1.3; }
+.reader-item-meta { color:var(--muted); font-size:.92rem; }
+.reader-excerpt { margin:.8rem 0 0; color:var(--muted); }
+.reader-article-body { margin-top:1.1rem; padding-top:1rem; border-top:1px solid var(--border); overflow-wrap:anywhere; }
+.reader-article-body h1,.reader-article-body h2,.reader-article-body h3,.reader-article-body h4 { margin-top:1.2rem; font-size:1.2rem; }
+.reader-article-body a { overflow-wrap:anywhere; }
+.reader-article-body table { display:block; max-width:100%; overflow-x:auto; border-collapse:collapse; }
+.reader-article-body th,.reader-article-body td { padding:.4rem .6rem; border:1px solid var(--border); text-align:left; }
+.reader-source { margin-top:0; font-weight:750; }
+.reader-empty { padding:1rem 1.2rem; background:var(--surface); border:1px solid var(--border); border-radius:.65rem; }
+@media (max-width:620px) { .reader-controls { align-items:stretch; flex-direction:column; } .reader-controls select { width:100%; } .reader-count { white-space:normal; } .reader-item details { padding:.9rem; } }
+@media (forced-colors:active) { .reader-item,.reader-controls,.reader-empty,.reader-message { border:1px solid CanvasText; } }

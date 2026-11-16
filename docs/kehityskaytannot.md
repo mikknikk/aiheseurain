@@ -69,3 +69,18 @@ Kun uusi skripti lisätään tai olemassa olevaa muutetaan:
 5. Päivitä tarvittaessa README ja muu dokumentaatio vastaamaan uutta tai muuttunutta skriptiä.
 
 Tavoitteena on, että myös Pythonia vähemmän osaava ylläpitäjä pystyy seuraamaan skriptin toimintaa, ymmärtämään sen keskeiset ratkaisut ja tekemään siihen turvallisia muutoksia.
+
+## HTML-sivujen muutosten tarkistus
+
+Jokaisen HTML-sivun muokkauksen jälkeen tarkista päivitetty sivu kokonaisuutena ennen muutoksen valmistumista. Pelkkä lähdekoodin lukeminen tai onnistunut Pages-rakennus ei riitä sivun käytettävyyden varmistamiseen.
+
+Tarkistuksen tulee kattaa vähintään:
+
+1. Sisältöjen ymmärrettävyys ja vastaavuus dokumentaatioon.
+2. HTML-rakenne, otsikkotasot, maamerkit ja kielimääritys.
+3. Sisäisten linkkien, navigaation ja RSS-linkkien oikeellisuus.
+4. Responsiivinen asettelu sekä 320 CSS-pikselin näkymä.
+5. Näppäimistökäyttö, näkyvä fokus, linkkien nimet ja muu olennainen saavutettavuus.
+6. Tekninen toiminta: selainkonsolin uudet virheet, resurssien latautuminen ja käyttöliittymän toiminta.
+
+Tee tarkistus julkaistusta tai muuten selaimessa renderöidystä sivusta aina, kun käytettävissä on sopiva selainympäristö. Jos renderöityä näkymää tai selainkonsolia ei voida tarkistaa, kirjaa selvästi, mitkä tarkistukset tehtiin lähdekoodista ja automaattisilla testeillä ja mitkä jäivät tekemättä. Älä väitä sivun ulkoasua tai selaintoimintaa varmennetuksi ilman renderöidyn sivun tarkistusta.

@@ -29,9 +29,11 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Tarkista RSS, HTML, dokumentaatio ja seurantatila
         run: python scripts/validate_feeds.py
-      - name: Tarkista Valvomon JavaScriptin syntaksi
-        run: node --check assets/js/valvomo.js
-      - name: Testaa Valvomon logiikka
-        run: node --test tests/valvomo.test.mjs
+      - name: Tarkista selaimen JavaScriptin syntaksi
+        run: |
+          node --check assets/js/valvomo.js
+          node --check assets/js/reader.js
+      - name: Testaa Valvomon ja RSS-lukijan logiikka
+        run: node --test tests/valvomo.test.mjs tests/reader.test.mjs
       - name: Testaa linkkitarkistimen logiikka
         run: python -m unittest discover -s tests -v

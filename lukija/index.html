@@ -1,0 +1,38 @@
+---
+layout: site
+title: RSS-lukija
+section: lukija
+reader: true
+description: Aiheseuraimen kymmenen RSS-syötteen yhteinen, suodatettava artikkelivirta.
+---
+<section class="page-intro" aria-labelledby="page-title">
+  <p class="eyebrow">Aiheseurain / uuden tiedon lukeminen</p>
+  <h1 id="page-title">RSS-lukija</h1>
+  <p>Selaa Aiheseuraimen kaikkia uutis- ja näytössyötteitä yhdessä aikajärjestyksessä tai rajaa näkymä yhteen syötteeseen. Alkuperäiset RSS-syötteet säilyvät erillisinä.</p>
+</section>
+
+<section class="reader-controls" aria-labelledby="filter-title">
+  <div>
+    <h2 id="filter-title" class="visually-hidden">Artikkelien suodatus</h2>
+    <label for="feed-filter">Näytettävä syöte</label>
+    <select id="feed-filter" name="feed">
+      <option value="all">Kaikki syötteet</option>
+    </select>
+  </div>
+  <p id="reader-count" class="reader-count" role="status" aria-live="polite">Ladataan RSS-syötteitä…</p>
+</section>
+
+<div id="reader-message" class="reader-message" role="status" aria-live="polite">
+  Haetaan artikkeleita kaikista kymmenestä syötteestä.
+</div>
+
+<section aria-labelledby="articles-title" class="content-section">
+  <h2 id="articles-title" class="visually-hidden">Artikkelit</h2>
+  <div id="article-list" class="reader-list">
+    <p>Artikkeleita ladataan…</p>
+  </div>
+</section>
+
+<noscript>
+  <p class="notice notice-error">RSS-lukija tarvitsee JavaScriptin. Voit avata alkuperäiset <a href="{{ '/' | relative_url }}">RSS-syötteet Aiheseuraimen etusivulta</a> myös erillisessä RSS-lukijassa.</p>
+</noscript>

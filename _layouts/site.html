@@ -10,6 +10,9 @@
     {% if page.dashboard %}
     <script type="module" src="{{ '/assets/js/valvomo.js' | relative_url }}"></script>
     {% endif %}
+    {% if page.reader %}
+    <script type="module" src="{{ '/assets/js/reader.js' | relative_url }}"></script>
+    {% endif %}
   </head>
   <body>
     <a class="skip-link" href="#main">Siirry pääsisältöön</a>
