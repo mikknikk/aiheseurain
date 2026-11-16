@@ -10,11 +10,17 @@ Tämä hakemisto sisältää `mikknikk/uutiset`-repositorioon liittyvien kolmen 
 | Intialaisten elokuvien näytösvahti | [`naytosvahti.txt`](naytosvahti.txt) | [`docs/intialaisten-elokuvien-naytosseuranta.md`](../docs/intialaisten-elokuvien-naytosseuranta.md) |
 | Viikoittainen järjestelmän laatutarkistus | [`laatutarkistus.txt`](laatutarkistus.txt) | [`docs/laatutarkistuksen-ohje.md`](../docs/laatutarkistuksen-ohje.md) |
 
+## Käynnistyskehotteen tunnisteen tarkistus
+
+Jokaisella kolmella käynnistyskehotteella on yksilöllinen `Käynnistyskehotteen tunniste`. Saman automaation tunniste tallennetaan `data/seurantatila.json`-tiedostoon vastaavan ohjeosion `startup_prompt_id`-kenttään. Ajon alussa automaatio vertaa aktiiviseen kehotteeseen sisältyvää tunnistetta GitHubin seurantatilaan. Jos tunniste puuttuu tai ei täsmää, ajo keskeytetään ennen varsinaista työtä.
+
+Kun käynnistyskehotteen sisältöä muutetaan, anna sille uusi tunniste ja päivitä saman automaation `startup_prompt_id` samassa muutossarjassa. Älä muuta muiden automaatioiden tunnisteita. Tämä tunnistevertailu havaitsee vanhentuneen asetuksiin kopioidun kehotteen, kun kanonisen kehotteen tunniste vaihdetaan; se ei yksin todista koko tekstin identtisyyttä. Siksi koko kehote kopioidaan edelleen asetuksiin ja tallennettu teksti tarkistetaan erikseen.
+
 ## Ylläpitoperiaate
 
 - `prompts/*.txt` sisältää vain automaation asetuksiin kopioitavan tekstin. Älä lisää tiedostoihin selittäviä otsikoita tai Markdown-muotoilua.
 - Tehtävien varsinainen sisältö, rajaukset, tarkistuslistat ja onnistumisehdot määritellään yllä olevissa käsikirjoissa. Käynnistyskehote ohjaa lukemaan oikean käsikirjan ja tekemään sen esitarkistukset.
-- Kun automaation käynnistyskehotetta muutetaan, päivitä ensin tämän hakemiston kanoninen tiedosto ja kopioi sen koko sisältö vastaavan automaation asetuksiin. Älä päivitä automaation asetuksia eri sisältöön kuin repositorion tiedosto.
+- Kun automaation käynnistyskehotetta muutetaan, päivitä ensin tämän hakemiston kanoninen tiedosto, anna sille uusi tunniste ja päivitä vastaavan automaation `startup_prompt_id` `data/seurantatila.json`-tiedostossa samassa muutossarjassa. Kopioi sen jälkeen koko sisältö vastaavan automaation asetuksiin. Älä päivitä automaation asetuksia eri sisältöön kuin repositorion tiedosto.
 - Kun kehote on kopioitu asetuksiin, vertaa tallennettua tekstiä tiedostoon ja varmista, että ne ovat täsmälleen samat. Asetusten päivitys on erillinen manuaalinen vaihe; GitHub-muutos ei päivitä automaation asetuksia automaattisesti.
 - Älä muuta automaatioiden aikatauluja tai tehtäväkäsikirjoja pelkän käynnistyskehotteen siirron yhteydessä.
 - Älä kovakoodaa käsikirjan versionumeroa käynnistyskehotteeseen. Kehotteen tulee lukea käsikirjan versio ja verrata sitä `data/seurantatila.json`-tiedoston vastaavaan `current_version`-arvoon ajon esitarkistuksessa. Näin tavallinen versionumeron päivitys ei vaadi käynnistyskehotteen muutosta.
