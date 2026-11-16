@@ -64,18 +64,29 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ### Prioriteetti 4 – linkkien toimivuuden seuranta
 
-- [ ] Selvitä erillisen, aikakatkaisuja ja uudelleenohjauksia sietävän linkkitarkistuksen toteutus.
-- [ ] Tarkista uutisten lähdelinkit ja kanavien osoitteet ilman, että yksittäinen tilapäinen verkkovirhe kaataa RSS:n rakennetestit.
-- [ ] Raportoi rikkinäiset linkit ja uudelleenohjaukset; älä muuta lähdeosoitteita automaattisesti ilman tarkistusta.
+**Toteutettu ensimmäinen versio:** `scripts/check_links.py` tarkistaa lähdekatalogin URL:t sekä kaikkien RSS-syötteiden kanava- ja artikkelilinkit. Erillinen `.github/workflows/check-links.yml` suorittaa tarkistuksen viikoittain ja käsin käynnistettäessä. Raportti tallennetaan GitHub Actions -artefaktiksi; tavallinen RSS:n CI ei tee verkkopyyntöjä ulkoisiin lähteisiin.
+
+- [x] Tarkista lähdekatalogin ja RSS-syötteiden linkit erillisessä työnkulussa.
+- [x] Erota uudelleenohjaukset, 401/403-estot, 429-nopeusrajat, 5xx-palvelinvirheet ja verkkovirheet selvistä 404/410-virheistä.
+- [x] Raportoi tulokset muuttamatta lähdeosoitteita automaattisesti.
+- [ ] Seuraa ensimmäisten viikoittaisten ajojen tuloksia ja säädä tarvittaessa poikkeusten käsittelyä.
+
+**Jäljellä:** toteutus on valmis testattavaksi CI:ssä ja ensimmäisissä ajastetuissa ajoissa. Linkkien nykytilaa ei ole vielä mitattu tällä uudella tarkistimella.
 
 **Valmistumiskriteeri:** linkkiongelmat havaitaan ja raportoidaan, mutta tilapäiset verkkohäiriöt eivät aiheuta vääriä laatuhälytyksiä.
 
 ### Prioriteetti 5 – saavutettavuuden testauksen syventäminen
 
+**Toteutettu valmistelu:** `docs/saavutettavuus.md` sisältää manuaalisen testauksen menettelyn, ympäristöjen kirjausohjeet ja täytettävän testipohjan.
+
+- [x] Määritä menettely näppäimistö-, ruudunlukija-, suurennus-, mobiili-, kontrasti- ja väritestaukselle.
+- [x] Lisää ympäristöjen, löydösten ja tulosten kirjauspohja.
 - [ ] Tee dokumentoitu manuaalinen testaus näppäimistöllä, ruudunlukijalla, suurennuksella, kapealla näkymällä ja pakotetuilla väreillä.
 - [ ] Tarkista värikontrastit WCAG 2.2 AAA -tavoitteiden mukaisesti kaikissa käyttöliittymätiloissa, joissa sisältöä esitetään.
-- [ ] Kirjaa testatut ympäristöt, löydökset ja korjaukset saavutettavuusdokumenttiin.
-- [ ] Pidä automaattiset HTML-rakennetestit erillään varsinaisesta WCAG-vaatimustenmukaisuuden arvioinnista.
+- [ ] Kirjaa todelliset testitulokset ja korjaukset saavutettavuusdokumenttiin.
+- [x] Pidä automaattiset HTML-rakennetestit erillään varsinaisesta WCAG-arvioinnista.
+
+**Jäljellä:** manuaalista testausta ei ole vielä tehty. Testauspohjan lisääminen ei ole testitulos, eikä AAA-tasoa väitetä.
 
 **Valmistumiskriteeri:** saavutettavuuden tila perustuu dokumentoituihin testeihin. AAA-tasoa ei väitetä ennen kuin soveltuvat vaatimukset on arvioitu.
 

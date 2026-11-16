@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.3
+Ohjeversion tunniste: 1.0.4
 
 ## 1. Tehtävä ja rajaus
 
@@ -64,10 +64,10 @@ Tarkista jokaisesta syötteestä XML/RSS-rakenne, GUIDien olemassaolo ja yksilö
 Vertaa README:tä, tehtäväjonoa, seurantadokumentteja, aihekohtaisia ohjeita ja automaatioiden työnjakoa. Pääkierto käsittelee yhden yhdeksästä tehtävästä päivässä; näytösvahti on erillinen päivittäinen tehtävä eikä kuluta kiertovuoroa. Uutis- ja näytös-RSS:t sekä seurantalokit eivät saa sekoittua. Etsi ristiriitaiset, vanhentuneet, päällekkäiset ja puuttuvat ohjeet.
 
 ### 4.6 Saavutettavuus
-Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
+Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Tarkista myös manuaalisten testien kirjaukset, ympäristöt, tulokset ja avoimet löydökset. Jos kirjauksia ei ole, ilmoita manuaalinen testaus tekemättömäksi; tyhjä testipohja ei ole testitulos. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
 
 ### 4.7 Lähteet ja sisältö
-Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja. Merkitse saavuttamattomat kohteet tarkistamatta jääneiksi; älä luokittele niitä automaattisesti virheiksi.
+Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Tarkista viimeisin viikoittaisen linkkitarkistuksen artefakti, jos se on saatavilla. Erota 404/410-virheet uudelleenohjauksista, estetyistä pyynnöistä (401/403), nopeusrajoituksista (429), palvelinvirheistä ja verkkoyhteysongelmista. Älä tulkitse estettyä tai tilapäisesti saavuttamatonta sivua automaattisesti rikkinäiseksi. Jos tarkistus tai artefakti puuttuu, kirjaa se tarkistamatta jääneeksi. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja.
 
 ## 5. Raportointi
 
