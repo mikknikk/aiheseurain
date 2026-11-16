@@ -295,7 +295,7 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 - [ ] Näytä tiedon viimeisin päivitysaika ja vanhentuneen tiedon tila.
 - [ ] Lisää JSON-skeemojen, käyttöliittymän ja virhetilojen testit.
 
-**Toteutustilanne:** [PR #30 – Valvomon vähimmäisversio](https://github.com/mikknikk/uutiset/pull/30) on yhdistetty. Valvomon erottaminen juurietusivusta omalle `/valvomo/`-sivulleen toteutetaan tiketin #38 PR:ssä. Nykyiset automaatiot eivät vielä tallenna vaihekohtaista ajohistoriaa, joten ensimmäinen versio näyttää tämän rajoitteen suoraan.
+**Toteutustilanne:** [PR #30 – Valvomon vähimmäisversio](https://github.com/mikknikk/aiheseurain/pull/30) on yhdistetty. Valvomon erottaminen juurietusivusta omalle `/valvomo/`-sivulleen toteutetaan tiketin #38 PR:ssä. Nykyiset automaatiot eivät vielä tallenna vaihekohtaista ajohistoriaa, joten ensimmäinen versio näyttää tämän rajoitteen suoraan.
 
 **Hyväksymiskriteeri:** Valvomo näyttää todellisen, validoituun dataan perustuvan tilan; epäonnistumista ei esitetä onnistumisena eikä automaatioiden tietoja sekoiteta.
 

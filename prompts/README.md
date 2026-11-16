@@ -1,6 +1,6 @@
 # Automaation käynnistyskehotteet
 
-Tämä hakemisto sisältää `mikknikk/uutiset`-repositorioon liittyvien kolmen automaation asetuksiin kopioitavat käynnistyskehotteet. Kunkin `.txt`-tiedoston sisältö on tarkoitettu kopioitavaksi sellaisenaan automaation prompt-kenttään.
+Tämä hakemisto sisältää `mikknikk/aiheseurain`-repositorioon liittyvien kolmen automaation asetuksiin kopioitavat käynnistyskehotteet. Kunkin `.txt`-tiedoston sisältö on tarkoitettu kopioitavaksi sellaisenaan automaation prompt-kenttään.
 
 ## Tiedostot ja vastuut
 
