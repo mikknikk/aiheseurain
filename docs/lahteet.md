@@ -86,7 +86,9 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 
 ### Suomessa järjestettävät aihekohtaiset tapahtumat
 
-Tolkienin, Taylor Swiftin, Muumien ja Euroviisujen seurannassa tee joka ajolla erillinen haku Suomessa järjestettävistä tai Suomeen liittyvistä tapahtumista. Älä tyydy yleiseen uutishakuun tai aiheiden virallisiin kansainvälisiin uutisvirtoihin. Tarkista tarpeen mukaan:
+Tolkienin, Taylor Swiftin, Muumien ja Euroviisujen seurannassa tee joka ajolla erillinen haku Suomessa järjestettävistä tai Suomeen liittyvistä tapahtumista. Älä tyydy yleiseen uutishakuun tai aiheiden virallisiin kansainvälisiin uutisvirtoihin. Tarkista tarpeen mukaan myös yleiset suomalaiset tapahtumahakupalvelut, kuten [Lippu.fi](https://www.lippu.fi/), [Ticketmaster Suomi](https://www.ticketmaster.fi/) ja [Tiketti](https://www.tiketti.fi/). Ne ovat löytölähteitä, eivät ensisijaisia vahvistuslähteitä: varmista tapahtuman järjestäjä, päivämäärä, paikka ja ohjelma tapahtuman viralliselta sivulta.
+
+Tarkista lisäksi:
 
 - aiheeseen liittyvien suomalaisten yhdistysten, faniryhmien, oikeudenhaltijoiden, artistien ja järjestäjien omat ilmoitukset;
 - museoiden, kulttuurikeskusten, kirjastojen, konserttisalien, elokuvateattereiden, festivaalien, messujen ja muiden tapahtumapaikkojen ohjelmistot;
