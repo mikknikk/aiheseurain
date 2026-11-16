@@ -105,7 +105,7 @@ Seuraa koko Baahubali-franchisea: live-action-elokuvia *Baahubali: The Beginning
 
 Yksittäisen median oma hakutoiminto ei ole ainoa hakukanava. Jos esimerkiksi HS:n sisäinen haku toimii puutteellisesti, käytetään täydentävänä menetelmänä Googlea tai muuta hakukonetta sivustokohtaisilla rajauksilla, kuten `site:hs.fi`. Hakutuloksesta siirrytään alkuperäiseen artikkeliin, jonka sisältö ja päiväys tarkistetaan ennen uutisen julkaisemista.
 
-Päivittäisissä raporteissa keskitytään uuteen tietoon ja olennaisiin muutoksiin. Aiemmin mainittuja muuttumattomia epävarmuuksia, selvittämättömiä yksityiskohtia tai tuloksettomia hakuja ei toisteta rutiininomaisesti. Ne nostetaan uudelleen esiin vasta, kun niihin tulee uutta tietoa tai ne ovat tarpeen uuden uutisen ymmärtämiseksi. Seurannan kattavuus säilytetään sisäisessä seurannassa ilman päivittäistä "ei muutosta" -luettelointia.
+Raporteissa keskitytään uuteen tietoon ja olennaisiin muutoksiin. Aiemmin mainittuja muuttumattomia epävarmuuksia, selvittämättömiä yksityiskohtia tai tuloksettomia hakuja ei toisteta rutiininomaisesti. Ne nostetaan uudelleen esiin vasta, kun niihin tulee uutta tietoa tai ne ovat tarpeen uuden uutisen ymmärtämiseksi. Seurannan kattavuus säilytetään sisäisessä seurannassa ilman toistuvaa "ei muutosta" -luettelointia.
 
 ## Lähteet ja tiedon luotettavuus
 
@@ -178,7 +178,7 @@ Raportit julkaistaan GitHub Pagesin RSS-syötteessä:
 
 **Päivittäinen uutiskooste:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
 
-- Yksi RSS `<item>` vastaa yhtä kokonaista päivittäistä raporttia.
+- Yksi RSS `<item>` vastaa yhtä kokonaista raporttia.
 - Suomen näytöksillä on oma erillinen syöte ja näytösvahti; ne eivät kuulu tähän uutisraporttiin tai sen RSS-syötteeseen.
 - `<description>` sisältää koko artikkelin HTML-muotoiluna, ei pelkkää ingressiä tai lyhennelmää.
 - Otsikot, väliotsikot, kappaleet, lihavoinnit, kursivoinnit, luettelot, julistekuvat ja YouTube-linkit säilytetään mahdollisuuksien mukaan.
@@ -204,7 +204,7 @@ Raportoinnin työvälineinä käytetään kahta ylläpidettävää tiedostoa:
 
 Uusia lähteitä lisätään vasta, kun niiden toimituksellinen tausta ja käyttökelpoisuus on arvioitu. Seurantalokia päivitetään vain lähteistetyillä muutoksilla. Puuttuvaa historiaa ei täytetä arvauksilla. Tärkeiden uutisten riippumattomuus arvioidaan alkuperäislähteiden ja lähdeketjujen, ei pelkän julkaisujen lukumäärän perusteella.
 
-Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [docs/intialaisen-elokuvan-lahteet.md](docs/intialaisen-elokuvan-lahteet.md)-tiedostoon. Näytösseuranta on saman päivittäisen automaation erillinen moduuli ja käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
+Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [docs/intialaisen-elokuvan-lahteet.md](docs/intialaisen-elokuvan-lahteet.md)-tiedostoon. Näytösseuranta on tehtäväjonon erillinen tehtävä ja käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
 
 Lipputuloissa erotetaan markkina-alue, brutto/netto, aikajakso ja arvioiden/virallisten lukujen status. Julisteiden ja videoiden lähde sekä julkaisija tarkistetaan ja kirjataan.
 
