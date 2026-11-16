@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "task_id": "gurmeet_ram_rahim_singh",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Gurmeet Ram Rahim Singh. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "gurmeet-courts",
+      "name": "Intian tuomioistuimet ja viranomaiset",
+      "url": "https://www.sci.gov.in/",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "punjab-haryana-highcourt",
+      "name": "Punjab and Haryana High Court",
+      "url": "https://highcourtchd.gov.in/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "cbi-india",
+      "name": "Central Bureau of Investigation",
+      "url": "https://cbi.gov.in/",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "the-hindu-india",
+      "name": "The Hindu",
+      "url": "https://www.thehindu.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "hindustan-times",
+      "name": "Hindustan Times",
+      "url": "https://www.hindustantimes.com/",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "tribune-india",
+      "name": "The Tribune – India",
+      "url": "https://www.tribuneindia.com/",
+      "language_regions": [
+        "en",
+        "pa"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "amar-ujala",
+      "name": "Amar Ujala",
+      "url": "https://www.amarujala.com/",
+      "language_regions": [
+        "hi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    }
+  ]
+}
