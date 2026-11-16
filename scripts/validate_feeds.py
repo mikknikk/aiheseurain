@@ -662,12 +662,12 @@ def validate_docs(state):
 
     # Näytösten muutoshistorian rakenne ja käyttöohje ovat osa ylläpidettävää
     # järjestelmää. Varmistamme, ettei uusi tietomalli jää irralliseksi tiedostoksi.
-    history_guide = ROOT / "docs/nayostohistorian-rakenne.md"
+    history_guide = ROOT / "docs/naytoshistorian-rakenne.md"
     screening_guide = ROOT / "docs/intialaisten-elokuvien-naytosseuranta.md"
     if not history_guide.is_file() or not screening_guide.is_file():
         fail("näytösten muutoshistorian tai näytösvahdin dokumentti puuttuu")
 
-    if "docs/nayostohistorian-rakenne.md" not in readme:
+    if "docs/naytoshistorian-rakenne.md" not in readme:
         fail("README ei linkitä näytösten muutoshistorian tietomalliin")
 
     screening_instructions = screening_guide.read_text(encoding="utf-8")

@@ -48,7 +48,7 @@ Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon
 7. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
 8. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.
 
-Lue ennen julkaisua kaikki kymmenen RSS-tiedostoa kokonaan tai hae niiden kaikki itemit. Näytösfeed luetaan vain historian säilyttämiseksi; älä tee näytöshakuja tai muuta näytösfeedin sisältöä. Tarkista kaikkien kymmenen syötteen GUIDien yksilöllisyys muuttamatta muiden tehtävien sisältöä. Näytösvahti ja sen dokumentit ovat erillisen automaation vastuulla; pääautomaatio ei tee näytöshakuja eikä muuta näytösfeedin tai näytöshistorian sisältöä. Näytöshistorian tietomalli on dokumentoitu tiedostossa `docs/nayostohistorian-rakenne.md`, ja se kuuluu näytösvahdin lukemistoon.
+Lue ennen julkaisua kaikki kymmenen RSS-tiedostoa kokonaan tai hae niiden kaikki itemit. Näytösfeed luetaan vain historian säilyttämiseksi; älä tee näytöshakuja tai muuta näytösfeedin sisältöä. Tarkista kaikkien kymmenen syötteen GUIDien yksilöllisyys muuttamatta muiden tehtävien sisältöä. Näytösvahti ja sen dokumentit ovat erillisen automaation vastuulla; pääautomaatio ei tee näytöshakuja eikä muuta näytösfeedin tai näytöshistorian sisältöä. Näytöshistorian tietomalli on dokumentoitu tiedostossa `docs/naytoshistorian-rakenne.md`, ja se kuuluu näytösvahdin lukemistoon.
 
 Dokumenttien vastuut ja tarkempi lukujärjestys on koottu tämän README:n **Tiedostojen vastuut** -osioon. Aiheiden, syötteiden tai automaatioiden muuttuessa päivitä kaikki niitä koskevat ensisijaiset dokumentit ja niitä tarkistavat testit.
 
@@ -96,7 +96,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/kehityskaytannot.md`: skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
-- `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/nayostohistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
+- `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/naytoshistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
 - `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila sekä pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversiot ja viimeksi onnistuneesti käytetyt versiot.
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
 - `schemas/naytosten-muutoshistoria.schema.json`: näytöshistorian JSON Schema Draft 2020-12 -skeema.
@@ -135,7 +135,7 @@ RSS-itemissä ei käytetä item-kohtaista `<link>`-elementtiä. Jokaisen itemin 
 
 ## Näytösseurannan muutoshistoria
 
-Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaan tiedostoon [data/naytosten-muutoshistoria.json](data/naytosten-muutoshistoria.json). Tietomalli ja käyttöönoton rajaukset on kuvattu tiedostossa [docs/nayostohistorian-rakenne.md](docs/nayostohistorian-rakenne.md), ja päivittäisen näytösvahdin on noudatettava [näytösseurannan työohjetta](docs/intialaisten-elokuvien-naytosseuranta.md). Ensimmäinen varmennettu lähtötilanne muodostettiin 16.11.2026 ja `baseline_status` on `active`; vanhoista RSS-teksteistä ei ole arvattu takautuvia tapahtumia.
+Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaan tiedostoon [data/naytosten-muutoshistoria.json](data/naytosten-muutoshistoria.json). Tietomalli ja käyttöönoton rajaukset on kuvattu tiedostossa [docs/naytoshistorian-rakenne.md](docs/naytoshistorian-rakenne.md), ja päivittäisen näytösvahdin on noudatettava [näytösseurannan työohjetta](docs/intialaisten-elokuvien-naytosseuranta.md). Ensimmäinen varmennettu lähtötilanne muodostettiin 16.11.2026 ja `baseline_status` on `active`; vanhoista RSS-teksteistä ei ole arvattu takautuvia tapahtumia.
 
 ## Koneellisesti luettava seurantatila
 
