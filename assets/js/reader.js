@@ -74,9 +74,13 @@ export function sanitizeArticleHtml(html) {
       return;
     }
 
-    // RSS-artikkelin oma H1 ei saa muodostaa toista päätason otsikkoa lukijasivulle.
-    // Muutetaan se H2-tasolle, jotta sivun ainoa H1 säilyy sivun otsikkona.
-    const outputTag = tag === "h1" ? "h2" : tag;
+    // Siirretään RSS-artikkelin kaikkia otsikoita yhden tason syvemmälle,
+    // jotta ne eivät kilpaile lukijasivun oman H1-otsikon kanssa. HTML:ssä
+    // ei ole H7-tasoa, joten alkuperäinen H6 säilyy H6-tasolla.
+    const headingLevel = /^h[1-6]$/.test(tag) ? Number(tag.slice(1)) : null;
+    const outputTag = headingLevel === null
+      ? tag
+      : "h" + Math.min(headingLevel + 1, 6);
     const clean = document.createElement(outputTag);
     if (tag === "a") {
       const href = source.getAttribute("href");
