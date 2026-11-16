@@ -1,6 +1,6 @@
 # Uutisseurannan kehityssuunnitelma
 
-**Tila:** tavoitekuvaus ja alustava kehitysjono määritelty; toteutusta ei ole aloitettu  
+**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio on toteutuksessa PR:ssä #30.  
 **Päivitetty:** 2026-11-16
 
 Tämä dokumentti kuvaa koko GitHub Pages -sivuston tavoitetilan, osioiden vastuut, tekniset periaatteet ja vaiheistuksen. Yksittäisten kehitystehtävien ajantasainen tila ylläpidetään GitHub Issues -tiketteinä; tätä dokumenttia ei käytetä rinnakkaisena tehtävälistana. Suunnitelman kirjaaminen ei tarkoita, että ominaisuus olisi jo käytössä.
@@ -269,7 +269,7 @@ Tarkista muutoksen jälkeen myös nykyisen Pages-julkaisun rakenne ja työnkulut
 
 ## 8. Kehitysvaiheet ja etenemisen seuranta
 
-Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa ja hyväksymiskriteerinsä.
+Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa ja hyväksymiskriteerinsä. Vaiheiden järjestys on toteutuksen suunnittelujärjestys; GitHub Issues -tikettien prioriteetit ja riippuvuudet ohjaavat käytännön etenemistä.
 
 ### Vaihe 0 – nykytilan kartoitus, tikettien perustaminen ja tietomallin hyväksyntä
 
@@ -285,28 +285,21 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 **Hyväksymiskriteeri:** backlog sisältää tunnisteelliset, taustoitettuja ja priorisoituja avoimia kehitystehtäviä; tietomalli ja julkaisupolku on kuvattu niin tarkasti, että toteutuksen voi tehdä ilman arvailua. Nykyiset automaatiot ja RSS-julkaisu eivät muutu tässä vaiheessa.
 
-### Vaihe 1 – kehitysjonon kanban-näkymän vähimmäisversio
-
-- [ ] Näytä GitHub Issues -tiketit tilasarakkeissa ja prioriteeteittain.
-- [ ] Lisää haku, aihealue- ja prioriteettisuodatus sekä linkit alkuperäisiin tiketteihin.
-- [ ] Näytä päivityksen ajankohta ja GitHub API -virheet.
-- [ ] Tarjoa kanbanin rinnalla saavutettava lista- tai taulukkonäkymä.
-
-**Hyväksymiskriteeri:** näkymä esittää GitHubin issue-tiedot oikein ja ajantasaisuuden rajat näkyvästi; muokkaus tapahtuu GitHubissa.
-
-### Vaihe 2 – Valvomon vähimmäisversio
+### Vaihe 1 – Valvomon vähimmäisversio (tiketti #30)
 
 - [ ] Luo sivuston yhteinen runko, navigaatio ja saavutettava ulkoasu.
 - [ ] Julkaise koneellisesti luettava yhteenveto automaatioiden viimeisimmästä tilasta.
 - [ ] Näytä pääautomaation aihekierros, viimeisin onnistuminen ja seuraava tehtävä.
 - [ ] Näytä näytösvahti ja laatutarkistus erillisinä automaatioina.
-- [ ] Näytä viimeisimmän ajon vaiheet, varoitukset, virheet ja Actions-linkki.
+- [ ] Näytä saatavilla olevat ajovaiheet, varoitukset, virheet ja Actions-linkit; älä päättele puuttuvia vaiheita.
 - [ ] Näytä tiedon viimeisin päivitysaika ja vanhentuneen tiedon tila.
-- [ ] Lisää JSON-skeemojen ja käyttöliittymän testit.
+- [ ] Lisää JSON-skeemojen, käyttöliittymän ja virhetilojen testit.
 
-**Hyväksymiskriteeri:** valvomo näyttää todellisen, lähteistetyn koneellisen tilan; epäonnistumista ei esitetä onnistumisena eikä automaatioiden tietoja sekoiteta.
+**Toteutustilanne:** [PR #30 – Valvomon vähimmäisversio](https://github.com/mikknikk/uutiset/pull/30) on avoinna. Nykyiset automaatiot eivät vielä tallenna vaihekohtaista ajohistoriaa, joten ensimmäinen versio näyttää tämän rajoitteen suoraan.
 
-### Vaihe 3 – RSS-lukijan vähimmäisversio
+**Hyväksymiskriteeri:** Valvomo näyttää todellisen, validoituun dataan perustuvan tilan; epäonnistumista ei esitetä onnistumisena eikä automaatioiden tietoja sekoiteta.
+
+### Vaihe 2 – RSS-lukijan vähimmäisversio (tiketti #31)
 
 - [ ] Luo syötekatalogi nykyisistä kymmenestä RSS-syötteestä.
 - [ ] Näytä kaikkien syötteiden artikkelit yhteisessä aikajärjestyksessä.
@@ -315,6 +308,15 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 - [ ] Lisää RSS-jäsennyksen ja sanitoinnin testit.
 
 **Hyväksymiskriteeri:** kaikki nykyiset syötteet näkyvät oikein, artikkelit eivät sekoitu aiheesta toiseen ja ulkoinen HTML ei voi suorittaa koodia lukijan sivulla.
+
+### Vaihe 3 – Kehitysjonon kanban-näkymän vähimmäisversio (tiketti #35)
+
+- [ ] Näytä GitHub Issues -tiketit tilasarakkeissa ja prioriteeteittain.
+- [ ] Lisää haku, aihealue- ja prioriteettisuodatus sekä linkit alkuperäisiin tiketteihin.
+- [ ] Näytä päivityksen ajankohta ja GitHub API -virheet.
+- [ ] Tarjoa kanbanin rinnalla saavutettava lista- tai taulukkonäkymä.
+
+**Hyväksymiskriteeri:** näkymä esittää GitHubin issue-tiedot oikein ja ajantasaisuuden rajat näkyvästi; muokkaus tapahtuu GitHubissa.
 
 ### Vaihe 4 – lukijan käyttömukavuus ja lähdenäkymä
 
@@ -351,3 +353,4 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 - **2026-11-16:** ensimmäinen tavoitekuvaus ja vaiheistettu kehityssuunnitelma kirjattu Valvomolle ja RSS-lukijalle.
 - **2026-11-16:** kehitysjono lisätty kolmanneksi osioksi. GitHub Issues määritelty tikettien ensisijaiseksi tietolähteeksi; yksittäisten tikettien siirto backlogiin on seuraava työvaihe.
 - **2026-11-16:** nykyinen Pages-julkaisutapa ja Valvomon tietomalli kartoitettu. Kanoniset seurantatiedostot säilyvät tietolähteinä; erillisiä päällekkäisiä status-JSONeja ei luoda.
+- **2026-11-16:** Valvomon vähimmäisversio siirretty toteutukseen PR:ssä #30. Kehitysvaiheiden järjestys päivitetty vastaamaan Valvomon, RSS-lukijan ja kehitysjonon tikettien prioriteetteja.
