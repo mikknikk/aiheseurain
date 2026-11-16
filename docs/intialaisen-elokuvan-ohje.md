@@ -4,7 +4,7 @@ Tämä projekti kokoaa suomeksi intialaisen elokuvan uutisia ja julkaisee pitkä
 
 - **Julkaisurytmi:** tehtäväjonon mukaisesti, normaalisti noin yhdeksän päivän välein. Uutisraportti ja näytösseuranta ovat eri tehtäviä.
 - **Raportointijakso:** ensisijaisesti edellisen raportin jälkeen julkaistut uutiset / viimeisin vuorokausi.
-- **RSS-syöte:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
+- **RSS-syöte:** [intialaiset-elokuvat.xml](https://mikknikk.github.io/uutiset/feeds/intialaiset-elokuvat.xml)
 - **Projektin sivu:** [uutiset-repositorio](https://github.com/mikknikk/uutiset)
 
 Raportti voi olla lyhyt, jos uutisia on vähän. Sisältöä ei täydennetä vanhoilla uutisilla vain pituuden vuoksi.
@@ -154,7 +154,7 @@ Jokaisessa raportissa tarkistetaan, onko uusissa tai aiemmin seuratuissa intiala
 
 ## Näytösseurannan rajaus
 
-Suomen intialaisten elokuvien näytöksiä seuraa erillinen päivittäinen näytösvahti. Se ei kuulu yhdeksän tehtävän aihekierrokseen eikä kuluta sen vuoroja. Näytösseuranta on silti toimituksellisesti ja teknisesti erillinen uutisraportoinnista: se ylläpitää omaa [intialaisten-elokuvien-naytokset.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml)-syötettään, eikä näytöslistoja lisätä uutisraportin RSS-itemeihin. Näytösseurannan yksityiskohtaiset hyväksymis-, lähde-, muutoshistoria- ja julkaisuohjeet ovat tiedostossa `docs/intialaisten-elokuvien-naytosseuranta.md`; uutisraportin ohjeet ovat tiedostossa `docs/intialaisen-elokuvan-uutiset.md`.
+Suomen intialaisten elokuvien näytöksiä seuraa erillinen päivittäinen näytösvahti. Se ei kuulu yhdeksän tehtävän aihekierrokseen eikä kuluta sen vuoroja. Näytösseuranta on silti toimituksellisesti ja teknisesti erillinen uutisraportoinnista: se ylläpitää omaa [intialaisten-elokuvien-naytokset.xml](https://mikknikk.github.io/uutiset/feeds/intialaisten-elokuvien-naytokset.xml)-syötettään, eikä näytöslistoja lisätä uutisraportin RSS-itemeihin. Näytösseurannan yksityiskohtaiset hyväksymis-, lähde-, muutoshistoria- ja julkaisuohjeet ovat tiedostossa `docs/intialaisten-elokuvien-naytosseuranta.md`; uutisraportin ohjeet ovat tiedostossa `docs/intialaisen-elokuvan-uutiset.md`.
 
 ## Raportin rakenne
 
@@ -176,7 +176,7 @@ Raportissa käytetään selkeää otsikointia, päiväystä, informatiivista alo
 
 Raportit julkaistaan GitHub Pagesin RSS-syötteessä:
 
-**Uutiskooste:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
+**Uutiskooste:** [intialaiset-elokuvat.xml](https://mikknikk.github.io/uutiset/feeds/intialaiset-elokuvat.xml)
 
 - Yksi RSS `<item>` vastaa yhtä kokonaista raporttia.
 - Suomen näytöksillä on oma erillinen syöte ja näytösvahti; ne eivät kuulu tähän uutisraporttiin tai sen RSS-syötteeseen.

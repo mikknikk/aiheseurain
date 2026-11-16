@@ -2,9 +2,9 @@
 <rss version="2.0">
   <channel>
     <title>Wakaliwood – uutisseuranta</title>
-    <link>https://github.com/mikknikk/uutiset</link>
+    <link>https://mikknikk.github.io/uutiset/</link>
     <description>Suomenkielinen, maailmanlaajuinen ja lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
-    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/wakaliwood.xml" rel="self" type="application/rss+xml" />
+    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/uutiset/feeds/wakaliwood.xml" rel="self" type="application/rss+xml" />
     </channel>
 </rss>

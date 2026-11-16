@@ -2,10 +2,10 @@
 <rss version="2.0">
   <channel>
     <title>Tolkien – uutisseuranta</title>
-    <link>https://github.com/mikknikk/uutiset</link>
+    <link>https://mikknikk.github.io/uutiset/</link>
     <description>Suomenkielinen, lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
-    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/tolkien.xml" rel="self" type="application/rss+xml" />
+    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/uutiset/feeds/tolkien.xml" rel="self" type="application/rss+xml" />
     <lastBuildDate>Mon, 16 Nov 2026 17:56:58 +0200</lastBuildDate>
       <item>
     <title>The Hunt for Gollum -elokuvan pääkuvaukset ovat päättyneet, Andy Serkis kertoo</title>
