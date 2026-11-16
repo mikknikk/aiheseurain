@@ -39,7 +39,7 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 
 ## Lähdekattavuuden koneellinen seuranta
 
-- `data/lahderekisteri.json` määrittää lähteiden pysyvät tunnisteet ja tehtävä-, kieli-/alue- sekä lähdetyyppitiedot.
+- `data/sources/{task_id}.json` määrittää kunkin tehtävän lähteiden pysyvät tunnisteet ja tehtävä-, kieli-/alue- sekä lähdetyyppitiedot.
 - `data/lahdetarkistukset.json` säilyttää ajokohtaiset tarkistustulokset. Jokaisessa ajossa eritellään tarkistetut lähteet sekä tarkistamatta jääneet lähteet syineen. Osittainen tai epäonnistunut ajo ei saa näyttää täydelliseltä.
 - Tehtävätunnisteet `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset` ovat erilliset. Uutisautomaatio ei lisää näytöslähteiden tarkistuksia omaan ajoonsa.
 - `complete` on operatiivinen merkintä siitä, että tehtävän rekisteriin merkityt kriittiset lähteet on käsitelty. Se ei ole todiste täydellisestä maailmanlaajuisesta kattavuudesta. Kieli- ja aluepuutteet kirjataan `coverage_notes`-kenttään.
