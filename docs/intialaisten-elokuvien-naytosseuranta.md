@@ -22,7 +22,7 @@ NÄYTÖKSEN HYVÄKSYMISKRITEERIT
 - Facebook-sivujen saavutettavuus tai hakukoneindeksoinnin puutteet eivät todista, ettei näytöksiä olisi. Kerro tarkistusrajoitteesta raportissa, jos se vaikuttaa kattavuuteen.
 
 TEHTÄVÄKOHTAINEN TARKISTUS
-- Tarkista uudet ja muuttuneet näytöstiedot edellisen onnistuneen näytösseurantavuoron jälkeen. Ilmoita raportissa täsmällinen seurantajakso alku- ja loppuaikoineen Europe/Helsinki-ajassa.
+- Tarkista uudet ja muuttuneet näytöstiedot edellisen onnistuneen näytösseurantavuoron jälkeen. Ilmoita raportissa täsmällinen seurantajakso alku- ja loppuaikoineen Europe/Helsinki-ajassa (päivittäisajossa edellisen onnistuneen näytösvahdin tarkistuksen jälkeen).
 - Etsi vain tulevia näytöksiä aktiiviseen RSS-syötteeseen. Poista menneet, perutut ja muuten vanhentuneet näytösajat.
 - Vertaile löydöksiä nykyiseen feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen ja aiempiin tarkistustuloksiin. Älä ilmoita samaa muuttumatonta näytöstä uudelleen uutena.
 - Ilmoita käyttäjälle vain uusista näytöksistä ja olennaisista muutoksista, kuten ajan, paikan, tekstityksen, lipputilanteen tai peruutuksen muutoksista. Jos uusia tai muuttuneita tietoja ei löydy, älä lähetä turhaa ilmoitusta.
@@ -91,4 +91,4 @@ Kaiken GitHub-repositorioon julkaistavan sisällön, HTML:n, RSS-syötteiden, do
 - Päivitä tarvittaessa docs/intialaisen-elokuvan-ohje.md:n saavutettavuusohje ja docs/intialaisen-elokuvan-seuranta.md:n testitiedot. Älä merkitse testaamatonta tarkistusta hyväksytyksi.
 
 YHDISTETTY AJOSYKLI
-Tämä näytösseuranta on uutisraportista erillinen tehtävä tehtäväjonossa. Suorita se vain, kun näytösseuranta on jonossa seuraavana. Uutisraportin ohjeet ovat docs/intialaisen-elokuvan-uutiset.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
+Tämä näytösseuranta suoritetaan erillisellä päivittäisellä Intialaisten elokuvien näytösvahti -automaatiolla, ei docs/tehtavajono.md:n aihekierrossa. Se käyttää tämän repositorion `feeds/intialaisten-elokuvien-naytokset.xml`-syötettä ja päivittää tämän repositorion näytöshistoriaa. Uutisraportin ohjeet ovat docs/intialaisen-elokuvan-uutiset.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
