@@ -4,7 +4,9 @@
   "updated_at": null,
   "notes": [
     "Aihekohtainen lähderekisteri: Tolkien. Käyttää yhteistä JSON Schema -skeemaa.",
-    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
+    "Kattavuutta laajennettu 16.11.2026: lisätty kustantajia Yhdysvalloista, Ranskasta, Espanjasta ja Brasiliasta; Tolkien-yhteisöjä Saksasta, Ranskasta, Italiasta, Espanjasta ja Suomesta; suomalainen toimituksellinen media, espanjankielinen erikoismedia, vertaisarvioitu tutkimusjulkaisu ja englanninkielinen adaptaatiouutisten erikoissivusto.",
+    "Kattavuus ei ole maailmanlaajuisesti täydellinen: erityisesti Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet vaativat jatkotyötä. Fanisivustot ja yhdistykset ovat uutisvihjeitä tai yhteisölähteitä, eivät riippumattomia vahvistuksia."
   ],
   "sources": [
     {
@@ -124,6 +126,210 @@
         "UK",
         "GLOBAL",
         "US"
+      ]
+    },
+    {
+      "id": "hmh-books-tolkien",
+      "name": "Houghton Mifflin Harcourt – Tolkien",
+      "url": "https://www.hmhbooks.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "US"
+      ]
+    },
+    {
+      "id": "christian-bourgois-tolkien",
+      "name": "Christian Bourgois éditeur – Tolkien",
+      "url": "https://bourgoisediteur.fr/jrr-tolkien",
+      "language_regions": [
+        "fr"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FR"
+      ]
+    },
+    {
+      "id": "planeta-minotauro-tolkien",
+      "name": "Ediciones Minotauro – Tolkien",
+      "url": "https://www.planetadelibros.com/coleccion-biblioteca-j-r-r-tolkien/0000493000",
+      "language_regions": [
+        "es"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "ES"
+      ]
+    },
+    {
+      "id": "harpercollins-brasil-tolkien",
+      "name": "HarperCollins Brasil – Tolkien",
+      "url": "https://harpercollins.com.br/pages/tolkien",
+      "language_regions": [
+        "pt-BR"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "BR"
+      ]
+    },
+    {
+      "id": "deutsche-tolkien-gesellschaft",
+      "name": "Deutsche Tolkien Gesellschaft",
+      "url": "https://www.tolkiengesellschaft.de/news/",
+      "language_regions": [
+        "de",
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Tolkien-yhdistyksen uutiset, tapahtumat ja tutkimus; ulkopuoliset uutisväitteet varmennettava alkuperäislähteestä.",
+      "regions": [
+        "DE",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "tolkiendil",
+      "name": "Tolkiendil",
+      "url": "https://www.tolkiendil.com/news",
+      "language_regions": [
+        "fr"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Ranskalainen Tolkien-yhdistys ja erikoissivusto; käytä myös tapahtuma- ja tutkimuslähteenä.",
+      "regions": [
+        "FR",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "societa-tolkieniana-italiana",
+      "name": "Società Tolkieniana Italiana",
+      "url": "https://www.tolkien.it/news/",
+      "language_regions": [
+        "it"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Italialaisen Tolkien-yhdistyksen tiedotteet ja tapahtumat; ulkopuoliset väitteet varmennettava.",
+      "regions": [
+        "IT"
+      ]
+    },
+    {
+      "id": "sociedad-tolkien-espanola",
+      "name": "Sociedad Tolkien Española",
+      "url": "https://www.sociedadtolkien.org/",
+      "language_regions": [
+        "es"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Espanjankielinen Tolkien-yhdistys, julkaisut, tapahtumat ja uutislinkit.",
+      "regions": [
+        "ES"
+      ]
+    },
+    {
+      "id": "suomen-tolkien-seura",
+      "name": "Suomen Tolkien-seura Kontu ry",
+      "url": "https://suomentolkienseura.fi/",
+      "language_regions": [
+        "fi",
+        "en"
+      ],
+      "source_type": "other",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": "Suomen Tolkien-yhteisön omat tiedotteet ja tapahtumat; ei riippumaton lähde kansainvälisille tuotantouutisille.",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "yle-tolkien",
+      "name": "Yle – J. R. R. Tolkien",
+      "url": "https://yle.fi/t/18-189195/fi",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": "Suomen yleisradioyhtiön Tolkien-aihesivu; tarkista artikkelikohtainen julkaisupäivä ja alkuperäislähteet.",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "elfenomeno",
+      "name": "Elfenomeno",
+      "url": "https://www.elfenomeno.com/",
+      "language_regions": [
+        "es",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Itsenäinen Tolkien-erikoismedia; asiantuntijakonteksti ja uutisvihjeet, varmista uutisväitteet ensisijaislähteestä.",
+      "regions": [
+        "GLOBAL",
+        "ES",
+        "LATAM"
+      ]
+    },
+    {
+      "id": "journal-tolkien-research",
+      "name": "Journal of Tolkien Research",
+      "url": "https://scholar.valpo.edu/journaloftolkienresearch/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Vertaisarvioitu avoin tutkimusjulkaisu; seuraa uusia tutkimusartikkeleita, ei ajankohtaisuutisia.",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "the-one-ring",
+      "name": "The One Ring – Tolkien News",
+      "url": "https://www.theonering.com/news/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Pitkään toiminut fanien ylläpitämä erikoissivusto; käytä uutisvihjeenä ja varmista väitteet virallisista tai riippumattomista lähteistä.",
+      "regions": [
+        "US",
+        "GLOBAL"
       ]
     }
   ]
