@@ -1,4 +1,4 @@
-Tehtävä: seuraa tehtäväjonon mukaisella vuorolla Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
+Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
 
 TARKOITUS JA RAJAUS
 - Etsi kaikkien Intian elokuvateollisuuksien elokuvien näytöksiä Suomessa: esimerkiksi hindi-, telugu-, tamil-, kannada-, malajalam-, bengali-, marathi-, punjabi- ja muut intialaiset elokuvat.
