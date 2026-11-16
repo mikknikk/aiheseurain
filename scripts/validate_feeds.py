@@ -11,6 +11,7 @@ from __future__ import annotations
 from datetime import datetime
 from html.parser import HTMLParser
 import json
+import jsonschema
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -321,6 +322,31 @@ def validate_screening_history():
         history = json.loads(path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, UnicodeDecodeError) as exc:
         fail(f"näytösten muutoshistorian JSON virheellinen: {exc}")
+
+    # Tarkistamme ensin tietomallin virallista JSON Schema -määrittelyä vasten.
+    # Näin pakolliset kentät, tietotyypit ja tapahtumien ehdollinen rakenne eivät
+    # jää vain tämän Python-skriptin käsin kirjoitettujen ehtojen varaan.
+    schema_path = ROOT / "schemas/naytosten-muutoshistoria.schema.json"
+    if not schema_path.is_file():
+        fail("näytöshistorian JSON Schema -määrittely puuttuu")
+
+    try:
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator.check_schema(schema)
+        schema_validator = jsonschema.Draft202012Validator(
+            schema, format_checker=jsonschema.FormatChecker()
+        )
+        schema_errors = sorted(
+            schema_validator.iter_errors(history),
+            key=lambda error: (list(map(str, error.absolute_path)), error.message),
+        )
+    except (json.JSONDecodeError, UnicodeDecodeError, jsonschema.SchemaError) as exc:
+        fail(f"näytöshistorian JSON Schema on virheellinen: {exc}")
+
+    if schema_errors:
+        first = schema_errors[0]
+        location = ".".join(str(part) for part in first.absolute_path) or "(juuritaso)"
+        fail(f"näytöshistoria ei vastaa JSON Schemaa kohdassa {location}: {first.message}")
 
     if not isinstance(history, dict) or history.get("schema_version") != 1:
         fail("näytösten muutoshistorian pitää olla schema_version 1 -JSON-olio")
@@ -863,6 +889,7 @@ def main():
     print("OK: kuvausten HTML-rakenne, linkit, otsikkotasot, alt-attribuutit ja lähdeluettelot.")
     print("OK: README, tehtäväjono, feed-polut ja seurantatila ovat yhdenmukaiset.")
     print("OK: aikaleimat, seurantajaksot, erillinen näytösvahti ja näytösten muutoshistoria.")
+    print("OK: näytöshistoria vastaa JSON Schema Draft 2020-12 -määrittelyä.")
 
 
 # Tämä ehto tarkoittaa, että main()-funktio suoritetaan vain, kun tiedosto
