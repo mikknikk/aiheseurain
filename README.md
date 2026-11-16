@@ -7,7 +7,7 @@ Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdess
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
-- `data/sources/*.json` ja `data/lahdetarkistukset.json` – aihekohtaiset lähderekisterit yhteisellä skeemalla ja ajokohtainen lähdekattavuusloki; uutis- ja näytösseurannan tehtävät pidetään erillisinä.
+- `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
 - `schemas/` – koneellisten lähdetietojen ja näytöshistorian skeemat.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
@@ -46,7 +46,7 @@ Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon
 2. `docs/paaautomaation-ohje.md` – pääautomaation täydellinen, versioitu toimintakäsikirja.
 3. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
 4. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
-5. `docs/lahteet.md` ja aihekohtaiset `data/sources/*.json`-rekisterit – yleiset lähdeperiaatteet, aihekohtaiset lähteet ja niiden tunnisteet.
+5. `docs/lahteet.md`, `data/source-catalog.json` ja valitun tehtävän `data/sources/{task_id}.json` – yleiset lähdeperiaatteet, yhteiset lähdetiedot ja tehtäväkohtaiset lähdekäytöt.
 6. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
 7. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
 8. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.
