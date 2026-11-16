@@ -17,7 +17,8 @@ Tämä hakemisto sisältää `mikknikk/uutiset`-repositorioon liittyvien kolmen 
 - Kun automaation käynnistyskehotetta muutetaan, päivitä ensin tämän hakemiston kanoninen tiedosto ja kopioi sen koko sisältö vastaavan automaation asetuksiin. Älä päivitä automaation asetuksia eri sisältöön kuin repositorion tiedosto.
 - Kun kehote on kopioitu asetuksiin, vertaa tallennettua tekstiä tiedostoon ja varmista, että ne ovat täsmälleen samat. Asetusten päivitys on erillinen manuaalinen vaihe; GitHub-muutos ei päivitä automaation asetuksia automaattisesti.
 - Älä muuta automaatioiden aikatauluja tai tehtäväkäsikirjoja pelkän käynnistyskehotteen siirron yhteydessä.
-- Jos käsikirjan polku tai versionumero muuttuu, päivitä käynnistyskehote vain samassa muutossarjassa ja tarkista, että se vastaa `data/seurantatila.json`-tiedoston vastaavaa ohjeversiota.
+- Älä kovakoodaa käsikirjan versionumeroa käynnistyskehotteeseen. Kehotteen tulee lukea käsikirjan versio ja verrata sitä `data/seurantatila.json`-tiedoston vastaavaan `current_version`-arvoon ajon esitarkistuksessa. Näin tavallinen versionumeron päivitys ei vaadi käynnistyskehotteen muutosta.
+- Päivitä käynnistyskehote vain, jos käsikirjan polku, tarkistettava tietorakenne tai käynnistys-/esitarkistusmenettely muuttuu. Varmista tällöin, että kehote ja käsikirja pysyvät keskenään yhteensopivina.
 - Säilytä pääuutisseurannan, näytösvahdin ja laatutarkistuksen rajat erillisinä. Älä yhdistä niiden käynnistyskehotteita yhdeksi yleiseksi promptiksi.
 
-Tiedostot sisältävät automaatioiden asetuksissa 16.11.2026 tallennettuina olleet käynnistyskehotteet. Niitä ei ole tässä muutoksessa muutettu sisällöllisesti.
+Tämän hakemiston tiedostot ovat käynnistyskehotteiden versionhallinnassa ylläpidettävät kanoniset lähteet. Reaaliaikaisten automaatioasetusten sisältö on tarkistettava erikseen; GitHubissa tehty muutos ei päivitä asetuksia automaattisesti.
