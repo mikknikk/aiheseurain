@@ -4,7 +4,8 @@
   "updated_at": null,
   "notes": [
     "Aihekohtainen lähderekisteri: Shakkidraamat. Käyttää yhteistä JSON Schema -skeemaa.",
-    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
+    "Seuranta sisältää myös tunnettujen aktiivisten shakkisisällöntuottajien ja -kommentaattorien julkiset somekanavat. Etsi ajankohtaiset ja uutisarvoiset tekijät dynaamisesti; varmista tilien aitous ja älä käsittele someväitteitä itsenäisesti vahvistettuina faktoina."
   ],
   "sources": [
     {
