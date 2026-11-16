@@ -155,6 +155,29 @@ def validate_docs(state):
         fail("README ei kuvaa yhdeksän aiheen kiertoa ja erillistä näytösvahtia")
     if "ei kuulu tähän jonoon" not in queue.lower():
         fail("tehtäväjono ei kuvaa näytösseurannan erillisyyttä")
+    for name, feed in entries:
+        state_task = next((item for item in state["rotation"]["tasks"].values()
+                           if item["feed"] == feed), None)
+        if state_task is None or state_task["name"] != name:
+            fail(f"JSON-tehtävän nimi ei vastaa tehtäväjonoa: {name}")
+    stale_phrases = (
+        "tehtäväjonon omalla vuorolla",
+        "tehtäväjonon erillisellä näytösvuorolla",
+        "tehtäväjonon erillinen tehtävä",
+        "erillinen jonotehtävä",
+    )
+    for relative in (
+        "docs/intialaisen-elokuvan-ohje.md",
+        "docs/intialaisen-elokuvan-uutiset.md",
+        "docs/intialaisen-elokuvan-seuranta.md",
+    ):
+        doc = ROOT / relative
+        if not doc.is_file():
+            fail(f"intialaisen elokuvan dokumentti puuttuu: {relative}")
+        lowered = doc.read_text(encoding="utf-8").lower()
+        for phrase in stale_phrases:
+            if phrase in lowered:
+                fail(f"{relative}: vanhentunut näytösseurannan kuvaus: {phrase}")
     for feed in FEEDS:
         if not (ROOT/feed).is_file(): fail(f"RSS-syöte puuttuu: {feed}")
 
