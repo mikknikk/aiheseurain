@@ -1,12 +1,12 @@
-# Uutisseuranta – kymmenen tehtävän seurantakierto
+# Uutisseuranta – yhdeksän tehtävän seurantakierto
 
-Tämä repositorio ylläpitää kymmentä erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Yhdeksän tehtävän kierto tarkoittaa, että kukin aihe tarkistetaan normaalisti noin yhdeksän päivän välein. Intialaisen elokuvan uutisraportti on jonon tehtävä 9. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla.
+Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Yhdeksän tehtävän kierto tarkoittaa, että kukin aihe tarkistetaan normaalisti noin yhdeksän päivän välein. Intialaisen elokuvan uutisraportti on jonon tehtävä 9. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla.
 
 ## Hakemistorakenne
 
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
-- `docs/tehtavajono.md` – kymmenen tehtävän kiertojärjestys, seuraava vuoro ja seurantajaksojen raportointisääntö.
+- `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja seurantajaksojen raportointisääntö.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
 
 ## Syötteet
@@ -28,14 +28,14 @@ Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olenn
 
 ## Ajon pakollinen esitietojen lukujärjestys ja tehtäväkierto
 
-Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kymmenen RSS-syötteen nykyinen sisältö:
+Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kymmenen RSS-syötteen nykyinen sisältö. Näytösfeed luetaan historian säilyttämiseksi, mutta sitä ei käsitellä eikä päivitetä tässä automaatiossa:
 
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
 2. `docs/tehtavajono.md` – tehtävien kiinteä järjestys, seuraava vuoro ja seurantajaksojen aikavälit.
 3. `docs/seuranta.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
-3. `docs/lahteet.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
-4. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/intialaisen-elokuvan-seuranta.md` ja `docs/intialaisen-elokuvan-lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
-5. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
+4. `docs/lahteet.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
+5. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/intialaisen-elokuvan-seuranta.md` ja `docs/intialaisen-elokuvan-lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
+6. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
 Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/tehtavajono.md:n seuraava tehtävä ja tee varsinaiset haut vain sille yhdelle tehtävälle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan tehtävään; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama tehtävä vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten yhdeksän tehtävän kierto tarkoittaa normaalisti noin yhdeksän päivän tarkistusväliä kullekin tehtävälle. Erillinen näytösvahti tarkistaa näytökset päivittäin. Ilmoita jokaisessa raportissa tehtäväkohtaisen seurantajakson alku ja loppu. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
@@ -79,7 +79,7 @@ Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku e
 Päivitä yllä oleva syötetaulukko, docs/tehtavajono.md ja esitietojen lukujärjestys aina, kun tehtäviä lisätään tai poistetaan. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, docs/tehtavajono.md, docs/seuranta.md, docs/lahteet.md, docs/saavutettavuus.md ja kaikki viisi intialaisen elokuvan docs/-dokumenttia.
 
 
-## Intialaisen elokuvan seurantatehtävät
+## Intialaisen elokuvan uutis- ja näytösseuranta
 
 Intialaisen elokuvan uutisraportti on tehtäväjonon tehtävä 9. Suomessa järjestettävien intialaisten elokuvien näytöksiä seuraa erillinen päivittäinen Intialaisten elokuvien näytösvahti, joka ei kuluta aihekierroksen vuoroa.
 
