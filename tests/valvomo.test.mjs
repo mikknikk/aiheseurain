@@ -40,12 +40,14 @@ test("seurantatiedon rakenteen tarkistus edellyttää kaikkia yhdeksää kiertot
 
 test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
   const layout = readFileSync(new URL("../_layouts/site.html", import.meta.url), "utf8");
+  const header = readFileSync(new URL("../_includes/site-header.html", import.meta.url), "utf8");
+  const footer = readFileSync(new URL("../_includes/site-footer.html", import.meta.url), "utf8");
   const page = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   assert.match(layout, /<html lang="fi">/);
   assert.match(layout, /href="#main"/);
-  assert.match(layout, /<nav aria-label="Päänavigaatio">/);
+  assert.match(header, /<nav aria-label="Päänavigaatio">/);
   assert.match(layout, /<main id="main"/);
-  assert.match(layout, /<footer/);
+  assert.match(footer, /<footer/);
   assert.match(page, /id="rotation-list"/);
   assert.match(page, /id="actions-content"/);
 });
