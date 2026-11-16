@@ -74,7 +74,10 @@ export function sanitizeArticleHtml(html) {
       return;
     }
 
-    const clean = document.createElement(tag);
+    // RSS-artikkelin oma H1 ei saa muodostaa toista päätason otsikkoa lukijasivulle.
+    // Muutetaan se H2-tasolle, jotta sivun ainoa H1 säilyy sivun otsikkona.
+    const outputTag = tag === "h1" ? "h2" : tag;
+    const clean = document.createElement(outputTag);
     if (tag === "a") {
       const href = source.getAttribute("href");
       if (isSafeArticleUrl(href)) {
@@ -194,7 +197,7 @@ function renderArticles() {
     const body = element("div", "reader-article-body");
     if (article.sourceUrl) {
       const source = element("p", "reader-source");
-      const link = element("a", "", "Avaa alkuperäinen lähde");
+      const link = element("a", "", "Alkuperäinen lähde: " + article.title);
       link.href = article.sourceUrl;
       link.rel = "noopener noreferrer";
       source.appendChild(link);
