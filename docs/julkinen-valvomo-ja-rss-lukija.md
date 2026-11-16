@@ -48,12 +48,12 @@ Näytösvahdille ja laatutarkistukselle määritellään omat vaiheensa niiden k
 
 Kunkin vaiheen mahdolliset tilat:
 
-- \u0060pending\u0060 – ei vielä aloitettu.
-- \u0060running\u0060 – käynnissä.
-- \u0060success\u0060 – onnistui.
-- \u0060failed\u0060 – epäonnistui.
-- \u0060skipped\u0060 – ohitettiin perustellusti.
-- \u0060warning\u0060 – valmistui, mutta havaittiin huomioitava puute.
+- `pending` – ei vielä aloitettu.
+- `running` – käynnissä.
+- `success` – onnistui.
+- `failed` – epäonnistui.
+- `skipped` – ohitettiin perustellusti.
+- `warning` – valmistui, mutta havaittiin huomioitava puute.
 
 Näytä mahdollisuuksien mukaan aloitus- ja päättymisaika, kesto, lyhyt selite sekä varoituksen tai virheen kuvaus. Linkitä vastaavaan GitHub Actions -ajoon, kun linkki on saatavilla.
 
@@ -71,7 +71,7 @@ Näytä mahdollisuuksien mukaan aihe- ja ajokohtaisesti rekisteröityjen lähtei
 
 Erottele aina **yritykset**, **onnistuneet noudot** ja **sisällöllisesti läpikäydyt lähteet**. Hakukyselyiden määrä tai rekisteröityjen lähteiden lukumäärä ei yksin todista kattavuutta. Prosenttilukua saa käyttää vain, jos sen nimittäjä ja laskentatapa on määritelty ja näkyvissä.
 
-\u0060complete\u0060-merkintä tarkoittaa nykyisen lähderekisterin kriittisten lähteiden operatiivista käsittelyä, ei täydellistä maailmanlaajuista uutiskattavuutta. Näytösvahdin lähteet raportoidaan omassa kokonaisuudessaan.
+`complete`-merkintä tarkoittaa nykyisen lähderekisterin kriittisten lähteiden operatiivista käsittelyä, ei täydellistä maailmanlaajuista uutiskattavuutta. Näytösvahdin lähteet raportoidaan omassa kokonaisuudessaan.
 
 ### 2.5 Virheet, varoitukset ja historia
 
