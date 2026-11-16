@@ -2,7 +2,7 @@
 
 Tämä tiedosto tukee uutisten jatkuvuutta ja auttaa estämään vanhojen uutisten kierrättämisen. Se ei ole uutislähde. Päivitä sitä vain, kun uusi tieto on lähteistetty. Älä keksi puuttuvia tilatietoja.
 
-**Rajaus:** Suomen elokuvateatterien näytökset ovat tehtäväjonon erillinen tehtävä ja niillä on oma RSS-syöte. Alla oleva "Suomen näytösten seuranta" -osio on näytöstehtävää varten; uutisraportti ei sisällytä näytöksiä uutisartikkeliin tai uutis-RSS:ään. Uutis- ja näytöstehtävät suoritetaan eri ajokerroilla tehtäväjonon mukaisesti.
+**Rajaus:** Suomen elokuvateatterien näytöksiä seuraa erillinen päivittäinen näytösvahti, jolla on oma RSS-syöte ja oma seurantatila. Se ei kuulu yhdeksän tehtävän aihekierrokseen eikä kuluta sen vuoroja. Alla oleva "Suomen näytösten seuranta" -osio on näytösvahtia varten; uutisraportti ei sisällytä näytöksiä uutisartikkeliin tai uutis-RSS:ään.
 
 ## Käyttöohje
 
