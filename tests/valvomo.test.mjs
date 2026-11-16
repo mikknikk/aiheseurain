@@ -33,6 +33,9 @@ test("seurantatiedon rakenteen tarkistus edellyttää kaikkia yhdeksää kiertot
   assert.equal(validateStateShape(state), true);
   delete state.rotation.tasks.sompote_sands;
   assert.equal(validateStateShape(state), false);
+  state.rotation.tasks.sompote_sands = {};
+  state.rotation.next_task = "not-a-task";
+  assert.equal(validateStateShape(state), false);
 });
 
 test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
