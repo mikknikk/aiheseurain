@@ -552,6 +552,32 @@ def validate_docs(state):
         if obsolete_heading.lower() in queue.lower():
             fail(f"tehtäväjonossa on yhteinen sääntö, joka kuuluu erilliseen ohjeeseen: {obsolete_heading}")
 
+    # Pääautomaation täysi ohjeistus on GitHubissa. Sen version on vastattava
+    # koneelliseen seurantatilaan tallennettua nykyistä versiota, jotta automaatio
+    # ei voi huomaamatta käyttää vanhaa tai väärää toimintakäsikirjaa.
+    automation_guide = ROOT / "docs/paautomaation-ohje.md"
+    automation_version = state.get("automation_instructions")
+    if not automation_guide.is_file() or not isinstance(automation_version, dict):
+        fail("pääautomaation ohjekäsikirja tai sen versionhallinnan tila puuttuu")
+
+    guide_text = automation_guide.read_text(encoding="utf-8")
+    version_match = re.search(r"^Ohjeversion tunniste:\\s*(\\d+\\.\\d+\\.\\d+)\\s*$", guide_text, re.M)
+    if not version_match:
+        fail("pääautomaation käsikirjasta puuttuu kelvollinen MAJOR.MINOR.PATCH-versio")
+
+    if automation_version.get("document") != "docs/paautomaation-ohje.md":
+        fail("seurantatilan pääautomaation käsikirjan polku on virheellinen")
+    if automation_version.get("current_version") != version_match.group(1):
+        fail("pääautomaation käsikirjan ja seurantatilan nykyiset ohjeversiot eivät täsmää")
+
+    for field in ("last_successful_run_version",):
+        value = automation_version.get(field)
+        if value is not None and not re.fullmatch(r"\\d+\\.\\d+\\.\\d+", value):
+            fail("automation_instructions." + field + " ei ole kelvollinen versiotunniste")
+    timestamp(automation_version.get("last_successful_run_at"), "automation_instructions.last_successful_run_at")
+    if (automation_version.get("last_successful_run_version") is None) != (automation_version.get("last_successful_run_at") is None):
+        fail("pääautomaation viimeisimmän onnistuneen version ja ajan pitää olla molemmat asetettuja tai null")
+
     tracking_guide = ROOT / "docs/seuranta.md"
     development_guide = ROOT / "docs/kehityskaytannot.md"
     if not tracking_guide.is_file() or not development_guide.is_file():
