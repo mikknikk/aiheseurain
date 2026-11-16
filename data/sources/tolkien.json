@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
   "task_id": "tolkien",
-  "updated_at": null,
+  "updated_at": "2026-11-16T17:56:58+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Tolkien. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
     "Kattavuutta laajennettu 16.11.2026: lisätty kustantajia Yhdysvalloista, Ranskasta, Espanjasta ja Brasiliasta; Tolkien-yhteisöjä Saksasta, Ranskasta, Italiasta, Espanjasta ja Suomesta; suomalainen toimituksellinen media, espanjankielinen erikoismedia, vertaisarvioitu tutkimusjulkaisu ja englanninkielinen adaptaatiouutisten erikoissivusto.",
-    "Kattavuus ei ole maailmanlaajuisesti täydellinen: erityisesti Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet vaativat jatkotyötä. Fanisivustot ja yhdistykset ovat uutisvihjeitä tai yhteisölähteitä, eivät riippumattomia vahvistuksia."
+    "Kattavuus ei ole maailmanlaajuisesti täydellinen: erityisesti Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet vaativat jatkotyötä. Fanisivustot ja yhdistykset ovat uutisvihjeitä tai yhteisölähteitä, eivät riippumattomia vahvistuksia.",
+    "16.11.2026: lähderekisteriin lisättiin EHU/TARTALO-konferenssiohjelma, The Mythopoeic Society, File 770, GamesRadar+ ja New Zealand Film Map. Vain EHU:n virallinen PDF avattiin suoraan; neljän muun uuden lähteen artikkeliteksti näkyi hakutulosotteessa mutta suora avaus ei onnistunut, joten niiden last_checked_at jätettiin null-arvoon ja ne kirjattiin ajolokissa tarkistamatta jääneiksi."
   ],
   "sources": [
     {
@@ -18,7 +19,7 @@
       ],
       "source_type": "primary",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": null,
       "regions": [
         "UK",
@@ -52,7 +53,7 @@
       ],
       "source_type": "primary",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": null,
       "regions": [
         "UK",
@@ -86,7 +87,7 @@
       ],
       "source_type": "other",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": null,
       "regions": [
         "UK",
@@ -103,7 +104,7 @@
       ],
       "source_type": "editorial",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": null,
       "regions": [
         "UK",
@@ -152,7 +153,7 @@
       ],
       "source_type": "primary",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": null,
       "regions": [
         "FR"
@@ -167,7 +168,7 @@
       ],
       "source_type": "primary",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": null,
       "regions": [
         "ES"
@@ -182,7 +183,7 @@
       ],
       "source_type": "primary",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": null,
       "regions": [
         "BR"
@@ -198,7 +199,7 @@
       ],
       "source_type": "other",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": "Tolkien-yhdistyksen uutiset, tapahtumat ja tutkimus; ulkopuoliset uutisväitteet varmennettava alkuperäislähteestä.",
       "regions": [
         "DE",
@@ -245,7 +246,7 @@
       ],
       "source_type": "other",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": "Espanjankielinen Tolkien-yhdistys, julkaisut, tapahtumat ja uutislinkit.",
       "regions": [
         "ES"
@@ -261,7 +262,7 @@
       ],
       "source_type": "other",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": "Suomen Tolkien-yhteisön omat tiedotteet ja tapahtumat; ei riippumaton lähde kansainvälisille tuotantouutisille.",
       "regions": [
         "FI"
@@ -276,7 +277,7 @@
       ],
       "source_type": "editorial",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": "Suomen yleisradioyhtiön Tolkien-aihesivu; tarkista artikkelikohtainen julkaisupäivä ja alkuperäislähteet.",
       "regions": [
         "FI"
@@ -309,7 +310,7 @@
       ],
       "source_type": "other",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
       "access_limit": "Vertaisarvioitu avoin tutkimusjulkaisu; seuraa uusia tutkimusartikkeleita, ei ajankohtaisuutisia.",
       "regions": [
         "US",
@@ -329,6 +330,87 @@
       "access_limit": "Pitkään toiminut fanien ylläpitämä erikoissivusto; käytä uutisvihjeenä ja varmista väitteet virallisista tai riippumattomista lähteistä.",
       "regions": [
         "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "ehu-tartalo-programme",
+      "name": "EHU / TARTALO – X International Conference on Myth in the Arts programme",
+      "url": "https://www.ehu.eus/documents/d/letren-fakultatea/tartalo2026_programacongreso",
+      "language_regions": [
+        "en",
+        "es",
+        "eu"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": "2026-11-16T17:56:58+02:00",
+      "access_limit": "Virallinen tapahtumaohjelma PDF-muodossa; avattu ja tarkistettu 16.11.2026.",
+      "regions": [
+        "ES"
+      ]
+    },
+    {
+      "id": "mythopoeic-society",
+      "name": "The Mythopoeic Society",
+      "url": "https://mythsoc.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Yhdistyksen kotisivu avautui, mutta David Bratmanin Sad News -ilmoitus näkyi vain hakutulosotteessa eikä avatulla sivulla; ilmoitusta ei lasketa tarkistetuksi ennen suoraa sisältöavausta.",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "file770",
+      "name": "File 770",
+      "url": "https://file770.com/david-bratman-1957-2026/comment-page-1/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "David Bratman -muistokirjoituksen koko tekstisisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "gamesradar-film",
+      "name": "GamesRadar+ – The Hunt for Gollum",
+      "url": "https://www.gamesradar.com/entertainment/lord-of-the-rings-movies/the-hunt-for-gollum-wraps-filming-as-andy-serkis-praises-incredible-journey-back-to-playing-endlessly-complex-gollum-again/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Artikkelin koko sisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
+      "regions": [
+        "UK",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "new-zealand-film-map",
+      "name": "New Zealand Film Map",
+      "url": "https://newzealandfilmmap.com/hunt-for-gollum-finished-filming/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Artikkelin koko sisältö ja 12.11. päivitys näkyivät hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
+      "regions": [
+        "NZ",
         "GLOBAL"
       ]
     }

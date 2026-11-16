@@ -91,7 +91,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/laatutarkistuksen-ohje.md`: viikoittaisen laatutarkistuksen täydellinen, versioitu tehtävä- ja toimintakuvaus.
 - `docs/tehtavajono.md`: yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja vuoron siirtämisen ehdot. Ei yleisiä raportointi- tai koodauskäytäntöjä.
 - `docs/seuranta.md`: tehtäväkohtaiset seurantajaksot, onnistuneiden tarkistusten tila, uutistapahtumien historia ja luotettavuusluokat.
-- `docs/lahteet.md`: yleiset lähdeperiaatteet ja kahdeksan muun aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
+- `docs/lahteet.md`: yleiset lähdeperiaatteet ja kaikkien yhdeksän aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
 - `docs/saavutettavuus.md`: kaikkien julkaisujen saavutettavuustavoitteet ja testausperiaatteet.
 - `docs/kehityskaytannot.md`: skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.

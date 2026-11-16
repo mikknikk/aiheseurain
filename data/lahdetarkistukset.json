@@ -1,6 +1,87 @@
 {
   "schema_version": 1,
   "timezone": "Europe/Helsinki",
-  "runs": [],
-  "latest_by_task": {}
+  "runs": [
+    {
+      "run_id": "tolkien-20261116T175100-0200",
+      "task_id": "tolkien",
+      "started_at": "2026-11-16T17:51:00+02:00",
+      "status": "complete",
+      "unchecked_sources": [
+        {
+          "source_id": "tolkien-society",
+          "reason": "Suora avaus palautti 403 Forbidden."
+        },
+        {
+          "source_id": "warnerbros-newsroom",
+          "reason": "Virallisen newsroom-sivun suora avaus palautti 403 Forbidden; erillistä kuvausten päättymistiedotetta ei voitu tarkistaa."
+        },
+        {
+          "source_id": "variety-film",
+          "reason": "Sivusto palautti 500/Tollbit-eston; artikkelisisältöä ei voitu avata."
+        },
+        {
+          "source_id": "hmh-books-tolkien",
+          "reason": "Osoite ohjautui HMH:n yleiselle yrityssivulle eikä Tolkien-katalogiin tai uutiseen."
+        },
+        {
+          "source_id": "societa-tolkieniana-italiana",
+          "reason": "Uutissivun suora avaus palautti cache miss."
+        },
+        {
+          "source_id": "tolkiendil",
+          "reason": "Uutissivu palautti vanhentuneen välimuistin; 11.11.2026 artikkelin suora osoite palautti cache miss."
+        },
+        {
+          "source_id": "elfenomeno",
+          "reason": "David Bratman -artikkelin suora avaus palautti cache miss; koko tekstisisältö näkyi hakutulosotteessa, joten lähdettä ei laskettu tarkistetuksi."
+        },
+        {
+          "source_id": "the-one-ring",
+          "reason": "11.11.–12.11.2026 Gollum-artikkelin suora avaus palautti cache miss; avattu arkistosivu näytti vain vanhempaa sisältöä."
+        },
+        {
+          "source_id": "mythopoeic-society",
+          "reason": "Kotisivu avautui, mutta David Bratmanin Sad News -ilmoitus näkyi vain hakutulosotteessa eikä avatulla sivulla."
+        },
+        {
+          "source_id": "file770",
+          "reason": "David Bratman -muistokirjoituksen suora avaus palautti cache miss."
+        },
+        {
+          "source_id": "gamesradar-film",
+          "reason": "The Hunt for Gollum -artikkelin suora avaus palautti cache miss."
+        },
+        {
+          "source_id": "new-zealand-film-map",
+          "reason": "The Hunt for Gollum -artikkelin suora avaus palautti cache miss."
+        }
+      ],
+      "coverage_notes": [
+        "Kielet: englanti, suomi, saksa, ranska, espanja, italia ja brasilianportugali; EHU:n ohjelma tarkistettiin myös baskin- ja espanjankielisessä ympäristössä.",
+        "Alueet: Britannia, Yhdysvallat, Saksa, Ranska, Espanja, Italia, Suomi, Brasilia ja Uusi-Seelanti; mukana myös globaalit adaptaatio- ja kirjallisuuslähteet.",
+        "Kaikki yhdeksän kriittistä lähdettä käsiteltiin: seitsemän avattiin ja tarkistettiin, kaksi jäi tarkistamatta täsmällisesti kirjattujen käyttörajoitteiden vuoksi.",
+        "Hakutulosotteista saatuja tietoja ei merkitty tarkistetuiksi lähteiksi. Gollum-kuvausuutisen kolme artikkelia perustuvat samaan The Morning Mosh Pit -haastatteluun."
+      ],
+      "ended_at": "2026-11-16T18:00:19+02:00",
+      "checked_source_ids": [
+        "tolkien-estate",
+        "harpercollins-tolkien",
+        "tolkiengateway",
+        "theguardian-books",
+        "christian-bourgois-tolkien",
+        "planeta-minotauro-tolkien",
+        "harpercollins-brasil-tolkien",
+        "deutsche-tolkien-gesellschaft",
+        "sociedad-tolkien-espanola",
+        "suomen-tolkien-seura",
+        "yle-tolkien",
+        "journal-tolkien-research",
+        "ehu-tartalo-programme"
+      ]
+    }
+  ],
+  "latest_by_task": {
+    "tolkien": "2026-11-16T18:00:19+02:00"
+  }
 }
