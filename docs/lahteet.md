@@ -93,4 +93,4 @@ Kun lähde tuottaa olennaista uutistietoa, kirjaa tarvittaessa:
 
 ## Intialaisen elokuvan lähderekisteri
 
-Koko Intian elokuvateollisuuden uutis- ja Suomen näytöslähteiden laaja lähderekisteri on siirretty tiedostoon `INDIAN_FILM_docs/lahteet.md`. Käytä sitä päivittäisessä intialaisen elokuvan uutis- ja näytösseurannassa. Lähderekisteri on lähtökohta, ei suljettu lista.
+Koko Intian elokuvateollisuuden uutis- ja Suomen näytöslähteiden laaja lähderekisteri on siirretty tiedostoon `docs/intialaisen-elokuvan-lahteet.md`. Käytä sitä päivittäisessä intialaisen elokuvan uutis- ja näytösseurannassa. Lähderekisteri on lähtökohta, ei suljettu lista.
