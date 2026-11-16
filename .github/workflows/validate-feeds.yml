@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   validate:
-    name: Tarkista RSS-syötteet
+    name: Tarkista RSS, HTML, dokumentaatio ja seurantatila
     runs-on: ubuntu-latest
     steps:
       - name: Hae lähdekoodi
@@ -21,5 +21,5 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
-      - name: Tarkista RSS- ja seurantatiedostot
+      - name: Tarkista RSS, HTML, dokumentaatio ja seurantatila
         run: python scripts/validate_feeds.py
