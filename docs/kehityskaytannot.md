@@ -39,6 +39,7 @@ Automaation asetuksiin kopioitavat käynnistyskehotteet ovat erillisiä tekstipo
 - Säilytä käynnistyskehotteet täsmälleen sellaisina teksteinä, jotka automaation asetuksiin kopioidaan. Älä lisää Markdown-otsikoita, selityksiä tai muuta sisältöä varsinaisen kehotteen sisään.
 - Käytä `prompts/README.md`-tiedostoa hakemiston selityksiin, automaatioiden ja tiedostojen yhdistämiseen sekä päivitysmenettelyyn.
 - Kun käynnistyskehotetta muutetaan, päivitä ensin repositorion kanoninen teksti ja kopioi sama sisältö automaation asetuksiin. Tarkista lopuksi, että asetuksiin tallennettu teksti vastaa tiedostoa.
+- Jokaisella automaatiolla on yksilöllinen käynnistyskehotteen tunniste, joka vastaa `data/seurantatila.json`-tiedoston saman automaation `startup_prompt_id`-kenttää. Kun promptin sisältö muuttuu, anna uusi tunniste ja päivitä JSON samassa muutossarjassa.
 - Käynnistyskehote käynnistää tehtävän ja ohjaa ensisijaiseen käsikirjaan. Varsinaiset tehtävärajaukset ja toimintatavat kuuluvat käsikirjaan.
 
 Vanhoja dokumentteja ei muotoilla automaattisesti tämän käytäntömuutoksen yhteydessä. Niitä uudistetaan asteittain, jotta ohjeiden merkitys tai koneellisesti tulkittavat osat eivät muutu vahingossa.

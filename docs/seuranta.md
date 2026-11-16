@@ -37,6 +37,14 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 - Viimeksi onnistuneesti käytetty versio ja aikaleima päivitetään vain kattavan auditoinnin jälkeen. Laatutarkistus ei korjaa havaintoja eikä muuta muita repositoryn tiedostoja; ainoastaan nämä kaksi onnistuneen ajon metatietokenttää saa päivittää.
 - Jos käsikirjan ja JSONin versiot eivät täsmää, automaatio keskeyttää.
 
+## Käynnistyskehotteiden tunnisteet
+
+- Jokaisella kolmella automaatiolla on oma yksilöllinen tunniste kanonisessa `prompts/`-tiedostossa ja sama arvo `data/seurantatila.json`-tiedoston vastaavan ohjeosion `startup_prompt_id`-kentässä.
+- Ajon alussa automaatio vertaa aktiivisen käynnistyskehotteensa tunnistetta GitHubin seurantatilaan. Puuttuva tai ristiriitainen tunniste pysäyttää ajon ennen varsinaista seurantaa tai auditointia.
+- Kun käynnistyskehotteen sisältöä muutetaan, tunniste vaihdetaan uuteen ja JSON-kenttä päivitetään samassa muutossarjassa. Muiden automaatioiden tunnisteet säilyvät ennallaan.
+- Tunnistevertailu havaitsee vanhentuneen live-kehotteen, jos kanonisen kehotteen tunniste on vaihdettu. Se ei todista koko prompt-tekstin identtisyyttä, joten koko teksti kopioidaan asetuksiin ja tarkistetaan edelleen manuaalisesti.
+- `scripts/validate_feeds.py` varmistaa, että kaikki kolme kanonista promptia ja niiden JSON-tunnisteet vastaavat toisiaan.
+
 ## Lähdekattavuuden koneellinen seuranta
 
 - `data/source-catalog.json` sisältää lähteiden yhteiset perustiedot (nimi, URL, kielet, lähdetyyppi ja alueet) kerran. `data/sources/{task_id}.json` sisältää tehtäväkohtaiset `source_id`-viittaukset sekä kriittisyyden, viimeisimmän tarkistusajan ja käyttörajoitteet. Yhdistä tiedot ID:n perusteella; lähteen tarkistus yhdessä tehtävässä ei tarkoita, että se olisi tarkistettu muissa tehtävissä.

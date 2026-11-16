@@ -1046,10 +1046,63 @@ def validate_feeds():
     return total, len(seen)
 
 
+
+def validate_startup_prompts(state):
+    """Varmistaa kolmen automaation käynnistyskehotteiden tunnisteiden eheyden.
+
+    Jokaisen kanonisen promptitiedoston tunnisteen pitää vastata saman
+    automaation koneelliseen seurantatilaan tallennettua tunnistetta.
+    Tämä testi ei voi lukea ChatGPTin live-asetuksia, mutta se estää
+    GitHubiin tallennettujen promptien ja JSON-tilan keskinäisen ristiriidan.
+    """
+    prompt_specs = (
+        ("prompts/paauutisseuranta.txt", state.get("automation_instructions"), "automation_instructions"),
+        ("prompts/naytosvahti.txt", state.get("separate_screening_watch", {}).get("automation_instructions"), "separate_screening_watch.automation_instructions"),
+        ("prompts/laatutarkistus.txt", state.get("quality_check_instructions"), "quality_check_instructions"),
+    )
+
+    seen_ids = set()
+
+    for relative_path, instruction_state, label in prompt_specs:
+        if not isinstance(instruction_state, dict):
+            fail(f"{label}: käynnistyskehotteen seurantatila puuttuu")
+
+        expected_id = instruction_state.get("startup_prompt_id")
+        if not isinstance(expected_id, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", expected_id):
+            fail(f"{label}.startup_prompt_id puuttuu tai on virheellinen")
+
+        if expected_id in seen_ids:
+            fail(f"käynnistyskehotteen tunniste ei ole yksilöllinen: {expected_id}")
+        seen_ids.add(expected_id)
+
+        prompt_path = ROOT / relative_path
+        if not prompt_path.is_file():
+            fail(f"kanoninen käynnistyskehote puuttuu: {relative_path}")
+
+        prompt_text = prompt_path.read_text(encoding="utf-8")
+        match = re.search(
+            r"^Käynnistyskehotteen tunniste:\s*([a-z0-9]+(?:-[a-z0-9]+)*)\s*$",
+            prompt_text,
+            re.M,
+        )
+        if not match:
+            fail(f"{relative_path}: käynnistyskehotteen tunniste puuttuu tai on virheellinen")
+
+        if match.group(1) != expected_id:
+            fail(
+                f"{relative_path}: promptin tunniste ({match.group(1)}) "
+                f"ei vastaa seurantatilan tunnistetta ({expected_id})"
+            )
+
+
 def main():
     """Ajaa kaikki tarkistukset oikeassa järjestyksessä."""
     # Ensin tarkistetaan seurantatila, jotta dokumentteja voidaan verrata siihen.
     state = validate_state()
+
+    # Varmistetaan, että jokaisen automaation käynnistyskehotteen tunniste
+    # vastaa GitHubin koneellista seurantatilaa ennen muita tarkistuksia.
+    validate_startup_prompts(state)
 
     # Seuraavaksi tarkistetaan dokumenttien ja seurantatilan yhdenmukaisuus.
     validate_docs(state)
@@ -1067,7 +1120,7 @@ def main():
     # Jos tähän asti päästiin, kaikki testit läpäisivät.
     print(f"OK: {len(FEEDS)} syötettä, {total} itemiä, {unique} yksilöllistä GUIDia.")
     print("OK: kuvausten HTML-rakenne, linkit, otsikkotasot, alt-attribuutit ja lähdeluettelot.")
-    print("OK: README, tehtäväjono, feed-polut ja seurantatila ovat yhdenmukaiset.")
+    print("OK: README, tehtäväjono, feed-polut, seurantatila ja käynnistyskehotteiden tunnisteet ovat yhdenmukaiset.")
     print("OK: aikaleimat, seurantajaksot, erillinen näytösvahti ja näytösten muutoshistoria.")
     print("OK: näytöshistoria vastaa JSON Schema Draft 2020-12 -määrittelyä.")
     print("OK: RSS:n historialliset näytösajat vastaavat JSON-historian completed-tietueita.")

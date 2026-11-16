@@ -1,11 +1,14 @@
 Tehtävä: suorita repositorion mikknikk/uutiset pääasiallinen päivittäinen uutisseurannan aihekierros.
 
+KÄYNNISTYSKEHOTTEEN TUNNISTE
+Käynnistyskehotteen tunniste: uutispaakierto-2026-11-16-01
+
 ENSISIJAINEN OHJE
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin tiedostossa docs/paaautomaation-ohje.md (tiedostonimessä on kaksi a-kirjainta alussa: paaautomaation). Tämä käynnistyskehote on vain käynnistysosoite; älä kopioi tai päättele tehtävän sisältöä siitä.
 
 Ajon alussa:
 1. Lue GitHubin main-haarasta README.md, docs/paaautomaation-ohje.md kokonaan, data/seurantatila.json, data/source-catalog.json, data/sources/{task_id}.json, schemas/lahdekatalogi.schema.json, schemas/lahderekisteri.schema.json ja data/lahdetarkistukset.json.
-2. Tarkista, että käsikirjan Ohjeversion tunniste vastaa JSONin automation_instructions.current_version-arvoa ja että automation_instructions.document on täsmälleen docs/paaautomaation-ohje.md.
+2. Tarkista, että tämän käynnistyskehotteen tunniste vastaa täsmälleen data/seurantatila.jsonin automation_instructions.startup_prompt_id-arvoa. Tarkista lisäksi, että käsikirjan Ohjeversion tunniste vastaa JSONin automation_instructions.current_version-arvoa ja että automation_instructions.document on täsmälleen docs/paaautomaation-ohje.md. Jos kehotetunniste puuttuu tai ei täsmää, keskeytä ennen uutishakuja ja kirjoituksia.
 3. Jos jokin tiedosto puuttuu, ei ole luettavissa, GitHub ei ole käytettävissä tai polku/versio ei täsmää, keskeytä ennen uutishakuja ja kirjoituksia. Älä käytä vanhaa kehotetta tai arvaa oikeaa versiota. Älä muuta onnistumistietoja tai tehtävävuoroa.
 4. Noudata käsikirjan lukujärjestystä, tehtävävalintaa, sisältö-, lähde-, julkaisu- ja tarkistussääntöjä kokonaan. Kirjaa tämän ajon lähdetarkistukset vain valitun aihekierroksen tehtävätunnisteelle; älä tarkista tai kirjaa näytösvahtia.
 
