@@ -2,7 +2,7 @@
 
 Tämä projekti kokoaa suomeksi intialaisen elokuvan uutisia ja julkaisee pitkämuotoisen artikkelin RSS-syötteessä tehtäväjonon mukaisella vuorolla.
 
-- **Julkaisurytmi:** tehtäväjonon mukaisesti, normaalisti noin kymmenen päivän välein. Uutisraportti ja näytösseuranta ovat eri tehtäviä.
+- **Julkaisurytmi:** tehtäväjonon mukaisesti, normaalisti noin yhdeksän päivän välein. Uutisraportti ja näytösseuranta ovat eri tehtäviä.
 - **Raportointijakso:** ensisijaisesti edellisen raportin jälkeen julkaistut uutiset / viimeisin vuorokausi.
 - **RSS-syöte:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
 - **Projektin sivu:** [uutiset-repositorio](https://github.com/mikknikk/uutiset)
@@ -154,7 +154,7 @@ Jokaisessa raportissa tarkistetaan, onko uusissa tai aiemmin seuratuissa intiala
 
 ## Näytösseuranta samassa tehtävässä
 
-Suomen intialaisten elokuvien näytökset tarkistetaan tehtäväjonon omalla vuorolla, erillään uutisraportoinnista. Näytösseuranta on silti toimituksellisesti ja teknisesti erillinen uutisraportoinnista: se ylläpitää omaa [intialaisten-elokuvien-naytokset.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml)-syötettään, eikä näytöslistoja lisätä uutisraportin RSS-itemeihin. Näytösseurannan yksityiskohtaiset hyväksymis-, lähde-, muutoshistoria- ja julkaisuohjeet ovat tiedostossa `docs/intialaisten-elokuvien-naytosseuranta.md`; uutisraportin ohjeet ovat tiedostossa `docs/intialaisen-elokuvan-uutiset.md`.
+Suomen intialaisten elokuvien näytöksiä seuraa erillinen päivittäinen näytösvahti. Se ei kuulu yhdeksän tehtävän aihekierrokseen eikä kuluta sen vuoroja. Näytösseuranta on silti toimituksellisesti ja teknisesti erillinen uutisraportoinnista: se ylläpitää omaa [intialaisten-elokuvien-naytokset.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml)-syötettään, eikä näytöslistoja lisätä uutisraportin RSS-itemeihin. Näytösseurannan yksityiskohtaiset hyväksymis-, lähde-, muutoshistoria- ja julkaisuohjeet ovat tiedostossa `docs/intialaisten-elokuvien-naytosseuranta.md`; uutisraportin ohjeet ovat tiedostossa `docs/intialaisen-elokuvan-uutiset.md`.
 
 ## Raportin rakenne
 
@@ -204,7 +204,7 @@ Raportoinnin työvälineinä käytetään kahta ylläpidettävää tiedostoa:
 
 Uusia lähteitä lisätään vasta, kun niiden toimituksellinen tausta ja käyttökelpoisuus on arvioitu. Seurantalokia päivitetään vain lähteistetyillä muutoksilla. Puuttuvaa historiaa ei täytetä arvauksilla. Tärkeiden uutisten riippumattomuus arvioidaan alkuperäislähteiden ja lähdeketjujen, ei pelkän julkaisujen lukumäärän perusteella.
 
-Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [docs/intialaisen-elokuvan-lahteet.md](docs/intialaisen-elokuvan-lahteet.md)-tiedostoon. Näytösseuranta on tehtäväjonon erillinen tehtävä ja käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
+Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [docs/intialaisen-elokuvan-lahteet.md](docs/intialaisen-elokuvan-lahteet.md)-tiedostoon. Näytösseuranta on uutisraportista erillinen päivittäinen automaatio ja käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
 
 Lipputuloissa erotetaan markkina-alue, brutto/netto, aikajakso ja arvioiden/virallisten lukujen status. Julisteiden ja videoiden lähde sekä julkaisija tarkistetaan ja kirjataan.
 
