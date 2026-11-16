@@ -1023,7 +1023,8 @@ def main():
     validate_docs(state)
 
     # Tarkistetaan myös näytösseurannan koneellisesti luettava muutoshistoria.
-    validate_screening_history()
+    screening_history = validate_screening_history()
+    validate_screening_history_rss(screening_history)
 
     # Lopuksi käydään RSS-syötteet ja niiden julkaistut itemit läpi.
     total, unique = validate_feeds()
@@ -1034,6 +1035,7 @@ def main():
     print("OK: README, tehtäväjono, feed-polut ja seurantatila ovat yhdenmukaiset.")
     print("OK: aikaleimat, seurantajaksot, erillinen näytösvahti ja näytösten muutoshistoria.")
     print("OK: näytöshistoria vastaa JSON Schema Draft 2020-12 -määrittelyä.")
+    print("OK: RSS:n historialliset näytösajat vastaavat JSON-historian completed-tietueita.")
 
 
 # Tämä ehto tarkoittaa, että main()-funktio suoritetaan vain, kun tiedosto
