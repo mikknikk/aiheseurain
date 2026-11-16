@@ -20,8 +20,8 @@ Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä aihekohtaista uu
 | Euroviisut ja kansalliset karsinnat | [euroviisut.xml](feeds/euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/euroviisut.xml |
 | Sompote Sands | [sompote-sands.xml](feeds/sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/sompote-sands.xml |
 | Shakkidraamat | [shakkidraamat.xml](feeds/shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/shakkidraamat.xml |
-| Intialaisen elokuvan uutisraportti | [feeds/intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml |
-| Intialaisten elokuvien näytökset Suomessa | [feeds/intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml |
+| Intialaisen elokuvan uutisraportti | [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml |
+| Intialaisten elokuvien näytökset Suomessa | [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml |
 
 Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olennaisia uutisia ei löydy. Intialaisen elokuvan kaksi syötettä siirrettiin aiemmasta repositoriosta historiallisine itemeineen. Yhteenkään syötteeseen ei lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
@@ -32,7 +32,7 @@ Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sek
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
 2. `docs/seuranta.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
 3. `docs/lahteet.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
-4. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/INDIAN_FILM_docs/seuranta.md` ja `docs/INDIAN_FILM_docs/lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
+4. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/docs/intialaisen-elokuvan-seuranta.md` ja `docs/docs/intialaisen-elokuvan-lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
 5. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
 Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/seuranta.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
@@ -80,11 +80,11 @@ Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aih
 
 Sama automaatio tekee jokaisella päivittäisellä ajolla myös koko Intian elokuvateollisuuden uutisraportin ja Suomessa järjestettävien intialaisten elokuvien näytösten tarkistuksen. Moduulit ovat toisistaan erillisiä, mutta eivät erillisiä automaatioita.
 
-- Uutisraportin RSS: [feeds/intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml
-- Näytösten RSS: [feeds/intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml
+- Uutisraportin RSS: [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml
+- Näytösten RSS: [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml
 - Ohjeet: `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md` ja `docs/intialaisten-elokuvien-naytosseuranta.md`.
-- Seurantaloki: `docs/INDIAN_FILM_docs/seuranta.md`.
-- Lähderekisteri: `docs/INDIAN_FILM_docs/lahteet.md`.
+- Seurantaloki: `docs/docs/intialaisen-elokuvan-seuranta.md`.
+- Lähderekisteri: `docs/docs/intialaisen-elokuvan-lahteet.md`.
 
 Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Uutisraportti ja näytösseuranta julkaisevat vain omiin syötteisiinsä.
 
