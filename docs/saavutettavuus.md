@@ -50,7 +50,7 @@ Tässä muutoksessa tarkistetaan tiedostopolut, RSS/XML:n jäsennettävyys, GUID
 
 ## Manuaalisen saavutettavuustestauksen menettely
 
-Automaattiset testit eivät korvaa manuaalista arviointia. Testaa vähintään GitHubissa renderöidyt keskeiset Markdown-dokumentit sekä RSS-sisältöä näyttävä käytännössä käytetty lukija. Jos repositorion omaa verkkokäyttöliittymää tai muuta esitystapaa lisätään, lisää se testattaviin kohteisiin. Älä yleistä yhden selaimen tai ruudunlukijan tulosta kaikkiin käyttöympäristöihin.
+Automaattiset testit eivät korvaa manuaalista arviointia. Testaa vähintään GitHubissa renderöidyt keskeiset Markdown-dokumentit sekä RSS-sisältöä näyttävä käytännössä käytetty lukija. Repositorion oma Valvomo on lisättävä testattaviin kohteisiin. Testaa myös sen lataus- ja virhetilat, automaatiokorttien erillisyys, aihekierron esitystapa ja GitHub Actions -vaiheiden ymmärrettävyys. Älä yleistä yhden selaimen tai ruudunlukijan tulosta kaikkiin käyttöympäristöihin.
 
 ### Testausympäristön kirjaaminen
 
@@ -63,7 +63,8 @@ Kirjaa jokaisesta testikerrasta testaaja, päivämäärä, käyttöjärjestelmä
 3. **Suurennus ja responsiivisuus:** tarkista vähintään 200 % ja 400 % suurennus sekä 320 CSS-pikselin leveä näkymä. Varmista, ettei tavallinen tekstisisältö vaadi vaakavieritystä eikä tietoa tai toimintoja katoa.
 4. **Kontrastit:** tarkista tekstin, linkkien, fokusmerkkien ja muiden olennaisten käyttöliittymäelementtien kontrasti. AAA-tavoitteena tavallisen tekstin kontrasti on vähintään 7:1 ja suuren tekstin 4,5:1.
 5. **Väritilat:** tarkista vaalea ja tumma tila sekä pakotetut värit, jos testattu käyttöympäristö tukee niitä.
-6. **RSS-lukija:** tarkista otsikoiden ja listojen rakenne, lähdelinkkien nimet, linkkien käyttö näppäimistöllä ja ruudunlukijalla sekä se, ettei raportin sisältö riipu pelkästä visuaalisesta asettelusta.
+6. **Valvomo:** tarkista pääsisältöön siirtyminen, päänavigaatio, otsikkohierarkia, automaatiokorttien erottelu, tilamerkintöjen ymmärrettävyys, aihekierron lista, virhe- ja varoitustiedot sekä Actions-vaiheiden avattavat yksityiskohdat. Testaa myös tilanne, jossa JSON tai GitHub API ei vastaa.
+7. **RSS-lukija:** tarkista otsikoiden ja listojen rakenne, lähdelinkkien nimet, linkkien käyttö näppäimistöllä ja ruudunlukijalla sekä se, ettei raportin sisältö riipu pelkästä visuaalisesta asettelusta.
 
 Älä merkitse testausta tehdyksi pelkän suunnitelman, automaattisen Lighthouse-/axe-tuloksen tai GitHubin Markdown-esikatselun perusteella. Kirjaa myös epäonnistuneet ja soveltumattomat kohdat. WCAG 2.2 AAA -tason väite edellyttää kaikkien soveltuvien onnistumiskriteerien asianmukaista arviointia; tämä tarkistuslista on apuväline, ei vaatimustenmukaisuustodistus.
 
@@ -88,7 +89,7 @@ Kopioi tämä osio uuteen testausmerkintään ja täytä vain tosiasiassa tehdyt
 | 320 CSS-pikselin näkymä | Ei testattu | |
 | Kontrastit ja linkkien erottuvuus | Ei testattu | |
 | Tumma tila ja pakotetut värit | Ei testattu | |
-| RSS-sisällön käyttö lukijassa | Ei testattu | |
+| Valvomon käyttö näppäimistöllä ja ruudunlukijalla | Ei testattu |\n| Valvomon 320 px / 200 % / 400 % -näkymä | Ei testattu |\n| Valvomon kontrastit ja väritilat | Ei testattu |\n| RSS-sisällön käyttö lukijassa | Ei testattu | |
 
 **Yhteenveto ja avoimet löydökset:**
 
