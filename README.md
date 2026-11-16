@@ -6,7 +6,7 @@ Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdess
 
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
-- `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja seurantajaksojen raportointisääntö.
+- `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
 
 ## Syötteet
@@ -31,13 +31,14 @@ Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olenn
 Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kymmenen RSS-syötteen nykyinen sisältö. Näytösfeed luetaan historian säilyttämiseksi, mutta sitä ei käsitellä eikä päivitetä tässä automaatiossa:
 
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
-2. `docs/tehtavajono.md` – tehtävien kiinteä järjestys, seuraava vuoro ja seurantajaksojen aikavälit.
-3. `docs/seuranta.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
-4. `docs/lahteet.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
-5. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/intialaisen-elokuvan-seuranta.md` ja `docs/intialaisen-elokuvan-lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
-6. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
+2. `docs/tehtavajono.md` – tehtävien kiinteä järjestys ja seuraava vuoro.
+3. `docs/seuranta.md` – raportointijaksot, koneellinen seurantatila, testaus sekä aihekohtainen aiempi uutisointi ja duplikaattien esto.
+4. `docs/kehityskaytannot.md` – Python-skriptien kommentointi- ja ylläpitokäytännöt.
+5. `docs/lahteet.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
+6. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/intialaisen-elokuvan-seuranta.md` ja `docs/intialaisen-elokuvan-lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
+7. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
-Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/tehtavajono.md:n seuraava tehtävä ja tee varsinaiset haut vain sille yhdelle tehtävälle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan tehtävään; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama tehtävä vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten yhdeksän tehtävän kierto tarkoittaa normaalisti noin yhdeksän päivän tarkistusväliä kullekin tehtävälle. Erillinen näytösvahti tarkistaa näytökset päivittäin. Ilmoita jokaisessa raportissa tehtäväkohtaisen seurantajakson alku ja loppu. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/tehtavajono.md:n seuraava tehtävä ja tee varsinaiset haut vain sille yhdelle tehtävälle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan tehtävään; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama tehtävä vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten yhdeksän tehtävän kierto tarkoittaa normaalisti noin yhdeksän päivän tarkistusväliä kullekin tehtävälle. Erillinen näytösvahti tarkistaa näytökset päivittäin. Ilmoita jokaisessa raportissa tehtäväkohtaisen seurantajakson alku ja loppu docs/seuranta.md:n raportointisäännön mukaisesti. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
 ## Dokumentaation ajantasaisuuden loppukatselmus
 
@@ -116,7 +117,7 @@ Päivitä tilatiedosto vasta onnistuneen tarkistuksen ja mahdollisen RSS-julkais
 
 ## Skriptien kehityskäytännöt
 
-Kaikki uudet skriptit kirjoitetaan alusta lähtien suomeksi kommentoituina ja dokumentoituina samalla perusteellisuudella kuin `scripts/validate_feeds.py`. Kommenttien tulee auttaa myös Pythonia vähemmän osaavaa lukijaa ymmärtämään tiedoston tarkoitus, keskeiset funktiot, toimintavaiheet ja ei-ilmeiset ratkaisut. Kommentit pidetään ajan tasalla koodin muuttuessa. Tarkempi sitova ohje ja tarkistuslista: [docs/kehityskaytannot.md](docs/kehityskaytannot.md).
+Skriptien kommentointi- ja ylläpitovaatimukset on määritelty sitovasti tiedostossa [docs/kehityskaytannot.md](docs/kehityskaytannot.md).
 
 ## Automaattiset laatutestit
 
