@@ -2,20 +2,26 @@
 
 Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä aihekohtaista uutisseurantaa sekä kahta päivittäin suoritettavaa intialaisen elokuvan seurantamoduulia: uutisraportointia ja Suomessa järjestettävien näytösten seurantaa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki. Kukin ajo käsittelee lisäksi yhden kahdeksasta kiertojonoaiheesta; kierto kestää kahdeksan päivää. Intialaisen elokuvan uutis- ja näytösseuranta suoritetaan joka päivä tämän kierron rinnalla.
 
+## Hakemistorakenne
+
+- `feeds/` – kaikki kymmenen RSS-syötettä.
+- `docs/` – seurannan yleiset ja intialaisen elokuvan ohje-, lähde- ja historiadokumentit.
+- `README.md` – repositorion aloitussivu ja kokonaiskuva.
+
 ## Syötteet
 
 | Aihe | RSS-tiedosto | Raaka RSS-osoite |
 |---|---|---|
-| J. R. R. Tolkien | [tolkien.xml](tolkien.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/tolkien.xml |
-| Taylor Swift | [taylor-swift.xml](taylor-swift.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/taylor-swift.xml |
-| Saint Dr. Gurmeet Ram Rahim Singh Ji Insan | [gurmeet-ram-rahim-singh.xml](gurmeet-ram-rahim-singh.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/gurmeet-ram-rahim-singh.xml |
-| Muumit | [muumit.xml](muumit.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/muumit.xml |
-| Wakaliwood | [wakaliwood.xml](wakaliwood.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/wakaliwood.xml |
-| Euroviisut ja kansalliset karsinnat | [euroviisut.xml](euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/euroviisut.xml |
-| Sompote Sands | [sompote-sands.xml](sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/sompote-sands.xml |
-| Shakkidraamat | [shakkidraamat.xml](shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/shakkidraamat.xml |
-| Intialaisen elokuvan uutisraportti | [indian-films.xml](indian-films.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml |
-| Intialaisten elokuvien näytökset Suomessa | [indian-film-screenings.xml](indian-film-screenings.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-film-screenings.xml |
+| J. R. R. Tolkien | [tolkien.xml](feeds/tolkien.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/tolkien.xml |
+| Taylor Swift | [taylor-swift.xml](feeds/taylor-swift.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/taylor-swift.xml |
+| Saint Dr. Gurmeet Ram Rahim Singh Ji Insan | [gurmeet-ram-rahim-singh.xml](feeds/gurmeet-ram-rahim-singh.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/gurmeet-ram-rahim-singh.xml |
+| Muumit | [muumit.xml](feeds/muumit.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/muumit.xml |
+| Wakaliwood | [wakaliwood.xml](feeds/wakaliwood.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/wakaliwood.xml |
+| Euroviisut ja kansalliset karsinnat | [euroviisut.xml](feeds/euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/euroviisut.xml |
+| Sompote Sands | [sompote-sands.xml](feeds/sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/sompote-sands.xml |
+| Shakkidraamat | [shakkidraamat.xml](feeds/shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/shakkidraamat.xml |
+| Intialaisen elokuvan uutisraportti | [indian-films.xml](feeds/indian-films.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-films.xml |
+| Intialaisten elokuvien näytökset Suomessa | [indian-film-screenings.xml](feeds/indian-film-screenings.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-film-screenings.xml |
 
 Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olennaisia uutisia ei löydy. Intialaisen elokuvan kaksi syötettä siirrettiin aiemmasta repositoriosta historiallisine itemeineen. Yhteenkään syötteeseen ei lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
@@ -24,10 +30,10 @@ Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olenn
 Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kymmenen RSS-syötteen nykyinen sisältö:
 
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
-2. `TRACKING.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
-3. `SOURCES.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
-4. `INDIAN_FILM_GUIDE.md`, `INDIAN_FILM_NEWS.md`, `INDIAN_FILM_SCREENINGS.md`, `INDIAN_FILM_TRACKING.md` ja `INDIAN_FILM_SOURCES.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
-5. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml`, `indian-films.xml` ja `indian-film-screenings.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
+2. `docs/TRACKING.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
+3. `docs/SOURCES.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
+4. `docs/INDIAN_FILM_GUIDE.md`, `docs/INDIAN_FILM_NEWS.md`, `docs/INDIAN_FILM_SCREENINGS.md`, `docs/INDIAN_FILM_TRACKING.md` ja `docs/INDIAN_FILM_SOURCES.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
+5. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/indian-films.xml` ja `feeds/indian-film-screenings.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
 Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
@@ -58,8 +64,8 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 ## Tiedostojen vastuut
 
-- `TRACKING.md`: aihekohtainen uutisseurannan tila, aiemmin käsitellyt tapahtumat, luotettavuus, lähteet ja seuraava olennainen tarkistustarve.
-- `SOURCES.md`: lähdeluettelo ja hakustrategiat. Lista on lähtökohta, ei suljettu sallittujen lähteiden luettelo.
+- `docs/TRACKING.md`: aihekohtainen uutisseurannan tila, aiemmin käsitellyt tapahtumat, luotettavuus, lähteet ja seuraava olennainen tarkistustarve.
+- `docs/SOURCES.md`: lähdeluettelo ja hakustrategiat. Lista on lähtökohta, ei suljettu sallittujen lähteiden luettelo.
 - RSS-tiedostot: julkaistut uutisartikkelit.
 
 
@@ -74,10 +80,10 @@ Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aih
 
 Sama automaatio tekee jokaisella päivittäisellä ajolla myös koko Intian elokuvateollisuuden uutisraportin ja Suomessa järjestettävien intialaisten elokuvien näytösten tarkistuksen. Moduulit ovat toisistaan erillisiä, mutta eivät erillisiä automaatioita.
 
-- Uutisraportin RSS: [indian-films.xml](indian-films.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml
-- Näytösten RSS: [indian-film-screenings.xml](indian-film-screenings.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-film-screenings.xml
-- Ohjeet: `INDIAN_FILM_GUIDE.md`, `INDIAN_FILM_NEWS.md` ja `INDIAN_FILM_SCREENINGS.md`.
-- Seurantaloki: `INDIAN_FILM_TRACKING.md`.
-- Lähderekisteri: `INDIAN_FILM_SOURCES.md`.
+- Uutisraportin RSS: [indian-films.xml](feeds/indian-films.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-films.xml
+- Näytösten RSS: [indian-film-screenings.xml](feeds/indian-film-screenings.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-film-screenings.xml
+- Ohjeet: `docs/INDIAN_FILM_GUIDE.md`, `docs/INDIAN_FILM_NEWS.md` ja `docs/INDIAN_FILM_SCREENINGS.md`.
+- Seurantaloki: `docs/INDIAN_FILM_TRACKING.md`.
+- Lähderekisteri: `docs/INDIAN_FILM_SOURCES.md`.
 
 Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Uutisraportti ja näytösseuranta julkaisevat vain omiin syötteisiinsä.
