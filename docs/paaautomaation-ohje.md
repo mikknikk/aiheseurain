@@ -21,7 +21,7 @@ Noudata joka ajolla tätä järjestystä:
 2. Lue `data/seurantatila.json`. Tarkista, että `automation_instructions.document` osoittaa tähän tiedostoon ja että `current_version` vastaa tämän dokumentin Ohjeversion tunnistetta.
 3. Jos GitHub ei ole käytettävissä, käsikirja tai seurantatila puuttuu tai versiot eivät täsmää, keskeytä ajo. Älä käytä vanhaa promptia, arvattua versiota tai vanhentunutta ohjetta. Älä tee hakuja, julkaisuja, onnistumismerkintöjä tai vuoron siirtoa.
 4. Lue kokonaan `docs/tehtavajono.md`, `docs/seuranta.md`, `docs/lahteet.md` ja `docs/saavutettavuus.md`. Lue valitun tehtävän lähteet tiedostosta `data/sources/{task_id}.json`, jossa `{task_id}` on tehtävän tarkka tunniste. Käytä vain tämän tehtävän rekisteriä.
-5. Lue `docs/kehityskaytannot.md), jos muutat skriptejä tai ylläpitokoodia.
+5. Lue `docs/kehityskaytannot.md`, jos muutat skriptejä tai ylläpitokoodia.
 6. Valitse seuraava tehtävä `docs/tehtavajono.md`:stä ja varmista, että se vastaa JSONin `rotation.next_task`-arvoa. Jos arvot eroavat, keskeytä ennen hakuja; älä arvaa kumpi on oikein.
 7. Lue valitun aiheen ohjeet ja seurantaloki. Tehtävässä 9 lue kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`. Älä lue tai muuta näytösvahdin ohjeita tai historiaa uutisautomaatiossa.
 8. Lue kaikki kymmenen RSS-tiedostoa kokonaan tai hae niiden kaikki itemit: kahdeksan muuta aihefeed-tiedostoa, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml`. Näytösfeed luetaan vain aiemman historian/GUIDien säilyttämiseksi; älä tee siihen liittyviä hakuja tai muutoksia.
