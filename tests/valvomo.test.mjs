@@ -18,7 +18,7 @@ test("viimeisin aiheajo valitaan onnistumisajan perusteella", () => {
     gurmeet_ram_rahim_singh: { last_successful_check: "2026-11-15T18:00:00+02:00" }
   };
   assert.equal(latestRotationTask(tasks).id, "tolkien");
-  assert.equal(latestRotationTask({}).id, undefined);
+  assert.equal(latestRotationTask({}), null);
 });
 
 test("seurantatiedon rakenteen tarkistus edellyttää kaikkia yhdeksää kiertotehtävää", () => {
