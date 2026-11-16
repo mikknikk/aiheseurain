@@ -15,6 +15,14 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 - Ilmoita aikaväli myös silloin, kun uutta merkittävää tietoa ei löydy tai RSS:ää ei päivitetä.
 - Päivitä tehtäväkohtainen viimeisin onnistunut tarkistus ja sen aikaleima vasta onnistuneen ajon jälkeen.
 
+## Pääautomaation ohjeversion seuranta
+
+- Pääautomaation täydellinen toimintakäsikirja on `docs/paautomaation-ohje.md`; sen versionumero on dokumentin alussa.
+- `data/seurantatila.json`-tiedoston `automation_instructions.current_version` on käsikirjan nykyinen hyväksytty versio. Arvojen on täsmättävä ennen jokaista ajoa.
+- `last_successful_run_version` ja `last_successful_run_at` kertovat viimeisimmän onnistuneen ajon käyttämän version ja ajan. Ne päivitetään vain, kun koko ajo ja GitHub-kirjoitusten takaisinlukutarkistukset ovat onnistuneet.
+- Käsikirjaa muutettaessa päivitetään sen versionumero ja `current_version` samassa muutossarjassa. Viimeisimmän onnistuneen ajon kenttiä ei muuteta etukäteen.
+- GitHub Actions tarkistaa, että käsikirja, JSONin nykyinen versio ja dokumentin polku vastaavat toisiaan.
+
 ## Koneellinen seurantatila ja automaattiset testit
 
 - `data/seurantatila.json` on koneellisesti luettava rinnakkaistila. Sen `rotation.next_task`-arvon pitää vastata [tehtäväjonon](tehtavajono.md) seuraava-tehtävä-merkintää.
