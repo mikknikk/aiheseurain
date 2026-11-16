@@ -25,7 +25,7 @@ test("seurantatiedon rakenteen tarkistus edellyttää kaikkia yhdeksää kiertot
   const state = {
     schema_version: 1,
     updated_at: "2026-11-16T18:00:00+02:00",
-    rotation: { tasks: Object.fromEntries(TASK_ORDER.map((id) => [id, {}])) },
+    rotation: { next_task: "taylor_swift", tasks: Object.fromEntries(TASK_ORDER.map((id) => [id, {}])) },
     separate_screening_watch: {},
     automation_instructions: {},
     quality_check_instructions: {}
