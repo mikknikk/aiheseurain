@@ -89,3 +89,8 @@ Kun lähde tuottaa olennaista uutistietoa, kirjaa tarvittaessa:
 - viimeisin tarkistuspäivä ja mahdolliset luotettavuushuomiot
 
 Älä lisää lähdettä luotettavaksi vain siksi, että se toistaa toisen julkaisun väitteen.
+
+
+## Intialaisen elokuvan lähderekisteri
+
+Koko Intian elokuvateollisuuden uutis- ja Suomen näytöslähteiden laaja lähderekisteri on siirretty tiedostoon `INDIAN_FILM_SOURCES.md`. Käytä sitä päivittäisessä intialaisen elokuvan uutis- ja näytösseurannassa. Lähderekisteri on lähtökohta, ei suljettu lista.
