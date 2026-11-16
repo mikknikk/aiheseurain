@@ -79,6 +79,47 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 - Tarkista Suomen yhteys kaikissa aiheissa: suomalaiset uutislähteet, järjestäjät, tapahtumapaikat, festivaalit, elokuvateatterit, konsertit, kilpailut ja muut tapahtumat. Mainitse Suomi-yhteys, kun sellainen löytyy ja on uutisarvoinen. Älä koskaan lisää täytehuomiota siitä, ettei Suomi-yhteyttä löytynyt.
 - Kirjaa uusia hyödyllisiä lähteitä ja niiden luotettavuus tähän tiedostoon sekä lähderiippuvuudet docs/seuranta.md:hen.
 
+## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
+
+data/lahderekisteri.json sisältää nyt 101 lähdemerkintää kymmenelle tehtävätunnisteelle (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, tehtävä, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: language_regions kertoo julkaisun kielet ja regions sen maantieteellisen painopisteen.
+
+| Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
+|---|---:|---|---|
+| Tolkien | 7 | englanti; Britannia, Yhdysvallat, globaali | Lähinnä englanninkielinen; muiden kielialueiden erikoismediaa täydennettävä. |
+| Taylor Swift | 6 | englanti; Yhdysvallat, globaali | Lähinnä englanninkielinen ja Yhdysvalta-painotteinen. |
+| Gurmeet Ram Rahim Singh | 7 | englanti, hindi, pandžabi; Haryana, Punjab, Chandigarh, Intian valtakunnallinen | Alueellisten hindin- ja pandžabinkielisten lähteiden saavutettavuus vaihtelee. |
+| Muumit | 5 | suomi, ruotsi, englanti, japani; Suomi, Ruotsi, Britannia, Japani, globaali | Pohjoismaiden ja Japanin lisäksi muita lisenssimarkkinoita voidaan lisätä. |
+| Wakaliwood | 5 | englanti; Uganda ja Itä-Afrikka | Lugandan- ja swahilinkielinen kattavuus on vielä ohut. |
+| Euroviisut | 7 | englanti, suomi, ruotsi sekä Aasian osallistujamaiden kieliä; Eurooppa, Aasia, globaali | Aasian osallistujamaiden omia yleisradioyhtiöitä on lisättävä erikseen; yksi kilpailun virallinen sivusto ei korvaa niitä. |
+| Sompote Sands | 6 | thai, japani, englanti; Thaimaa ja Japani | Thai- ja japaninkielinen elokuvahistoria on tärkeä; oikeus- ja lisenssikiistoissa ensisijaiset asiakirjat ratkaisevat. |
+| Shakkidraamat | 7 | englanti, saksa, suomi; Eurooppa, Pohjois-Amerikka, globaali | Aasian, Afrikan ja Latinalaisen Amerikan kansalliset liitot sekä paikallismediat puuttuvat vielä useilta alueilta. |
+| Intialaisen elokuvan uutiset | 40 | englanti, hindi, telugu, tamili, kannada, malajalam, bengali, marathi, pandžabi, assami, odia, suomi | Kattaa tärkeimmät nimetyt kielialueet lähtötasolla; yksittäisten osavaltioiden, elokuvateollisuuksien ja itsenäisten elokuvantekijöiden lähteitä pitää täydentää. |
+| Intialaisten elokuvien näytösvahti | 11 | suomi, englanti, tamili; Suomi | Teattereiden, festivaalien ja levittäjien omat ohjelmistot tarkistetaan joka ajossa; rekisteri ei yksin kata kaikkia tapahtumajärjestäjiä. |
+
+### Intialaisen elokuvan uutislähteiden kielialueet
+
+Uutislähteiden rekisteriin on lisätty alueellisia toimituksia myös valtakunnallisten englanninkielisten lähteiden rinnalle:
+
+- **Hindi / valtakunnallinen:** The Times of India, NDTV, Bollywood Hungama, Pinkvilla sekä The Indian Express ja India Today.
+- **Telugu – Andhra Pradesh ja Telangana:** Eenadu, Sakshi, 123telugu ja TeluguCinema.
+- **Tamili – Tamil Nadu ja Puducherry:** Hindu Tamil Thisai, Maalai Malar, Dinamani, Cinema Express ja Daily Thanthi.
+- **Kannada – Karnataka:** Vijaya Karnataka, Prajavani, Kannada Prabha ja Cini Suddi.
+- **Malajalam – Kerala:** Onmanorama, Mathrubhumi, Manorama Online ja Simply Mollywood.
+- **Bengali – Länsi-Bengali:** Anandabazar Patrika ja Sangbad Pratidin.
+- **Marathi – Maharashtra:** Lokmat, Sakal ja Loksatta.
+- **Pandžabi – Punjab:** Ajit ja Punjabi Tribune.
+- **Assami – Assam:** Asomiya Pratidin sekä englanninkielinen The Assam Tribune.
+- **Odia – Odisha:** Sambad ja Dharitri.
+- **Suomi:** Yle, Helsingin Sanomat, Episodi, Elokuvauutiset.fi ja Film-O-Holic.
+
+Lähteet ovat ehdokas- ja hakulista, eivät takuu siitä, että jokainen sivusto olisi jokaisella ajolla saavutettavissa tai julkaisee juuri kyseisen alan uutisia. Rekisterin critical=true tarkoittaa operatiivisesti pakollista tarkistettavaa lähtölähdettä, ei lähteen laatua tai puolueettomuutta koskevaa luotettavuusarviota. source_type kuvaa lähteen roolia (ensisijainen, toimituksellinen tai muu), ei yksin yksittäisen väitteen vahvistumista. Älä merkitse last_checked_at-arvoa ennen kuin alkuperäisen lähteen sisältö on kyseisellä ajolla todella tarkistettu. URL-osoitteiden olemassaolo rekisterissä ei itsessään ole linkkitarkistuksen tulos.
+
+### Maantieteellisten tunnisteiden käytäntö
+
+regions käyttää vapaamuotoisia, mutta johdonmukaisia aluekoodeja. Intian osavaltioiden koodit ovat IN-AP (Andhra Pradesh), IN-TG (Telangana), IN-TN (Tamil Nadu), IN-PY (Puducherry), IN-KA (Karnataka), IN-KL (Kerala), IN-WB (Länsi-Bengali), IN-MH (Maharashtra), IN-PB (Punjab), IN-AS (Assam), IN-OD (Odisha), IN-HR (Haryana) ja IN-CH (Chandigarh). IN-NATIONAL tarkoittaa valtakunnallista Intian kattavuutta. Muut käytetyt tunnisteet ovat maita tai laajempia alueita, kuten FI, TH, JP, UG, EAST-AFRICA, EUROPE, ASIA, NORTH-AMERICA ja GLOBAL.
+
+Tämä kartoitus on alkuarvio julkaisujen toimituksellisesta painopisteestä, ei todistettu levikki- tai lukijakuntatieto. Jos lähteen alueellinen painopiste osoittautuu vääräksi, korjaa rekisteri.
+
 ## Koneellinen lähderekisteri ja kattavuusloki
 
 `data/lahderekisteri.json` on tekninen rekisteri lähteistä. Siinä jokaisella lähteellä on pysyvä ID, nimi, URL, tehtävätunnisteet, kieli-/aluekuvaus, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja mahdollinen käyttörajoite. Tämä rekisteri ei korvaa alla olevia aihekohtaisia ohjeita eikä ole suljettu sallittujen lähteiden lista.

@@ -66,6 +66,8 @@ def validate_source_coverage():
         osat = urlsplit(lahde["url"])
         if osat.scheme not in {"http", "https"} or not osat.netloc:
             raise ValueError(f"Lähteen {lahde['id']} URL ei ole kelvollinen HTTP(S)-osoite")
+        if not lahde["regions"]:
+            raise ValueError(f"Lähteeltä {lahde['id']} puuttuvat maantieteelliset alueet")
         tarkista_aikaleima(
             lahde["last_checked_at"],
             f"lähde {lahde['id']}.last_checked_at",

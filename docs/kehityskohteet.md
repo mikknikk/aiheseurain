@@ -37,10 +37,11 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 - [x] Yhtenäisen lähderekisterin tietomalli ja alustava rekisteri: lähteen nimi, URL, tehtävä, kieli/alue, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja käyttörajoite. Rekisterin kattavuus vaatii edelleen täydentämistä.
 - [x] Ajokohtainen lähdetarkistusloki `data/lahdetarkistukset.json` erottaa tarkistetut lähteet ja tarkistamatta jääneet lähteet syineen. Varsinaiset automaatioajot eivät ole vielä tuottaneet lokihistoriaa.
 - [x] Ajolokin tietomalli edellyttää tarkistamatta jääneelle lähteelle syyn. Raportointikäytäntö on lisätty molempiin automaatio-ohjeisiin.
-- [ ] Arvioi aiheittain kieli- ja maantieteellisen kattavuuden puutteita. Älä tulkitse lähteiden lukumäärää yksin kattavuuden mittariksi.
+- [x] Tee ensimmäinen aihekohtainen kieli- ja maantieteellisen kattavuuden kartoitus ja kirjaa puutteet docs/lahteet.md:hen. Rekisterissä on nyt 101 lähdemerkintää, joille kieli ja maantieteellinen alue on eroteltu.
+- [ ] Täydennä jatkossa tunnistettuja aukkoja (esim. Tolkienin ja Taylor Swiftin muut kuin englanninkieliset lähteet, Wakaliwoodin paikalliskielet, Euroviisujen kansalliset yleisradioyhtiöt sekä shakin Aasian/Afrikan/Latinalaisen Amerikan lähteet). Älä tulkitse lähteiden lukumäärää yksin kattavuuden mittariksi.
 - [x] JSON Schema -skeemat ja CI-validointi tarkistavat lähderekisterin sekä ajolokin rakenteen ja lähde-ID-viittaukset.
 
-**Jäljellä:** täydentää lähderekisterin lähteet kattavasti kaikille yhdeksälle aiheelle sekä näytösvahtiin, päivittää automaatioiden käynnistyskehotteet ja todentaa käytännön ajot. Kohdetta ei merkitä valmiiksi ennen kuin oikeista ajoista syntyy käyttökelpoiset lokimerkinnät.
+**Jäljellä:** rekisteri on laajennettu kaikkiin tehtäviin 101 merkintään ja ensimmäinen kattavuusaukkojen arvio on dokumentoitu. Lähdeluettelo ei ole vielä tyhjentävä; alueellisia aukkoja täydennetään käytännön seurannassa. Automaatiokehotteet on päivitetty, mutta uudet kirjaukset ja kattavuus on vielä todennettava oikeissa ajoissa. Kohdetta ei merkitä valmiiksi ennen kuin ajolokiin syntyy käyttökelpoisia merkintöjä.
 
 **Valmistumiskriteeri:** jokaisesta raportista voidaan jälkikäteen nähdä, mitä lähteitä tarkistettiin ja mitkä olennaiset lähteet jäivät tavoittamatta.
 
