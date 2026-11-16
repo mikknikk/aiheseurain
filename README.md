@@ -24,21 +24,23 @@ Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdess
 | Intialaisen elokuvan uutisraportti | [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml |
 | Intialaisten elokuvien näytökset Suomessa | [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml |
 
-Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olennaisia uutisia ei löydy. Intialaisen elokuvan kaksi syötettä siirrettiin aiemmasta repositoriosta historiallisine itemeineen. Yhteenkään syötteeseen ei lisätä keinotekoisia “ei uutisia” -artikkeleita.
+Kahdeksan muuta aihekierroksen syötettä voivat olla tyhjiä, jos uusia olennaisia uutisia ei löydy. Intialaisen elokuvan kaksi syötettä siirrettiin aiemmasta repositoriosta historiallisine itemeineen. Yhteenkään syötteeseen ei lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
-## Ajon pakollinen esitietojen lukujärjestys ja tehtäväkierto
+## Pääautomaation lukujärjestys ja tehtäväkierto
 
-Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kymmenen RSS-syötteen nykyinen sisältö. Näytösfeed luetaan historian säilyttämiseksi, mutta sitä ei käsitellä eikä päivitetä tässä automaatiossa:
+Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon aihetta. Lue ennen hakua seuraavat tiedostot tässä järjestyksessä:
 
-1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
-2. `docs/tehtavajono.md` – tehtävien kiinteä järjestys ja seuraava vuoro.
-3. `docs/seuranta.md` – raportointijaksot, koneellinen seurantatila, testaus sekä aihekohtainen aiempi uutisointi ja duplikaattien esto.
-4. `docs/kehityskaytannot.md` – Python-skriptien kommentointi- ja ylläpitokäytännöt.
-5. `docs/lahteet.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
-6. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/intialaisen-elokuvan-seuranta.md` ja `docs/intialaisen-elokuvan-lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
-7. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
+1. `README.md` – repositorion yleiskuva, tiedostojen vastuut ja julkaisuperiaatteet.
+2. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
+3. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
+4. `docs/lahteet.md` – yleiset lähdeperiaatteet ja aihekohtaiset lähteiden lähtöpisteet.
+5. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
+6. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
+7. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.
 
-Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/tehtavajono.md:n seuraava tehtävä ja tee varsinaiset haut vain sille yhdelle tehtävälle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan tehtävään; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama tehtävä vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten yhdeksän tehtävän kierto tarkoittaa normaalisti noin yhdeksän päivän tarkistusväliä kullekin tehtävälle. Erillinen näytösvahti tarkistaa näytökset päivittäin. Ilmoita jokaisessa raportissa tehtäväkohtaisen seurantajakson alku ja loppu docs/seuranta.md:n raportointisäännön mukaisesti. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+Lue ennen julkaisua kyseisen tehtävän RSS-syöte ja `data/seurantatila.json`. Tarkista myös muiden syötteiden GUID- ja aihe-erotteluperiaatteet muuttamatta muiden tehtävien sisältöä. Näytösvahti ja sen dokumentit ovat erillisen automaation vastuulla; pääautomaatio ei tee näytöshakuja eikä muuta näytösfeedin tai näytöshistorian sisältöä. Näytöshistorian tietomalli on dokumentoitu tiedostossa `docs/nayostohistorian-rakenne.md`, ja se kuuluu näytösvahdin lukemistoon.
+
+Dokumenttien vastuut ja tarkempi lukujärjestys on koottu tämän README:n **Tiedostojen vastuut** -osioon. Aiheiden, syötteiden tai automaatioiden muuttuessa päivitä kaikki niitä koskevat ensisijaiset dokumentit ja niitä tarkistavat testit.
 
 ## Dokumentaation ajantasaisuuden loppukatselmus
 
@@ -71,17 +73,29 @@ Ajantasainen lista toteutetuista parannuksista ja avoimista kehityskohteista on 
 
 ## Tiedostojen vastuut
 
-- `docs/tehtavajono.md`: tehtäväjärjestys, seuraava vuoro ja seurantajaksojen raportointisääntö.
-- `docs/seuranta.md`: aihekohtainen uutisseurannan tila, aiemmin käsitellyt tapahtumat, luotettavuus, lähteet ja seuraava olennainen tarkistustarve.
-- `docs/lahteet.md`: lähdeluettelo ja hakustrategiat. Lista on lähtökohta, ei suljettu sallittujen lähteiden luettelo.
-- RSS-tiedostot: julkaistut uutisartikkelit.
+Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat siihen sen sijaan, että kopioisivat saman säännön kokonaisuudessaan.
 
+- `README.md`: repositorion yleiskuva, hakemistorakenne, RSS-syötteiden luettelo, automaatioiden työnjako ja dokumentaation lukujärjestys.
+- `docs/tehtavajono.md`: yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja vuoron siirtämisen ehdot. Ei yleisiä raportointi- tai koodauskäytäntöjä.
+- `docs/seuranta.md`: tehtäväkohtaiset seurantajaksot, onnistuneiden tarkistusten tila, uutistapahtumien historia ja luotettavuusluokat.
+- `docs/lahteet.md`: yleiset lähdeperiaatteet ja kahdeksan muun aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
+- `docs/saavutettavuus.md`: kaikkien julkaisujen saavutettavuustavoitteet ja testausperiaatteet.
+- `docs/kehityskaytannot.md`: skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
+- `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
+- `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
+- `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/nayostohistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
+- `data/seurantatila.json`: koneellisesti luettava tarkistustila ja tehtäväkierron rinnakkaistila.
+- `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
+- `scripts/validate_feeds.py` ja `.github/workflows/validate-feeds.yml`: automaattiset rakennetarkistukset ja niiden suoritus.
+- `feeds/*.xml`: julkaistut RSS-artikkelit; jokainen syöte sisältää vain sille kuuluvan aiheen.
+
+Yleiset raportointisäännöt ovat `docs/seuranta.md`:ssä, eivät tehtäväjonossa. Skriptien kommentointikäytäntö on `docs/kehityskaytannot.md`:ssä. Näytösvahti on erillinen automaatio eikä kuulu pääautomaation lukujärjestykseen tai tehtäväkiertoon.
 
 ## Laaja kansainvälinen haku ja Suomi-näkökulma
 
 Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku ei rajoitu englanninkieliseen mediaan: käytä aiheen kannalta olennaisia paikalliskieliä, alkuperäisiä kirjoitusasuja, translitterointeja ja alueellisia lähteitä. Tarkista myös Suomen media, viralliset suomalaiset järjestäjät, tapahtumapaikat, levittäjät ja kulttuuritoimijat. Nosta uutisissa selvästi esiin Suomeen liittyvät tapahtumat, suomalaiset toimijat ja Suomessa järjestettävät konsertit, elokuvanäytökset, kilpailut, fanitapahtumat tai muut tapahtumat. Jos tällaista Suomen-yhteyttä ei löydy, älä lisää raporttiin erillistä mainintaa sen puuttumisesta.
 
-Päivitä yllä oleva syötetaulukko, docs/tehtavajono.md ja esitietojen lukujärjestys aina, kun tehtäviä lisätään tai poistetaan. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, docs/tehtavajono.md, docs/seuranta.md, docs/lahteet.md, docs/saavutettavuus.md ja kaikki viisi intialaisen elokuvan docs/-dokumenttia.
+Kun tehtäviä tai syötteitä lisätään tai poistetaan, päivitä syötetaulukko, tehtäväjono, koneellinen seurantatila ja tämän README:n lukujärjestys. Aihekohtaiset ohjeet luetaan vain kyseisen tehtävän yhteydessä; näytösvahti käyttää omaa erillistä lukujärjestystään.
 
 
 ## Intialaisen elokuvan uutis- ja näytösseuranta
