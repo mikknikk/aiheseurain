@@ -50,6 +50,7 @@ export function isSafeArticleUrl(value) {
 function parseHtmlFragment(html) {
   // template-elementin sisältö on inerttiä: esimerkiksi RSS:n img- tai iframe-
   // elementit eivät käynnistä verkkopyyntöjä ennen kuin ne siirretään sivulle.
+  // innerHTML-käsittely rajataan tähän irralliseen templateen, ei sivun DOMiin.
   const template = document.createElement("template");
   template.innerHTML = String(html || "");
   return template.content;
