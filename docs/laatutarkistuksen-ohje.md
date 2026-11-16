@@ -28,7 +28,7 @@ Tarkista, että käsikirjan versionumero vastaa JSONin `quality_check_instructio
 
 Tarkasta ajantasainen main-haara. Tarkastele vähintään:
 - README, tehtäväjono ja kaikki seuranta-, lähde-, aihe- ja kehitysohjeet
-- `data/seurantatila.json` ja `data/naytosten-muutoshistoria.json`
+- `data/seurantatila.json`, `data/naytosten-muutoshistoria.json`, `data/lahderekisteri.json` ja `data/lahdetarkistukset.json`
 - kaikki `feeds/*.xml`-syötteet
 - `scripts/validate_feeds.py`
 - kaikki `.github/workflows/`-työnkulut
@@ -46,7 +46,13 @@ Ota mukaan myös uudet vastaavat tiedostot, jos niitä on lisätty. Älä rajaa 
 ### 4.2 RSS-syötteet
 Tarkista jokaisesta syötteestä XML/RSS-rakenne, GUIDien olemassaolo ja yksilöllisyys kaikkien syötteiden välillä, CDATA-kuvaukset, item-tason `<link>`-elementtien puuttuminen, lähdeluetteloiden olemassaolo, kuvausten sisäisen HTML:n rakenne, kelvolliset linkit, alt-tekstit, otsikkotasot, aiherajaus, duplikaatit sekä tyhjät, virheelliset tai vanhentuneet raportit. Älä muokkaa syötteitä.
 
-### 4.3 Koneellinen tila ja historia
+### 4.3 Koneellinen tila, lähderekisteri ja ajoloki
+- Tarkista lähderekisterin pysyvät ID:t, URL:t, tehtävärajaukset, kieli-/aluekuvaukset ja kriittisyysmerkinnät.
+- Vertaa ajolokin tarkistettuja ja tarkistamatta jääneitä lähteitä rekisteriin. Etsi puuttuvia kriittisiä lähteitä, tuntemattomia ID:itä ja virheellisiä `latest_by_task`-arvoja.
+- Arvioi kieli- ja maantieteelliset puutteet erikseen; älä päättele kattavuutta pelkästä lähteiden määrästä.
+- Varmista, että uutisraportin ja erillisen näytösvahdin intialaiset lähteet pysyvät eri tehtävätunnisteiden alla.
+
+### 4.4 Koneellinen tila ja historia
 - Tarkista JSON-rakenne, pakolliset kentät ja aikaleimojen ISO 8601 -muoto aikavyöhykkeineen.
 - Varmista, että yhdeksän aiheen kierto vastaa `docs/tehtavajono.md`:tä ja seuraava tehtävä täsmää JSONin kanssa.
 - Varmista, että näytösvahti on erillinen eikä muuta kiertoa.

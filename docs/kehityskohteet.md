@@ -34,11 +34,13 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 **Tavoite:** pystyä arvioimaan, mitä lähteitä ja alueita kunkin aiheen tarkistuksessa todella käytiin läpi.
 
-- [ ] Yhtenäistä lähderekistereihin lähteen nimi, URL, aihe, kieli tai alue, lähdetyyppi (ensisijainen/toimituksellinen/muu), viimeisin tarkistusaika ja mahdollinen käyttörajoite.
-- [ ] Kirjaa tehtäväkohtaisesti tarkistetut lähteet niin, että `data/seurantatila.json` tai siihen liittyvä koneellisesti luettava raportti kertoo muutakin kuin pelkän lukumäärän.
-- [ ] Tuo esiin lähteet, joita ei voitu tarkistaa, ja syy (esimerkiksi sivusto ei toimi, kirjautumisrajoitus tai sisältöä ei löydy).
+- [x] Yhtenäisen lähderekisterin tietomalli ja alustava rekisteri: lähteen nimi, URL, tehtävä, kieli/alue, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja käyttörajoite. Rekisterin kattavuus vaatii edelleen täydentämistä.
+- [x] Ajokohtainen lähdetarkistusloki `data/lahdetarkistukset.json` erottaa tarkistetut lähteet ja tarkistamatta jääneet lähteet syineen. Varsinaiset automaatioajot eivät ole vielä tuottaneet lokihistoriaa.
+- [x] Ajolokin tietomalli edellyttää tarkistamatta jääneelle lähteelle syyn. Raportointikäytäntö on lisätty molempiin automaatio-ohjeisiin.
 - [ ] Arvioi aiheittain kieli- ja maantieteellisen kattavuuden puutteita. Älä tulkitse lähteiden lukumäärää yksin kattavuuden mittariksi.
-- [ ] Lisää mahdollisuuksien mukaan automaattinen tarkistus lähderekisterien rakenteelle ja dokumentaation yhdenmukaisuudelle.
+- [x] JSON Schema -skeemat ja CI-validointi tarkistavat lähderekisterin sekä ajolokin rakenteen ja lähde-ID-viittaukset.
+
+**Jäljellä:** täydentää lähderekisterin lähteet kattavasti kaikille yhdeksälle aiheelle sekä näytösvahtiin, päivittää automaatioiden käynnistyskehotteet ja todentaa käytännön ajot. Kohdetta ei merkitä valmiiksi ennen kuin oikeista ajoista syntyy käyttökelpoiset lokimerkinnät.
 
 **Valmistumiskriteeri:** jokaisesta raportista voidaan jälkikäteen nähdä, mitä lähteitä tarkistettiin ja mitkä olennaiset lähteet jäivät tavoittamatta.
 

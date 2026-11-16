@@ -1,4 +1,4 @@
-Ohjeversion tunniste: 1.2.0
+Ohjeversion tunniste: 1.3.0
 
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
 
@@ -22,6 +22,13 @@ NÄYTÖKSEN HYVÄKSYMISKRITEERIT
 - Tallenna sisäiseen lähdeseurantaan suora lähde- tai lipunmyyntilinkki, julkaisija, julkaisupäivä jos saatavilla, tarkistuspäivä sekä mahdolliset ristiriidat ja epävarmuudet. Tallenna lähdetiedot sisäiseen seurantaan ja lisää RSS-itemin `<description>`-sisällön loppuun otsikoitu lähdeluettelo kuvaavine lähdelinkkeineen. Älä käytä item-tason `<link>`-elementtiä.
 - Älä keksi näytöksiä, kellonaikoja, osoitteita, linkkejä, tekstitystietoja tai lipun saatavuutta. Jos jokin tieto ei ole saatavilla, jätä se pois tai merkitse tuntemattomaksi.
 - Facebook-sivujen saavutettavuus tai hakukoneindeksoinnin puutteet eivät todista, ettei näytöksiä olisi. Kerro tarkistusrajoitteesta raportissa, jos se vaikuttaa kattavuuteen.
+
+LÄHTEIDEN KATTAVUUDEN KIRJAAMINEN
+- Käytä `data/lahderekisteri.json`-tiedoston tehtävätunnistetta `intialaiset_elokuvat_naytokset`. Älä käytä uutisraportin tunnistetta tai kirjaa näytöslähteitä uutisautomaation ajolokiin.
+- Lisää jokaisesta ajosta `data/lahdetarkistukset.json`-tiedostoon ajomerkintä: tarkistetut lähde-ID:t, tarkistamatta jääneet lähteet ja syyt, ajon tila sekä lyhyt huomio kieli- ja aluekattavuudesta.
+- Tarkista vähintään kaikki rekisterissä tämän tehtävän `critical: true` -merkityt lähteet. Jos kriittistä lähdettä ei voi tarkistaa, merkitse se tarkistamatta jääneeksi ja arvioi, voidaanko ajo silti merkitä täydelliseksi. Älä tulkitse saavuttamatonta lähdettä tyhjäksi ohjelmistoksi.
+- Kino Myyrin rekisterimerkintä voi osoittaa kolmannen osapuolen teatterihakemistoon; se ei ole teatterin oma vahvistus. Etsi ja käytä teatterin omaa ohjelmistoa tai lipunmyyntiä, kun sellainen on löydettävissä.
+- Päivitä `latest_by_task` vain tämän näytösvahtiajon päätyttyä. Säilytä aikaisemmat ajomerkinnät.
 
 TEHTÄVÄKOHTAINEN TARKISTUS
 - Tarkista uudet ja muuttuneet näytöstiedot edellisen onnistuneen näytösseurantavuoron jälkeen. Ilmoita raportissa täsmällinen seurantajakso alku- ja loppuaikoineen Europe/Helsinki-ajassa (päivittäisajossa edellisen onnistuneen näytösvahdin tarkistuksen jälkeen).
@@ -125,3 +132,6 @@ Kaiken GitHub-repositorioon julkaistavan sisällön, HTML:n, RSS-syötteiden, do
 
 YHDISTETTY AJOSYKLI
 Tämä näytösseuranta suoritetaan erillisellä päivittäisellä Intialaisten elokuvien näytösvahti -automaatiolla, ei docs/tehtavajono.md:n aihekierrossa. Se käyttää tämän repositorion `feeds/intialaisten-elokuvien-naytokset.xml`-syötettä ja päivittää tämän repositorion näytöshistoriaa. Uutisraportin ohjeet ovat docs/intialaisen-elokuvan-uutiset.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
+
+
+Lähderekisterin ja ajokohtaisen tarkistuslokin rakenne validoidaan GitHub Actions -testissä. Lokimerkintä ei itsessään todista, että lähteen sisältö olisi ollut laadukasta tai että kaikkien alueiden kattavuus olisi täydellinen.

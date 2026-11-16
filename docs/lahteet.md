@@ -79,6 +79,14 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 - Tarkista Suomen yhteys kaikissa aiheissa: suomalaiset uutislähteet, järjestäjät, tapahtumapaikat, festivaalit, elokuvateatterit, konsertit, kilpailut ja muut tapahtumat. Mainitse Suomi-yhteys, kun sellainen löytyy ja on uutisarvoinen. Älä koskaan lisää täytehuomiota siitä, ettei Suomi-yhteyttä löytynyt.
 - Kirjaa uusia hyödyllisiä lähteitä ja niiden luotettavuus tähän tiedostoon sekä lähderiippuvuudet docs/seuranta.md:hen.
 
+## Koneellinen lähderekisteri ja kattavuusloki
+
+`data/lahderekisteri.json` on tekninen rekisteri lähteistä. Siinä jokaisella lähteellä on pysyvä ID, nimi, URL, tehtävätunnisteet, kieli-/aluekuvaus, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja mahdollinen käyttörajoite. Tämä rekisteri ei korvaa alla olevia aihekohtaisia ohjeita eikä ole suljettu sallittujen lähteiden lista.
+
+`data/lahdetarkistukset.json` sisältää ajokohtaisen lokin. Jokaisesta ajosta kirjataan lähde-ID:t, joiden sisältö tarkistettiin, sekä lähteet, joita ei voitu tarkistaa ja syy. Pelkkä hakutuloksen näkeminen ei ole lähteen tarkistus. Kirjaa myös lyhyt huomio kieli- ja maantieteellisen kattavuuden puutteista. Lähteiden määrä ei yksin mittaa kattavuutta.
+
+Intialaisen elokuvan uutisraportin ja erillisen näytösvahdin lähteet on erotettu tehtävätunnisteilla `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset`. Pääautomaation uutisajo ei tarkista eikä kirjaa näytöslähteitä. Näytösvahti ei muuta uutisajojen lokimerkintöjä.
+
 ## Lähdekohtainen historiakirjaus
 
 Kun lähde tuottaa olennaista uutistietoa, kirjaa tarvittaessa:

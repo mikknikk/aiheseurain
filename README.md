@@ -6,6 +6,8 @@ Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdess
 
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
+- `data/lahderekisteri.json` ja `data/lahdetarkistukset.json` – yhtenäinen lähderekisteri ja ajokohtainen lähdekattavuusloki; uutis- ja näytösseurannan tehtävät pidetään erillisinä.
+- `schemas/` – koneellisten lähdetietojen ja näytöshistorian skeemat.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
 
@@ -41,7 +43,7 @@ Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon
 2. `docs/paaautomaation-ohje.md` – pääautomaation täydellinen, versioitu toimintakäsikirja.
 3. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
 4. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
-5. `docs/lahteet.md` – yleiset lähdeperiaatteet ja aihekohtaiset lähteiden lähtöpisteet.
+5. `docs/lahteet.md` ja `data/lahderekisteri.json` – yleiset lähdeperiaatteet, aihekohtaiset lähteet ja niiden tunnisteet.
 6. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
 7. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
 8. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.

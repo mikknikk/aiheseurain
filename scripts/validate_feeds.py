@@ -19,6 +19,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 from urllib.parse import urlsplit
 
+from validate_source_coverage import validate_source_coverage
+
 
 # ROOT tarkoittaa projektin juurikansiota. Koska tämä skripti on scripts/-
 # kansiossa, sen yläpuolella oleva kansio on koko repository.
@@ -1025,6 +1027,9 @@ def main():
     # Tarkistetaan myös näytösseurannan koneellisesti luettava muutoshistoria.
     screening_history = validate_screening_history()
     validate_screening_history_rss(screening_history)
+
+    # Tarkistetaan lähderekisteri ja ajokohtaisen kattavuuslokin eheys.
+    validate_source_coverage()
 
     # Lopuksi käydään RSS-syötteet ja niiden julkaistut itemit läpi.
     total, unique = validate_feeds()

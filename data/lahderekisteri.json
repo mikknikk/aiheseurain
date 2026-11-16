@@ -1,0 +1,411 @@
+{
+  "schema_version": 1,
+  "updated_at": null,
+  "notes": [
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
+    "Uutiskierron intialaisen elokuvan uutislähteet ja erillisen päivittäisen näytösvahdin lähteet ovat eri topic-tunnisteilla.",
+    "Kino Myyriä koskeva rekisterimerkintä osoittaa toistaiseksi kolmannen osapuolen teatterihakemistoon, ei teatterin omaan kanavaan."
+  ],
+  "sources": [
+    {
+      "id": "tolkien-estate",
+      "name": "Tolkien Estate",
+      "url": "https://www.tolkienestate.com/",
+      "topics": [
+        "tolkien"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "tolkien-society",
+      "name": "Tolkien Society",
+      "url": "https://www.tolkiensociety.org/",
+      "topics": [
+        "tolkien"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "taylor-swift-official",
+      "name": "Taylor Swift official",
+      "url": "https://www.taylorswift.com/",
+      "topics": [
+        "taylor_swift"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "gurmeet-courts",
+      "name": "Intian tuomioistuimet ja viranomaiset",
+      "url": "https://www.sci.gov.in/",
+      "topics": [
+        "gurmeet_ram_rahim_singh"
+      ],
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "moomin-official",
+      "name": "Moomin Characters",
+      "url": "https://www.moomin.com/",
+      "topics": [
+        "muumit"
+      ],
+      "language_regions": [
+        "fi",
+        "sv",
+        "en",
+        "ja"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "wakaliwood-official",
+      "name": "Wakaliwood",
+      "url": "https://wakaliwood.com/",
+      "topics": [
+        "wakaliwood"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "ebu",
+      "name": "European Broadcasting Union / Eurovision",
+      "url": "https://eurovision.com/",
+      "topics": [
+        "euroviisut"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "fide",
+      "name": "FIDE",
+      "url": "https://www.fide.com/",
+      "topics": [
+        "shakkidraamat"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "chesscom",
+      "name": "Chess.com",
+      "url": "https://www.chess.com/news",
+      "topics": [
+        "shakkidraamat"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "indian-express-regional",
+      "name": "The Indian Express – Regional",
+      "url": "https://indianexpress.com/section/entertainment/regional/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "india-today-regional",
+      "name": "India Today – Regional Cinema",
+      "url": "https://www.indiatoday.in/topic/regional-cinema",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "telugucinema",
+      "name": "TeluguCinema.com",
+      "url": "https://telugucinema.com/news",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "te",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "cinema-express",
+      "name": "Cinema Express",
+      "url": "https://www.cinemaexpress.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ta",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "daily-thanthi",
+      "name": "Daily Thanthi Cinema",
+      "url": "https://www.dailythanthi.com/cinema/cinemanews",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "cinisuddi",
+      "name": "Cini Suddi",
+      "url": "https://www.cinisuddi.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "simply-mollywood",
+      "name": "Simply Mollywood",
+      "url": "https://simplymollywood.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "yle",
+      "name": "Yle",
+      "url": "https://yle.fi/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "hs",
+      "name": "Helsingin Sanomat",
+      "url": "https://www.hs.fi/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "finnkino",
+      "name": "Finnkino",
+      "url": "https://www.finnkino.fi/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "biorex",
+      "name": "BioRex",
+      "url": "https://biorex.fi/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "kino-regina",
+      "name": "Kino Regina",
+      "url": "https://kinoregina.fi/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "cinema-orion",
+      "name": "Cinema Orion",
+      "url": "https://cinemaorion.fi/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "kino-myyri",
+      "name": "Kinoon – Kino Myyrin teatterilistauksen lähde",
+      "url": "https://kinoon.fi/teatterit",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy."
+    },
+    {
+      "id": "finbolly",
+      "name": "FinBolly Movies",
+      "url": "https://www.facebook.com/Finbollymovies",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "en",
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "fintamil",
+      "name": "FinTamil Movies",
+      "url": "https://www.facebook.com/fintamil.movies",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "ta",
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "rasa-entertainment",
+      "name": "Rasa Entertainment",
+      "url": "https://www.facebook.com/298328530028338/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "en",
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    }
+  ]
+}
