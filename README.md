@@ -4,11 +4,13 @@ Aiheseurain on henkilökohtainen, moniaiheinen tiedonkeruu- ja seurantapalvelu. 
 
 GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) kokoaa kaikki kymmenen syötettä yhteen aikajärjestykseen ja mahdollistaa syötekohtaisen suodatuksen. [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/) näyttää GitHub Issues -tehtävät tilasarakkeissa sekä saavutettavassa listanäkymässä. Valvomo, RSS-lukija ja Kehitysjono ovat vain luku -näkymiä.
 
+Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation lukupolusta](docs/aloitus-ja-lukujarjestys.md). Se etenee järjestelmän yleiskuvasta käytännön toimintaan, lähteisiin, JSON-tietomalleihin, verkkosivustoon ja lopuksi ylläpitoon.
+
 ## Hakemistorakenne
 
 - `index.html` – Aiheseuraimen etusivu; `valvomo/index.html` – Valvomon sivu osoitteessa `/valvomo/`; `lukija/index.html` – RSS-lukijan sivu osoitteessa `/lukija/`; `kehitysjono/index.html` – GitHub Issues -kanban osoitteessa `/kehitysjono/`; `_layouts/`, `_includes/` ja `assets/` – yhteinen sivustorunko ja käyttöliittymän resurssit.
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
-- `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. JSON-tiedostojen suhteet ja prosessikaaviot on koottu tiedostoon `docs/tietomallit-ja-prosessit.md`.
+- `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. Ihmiselle tarkoitettu vaiheittainen lukupolku on tiedostossa [docs/aloitus-ja-lukujarjestys.md](docs/aloitus-ja-lukujarjestys.md); JSON-tiedostojen suhteet ja prosessikaaviot ovat tiedostossa `docs/tietomallit-ja-prosessit.md`.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
 - `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
 - `schemas/` – koneellisten lähdetietojen ja näytöshistorian skeemat.
