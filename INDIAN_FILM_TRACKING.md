@@ -2,7 +2,7 @@
 
 Tämä tiedosto tukee uutisten jatkuvuutta ja auttaa estämään vanhojen uutisten kierrättämisen. Se ei ole uutislähde. Päivitä sitä vain, kun uusi tieto on lähteistetty. Älä keksi puuttuvia tilatietoja.
 
-**Rajaus:** Suomen elokuvateatterien näytökset kuuluvat erilliseen näytösvahti-automaatioon ja omaan RSS-syötteeseensä. Alla oleva "Suomen näytösten seuranta" -osio on vain näytösvahtia varten; uutisraportin automaatio ohittaa sen kokonaan eikä sisällytä näytöksiä uutisraporttiin tai uutis-RSS:ään.
+**Rajaus:** Suomen elokuvateatterien näytökset kuuluvat saman päivittäisen automaation erilliseen näytösseurantamoduuliin ja omaan RSS-syötteeseensä. Alla oleva "Suomen näytösten seuranta" -osio on näytösmoduulia varten; uutisraportin moduuli ei sisällytä näytöksiä uutisartikkeliin tai uutis-RSS:ään. Molemmat moduulit suoritetaan saman tehtävän jokaisella päivittäisellä ajolla.
 
 ## Käyttöohje
 
