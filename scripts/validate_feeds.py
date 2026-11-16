@@ -306,6 +306,145 @@ def validate_state():
 
 
 
+
+class ScreeningHistoryHTMLParser(HTMLParser):
+    """Kerää HTML-kuvauksen Historialliset näytösajat -osion listakohdat."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.in_h2 = False
+        self.in_li = False
+        self.current_heading = ""
+        self.current_li = []
+        self.historical_rows = []
+        self.historical_section_seen = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "h2":
+            self.in_h2 = True
+            self.current_heading = ""
+        elif tag == "li":
+            self.in_li = True
+            self.current_li = []
+
+    def handle_endtag(self, tag):
+        if tag == "h2":
+            if self.current_heading.strip().casefold() == "historialliset näytösajat":
+                self.historical_section_seen = True
+            self.in_h2 = False
+        elif tag == "li":
+            if self.in_li and self.historical_section_seen:
+                row = " ".join("".join(self.current_li).split())
+                if row:
+                    self.historical_rows.append(row)
+            self.in_li = False
+            self.current_li = []
+
+    def handle_data(self, data):
+        if self.in_h2:
+            self.current_heading += data
+        if self.in_li:
+            self.current_li.append(data)
+
+
+def validate_screening_history_rss(history):
+    """Varmistaa, että completed-tietueet näkyvät uusimmassa elokuvakohtaisessa RSS-itemissä.
+
+    Vertailu tehdään näytöksen päivämäärän, kellonajan, teatterin ja kaupungin
+    perusteella. Tarkistus on kaksisuuntainen: JSONista ei saa puuttua RSS-riviä,
+    eikä RSS:n historiassa saa olla ylimääräistä tai kahteen kertaan julkaistua riviä.
+    """
+    feed_path = ROOT / "feeds/intialaisten-elokuvien-naytokset.xml"
+    try:
+        root = ET.fromstring(feed_path.read_text(encoding="utf-8"))
+    except (OSError, ET.ParseError) as exc:
+        fail(f"näytöshistorian RSS-vertailu ei onnistu: {exc}")
+
+    channel = root.find("channel")
+    if channel is None:
+        fail("näytöshistorian RSS-vertailussa channel puuttuu")
+
+    items = channel.findall("item")
+    screenings = history["screenings"]
+    films = sorted({item["film"] for item in screenings})
+    completed_by_film = {
+        film: [item for item in screenings
+               if item["film"] == film and item["status"] == "completed"]
+        for film in films
+    }
+
+    for film in films:
+        completed = completed_by_film[film]
+        if not completed:
+            continue
+
+        # Itemit ovat uusimmasta vanhimpaan. Valitaan ensimmäinen juuri tälle
+        # elokuvalle kuuluva julkaisu, ei koko syötteen ensimmäistä itemiä.
+        latest = next(
+            (item for item in items
+             if (item.findtext("title") or "").strip().startswith(film + " –")),
+            None,
+        )
+        if latest is None:
+            fail(f"{film}: RSS:stä puuttuu elokuvan uusin julkaisuitem")
+
+        description = latest.findtext("description") or ""
+        parser = ScreeningHistoryHTMLParser()
+        parser.feed(description)
+        parser.close()
+
+        if not parser.historical_section_seen:
+            fail(f"{film}: uusimmasta RSS-itemistä puuttuu Historialliset näytösajat -osio")
+
+        expected = {}
+        for screening in completed:
+            starts = timestamp(
+                screening["starts_at"],
+                f"{film}/{screening['screening_id']}.starts_at",
+            )
+            local = starts.astimezone()
+            # Näytösten RSS käyttää Suomen paikallista aikaa.
+            date_text = f"{local.day}.{local.month}."
+            time_text = f"{local.hour:02d}.{local.minute:02d}"
+            key = (date_text, time_text, screening["venue"], screening["city"])
+            if key in expected:
+                fail(f"{film}: JSON-historiassa on päällekkäinen completed-näytös {key}")
+            expected[key] = screening["screening_id"]
+
+        actual = {}
+        for row in parser.historical_rows:
+            match = re.search(
+                r"(?P<date>\\d{1,2}\\.\\d{1,2}\\.)\\s*klo\\s*"
+                r"(?P<time>\\d{1,2}\\.\\d{2})\\s*[–-]\\s*"
+                r"(?P<venue>.*?)\\s*\\((?P<city>[^()]+)\\)",
+                row,
+            )
+            if not match:
+                fail(f"{film}: historiallisesta RSS-rivistä ei voi lukea näytöksen tietoja: {row}")
+            key = (
+                match.group("date"),
+                match.group("time").zfill(5),
+                match.group("venue").strip(),
+                match.group("city").strip(),
+            )
+            if key in actual:
+                fail(f"{film}: RSS:n historiallinen näytösrivi toistuu: {key}")
+            actual[key] = row
+
+        missing = sorted(set(expected) - set(actual))
+        extra = sorted(set(actual) - set(expected))
+        if missing or extra:
+            details = []
+            if missing:
+                details.append("puuttuvat JSON-historian rivit: " + repr(missing))
+            if extra:
+                details.append("ylimääräiset RSS-historiarivit: " + repr(extra))
+            fail(f"{film}: RSS:n historialliset näytösajat eivät vastaa JSON-historiaa; " + "; ".join(details))
+
+    print("OK: RSS:n historialliset näytösajat vastaavat JSON-historian completed-tietueita.")
+
+
+
 def validate_screening_history():
     """Tarkistaa näytösseurannan erillisen, tapahtumapohjaisen muutoshistorian.
 
