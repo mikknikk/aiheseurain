@@ -1,0 +1,88 @@
+Tehtävä: ylläpidä repositorion mikknikk/uutiset erillistä päivittäistä intialaisten elokuvien näytösseurantaa Suomessa.
+
+ENSISIJAINEN OHJE
+Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md. Käsikirjan ohjeversion tulee olla 1.4.0. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele sen sisältöä tästä kehotteesta.
+
+AJON ESITARKISTUS
+Lue GitHubista main-haarasta seuraavat tiedostot tässä järjestyksessä:
+1. README.md
+2. docs/intialaisten-elokuvien-naytosseuranta.md kokonaan
+3. docs/nayostohistorian-rakenne.md
+4. schemas/naytosten-muutoshistoria.schema.json
+5. docs/saavutettavuus.md
+6. docs/intialaisen-elokuvan-ohje.md
+7. docs/intialaisen-elokuvan-lahteet.md
+8. docs/intialaisen-elokuvan-seuranta.md
+9. data/seurantatila.json
+10. data/naytosten-muutoshistoria.json
+11. feeds/intialaisten-elokuvien-naytokset.xml
+12. data/sources/intialaiset_elokuvat_naytokset.json
+schemas/lahderekisteri.schema.json
+13. data/lahdetarkistukset.json
+
+Tarkista ennen hakujen aloittamista, että:
+- käsikirjan Ohjeversion tunniste on täsmälleen 1.4.0;
+- data/seurantatila.jsonin separate_screening_watch.automation_instructions.current_version vastaa käsikirjan versiota;
+- separate_screening_watch.automation_instructions.document on täsmälleen docs/intialaisten-elokuvien-naytosseuranta.md;
+- kaikki esitarkistuksessa tarvittavat tiedostot ovat olemassa ja luettavissa;
+- näytöshistoria validoidaan schemas/naytosten-muutoshistoria.schema.json -skeemaa vasten ennen kirjoituksia.
+
+Jos jokin tiedosto puuttuu, ei ole luettavissa, GitHub ei ole käytettävissä tai polku/versio ei täsmää, keskeytä ennen näytöshakuja ja kirjoituksia. Älä arvaa, ohita tarkistusta tai käytä vanhaa ohjetta.
+
+SEURANNAN RAJAUS
+Käytä lähdekattavuuden kirjaamiseen vain tehtävätunnistetta intialaiset_elokuvat_naytokset. Kirjaa tarkistetut lähde-ID:t, tarkistamatta jääneet lähteet ja syyt, ajon tila sekä kieli-/aluekattavuuden huomiot data/lahdetarkistukset.json-tiedostoon. Tarkista rekisterin kaikki tämän tehtävän kriittiset lähteet; älä tulkitse tavoittamatonta lähdettä tyhjäksi ohjelmistoksi. Päivitä last_checked_at vain aidosti tarkistetuille lähteille ja latest_by_task vain näytösvahdin omalle tunnisteelle. Säilytä kaikki aiemmat lokimerkinnät. Älä kirjoita uutisautomaation tehtävien lähdetarkistuksia tai muuta sen tehtävätilaa.
+
+Noudata käsikirjan koko hakumenetelmää, lähdevalikoimaa, hyväksymiskriteerejä, näytöshistorian käsittelyä, RSS-rakennetta, saavutettavuusvaatimuksia ja validointisääntöjä.
+
+Etsi Suomessa järjestettäviä julkisia intialaisten elokuvien näytöksiä ja elokuvatapahtumia kaikilta Intian elokuvateollisuuden alueilta ja kielialueilta. Seurannan tulee kattaa tavalliset elokuvateatterinäytökset, ennakkonäytökset, erikoisnäytökset, festivaalit ja muut julkiset elokuvatapahtumat käsikirjan mukaisesti.
+
+Päivitä näytösseurannan RSS-syötettä:
+feeds/intialaisten-elokuvien-naytokset.xml
+
+Käsittele näytöshistoriaa tiedostossa:
+data/naytosten-muutoshistoria.json
+
+Tämä automaatio on täysin erillinen pääasiallisesta uutisseurannasta. Älä:
+- käsittele uutisaihekierroksen tehtäviä;
+- muuta pääuutisten RSS-syötteitä;
+- muuta pääautomaation tehtävävuoroa tai sen onnistumistietoja;
+- muuta pääautomaation tai laatutarkistuksen ohjeita tai asetuksia;
+- lisää näytösseurantaa pääuutisten RSS-syötteeseen.
+
+ONNISTUMISEN KIRJAUS JA TIEDOSTOJEN SÄILYTTÄMINEN
+Päivitä data/seurantatila.jsonin ainoastaan tämän automaation omia separate_screening_watch-osioon kuuluvia onnistumistietoja käsikirjan määrittelemällä tavalla ja vasta, kun kaikki käsikirjan onnistumisehdot täyttyvät.
+
+Säilytä JSONin automation_instructions-, quality_check_instructions- ja muut pääautomaation tilatiedot muuttumattomina. Älä muuta rotation.next_task-arvoa.
+
+Älä merkitse ajoa onnistuneeksi, jos haku, näytösten käsittely, RSS-päivitys, näytöshistorian päivitys tai validointi jää kesken. Älä myöskään siirrä viimeisimmän onnistuneen tarkistuksen ajankohtaa epäonnistuneen ajon jälkeen.
+
+Hae kaikki muuttamasi tiedostot takaisin GitHubista ja varmista, että:
+- RSS on kelvollista XML:ää;
+- uudet ja muuttuneet näytöstiedot ovat oikein;
+- aiempi näytöshistoria on säilynyt;
+- näytöshistoria ja RSS vastaavat toisiaan;
+- data/seurantatila.jsonin muutokset koskevat vain tämän automaation sallittuja kenttiä.
+
+Jos näytöshistorian lähtötilaa ei ole vielä voitu vahvistaa onnistuneella ajolla, älä väitä sitä vahvistetuksi tai alustetuksi.
+
+Raportoi ajon tulos, tarkistettu seurantajakso Suomen ajassa, löydetyt näytökset, muutokset, lähteet, validoinnin tulos ja mahdolliset rajoitteet käsikirjan mukaisesti.
+
+Älä tee mitään tämän käynnistyskehotteen lisäksi ilman GitHubista luettua ajantasaista käsikirjaa.
+
+GITHUBIN MAIN-HAARAN SUOJAUS – PAKOLLINEN JULKAISUPROSESSI
+Repositoryn main-haara on suojattu aktiivisella rulesetillä "Suojaa main – PR ja validointi". Älä yritä kirjoittaa suoraan main-haaraan äläkä kierrä suojausta.
+- Tee kaikki tämän ajon repository-muutokset omassa uudessa työhaarassa, joka luodaan ajantasaisesta main-haarasta. Käytä yksilöllistä, kuvaavaa haaranimeä.
+- Tee kaikki ajon muutokset työhaaraan. Sisällytä samaan muutossarjaan kaikki tämän automaation sallimat tiedostot ja mahdollinen tämän automaation oma onnistumismetatieto.
+- Luo työhaarasta pull request main-haaraan. Älä merkitse ajoa onnistuneeksi PR:n luonnin tai työhaaran kirjoitusten perusteella.
+- Odota PR:n pakollisen status checkin "Tarkista RSS, HTML, dokumentaatio ja seurantatila" valmistumista. Tarkista PR:n uusimman commitin tulos. Yhdistä PR vasta, kun vaadittu tarkistus on nimenomaisesti onnistunut (success). Jos tarkistus epäonnistuu, jää odottamaan, peruuntuu tai sen tulosta ei voi varmistaa, älä yhdistä PR:ää äläkä julkaise onnistumistietoja.
+- Jos tarkistus epäonnistuu, raportoi virhe ja sen olennaiset lokitiedot käyttäjälle. Korjaa vain tämän automaation vastuulla olevat virheet työhaarassa, luo uusi commit ja odota uuden commitin tarkistuksen onnistumista. Älä muuta rajauksia tai poista testejä virheen peittämiseksi.
+- Yhdistä PR vasta onnistuneen tarkistuksen jälkeen käyttäen sallittua merge-menetelmää. Jos yhdistäminen ei onnistu, älä ohita sääntöjä; raportoi PR:n tila ja syy.
+- Yhdistämisen jälkeen lue kaikki muutetut tiedostot takaisin main-haarasta ja varmista niiden sisältö. Vasta onnistuneen takaisinluvun jälkeen raportoi julkaisu ja päivitä ajon tulos onnistuneeksi.
+- Jos ajon sisältötyö tai validointi epäonnistuu, älä yhdistä PR:ää äläkä kirjaa main-haaraan onnistunutta tarkistusaikaa, ohjeversiota tai tehtävävuoron siirtymää. Säilytä aiemmat onnistumistiedot.
+- Jos tässä automaatiossa ei ole repositoryyn kirjoitettavaa muutosta, älä luo tyhjää PR:ää; suorita vain käsikirjan sallimat tarkistukset ja raportoi tulos.
+
+
+VIRHEISTÄ PALAUTUMINEN – KÄYTÄ KÄSIKIRJAN VERSIOTA 1.4.0
+Noudata käsikirjan rajattuja uusintayrityksiä: tilapäinen verkkoluku tai GitHub-luku/kirjoitus enintään kolme yritystä, pysyviä virheitä ei toisteta. Jos GitHub-kirjoituksen tulos on epäselvä, lue tiedosto/haara takaisin ennen uusintaa. Älä yritä peittää validointivirhettä sokkona uusimalla; korjaa virheen syy työhaarassa ja odota uuden commitin CI-tarkistus.
+
+Jos ajo epäonnistuu tai jää osittaiseksi, älä siirrä separate_screening_watch.last_successful_check-, last_period_start-, last_period_end- tai last_successful_run_* -kenttiä. Seuraava ajo aloittaa seurantajakson viimeisimmästä onnistuneesta last_successful_check-arvosta ja tarkistaa koko väliin jääneen jakson nykyhetkeen asti. Vertaa nykyistä näytöshistoriaa ja RSS:n kaikkia olennaisia julkaisuversioita; käytä pysyviä screening_id-tunnisteita ja deterministisiä event_id/GUID-tunnisteita, jotta uusintakäsittely ei tee duplikaatteja. Älä merkitse saavuttamatonta lähdettä näytösten puuttumiseksi äläkä poista sen aiempia näytöksiä. Säilytä aiempi main-haaran RSS ja historia, kunnes PR:n pakollinen validointi onnistuu ja PR on yhdistetty. Päivitä onnistumisen tarkistuspiste ja ohjeversion onnistumistiedot vasta koko palautumisjakson, julkaisun ja GitHub-takaisinluvun jälkeen. Jos palautuminen jää kesken, säilytä tarkistuspiste seuraavaa ajoa varten ja raportoi käsittelemättä jäänyt väli/lähteet.
