@@ -42,7 +42,8 @@ test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
   const layout = readFileSync(new URL("../_layouts/site.html", import.meta.url), "utf8");
   const header = readFileSync(new URL("../_includes/site-header.html", import.meta.url), "utf8");
   const footer = readFileSync(new URL("../_includes/site-footer.html", import.meta.url), "utf8");
-  const page = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  const page = readFileSync(new URL("../valvomo/index.html", import.meta.url), "utf8");
+  const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   assert.match(layout, /<html lang="fi">/);
   assert.match(layout, /href="#main"/);
   assert.match(header, /<nav aria-label="Päänavigaatio">/);
@@ -50,6 +51,10 @@ test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
   assert.match(footer, /<footer/);
   assert.match(page, /id="rotation-list"/);
   assert.match(page, /id="actions-content"/);
+  assert.match(page, /section: valvomo/);
+  assert.match(home, /section: home/);
+  assert.match(home, /href="{{ \/valvomo\/ \\| relative_url }}"/);
+  assert.match(header, /href="{{ \/valvomo\/ \\| relative_url }}"/);
 });
 
 function fakeDom() {
