@@ -81,7 +81,7 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-data/sources/{tehtava}.json sisältää nyt 101 lähdemerkintää kymmenelle tehtävätunnisteelle (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, tehtävä, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: language_regions kertoo julkaisun kielet ja regions sen maantieteellisen painopisteen.
+`data/sources/`-hakemistossa on kymmenen tehtäväkohtaista rekisteriä, joissa on yhteensä 101 lähdemerkintää (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, nimi, URL, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: `language_regions` kertoo julkaisun kielet ja `regions` sen maantieteellisen painopisteen.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
