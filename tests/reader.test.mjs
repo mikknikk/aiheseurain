@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { ALLOWED_TAGS, DROP_TAGS, isSafeArticleUrl, sanitizeArticleHtml } from "../assets/js/reader.js";
+import { ALLOWED_TAGS, DROP_TAGS, isSafeArticleUrl, parseFeedXml, sanitizeArticleHtml } from "../assets/js/reader.js";
 
 test("artikkelilinkit hyväksyvät vain täydelliset HTTP- ja HTTPS-osoitteet", () => {
   assert.equal(isSafeArticleUrl("https://example.com/article"), true);
@@ -56,7 +56,12 @@ test("sanitointi pudottaa aktiiviset elementit ja tapahtumankäsittelijät", () 
   globalThis.document = {
     createDocumentFragment: () => new FakeNode(11),
     createTextNode: (value) => new FakeNode(3, "", value),
-    createElement: (tag) => new FakeNode(1, tag)
+    createElement: (tag) => {
+      if (tag === "template") {
+        return { content: { childNodes: [tree], textContent: "", querySelectorAll: () => [] }, set innerHTML(_value) {} };
+      }
+      return new FakeNode(1, tag);
+    }
   };
   try {
     const result = sanitizeArticleHtml("<div>ignored test source</div>");
@@ -85,5 +90,21 @@ test("RSS-lukijan sivu ja navigaatio tarjoavat oman saavutettavan osion", () => 
   assert.match(header, /\/lukija\//);
   assert.match(header, /page\.section == "lukija"/);
   assert.match(layout, /assets\/js\/reader\.js/);
-  assert.doesNotMatch(script, /innerHTML\s*=/);
+  assert.doesNotMatch(script, /target\.innerHTML|insertAdjacentHTML/);
+});
+
+test("tyhjä RSS-syöte tuottaa tyhjän artikkelilistan", () => {
+  const oldParser = globalThis.DOMParser;
+  globalThis.DOMParser = class {
+    parseFromString() {
+      return { getElementsByTagName: () => [] };
+    }
+  };
+  try {
+    assert.deepEqual(parseFeedXml("<rss><channel></channel></rss>", {
+      id: "empty", title: "Tyhjä syöte"
+    }), []);
+  } finally {
+    globalThis.DOMParser = oldParser;
+  }
 });

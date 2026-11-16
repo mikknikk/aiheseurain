@@ -47,8 +47,16 @@ export function isSafeArticleUrl(value) {
  * tavalliset elementit puretaan tekstiksi; aktiiviset ja upotetut elementit
  * sekä niiden sisältö poistetaan kokonaan.
  */
+function parseHtmlFragment(html) {
+  // template-elementin sisältö on inerttiä: esimerkiksi RSS:n img- tai iframe-
+  // elementit eivät käynnistä verkkopyyntöjä ennen kuin ne siirretään sivulle.
+  const template = document.createElement("template");
+  template.innerHTML = String(html || "");
+  return template.content;
+}
+
 export function sanitizeArticleHtml(html) {
-  const parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
+  const parsed = parseHtmlFragment(html);
   const fragment = document.createDocumentFragment();
 
   function copyNode(source, target) {
@@ -85,8 +93,8 @@ export function sanitizeArticleHtml(html) {
 
 /** Poimii turvallisen tekstikatkelman artikkelikortin ingressiksi. */
 function plainText(html) {
-  const parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
-  return (parsed.body.textContent || "").replace(/\s+/g, " ").trim();
+  const parsed = parseHtmlFragment(html);
+  return (parsed.textContent || "").replace(/\s+/g, " ").trim();
 }
 
 /** Muotoilee RSS:n päiväyksen suomenkieliseen esitystapaan. */
@@ -106,8 +114,8 @@ function childText(parent, tagName) {
 
 /** Etsii kuvauksen ensimmäisen turvallisen lähdelinkin. */
 function parsedFirstSafeLink(html) {
-  const parsed = new DOMParser().parseFromString(String(html || ""), "text/html");
-  for (const link of parsed.getElementsByTagName("a")) {
+  const parsed = parseHtmlFragment(html);
+  for (const link of parsed.querySelectorAll("a")) {
     const href = link.getAttribute("href");
     if (isSafeArticleUrl(href)) return href;
   }

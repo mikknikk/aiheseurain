@@ -64,7 +64,7 @@ def load_feed_catalog():
         if entry["type"] not in {"topic", "screening"}:
             fail(f"{label}.type pitää olla topic tai screening")
         feed_path = entry["path"]
-        if not re.fullmatch(r"feeds/[a-z0-9-]+\\.xml", feed_path):
+        if not re.fullmatch(r"feeds/[a-z0-9-]+\.xml", feed_path):
             fail(f"{label}.path ei ole kelvollinen RSS-polku: {feed_path}")
         ids.append(entry["id"])
         paths.append(feed_path)

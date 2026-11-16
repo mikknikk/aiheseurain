@@ -1,6 +1,6 @@
 # Aiheseuraimen kehityssuunnitelma
 
-**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) on yhdistetty ja Valvomon siirto omalle sivulleen (#38) on toteutuksessa.  
+**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) ja siirto omalle sivulleen (#38) on yhdistetty. RSS-lukijan vähimmäisversio (#31) on toteutuksessa.  
 **Päivitetty:** 2026-11-16
 
 Tämä dokumentti kuvaa koko GitHub Pages -sivuston tavoitetilan, osioiden vastuut, tekniset periaatteet ja vaiheistuksen. Yksittäisten kehitystehtävien ajantasainen tila ylläpidetään GitHub Issues -tiketteinä; tätä dokumenttia ei käytetä rinnakkaisena tehtävälistana. Suunnitelman kirjaaminen ei tarkoita, että ominaisuus olisi jo käytössä.
