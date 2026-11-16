@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "task_id": "sompote_sands",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Sompote Sands. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "thai-film-archive",
+      "name": "Thai Film Archive (Public Organization)",
+      "url": "https://www.fapot.or.th/",
+      "language_regions": [
+        "th",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "thai-film-archive-news",
+      "name": "Thai Film Archive – News",
+      "url": "https://www.fapot.or.th/main/news",
+      "language_regions": [
+        "th",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "thai-pbs",
+      "name": "Thai PBS",
+      "url": "https://www.thaipbs.or.th/",
+      "language_regions": [
+        "th"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "nation-thailand",
+      "name": "The Nation Thailand",
+      "url": "https://www.nationthailand.com/",
+      "language_regions": [
+        "en",
+        "th"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "ultraman-official",
+      "name": "Tsuburaya Productions",
+      "url": "https://www.tsuburaya-prod.co.jp/",
+      "language_regions": [
+        "ja",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "TH",
+        "JP"
+      ]
+    },
+    {
+      "id": "eiga-com",
+      "name": "映画.com (Eiga.com)",
+      "url": "https://eiga.com/",
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "TH",
+        "JP"
+      ]
+    }
+  ]
+}

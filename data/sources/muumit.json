@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "task_id": "muumit",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Muumit. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "moomin-official",
+      "name": "Moomin Characters",
+      "url": "https://www.moomin.com/",
+      "language_regions": [
+        "fi",
+        "sv",
+        "en",
+        "ja"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "moomin-museum",
+      "name": "Moomin Museum",
+      "url": "https://www.muumimuseo.fi/en/",
+      "language_regions": [
+        "fi",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "moomin-characters-news",
+      "name": "Moomin Characters",
+      "url": "https://www.moomin.com/en/",
+      "language_regions": [
+        "en",
+        "fi",
+        "sv",
+        "ja"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "tove-jansson-society",
+      "name": "Tove Jansson Society",
+      "url": "https://tovejansson.com/",
+      "language_regions": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "yle-culture",
+      "name": "Yle – Culture",
+      "url": "https://yle.fi/aihe/kulttuuri",
+      "language_regions": [
+        "fi",
+        "sv"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    }
+  ]
+}

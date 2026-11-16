@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.0.3
+Ohjeversion tunniste: 1.0.4
 Viimeksi päivitetty: 2026-11-16
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -20,7 +20,7 @@ Noudata joka ajolla tätä järjestystä:
 1. Lue `README.md` ja tämä käsikirja kokonaan.
 2. Lue `data/seurantatila.json`. Tarkista, että `automation_instructions.document` osoittaa tähän tiedostoon ja että `current_version` vastaa tämän dokumentin Ohjeversion tunnistetta.
 3. Jos GitHub ei ole käytettävissä, käsikirja tai seurantatila puuttuu tai versiot eivät täsmää, keskeytä ajo. Älä käytä vanhaa promptia, arvattua versiota tai vanhentunutta ohjetta. Älä tee hakuja, julkaisuja, onnistumismerkintöjä tai vuoron siirtoa.
-4. Lue kokonaan `docs/tehtavajono.md`, `docs/seuranta.md`, `docs/lahteet.md` ja `docs/saavutettavuus.md`. Lue myös `data/lahderekisteri.json` valitun tehtävän lähteiden tunnistamiseksi.
+4. Lue kokonaan `docs/tehtavajono.md`, `docs/seuranta.md`, `docs/lahteet.md` ja `docs/saavutettavuus.md`. Lue valitun tehtävän lähteet tiedostosta `data/sources/{task_id}.json`, jossa `{task_id}` on tehtävän tarkka tunniste. Käytä vain tämän tehtävän rekisteriä.
 5. Lue `docs/kehityskaytannot.md), jos muutat skriptejä tai ylläpitokoodia.
 6. Valitse seuraava tehtävä `docs/tehtavajono.md`:stä ja varmista, että se vastaa JSONin `rotation.next_task`-arvoa. Jos arvot eroavat, keskeytä ennen hakuja; älä arvaa kumpi on oikein.
 7. Lue valitun aiheen ohjeet ja seurantaloki. Tehtävässä 9 lue kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`. Älä lue tai muuta näytösvahdin ohjeita tai historiaa uutisautomaatiossa.
@@ -102,7 +102,7 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 
 ## 10. Lähteiden kattavuus ja ajokohtainen loki
 
-- `data/lahderekisteri.json` on yhdeksän aihekierroksen ja erillisen näytösvahdin yhteinen tekninen rekisteri. Intialaisen elokuvan uutisilla ja näytösseurannalla on eri tehtävätunnisteet: `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset`.
+- Jokaisella yhdeksällä aihekierroksen tehtävällä on oma lähderekisterinsä `data/sources/{task_id}.json`. Kaikki rekisterit käyttävät yhteistä `schemas/lahderekisteri.schema.json`-skeemaa. Intialaisen elokuvan uutisilla ja erillisellä näytösseurannalla on eri tiedostot ja tehtävätunnisteet: `data/sources/intialaiset_elokuvat_uutiset.json` ja `data/sources/intialaiset_elokuvat_naytokset.json`.
 - Rekisterin lähde on lähtöpiste, ei suljettu lista eikä luotettavuusleima. Lisää löydetyt olennaiset lähteet rekisteriin vasta, kun nimi, URL, aihe, kieli/alue ja lähdetyyppi on tarkistettu. Älä keksi osoitteita.
 - `data/lahdetarkistukset.json` säilyttää ajokohtaisen jäljen. Kirjaa kaikki kyseisen tehtävän kriittiset lähteet joko tarkistetuiksi tai tarkistamatta jääneiksi syineen. Lisää myös muut todella tarkistetut lähteet. Osittainen tai epäonnistunut ajo merkitään vastaavasti; se ei saa näyttää täydelliseltä kattavuudelta.
 - `complete` tarkoittaa, että tehtävän suunnitellut kriittiset lähteet on käsitelty; se ei todista kaikkien mahdollisten lähteiden tai koko kieli-/maantieteellisen alueen kattavuutta. Kirjaa kattavuushuomiot ja tunnistetut puutteet.

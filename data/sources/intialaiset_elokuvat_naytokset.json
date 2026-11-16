@@ -1,0 +1,179 @@
+{
+  "schema_version": 1,
+  "task_id": "intialaiset_elokuvat_naytokset",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Intialaisten elokuvien näytösseuranta. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "finnkino",
+      "name": "Finnkino",
+      "url": "https://www.finnkino.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "biorex",
+      "name": "BioRex",
+      "url": "https://biorex.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "kino-regina",
+      "name": "Kino Regina",
+      "url": "https://kinoregina.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "cinema-orion",
+      "name": "Cinema Orion",
+      "url": "https://cinemaorion.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "kino-myyri",
+      "name": "Kinoon – Kino Myyrin teatterilistauksen lähde",
+      "url": "https://kinoon.fi/teatterit",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy.",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "finbolly",
+      "name": "FinBolly Movies",
+      "url": "https://www.facebook.com/Finbollymovies",
+      "language_regions": [
+        "en",
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "fintamil",
+      "name": "FinTamil Movies",
+      "url": "https://www.facebook.com/fintamil.movies",
+      "language_regions": [
+        "ta",
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "rasa-entertainment",
+      "name": "Rasa Entertainment",
+      "url": "https://www.facebook.com/298328530028338/",
+      "language_regions": [
+        "en",
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "finnish-film-foundation",
+      "name": "Suomen elokuvasäätiö",
+      "url": "https://www.ses.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "cinema-mondo",
+      "name": "Cinema Mondo",
+      "url": "https://www.cinemamondo.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "filmikamari",
+      "name": "Suomen Filmikamari",
+      "url": "https://www.filmikamari.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "FI"
+      ]
+    }
+  ]
+}

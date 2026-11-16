@@ -34,7 +34,8 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 **Tavoite:** pystyä arvioimaan, mitä lähteitä ja alueita kunkin aiheen tarkistuksessa todella käytiin läpi.
 
-- [x] Yhtenäisen lähderekisterin tietomalli ja alustava rekisteri: lähteen nimi, URL, tehtävä, kieli/alue, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja käyttörajoite. Rekisterin kattavuus vaatii edelleen täydentämistä.
+- [x] Yhtenäisen lähderekisterin tietomalli ja alustava rekisteri: lähteen nimi, URL, tehtävä, kieli/alue, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja käyttörajoite.
+- [x] Jaa lähteet tehtäväkohtaisiin JSON-tiedostoihin `data/sources/`-hakemistossa. Kaikki yhdeksän uutisaihetta ja erillinen näytösvahti käyttävät samaa JSON Schema -skeemaa; näytösseuranta säilyy omana rekisterinään.
 - [x] Ajokohtainen lähdetarkistusloki `data/lahdetarkistukset.json` erottaa tarkistetut lähteet ja tarkistamatta jääneet lähteet syineen. Varsinaiset automaatioajot eivät ole vielä tuottaneet lokihistoriaa.
 - [x] Ajolokin tietomalli edellyttää tarkistamatta jääneelle lähteelle syyn. Raportointikäytäntö on lisätty molempiin automaatio-ohjeisiin.
 - [x] Tee ensimmäinen aihekohtainen kieli- ja maantieteellisen kattavuuden kartoitus ja kirjaa puutteet docs/lahteet.md:hen. Rekisterissä on nyt 101 lähdemerkintää, joille kieli ja maantieteellinen alue on eroteltu.

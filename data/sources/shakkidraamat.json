@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "task_id": "shakkidraamat",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Shakkidraamat. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "fide",
+      "name": "FIDE",
+      "url": "https://www.fide.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "chesscom",
+      "name": "Chess.com",
+      "url": "https://www.chess.com/news",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "chessbase",
+      "name": "ChessBase News",
+      "url": "https://en.chessbase.com/",
+      "language_regions": [
+        "en",
+        "de"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "lichess-blog",
+      "name": "Lichess Blog",
+      "url": "https://lichess.org/blog",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "us-chess",
+      "name": "US Chess Federation",
+      "url": "https://www.uschess.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "european-chess-union",
+      "name": "European Chess Union",
+      "url": "https://www.europechess.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "finnish-chess",
+      "name": "Suomen Shakkiliitto",
+      "url": "https://www.shakkiliitto.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    }
+  ]
+}

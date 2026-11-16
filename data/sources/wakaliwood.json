@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "task_id": "wakaliwood",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Wakaliwood. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "wakaliwood-official",
+      "name": "Wakaliwood",
+      "url": "https://wakaliwood.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "wakaliwood-supa-store",
+      "name": "Wakaliwood Supa Store / studio channel",
+      "url": "https://supastore.wakaliwood.com/pages/frontpage",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "new-vision-uganda",
+      "name": "New Vision – Uganda",
+      "url": "https://www.newvision.co.ug/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "daily-monitor-uganda",
+      "name": "Daily Monitor – Uganda",
+      "url": "https://www.monitor.co.ug/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "ugandan-film-festival",
+      "name": "Uganda Communications Commission – Film Festival",
+      "url": "https://www.ucc.co.ug/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    }
+  ]
+}

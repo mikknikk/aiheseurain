@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Tarkistaa lähderekisterin ja ajokohtaisen lähdekattavuuslokin rakenteen.
+"""Tarkistaa aihekohtaisten lähderekisterien ja ajokohtaisen kattavuuslokin rakenteen.
 
-Skripti on vain luku -tarkistin. Se ei käy verkkosivuilla eikä päättele,
-onko lähde tosiasiassa tarkistettu tai onko aiheen kattavuus riittävä.
+Kaikki rekisterit käyttävät samaa JSON Schema -skeemaa. Jokainen aihe,
+myös erillinen näytösseuranta, säilyttää oman tiedostonsa ja ajolokinsa.
+Skripti on vain luku -tarkistin eikä käy verkkosivuilla tai päättele
+lähteiden tosiasiallista luotettavuutta.
 """
 
 from __future__ import annotations
@@ -46,32 +48,53 @@ def tarkista_aikaleima(arvo, sijainti: str, sallii_null: bool = False):
 
 
 def validate_source_coverage():
-    """Tarkistaa skeemat sekä lähde-ID:iden ja ajolokien väliset viittaukset."""
-    rekisteri = lue_json("data/lahderekisteri.json")
+    """Validoi kaikki aihekohtaiset rekisterit samalla skeemalla ja tarkistaa ajolokit."""
     loki = lue_json("data/lahdetarkistukset.json")
     rekisteri_skeema = lue_json("schemas/lahderekisteri.schema.json")
     loki_skeema = lue_json("schemas/lahdetarkistukset.schema.json")
-
-    jsonschema.validate(rekisteri, rekisteri_skeema)
     jsonschema.validate(loki, loki_skeema)
-    tarkista_aikaleima(rekisteri.get("updated_at"), "lahderekisteri.updated_at", True)
 
-    lahteet = rekisteri["sources"]
-    tunnisteet = [lahde["id"] for lahde in lahteet]
-    if len(tunnisteet) != len(set(tunnisteet)):
-        raise ValueError("Lähderekisterissä on päällekkäisiä lähde-ID-tunnisteita")
+    rekisterit = {}
+    kaikki_tunnisteet = set()
+    rekisteripolut = sorted((ROOT / "data" / "sources").glob("*.json"))
+    if not rekisteripolut:
+        raise ValueError("data/sources/ ei sisällä yhtään aihekohtaista lähderekisteriä")
 
-    lahde_idt = set(tunnisteet)
-    for lahde in lahteet:
-        osat = urlsplit(lahde["url"])
-        if osat.scheme not in {"http", "https"} or not osat.netloc:
-            raise ValueError(f"Lähteen {lahde['id']} URL ei ole kelvollinen HTTP(S)-osoite")
-        if not lahde["regions"]:
-            raise ValueError(f"Lähteeltä {lahde['id']} puuttuvat maantieteelliset alueet")
+    for polku in rekisteripolut:
+        suhteellinen = polku.relative_to(ROOT).as_posix()
+        rekisteri = lue_json(suhteellinen)
+        jsonschema.validate(rekisteri, rekisteri_skeema)
+        tehtava = rekisteri["task_id"]
+        if polku.stem != tehtava:
+            raise ValueError(
+                f"{suhteellinen}: tiedostonimen pitää vastata task_id-arvoa {tehtava}"
+            )
+        if tehtava in rekisterit:
+            raise ValueError(f"Tehtävälle {tehtava} on useita rekistereitä")
         tarkista_aikaleima(
-            lahde["last_checked_at"],
-            f"lähde {lahde['id']}.last_checked_at",
-            True,
+            rekisteri.get("updated_at"), f"{suhteellinen}.updated_at", True
+        )
+        for lahde in rekisteri["sources"]:
+            lahde_id = lahde["id"]
+            if lahde_id in kaikki_tunnisteet:
+                raise ValueError(f"Lähde-ID {lahde_id} esiintyy useassa rekisterissä")
+            kaikki_tunnisteet.add(lahde_id)
+            osat = urlsplit(lahde["url"])
+            if osat.scheme not in {"http", "https"} or not osat.netloc:
+                raise ValueError(f"Lähteen {lahde_id} URL ei ole kelvollinen HTTP(S)-osoite")
+            if not lahde["regions"]:
+                raise ValueError(f"Lähteeltä {lahde_id} puuttuvat maantieteelliset alueet")
+            tarkista_aikaleima(
+                lahde["last_checked_at"], f"lähde {lahde_id}.last_checked_at", True
+            )
+        rekisterit[tehtava] = rekisteri
+
+    if set(rekisterit) != TOPICS:
+        puuttuvat = sorted(TOPICS - set(rekisterit))
+        ylimaaraiset = sorted(set(rekisterit) - TOPICS)
+        raise ValueError(
+            f"Aihekohtaisten rekisterien tehtäväjoukko ei täsmää; "
+            f"puuttuvat={puuttuvat}, ylimääräiset={ylimaaraiset}"
         )
 
     run_ids = set()
@@ -80,8 +103,9 @@ def validate_source_coverage():
         if ajo["run_id"] in run_ids:
             raise ValueError(f"Ajolokissa on toistuva run_id: {ajo['run_id']}")
         run_ids.add(ajo["run_id"])
-        if ajo["task_id"] not in TOPICS:
-            raise ValueError(f"Tuntematon tehtävä ajolokissa: {ajo['task_id']}")
+        tehtava = ajo["task_id"]
+        if tehtava not in TOPICS:
+            raise ValueError(f"Tuntematon tehtävä ajolokissa: {tehtava}")
         tarkista_aikaleima(ajo["started_at"], f"{ajo['run_id']}.started_at")
         tarkista_aikaleima(ajo["ended_at"], f"{ajo['run_id']}.ended_at")
         aloitus = datetime.fromisoformat(ajo["started_at"].replace("Z", "+00:00"))
@@ -94,36 +118,35 @@ def validate_source_coverage():
         ]
         if len(kaikki_idt) != len(set(kaikki_idt)):
             raise ValueError(f"{ajo['run_id']}: sama lähde on merkitty useaan tilaan")
-        for source_id in kaikki_idt:
-            if source_id not in lahde_idt:
-                raise ValueError(f"{ajo['run_id']}: tuntematon lähde-ID {source_id}")
-            lahde = next(item for item in lahteet if item["id"] == source_id)
-            if ajo["task_id"] not in lahde["topics"]:
-                raise ValueError(
-                    f"{ajo['run_id']}: lähde {source_id} ei kuulu tehtävään {ajo['task_id']}"
-                )
-        for lahde in lahteet:
-            if ajo["task_id"] in lahde["topics"] and lahde["critical"]:
-                if lahde["id"] not in kaikki_idt and ajo["status"] == "complete":
-                    raise ValueError(
-                        f"{ajo['run_id']}: kriittinen lähde {lahde['id']} puuttuu "
-                        "sekä tarkistetuista että tarkistamatta jääneistä lähteistä"
-                    )
-        nykyinen = datetime.fromisoformat(ajo["ended_at"].replace("Z", "+00:00"))
-        aiempi = viimeisin.get(ajo["task_id"])
-        if aiempi is None or nykyinen > aiempi:
-            viimeisin[ajo["task_id"]] = nykyinen
 
-    odotetut = {
-        tehtava: aika.isoformat()
-        for tehtava, aika in viimeisin.items()
-    }
+        rekisterin_lahteet = {
+            lahde["id"]: lahde for lahde in rekisterit[tehtava]["sources"]
+        }
+        for source_id in kaikki_idt:
+            if source_id not in rekisterin_lahteet:
+                raise ValueError(
+                    f"{ajo['run_id']}: lähde {source_id} ei kuulu tehtävän {tehtava} rekisteriin"
+                )
+        for lahde in rekisterit[tehtava]["sources"]:
+            if lahde["critical"] and lahde["id"] not in kaikki_idt and ajo["status"] == "complete":
+                raise ValueError(
+                    f"{ajo['run_id']}: kriittinen lähde {lahde['id']} puuttuu "
+                    "sekä tarkistetuista että tarkistamatta jääneistä lähteistä"
+                )
+
+        nykyinen = datetime.fromisoformat(ajo["ended_at"].replace("Z", "+00:00"))
+        aiempi = viimeisin.get(tehtava)
+        if aiempi is None or nykyinen > aiempi:
+            viimeisin[tehtava] = nykyinen
+
+    odotetut = {tehtava: aika.isoformat() for tehtava, aika in viimeisin.items()}
     if loki["latest_by_task"] != odotetut:
         raise ValueError("latest_by_task ei vastaa ajolokin uusimpia ajoja")
 
+    lahteiden_maara = sum(len(r["sources"]) for r in rekisterit.values())
     print(
-        f"OK: {len(lahteet)} lähderekisterimerkintää, "
-        f"{len(loki['runs'])} lähdetarkistusajoa."
+        f"OK: {len(rekisterit)} aihekohtaista lähderekisteriä, "
+        f"{lahteiden_maara} lähdemerkintää, {len(loki['runs'])} lähdetarkistusajoa."
     )
 
 

@@ -81,7 +81,7 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-data/lahderekisteri.json sisältää nyt 101 lähdemerkintää kymmenelle tehtävätunnisteelle (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, tehtävä, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: language_regions kertoo julkaisun kielet ja regions sen maantieteellisen painopisteen.
+`data/sources/`-hakemistossa on kymmenen tehtäväkohtaista rekisteriä, joissa on yhteensä 101 lähdemerkintää (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, nimi, URL, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: `language_regions` kertoo julkaisun kielet ja `regions` sen maantieteellisen painopisteen.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
@@ -122,11 +122,11 @@ Tämä kartoitus on alkuarvio julkaisujen toimituksellisesta painopisteestä, ei
 
 ## Koneellinen lähderekisteri ja kattavuusloki
 
-`data/lahderekisteri.json` on tekninen rekisteri lähteistä. Siinä jokaisella lähteellä on pysyvä ID, nimi, URL, tehtävätunnisteet, kieli-/aluekuvaus, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja mahdollinen käyttörajoite. Tämä rekisteri ei korvaa alla olevia aihekohtaisia ohjeita eikä ole suljettu sallittujen lähteiden lista.
+`data/sources/{task_id}.json` on valitun tehtävän tekninen lähderekisteri. Tiedoston `task_id` vastaa tiedostonimeä ja automaation tehtävätunnistetta. Kaikilla aiheilla, myös näytösseurannalla, on sama rakenne ja yhteinen JSON Schema. Rekisteritiedostoja ei yhdistetä ajolokissa: kukin ajo viittaa vain oman tehtävänsä lähde-ID:ihin. Rekisterit eivät korvaa alla olevia aihekohtaisia ohjeita eivätkä ole suljettuja sallittujen lähteiden listoja.
 
 `data/lahdetarkistukset.json` sisältää ajokohtaisen lokin. Jokaisesta ajosta kirjataan lähde-ID:t, joiden sisältö tarkistettiin, sekä lähteet, joita ei voitu tarkistaa ja syy. Pelkkä hakutuloksen näkeminen ei ole lähteen tarkistus. Kirjaa myös lyhyt huomio kieli- ja maantieteellisen kattavuuden puutteista. Lähteiden määrä ei yksin mittaa kattavuutta.
 
-Intialaisen elokuvan uutisraportin ja erillisen näytösvahdin lähteet on erotettu tehtävätunnisteilla `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset`. Pääautomaation uutisajo ei tarkista eikä kirjaa näytöslähteitä. Näytösvahti ei muuta uutisajojen lokimerkintöjä.
+Intialaisen elokuvan uutisraportilla ja erillisellä näytösvahdilla on omat tiedostonsa: `data/sources/intialaiset_elokuvat_uutiset.json` ja `data/sources/intialaiset_elokuvat_naytokset.json`. Pääautomaation uutisajo ei tarkista eikä kirjaa näytöslähteitä. Näytösvahti ei muuta uutisajojen lokimerkintöjä.
 
 ## Lähdekohtainen historiakirjaus
 

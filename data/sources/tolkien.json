@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "task_id": "tolkien",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Tolkien. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "tolkien-estate",
+      "name": "Tolkien Estate",
+      "url": "https://www.tolkienestate.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "tolkien-society",
+      "name": "Tolkien Society",
+      "url": "https://www.tolkiensociety.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "harpercollins-tolkien",
+      "name": "HarperCollins",
+      "url": "https://www.harpercollins.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "warnerbros-newsroom",
+      "name": "Warner Bros. Discovery – newsroom",
+      "url": "https://press.wbd.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "tolkiengateway",
+      "name": "Tolkien Gateway",
+      "url": "https://tolkiengateway.net/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "theguardian-books",
+      "name": "The Guardian – Books",
+      "url": "https://www.theguardian.com/books",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "variety-film",
+      "name": "Variety – Film",
+      "url": "https://variety.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    }
+  ]
+}
