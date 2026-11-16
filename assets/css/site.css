@@ -124,3 +124,85 @@ p { max-width: 72ch; }
   .status-line, .next-task, .automation-card, .update-panel, .actions-card, .rotation-list li { border: 1px solid CanvasText; }
   a:focus-visible, button:focus-visible { outline: 3px solid Highlight; }
 }
+
+/* Etusivun seuranta-aiheiden kortit */
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.topic-card {
+  display: flex;
+  min-width: 0;
+  min-height: 10rem;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+}
+
+.topic-number {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.topic-card h3 {
+  overflow-wrap: anywhere;
+}
+
+.topic-feed-link {
+  display: inline-block;
+  margin-top: auto;
+  padding-top: 0.35rem;
+  font-weight: 750;
+}
+
+.topic-extra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.4rem;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-left: 0.35rem solid var(--link);
+  border-radius: 0.65rem;
+}
+
+.topic-extra > div {
+  min-width: 0;
+}
+
+.topic-extra h3 {
+  margin: 0.25rem 0 0.4rem;
+}
+
+.topic-extra p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .topic-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .topic-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topic-extra {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
