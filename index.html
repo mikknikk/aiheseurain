@@ -10,20 +10,69 @@ description: Aiheseuraimen etusivu ja palvelun käyttöliittymät.
   <p>Aiheseurain on henkilökohtainen, moniaiheinen tiedonkeruu- ja seurantapalvelu. Se kokoaa eri lähteistä uutta tietoa valituista aiheista ja tarjoaa sen seurattavaksi aihekohtaisina RSS-syötteinä. Valitse alta haluamasi näkymä.</p>
 </section>
 
-<section class="content-section" aria-labelledby="topics-title">
-  <h2 id="topics-title">Seurannassa olevat aiheet</h2>
-  <ul>
-    <li>J. R. R. Tolkien</li>
-    <li>Taylor Swift</li>
-    <li>Saint Dr. Gurmeet Ram Rahim Singh Ji Insan</li>
-    <li>Muumit</li>
-    <li>Wakaliwood</li>
-    <li>Euroviisut ja kansalliset karsinnat</li>
-    <li>Sompote Sands</li>
-    <li>Shakkidraamat</li>
-    <li>Intialaisen elokuvan uutisseuranta</li>
-  </ul>
-  <p>Lisäksi erillinen päivittäinen seuranta kattaa Suomessa järjestettävät intialaisten elokuvien näytökset. Se ei kuulu aihekierron tehtäväjonoon.</p>
+<section class="content-section topic-section" aria-labelledby="topics-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Yhdeksän aihetta yhdessä kiertojonossa</p>
+      <h2 id="topics-title">Seurannassa olevat aiheet</h2>
+    </div>
+    <p class="section-note">Jokaisella aiheella on oma RSS-syöte.</p>
+  </div>
+  <div class="topic-grid">
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">01</span>
+      <h3>J. R. R. Tolkien</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/tolkien.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">02</span>
+      <h3>Taylor Swift</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/taylor-swift.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">03</span>
+      <h3>Saint Dr. Gurmeet Ram Rahim Singh Ji Insan</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/gurmeet-ram-rahim-singh.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">04</span>
+      <h3>Muumit</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/muumit.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">05</span>
+      <h3>Wakaliwood</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/wakaliwood.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">06</span>
+      <h3>Euroviisut ja kansalliset karsinnat</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/euroviisut.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">07</span>
+      <h3>Sompote Sands</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/sompote-sands.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">08</span>
+      <h3>Shakkidraamat</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/shakkidraamat.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+    <article class="topic-card">
+      <span class="topic-number" aria-hidden="true">09</span>
+      <h3>Intialaisen elokuvan uutisseuranta</h3>
+      <a class="topic-feed-link" href="{{ '/feeds/intialaiset-elokuvat.xml' | relative_url }}">Avaa RSS-syöte <span aria-hidden="true">↗</span></a>
+    </article>
+  </div>
+  <aside class="topic-extra" aria-labelledby="screenings-title">
+    <div>
+      <p class="eyebrow">Erillinen päivittäinen seuranta</p>
+      <h3 id="screenings-title">Intialaisten elokuvien näytökset Suomessa</h3>
+      <p>Ei kuulu yhdeksän aiheen kiertojonoon.</p>
+    </div>
+    <a class="topic-feed-link" href="{{ '/feeds/intialaisten-elokuvien-naytokset.xml' | relative_url }}">Avaa näytösten RSS-syöte <span aria-hidden="true">↗</span></a>
+  </aside>
 </section>
 
 <section class="portal-grid" aria-label="Aiheseuraimen palvelut">
