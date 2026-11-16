@@ -45,11 +45,14 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 ### Muumit
 
 - RSS: `muumit.xml`
-- Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
+- Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta: Tove Janssonin teokset ja perintö, Moomin Characters ja oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja kulttuurihankkeet.
 - Käytä hakusanoja Muumit, Moomin, Moomins ja ムーミン sekä tarvittaessa paikallisia kielimuotoja.
 - Erota virallinen uutinen fanisisällöstä.
-### Muumit
+- **16.11.2026 – VIRALLISESTI VAHVISTETTU:** Moominin virallinen japanilainen sivusto ilmoitti julkaisujuhlasta pelille *Muumit: Muumilaakson kesäjuhlat*. Maksuton tapahtuma järjestetään Cocoon Cityssä Saitamassa 21.–22.11.2026; ohjelmassa on pelin kokeilua ja muuta teemaan liittyvää toimintaa.
+- Lähde: Moomin Official Website, https://www.moomin.co.jp/news/events/6ae85147d7289 (ensisijainen). Shochikun aiempi tiedote tapahtumasta on saman järjestäjätahon viestintää, ei riippumaton vahvistus.
+- RSS GUID: `urn:uutiset:muumit:2026-11-16:cocoon-city-launch-event`.
+- Seuraava tarkistus: tarkista tapahtuman toteutuminen ja mahdolliset merkittävät jatkouutiset 22.11. jälkeen.
 
 - **16.11.2026 – VIRALLISESTI VAHVISTETTU:** Moominin virallinen japanilainen sivusto ilmoitti 16.11. julkaisutapahtumasta pelille *Muumit: Muumilaakson kesäjuhlat*. Maksuton tapahtuma järjestetään Cocoon Cityssä Saitamassa 21.–22.11.2026; ohjelmassa on pelin kokeilua ja muuta teemaan liittyvää toimintaa.
 - Lähde: Moomin Official Website, https://www.moomin.co.jp/news/events/6ae85147d7289 (ensisijainen). Shochikun aiempi tiedote tapahtumasta on saman järjestäjätahon viestintää, ei riippumaton vahvistus.
@@ -67,12 +70,15 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 ### Euroviisut ja kansalliset karsinnat
 
 - RSS: `euroviisut.xml`
-- Lähtötilanne 2026-11-16: uusi seuranta; julkaistuja RSS-artikkeleita ei vielä ole.
+- Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta kattaa Eurovision Song Contestin, kaikki osallistujamaiden kansalliset valinnat ja karsinnat, esikarsinnat, valintaprosessit, artisti- ja kappalejulkistukset, sääntömuutokset, järjestelyt, lähetykset, tulokset, delegaatiot sekä oheis- ja aluekilpailut.
 - Sisällytä Eurovision Song Contest Asia ja sen mahdolliset kansalliset karsinnat/valinnat sekä muut Eurovision-brändiin tai euroviisuyhteisöön liittyvät alueelliset kilpailut. Älä rajaa seurantaa Euroopan maantieteeseen.
 - Seuraa kaikkia maita ja kielialueita, ei vain Suomen tai suurten osallistujamaiden uutisia. Suomen UMK, Yle, suomalaiset artistit ja Suomessa järjestettävät Euroviisu-aiheiset tapahtumat nostetaan esiin, kun niistä on uutista.
 - Erota viralliset EBU-/järjestäjätiedot, kansallisten yleisradioyhtiöiden ilmoitukset, median raportit ja fanihuhut.
-### Euroviisut ja kansalliset karsinnat
+- **14.11.2026 – VIRALLISESTI VAHVISTETTU:** Filippiinejä edustanut CARMELLE voitti ensimmäisen Eurovision Song Contest Asian kappaleella *Sobra-Sobra* ja sai 211 pistettä (93 raadilta, 118 yleisöltä). Finaalissa oli 11 maan edustajat; EBU:n mukaan ääniä annettiin 183 maasta ja alueelta.
+- Ensisijainen lähde: EBU/Eurovisionin virallinen tiedote, https://www.eurovision.com/newsroom/release/carmelle-from-philippines-wins-inaugural-eurovision-song-contest-asia-in-bangkok/. Riippumattomat toimitukselliset vahvistukset: AFP (https://origin-zh9p7m-www.afp.com/en/philippines-wins-eurovisions-first-asia-contest) ja Associated Press (https://apnews.com/article/099ca558c4638949e637d3a8f8061d6d).
+- RSS GUID: `urn:uutiset:euroviisut:2026-11-14:esc-asia-first-winner-carmelle`.
+- Seuraava tarkistus: seuraa EBU:n ja osallistuneiden yleisradioyhtiöiden vahvistuksia mahdollisesta vuoden 2027 jatkokilpailusta; mediassa esitettyä kiinnostusta ei tule käsitellä vahvistettuna osallistujalistana.
 
 - **14.11.2026 – VIRALLISESTI VAHVISTETTU:** Filippiinejä edustanut CARMELLE voitti ensimmäisen Eurovision Song Contest Asian kappaleella *Sobra-Sobra* ja sai 211 pistettä (93 raadilta, 118 yleisöltä). Finaalissa oli 11 maan edustajat; EBU:n mukaan ääniä annettiin 183 maasta ja alueelta.
 - Ensisijainen lähde: EBU/Eurovisionin virallinen tiedote, https://www.eurovision.com/newsroom/release/carmelle-from-philippines-wins-inaugural-eurovision-song-contest-asia-in-bangkok/. Riippumattomat toimitukselliset vahvistukset: AFP (https://origin-zh9p7m-www.afp.com/en/philippines-wins-eurovisions-first-asia-contest) ja Associated Press (https://apnews.com/article/099ca558c4638949e637d3a8f8061d6d). Nämä tukevat voittajaa ja pistemäärää.
