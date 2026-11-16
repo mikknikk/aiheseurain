@@ -120,3 +120,4 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Versio 1.0.1: täsmennettiin erillisen näytösvahdin JSON-kenttien säilytys uuden pääautomaation versionhallintaosion käyttöönoton jälkeen.
 - Versio 1.0.2: säilytettiin aiempi vaatimus lukea kaikki kymmenen RSS-syötettä jokaisella ajolla ja täsmennettiin globaalin GUID-tarkistuksen sekä lähderekisterin ylläpidon vastuut.
 - Versio 1.0.3: otettiin käyttöön yhtenäinen lähderekisteri ja ajokohtainen lähdetarkistusloki; uutiskierron intialaiset uutislähteet erotettiin näytösvahtia varten olevista lähteistä.
+- Versio 1.0.4: jaettiin lähderekisterit tehtäväkohtaisiin JSON-tiedostoihin yhteisen skeeman alle, täsmennettiin valitun tehtävän rekisterin lukemista ja päivitettiin ajokohtaisen lähdekattavuuslokin validointi.
