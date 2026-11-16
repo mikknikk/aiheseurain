@@ -125,9 +125,7 @@ Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaa
 
 ## Koneellisesti luettava seurantatila
 
-data/seurantatila.json on aihekohtaisten tarkistusten koneellisesti luettava tilatiedosto. Se sisältää yhdeksän kiertotehtävän viimeisimmät onnistuneet tarkistusajat ja seurantajaksot sekä erillisen näytösvahdin tilan. Aikaleimat ovat aluksi null-arvoja, koska vanhoja tehtäväkohtaisia kellonaikoja ei ole luotettavasti vahvistettu. Niitä ei saa täydentää arvauksilla.
-
-Päivitä tilatiedosto vasta onnistuneen tarkistuksen ja mahdollisen RSS-julkaisun jälkeen, kun GitHubiin tehty muutos on luettu takaisin ja tarkistettu. Epäonnistunut tai kesken jäänyt ajo ei muuta viimeisintä onnistunutta tarkistusta eikä tehtäväjonon vuoroa. Käytä ISO 8601 -aikaleimoja aikavyöhyketietoineen. Päivitä rotation.next_task samaan aikaan kuin docs/tehtavajono.md:n seuraava tehtävä.
+`data/seurantatila.json` tallentaa yhdeksän kiertotehtävän ja erillisen näytösvahdin koneellisesti luettavan tilan. Sen tehtäväkierron on vastattava `docs/tehtavajono.md`:tä. Seurantajaksojen, aikaleimojen ja päivitysten tarkat säännöt ovat [seurantaohjeessa](docs/seuranta.md).
 
 ## Skriptien kehityskäytännöt
 
@@ -135,6 +133,6 @@ Skriptien kommentointi- ja ylläpitovaatimukset on määritelty sitovasti tiedos
 
 ## Automaattiset laatutestit
 
-GitHub Actions suorittaa scripts/validate_feeds.py-testin main-haaraan kohdistuvissa push- ja pull request -muutoksissa. Testi tarkistaa kaikki kymmenen RSS-syötettä: XML:n jäsennettävyyden, item-määrän, GUIDien olemassaolon ja yksilöllisyyden, item-kohtaisten linkkien puuttumisen, CDATA-muotoiset descriptionit sekä kuvausten HTML-rakenteen, linkkien URL-muodot, otsikkotasot ja kuvien alt-attribuutit. Lisäksi testi vertaa README:n syötetaulukkoa, tehtäväjonon yhdeksää tehtävää ja JSON-seurantatilan kiertojärjestystä sekä tarkistaa aikaleimojen aikavyöhykkeet, seurantajaksojen johdonmukaisuuden ja erillisen näytösvahdin määritykset.
+GitHub Actions suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
 
-Testit eivät varmista uutisväitteiden paikkansapitävyyttä, linkkien saavutettavuutta, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään edelleen erikseen.
+Automaattiset testit eivät todista uutisväitteiden paikkansapitävyyttä, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään erikseen.
