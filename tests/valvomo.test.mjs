@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { classifyFreshness, latestRotationTask, validateStateShape, TASK_ORDER } from "../assets/js/valvomo.js";
 
 test("tuoreus erottaa tuoreen, vanhentuneen ja tuntemattoman ajan", () => {
@@ -32,4 +33,16 @@ test("seurantatiedon rakenteen tarkistus edellyttää kaikkia yhdeksää kiertot
   assert.equal(validateStateShape(state), true);
   delete state.rotation.tasks.sompote_sands;
   assert.equal(validateStateShape(state), false);
+});
+
+test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
+  const layout = readFileSync(new URL("../_layouts/site.html", import.meta.url), "utf8");
+  const page = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  assert.match(layout, /<html lang="fi">/);
+  assert.match(layout, /href="#main"/);
+  assert.match(layout, /<nav aria-label="Päänavigaatio">/);
+  assert.match(layout, /<main id="main"/);
+  assert.match(layout, /<footer/);
+  assert.match(page, /id="rotation-list"/);
+  assert.match(page, /id="actions-content"/);
 });
