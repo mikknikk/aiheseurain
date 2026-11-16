@@ -89,13 +89,13 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 - Seuranta: elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, adaptaatiot (elokuva, televisio, pelit), näyttelyt ja tapahtumat. Tarkista erikseen Suomessa järjestettävät Tolkien-aiheiset tapahtumat, kuten näyttelyt, conit, luennot, elokuvanäytökset ja yleisötilaisuudet.
 - Erota Tolkienin itse kirjoittamat teokset myöhemmästä toimituksellisesta aineistosta ja adaptaatioista.
 - **11.11.2026 – MEDIAN RAPORTOIMA:** Andy Serkis kertoi The Morning Mosh Pit -haastattelussa, että *The Lord of the Rings: The Hunt for Gollum* -elokuvan pääkuvaukset ovat päättyneet. Lausunto julkaistiin 11.11.; toimitukselliset raportit ilmestyivät 12.11. Serkis ei ilmoittanut tarkkaa viimeistä kuvauspäivää, eikä Warner Brosin erillistä kuvausten päättymistä koskevaa tiedotetta saatu tarkistettua. New Zealand Film Map, GamesRadar+ ja The One Ring raportoivat samasta haastattelusta, joten kyse ei ole kolmesta toisistaan riippumattomasta vahvistuksesta. Alkuperäistä videota ei saatu avattua.
-  - RSS GUID: `urn:uutiset:tolkien:2026-11-12:hunt-for-gollum-wrap`; `feeds/tolkien.xml`.
+  - RSS GUID: `urn:aiheseurain:tolkien:2026-11-12:hunt-for-gollum-wrap`; `feeds/tolkien.xml`.
   - Seuraava tarkistus: virallinen Warner Brosin tai Serkisin tiedote, mahdolliset lisäkuvaukset ja siirtyminen jälkituotantoon.
 - **9.11.2026 – MEDIAN RAPORTOIMA:** Tolkien-tutkija David Bratman kuoli 9.11.2026 69-vuotiaana. File 770 (9.11.) ja Elfenomeno (10.11.) raportoivat kuolemasta ja hänen pitkästä Tolkien-tutkimuksen urastaan. Mythopoeic Societyn kotisivun hakutulosotteessa näkyi järjestön suru-uutinen, mutta ilmoitusta ei saatu esiin avatulla sivulla; sitä ei lasketa suoraksi ensisijaislähteen tarkistukseksi.
-  - RSS GUID: `urn:uutiset:tolkien:2026-11-10:david-bratman`; `feeds/tolkien.xml`.
+  - RSS GUID: `urn:aiheseurain:tolkien:2026-11-10:david-bratman`; `feeds/tolkien.xml`.
   - Seuraava tarkistus: mahdolliset merkittävät muistotilaisuudet, muistokirjoitukset tai hänen työnsä postuumit julkaisut.
 - **16.11.2026 – VIRALLISESTI VAHVISTETTU:** EHU:n julkaisema TARTALO-konferenssin ohjelma vahvistaa neljä Tolkien-aiheista tutkimusesitelmää ja kuvittaja Anke Eissmannin keynote-puheenvuoron Vitoria-Gasteizissa 18. ja 20.11.2026.
-  - RSS GUID: `urn:uutiset:tolkien:2026-11-16:tartalo-conference`; `feeds/tolkien.xml`.
+  - RSS GUID: `urn:aiheseurain:tolkien:2026-11-16:tartalo-conference`; `feeds/tolkien.xml`.
   - Seuraava tarkistus: tapahtuman toteutuminen 20.11. jälkeen sekä mahdolliset tallenteet, julkaisut tai konferenssijulkaisut.
 
 ### Taylor Swift
@@ -124,7 +124,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 - Erota virallinen uutinen fanisisällöstä.
 - **16.11.2026 – VIRALLISESTI VAHVISTETTU:** Moominin virallinen japanilainen sivusto ilmoitti julkaisujuhlasta pelille *Muumit: Muumilaakson kesäjuhlat*. Maksuton tapahtuma järjestetään Cocoon Cityssä Saitamassa 21.–22.11.2026; ohjelmassa on pelin kokeilua ja muuta teemaan liittyvää toimintaa.
 - Lähde: Moomin Official Website, https://www.moomin.co.jp/news/events/6ae85147d7289 (ensisijainen). Shochikun aiempi tiedote tapahtumasta on saman järjestäjätahon viestintää, ei riippumaton vahvistus.
-- RSS GUID: `urn:uutiset:muumit:2026-11-16:cocoon-city-launch-event`.
+- RSS GUID: `urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event`.
 - Seuraava tarkistus: tarkista tapahtuman toteutuminen ja mahdolliset merkittävät jatkouutiset 22.11. jälkeen.
 
 ### Wakaliwood
@@ -145,7 +145,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 - Erota viralliset EBU-/järjestäjätiedot, kansallisten yleisradioyhtiöiden ilmoitukset, median raportit ja fanihuhut.
 - **14.11.2026 – VIRALLISESTI VAHVISTETTU:** Filippiinejä edustanut CARMELLE voitti ensimmäisen Eurovision Song Contest Asian kappaleella *Sobra-Sobra* ja sai 211 pistettä (93 raadilta, 118 yleisöltä). Finaalissa oli 11 maan edustajat; EBU:n mukaan ääniä annettiin 183 maasta ja alueelta.
 - Ensisijainen lähde: EBU/Eurovisionin virallinen tiedote, https://www.eurovision.com/newsroom/release/carmelle-from-philippines-wins-inaugural-eurovision-song-contest-asia-in-bangkok/. Riippumattomat toimitukselliset vahvistukset: AFP (https://origin-zh9p7m-www.afp.com/en/philippines-wins-eurovisions-first-asia-contest) ja Associated Press (https://apnews.com/article/099ca558c4638949e637d3a8f8061d6d).
-- RSS GUID: `urn:uutiset:euroviisut:2026-11-14:esc-asia-first-winner-carmelle`.
+- RSS GUID: `urn:aiheseurain:euroviisut:2026-11-14:esc-asia-first-winner-carmelle`.
 - Seuraava tarkistus: seuraa EBU:n ja osallistuneiden yleisradioyhtiöiden vahvistuksia mahdollisesta vuoden 2027 jatkokilpailusta; mediassa esitettyä kiinnostusta ei tule käsitellä vahvistettuna osallistujalistana.
 
 ### Sompote Sands
