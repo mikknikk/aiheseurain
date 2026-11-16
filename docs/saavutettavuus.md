@@ -91,7 +91,7 @@ Kopioi tämä osio uuteen testausmerkintään ja täytä vain tosiasiassa tehdyt
 | Tumma tila ja pakotetut värit | Ei testattu | |
 | Valvomon käyttö näppäimistöllä ja ruudunlukijalla | Ei testattu | |
 | Valvomon 320 px / 200 % / 400 % -näkymä | Ei testattu | |
-| Valvomon kontrastit ja väritilat | Ei testattu |\n| RSS-sisällön käyttö lukijassa | Ei testattu | |
+| Valvomon kontrastit ja väritilat | Ei testattu | |\n| RSS-sisällön käyttö lukijassa | Ei testattu | |
 
 **Yhteenveto ja avoimet löydökset:**
 
