@@ -1,6 +1,9 @@
 """Yksikkötestit verkkolinkkien tarkistimen peruslogiikalle."""
 import unittest
-from urllib.error import HTTPError\nfrom unittest.mock import patch\n\nfrom scripts.check_links import LinkParser, luokittele_vastaus, tee_pyyntö
+from urllib.error import HTTPError
+from unittest.mock import patch
+
+from scripts.check_links import LinkParser, luokittele_vastaus, tee_pyyntö
 
 
 class LinkCheckerTests(unittest.TestCase):
