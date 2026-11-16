@@ -45,7 +45,7 @@ Automaation käynnistyskehotteet tallennetaan `prompts/`-hakemistoon `.txt`-tied
 - Automaattiset Lighthouse-/axe-tulokset eivät yksin todista AAA-vaatimusten täyttymistä.
 
 ## Tämän muutoksen testauksen tila
-Tässä muutoksessa tarkistetaan tiedostopolut, RSS/XML:n jäsennettävyys, GUIDien yksilöllisyys, item-linkkien puuttuminen ja lähdeluettelon olemassaolo. Kontrasti-, ruudunlukija-, näppäimistö-, mobiili- ja suurennustestausta ei suoritettu, joten AAA-tason toteutumista ei väitetä varmennetuksi.
+Automaattiset testit tarkistavat RSS/XML:n rakenteen ja viittaukset sekä Valvomon JavaScriptin syntaksin, tuoreustulkinnan, aihekierron, tilatietojen rakenteen ja keskeiset virhetilat. Valvomon kontrasti-, ruudunlukija-, näppäimistö-, mobiili- ja suurennustestausta ei ole vielä suoritettu. WCAG 2.2 AAA -tason toteutumista ei siksi väitetä varmennetuksi.
 
 
 ## Manuaalisen saavutettavuustestauksen menettely
