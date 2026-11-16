@@ -1,0 +1,25 @@
+name: RSS- ja dokumentaatiotestit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Tarkista RSS-syötteet
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae lähdekoodi
+        uses: actions/checkout@v4
+      - name: Aseta Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Tarkista RSS- ja seurantatiedostot
+        run: python scripts/validate_feeds.py
