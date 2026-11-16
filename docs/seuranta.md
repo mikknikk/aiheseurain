@@ -23,6 +23,20 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 - Käsikirjaa muutettaessa päivitetään sen versionumero ja `current_version` samassa muutossarjassa. Viimeisimmän onnistuneen ajon kenttiä ei muuteta etukäteen. Erillinen näytösvahti säilyttää tämän versionhallintaosion muuttumattomana omissa JSON-päivityksissään.
 - GitHub Actions tarkistaa, että käsikirja, JSONin nykyinen versio ja dokumentin polku vastaavat toisiaan.
 
+## Erillisen näytösvahdin ohjeversion seuranta
+
+- Näytösvahdin täydellinen tehtäväohje on `docs/intialaisten-elokuvien-naytosseuranta.md`. Sen MAJOR.MINOR.PATCH-versio on dokumentin alussa.
+- `data/seurantatila.json`-tiedoston `separate_screening_watch.automation_instructions.current_version` on hyväksytty nykyversio; sen on vastattava käsikirjaa ennen jokaista ajoa.
+- `last_successful_run_version` ja `last_successful_run_at` kirjataan vain onnistuneen näytösvahtiajon jälkeen. Näytösvahti säilyttää pääautomaation ja laatutarkistuksen ohjeversiot ennallaan.
+- GitHub Actions tarkistaa käsikirjan version ja JSONin vastaavuuden.
+
+## Laatutarkistuksen ohjeversion seuranta
+
+- Viikoittaisen laatutarkistuksen täydellinen käsikirja on `docs/laatutarkistuksen-ohje.md`.
+- `data/seurantatila.json`-tiedoston `quality_check_instructions.current_version` on hyväksytty nykyversio.
+- Viimeksi onnistuneesti käytetty versio ja aikaleima päivitetään vain kattavan auditoinnin jälkeen. Laatutarkistus ei korjaa havaintoja eikä muuta muita repositoryn tiedostoja; ainoastaan nämä kaksi onnistuneen ajon metatietokenttää saa päivittää.
+- Jos käsikirjan ja JSONin versiot eivät täsmää, automaatio keskeyttää.
+
 ## Koneellinen seurantatila ja automaattiset testit
 
 - `data/seurantatila.json` on koneellisesti luettava rinnakkaistila. Sen `rotation.next_task`-arvon pitää vastata [tehtäväjonon](tehtavajono.md) seuraava-tehtävä-merkintää.
