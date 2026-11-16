@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "task_id": "euroviisut",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Euroviisut. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "ebu",
+      "name": "European Broadcasting Union / Eurovision",
+      "url": "https://eurovision.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "ebu-news",
+      "name": "European Broadcasting Union – News",
+      "url": "https://www.ebu.ch/news",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "eurovision-asia",
+      "name": "Eurovision Song Contest Asia",
+      "url": "https://eurovisionasia.com/",
+      "language_regions": [
+        "en",
+        "th",
+        "ko",
+        "ms",
+        "vi",
+        "tl",
+        "bn",
+        "ne"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "yle-euroviisut",
+      "name": "Yle – Euroviisut",
+      "url": "https://yle.fi/aihe/musiikki/euroviisut",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "svt-melodifestivalen",
+      "name": "SVT – Melodifestivalen",
+      "url": "https://www.svt.se/melodifestivalen/",
+      "language_regions": [
+        "sv"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "bbc-eurovision",
+      "name": "BBC – Eurovision",
+      "url": "https://www.bbc.co.uk/eurovision",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "escxtra",
+      "name": "ESCXTRA",
+      "url": "https://escxtra.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    }
+  ]
+}
