@@ -7,7 +7,8 @@
     "Nykyinen RSS sisältää aiempia julkaisuversioita, mutta niistä ei voi luotettavasti palauttaa kaikkia näytöksiä rakenteisiksi tietueiksi. Älä keksi takautuvia tapahtumia.",
     "Ensimmäisessä onnistuneessa näytösvahdin ajossa muodosta nykyisten lähteiden ja viimeisimmän RSS-version perusteella varmennettu lähtötilanne. Kirjaa lähtötilanteen luonti baseline_created-tapahtumana tai merkitse lähtötason muodostus tähän tiedostoon.",
     "Lisää jatkossa jokainen havaittu muutos events-listaan. Älä muokkaa tai poista aiempia tapahtumia; virhe korjataan uudella correction-tapahtumalla.",
-    "Ensimmäinen varmennettu lähtötilanne muodostettu 16.11.2026 klo 15.24 Europe/Helsinki-ajassa. Aiemmista RSS-versioista ei johdettu takautuvia muutoshetkiä."
+    "Ensimmäinen varmennettu lähtötilanne muodostettu 16.11.2026 klo 15.24 Europe/Helsinki-ajassa. Aiemmista RSS-versioista ei johdettu takautuvia muutoshetkiä.",
+    "16.11.2026 klo 15.24: Finnkino vahvisti lisäksi Ramayanan 16.11. klo 18.00 Oulun Plazassa; Kuopion 19.00 näytös tarkennettiin Finnkinon omalla lähteellä."
   ],
   "screenings": [
     {
@@ -381,6 +382,28 @@
       "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
     },
     {
+      "screening_id": "ramayana-finnkino-plaza-oulu-20261116-1800",
+      "film": "Ramayana: Rise of a Legend",
+      "venue": "Finnkino Plaza",
+      "city": "Oulu",
+      "starts_at": "2026-11-16T18:00:00+02:00",
+      "status": "scheduled",
+      "source_claim_type": "TEATTERIN VAHVISTAMA",
+      "sources": [
+        {
+          "publisher": "Finnkino",
+          "url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1107",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "booking_url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1107",
+      "language": "hindi",
+      "subtitles": "englanti",
+      "notes": "Finnkinon oma elokuvasivu vahvistaa 16.11. klo 18.00 näytöksen; aikaa ei näy Kinoonin koko Suomen listauksessa."
+    },
+    {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261116-1825",
       "film": "Klara ja aurinko",
       "venue": "Finnkino Kinopalatsi",
@@ -407,17 +430,19 @@
       "city": "Kuopio",
       "starts_at": "2026-11-16T19:00:00+02:00",
       "status": "scheduled",
-      "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+      "source_claim_type": "TEATTERIN VAHVISTAMA",
       "sources": [
         {
-          "publisher": "Kinoon",
-          "url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
+          "publisher": "Finnkino",
+          "url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1150",
           "published_at": null,
           "checked_at": "2026-11-16T15:24:00+02:00",
-          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          "claim_type": "TEATTERIN VAHVISTAMA"
         }
       ],
-      "booking_url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157"
+      "booking_url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1150",
+      "language": "hindi",
+      "subtitles": "englanti"
     },
     {
       "screening_id": "klara-ja-aurinko-kino-iiris-20261116-1915",
@@ -2136,6 +2161,89 @@
     }
   ],
   "events": [
+    {
+      "event_id": "details-changed-20261116T152400-ramayana-scala-1900-official",
+      "observed_at": "2026-11-16T15:24:00+02:00",
+      "type": "details_changed",
+      "screening_id": "ramayana-rise-of-a-legend-finnkino-scala-20261116-1900",
+      "previous": {
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157"
+      },
+      "current": {
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Finnkino",
+            "url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1150",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1150",
+        "language": "hindi",
+        "subtitles": "englanti"
+      },
+      "sources": [
+        {
+          "publisher": "Finnkino",
+          "url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1150",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Finnkinon oma Scala Kuopion elokuvasivu vahvistaa 16.11. klo 19.00 näytöksen sekä hindi-äänen ja englanninkielisen tekstityksen; Kinoonin kolmannen osapuolen lähde korvattiin teatterin omalla lähteellä."
+    },
+    {
+      "event_id": "added-20261116T152400-ramayana-finnkino-plaza-oulu-1800",
+      "observed_at": "2026-11-16T15:24:00+02:00",
+      "type": "added",
+      "screening_id": "ramayana-finnkino-plaza-oulu-20261116-1800",
+      "previous": null,
+      "current": {
+        "screening_id": "ramayana-finnkino-plaza-oulu-20261116-1800",
+        "film": "Ramayana: Rise of a Legend",
+        "venue": "Finnkino Plaza",
+        "city": "Oulu",
+        "starts_at": "2026-11-16T18:00:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Finnkino",
+            "url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1107",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1107",
+        "language": "hindi",
+        "subtitles": "englanti",
+        "notes": "Finnkinon oma elokuvasivu vahvistaa 16.11. klo 18.00 näytöksen; aikaa ei näy Kinoonin koko Suomen listauksessa."
+      },
+      "sources": [
+        {
+          "publisher": "Finnkino",
+          "url": "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/?cinema=1107",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Finnkinon oma elokuvasivu vahvistaa Oulun Plazan 16.11. klo 18.00 näytöksen. Kinoonin koko Suomen listaus ei sisällä tätä aikaa."
+    },
     {
       "event_id": "baseline-created-20261116T152400-104-screenings",
       "observed_at": "2026-11-16T15:24:00+02:00",
