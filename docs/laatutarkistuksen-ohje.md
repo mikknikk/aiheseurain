@@ -50,7 +50,7 @@ Tarkista jokaisesta syötteestä XML/RSS-rakenne, GUIDien olemassaolo ja yksilö
 - Tarkista JSON-rakenne, pakolliset kentät ja aikaleimojen ISO 8601 -muoto aikavyöhykkeineen.
 - Varmista, että yhdeksän aiheen kierto vastaa `docs/tehtavajono.md`:tä ja seuraava tehtävä täsmää JSONin kanssa.
 - Varmista, että näytösvahti on erillinen eikä muuta kiertoa.
-- Tarkista näytösseurannan tila ja `data/naytosten-muutoshistoria.json`. Älä käsittele dokumentoitua pending-baselinea virheenä.
+- Tarkista näytösseurannan tila, `data/naytosten-muutoshistoria.json` ja `schemas/naytosten-muutoshistoria.schema.json`. `pending_first_verified_run` on hyväksyttävä vain, jos lähtötila on dokumentoidusti vielä muodostamatta ja `screenings` sekä `events` ovat tyhjiä; aktiivisessa tilassa pitää olla täsmälleen yksi `baseline_created`-tapahtuma. Varmista, että GitHub Actions suorittaa JSON Schema -validoinnin.
 - Älä hyväksy arvattuja aikaleimoja tai historiatapahtumia.
 - Tarkista pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversioiden vastaavuus.
 
