@@ -588,7 +588,7 @@ def validate_docs(state):
     if not isinstance(screening_instructions, dict):
         fail("näytösvahdin ohjeversion seurantatila puuttuu")
     screening_version = re.search(
-        r"^Ohjeversion tunniste:\\s*(\\d+\\.\\d+\\.\\d+)\\s*$",
+        r"^Ohjeversion tunniste:\s*(\d+\.\d+\.\d+)\s*$",
         screening_guide.read_text(encoding="utf-8"),
         re.M,
     )
@@ -602,7 +602,7 @@ def validate_docs(state):
         fail("README ei viittaa näytösvahdin käsikirjaan")
     for field in ("last_successful_run_version",):
         value = screening_instructions.get(field)
-        if value is not None and not re.fullmatch(r"\\d+\\.\\d+\\.\\d+", value):
+        if value is not None and not re.fullmatch(r"\d+\.\d+\.\d+", value):
             fail("screening automation_instructions." + field + " ei ole kelvollinen versiotunniste")
     timestamp(screening_instructions.get("last_successful_run_at"), "screening.automation_instructions.last_successful_run_at")
     if (screening_instructions.get("last_successful_run_version") is None) != (screening_instructions.get("last_successful_run_at") is None):
@@ -614,7 +614,7 @@ def validate_docs(state):
     if not quality_guide.is_file() or not isinstance(quality_instructions, dict):
         fail("laatutarkistuksen käsikirja tai sen versionhallinnan tila puuttuu")
     quality_version = re.search(
-        r"^Ohjeversion tunniste:\\s*(\\d+\\.\\d+\\.\\d+)\\s*$",
+        r"^Ohjeversion tunniste:\s*(\d+\.\d+\.\d+)\s*$",
         quality_guide.read_text(encoding="utf-8"),
         re.M,
     )
@@ -627,7 +627,7 @@ def validate_docs(state):
     if "docs/laatutarkistuksen-ohje.md" not in readme:
         fail("README ei viittaa laatutarkistuksen käsikirjaan")
     value = quality_instructions.get("last_successful_run_version")
-    if value is not None and not re.fullmatch(r"\\d+\\.\\d+\\.\\d+", value):
+    if value is not None and not re.fullmatch(r"\d+\.\d+\.\d+", value):
         fail("quality_check_instructions.last_successful_run_version ei ole kelvollinen versiotunniste")
     timestamp(quality_instructions.get("last_successful_run_at"), "quality_check_instructions.last_successful_run_at")
     if (quality_instructions.get("last_successful_run_version") is None) != (quality_instructions.get("last_successful_run_at") is None):
