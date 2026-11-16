@@ -561,7 +561,7 @@ def validate_docs(state):
         fail("pääautomaation ohjekäsikirja tai sen versionhallinnan tila puuttuu")
 
     guide_text = automation_guide.read_text(encoding="utf-8")
-    version_match = re.search(r"^Ohjeversion tunniste:\\s*(\\d+\\.\\d+\\.\\d+)\\s*$", guide_text, re.M)
+    version_match = re.search(r"^Ohjeversion tunniste:\s*(\d+\.\d+\.\d+)\s*$", guide_text, re.M)
     if not version_match:
         fail("pääautomaation käsikirjasta puuttuu kelvollinen MAJOR.MINOR.PATCH-versio")
 
@@ -572,7 +572,7 @@ def validate_docs(state):
 
     for field in ("last_successful_run_version",):
         value = automation_version.get(field)
-        if value is not None and not re.fullmatch(r"\\d+\\.\\d+\\.\\d+", value):
+        if value is not None and not re.fullmatch(r"\d+\.\d+\.\d+", value):
             fail("automation_instructions." + field + " ei ole kelvollinen versiotunniste")
     timestamp(automation_version.get("last_successful_run_at"), "automation_instructions.last_successful_run_at")
     if (automation_version.get("last_successful_run_version") is None) != (automation_version.get("last_successful_run_at") is None):
