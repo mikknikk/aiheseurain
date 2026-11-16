@@ -1,0 +1,82 @@
+---
+layout: site
+title: Kehitysjono
+section: kehitysjono
+kanban: true
+description: Aiheseuraimen GitHub Issues -pohjainen, vain luku -muotoinen kehitysjono.
+---
+<section class="page-intro" aria-labelledby="page-title">
+  <p class="eyebrow">Aiheseurain / kehityksen seuranta</p>
+  <h1 id="page-title">Kehitysjono</h1>
+  <p>GitHub Issues on kehitystehtävien ensisijainen tietolähde. Tämä sivu näyttää tiketit vain luku -muodossa; luokittelu, tilan muuttaminen ja tehtävien ylläpito tehdään GitHubissa.</p>
+</section>
+
+<section class="kanban-controls" aria-labelledby="filters-title">
+  <h2 id="filters-title" class="visually-hidden">Kehitystehtävien haku ja suodatus</h2>
+  <div class="kanban-filter">
+    <label for="kanban-search">Hae otsikosta tai tiketin numerosta</label>
+    <input id="kanban-search" type="search" autocomplete="off" placeholder="Esim. RSS tai 35">
+  </div>
+  <div class="kanban-filter">
+    <label for="kanban-priority">Prioriteetti</label>
+    <select id="kanban-priority">
+      <option value="all">Kaikki prioriteetit</option>
+      <option value="P0">P0 – kiireellisin</option>
+      <option value="P1">P1 – korkea</option>
+      <option value="P2">P2 – normaali</option>
+      <option value="P3">P3 – matala</option>
+      <option value="none">Ei prioriteettia merkitty</option>
+    </select>
+  </div>
+  <div class="kanban-filter">
+    <label for="kanban-area">Aihealue</label>
+    <select id="kanban-area">
+      <option value="all">Kaikki aihealueet</option>
+      <option value="none">Ei aihealuetta merkitty</option>
+    </select>
+  </div>
+  <p id="kanban-count" class="kanban-count" role="status" aria-live="polite">Ladataan tikettejä…</p>
+</section>
+
+<section class="kanban-status-panel" aria-label="Tietojen päivitystila">
+  <p id="kanban-freshness" class="kanban-freshness" role="status" aria-live="polite">Haetaan tikettejä GitHubista…</p>
+  <button id="kanban-refresh" class="refresh-button" type="button">Päivitä tiketit</button>
+</section>
+<div id="kanban-api-error" class="notice notice-warning" role="alert" hidden></div>
+<div id="kanban-classification-warning" class="notice notice-warning" role="status" hidden></div>
+
+<section class="content-section" aria-labelledby="view-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Esitystapa</p>
+      <h2 id="view-title">Tehtävät</h2>
+    </div>
+    <div class="kanban-view-controls" role="group" aria-label="Valitse tehtävien esitystapa">
+      <button id="view-board" class="kanban-view-button" type="button" aria-pressed="true">Kanban</button>
+      <button id="view-list" class="kanban-view-button" type="button" aria-pressed="false">Lista</button>
+    </div>
+  </div>
+  <p id="kanban-empty" class="notice" hidden>Suodattimilla ei löytynyt tikettejä.</p>
+  <div id="kanban-board" class="kanban-board" aria-label="Kehitystehtävät tilan mukaan"></div>
+  <div id="kanban-list-view" class="kanban-table-wrap" hidden>
+    <table class="kanban-table">
+      <caption>GitHub Issues -tikettien tila, prioriteetti ja aihealue</caption>
+      <thead>
+        <tr>
+          <th scope="col">Numero</th>
+          <th scope="col">Tehtävä</th>
+          <th scope="col">Prioriteetti</th>
+          <th scope="col">Aihealue</th>
+          <th scope="col">Tila</th>
+        </tr>
+      </thead>
+      <tbody id="kanban-table-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<p class="kanban-help">Aihealue suodatetaan GitHub-labelien <code>aihe:</code> perusteella. Jos tiketiltä puuttuu tila tai prioriteetti, sitä ei luokitella arvaamalla. Suljetut GitHub-issuet näkyvät Valmis-sarakkeessa.</p>
+
+<noscript>
+  <p class="notice notice-error">Kehitysjono tarvitsee JavaScriptin ja GitHubin julkisen rajapinnan. Voit tarkastella ja ylläpitää tikettejä suoraan <a href="https://github.com/mikknikk/aiheseurain/issues">GitHub Issuesissa</a>.</p>
+</noscript>

@@ -33,7 +33,8 @@ jobs:
         run: |
           node --check assets/js/valvomo.js
           node --check assets/js/reader.js
-      - name: Testaa Valvomon ja RSS-lukijan logiikka
-        run: node --test tests/valvomo.test.mjs tests/reader.test.mjs
+          node --check assets/js/kanban.js
+      - name: Testaa Valvomon, RSS-lukijan ja Kehitysjonon logiikka
+        run: node --test tests/valvomo.test.mjs tests/reader.test.mjs tests/kanban.test.mjs
       - name: Testaa linkkitarkistimen logiikka
         run: python -m unittest discover -s tests -v
