@@ -1,10 +1,10 @@
 # Uutisseuranta – kymmenen tehtävän seurantakierto
 
-Tämä repositorio ylläpitää kymmentä erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Kymmenen tehtävän kierto tarkoittaa, että kukin tehtävä tarkistetaan normaalisti noin kymmenen päivän välein. Intialaisen elokuvan uutisraportti ja Suomessa järjestettävien näytösten seuranta ovat jonon tehtävät 9 ja 10, eivät päivittäisiä rinnakkaismoduuleja.
+Tämä repositorio ylläpitää kymmentä erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Yhdeksän tehtävän kierto tarkoittaa, että kukin aihe tarkistetaan normaalisti noin yhdeksän päivän välein. Intialaisen elokuvan uutisraportti on jonon tehtävä 9. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla.
 
 ## Hakemistorakenne
 
-- `feeds/` – kaikki kymmenen RSS-syötettä.
+- `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
 - `docs/tehtavajono.md` – kymmenen tehtävän kiertojärjestys, seuraava vuoro ja seurantajaksojen raportointisääntö.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
@@ -37,7 +37,7 @@ Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sek
 4. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/intialaisen-elokuvan-seuranta.md` ja `docs/intialaisen-elokuvan-lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
 5. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
-Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/tehtavajono.md:n seuraava tehtävä ja tee varsinaiset haut vain sille yhdelle tehtävälle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan tehtävään; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama tehtävä vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten kymmenen tehtävän kierto tarkoittaa normaalisti noin kymmenen päivän tarkistusväliä kullekin tehtävälle. Ilmoita jokaisessa raportissa tehtäväkohtaisen seurantajakson alku ja loppu. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/tehtavajono.md:n seuraava tehtävä ja tee varsinaiset haut vain sille yhdelle tehtävälle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan tehtävään; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama tehtävä vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten yhdeksän tehtävän kierto tarkoittaa normaalisti noin yhdeksän päivän tarkistusväliä kullekin tehtävälle. Erillinen näytösvahti tarkistaa näytökset päivittäin. Ilmoita jokaisessa raportissa tehtäväkohtaisen seurantajakson alku ja loppu. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
 ## Dokumentaation ajantasaisuuden loppukatselmus
 
@@ -81,7 +81,7 @@ Päivitä yllä oleva syötetaulukko, docs/tehtavajono.md ja esitietojen lukujä
 
 ## Intialaisen elokuvan seurantatehtävät
 
-Intialaisen elokuvan uutisraportti ja Suomessa järjestettävien intialaisten elokuvien näytösten tarkistus ovat tehtäväjonon kaksi erillistä tehtävää (numerot 9 ja 10). Ne suoritetaan vain silloin, kun kyseinen tehtävä on jonossa seuraavana.
+Intialaisen elokuvan uutisraportti on tehtäväjonon tehtävä 9. Suomessa järjestettävien intialaisten elokuvien näytöksiä seuraa erillinen päivittäinen Intialaisten elokuvien näytösvahti, joka ei kuluta aihekierroksen vuoroa.
 
 - Uutisraportin RSS: [intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml
 - Näytösten RSS: [intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml
@@ -89,7 +89,7 @@ Intialaisen elokuvan uutisraportti ja Suomessa järjestettävien intialaisten el
 - Seurantaloki: `docs/intialaisen-elokuvan-seuranta.md`.
 - Lähderekisteri: `docs/intialaisen-elokuvan-lahteet.md`.
 
-Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Uutisraportti ja näytösseuranta julkaisevat vain omiin syötteisiinsä.
+Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Näytösvahti julkaisee vain näytös-RSS-syötteeseen.
 
 
 ## Saavutettavuus
