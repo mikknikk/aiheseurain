@@ -55,8 +55,11 @@ export function latestRotationTask(tasks) {
 
 export function validateStateShape(state) {
   if (!state || typeof state !== "object" || state.schema_version !== 1) return false;
-  if (!state.rotation || !state.rotation.tasks || !TASK_ORDER.every((id) => state.rotation.tasks[id])) return false;
-  if (!state.separate_screening_watch || !state.automation_instructions || !state.quality_check_instructions) return false;
+  if (!state.rotation || !state.rotation.tasks || !TASK_ORDER.includes(state.rotation.next_task)) return false;
+  if (!TASK_ORDER.every((id) => state.rotation.tasks[id] && typeof state.rotation.tasks[id] === "object")) return false;
+  if (!state.separate_screening_watch || typeof state.separate_screening_watch !== "object") return false;
+  if (!state.automation_instructions || typeof state.automation_instructions !== "object") return false;
+  if (!state.quality_check_instructions || typeof state.quality_check_instructions !== "object") return false;
   if (!state.updated_at || !Number.isFinite(Date.parse(state.updated_at))) return false;
   return true;
 }
@@ -346,15 +349,23 @@ async function loadDashboard() {
     }
     const state = await stateResponse.value.json();
     if (!validateStateShape(state)) throw new Error("Seurantatiedosto ei vastaa Valvomon odottamaa rakennetta.");
-    const sourceLog = sourceResponse.status === "fulfilled" && sourceResponse.value.ok
-      ? await sourceResponse.value.json()
-      : null;
+    let sourceLog = null;
+    if (sourceResponse.status === "fulfilled" && sourceResponse.value.ok) {
+      try {
+        const parsedSourceLog = await sourceResponse.value.json();
+        if (parsedSourceLog && Array.isArray(parsedSourceLog.runs)) sourceLog = parsedSourceLog;
+      } catch {
+        // Lähdetarkistuslokin virhe ei saa piilottaa erikseen ladattua automaatiotilaa.
+      }
+    }
 
     document.getElementById("data-updated").textContent = dateText(state.updated_at);
     const updatedAge = classifyFreshness(state.updated_at, 36);
     document.getElementById("data-age").textContent = updatedAge.key === "warning"
       ? "Tilatiedoston päivitys on vanhentunut."
-      : "Seurantatiedoston viimeisin päivitysaika (ei sama asia kuin yksittäisen automaation viimeisin ajo).";
+      : updatedAge.key === "unknown"
+        ? "Tilatiedoston aikaleimaa ei voitu varmentaa."
+        : "Seurantatiedoston viimeisin päivitysaika (ei sama asia kuin yksittäisen automaation viimeisin ajo).";
 
     renderMain(state, sourceLog);
     renderScreening(state);
