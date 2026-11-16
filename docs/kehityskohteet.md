@@ -9,7 +9,7 @@ Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen pri
 - **#29 – Pages-kartoitus ja Valvomon tietomalli:** valmis ja yhdistetty `main`-haaraan.
 - **#30 – Valvomon vähimmäisversio:** työn alla; [PR #30](https://github.com/mikknikk/uutiset/pull/30) on avoinna.
 - **#31 – RSS-lukijan vähimmäisversio:** backlogissa, ei vielä toteutuksessa.
-- **#35 – GitHub Issues -pohjainen Kehityjono-kanban:** backlogissa, ei vielä toteutuksessa.
+- **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** backlogissa, ei vielä toteutuksessa.
 
 Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
