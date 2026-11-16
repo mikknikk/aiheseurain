@@ -1,0 +1,1645 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "123telugu",
+      "name": "123telugu",
+      "url": "https://www.123telugu.com/",
+      "language_regions": [
+        "te",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-AP",
+        "IN-TG",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "ajit-punjabi",
+      "name": "Ajit",
+      "url": "https://www.ajitjalandhar.com/",
+      "language_regions": [
+        "pa"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-PB"
+      ]
+    },
+    {
+      "id": "amar-ujala",
+      "name": "Amar Ujala",
+      "url": "https://www.amarujala.com/",
+      "language_regions": [
+        "hi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "anandabazar",
+      "name": "Anandabazar Patrika",
+      "url": "https://www.anandabazar.com/",
+      "language_regions": [
+        "bn"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-WB"
+      ]
+    },
+    {
+      "id": "ap-entertainment",
+      "name": "Associated Press – Entertainment",
+      "url": "https://apnews.com/entertainment",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "asomiya-pratidin",
+      "name": "Asomiya Pratidin",
+      "url": "https://www.asomiyapratidin.in/",
+      "language_regions": [
+        "as"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-AS"
+      ]
+    },
+    {
+      "id": "assam-tribune",
+      "name": "The Assam Tribune",
+      "url": "https://assamtribune.com/",
+      "language_regions": [
+        "en",
+        "as"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL",
+        "IN-AS"
+      ]
+    },
+    {
+      "id": "bbc-eurovision",
+      "name": "BBC – Eurovision",
+      "url": "https://www.bbc.co.uk/eurovision",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "billboard",
+      "name": "Billboard",
+      "url": "https://www.billboard.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "biorex",
+      "name": "BioRex",
+      "url": "https://biorex.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "bollywood-hungama",
+      "name": "Bollywood Hungama",
+      "url": "https://www.bollywoodhungama.com/",
+      "language_regions": [
+        "hi",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "cbi-india",
+      "name": "Central Bureau of Investigation",
+      "url": "https://cbi.gov.in/",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "chessbase",
+      "name": "ChessBase News",
+      "url": "https://en.chessbase.com/",
+      "language_regions": [
+        "en",
+        "de"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "chesscom",
+      "name": "Chess.com",
+      "url": "https://www.chess.com/news",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "christian-bourgois-tolkien",
+      "name": "Christian Bourgois éditeur – Tolkien",
+      "url": "https://bourgoisediteur.fr/jrr-tolkien",
+      "language_regions": [
+        "fr"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FR"
+      ]
+    },
+    {
+      "id": "cinema-express",
+      "name": "Cinema Express",
+      "url": "https://www.cinemaexpress.com/",
+      "language_regions": [
+        "ta",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-TN",
+        "IN-PY",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "cinema-mondo",
+      "name": "Cinema Mondo",
+      "url": "https://www.cinemamondo.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "cinema-orion",
+      "name": "Cinema Orion",
+      "url": "https://cinemaorion.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "cinisuddi",
+      "name": "Cini Suddi",
+      "url": "https://www.cinisuddi.com/",
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KA"
+      ]
+    },
+    {
+      "id": "daily-monitor-uganda",
+      "name": "Daily Monitor – Uganda",
+      "url": "https://www.monitor.co.ug/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "daily-thanthi",
+      "name": "Daily Thanthi Cinema",
+      "url": "https://www.dailythanthi.com/cinema/cinemanews",
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
+    },
+    {
+      "id": "deutsche-tolkien-gesellschaft",
+      "name": "Deutsche Tolkien Gesellschaft",
+      "url": "https://www.tolkiengesellschaft.de/news/",
+      "language_regions": [
+        "de",
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "DE",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "dharitri",
+      "name": "Dharitri",
+      "url": "https://www.dharitri.com/",
+      "language_regions": [
+        "or"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-OD"
+      ]
+    },
+    {
+      "id": "dinamani",
+      "name": "Dinamani",
+      "url": "https://www.dinamani.com/",
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
+    },
+    {
+      "id": "ebu",
+      "name": "European Broadcasting Union / Eurovision",
+      "url": "https://eurovision.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "ebu-news",
+      "name": "European Broadcasting Union – News",
+      "url": "https://www.ebu.ch/news",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "eenadu-cinema",
+      "name": "Eenadu – Cinema",
+      "url": "https://www.eenadu.net/",
+      "language_regions": [
+        "te"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-AP",
+        "IN-TG"
+      ]
+    },
+    {
+      "id": "ehu-tartalo-programme",
+      "name": "EHU / TARTALO – X International Conference on Myth in the Arts programme",
+      "url": "https://www.ehu.eus/documents/d/letren-fakultatea/tartalo2026_programacongreso",
+      "language_regions": [
+        "en",
+        "es",
+        "eu"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "ES"
+      ]
+    },
+    {
+      "id": "eiga-com",
+      "name": "映画.com (Eiga.com)",
+      "url": "https://eiga.com/",
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "TH",
+        "JP"
+      ]
+    },
+    {
+      "id": "elfenomeno",
+      "name": "Elfenomeno",
+      "url": "https://www.elfenomeno.com/",
+      "language_regions": [
+        "es",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "GLOBAL",
+        "ES",
+        "LATAM"
+      ]
+    },
+    {
+      "id": "elokuvauutiset",
+      "name": "Elokuvauutiset.fi",
+      "url": "https://www.elokuvauutiset.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "episodi",
+      "name": "Episodi",
+      "url": "https://www.episodi.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "escxtra",
+      "name": "ESCXTRA",
+      "url": "https://escxtra.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "european-chess-union",
+      "name": "European Chess Union",
+      "url": "https://www.europechess.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "eurovision-asia",
+      "name": "Eurovision Song Contest Asia",
+      "url": "https://eurovisionasia.com/",
+      "language_regions": [
+        "en",
+        "th",
+        "ko",
+        "ms",
+        "vi",
+        "tl",
+        "bn",
+        "ne"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "fide",
+      "name": "FIDE",
+      "url": "https://www.fide.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "file770",
+      "name": "File 770",
+      "url": "https://file770.com/david-bratman-1957-2026/comment-page-1/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "film-o-holic",
+      "name": "Film-O-Holic",
+      "url": "https://www.film-o-holic.com/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "filmikamari",
+      "name": "Suomen Filmikamari",
+      "url": "https://www.filmikamari.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "finbolly",
+      "name": "FinBolly Movies",
+      "url": "https://www.facebook.com/Finbollymovies",
+      "language_regions": [
+        "en",
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "finnish-chess",
+      "name": "Suomen Shakkiliitto",
+      "url": "https://www.shakkiliitto.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "finnish-film-foundation",
+      "name": "Suomen elokuvasäätiö",
+      "url": "https://www.ses.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "finnkino",
+      "name": "Finnkino",
+      "url": "https://www.finnkino.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "fintamil",
+      "name": "FinTamil Movies",
+      "url": "https://www.facebook.com/fintamil.movies",
+      "language_regions": [
+        "ta",
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "gamesradar-film",
+      "name": "GamesRadar+ – The Hunt for Gollum",
+      "url": "https://www.gamesradar.com/entertainment/lord-of-the-rings-movies/the-hunt-for-gollum-wraps-filming-as-andy-serkis-praises-incredible-journey-back-to-playing-endlessly-complex-gollum-again/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "UK",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "gurmeet-courts",
+      "name": "Intian tuomioistuimet ja viranomaiset",
+      "url": "https://www.sci.gov.in/",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "harpercollins-brasil-tolkien",
+      "name": "HarperCollins Brasil – Tolkien",
+      "url": "https://harpercollins.com.br/pages/tolkien",
+      "language_regions": [
+        "pt-BR"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "BR"
+      ]
+    },
+    {
+      "id": "harpercollins-tolkien",
+      "name": "HarperCollins – Tolkien (UK)",
+      "url": "https://www.tolkien.co.uk/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "hindu-tamil-thisai",
+      "name": "Hindu Tamil Thisai",
+      "url": "https://www.hindutamil.in/",
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
+    },
+    {
+      "id": "hindustan-times",
+      "name": "Hindustan Times",
+      "url": "https://www.hindustantimes.com/",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "hmh-books-tolkien",
+      "name": "Houghton Mifflin Harcourt – Tolkien",
+      "url": "https://www.hmhbooks.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "US"
+      ]
+    },
+    {
+      "id": "hs",
+      "name": "Helsingin Sanomat",
+      "url": "https://www.hs.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "india-today-regional",
+      "name": "India Today – Regional Cinema",
+      "url": "https://www.indiatoday.in/topic/regional-cinema",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "indian-express-regional",
+      "name": "The Indian Express – Regional",
+      "url": "https://indianexpress.com/section/entertainment/regional/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "journal-tolkien-research",
+      "name": "Journal of Tolkien Research",
+      "url": "https://scholar.valpo.edu/journaloftolkienresearch/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "kannada-prabha",
+      "name": "Kannada Prabha",
+      "url": "https://www.kannadaprabha.com/",
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KA"
+      ]
+    },
+    {
+      "id": "kino-myyri",
+      "name": "Kinoon – Kino Myyrin teatterilistauksen lähde",
+      "url": "https://kinoon.fi/teatterit",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "kino-regina",
+      "name": "Kino Regina",
+      "url": "https://kinoregina.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "lichess-blog",
+      "name": "Lichess Blog",
+      "url": "https://lichess.org/blog",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "lippu-fi-events",
+      "name": "Lippu.fi – tapahtumahaku",
+      "url": "https://www.lippu.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "lokmat",
+      "name": "Lokmat",
+      "url": "https://www.lokmat.com/",
+      "language_regions": [
+        "mr"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-MH"
+      ]
+    },
+    {
+      "id": "loksatta",
+      "name": "Loksatta",
+      "url": "https://www.loksatta.com/",
+      "language_regions": [
+        "mr"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-MH"
+      ]
+    },
+    {
+      "id": "maalaimalar",
+      "name": "Maalai Malar",
+      "url": "https://www.maalaimalar.com/",
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-TN",
+        "IN-PY"
+      ]
+    },
+    {
+      "id": "manorama-online",
+      "name": "Manorama Online",
+      "url": "https://www.manoramaonline.com/",
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "mathrubhumi",
+      "name": "Mathrubhumi",
+      "url": "https://www.mathrubhumi.com/",
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "moomin-characters-news",
+      "name": "Moomin Characters",
+      "url": "https://www.moomin.com/en/",
+      "language_regions": [
+        "en",
+        "fi",
+        "sv",
+        "ja"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "moomin-museum",
+      "name": "Moomin Museum",
+      "url": "https://www.muumimuseo.fi/en/",
+      "language_regions": [
+        "fi",
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "moomin-official",
+      "name": "Moomin Characters",
+      "url": "https://www.moomin.com/",
+      "language_regions": [
+        "fi",
+        "sv",
+        "en",
+        "ja"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "mythopoeic-society",
+      "name": "The Mythopoeic Society",
+      "url": "https://mythsoc.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "nation-thailand",
+      "name": "The Nation Thailand",
+      "url": "https://www.nationthailand.com/",
+      "language_regions": [
+        "en",
+        "th"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "ndtv-entertainment",
+      "name": "NDTV – Entertainment",
+      "url": "https://www.ndtv.com/entertainment",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "new-vision-uganda",
+      "name": "New Vision – Uganda",
+      "url": "https://www.newvision.co.ug/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "new-zealand-film-map",
+      "name": "New Zealand Film Map",
+      "url": "https://newzealandfilmmap.com/hunt-for-gollum-finished-filming/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "NZ",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "onmanorama",
+      "name": "Onmanorama",
+      "url": "https://www.onmanorama.com/",
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "pinkvilla",
+      "name": "Pinkvilla",
+      "url": "https://www.pinkvilla.com/",
+      "language_regions": [
+        "hi",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "planeta-minotauro-tolkien",
+      "name": "Ediciones Minotauro – Tolkien",
+      "url": "https://www.planetadelibros.com/coleccion-biblioteca-j-r-r-tolkien/0000493000",
+      "language_regions": [
+        "es"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "ES"
+      ]
+    },
+    {
+      "id": "prajavani",
+      "name": "Prajavani",
+      "url": "https://www.prajavani.net/",
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KA"
+      ]
+    },
+    {
+      "id": "punjab-haryana-highcourt",
+      "name": "Punjab and Haryana High Court",
+      "url": "https://highcourtchd.gov.in/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "punjabi-tribune",
+      "name": "Punjabi Tribune",
+      "url": "https://www.punjabitribuneonline.com/",
+      "language_regions": [
+        "pa"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-PB"
+      ]
+    },
+    {
+      "id": "rasa-entertainment",
+      "name": "Rasa Entertainment",
+      "url": "https://www.facebook.com/298328530028338/",
+      "language_regions": [
+        "en",
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "republic-records",
+      "name": "Republic Records",
+      "url": "https://www.republicrecords.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "rolling-stone",
+      "name": "Rolling Stone",
+      "url": "https://www.rollingstone.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "sakal",
+      "name": "Sakal",
+      "url": "https://www.esakal.com/",
+      "language_regions": [
+        "mr"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-MH"
+      ]
+    },
+    {
+      "id": "sakshi-telugu",
+      "name": "Sakshi",
+      "url": "https://www.sakshi.com/",
+      "language_regions": [
+        "te"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-AP",
+        "IN-TG"
+      ]
+    },
+    {
+      "id": "sambad-odia",
+      "name": "Sambad",
+      "url": "https://sambad.in/",
+      "language_regions": [
+        "or"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-OD"
+      ]
+    },
+    {
+      "id": "sangbad-pratidin",
+      "name": "Sangbad Pratidin",
+      "url": "https://www.sangbadpratidin.in/",
+      "language_regions": [
+        "bn"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-WB"
+      ]
+    },
+    {
+      "id": "simply-mollywood",
+      "name": "Simply Mollywood",
+      "url": "https://simplymollywood.com/",
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KL",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "sociedad-tolkien-espanola",
+      "name": "Sociedad Tolkien Española",
+      "url": "https://www.sociedadtolkien.org/",
+      "language_regions": [
+        "es"
+      ],
+      "source_type": "other",
+      "regions": [
+        "ES"
+      ]
+    },
+    {
+      "id": "societa-tolkieniana-italiana",
+      "name": "Società Tolkieniana Italiana",
+      "url": "https://www.tolkien.it/news/",
+      "language_regions": [
+        "it"
+      ],
+      "source_type": "other",
+      "regions": [
+        "IT"
+      ]
+    },
+    {
+      "id": "suomen-tolkien-seura",
+      "name": "Suomen Tolkien-seura Kontu ry",
+      "url": "https://suomentolkienseura.fi/",
+      "language_regions": [
+        "fi",
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "svt-melodifestivalen",
+      "name": "SVT – Melodifestivalen",
+      "url": "https://www.svt.se/melodifestivalen/",
+      "language_regions": [
+        "sv"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "taylor-swift-official",
+      "name": "Taylor Swift official",
+      "url": "https://www.taylorswift.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "telugucinema",
+      "name": "TeluguCinema.com",
+      "url": "https://telugucinema.com/news",
+      "language_regions": [
+        "te",
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-AP",
+        "IN-TG",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "thai-film-archive",
+      "name": "Thai Film Archive (Public Organization)",
+      "url": "https://www.fapot.or.th/",
+      "language_regions": [
+        "th",
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "thai-film-archive-news",
+      "name": "Thai Film Archive – News",
+      "url": "https://www.fapot.or.th/main/news",
+      "language_regions": [
+        "th",
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "thai-pbs",
+      "name": "Thai PBS",
+      "url": "https://www.thaipbs.or.th/",
+      "language_regions": [
+        "th"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "TH"
+      ]
+    },
+    {
+      "id": "the-hindu-cinema",
+      "name": "The Hindu – Cinema",
+      "url": "https://www.thehindu.com/entertainment/movies/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "the-hindu-india",
+      "name": "The Hindu",
+      "url": "https://www.thehindu.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "the-one-ring",
+      "name": "The One Ring – Tolkien News",
+      "url": "https://www.theonering.com/news/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "theguardian-books",
+      "name": "The Guardian – Books",
+      "url": "https://www.theguardian.com/books",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "ticketmaster-fi-events",
+      "name": "Ticketmaster Suomi – tapahtumahaku",
+      "url": "https://www.ticketmaster.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "tiketti-fi-events",
+      "name": "Tiketti – tapahtumahaku",
+      "url": "https://www.tiketti.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "times-of-india-entertainment",
+      "name": "The Times of India – Entertainment",
+      "url": "https://timesofindia.indiatimes.com/entertainment",
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "tolkien-estate",
+      "name": "Tolkien Estate",
+      "url": "https://www.tolkienestate.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "tolkien-society",
+      "name": "Tolkien Society",
+      "url": "https://www.tolkiensociety.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "tolkiendil",
+      "name": "Tolkiendil",
+      "url": "https://www.tolkiendil.com/news",
+      "language_regions": [
+        "fr"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FR",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "tolkiengateway",
+      "name": "Tolkien Gateway",
+      "url": "https://tolkiengateway.net/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "tove-jansson-society",
+      "name": "Tove Jansson Society",
+      "url": "https://tovejansson.com/",
+      "language_regions": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "tribune-india",
+      "name": "The Tribune – India",
+      "url": "https://www.tribuneindia.com/",
+      "language_regions": [
+        "en",
+        "pa"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-HR",
+        "IN-PB",
+        "IN-CH",
+        "IN-NATIONAL"
+      ]
+    },
+    {
+      "id": "ugandan-film-festival",
+      "name": "Uganda Communications Commission – Film Festival",
+      "url": "https://www.ucc.co.ug/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "ultraman-official",
+      "name": "Tsuburaya Productions",
+      "url": "https://www.tsuburaya-prod.co.jp/",
+      "language_regions": [
+        "ja",
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "TH",
+        "JP"
+      ]
+    },
+    {
+      "id": "umg-news",
+      "name": "Universal Music Group – News",
+      "url": "https://www.universalmusic.com/news/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "us-chess",
+      "name": "US Chess Federation",
+      "url": "https://www.uschess.org/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "GLOBAL",
+        "FI",
+        "EUROPE",
+        "NORTH-AMERICA"
+      ]
+    },
+    {
+      "id": "variety-film",
+      "name": "Variety – Film",
+      "url": "https://variety.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "vijaya-karnataka",
+      "name": "Vijaya Karnataka",
+      "url": "https://vijaykarnataka.com/",
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "IN-KA"
+      ]
+    },
+    {
+      "id": "wakaliwood-official",
+      "name": "Wakaliwood",
+      "url": "https://wakaliwood.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "wakaliwood-supa-store",
+      "name": "Wakaliwood Supa Store / studio channel",
+      "url": "https://supastore.wakaliwood.com/pages/frontpage",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "UG",
+        "EAST-AFRICA"
+      ]
+    },
+    {
+      "id": "warnerbros-newsroom",
+      "name": "Warner Bros. Discovery – newsroom",
+      "url": "https://press.wbd.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "UK",
+        "GLOBAL",
+        "US"
+      ]
+    },
+    {
+      "id": "yle",
+      "name": "Yle",
+      "url": "https://yle.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "yle-culture",
+      "name": "Yle – Culture",
+      "url": "https://yle.fi/aihe/kulttuuri",
+      "language_regions": [
+        "fi",
+        "sv"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "FI",
+        "SE",
+        "UK",
+        "JP",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "yle-euroviisut",
+      "name": "Yle – Euroviisut",
+      "url": "https://yle.fi/aihe/musiikki/euroviisut",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "EUROPE",
+        "ASIA",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "yle-tolkien",
+      "name": "Yle – J. R. R. Tolkien",
+      "url": "https://yle.fi/t/18-189195/fi",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "FI"
+      ]
+    }
+  ]
+}
