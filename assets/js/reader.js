@@ -99,12 +99,6 @@ export function sanitizeArticleHtml(html) {
   return fragment;
 }
 
-/** Poimii turvallisen tekstikatkelman artikkelikortin ingressiksi. */
-function plainText(html) {
-  const parsed = parseHtmlFragment(html);
-  return (parsed.textContent || "").replace(/\s+/g, " ").trim();
-}
-
 /** Muotoilee RSS:n päiväyksen suomenkieliseen esitystapaan. */
 function formatDate(value) {
   const date = new Date(value);
@@ -118,16 +112,6 @@ function formatDate(value) {
 function childText(parent, tagName) {
   const element = parent.getElementsByTagName(tagName)[0];
   return element ? element.textContent || "" : "";
-}
-
-/** Etsii kuvauksen ensimmäisen turvallisen lähdelinkin. */
-function parsedFirstSafeLink(html) {
-  const parsed = parseHtmlFragment(html);
-  for (const link of parsed.querySelectorAll("a")) {
-    const href = link.getAttribute("href");
-    if (isSafeArticleUrl(href)) return href;
-  }
-  return null;
 }
 
 /**
@@ -144,16 +128,13 @@ export function parseFeedXml(xmlText, feed) {
     const description = childText(item, "description");
     const pubDate = childText(item, "pubDate").trim();
     const timestamp = Date.parse(pubDate);
-    const text = plainText(description);
     return {
       id: feed.id + ":" + (childText(item, "guid").trim() || String(index)),
       title, description,
-      excerpt: text.length > 360 ? text.slice(0, 357) + "…" : text,
       pubDate,
       timestamp: Number.isFinite(timestamp) ? timestamp : 0,
       feedId: feed.id,
-      feedTitle: feed.title,
-      sourceUrl: parsedFirstSafeLink(description)
+      feedTitle: feed.title
     };
   });
 }
@@ -196,17 +177,7 @@ function renderArticles() {
       element("span", "reader-item-meta", article.feedTitle + " · " + formatDate(article.pubDate))
     );
     details.appendChild(summary);
-    if (article.excerpt) details.appendChild(element("p", "reader-excerpt", article.excerpt));
-
     const body = element("div", "reader-article-body");
-    if (article.sourceUrl) {
-      const source = element("p", "reader-source");
-      const link = element("a", "", "Alkuperäinen lähde: " + article.title);
-      link.href = article.sourceUrl;
-      link.rel = "noopener noreferrer";
-      source.appendChild(link);
-      body.appendChild(source);
-    }
     body.appendChild(sanitizeArticleHtml(article.description));
     details.appendChild(body);
     card.appendChild(details);
