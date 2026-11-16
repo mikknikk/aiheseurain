@@ -10,6 +10,10 @@ Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä, suomenkielistä
 | Taylor Swift | [taylor-swift.xml](taylor-swift.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/taylor-swift.xml |
 | Saint Dr. Gurmeet Ram Rahim Singh Ji Insan | [gurmeet-ram-rahim-singh.xml](gurmeet-ram-rahim-singh.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/gurmeet-ram-rahim-singh.xml |
 | Muumit | [muumit.xml](muumit.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/muumit.xml |
+| Wakaliwood | [wakaliwood.xml](wakaliwood.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/wakaliwood.xml |
+| Euroviisut ja kansalliset karsinnat | [euroviisut.xml](euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/euroviisut.xml |
+| Sompote Sands | [sompote-sands.xml](sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/sompote-sands.xml |
+| Shakkidraamat | [shakkidraamat.xml](shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/shakkidraamat.xml |
 
 Syötteet on alustettu tyhjinä RSS 2.0 -tiedostoina. Niihin lisätään vain tarkistetut, olennaiset uutiset; tyhjä syöte ei tarkoita virhettä eikä sinne lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
@@ -23,6 +27,18 @@ Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sek
 4. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml` – julkaistut uutiset ja GUID-tunnisteet.
 
 Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+
+## Dokumentaation ajantasaisuuden loppukatselmus
+
+Aina kun mitä tahansa dokumentaatiotiedostoa muutetaan tai lisätään, tee ennen työn päättämistä koko dokumentaation ajantasaisuuden katselmus:
+
+1. Lue muutoksen jälkeen README.md, TRACKING.md ja SOURCES.md kokonaan sekä kaikki muut aiheeseen liittyvät dokumentit.
+2. Tarkista, että kaikki aihe-, tiedosto-, RSS-URL-, aikataulu-, lähde- ja toimintatapatiedot ovat keskenään yhdenmukaisia. Esimerkiksi aiheiden tai syötteiden lisäys tai poisto päivitetään kaikkialle, missä niitä luetellaan.
+3. Etsi vanhentuneet, päällekkäiset, ristiriitaiset ja puuttuvat tiedot myös muista dokumenteista; älä tyydy tarkistamaan vain juuri muokattua kohtaa.
+4. Korjaa havaitut ristiriidat saman muutossarjan yhteydessä. Jos jokin tieto on tarkoituksella erilainen eri tiedostoissa, selitä ero.
+5. Hae kaikki muutetut dokumentit GitHubista takaisin ja varmista, että tallennettu sisältö vastaa tarkistettua versiota.
+
+Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 ## Julkaisuperiaatteet
 
@@ -43,15 +59,6 @@ Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellis
 - `SOURCES.md`: lähdeluettelo ja hakustrategiat. Lista on lähtökohta, ei suljettu sallittujen lähteiden luettelo.
 - RSS-tiedostot: julkaistut uutisartikkelit.
 
-
-## Uudet seurattavat aiheet
-
-| Aihe | RSS-tiedosto | Raaka RSS-osoite |
-|---|---|---|
-| Wakaliwood | [wakaliwood.xml](wakaliwood.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/wakaliwood.xml |
-| Euroviisut ja kansalliset karsinnat | [euroviisut.xml](euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/euroviisut.xml |
-| Sompote Sands | [sompote-sands.xml](sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/sompote-sands.xml |
-| Shakkidraamat | [shakkidraamat.xml](shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/shakkidraamat.xml |
 
 ## Laaja kansainvälinen haku ja Suomi-näkökulma
 
