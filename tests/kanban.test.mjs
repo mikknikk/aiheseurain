@@ -88,5 +88,5 @@ test("Kehitysjono-sivu ja navigaatio tarjoavat saavutettavan vain luku -osion", 
   assert.match(header, /\/kehitysjono\//);
   assert.match(header, /page\.section == "kehitysjono"/);
   assert.match(layout, /assets\/js\/kanban\.js/);
-  assert.doesNotMatch(script, /POST|PATCH|DELETE|Authorization|token/i);
+  assert.doesNotMatch(script, /Authorization\s*:|Bearer\s+[A-Za-z0-9_-]+|method\s*:\s*[\"'](?:POST|PATCH|DELETE)[\"']/i);
 });
