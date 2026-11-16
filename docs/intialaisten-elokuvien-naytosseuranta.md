@@ -1,3 +1,5 @@
+Ohjeversion tunniste: 1.0.0
+
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
 
 TARKOITUS JA RAJAUS
