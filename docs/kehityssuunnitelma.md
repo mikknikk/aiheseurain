@@ -1,6 +1,6 @@
 # Uutisseurannan kehityssuunnitelma
 
-**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio on toteutuksessa PR:ssä #30.  
+**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) on yhdistetty ja Valvomon siirto omalle sivulleen (#38) on toteutuksessa.  
 **Päivitetty:** 2026-11-16
 
 Tämä dokumentti kuvaa koko GitHub Pages -sivuston tavoitetilan, osioiden vastuut, tekniset periaatteet ja vaiheistuksen. Yksittäisten kehitystehtävien ajantasainen tila ylläpidetään GitHub Issues -tiketteinä; tätä dokumenttia ei käytetä rinnakkaisena tehtävälistana. Suunnitelman kirjaaminen ei tarkoita, että ominaisuus olisi jo käytössä.
@@ -17,7 +17,7 @@ Raporttiarkisto on mahdollinen myöhempi ominaisuus, ei oma ensisijainen osionsa
 
 Käyttöliittymä on staattinen GitHub Pages -sivusto. Se lukee automaatioiden tuottamia julkisia JSON-tiedostoja ja RSS-syötteitä, mutta ei tarvitse selaimessa GitHub-kirjoitusoikeuksia, salaisuuksia tai käyttäjätunnistusta. Automaatiot ja niiden tietojen keruu pysyvät erillään käyttöliittymästä.
 
-Tarkat tiedostonimet, teknologiat ja hakemistorakenne päätetään ennen toteutusta nykyisen Pages-julkaisun ja repositorion rakenteen tarkistamisen jälkeen. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
+Sivuston juuri (`/`) toimii Uutisvahdin etusivuna. Valvomolla on oma osoite `/valvomo/`; RSS-lukijalle ja Kehitysjonolle varataan omat reitit niiden valmistuessa. Kaikki sivut käyttävät samaa Jekyll-sivupohjaa ja navigaatiota. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
 
 ## 2. Valvomo: seurannan tila
 
@@ -295,7 +295,7 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 - [ ] Näytä tiedon viimeisin päivitysaika ja vanhentuneen tiedon tila.
 - [ ] Lisää JSON-skeemojen, käyttöliittymän ja virhetilojen testit.
 
-**Toteutustilanne:** [PR #30 – Valvomon vähimmäisversio](https://github.com/mikknikk/uutiset/pull/30) on avoinna. Nykyiset automaatiot eivät vielä tallenna vaihekohtaista ajohistoriaa, joten ensimmäinen versio näyttää tämän rajoitteen suoraan.
+**Toteutustilanne:** [PR #30 – Valvomon vähimmäisversio](https://github.com/mikknikk/uutiset/pull/30) on yhdistetty. Valvomon erottaminen juurietusivusta omalle `/valvomo/`-sivulleen toteutetaan tiketin #38 PR:ssä. Nykyiset automaatiot eivät vielä tallenna vaihekohtaista ajohistoriaa, joten ensimmäinen versio näyttää tämän rajoitteen suoraan.
 
 **Hyväksymiskriteeri:** Valvomo näyttää todellisen, validoituun dataan perustuvan tilan; epäonnistumista ei esitetä onnistumisena eikä automaatioiden tietoja sekoiteta.
 
@@ -350,7 +350,9 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 ## 10. Muutosloki
 
+- **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Uutisvahdin palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
+
 - **2026-11-16:** ensimmäinen tavoitekuvaus ja vaiheistettu kehityssuunnitelma kirjattu Valvomolle ja RSS-lukijalle.
 - **2026-11-16:** kehitysjono lisätty kolmanneksi osioksi. GitHub Issues määritelty tikettien ensisijaiseksi tietolähteeksi; yksittäisten tikettien siirto backlogiin on seuraava työvaihe.
 - **2026-11-16:** nykyinen Pages-julkaisutapa ja Valvomon tietomalli kartoitettu. Kanoniset seurantatiedostot säilyvät tietolähteinä; erillisiä päällekkäisiä status-JSONeja ei luoda.
-- **2026-11-16:** Valvomon vähimmäisversio siirretty toteutukseen PR:ssä #30. Kehitysvaiheiden järjestys päivitetty vastaamaan Valvomon, RSS-lukijan ja kehitysjonon tikettien prioriteetteja.
+- **2026-11-16:** Valvomon vähimmäisversio (#30) yhdistetty. Kehitysvaiheiden järjestys päivitetty vastaamaan Valvomon, RSS-lukijan ja kehitysjonon tikettien prioriteetteja.

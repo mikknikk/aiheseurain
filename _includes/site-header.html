@@ -2,7 +2,8 @@
   <a class="site-brand" href="{{ '/' | relative_url }}">Uutisvahti</a>
   <nav aria-label="Päänavigaatio">
     <ul>
-      <li><a href="{{ '/' | relative_url }}" aria-current="page">Valvomo</a></li>
+      <li><a href="{{ '/' | relative_url }}"{% if page.section == "home" %} aria-current="page"{% endif %}>Etusivu</a></li>
+      <li><a href="{{ '/valvomo/' | relative_url }}"{% if page.section == "valvomo" %} aria-current="page"{% endif %}>Valvomo</a></li>
       <li><span class="nav-upcoming">RSS-lukija <span>(tulossa)</span></span></li>
       <li><span class="nav-upcoming">Kehitysjono <span>(tulossa)</span></span></li>
     </ul>
