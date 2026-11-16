@@ -4,7 +4,8 @@
   "updated_at": null,
   "notes": [
     "Aihekohtainen lähderekisteri: Euroviisut. Käyttää yhteistä JSON Schema -skeemaa.",
-    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
+    "Suomen tapahtumahaun yleiset löytölähteet on lisätty rekisteriin. Lipunmyyntipalvelut ovat hakuvihjeitä, eivät tapahtuman ensisijaisia vahvistuslähteitä; tarkista tapahtuma järjestäjän omasta ilmoituksesta."
   ],
   "sources": [
     {
@@ -131,6 +132,51 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
+      ]
+    },
+    {
+      "id": "lippu-fi-events",
+      "name": "Lippu.fi – tapahtumahaku",
+      "url": "https://www.lippu.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "ticketmaster-fi-events",
+      "name": "Ticketmaster Suomi – tapahtumahaku",
+      "url": "https://www.ticketmaster.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "tiketti-fi-events",
+      "name": "Tiketti – tapahtumahaku",
+      "url": "https://www.tiketti.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "regions": [
+        "FI"
       ]
     }
   ]
