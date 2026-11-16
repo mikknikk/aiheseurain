@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.0.0
+Ohjeversion tunniste: 1.0.1
 Viimeksi päivitetty: 2026-11-16
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -105,4 +105,5 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Kun tämän käsikirjan sitovia ohjeita muutetaan, päivitä versionumero ja saman muutoksen yhteydessä `data/seurantatila.json`:n `automation_instructions.current_version`. Automaattisen testin pitää hylätä niiden ristiriita.
 - Älä muuta `last_successful_run_version`-arvoa käsikirjaa päivitettäessä. Se kertoo viimeisimmän onnistuneen ajon version ja päivittyy vasta seuraavan onnistuneen ajon yhteydessä.
 - Jokainen onnistunut pääautomaation ajo kirjaa käytetyn version ja ajoajan koneelliseen seurantatilaan. Näin tulos voidaan jälkikäteen yhdistää täsmälliseen ohjeversioon.
-- Tämä versionhallinta koskee pääautomaatiota. Erillisen näytösvahdin ohjeita, promptia tai ajastusta ei muuteta tässä työssä.
+- Tämä versionhallinta koskee pääautomaatiota. Näytösvahdin tehtävä, hakusäännöt ja ajastus säilyvät ennallaan. Sen kehotteeseen lisättiin vain yhteensopivuusvarmistus: se säilyttää `automation_instructions`-osion muuttumattomana, kun se päivittää samaa JSON-seurantatiedostoa.
+- Versio 1.0.1: täsmennettiin erillisen näytösvahdin JSON-kenttien säilytys uuden pääautomaation versionhallintaosion käyttöönoton jälkeen.
