@@ -96,13 +96,7 @@ def tarkista_osoite(kohde, timeout):
     viimeinen_virhe = None
     for yritys in range(3):
         try:
-            try:
-                status, lopullinen = tee_pyyntö(url, "HEAD", timeout)
-            except urllib.error.HTTPError as error:
-                if error.code in (403, 405, 501):
-                    status, lopullinen = tee_pyyntö(url, "GET", timeout)
-                else:
-                    status, lopullinen = error.code, error.geturl()
+            status, lopullinen = tee_pyyntö(url, "HEAD", timeout)
             if status in (403, 405, 501):
                 status, lopullinen = tee_pyyntö(url, "GET", timeout)
             tulos = luokittele_vastaus(status, url, lopullinen)
