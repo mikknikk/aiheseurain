@@ -28,7 +28,7 @@ LÄHDEPEITTO JA TARKISTUSMENETELMÄ
 Jokaiselle raportointijaksolle tee erilliset hakukierrokset:
 1. kielialueittain paikallismedioiden ja paikalliskielisten hakutulosten haku;
 2. virallisten tuotantoyhtiöiden, levittäjien, tekijöiden ja elokuvien kanavien haku;
-3. kymmenen seuratun henkilön ja kuuden projektin nimikohtainen haku kaikilla olennaisilla kirjoitusasuilla;
+3. kymmenen seuratun henkilön ja kahdeksan projektin nimikohtainen haku kaikilla olennaisilla kirjoitusasuilla;
 4. tärkeimpien löydösten riippumaton varmennus ja ristiriitojen tarkistus.
 Älä tyydy yhteen yleiseen "Indian cinema news" -hakuun. Jos jokin kielialue jää haussa vajaaksi, ilmoita se raportissa; älä esitä sitä kattavasti tarkistetuksi.
 Arvioi lähteen toimituksellinen vastuu, kirjoittajan/bylinen ja päiväyksen näkyvyys, alkuperäislähteiden linkitys, korjauskäytäntö, aiempi paikkansapitävyys ja se, onko kyse uutistoimituksesta vai fanisivusta/aggregaatista. Fanitilit ja huhusivut voivat olla vihjeitä, eivät itsenäinen vahvistus.
