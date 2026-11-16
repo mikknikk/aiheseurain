@@ -96,6 +96,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/nayostohistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
 - `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila sekä pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversiot ja viimeksi onnistuneesti käytetyt versiot.
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
+- `schemas/naytosten-muutoshistoria.schema.json`: näytöshistorian JSON Schema Draft 2020-12 -skeema.
 - `scripts/validate_feeds.py` ja `.github/workflows/validate-feeds.yml`: automaattiset rakennetarkistukset ja niiden suoritus.
 - `feeds/*.xml`: julkaistut RSS-artikkelit; jokainen syöte sisältää vain sille kuuluvan aiheen.
 
@@ -143,6 +144,6 @@ Skriptien kommentointi- ja ylläpitovaatimukset on määritelty sitovasti tiedos
 
 ## Automaattiset laatutestit
 
-GitHub Actions suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
+GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ja suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Näytöshistorian rakenteen tarkistus tehdään lisäksi virallista JSON Schema -määrittelyä vasten. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
 
 Automaattiset testit eivät todista uutisväitteiden paikkansapitävyyttä, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään erikseen.
