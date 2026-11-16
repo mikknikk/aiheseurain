@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/mikknikk/uutiset/main/schemas/seurantatila.schema.json",
+  "title": "Uutisseurannan koneellinen seurantatila",
+  "description": "Pääautomaation kiertotila, erillisen näytösvahdin tila ja automaatio-ohjeiden versiot.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "timezone",
+    "updated_at",
+    "notes",
+    "rotation",
+    "separate_screening_watch",
+    "automation_instructions",
+    "quality_check_instructions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "timezone": {
+      "const": "Europe/Helsinki"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rotation": {
+      "$ref": "#/$defs/rotation"
+    },
+    "separate_screening_watch": {
+      "$ref": "#/$defs/screeningWatch"
+    },
+    "automation_instructions": {
+      "$ref": "#/$defs/instructions"
+    },
+    "quality_check_instructions": {
+      "$ref": "#/$defs/instructions"
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "nullableDateTime": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableCount": {
+      "anyOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "instructions": {
+      "type": "object",
+      "required": [
+        "document",
+        "current_version",
+        "last_successful_run_version",
+        "last_successful_run_at",
+        "startup_prompt_id"
+      ],
+      "properties": {
+        "document": {
+          "type": "string",
+          "minLength": 1
+        },
+        "current_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_successful_run_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_successful_run_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "startup_prompt_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "task": {
+      "type": "object",
+      "required": [
+        "name",
+        "feed",
+        "last_successful_check",
+        "last_period_start",
+        "last_period_end",
+        "last_result",
+        "published_items",
+        "sources_checked",
+        "errors"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feed": {
+          "type": "string",
+          "pattern": "^feeds/[a-z0-9-]+\\.xml$"
+        },
+        "last_successful_check": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "last_period_start": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "last_period_end": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "last_result": {
+          "enum": [
+            "published",
+            "not_recorded",
+            "partial",
+            "failed"
+          ]
+        },
+        "published_items": {
+          "$ref": "#/$defs/nullableCount"
+        },
+        "sources_checked": {
+          "$ref": "#/$defs/nullableCount"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "rotation": {
+      "type": "object",
+      "required": [
+        "next_task",
+        "tasks"
+      ],
+      "properties": {
+        "next_task": {
+          "enum": [
+            "tolkien",
+            "taylor_swift",
+            "gurmeet_ram_rahim_singh",
+            "muumit",
+            "wakaliwood",
+            "euroviisut",
+            "sompote_sands",
+            "shakkidraamat",
+            "intialaiset_elokuvat"
+          ]
+        },
+        "tasks": {
+          "type": "object",
+          "required": [
+            "tolkien",
+            "taylor_swift",
+            "gurmeet_ram_rahim_singh",
+            "muumit",
+            "wakaliwood",
+            "euroviisut",
+            "sompote_sands",
+            "shakkidraamat",
+            "intialaiset_elokuvat"
+          ],
+          "properties": {
+            "tolkien": {
+              "$ref": "#/$defs/task"
+            },
+            "taylor_swift": {
+              "$ref": "#/$defs/task"
+            },
+            "gurmeet_ram_rahim_singh": {
+              "$ref": "#/$defs/task"
+            },
+            "muumit": {
+              "$ref": "#/$defs/task"
+            },
+            "wakaliwood": {
+              "$ref": "#/$defs/task"
+            },
+            "euroviisut": {
+              "$ref": "#/$defs/task"
+            },
+            "sompote_sands": {
+              "$ref": "#/$defs/task"
+            },
+            "shakkidraamat": {
+              "$ref": "#/$defs/task"
+            },
+            "intialaiset_elokuvat": {
+              "$ref": "#/$defs/task"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "screeningWatch": {
+      "type": "object",
+      "required": [
+        "name",
+        "feed",
+        "cadence",
+        "last_successful_check",
+        "last_period_start",
+        "last_period_end",
+        "last_result",
+        "published_items",
+        "sources_checked",
+        "errors",
+        "automation_instructions"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feed": {
+          "const": "feeds/intialaisten-elokuvien-naytokset.xml"
+        },
+        "cadence": {
+          "const": "daily"
+        },
+        "last_successful_check": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "last_period_start": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "last_period_end": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "last_result": {
+          "enum": [
+            "success",
+            "partial",
+            "failed",
+            "not_recorded"
+          ]
+        },
+        "published_items": {
+          "$ref": "#/$defs/nullableCount"
+        },
+        "sources_checked": {
+          "$ref": "#/$defs/nullableCount"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "automation_instructions": {
+          "$ref": "#/$defs/instructions"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

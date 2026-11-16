@@ -57,6 +57,7 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 ## Koneellinen seurantatila ja automaattiset testit
 
 - `data/seurantatila.json` on koneellisesti luettava rinnakkaistila. Sen `rotation.next_task`-arvon pitää vastata [tehtäväjonon](tehtavajono.md) seuraava-tehtävä-merkintää.
+- Tiedoston rakenne validoidaan skeemalla `schemas/seurantatila.schema.json` ennen projektikohtaisia eheystarkistuksia. Valvomon tietolähteiden ja julkaisun tarkempi vastuunjako on dokumentissa [Valvomon tietomalli](valvomon-tietomalli.md).
 - Päivitä kyseisen tehtävän `last_successful_check`, `last_period_start`, `last_period_end`, `last_result`, `published_items` ja `sources_checked` vasta, kun tarkistus on onnistunut ja kaikki tarvittavat GitHub-kirjoitukset on luettu takaisin.
 - Käytä ISO 8601 -aikaleimoja aikavyöhyketietoineen. Älä päättele vanhoja tarkkoja aikoja jälkikäteen. Tuntematon arvo säilyy `null`-arvona.
 - Erillisen näytösvahdin tila kirjataan JSON-tiedoston `separate_screening_watch`-osioon. Se ei muuta `rotation.next_task`-arvoa.
