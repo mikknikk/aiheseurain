@@ -7,7 +7,7 @@ Tämä projekti kokoaa suomeksi intialaisen elokuvan uutisia ja julkaisee pitkä
 - **RSS-syöte:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
 - **Projektin sivu:** [uutiset-repositorio](https://github.com/mikknikk/uutiset)
 
-Päivittäinen raportti voi olla viikkokatsausta lyhyempi, jos uutisia on vähän. Sisältöä ei täydennetä vanhoilla uutisilla vain pituuden vuoksi.
+Raportti voi olla lyhyt, jos uutisia on vähän. Sisältöä ei täydennetä vanhoilla uutisilla vain pituuden vuoksi.
 
 ## Tavoite ja toimitukselliset periaatteet
 
@@ -176,7 +176,7 @@ Raportissa käytetään selkeää otsikointia, päiväystä, informatiivista alo
 
 Raportit julkaistaan GitHub Pagesin RSS-syötteessä:
 
-**Päivittäinen uutiskooste:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
+**Uutiskooste:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
 
 - Yksi RSS `<item>` vastaa yhtä kokonaista raporttia.
 - Suomen näytöksillä on oma erillinen syöte ja näytösvahti; ne eivät kuulu tähän uutisraporttiin tai sen RSS-syötteeseen.
