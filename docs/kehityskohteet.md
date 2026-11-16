@@ -1,0 +1,92 @@
+# Uutisseurannan kehityskohteet
+
+Tämä dokumentti on repositorion kehitystyön ajantasainen työlista. Se erottaa jo toteutetut parannukset avoimista tehtävistä ja auttaa valitsemaan seuraavan työn ilman, että valmiita asioita ehdotetaan uudelleen.
+
+Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen prioriteetti vaihtuu. Älä merkitse tehtävää valmiiksi pelkän suunnitelman tai osittaisen toteutuksen perusteella.
+
+## Tavoitetila
+
+Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidettävä. Sen on säilytettävä eri aiheet erillään, osoitettava uutisten lähteet ja seurantajaksot sekä havaittava rakenteelliset virheet automaattisesti. Kehityksessä suositaan pieniä, testattavia muutoksia. Uudet ja muutetut skriptit kommentoidaan suomeksi vähintään `scripts/validate_feeds.py`-tiedoston tasoisesti; tarkempi sääntö on [kehityskäytännöissä](kehityskaytannot.md).
+
+## Toteutetut kohteet
+
+- [x] **Koneellisesti luettava seurantatila.** `data/seurantatila.json` tallentaa yhdeksän aihekierroksen tehtävän ja erillisen näytösvahdin tilaa. Tuntemattomia vanhoja tarkistusaikoja ei täytetä arvauksilla.
+- [x] **Automaattiset GitHub Actions -laat testit.** `.github/workflows/validate-feeds.yml` suorittaa tarkistukset push- ja pull request -muutoksissa.
+- [x] **RSS-syötteiden rakennetarkistukset.** Kaikkien kymmenen syötteen XML, GUIDien olemassaolo ja yksilöllisyys, item-tason `<link>`-elementtien kielto ja CDATA-kuvaukset tarkistetaan.
+- [x] **RSS-kuvausten HTML-tarkistukset.** Testataan muun muassa elementtien sulkeutuminen, linkkien HTTP(S)-osoitteet, otsikkotasojen järjestys ja kuvien vaihtoehtotekstit.
+- [x] **Dokumentaation ja seurantatilan yhdenmukaisuustestit.** Testi vertaa README:n syötetaulukkoa, tehtäväjonon yhdeksää tehtävää ja JSON-tilatiedoston kiertojärjestystä sekä tarkistaa seurantajaksojen aikaleimojen aikavyöhykkeet ja näytösvahdin erillisyyden.
+- [x] **Aloittelijaystävällinen skriptidokumentointi.** `scripts/validate_feeds.py` sisältää suomenkieliset docstring-kuvaukset ja kommentit, jotka selittävät myös Pythonia vähemmän osaavalle lukijalle keskeisen toiminnan.
+- [x] **Uusien skriptien kommentointisääntö.** `docs/kehityskaytannot.md`, README ja tämä kehityskohdelista edellyttävät, että kaikki uudet skriptit kommentoidaan vastaavalla perusteellisuudella ja kommentit pidetään ajan tasalla.
+
+## Avoimet kehityskohteet
+
+### Prioriteetti 1 – näytösseurannan muutoshistoria
+
+**Tavoite:** tehdä näytösten muutoksista jäljitettäviä ilman, että vanhoja RSS-itemeitä tarvitsee muokata tai poistaa huomaamatta.
+
+- [ ] Suunnittele näytösseurannan erillinen muutosloki, joka erottaa uudet näytökset, aika- tai paikkamuutokset, peruutukset ja muut olennaiset tilamuutokset.
+- [ ] Tallenna jokaisesta muutoksesta havaintoaika, elokuva, näytöksen yksilöivä tunniste tai riittävät tunnistetiedot, vanha ja uusi tieto sekä lähde.
+- [ ] Säilytä ero teatterin vahvistaman, järjestäjän ilmoittaman ja kolmannen osapuolen ilmoittaman tiedon välillä.
+- [ ] Määritä, milloin muutos julkaistaan RSS:ssä uutena päivityksenä ja miten alkuperäisen näytösartikkelin historia säilyy.
+- [ ] Lisää muutoslokille rakennetarkistukset ja dokumentoi sen käyttö näytösvahdin ohjeeseen.
+
+**Valmistumiskriteeri:** muutos voidaan jäljittää lähteeseen ja havaintoaikaan, eikä peruutettu tai muuttunut näytös jää virheellisesti voimaan ilman selkeää päivitystä.
+
+### Prioriteetti 2 – lähteiden kattavuuden seuranta
+
+**Tavoite:** pystyä arvioimaan, mitä lähteitä ja alueita kunkin aiheen tarkistuksessa todella käytiin läpi.
+
+- [ ] Yhtenäistä lähderekistereihin lähteen nimi, URL, aihe, kieli tai alue, lähdetyyppi (ensisijainen/toimituksellinen/muu), viimeisin tarkistusaika ja mahdollinen käyttörajoite.
+- [ ] Kirjaa tehtäväkohtaisesti tarkistetut lähteet niin, että `data/seurantatila.json` tai siihen liittyvä koneellisesti luettava raportti kertoo muutakin kuin pelkän lukumäärän.
+- [ ] Tuo esiin lähteet, joita ei voitu tarkistaa, ja syy (esimerkiksi sivusto ei toimi, kirjautumisrajoitus tai sisältöä ei löydy).
+- [ ] Arvioi aiheittain kieli- ja maantieteellisen kattavuuden puutteita. Älä tulkitse lähteiden lukumäärää yksin kattavuuden mittariksi.
+- [ ] Lisää mahdollisuuksien mukaan automaattinen tarkistus lähderekisterien rakenteelle ja dokumentaation yhdenmukaisuudelle.
+
+**Valmistumiskriteeri:** jokaisesta raportista voidaan jälkikäteen nähdä, mitä lähteitä tarkistettiin ja mitkä olennaiset lähteet jäivät tavoittamatta.
+
+### Prioriteetti 3 – uutisten luotettavuusluokituksen täsmennys
+
+**Tavoite:** tehdä uutisraporttien luotettavuusmerkinnöistä yhdenmukaisia ja perusteltuja.
+
+- [ ] Määritä selkeät luokat ja niiden kriteerit, esimerkiksi vahvistettu ensisijaislähteellä, useasta riippumattomasta toimituksellisesta lähteestä varmennettu, yhden luotettavan lähteen tieto ja vahvistamaton/epävarma.
+- [ ] Erota lähteen luotettavuus yksittäisen väitteen varmistumisesta. Virallinen lähde voi vahvistaa oman ilmoituksensa, mutta ei välttämättä kaikkia siihen liittyviä väitteitä.
+- [ ] Määritä, miten ristiriitaiset lähteet, nimettömät lähteet, huhut ja nopeasti muuttuvat tiedot käsitellään.
+- [ ] Lisää luokitusohje yleisiin julkaisuperiaatteisiin ja aihekohtaisiin ohjeisiin.
+- [ ] Lisää testejä, jotka tarkistavat luokituksen pakollisen esitystavan, mutta eivät yritä koneellisesti päätellä väitteen totuutta.
+
+**Valmistumiskriteeri:** lukija ymmärtää jokaisen luokan merkityksen ja sen, mihin varmennus perustuu. Luokitusta ei esitetä näennäisenä numeerisena tarkkuutena.
+
+### Prioriteetti 4 – linkkien toimivuuden seuranta
+
+- [ ] Selvitä erillisen, aikakatkaisuja ja uudelleenohjauksia sietävän linkkitarkistuksen toteutus.
+- [ ] Tarkista uutisten lähdelinkit ja kanavien osoitteet ilman, että yksittäinen tilapäinen verkkovirhe kaataa RSS:n rakennetestit.
+- [ ] Raportoi rikkinäiset linkit ja uudelleenohjaukset; älä muuta lähdeosoitteita automaattisesti ilman tarkistusta.
+
+**Valmistumiskriteeri:** linkkiongelmat havaitaan ja raportoidaan, mutta tilapäiset verkkohäiriöt eivät aiheuta vääriä laatuhälytyksiä.
+
+### Prioriteetti 5 – saavutettavuuden testauksen syventäminen
+
+- [ ] Tee dokumentoitu manuaalinen testaus näppäimistöllä, ruudunlukijalla, suurennuksella, kapealla näkymällä ja pakotetuilla väreillä.
+- [ ] Tarkista värikontrastit WCAG 2.2 AAA -tavoitteiden mukaisesti kaikissa käyttöliittymätiloissa, joissa sisältöä esitetään.
+- [ ] Kirjaa testatut ympäristöt, löydökset ja korjaukset saavutettavuusdokumenttiin.
+- [ ] Pidä automaattiset HTML-rakennetestit erillään varsinaisesta WCAG-vaatimustenmukaisuuden arvioinnista.
+
+**Valmistumiskriteeri:** saavutettavuuden tila perustuu dokumentoituihin testeihin. AAA-tasoa ei väitetä ennen kuin soveltuvat vaatimukset on arvioitu.
+
+## Suositeltu toteutusjärjestys
+
+1. Näytösseurannan muutoshistorian tietomalli ja dokumentointi.
+2. Lähderekisterien yhdenmukaistaminen ja lähdekattavuuden raportointi.
+3. Uutisten luotettavuusluokkien määrittely ja ohjeistus.
+4. Linkkien toimivuuden erillinen seuranta.
+5. Saavutettavuuden manuaalinen testaus ja tulosten kirjaaminen.
+
+Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän prioriteetit sitä edellyttävät. Älä kuitenkaan laajenna järjestelmää tarpeettomasti: jokaisen uuden tiedoston, automaation ja testin pitää ratkaista tunnistettu ylläpito- tai luotettavuusongelma.
+
+## Rajaukset ja rehellinen raportointi
+
+- Automaattisten testien läpäisy osoittaa vain testattujen rakenteellisten ehtojen täyttymisen. Se ei todista uutisväitteiden paikkansapitävyyttä, lähteiden riippumattomuutta, linkkien toimivuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä.
+- Älä lisää erillisiä aihekohtaisia automaatioita. Nykyinen yhdeksän tehtävän kierto ja siitä riippumaton päivittäinen näytösvahti säilyvät.
+- Säilytä RSS-syötteiden vanhat itemit ja GUIDit. Älä lisää tyhjiä tai keinotekoisia uutisartikkeleita.
+- Kaikissa raporteissa ilmoitetaan tehtäväkohtaisen seurantajakson alku ja loppu Europe/Helsinki-ajassa. Tuntemattomia aikoja ei arvata.
+- Kaikki uudet skriptit kommentoidaan suomeksi vastaavalla perusteellisuudella kuin `scripts/validate_feeds.py`; noudata [kehityskäytäntöjä](kehityskaytannot.md).
