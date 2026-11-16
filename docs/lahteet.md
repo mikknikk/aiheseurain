@@ -112,7 +112,7 @@ Uutislähteiden rekisteriin on lisätty alueellisia toimituksia myös valtakunna
 - **Odia – Odisha:** Sambad ja Dharitri.
 - **Suomi:** Yle, Helsingin Sanomat, Episodi, Elokuvauutiset.fi ja Film-O-Holic.
 
-Lähteet ovat ehdokas- ja hakulista, eivät takuu siitä, että jokainen sivusto olisi jokaisella ajolla saavutettavissa tai julkaisee juuri kyseisen alan uutisia. Älä merkitse last_checked_at-arvoa ennen kuin alkuperäisen lähteen sisältö on kyseisellä ajolla todella tarkistettu. URL-osoitteiden olemassaolo rekisterissä ei itsessään ole linkkitarkistuksen tulos.
+Lähteet ovat ehdokas- ja hakulista, eivät takuu siitä, että jokainen sivusto olisi jokaisella ajolla saavutettavissa tai julkaisee juuri kyseisen alan uutisia. Rekisterin critical=true tarkoittaa operatiivisesti pakollista tarkistettavaa lähtölähdettä, ei lähteen laatua tai puolueettomuutta koskevaa luotettavuusarviota. source_type kuvaa lähteen roolia (ensisijainen, toimituksellinen tai muu), ei yksin yksittäisen väitteen vahvistumista. Älä merkitse last_checked_at-arvoa ennen kuin alkuperäisen lähteen sisältö on kyseisellä ajolla todella tarkistettu. URL-osoitteiden olemassaolo rekisterissä ei itsessään ole linkkitarkistuksen tulos.
 
 ### Maantieteellisten tunnisteiden käytäntö
 
