@@ -82,6 +82,31 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 - Tarkista Suomen yhteys kaikissa aiheissa: suomalaiset uutislähteet, järjestäjät, tapahtumapaikat, festivaalit, elokuvateatterit, konsertit, kilpailut ja muut tapahtumat. Mainitse Suomi-yhteys, kun sellainen löytyy ja on uutisarvoinen. Älä koskaan lisää täytehuomiota siitä, ettei Suomi-yhteyttä löytynyt.
 - Kirjaa uusia hyödyllisiä lähteitä ja niiden luotettavuus tähän tiedostoon sekä lähderiippuvuudet docs/seuranta.md:hen.
 
+## Täsmennetyt seuranta-alueet ja hakutavat
+
+### Suomessa järjestettävät aihekohtaiset tapahtumat
+
+Tolkienin, Taylor Swiftin, Muumien ja Euroviisujen seurannassa tee joka ajolla erillinen haku Suomessa järjestettävistä tai Suomeen liittyvistä tapahtumista. Älä tyydy yleiseen uutishakuun tai aiheiden virallisiin kansainvälisiin uutisvirtoihin. Tarkista tarpeen mukaan:
+
+- aiheeseen liittyvien suomalaisten yhdistysten, faniryhmien, oikeudenhaltijoiden, artistien ja järjestäjien omat ilmoitukset;
+- museoiden, kulttuurikeskusten, kirjastojen, konserttisalien, elokuvateattereiden, festivaalien, messujen ja muiden tapahtumapaikkojen ohjelmistot;
+- tapahtumajärjestäjien ja lipunmyyjien tapahtumakalenterit sekä tapahtumakohtaiset viralliset sivut;
+- paikalliset uutis- ja kulttuurimediat.
+
+Sisällytä konserttien lisäksi näyttelyt, luennot, keskustelut, fanitapahtumat, katselujuhlat, erikoisnäytökset, teatteri, kilpailut, messut, perhetapahtumat ja muut yleisölle avoimet tilaisuudet. Julkaise vain aiheeseen aidosti liittyvät ja uutisarvoiset tapahtumat; tarkista päivämäärä, paikka, järjestäjä ja lipunmyynnin tila alkuperäislähteestä. Tapahtumakalenterin listaus ei yksin vahvista tapahtuman toteutumista, jos virallinen järjestäjätieto on saatavilla.
+
+### Shakkidraamat ja shakkisisällöntuottajien some
+
+Shakkidraamat tarkoittaa todellisen shakkimaailman ajankohtaisia kiistoja ja julkisia konflikteja. Seuraa FIDEn ja kansallisten liittojen lisäksi pelaajia, järjestäjiä, tuomareita, kommentaattoreita ja tunnettuja shakkisisällöntuottajia heidän julkisissa somekanavissaan. Tunnista aktiiviset ja uutisarvoiset tekijät aihekohtaisen haun perusteella sen sijaan, että seuranta lukittaisiin pysyvään nimilistaan. Tarkista, että tili on henkilön tai organisaation aito julkinen tili; fanitilit ja uudelleenjulkaisut eivät ole ensisijaisia lähteitä.
+
+Somejulkaisu voi olla ensisijainen lähde sille, mitä kyseinen henkilö itse sanoi, mutta ei automaattinen todiste julkaisussa esitetyistä syytöksistä. Varmista kiistan taustafaktat muista lähteistä ja etsi osapuolten vastineet. Seuraa merkittäviä lausuntoja, väitteitä, vastauksia, keskusteluja, yhteistyö- ja sopimuskiistoja sekä julkisia henkilökonflikteja; ohita rutiinipostaukset, tavalliset pelivideot ja yleinen somekohina. Merkitse selvästi, kuka esitti väitteen, milloin, missä yhteydessä ja onko väite vahvistettu, kiistetty, tutkinnassa vai ratkaistu.
+
+Esimerkkitapauksia seurannan luonteen ymmärtämiseksi ovat Carlsenin ja FIDEn jännitteet sekä Jeansgate, Vladimir Kramnikin esittämät vilppisyytökset ja niihin annetut vastaukset, Hans Niemanniin liittyvät aiemmat syytökset ja niiden myöhemmät kehitykset sekä Danya/Daniel Naroditskyn kuolemaan liittyvät luotettavasti raportoidut tapahtumat. Esimerkit eivät ole väitteitä siitä, että niissä olisi juuri nyt uutta uutisoitavaa.
+
+### Gurmeet Ram Rahim Singh: elokuvat ja musiikki
+
+Oikeudellisten ja virallisten tapahtumien rinnalla seuraa henkilön elokuva- ja musiikkitoimintaa: elokuvaprojektit, julkaisut ja levitys, kappaleet, albumit, musiikkivideot, soundtrackit, musiikkikanavien julkaisut ja merkittävät esiintymiset. Hae englanniksi, hindiksi ja pandžabiksi sekä nimivariantteja ja paikallisia kirjoitusasuja. Tarkista julkaisun yhteys henkilöön virallisesta kanavasta tai luotettavasta toimituksellisesta lähteestä. Erota itse julkaistu sisältö, hänen organisaationsa tuotanto, muiden tekemä sisältö ja riippumaton uutisointi. Älä sekoita samannimisiä henkilöitä.
+
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
 `data/sources/`-hakemistossa on kymmenen tehtäväkohtaista rekisteriä, joissa on yhteensä 119 lähdemerkintää (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, nimi, URL, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: `language_regions` kertoo julkaisun kielet ja `regions` sen maantieteellisen painopisteen.
