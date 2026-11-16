@@ -1,4 +1,4 @@
-Ohjeversion tunniste: 1.0.0
+Ohjeversion tunniste: 1.1.0
 
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
 
@@ -25,7 +25,7 @@ NÄYTÖKSEN HYVÄKSYMISKRITEERIT
 
 TEHTÄVÄKOHTAINEN TARKISTUS
 - Tarkista uudet ja muuttuneet näytöstiedot edellisen onnistuneen näytösseurantavuoron jälkeen. Ilmoita raportissa täsmällinen seurantajakso alku- ja loppuaikoineen Europe/Helsinki-ajassa (päivittäisajossa edellisen onnistuneen näytösvahdin tarkistuksen jälkeen).
-- Etsi vain tulevia näytöksiä aktiiviseen RSS-syötteeseen. Poista menneet, perutut ja muuten vanhentuneet näytösajat.
+- Esitä aktiivisen näytöslistan osassa vain tulevat näytökset. Kun näytöksen alkamisaika on ohitettu, merkitse se muutoshistoriassa tilaan `completed` ja siirrä se uusimman RSS-itemin lopussa olevaan erilliseen **Historialliset näytösajat** -osioon. Historiallisia näytösaikoja ei lasketa tulevien näytösten määrään. Älä käsittele mennyttä näytösaikaa peruttuna tai ohjelmistosta poistettuna.
 - Vertaile löydöksiä nykyiseen feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen ja aiempiin tarkistustuloksiin. Älä ilmoita samaa muuttumatonta näytöstä uudelleen uutena.
 - Ilmoita käyttäjälle vain uusista näytöksistä ja olennaisista muutoksista, kuten ajan, paikan, tekstityksen, lipputilanteen tai peruutuksen muutoksista. Jos uusia tai muuttuneita tietoja ei löydy, älä lähetä turhaa ilmoitusta.
 - Jos lähteiden tiedot ovat ristiriidassa, älä ratkaise ristiriitaa arvaamalla. Näytä ristiriita ja lähteet.
@@ -39,7 +39,7 @@ KINOON-LÖYTÖJEN TEATTERILINKKIEN JÄLJITTÄMINEN
 
 
 MUUTOSHISTORIAN KONEELLINEN YLLÄPITO
-- Ylläpidä näytöskohtaista nykytilaa ja vain lisäämällä ylläpidettävää muutoslokia tiedostossa data/naytosten-muutoshistoria.json. Tietomallin yksityiskohdat ovat docs/nayostohistorian-rakenne.md-tiedostossa.
+- Ylläpidä näytöskohtaista nykytilaa ja vain lisäämällä ylläpidettävää muutoslokia tiedostossa data/naytosten-muutoshistoria.json. Tietomallin yksityiskohdat ovat docs/nayostohistorian-rakenne.md-tiedostossa, ja koneellinen rakenne validoidaan tiedoston schemas/naytosten-muutoshistorian.schema.json JSON Schema -määrittelyä vasten.
 - Lue jokaisen ajon alussa koko muutoshistoria sekä näytös-RSS:n viimeisimmät julkaisuversiot. Vertaa uusia havaintoja JSON-tiedoston screenings-listan edelliseen tilaan.
 - Pidä screening_id pysyvänä, vaikka näytöksen kellonaika, päivämäärä tai paikka muuttuu. Älä luo muutokselle uutta tunnistetta.
 - Lisää jokaisesta todellisesta muutoksesta oma tapahtuma events-listaan. Tapahtumassa on yksilöllinen event_id, observed_at-aikaleima, tyyppi, näytöstunniste, previous- ja current-tilanne, lähteet sekä lyhyt selitys. Muodosta event_id deterministisesti, jotta saman ajon uusintakäsittely ei lisää duplikaattia.
@@ -55,7 +55,7 @@ RSS-SYÖTTEEN RAKENNE JA PÄIVITYS
 - RSS-syötteessä julkaistaan ensimmäisellä löytymiskerralla yksi <item> per elokuva. Kun saman elokuvan näytöstiedoissa tapahtuu myöhemmin muutos, älä korvaa aiempaa itemiä: lisää samaan feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen uusi item, jossa on koko ajantasainen näytöslista.
 - Säilytä kaikki aiemmat julkaisuversiot syötteessä muutoshistoriana. Aiemmat versiot ovat vertailupohjia, vaikka niiden näytösajat olisivat sittemmin menneitä tai poistuneita; vain uusimmassa versiossa näytetään voimassa olevat tulevat näytökset.
 - Jokaisen uuden päivitysitemin otsikossa on elokuvan nimi ja selkeä päivitysaika Suomen paikallisessa ajassa, esimerkiksi "Klara ja aurinko – näytöstiedot päivitetty 15.11.2026 klo 19.30".
-- Jokaisen itemin kuvauksessa esitä ensin koko julkaisuhetken ajantasainen näytöslista. Lisää sen jälkeen erillinen osio "Muutokset edelliseen julkaisuun", jossa eritellään lisätyt, poistetut/perutut ja muuttuneet näytökset sekä muuttuneet teatteri-, aika-, esityskieli-, tekstitys- ja linkkitiedot.
+- Jokaisen itemin kuvauksessa esitä ensin koko julkaisuhetken tulevien näytösten lista. Lisää sen jälkeen erillinen **Historialliset näytösajat** -osio, jossa alkamisaikansa ohittaneet `completed`-tietueet esitetään erillään tulevista näytöksistä. Älä laske niitä tulevien näytösten määrään. Lisää tämän jälkeen erillinen osio "Muutokset edelliseen julkaisuun", jossa eritellään lisätyt, poistetut/perutut ja muuttuneet näytökset sekä muuttuneet teatteri-, aika-, esityskieli-, tekstitys- ja linkkitiedot.
 - Vertaa aina saman elokuvan välittömästi edelliseen julkaistuun itemiin. Ensimmäisessä julkaisussa ilmoita "Ensimmäinen julkaisu". Älä julkaise uutta itemiä, ellei tietoa ole oikeasti muuttunut.
 - Anna jokaiselle julkaisuversiolle oma yksilöllinen ja pysyvä GUID, joka pysyy samana saman julkaisutapahtuman uusintakäsittelyssä. Muodosta se deterministisesti elokuvan tunnisteesta, päivityshetkestä ja muutoksen sisällöstä.
 - Aseta pubDate todelliseen julkaisuhetkeen ja järjestä itemit uusimmasta vanhimpaan. Päivitä kanavan lastBuildDate.
@@ -72,7 +72,7 @@ RSS-SYÖTTEEN RAKENNE JA PÄIVITYS
 - Älä lisää item-tason <link>-elementtiä. Kanavatason linkki on sallittu.
 - Poista menneet, perutut ja vanhentuneet näytösajat vain uusimmasta ajantasaisesta julkaisuversiosta. Älä poista vanhoja RSS-itemeitä: ne säilytetään historiallisina julkaisuina.
 - Jos elokuvalla ei enää ole tulevia näytöksiä, julkaise uusi päivitysitem, jossa tämä kerrotaan ja muutokset-osiossa eritellään poistuneet/perutut ajat.
-- Tarkista ennen kirjoitusta, ettei täsmälleen sama päivitysitem ole jo julkaistu. Varmista XML:n jäsennettävyys, GUIDien yksilöllisyys, aikaleimat, muutoslistan oikeellisuus ja item-tason <link>-elementtien puuttuminen.
+- Tarkista ennen kirjoitusta, ettei täsmälleen sama päivitysitem ole jo julkaistu. Varmista XML:n jäsennettävyys, GUIDien yksilöllisyys, aikaleimat, muutoslistan oikeellisuus, tulevien ja historiallisten näytösaikojen erottelu sekä item-tason <link>-elementtien puuttuminen.
 
 ENNEN JOKAISTA AJOA – DOKUMENTAATION ESITARKISTUS
 - Avaa repositorion mikknikk/uutiset ajon alussa ja lue aina ajantasaiset docs/intialaisen-elokuvan-ohje.md-, docs/intialaisen-elokuvan-lahteet.md- ja docs/intialaisen-elokuvan-seuranta.md-tiedostot ennen näytöshakua.
