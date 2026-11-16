@@ -4,7 +4,8 @@
   "notes": [
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
     "Uutiskierron intialaisen elokuvan uutislähteet ja erillisen päivittäisen näytösvahdin lähteet ovat eri topic-tunnisteilla.",
-    "Kino Myyriä koskeva rekisterimerkintä osoittaa toistaiseksi kolmannen osapuolen teatterihakemistoon, ei teatterin omaan kanavaan."
+    "Kino Myyriä koskeva rekisterimerkintä osoittaa toistaiseksi kolmannen osapuolen teatterihakemistoon, ei teatterin omaan kanavaan.",
+    "Rekisteriä laajennettiin 16.11.2026 eri aiheiden ensisijaisiin lähteisiin ja alueellisiin/toimituksellisiin medioihin. Merkinnät ovat hakujen lähtöpisteitä; yksittäisten URL-osoitteiden saatavuutta tai jokaisen lähteen ajantasaista sisältöä ei ole merkitty tarkistetuksi."
   ],
   "sources": [
     {
@@ -400,6 +401,1162 @@
       ],
       "language_regions": [
         "en",
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "harpercollins-tolkien",
+      "name": "HarperCollins",
+      "url": "https://www.harpercollins.com/",
+      "topics": [
+        "tolkien"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "warnerbros-newsroom",
+      "name": "Warner Bros. Discovery – newsroom",
+      "url": "https://press.wbd.com/",
+      "topics": [
+        "tolkien"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "tolkiengateway",
+      "name": "Tolkien Gateway",
+      "url": "https://tolkiengateway.net/",
+      "topics": [
+        "tolkien"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "theguardian-books",
+      "name": "The Guardian – Books",
+      "url": "https://www.theguardian.com/books",
+      "topics": [
+        "tolkien"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "variety-film",
+      "name": "Variety – Film",
+      "url": "https://variety.com/",
+      "topics": [
+        "tolkien"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "umg-news",
+      "name": "Universal Music Group – News",
+      "url": "https://www.universalmusic.com/news/",
+      "topics": [
+        "taylor_swift"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "republic-records",
+      "name": "Republic Records",
+      "url": "https://www.republicrecords.com/",
+      "topics": [
+        "taylor_swift"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "billboard",
+      "name": "Billboard",
+      "url": "https://www.billboard.com/",
+      "topics": [
+        "taylor_swift"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "ap-entertainment",
+      "name": "Associated Press – Entertainment",
+      "url": "https://apnews.com/entertainment",
+      "topics": [
+        "taylor_swift"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "rolling-stone",
+      "name": "Rolling Stone",
+      "url": "https://www.rollingstone.com/",
+      "topics": [
+        "taylor_swift"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "punjab-haryana-highcourt",
+      "name": "Punjab and Haryana High Court",
+      "url": "https://highcourtchd.gov.in/",
+      "topics": [
+        "gurmeet_ram_rahim_singh"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "cbi-india",
+      "name": "Central Bureau of Investigation",
+      "url": "https://cbi.gov.in/",
+      "topics": [
+        "gurmeet_ram_rahim_singh"
+      ],
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "the-hindu-india",
+      "name": "The Hindu",
+      "url": "https://www.thehindu.com/",
+      "topics": [
+        "gurmeet_ram_rahim_singh"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "hindustan-times",
+      "name": "Hindustan Times",
+      "url": "https://www.hindustantimes.com/",
+      "topics": [
+        "gurmeet_ram_rahim_singh"
+      ],
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "tribune-india",
+      "name": "The Tribune – India",
+      "url": "https://www.tribuneindia.com/",
+      "topics": [
+        "gurmeet_ram_rahim_singh"
+      ],
+      "language_regions": [
+        "en",
+        "pa"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "amar-ujala",
+      "name": "Amar Ujala",
+      "url": "https://www.amarujala.com/",
+      "topics": [
+        "gurmeet_ram_rahim_singh"
+      ],
+      "language_regions": [
+        "hi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "moomin-museum",
+      "name": "Moomin Museum",
+      "url": "https://www.muumimuseo.fi/en/",
+      "topics": [
+        "muumit"
+      ],
+      "language_regions": [
+        "fi",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "moomin-characters-news",
+      "name": "Moomin Characters",
+      "url": "https://www.moomin.com/en/",
+      "topics": [
+        "muumit"
+      ],
+      "language_regions": [
+        "en",
+        "fi",
+        "sv",
+        "ja"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "tove-jansson-society",
+      "name": "Tove Jansson Society",
+      "url": "https://tovejansson.com/",
+      "topics": [
+        "muumit"
+      ],
+      "language_regions": [
+        "fi",
+        "sv",
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "yle-culture",
+      "name": "Yle – Culture",
+      "url": "https://yle.fi/aihe/kulttuuri",
+      "topics": [
+        "muumit"
+      ],
+      "language_regions": [
+        "fi",
+        "sv"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "wakaliwood-supa-store",
+      "name": "Wakaliwood Supa Store / studio channel",
+      "url": "https://supastore.wakaliwood.com/pages/frontpage",
+      "topics": [
+        "wakaliwood"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "new-vision-uganda",
+      "name": "New Vision – Uganda",
+      "url": "https://www.newvision.co.ug/",
+      "topics": [
+        "wakaliwood"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "daily-monitor-uganda",
+      "name": "Daily Monitor – Uganda",
+      "url": "https://www.monitor.co.ug/",
+      "topics": [
+        "wakaliwood"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "ugandan-film-festival",
+      "name": "Uganda Communications Commission – Film Festival",
+      "url": "https://www.ucc.co.ug/",
+      "topics": [
+        "wakaliwood"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "ebu-news",
+      "name": "European Broadcasting Union – News",
+      "url": "https://www.ebu.ch/news",
+      "topics": [
+        "euroviisut"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "eurovision-asia",
+      "name": "Eurovision Song Contest Asia",
+      "url": "https://eurovisionasia.com/",
+      "topics": [
+        "euroviisut"
+      ],
+      "language_regions": [
+        "en",
+        "th",
+        "ko",
+        "ms",
+        "vi",
+        "tl",
+        "bn",
+        "ne"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "yle-euroviisut",
+      "name": "Yle – Euroviisut",
+      "url": "https://yle.fi/aihe/musiikki/euroviisut",
+      "topics": [
+        "euroviisut"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "svt-melodifestivalen",
+      "name": "SVT – Melodifestivalen",
+      "url": "https://www.svt.se/melodifestivalen/",
+      "topics": [
+        "euroviisut"
+      ],
+      "language_regions": [
+        "sv"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "bbc-eurovision",
+      "name": "BBC – Eurovision",
+      "url": "https://www.bbc.co.uk/eurovision",
+      "topics": [
+        "euroviisut"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "escxtra",
+      "name": "ESCXTRA",
+      "url": "https://escxtra.com/",
+      "topics": [
+        "euroviisut"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "thai-film-archive",
+      "name": "Thai Film Archive (Public Organization)",
+      "url": "https://www.fapot.or.th/",
+      "topics": [
+        "sompote_sands"
+      ],
+      "language_regions": [
+        "th",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "thai-film-archive-news",
+      "name": "Thai Film Archive – News",
+      "url": "https://www.fapot.or.th/main/news",
+      "topics": [
+        "sompote_sands"
+      ],
+      "language_regions": [
+        "th",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "thai-pbs",
+      "name": "Thai PBS",
+      "url": "https://www.thaipbs.or.th/",
+      "topics": [
+        "sompote_sands"
+      ],
+      "language_regions": [
+        "th"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "nation-thailand",
+      "name": "The Nation Thailand",
+      "url": "https://www.nationthailand.com/",
+      "topics": [
+        "sompote_sands"
+      ],
+      "language_regions": [
+        "en",
+        "th"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "ultraman-official",
+      "name": "Tsuburaya Productions",
+      "url": "https://www.tsuburaya-prod.co.jp/",
+      "topics": [
+        "sompote_sands"
+      ],
+      "language_regions": [
+        "ja",
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "eiga-com",
+      "name": "映画.com (Eiga.com)",
+      "url": "https://eiga.com/",
+      "topics": [
+        "sompote_sands"
+      ],
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "chessbase",
+      "name": "ChessBase News",
+      "url": "https://en.chessbase.com/",
+      "topics": [
+        "shakkidraamat"
+      ],
+      "language_regions": [
+        "en",
+        "de"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "lichess-blog",
+      "name": "Lichess Blog",
+      "url": "https://lichess.org/blog",
+      "topics": [
+        "shakkidraamat"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "us-chess",
+      "name": "US Chess Federation",
+      "url": "https://www.uschess.org/",
+      "topics": [
+        "shakkidraamat"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "european-chess-union",
+      "name": "European Chess Union",
+      "url": "https://www.europechess.org/",
+      "topics": [
+        "shakkidraamat"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "finnish-chess",
+      "name": "Suomen Shakkiliitto",
+      "url": "https://www.shakkiliitto.fi/",
+      "topics": [
+        "shakkidraamat"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "the-hindu-cinema",
+      "name": "The Hindu – Cinema",
+      "url": "https://www.thehindu.com/entertainment/movies/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "times-of-india-entertainment",
+      "name": "The Times of India – Entertainment",
+      "url": "https://timesofindia.indiatimes.com/entertainment",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "ndtv-entertainment",
+      "name": "NDTV – Entertainment",
+      "url": "https://www.ndtv.com/entertainment",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "en",
+        "hi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "bollywood-hungama",
+      "name": "Bollywood Hungama",
+      "url": "https://www.bollywoodhungama.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "hi",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "pinkvilla",
+      "name": "Pinkvilla",
+      "url": "https://www.pinkvilla.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "hi",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "eenadu-cinema",
+      "name": "Eenadu – Cinema",
+      "url": "https://www.eenadu.net/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "te"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "sakshi-telugu",
+      "name": "Sakshi",
+      "url": "https://www.sakshi.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "te"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "123telugu",
+      "name": "123telugu",
+      "url": "https://www.123telugu.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "te",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "hindu-tamil-thisai",
+      "name": "Hindu Tamil Thisai",
+      "url": "https://www.hindutamil.in/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "maalaimalar",
+      "name": "Maalai Malar",
+      "url": "https://www.maalaimalar.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "dinamani",
+      "name": "Dinamani",
+      "url": "https://www.dinamani.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ta"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "vijaya-karnataka",
+      "name": "Vijaya Karnataka",
+      "url": "https://vijaykarnataka.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "prajavani",
+      "name": "Prajavani",
+      "url": "https://www.prajavani.net/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "kannada-prabha",
+      "name": "Kannada Prabha",
+      "url": "https://www.kannadaprabha.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "kn"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "onmanorama",
+      "name": "Onmanorama",
+      "url": "https://www.onmanorama.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "mathrubhumi",
+      "name": "Mathrubhumi",
+      "url": "https://www.mathrubhumi.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "manorama-online",
+      "name": "Manorama Online",
+      "url": "https://www.manoramaonline.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "ml",
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "anandabazar",
+      "name": "Anandabazar Patrika",
+      "url": "https://www.anandabazar.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "bn"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "sangbad-pratidin",
+      "name": "Sangbad Pratidin",
+      "url": "https://www.sangbadpratidin.in/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "bn"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "lokmat",
+      "name": "Lokmat",
+      "url": "https://www.lokmat.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "mr"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "sakal",
+      "name": "Sakal",
+      "url": "https://www.esakal.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "mr"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "loksatta",
+      "name": "Loksatta",
+      "url": "https://www.loksatta.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "mr"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "ajit-punjabi",
+      "name": "Ajit",
+      "url": "https://www.ajitjalandhar.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "pa"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "punjabi-tribune",
+      "name": "Punjabi Tribune",
+      "url": "https://www.punjabitribuneonline.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "pa"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "assam-tribune",
+      "name": "The Assam Tribune",
+      "url": "https://assamtribune.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "en",
+        "as"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "asomiya-pratidin",
+      "name": "Asomiya Pratidin",
+      "url": "https://www.asomiyapratidin.in/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "as"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "sambad-odia",
+      "name": "Sambad",
+      "url": "https://sambad.in/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "or"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "dharitri",
+      "name": "Dharitri",
+      "url": "https://www.dharitri.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "or"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "episodi",
+      "name": "Episodi",
+      "url": "https://www.episodi.fi/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "elokuvauutiset",
+      "name": "Elokuvauutiset.fi",
+      "url": "https://www.elokuvauutiset.fi/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "film-o-holic",
+      "name": "Film-O-Holic",
+      "url": "https://www.film-o-holic.com/",
+      "topics": [
+        "intialaiset_elokuvat_uutiset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "finnish-film-foundation",
+      "name": "Suomen elokuvasäätiö",
+      "url": "https://www.ses.fi/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "cinema-mondo",
+      "name": "Cinema Mondo",
+      "url": "https://www.cinemamondo.fi/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null
+    },
+    {
+      "id": "filmikamari",
+      "name": "Suomen Filmikamari",
+      "url": "https://www.filmikamari.fi/",
+      "topics": [
+        "intialaiset_elokuvat_naytokset"
+      ],
+      "language_regions": [
         "fi"
       ],
       "source_type": "other",
