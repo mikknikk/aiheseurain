@@ -35,15 +35,15 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 **Tavoite:** pystyä arvioimaan, mitä lähteitä ja alueita kunkin aiheen tarkistuksessa todella käytiin läpi.
 
-- [x] Yhtenäisen lähderekisterin tietomalli ja alustava rekisteri: lähteen nimi, URL, tehtävä, kieli/alue, lähdetyyppi, kriittisyys, viimeisin tarkistusaika ja käyttörajoite.
-- [x] Jaa lähteet tehtäväkohtaisiin JSON-tiedostoihin `data/sources/`-hakemistossa. Kaikki yhdeksän uutisaihetta ja erillinen näytösvahti käyttävät samaa JSON Schema -skeemaa; näytösseuranta säilyy omana rekisterinään.
+- [x] Yhteinen lähdekatalogi `data/source-catalog.json`: 122 yksilöllisen lähteen yhteiset perustiedot ylläpidetään kerran; aihekohtaiset käyttöasetukset ovat erillisissä rekistereissä.
+- [x] Kymmenen tehtäväkohtaista käyttörekisteriä `data/sources/`-hakemistossa. Ne viittaavat katalogin lähteisiin `source_id`-kentällä ja säilyttävät kriittisyyden, tarkistusajan ja käyttörajoitteen tehtäväkohtaisina; uutis- ja näytösseuranta ovat erillisiä.
 - [x] Ajokohtainen lähdetarkistusloki `data/lahdetarkistukset.json` erottaa tarkistetut lähteet ja tarkistamatta jääneet lähteet syineen. Varsinaiset automaatioajot eivät ole vielä tuottaneet lokihistoriaa.
 - [x] Ajolokin tietomalli edellyttää tarkistamatta jääneelle lähteelle syyn. Raportointikäytäntö on lisätty molempiin automaatio-ohjeisiin.
-- [x] Tee ensimmäinen aihekohtainen kieli- ja maantieteellisen kattavuuden kartoitus ja kirjaa puutteet docs/lahteet.md:hen. Rekisterissä on nyt 114 lähdemerkintää, joille kieli ja maantieteellinen alue on eroteltu. Tolkienin rekisteriä laajennettiin 16.11.2026 seitsemästä kahteenkymmeneen lähteeseen ja seitsemään kieleen.
+- [x] Tee ensimmäinen aihekohtainen kieli- ja maantieteellisen kattavuuden kartoitus ja kirjaa puutteet docs/lahteet.md:hen. Katalogissa on nyt 122 yksilöllistä lähdettä ja käyttörekistereissä yhteensä 131 aihekohtaista lähdekäyttöä. Tolkienin käyttörekisterissä on 28 lähdeviittausta.
 - [ ] Täydennä jatkossa tunnistettuja aukkoja (esim. Tolkienin Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan toimitukselliset lähteet; Taylor Swiftin muut kuin englanninkieliset lähteet; Wakaliwoodin paikalliskielet; Euroviisujen kansalliset yleisradioyhtiöt; shakin Aasian/Afrikan/Latinalaisen Amerikan lähteet). Älä tulkitse lähteiden lukumäärää yksin kattavuuden mittariksi.
-- [x] JSON Schema -skeemat ja CI-validointi tarkistavat lähderekisterin sekä ajolokin rakenteen ja lähde-ID-viittaukset.
+- [x] Erilliset JSON Schema -skeemat ja CI-validointi tarkistavat katalogin, käyttörekisterien viittaukset sekä tehtäväkohtaisen ajolokin eheyden.
 
-**Jäljellä:** rekisteri on laajennettu kaikkiin tehtäviin 114 merkintään ja ensimmäinen kattavuusaukkojen arvio on dokumentoitu. Lähdeluettelo ei ole vielä tyhjentävä; alueellisia aukkoja täydennetään käytännön seurannassa. Automaatiokehotteet on päivitetty, mutta uudet kirjaukset ja kattavuus on vielä todennettava oikeissa ajoissa. Kohdetta ei merkitä valmiiksi ennen kuin ajolokiin syntyy käyttökelpoisia merkintöjä.
+**Jäljellä:** katalogi ja kymmenen tehtäväkohtaista käyttörekisteriä on toteutettu, ja ensimmäinen kattavuusaukkojen arvio on dokumentoitu. Lähdeluettelo ei ole vielä tyhjentävä; alueellisia aukkoja täydennetään käytännön seurannassa. Automaatiokehotteet on päivitetty, mutta uudet kirjaukset ja kattavuus on vielä todennettava oikeissa ajoissa. Kohdetta ei merkitä valmiiksi ennen kuin ajolokiin syntyy käyttökelpoisia merkintöjä.
 
 **Ensimmäisen näytösvahtiajon rajaus:** 16.11.2026 tehty lähtötilanneajo käytti käsikirjan versiota 1.0.0. Nykyinen tehtäväkohtainen lähderekisteri ja ajolokin kirjaamissäännöt otettiin käyttöön vasta myöhemmässä muutoksessa. Ajon raporttiin kirjattu `sources_checked: 17` ei sisällä lähde-ID-kohtaista erittelyä, joten sitä ei voi muuntaa jälkikäteen luotettavaksi ajolokimerkinnäksi. `data/lahdetarkistukset.json` jätetään siksi tyhjäksi, kunnes uusi ajo tuottaa todennettavat lähde-ID:t. Seuraava näytösvahtiajo on ensimmäinen testi nykyiselle lokitukselle.
 

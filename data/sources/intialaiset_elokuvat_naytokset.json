@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "intialaiset_elokuvat_naytokset",
   "updated_at": null,
   "notes": [
@@ -8,172 +8,70 @@
   ],
   "sources": [
     {
-      "id": "finnkino",
-      "name": "Finnkino",
-      "url": "https://www.finnkino.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "primary",
+      "source_id": "finnkino",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "biorex",
-      "name": "BioRex",
-      "url": "https://biorex.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "primary",
+      "source_id": "biorex",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "kino-regina",
-      "name": "Kino Regina",
-      "url": "https://kinoregina.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "primary",
+      "source_id": "kino-regina",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "cinema-orion",
-      "name": "Cinema Orion",
-      "url": "https://cinemaorion.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "primary",
+      "source_id": "cinema-orion",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "kino-myyri",
-      "name": "Kinoon – Kino Myyrin teatterilistauksen lähde",
-      "url": "https://kinoon.fi/teatterit",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "kino-myyri",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy."
     },
     {
-      "id": "finbolly",
-      "name": "FinBolly Movies",
-      "url": "https://www.facebook.com/Finbollymovies",
-      "language_regions": [
-        "en",
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "finbolly",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "fintamil",
-      "name": "FinTamil Movies",
-      "url": "https://www.facebook.com/fintamil.movies",
-      "language_regions": [
-        "ta",
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "fintamil",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "rasa-entertainment",
-      "name": "Rasa Entertainment",
-      "url": "https://www.facebook.com/298328530028338/",
-      "language_regions": [
-        "en",
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "rasa-entertainment",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "finnish-film-foundation",
-      "name": "Suomen elokuvasäätiö",
-      "url": "https://www.ses.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "primary",
+      "source_id": "finnish-film-foundation",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "cinema-mondo",
-      "name": "Cinema Mondo",
-      "url": "https://www.cinemamondo.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "primary",
+      "source_id": "cinema-mondo",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     },
     {
-      "id": "filmikamari",
-      "name": "Suomen Filmikamari",
-      "url": "https://www.filmikamari.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "filmikamari",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI"
-      ]
+      "access_limit": null
     }
   ]
 }

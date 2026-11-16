@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "sompote_sands",
   "updated_at": null,
   "notes": [
@@ -8,100 +8,40 @@
   ],
   "sources": [
     {
-      "id": "thai-film-archive",
-      "name": "Thai Film Archive (Public Organization)",
-      "url": "https://www.fapot.or.th/",
-      "language_regions": [
-        "th",
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "thai-film-archive",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "TH"
-      ]
+      "access_limit": null
     },
     {
-      "id": "thai-film-archive-news",
-      "name": "Thai Film Archive – News",
-      "url": "https://www.fapot.or.th/main/news",
-      "language_regions": [
-        "th",
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "thai-film-archive-news",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "TH"
-      ]
+      "access_limit": null
     },
     {
-      "id": "thai-pbs",
-      "name": "Thai PBS",
-      "url": "https://www.thaipbs.or.th/",
-      "language_regions": [
-        "th"
-      ],
-      "source_type": "editorial",
+      "source_id": "thai-pbs",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "TH"
-      ]
+      "access_limit": null
     },
     {
-      "id": "nation-thailand",
-      "name": "The Nation Thailand",
-      "url": "https://www.nationthailand.com/",
-      "language_regions": [
-        "en",
-        "th"
-      ],
-      "source_type": "editorial",
+      "source_id": "nation-thailand",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "TH"
-      ]
+      "access_limit": null
     },
     {
-      "id": "ultraman-official",
-      "name": "Tsuburaya Productions",
-      "url": "https://www.tsuburaya-prod.co.jp/",
-      "language_regions": [
-        "ja",
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "ultraman-official",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "TH",
-        "JP"
-      ]
+      "access_limit": null
     },
     {
-      "id": "eiga-com",
-      "name": "映画.com (Eiga.com)",
-      "url": "https://eiga.com/",
-      "language_regions": [
-        "ja"
-      ],
-      "source_type": "editorial",
+      "source_id": "eiga-com",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "TH",
-        "JP"
-      ]
+      "access_limit": null
     }
   ]
 }

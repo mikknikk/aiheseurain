@@ -22,3 +22,5 @@ Tämä hakemisto sisältää `mikknikk/uutiset`-repositorioon liittyvien kolmen 
 - Säilytä pääuutisseurannan, näytösvahdin ja laatutarkistuksen rajat erillisinä. Älä yhdistä niiden käynnistyskehotteita yhdeksi yleiseksi promptiksi.
 
 Tämän hakemiston tiedostot ovat käynnistyskehotteiden versionhallinnassa ylläpidettävät kanoniset lähteet. Reaaliaikaisten automaatioasetusten sisältö on tarkistettava erikseen; GitHubissa tehty muutos ei päivitä asetuksia automaattisesti.
+
+Pääuutisseurannan käynnistyskehotetta on päivitetty vastaamaan lähdekatalogin ja tehtäväkohtaisten käyttörekisterien uutta rakennetta. Kopioi päivitetty `paauutisseuranta.txt` kokonaisuudessaan pääautomaation asetuksiin ja varmista, että tallennettu teksti vastaa tiedostoa. Muut käynnistyskehotteet eivät muutu tämän lähdetietomallin uudistuksen vuoksi.

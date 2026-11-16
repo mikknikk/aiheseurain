@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "tolkien",
   "updated_at": "2026-11-16T17:56:58+02:00",
   "notes": [
@@ -7,412 +7,177 @@
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
     "Kattavuutta laajennettu 16.11.2026: lisätty kustantajia Yhdysvalloista, Ranskasta, Espanjasta ja Brasiliasta; Tolkien-yhteisöjä Saksasta, Ranskasta, Italiasta, Espanjasta ja Suomesta; suomalainen toimituksellinen media, espanjankielinen erikoismedia, vertaisarvioitu tutkimusjulkaisu ja englanninkielinen adaptaatiouutisten erikoissivusto.",
     "Kattavuus ei ole maailmanlaajuisesti täydellinen: erityisesti Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet vaativat jatkotyötä. Fanisivustot ja yhdistykset ovat uutisvihjeitä tai yhteisölähteitä, eivät riippumattomia vahvistuksia.",
-    "16.11.2026: lähderekisteriin lisättiin EHU/TARTALO-konferenssiohjelma, The Mythopoeic Society, File 770, GamesRadar+ ja New Zealand Film Map. Vain EHU:n virallinen PDF avattiin suoraan; neljän muun uuden lähteen artikkeliteksti näkyi hakutulosotteessa mutta suora avaus ei onnistunut, joten niiden last_checked_at jätettiin null-arvoon ja ne kirjattiin ajolokissa tarkistamatta jääneiksi."
+    "16.11.2026: lähderekisteriin lisättiin EHU/TARTALO-konferenssiohjelma, The Mythopoeic Society, File 770, GamesRadar+ ja New Zealand Film Map. Vain EHU:n virallinen PDF avattiin suoraan; neljän muun uuden lähteen artikkeliteksti näkyi hakutulosotteessa mutta suora avaus ei onnistunut, joten niiden last_checked_at jätettiin null-arvoon ja ne kirjattiin ajolokissa tarkistamatta jääneiksi.",
+    "Suomen tapahtumahaun yleiset löytölähteet on lisätty rekisteriin. Lipunmyyntipalvelut ovat hakuvihjeitä, eivät tapahtuman ensisijaisia vahvistuslähteitä; tarkista tapahtuma järjestäjän omasta ilmoituksesta."
   ],
   "sources": [
     {
-      "id": "tolkien-estate",
-      "name": "Tolkien Estate",
-      "url": "https://www.tolkienestate.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "tolkien-estate",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null,
-      "regions": [
-        "UK",
-        "GLOBAL",
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "tolkien-society",
-      "name": "Tolkien Society",
-      "url": "https://www.tolkiensociety.org/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "tolkien-society",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UK",
-        "GLOBAL",
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "harpercollins-tolkien",
-      "name": "HarperCollins – Tolkien (UK)",
-      "url": "https://www.tolkien.co.uk/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "harpercollins-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null,
-      "regions": [
-        "UK",
-        "GLOBAL",
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "warnerbros-newsroom",
-      "name": "Warner Bros. Discovery – newsroom",
-      "url": "https://press.wbd.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "warnerbros-newsroom",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UK",
-        "GLOBAL",
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "tolkiengateway",
-      "name": "Tolkien Gateway",
-      "url": "https://tolkiengateway.net/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "tolkiengateway",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null,
-      "regions": [
-        "UK",
-        "GLOBAL",
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "theguardian-books",
-      "name": "The Guardian – Books",
-      "url": "https://www.theguardian.com/books",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "theguardian-books",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null,
-      "regions": [
-        "UK",
-        "GLOBAL",
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "variety-film",
-      "name": "Variety – Film",
-      "url": "https://variety.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "variety-film",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UK",
-        "GLOBAL",
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "hmh-books-tolkien",
-      "name": "Houghton Mifflin Harcourt – Tolkien",
-      "url": "https://www.hmhbooks.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "hmh-books-tolkien",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "US"
-      ]
+      "access_limit": null
     },
     {
-      "id": "christian-bourgois-tolkien",
-      "name": "Christian Bourgois éditeur – Tolkien",
-      "url": "https://bourgoisediteur.fr/jrr-tolkien",
-      "language_regions": [
-        "fr"
-      ],
-      "source_type": "primary",
+      "source_id": "christian-bourgois-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null,
-      "regions": [
-        "FR"
-      ]
+      "access_limit": null
     },
     {
-      "id": "planeta-minotauro-tolkien",
-      "name": "Ediciones Minotauro – Tolkien",
-      "url": "https://www.planetadelibros.com/coleccion-biblioteca-j-r-r-tolkien/0000493000",
-      "language_regions": [
-        "es"
-      ],
-      "source_type": "primary",
+      "source_id": "planeta-minotauro-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null,
-      "regions": [
-        "ES"
-      ]
+      "access_limit": null
     },
     {
-      "id": "harpercollins-brasil-tolkien",
-      "name": "HarperCollins Brasil – Tolkien",
-      "url": "https://harpercollins.com.br/pages/tolkien",
-      "language_regions": [
-        "pt-BR"
-      ],
-      "source_type": "primary",
+      "source_id": "harpercollins-brasil-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null,
-      "regions": [
-        "BR"
-      ]
+      "access_limit": null
     },
     {
-      "id": "deutsche-tolkien-gesellschaft",
-      "name": "Deutsche Tolkien Gesellschaft",
-      "url": "https://www.tolkiengesellschaft.de/news/",
-      "language_regions": [
-        "de",
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "deutsche-tolkien-gesellschaft",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Tolkien-yhdistyksen uutiset, tapahtumat ja tutkimus; ulkopuoliset uutisväitteet varmennettava alkuperäislähteestä.",
-      "regions": [
-        "DE",
-        "GLOBAL"
-      ]
+      "access_limit": "Tolkien-yhdistyksen uutiset, tapahtumat ja tutkimus; ulkopuoliset uutisväitteet varmennettava alkuperäislähteestä."
     },
     {
-      "id": "tolkiendil",
-      "name": "Tolkiendil",
-      "url": "https://www.tolkiendil.com/news",
-      "language_regions": [
-        "fr"
-      ],
-      "source_type": "other",
+      "source_id": "tolkiendil",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Ranskalainen Tolkien-yhdistys ja erikoissivusto; käytä myös tapahtuma- ja tutkimuslähteenä.",
-      "regions": [
-        "FR",
-        "GLOBAL"
-      ]
+      "access_limit": "Ranskalainen Tolkien-yhdistys ja erikoissivusto; käytä myös tapahtuma- ja tutkimuslähteenä."
     },
     {
-      "id": "societa-tolkieniana-italiana",
-      "name": "Società Tolkieniana Italiana",
-      "url": "https://www.tolkien.it/news/",
-      "language_regions": [
-        "it"
-      ],
-      "source_type": "other",
+      "source_id": "societa-tolkieniana-italiana",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Italialaisen Tolkien-yhdistyksen tiedotteet ja tapahtumat; ulkopuoliset väitteet varmennettava.",
-      "regions": [
-        "IT"
-      ]
+      "access_limit": "Italialaisen Tolkien-yhdistyksen tiedotteet ja tapahtumat; ulkopuoliset väitteet varmennettava."
     },
     {
-      "id": "sociedad-tolkien-espanola",
-      "name": "Sociedad Tolkien Española",
-      "url": "https://www.sociedadtolkien.org/",
-      "language_regions": [
-        "es"
-      ],
-      "source_type": "other",
+      "source_id": "sociedad-tolkien-espanola",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Espanjankielinen Tolkien-yhdistys, julkaisut, tapahtumat ja uutislinkit.",
-      "regions": [
-        "ES"
-      ]
+      "access_limit": "Espanjankielinen Tolkien-yhdistys, julkaisut, tapahtumat ja uutislinkit."
     },
     {
-      "id": "suomen-tolkien-seura",
-      "name": "Suomen Tolkien-seura Kontu ry",
-      "url": "https://suomentolkienseura.fi/",
-      "language_regions": [
-        "fi",
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "suomen-tolkien-seura",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Suomen Tolkien-yhteisön omat tiedotteet ja tapahtumat; ei riippumaton lähde kansainvälisille tuotantouutisille.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomen Tolkien-yhteisön omat tiedotteet ja tapahtumat; ei riippumaton lähde kansainvälisille tuotantouutisille."
     },
     {
-      "id": "yle-tolkien",
-      "name": "Yle – J. R. R. Tolkien",
-      "url": "https://yle.fi/t/18-189195/fi",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "editorial",
+      "source_id": "yle-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Suomen yleisradioyhtiön Tolkien-aihesivu; tarkista artikkelikohtainen julkaisupäivä ja alkuperäislähteet.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomen yleisradioyhtiön Tolkien-aihesivu; tarkista artikkelikohtainen julkaisupäivä ja alkuperäislähteet."
     },
     {
-      "id": "elfenomeno",
-      "name": "Elfenomeno",
-      "url": "https://www.elfenomeno.com/",
-      "language_regions": [
-        "es",
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "elfenomeno",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Itsenäinen Tolkien-erikoismedia; asiantuntijakonteksti ja uutisvihjeet, varmista uutisväitteet ensisijaislähteestä.",
-      "regions": [
-        "GLOBAL",
-        "ES",
-        "LATAM"
-      ]
+      "access_limit": "Itsenäinen Tolkien-erikoismedia; asiantuntijakonteksti ja uutisvihjeet, varmista uutisväitteet ensisijaislähteestä."
     },
     {
-      "id": "journal-tolkien-research",
-      "name": "Journal of Tolkien Research",
-      "url": "https://scholar.valpo.edu/journaloftolkienresearch/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "journal-tolkien-research",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Vertaisarvioitu avoin tutkimusjulkaisu; seuraa uusia tutkimusartikkeleita, ei ajankohtaisuutisia.",
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": "Vertaisarvioitu avoin tutkimusjulkaisu; seuraa uusia tutkimusartikkeleita, ei ajankohtaisuutisia."
     },
     {
-      "id": "the-one-ring",
-      "name": "The One Ring – Tolkien News",
-      "url": "https://www.theonering.com/news/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "the-one-ring",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Pitkään toiminut fanien ylläpitämä erikoissivusto; käytä uutisvihjeenä ja varmista väitteet virallisista tai riippumattomista lähteistä.",
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": "Pitkään toiminut fanien ylläpitämä erikoissivusto; käytä uutisvihjeenä ja varmista väitteet virallisista tai riippumattomista lähteistä."
     },
     {
-      "id": "ehu-tartalo-programme",
-      "name": "EHU / TARTALO – X International Conference on Myth in the Arts programme",
-      "url": "https://www.ehu.eus/documents/d/letren-fakultatea/tartalo2026_programacongreso",
-      "language_regions": [
-        "en",
-        "es",
-        "eu"
-      ],
-      "source_type": "primary",
+      "source_id": "ehu-tartalo-programme",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Virallinen tapahtumaohjelma PDF-muodossa; avattu ja tarkistettu 16.11.2026.",
-      "regions": [
-        "ES"
-      ]
+      "access_limit": "Virallinen tapahtumaohjelma PDF-muodossa; avattu ja tarkistettu 16.11.2026."
     },
     {
-      "id": "mythopoeic-society",
-      "name": "The Mythopoeic Society",
-      "url": "https://mythsoc.org/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "mythopoeic-society",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Yhdistyksen kotisivu avautui, mutta David Bratmanin Sad News -ilmoitus näkyi vain hakutulosotteessa eikä avatulla sivulla; ilmoitusta ei lasketa tarkistetuksi ennen suoraa sisältöavausta.",
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": "Yhdistyksen kotisivu avautui, mutta David Bratmanin Sad News -ilmoitus näkyi vain hakutulosotteessa eikä avatulla sivulla; ilmoitusta ei lasketa tarkistetuksi ennen suoraa sisältöavausta."
     },
     {
-      "id": "file770",
-      "name": "File 770",
-      "url": "https://file770.com/david-bratman-1957-2026/comment-page-1/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "file770",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "David Bratman -muistokirjoituksen koko tekstisisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": "David Bratman -muistokirjoituksen koko tekstisisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi."
     },
     {
-      "id": "gamesradar-film",
-      "name": "GamesRadar+ – The Hunt for Gollum",
-      "url": "https://www.gamesradar.com/entertainment/lord-of-the-rings-movies/the-hunt-for-gollum-wraps-filming-as-andy-serkis-praises-incredible-journey-back-to-playing-endlessly-complex-gollum-again/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "gamesradar-film",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Artikkelin koko sisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
-      "regions": [
-        "UK",
-        "GLOBAL"
-      ]
+      "access_limit": "Artikkelin koko sisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi."
     },
     {
-      "id": "new-zealand-film-map",
-      "name": "New Zealand Film Map",
-      "url": "https://newzealandfilmmap.com/hunt-for-gollum-finished-filming/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "new-zealand-film-map",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Artikkelin koko sisältö ja 12.11. päivitys näkyivät hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
-      "regions": [
-        "NZ",
-        "GLOBAL"
-      ]
+      "access_limit": "Artikkelin koko sisältö ja 12.11. päivitys näkyivät hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi."
+    },
+    {
+      "source_id": "lippu-fi-events",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+    },
+    {
+      "source_id": "ticketmaster-fi-events",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+    },
+    {
+      "source_id": "tiketti-fi-events",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     }
   ]
 }
