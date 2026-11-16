@@ -11,7 +11,8 @@
     "Näytösvahdin täydellinen tehtäväohje on versionhallittu tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md; sen onnistuneen ajon käyttämä ohjeversio ja aika kirjataan separate_screening_watch.automation_instructions-osioon.",
     "Viikoittaisen laatutarkistuksen käsikirja on versionhallittu tiedostossa docs/laatutarkistuksen-ohje.md; sen onnistuneen ajon käyttämä ohjeversio ja aika kirjataan quality_check_instructions-osioon. Laatutarkistus saa muuttaa vain näitä kahta seurantakenttää.",
     "Näytösvahdin epäonnistunut tai osittainen ajo ei siirrä last_successful_check-tarkistuspistettä; seuraava ajo käsittelee koko välin edellisestä onnistumisesta.",
-    "Tehtäväkohtaiset lähderekisterit ovat data/sources/{task_id}.json ja ajokohtainen tarkistusloki data/lahdetarkistukset.json; uutiskierron ja erillisen näytösvahdin intialaiset tehtävätunnisteet ovat erilliset."
+    "Tehtäväkohtaiset lähderekisterit ovat data/sources/{task_id}.json ja ajokohtainen tarkistusloki data/lahdetarkistukset.json; uutiskierron ja erillisen näytösvahdin intialaiset tehtävätunnisteet ovat erilliset.",
+    "Lähteiden yhteiset perustiedot ovat data/source-catalog.json-tiedostossa; data/sources/{task_id}.json sisältää tehtäväkohtaiset source_id-viittaukset ja käyttöasetukset."
   ],
   "rotation": {
     "next_task": "taylor_swift",
@@ -137,7 +138,7 @@
   },
   "automation_instructions": {
     "document": "docs/paaautomaation-ohje.md",
-    "current_version": "1.1.0",
+    "current_version": "1.2.0",
     "last_successful_run_version": "1.0.4",
     "last_successful_run_at": "2026-11-16T18:00:19+02:00"
   },
