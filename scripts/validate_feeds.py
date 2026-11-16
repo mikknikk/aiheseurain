@@ -42,6 +42,10 @@ FEEDS = [
 ]
 ROTATION_FEEDS = FEEDS[:-1]
 
+# GitHub Pages on kaikkien RSS-syötteiden kanoninen julkinen jakelukanava.
+PAGES_BASE_URL = "https://mikknikk.github.io/uutiset"
+PAGES_SITE_URL = PAGES_BASE_URL + "/"
+
 # HTML:ssä on elementtejä, joilla ei ole erillistä sulkutagia.
 # Esimerkiksi <br> ja <img> ovat tällaisia. Muut elementit pitää sulkea.
 VOID = {
@@ -867,6 +871,13 @@ def validate_docs(state):
             f"puuttuu {sorted(set(FEEDS) - readme_feeds)}"
         )
 
+    # README:n kaikkien RSS-linkkien pitää käyttää samaa GitHub Pages -osoitekäytäntöä.
+    for feed in FEEDS:
+        if f"{PAGES_BASE_URL}/{feed}" not in readme:
+            fail(f"README:stä puuttuu GitHub Pages -RSS-osoite: {feed}")
+    if "raw.githubusercontent.com/mikknikk/uutiset" in readme:
+        fail("README sisältää vanhentuneen raw.githubusercontent.com-RSS-osoitteen")
+
     # Varmistamme, että README kertoo yhdeksän aiheen kierrosta ja näytösvahdin
     # erillisyydestä. Tämä on kevyt tekstipohjainen ristiriitojen tunnistus.
     if "yhdeksän" not in readme.lower() or "ei kuluta" not in readme.lower():
@@ -940,6 +951,25 @@ def validate_feeds():
             fail(f"{relative}: rss/channel puuttuu")
 
         channel = root.find("channel")
+
+        # Kaikkien syötteiden kanavalinkki ja Atom self-linkki osoittavat GitHub Pagesiin.
+        channel_link = (channel.findtext("link") or "").strip()
+        if channel_link != PAGES_SITE_URL:
+            fail(f"{relative}: channel/link ei osoita GitHub Pages -etusivulle ({PAGES_SITE_URL})")
+
+        atom_self_links = [
+            element for element in list(channel)
+            if element.tag.rsplit("}", 1)[-1] == "link"
+            and element.attrib.get("rel") == "self"
+        ]
+        expected_self_url = f"{PAGES_BASE_URL}/{relative}"
+        if len(atom_self_links) != 1:
+            fail(f"{relative}: kanavalla pitää olla täsmälleen yksi Atom self-link")
+        atom_self = atom_self_links[0]
+        if atom_self.attrib.get("href") != expected_self_url:
+            fail(f"{relative}: Atom self-link ei osoita GitHub Pages -syötteeseen ({expected_self_url})")
+        if atom_self.attrib.get("type") != "application/rss+xml":
+            fail(f"{relative}: Atom self-linkin type-attribuutti ei ole application/rss+xml")
 
         # Poimimme itemit myös alkuperäisestä tekstistä, jotta voimme varmistaa,
         # että jokaisen description-elementin ympärillä on CDATA-merkintä.

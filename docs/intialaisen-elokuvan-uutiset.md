@@ -78,7 +78,7 @@ Lisää käsitellyn elokuvan yhteyteen mahdollisuuksien mukaan virallinen julist
 Kirjaa kuvan/video-linkin yhteyteen lähde ja julkaisupäivä, jos saatavilla. Julisteen yhteydessä säilytä alkuperäinen lähde ja suora kuvatiedoston URL vain jos se on todellinen ja käyttökelpoinen. Älä kaavi tai arvaa URL-osoitteita. Jos käyttökelpoista mediaa ei löydy, jätä se pois. Yksi juliste/videoesittely elokuvaa kohti riittää.
 
 RSS-JULKAISU
-RSS: https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml
+RSS: https://mikknikk.github.io/uutiset/feeds/intialaiset-elokuvat.xml
 Kun GitHub-julkaisu on käytettävissä, julkaise yksi RSS <item> koko raportista. <description> sisältää koko artikkelin HTML:n, ei tiivistelmää. Säilytä otsikot, kappaleet, luettelot, kuvat ja YouTube-linkit. Lähteet artikkelin lopussa. Käytä yksilöllistä GUID-tunnistetta ja oikeaa pubDate-arvoa. Tarkista julkaisun jälkeen feedin sisältö ja itemin yksilöllisyys. Älä väitä julkaisua onnistuneeksi ilman vahvistettua kirjoitusta ja tarkistusta. Jos julkaisu ei onnistu, toimita valmis artikkeli ja kerro RSS-tilanne.
 
 SEURANTAJAKSON UUTUUSARVO
