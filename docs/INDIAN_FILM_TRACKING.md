@@ -333,7 +333,7 @@ BioRexin Ramayana-sivu on sijaintivalinnasta riippuvainen: tarkistuksessa avautu
 
 ## Julkaisujen saavutettavuustarkistus
 
-Ennen jokaista GitHub Pages-, RSS- tai dokumentaatiojulkaisua tarkista README.md:n [Saavutettavuus – WCAG 2.2 AAA tavoitetasona](docs/INDIAN_FILM_GUIDE.md#saavutettavuus--wcag-22-aaa-tavoitetasona) -ohje. Kirjaa tähän vain todelliset testitulokset ja löydetyt puutteet; älä merkitse testaamatonta kohtaa hyväksytyksi.
+Ennen jokaista GitHub Pages-, RSS- tai dokumentaatiojulkaisua tarkista README.md:n [Saavutettavuus – WCAG 2.2 AAA tavoitetasona](INDIAN_FILM_GUIDE.md#saavutettavuus--wcag-22-aaa-tavoitetasona) -ohje. Kirjaa tähän vain todelliset testitulokset ja löydetyt puutteet; älä merkitse testaamatonta kohtaa hyväksytyksi.
 
 | Julkaisu / tiedosto | HTML/XML-validointi | Otsikot ja semantiikka | Linkit ja kuvat | Näppäimistö / ruudunlukija | Kontrasti / suurennus | Havaitut puutteet ja korjaukset | Tarkistuspäivä |
 |---|---|---|---|---|---|---|---|
