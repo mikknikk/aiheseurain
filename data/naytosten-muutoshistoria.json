@@ -35,7 +35,7 @@
     {
       "screening_id": "klara-ja-aurinko-cinema-niagara-20261116-1415",
       "film": "Klara ja aurinko",
-      "venue": "Cinema Niagara ·",
+      "venue": "Cinema Niagara",
       "city": "Tampere",
       "starts_at": "2026-11-16T14:15:00+02:00",
       "status": "scheduled",
@@ -76,7 +76,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-luxe-mylly-20261116-1450",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino LUXE Mylly ·",
+      "venue": "Finnkino LUXE Mylly",
       "city": "Raisio",
       "starts_at": "2026-11-16T14:50:00+02:00",
       "status": "scheduled",
@@ -139,7 +139,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261116-1530",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-16T15:30:00+02:00",
       "status": "scheduled",
@@ -159,7 +159,7 @@
     {
       "screening_id": "klara-ja-aurinko-kinopirtti-20261116-1540",
       "film": "Klara ja aurinko",
-      "venue": "Kinopirtti ·",
+      "venue": "Kinopirtti",
       "city": "Kemi",
       "starts_at": "2026-11-16T15:40:00+02:00",
       "status": "scheduled",
@@ -179,7 +179,7 @@
     {
       "screening_id": "klara-ja-aurinko-bio-dux-20261116-1600",
       "film": "Klara ja aurinko",
-      "venue": "Bio Dux ·",
+      "venue": "Bio Dux",
       "city": "Kristiinankaupunki",
       "starts_at": "2026-11-16T16:00:00+02:00",
       "status": "scheduled",
@@ -199,7 +199,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-plaza-20261116-1600",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Plaza ·",
+      "venue": "Finnkino Plaza",
       "city": "Oulu",
       "starts_at": "2026-11-16T16:00:00+02:00",
       "status": "scheduled",
@@ -219,7 +219,7 @@
     {
       "screening_id": "klara-ja-aurinko-fantasia-20261116-1640",
       "film": "Klara ja aurinko",
-      "venue": "Fantasia ·",
+      "venue": "Fantasia",
       "city": "Jyväskylä",
       "starts_at": "2026-11-16T16:40:00+02:00",
       "status": "scheduled",
@@ -260,7 +260,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-flamingo-20261116-1700",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Flamingo ·",
+      "venue": "Finnkino Flamingo",
       "city": "Vantaa",
       "starts_at": "2026-11-16T17:00:00+02:00",
       "status": "scheduled",
@@ -280,7 +280,7 @@
     {
       "screening_id": "klara-ja-aurinko-trio-123-20261116-1700",
       "film": "Klara ja aurinko",
-      "venue": "Trio 123 ·",
+      "venue": "Trio 123",
       "city": "Kotka",
       "starts_at": "2026-11-16T17:00:00+02:00",
       "status": "scheduled",
@@ -321,7 +321,7 @@
     {
       "screening_id": "klara-ja-aurinko-kino-123-veturi-kuusankoski-20261116-1715",
       "film": "Klara ja aurinko",
-      "venue": "Kino 123 Veturi (Kuusankoski) ·",
+      "venue": "Kino 123 Veturi (Kuusankoski)",
       "city": "Kouvola",
       "starts_at": "2026-11-16T17:15:00+02:00",
       "status": "scheduled",
@@ -341,7 +341,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261116-1750",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Turku",
       "starts_at": "2026-11-16T17:50:00+02:00",
       "status": "scheduled",
@@ -383,7 +383,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261116-1825",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-16T18:25:00+02:00",
       "status": "scheduled",
@@ -403,7 +403,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-scala-20261116-1900",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Scala ·",
+      "venue": "Finnkino Scala",
       "city": "Kuopio",
       "starts_at": "2026-11-16T19:00:00+02:00",
       "status": "scheduled",
@@ -444,7 +444,7 @@
     {
       "screening_id": "klara-ja-aurinko-kinolinna-20261116-1915",
       "film": "Klara ja aurinko",
-      "venue": "Kinolinna ·",
+      "venue": "Kinolinna",
       "city": "Mikkeli",
       "starts_at": "2026-11-16T19:15:00+02:00",
       "status": "scheduled",
@@ -485,7 +485,7 @@
     {
       "screening_id": "klara-ja-aurinko-kuvapalatsi-20261116-1930",
       "film": "Klara ja aurinko",
-      "venue": "Kuvapalatsi ·",
+      "venue": "Kuvapalatsi",
       "city": "Lahti",
       "starts_at": "2026-11-16T19:30:00+02:00",
       "status": "scheduled",
@@ -505,7 +505,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-plevna-20261116-1945",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Plevna ·",
+      "venue": "Finnkino Plevna",
       "city": "Tampere",
       "starts_at": "2026-11-16T19:45:00+02:00",
       "status": "scheduled",
@@ -525,7 +525,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261116-1945",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-16T19:45:00+02:00",
       "status": "scheduled",
@@ -544,7 +544,7 @@
     {
       "screening_id": "klara-ja-aurinko-promenadi-20261116-2000",
       "film": "Klara ja aurinko",
-      "venue": "Promenadi ·",
+      "venue": "Promenadi",
       "city": "Pori",
       "starts_at": "2026-11-16T20:00:00+02:00",
       "status": "scheduled",
@@ -564,7 +564,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-itis-20261116-2000",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Itis ·",
+      "venue": "Finnkino Itis",
       "city": "Helsinki",
       "starts_at": "2026-11-16T20:00:00+02:00",
       "status": "scheduled",
@@ -578,7 +578,8 @@
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         }
       ],
-      "booking_url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157"
+      "booking_url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
+      "notes": "Kinoon ilmoittaa 16.11. klo 20.00 ja Finnkinon oma sivu 16.11. klo 20.15; lähteiden ristiriitaa ei ratkaista arvaamalla."
     },
     {
       "screening_id": "klara-ja-aurinko-kino-marilyn-20261116-2015",
@@ -627,7 +628,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261116-2030",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-16T20:30:00+02:00",
       "status": "scheduled",
@@ -647,7 +648,7 @@
     {
       "screening_id": "klara-ja-aurinko-kino-piispanristi-20261117-1345",
       "film": "Klara ja aurinko",
-      "venue": "Kino Piispanristi ·",
+      "venue": "Kino Piispanristi",
       "city": "Kaarina",
       "starts_at": "2026-11-17T13:45:00+02:00",
       "status": "scheduled",
@@ -667,7 +668,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-scala-20261117-1430",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Scala ·",
+      "venue": "Finnkino Scala",
       "city": "Kuopio",
       "starts_at": "2026-11-17T14:30:00+02:00",
       "status": "scheduled",
@@ -751,7 +752,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261117-1530",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-17T15:30:00+02:00",
       "status": "scheduled",
@@ -771,7 +772,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-plaza-20261117-1600",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Plaza ·",
+      "venue": "Finnkino Plaza",
       "city": "Oulu",
       "starts_at": "2026-11-17T16:00:00+02:00",
       "status": "scheduled",
@@ -812,7 +813,7 @@
     {
       "screening_id": "klara-ja-aurinko-kino-123-veturi-kuusankoski-20261117-1715",
       "film": "Klara ja aurinko",
-      "venue": "Kino 123 Veturi (Kuusankoski) ·",
+      "venue": "Kino 123 Veturi (Kuusankoski)",
       "city": "Kouvola",
       "starts_at": "2026-11-17T17:15:00+02:00",
       "status": "scheduled",
@@ -874,7 +875,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261117-1750",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Turku",
       "starts_at": "2026-11-17T17:50:00+02:00",
       "status": "scheduled",
@@ -894,7 +895,7 @@
     {
       "screening_id": "klara-ja-aurinko-ihme-kompleksi-20261117-1800",
       "film": "Klara ja aurinko",
-      "venue": "Ihme Kompleksi ·",
+      "venue": "Ihme Kompleksi",
       "city": "Kankaanpää",
       "starts_at": "2026-11-17T18:00:00+02:00",
       "status": "scheduled",
@@ -914,7 +915,7 @@
     {
       "screening_id": "klara-ja-aurinko-trio-123-20261117-1815",
       "film": "Klara ja aurinko",
-      "venue": "Trio 123 ·",
+      "venue": "Trio 123",
       "city": "Kotka",
       "starts_at": "2026-11-17T18:15:00+02:00",
       "status": "scheduled",
@@ -934,7 +935,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261117-1825",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-17T18:25:00+02:00",
       "status": "scheduled",
@@ -954,7 +955,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-plaza-20261117-1850",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Plaza ·",
+      "venue": "Finnkino Plaza",
       "city": "Oulu",
       "starts_at": "2026-11-17T18:50:00+02:00",
       "status": "scheduled",
@@ -973,7 +974,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261117-1910",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Turku",
       "starts_at": "2026-11-17T19:10:00+02:00",
       "status": "scheduled",
@@ -992,7 +993,7 @@
     {
       "screening_id": "klara-ja-aurinko-kinolinna-20261117-1915",
       "film": "Klara ja aurinko",
-      "venue": "Kinolinna ·",
+      "venue": "Kinolinna",
       "city": "Mikkeli",
       "starts_at": "2026-11-17T19:15:00+02:00",
       "status": "scheduled",
@@ -1012,7 +1013,7 @@
     {
       "screening_id": "klara-ja-aurinko-fantasia-20261117-1925",
       "film": "Klara ja aurinko",
-      "venue": "Fantasia ·",
+      "venue": "Fantasia",
       "city": "Jyväskylä",
       "starts_at": "2026-11-17T19:25:00+02:00",
       "status": "scheduled",
@@ -1032,7 +1033,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-plevna-20261117-1930",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Plevna ·",
+      "venue": "Finnkino Plevna",
       "city": "Tampere",
       "starts_at": "2026-11-17T19:30:00+02:00",
       "status": "scheduled",
@@ -1051,7 +1052,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261117-1945",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-17T19:45:00+02:00",
       "status": "scheduled",
@@ -1070,7 +1071,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-itis-20261117-2000",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Itis ·",
+      "venue": "Finnkino Itis",
       "city": "Helsinki",
       "starts_at": "2026-11-17T20:00:00+02:00",
       "status": "scheduled",
@@ -1084,12 +1085,13 @@
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         }
       ],
-      "booking_url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157"
+      "booking_url": "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
+      "notes": "Kinoon ilmoittaa 16.11. klo 20.00 ja Finnkinon oma sivu 16.11. klo 20.15; lähteiden ristiriitaa ei ratkaista arvaamalla."
     },
     {
       "screening_id": "klara-ja-aurinko-finnkino-plevna-20261117-2015",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Plevna ·",
+      "venue": "Finnkino Plevna",
       "city": "Tampere",
       "starts_at": "2026-11-17T20:15:00+02:00",
       "status": "scheduled",
@@ -1109,7 +1111,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261117-2030",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-17T20:30:00+02:00",
       "status": "scheduled",
@@ -1193,7 +1195,7 @@
     {
       "screening_id": "klara-ja-aurinko-elokuvateatteri-star-20261118-1500",
       "film": "Klara ja aurinko",
-      "venue": "Elokuvateatteri Star ·",
+      "venue": "Elokuvateatteri Star",
       "city": "Oulu",
       "starts_at": "2026-11-18T15:00:00+02:00",
       "status": "scheduled",
@@ -1213,7 +1215,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1530",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-18T15:30:00+02:00",
       "status": "scheduled",
@@ -1255,7 +1257,7 @@
     {
       "screening_id": "klara-ja-aurinko-kinopirtti-20261118-1540",
       "film": "Klara ja aurinko",
-      "venue": "Kinopirtti ·",
+      "venue": "Kinopirtti",
       "city": "Kemi",
       "starts_at": "2026-11-18T15:40:00+02:00",
       "status": "scheduled",
@@ -1296,7 +1298,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-plaza-20261118-1600",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Plaza ·",
+      "venue": "Finnkino Plaza",
       "city": "Oulu",
       "starts_at": "2026-11-18T16:00:00+02:00",
       "status": "scheduled",
@@ -1316,7 +1318,7 @@
     {
       "screening_id": "klara-ja-aurinko-strand-20261118-1620",
       "film": "Klara ja aurinko",
-      "venue": "Strand ·",
+      "venue": "Strand",
       "city": "Lappeenranta",
       "starts_at": "2026-11-18T16:20:00+02:00",
       "status": "scheduled",
@@ -1378,7 +1380,7 @@
     {
       "screening_id": "klara-ja-aurinko-kinolinna-20261118-1645",
       "film": "Klara ja aurinko",
-      "venue": "Kinolinna ·",
+      "venue": "Kinolinna",
       "city": "Mikkeli",
       "starts_at": "2026-11-18T16:45:00+02:00",
       "status": "scheduled",
@@ -1398,7 +1400,7 @@
     {
       "screening_id": "klara-ja-aurinko-trio-123-20261118-1645",
       "film": "Klara ja aurinko",
-      "venue": "Trio 123 ·",
+      "venue": "Trio 123",
       "city": "Kotka",
       "starts_at": "2026-11-18T16:45:00+02:00",
       "status": "scheduled",
@@ -1418,7 +1420,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1650",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Turku",
       "starts_at": "2026-11-18T16:50:00+02:00",
       "status": "scheduled",
@@ -1480,7 +1482,7 @@
     {
       "screening_id": "klara-ja-aurinko-kino-123-veturi-kuusankoski-20261118-1715",
       "film": "Klara ja aurinko",
-      "venue": "Kino 123 Veturi (Kuusankoski) ·",
+      "venue": "Kino 123 Veturi (Kuusankoski)",
       "city": "Kouvola",
       "starts_at": "2026-11-18T17:15:00+02:00",
       "status": "scheduled",
@@ -1542,7 +1544,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-luxe-mylly-20261118-1750",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino LUXE Mylly ·",
+      "venue": "Finnkino LUXE Mylly",
       "city": "Raisio",
       "starts_at": "2026-11-18T17:50:00+02:00",
       "status": "scheduled",
@@ -1562,7 +1564,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1825",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-18T18:25:00+02:00",
       "status": "scheduled",
@@ -1603,7 +1605,7 @@
     {
       "screening_id": "klara-ja-aurinko-kinotar-123-20261118-1900",
       "film": "Klara ja aurinko",
-      "venue": "Kinotar 123 ·",
+      "venue": "Kinotar 123",
       "city": "Jämsä",
       "starts_at": "2026-11-18T19:00:00+02:00",
       "status": "scheduled",
@@ -1666,7 +1668,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-plevna-20261118-1945",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Plevna ·",
+      "venue": "Finnkino Plevna",
       "city": "Tampere",
       "starts_at": "2026-11-18T19:45:00+02:00",
       "status": "scheduled",
@@ -1707,7 +1709,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261118-2000",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-18T20:00:00+02:00",
       "status": "scheduled",
@@ -1726,7 +1728,7 @@
     {
       "screening_id": "klara-ja-aurinko-kino-piispanristi-20261118-2030",
       "film": "Klara ja aurinko",
-      "venue": "Kino Piispanristi ·",
+      "venue": "Kino Piispanristi",
       "city": "Kaarina",
       "starts_at": "2026-11-18T20:30:00+02:00",
       "status": "scheduled",
@@ -1746,7 +1748,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-2100",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-18T21:00:00+02:00",
       "status": "scheduled",
@@ -1788,7 +1790,7 @@
     {
       "screening_id": "klara-ja-aurinko-kinolinna-20261119-1315",
       "film": "Klara ja aurinko",
-      "venue": "Kinolinna ·",
+      "venue": "Kinolinna",
       "city": "Mikkeli",
       "starts_at": "2026-11-19T13:15:00+02:00",
       "status": "scheduled",
@@ -1808,7 +1810,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261119-1400",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Turku",
       "starts_at": "2026-11-19T14:00:00+02:00",
       "status": "scheduled",
@@ -1828,7 +1830,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-scala-20261119-1405",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Scala ·",
+      "venue": "Finnkino Scala",
       "city": "Kuopio",
       "starts_at": "2026-11-19T14:05:00+02:00",
       "status": "scheduled",
@@ -1848,7 +1850,7 @@
     {
       "screening_id": "klara-ja-aurinko-fantasia-20261119-1420",
       "film": "Klara ja aurinko",
-      "venue": "Fantasia ·",
+      "venue": "Fantasia",
       "city": "Jyväskylä",
       "starts_at": "2026-11-19T14:20:00+02:00",
       "status": "scheduled",
@@ -1868,7 +1870,7 @@
     {
       "screening_id": "klara-ja-aurinko-kuvapalatsi-20261119-1440",
       "film": "Klara ja aurinko",
-      "venue": "Kuvapalatsi ·",
+      "venue": "Kuvapalatsi",
       "city": "Lahti",
       "starts_at": "2026-11-19T14:40:00+02:00",
       "status": "scheduled",
@@ -1994,7 +1996,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-plevna-20261119-1615",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Plevna ·",
+      "venue": "Finnkino Plevna",
       "city": "Tampere",
       "starts_at": "2026-11-19T16:15:00+02:00",
       "status": "scheduled",
@@ -2014,7 +2016,7 @@
     {
       "screening_id": "klara-ja-aurinko-kino-123-veturi-kuusankoski-20261119-1715",
       "film": "Klara ja aurinko",
-      "venue": "Kino 123 Veturi (Kuusankoski) ·",
+      "venue": "Kino 123 Veturi (Kuusankoski)",
       "city": "Kouvola",
       "starts_at": "2026-11-19T17:15:00+02:00",
       "status": "scheduled",
@@ -2055,7 +2057,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261119-1810",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-19T18:10:00+02:00",
       "status": "scheduled",
@@ -2075,7 +2077,7 @@
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261119-1930",
       "film": "Ramayana: Rise of a Legend",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-19T19:30:00+02:00",
       "status": "scheduled",
@@ -2115,7 +2117,7 @@
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261119-2125",
       "film": "Klara ja aurinko",
-      "venue": "Finnkino Kinopalatsi ·",
+      "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-19T21:25:00+02:00",
       "status": "scheduled",
