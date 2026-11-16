@@ -32,6 +32,7 @@ Pääautomaation varsinainen tehtävä- ja toimintakuvaus on versionhallittu tie
 
 Myös erillisellä näytövahdilla ja viikoittaisella laatutarkistuksella on omat GitHubissa ylläpidettävät käsikirjansa:
 - Näytösvahti: `docs/intialaisten-elokuvien-naytosseuranta.md`. Ohjeversion tunniste ja viimeisin onnistunut käyttöaika ovat `separate_screening_watch.automation_instructions`-osiossa.
+  Näytösvahti käsittelee tilapäiset virheet rajatuilla uusintayrityksillä; epäonnistunut ajo säilyttää viimeisimmän onnistumisen tarkistuspisteen, ja seuraava ajo palauttaa koko väliin jääneen seurantajakson.
 - Laatutarkistus: `docs/laatutarkistuksen-ohje.md`. Ohjeversion tunniste ja viimeisin onnistunut käyttöaika ovat `quality_check_instructions`-osiossa. Laatutarkistus on muuten vain luku -auditointi; se saa päivittää ainoastaan nämä kaksi onnistuneen ajon metatietokenttää.
 
 Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon aihetta. Lue ennen hakua seuraavat tiedostot tässä järjestyksessä:
