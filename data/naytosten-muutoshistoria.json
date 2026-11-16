@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "timezone": "Europe/Helsinki",
+  "baseline_status": "pending_first_verified_run",
+  "notes": [
+    "Tämä on näytösseurannan koneellisesti luettava, vain lisäämällä ylläpidettävä muutoshistoria.",
+    "Nykyinen RSS sisältää aiempia julkaisuversioita, mutta niistä ei voi luotettavasti palauttaa kaikkia näytöksiä rakenteisiksi tietueiksi. Älä keksi takautuvia tapahtumia.",
+    "Ensimmäisessä onnistuneessa näytösvahdin ajossa muodosta nykyisten lähteiden ja viimeisimmän RSS-version perusteella varmennettu lähtötilanne. Kirjaa lähtötilanteen luonti baseline_created-tapahtumana tai merkitse lähtötason muodostus tähän tiedostoon.",
+    "Lisää jatkossa jokainen havaittu muutos events-listaan. Älä muokkaa tai poista aiempia tapahtumia; virhe korjataan uudella correction-tapahtumalla."
+  ],
+  "screenings": [],
+  "events": []
+}
