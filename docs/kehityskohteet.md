@@ -44,6 +44,8 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 **Jäljellä:** rekisteri on laajennettu kaikkiin tehtäviin 101 merkintään ja ensimmäinen kattavuusaukkojen arvio on dokumentoitu. Lähdeluettelo ei ole vielä tyhjentävä; alueellisia aukkoja täydennetään käytännön seurannassa. Automaatiokehotteet on päivitetty, mutta uudet kirjaukset ja kattavuus on vielä todennettava oikeissa ajoissa. Kohdetta ei merkitä valmiiksi ennen kuin ajolokiin syntyy käyttökelpoisia merkintöjä.
 
+**Ensimmäisen näytösvahtiajon rajaus:** 16.11.2026 tehty lähtötilanneajo käytti käsikirjan versiota 1.0.0. Nykyinen tehtäväkohtainen lähderekisteri ja ajolokin kirjaamissäännöt otettiin käyttöön vasta myöhemmässä muutoksessa. Ajon raporttiin kirjattu `sources_checked: 17` ei sisällä lähde-ID-kohtaista erittelyä, joten sitä ei voi muuntaa jälkikäteen luotettavaksi ajolokimerkinnäksi. `data/lahdetarkistukset.json` jätetään siksi tyhjäksi, kunnes uusi ajo tuottaa todennettavat lähde-ID:t. Seuraava näytösvahtiajo on ensimmäinen testi nykyiselle lokitukselle.
+
 **Valmistumiskriteeri:** jokaisesta raportista voidaan jälkikäteen nähdä, mitä lähteitä tarkistettiin ja mitkä olennaiset lähteet jäivät tavoittamatta.
 
 ### Prioriteetti 3 – uutisten luotettavuusluokituksen täsmennys
