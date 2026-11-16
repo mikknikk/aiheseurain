@@ -118,11 +118,11 @@ test("tyhjä RSS-syöte tuottaa tyhjän artikkelilistan", () => {
 });
 
 
-test("etusivun RSS-linkit nimeävät kohdesyötteen ja lukijan lähdelinkki artikkelin", () => {
+test("etusivun RSS-linkit nimeävät kohdesyötteen eikä lukija luo erillistä lähdelinkkiä", () => {
   const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   const script = readFileSync(new URL("../assets/js/reader.js", import.meta.url), "utf8");
   assert.doesNotMatch(home, />Avaa RSS-syöte</);
   assert.ok(home.includes("Avaa J. R. R. Tolkienin RSS-syöte"));
   assert.match(home, /Avaa intialaisten elokuvien näytösseurannan RSS-syöte/);
-  assert.ok(script.includes('element("a", "", "Alkuperäinen lähde: " + article.title)'));
+  assert.doesNotMatch(script, /Alkuperäinen lähde|sourceUrl|parsedFirstSafeLink/);
 });
