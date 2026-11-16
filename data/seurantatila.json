@@ -5,7 +5,8 @@
   "notes": [
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
-    "Näytösseuranta on erillinen päivittäinen prosessi eikä kuluta yhdeksän tehtävän kiertoa."
+    "Näytösseuranta on erillinen päivittäinen prosessi eikä kuluta yhdeksän tehtävän kiertoa.",
+    "Näytösseurannan näytöskohtainen nykytila ja append-only-muutosloki ovat tiedostossa data/naytosten-muutoshistoria.json; ensimmäinen varmennettu lähtötilanne on vielä muodostamatta."
   ],
   "rotation": {
     "next_task": "tolkien",
