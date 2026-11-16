@@ -28,10 +28,13 @@ Kahdeksan muuta aihekierroksen syötettä voivat olla tyhjiä, jos uusia olennai
 
 ## Pääautomaation lukujärjestys ja tehtäväkierto
 
+Pääautomaation varsinainen tehtävä- ja toimintakuvaus on versionhallittu tiedostossa [docs/paautomaation-ohje.md](docs/paautomaation-ohje.md). ChatGPT-automaation asetuksissa on vain lyhyt käynnistyskehote. Ohjeversion tunniste ja viimeisimmän onnistuneen ajon käyttämä versio tallennetaan `data/seurantatila.json`-tiedoston `automation_instructions`-osioon. Jos käsikirjan ja JSONin nykyversiot eivät täsmää, pääautomaatio keskeyttää ajon.
+
 Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon aihetta. Lue ennen hakua seuraavat tiedostot tässä järjestyksessä:
 
 1. `README.md` – repositorion yleiskuva, tiedostojen vastuut ja julkaisuperiaatteet.
-2. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
+2. `docs/paautomaation-ohje.md` – pääautomaation täydellinen, versioitu toimintakäsikirja.
+3. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
 3. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
 4. `docs/lahteet.md` – yleiset lähdeperiaatteet ja aihekohtaiset lähteiden lähtöpisteet.
 5. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
@@ -76,6 +79,7 @@ Ajantasainen lista toteutetuista parannuksista ja avoimista kehityskohteista on 
 Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat siihen sen sijaan, että kopioisivat saman säännön kokonaisuudessaan.
 
 - `README.md`: repositorion yleiskuva, hakemistorakenne, RSS-syötteiden luettelo, automaatioiden työnjako ja dokumentaation lukujärjestys.
+- `docs/paautomaation-ohje.md`: pääautomaation täydellinen tehtävä- ja toimintakuvaus sekä sen versionhallinnan säännöt. ChatGPT-automaation kehote on vain lyhyt käynnistysosoite.
 - `docs/tehtavajono.md`: yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja vuoron siirtämisen ehdot. Ei yleisiä raportointi- tai koodauskäytäntöjä.
 - `docs/seuranta.md`: tehtäväkohtaiset seurantajaksot, onnistuneiden tarkistusten tila, uutistapahtumien historia ja luotettavuusluokat.
 - `docs/lahteet.md`: yleiset lähdeperiaatteet ja kahdeksan muun aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
@@ -84,7 +88,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
 - `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/nayostohistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
-- `data/seurantatila.json`: koneellisesti luettava tarkistustila ja tehtäväkierron rinnakkaistila.
+- `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila ja pääautomaation ohjeversion nykyinen/viimeksi onnistuneesti käytetty versio.
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
 - `scripts/validate_feeds.py` ja `.github/workflows/validate-feeds.yml`: automaattiset rakennetarkistukset ja niiden suoritus.
 - `feeds/*.xml`: julkaistut RSS-artikkelit; jokainen syöte sisältää vain sille kuuluvan aiheen.
