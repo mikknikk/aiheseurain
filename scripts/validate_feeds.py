@@ -566,6 +566,30 @@ def validate_docs(state):
         if required_phrase not in development_text:
             fail(f"docs/kehityskaytannot.md: kommentointikäytäntö puuttuu: {required_phrase}")
 
+    # Dokumenttien vastuut pidetään yksiselitteisinä: tehtäväjono sisältää
+    # vain kiertojärjestyksen ja seuraavan vuoron, kun taas raportointijaksot
+    # ja koneellinen seurantatila kuuluvat seurantaohjeeseen.
+    queue_lower = queue.lower()
+    if "seurantajaksojen raportointisääntö" in queue_lower or "python-skriptien kommentointi" in queue_lower:
+        fail("tehtäväjonossa on yhteisiä ohjeita, joiden pitää olla omissa dokumenteissaan")
+
+    if "docs/seuranta.md" not in readme or "docs/kehityskaytannot.md" not in readme:
+        fail("README ei ohjaa yleisiin seuranta- ja kehityskäytäntöihin")
+
+    if "kahdeksan aihekohtaisen seurannan syötteet" in readme.lower():
+        fail("README:n syötteiden lukumäärä on vanhentunut tai epäselvä")
+
+    if "## yleiset seurantamerkinnät" in tracking_text:
+        fail("docs/seuranta.md sisältää tyhjän tai tarpeettoman yleisotsikon")
+
+    for required_section in (
+        "## pääautomaation lukujärjestys ja tehtäväkierto",
+        "## tiedostojen vastuut",
+        "## automaattiset laatutestit",
+    ):
+        if required_section not in readme.lower():
+            fail("README:stä puuttuu dokumentaation rakenteen kannalta keskeinen osio: " + required_section)
+
     # README:n pitää luetella kaikki kymmenen syötettä – myös erillinen näytösfeed.
     readme_feeds = set(re.findall(r"\]\((feeds/[^)]+\.xml)\)", readme))
     if readme_feeds != set(FEEDS):
