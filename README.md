@@ -106,6 +106,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
 - `schemas/naytosten-muutoshistoria.schema.json`: näytöshistorian JSON Schema Draft 2020-12 -skeema.
 - `scripts/validate_feeds.py` ja `.github/workflows/validate-feeds.yml`: automaattiset rakennetarkistukset ja niiden suoritus.
+- `scripts/check_links.py` ja `.github/workflows/check-links.yml`: erillinen viikoittainen lähde- ja RSS-linkkien verkkotarkistus; raportti tallennetaan GitHub Actions -artefaktiksi.
 - `feeds/*.xml`: julkaistut RSS-artikkelit; jokainen syöte sisältää vain sille kuuluvan aiheen.
 
 Yleiset raportointisäännöt ovat `docs/seuranta.md`:ssä, eivät tehtäväjonossa. Dokumentaation ja skriptien kehityskäytännöt ovat `docs/kehityskaytannot.md`:ssä. Automaation asetuksiin kopioitavien käynnistyskehotteiden ensisijaiset tekstit ovat `prompts/`-hakemistossa; automaatioiden tehtäväkäsikirjat pysyvät `docs/`-hakemistossa. Näytösvahti on erillinen automaatio eikä kuulu pääautomaation lukujärjestykseen tai tehtäväkiertoon.
@@ -152,6 +153,6 @@ Skriptien kommentointi- ja ylläpitovaatimukset on määritelty sitovasti tiedos
 
 ## Automaattiset laatutestit
 
-GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ja suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Näytöshistorian rakenteen tarkistus tehdään lisäksi virallista JSON Schema -määrittelyä vasten. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
+GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ja suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Erillinen `.github/workflows/check-links.yml` tarkistaa lähdekatalogin ja RSS-syötteiden linkit viikoittain sekä käsin käynnistettäessä; tulokset ovat ladattavissa työnkulun artefaktina. Näytöshistorian rakenteen tarkistus tehdään lisäksi virallista JSON Schema -määrittelyä vasten. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Erillinen linkkitarkistus raportoi osoitteiden HTTP-tilat muuttamatta julkaisuja. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
 
-Automaattiset testit eivät todista uutisväitteiden paikkansapitävyyttä, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään erikseen.
+Automaattiset testit eivät todista uutisväitteiden paikkansapitävyyttä, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään erikseen. Lähde- ja RSS-linkkien verkkotarkistus on oma viikoittainen työnkulkunsa eikä kuulu julkaisua estävään rakennetestaukseen.

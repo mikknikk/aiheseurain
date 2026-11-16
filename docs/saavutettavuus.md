@@ -46,3 +46,49 @@ Automaation käynnistyskehotteet tallennetaan `prompts/`-hakemistoon `.txt`-tied
 
 ## Tämän muutoksen testauksen tila
 Tässä muutoksessa tarkistetaan tiedostopolut, RSS/XML:n jäsennettävyys, GUIDien yksilöllisyys, item-linkkien puuttuminen ja lähdeluettelon olemassaolo. Kontrasti-, ruudunlukija-, näppäimistö-, mobiili- ja suurennustestausta ei suoritettu, joten AAA-tason toteutumista ei väitetä varmennetuksi.
+
+
+## Manuaalisen saavutettavuustestauksen menettely
+
+Automaattiset testit eivät korvaa manuaalista arviointia. Testaa vähintään GitHubissa renderöidyt keskeiset Markdown-dokumentit sekä RSS-sisältöä näyttävä käytännössä käytetty lukija. Jos repositorion omaa verkkokäyttöliittymää tai muuta esitystapaa lisätään, lisää se testattaviin kohteisiin. Älä yleistä yhden selaimen tai ruudunlukijan tulosta kaikkiin käyttöympäristöihin.
+
+### Testausympäristön kirjaaminen
+
+Kirjaa jokaisesta testikerrasta testaaja, päivämäärä, käyttöjärjestelmä, selain ja niiden versiot, ruudunlukijan nimi ja versio, testattu näkymä tai tiedosto ja sen URL, suurennus, näkymän leveys, väritila sekä testin tulos ja toistamisvaiheet.
+
+### Testauslista
+
+1. **Näppäimistö:** käy sisältö läpi ilman hiirtä. Varmista looginen kohdistusjärjestys, näkyvä fokus, kaikkien linkkien ja toimintojen käyttö sekä se, ettei fokus jää loukkuun.
+2. **Ruudunlukija:** tarkista pääotsikko, otsikkotasot, linkkien nimet, taulukoiden otsikot, luetteloiden rakenne, sivun kieli sekä linkkien ymmärrettävyys irrallaan ympäröivästä tekstistä.
+3. **Suurennus ja responsiivisuus:** tarkista vähintään 200 % ja 400 % suurennus sekä 320 CSS-pikselin leveä näkymä. Varmista, ettei tavallinen tekstisisältö vaadi vaakavieritystä eikä tietoa tai toimintoja katoa.
+4. **Kontrastit:** tarkista tekstin, linkkien, fokusmerkkien ja muiden olennaisten käyttöliittymäelementtien kontrasti. AAA-tavoitteena tavallisen tekstin kontrasti on vähintään 7:1 ja suuren tekstin 4,5:1.
+5. **Väritilat:** tarkista vaalea ja tumma tila sekä pakotetut värit, jos testattu käyttöympäristö tukee niitä.
+6. **RSS-lukija:** tarkista otsikoiden ja listojen rakenne, lähdelinkkien nimet, linkkien käyttö näppäimistöllä ja ruudunlukijalla sekä se, ettei raportin sisältö riipu pelkästä visuaalisesta asettelusta.
+
+Älä merkitse testausta tehdyksi pelkän suunnitelman, automaattisen Lighthouse-/axe-tuloksen tai GitHubin Markdown-esikatselun perusteella. Kirjaa myös epäonnistuneet ja soveltumattomat kohdat. WCAG 2.2 AAA -tason väite edellyttää kaikkien soveltuvien onnistumiskriteerien asianmukaista arviointia; tämä tarkistuslista on apuväline, ei vaatimustenmukaisuustodistus.
+
+### Testauskerran kirjauspohja
+
+Kopioi tämä osio uuteen testausmerkintään ja täytä vain tosiasiassa tehdyt tarkistukset.
+
+- Päivä ja aika:
+- Testaaja:
+- Käyttöjärjestelmä:
+- Selain ja versio:
+- Ruudunlukija ja versio:
+- Testattu sisältö/näkymä:
+- Suurennus ja näkymän leveys:
+- Väritila:
+
+| Testi | Tulos (läpäisty / havainto / ei sovellu) | Huomiot ja toistamisvaiheet |
+|---|---|---|
+| Näppäimistön käyttö ja fokus | Ei testattu | |
+| Ruudunlukija ja otsikkorakenne | Ei testattu | |
+| 200 % ja 400 % suurennus | Ei testattu | |
+| 320 CSS-pikselin näkymä | Ei testattu | |
+| Kontrastit ja linkkien erottuvuus | Ei testattu | |
+| Tumma tila ja pakotetut värit | Ei testattu | |
+| RSS-sisällön käyttö lukijassa | Ei testattu | |
+
+**Yhteenveto ja avoimet löydökset:**
+

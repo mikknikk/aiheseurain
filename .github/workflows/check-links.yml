@@ -1,0 +1,32 @@
+name: Lähde- ja RSS-linkkien viikoittainen tarkistus
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-links:
+    name: Tarkista lähde- ja RSS-linkit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Hae lähdekoodi
+        uses: actions/checkout@v4
+      - name: Aseta Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Tarkista linkit
+        run: python scripts/check_links.py
+      - name: Tallenna tarkistusraportti
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lahde-ja-rss-linkit-${{ github.run_id }}
+          path: link-check-results/
+          if-no-files-found: warn
+          retention-days: 90
