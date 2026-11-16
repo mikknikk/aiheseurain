@@ -70,8 +70,8 @@ Yksi lähde voi olla monen aiheen käytössä. Siksi sen perustietoja ei kopioid
 
 ## 3. Yhteinen lähdekatalogi: mikä lähde on?
 
-Tiedosto: [`data/source-catalog.json`](../data/source-catalog.json)  
-Skeema: [`schemas/lahdekatalogi.schema.json`](../schemas/lahdekatalogi.schema.json)
+Tiedosto: [`data/source-catalog.json`](../data/source-catalog.json`  
+Skeema: [`schemas/lahdekatalogi.schema.json`](../schemas/lahdekatalogi.schema.json`
 
 Katalogi sisältää lähteen yhteiset perustiedot. Yksinkertaistettu esimerkki nykyisestä rakenteesta:
 
@@ -104,7 +104,7 @@ Esimerkkejä:
 - [Intialaisen elokuvan uutisten rekisteri](../data/sources/intialaiset_elokuvat_uutiset.json)
 - [Näytösvahdin rekisteri](../data/sources/intialaiset_elokuvat_naytokset.json)
 
-Skeema: [`schemas/lahderekisteri.schema.json`](../schemas/lahderekisteri.schema.json)
+Skeema: [`schemas/lahderekisteri.schema.json`](../schemas/lahderekisteri.schema.json`
 
 Käyttörekisteri ei toista lähteen nimeä tai URL-osoitetta. Se viittaa katalogiin `source_id`-kentällä:
 
@@ -117,9 +117,9 @@ Käyttörekisteri ei toista lähteen nimeä tai URL-osoitetta. Se viittaa katalo
 }
 ```
 
-- `source_id`: viittaus yhteisen katalogin `id)-arvoon.
+- `source_id`: viittaus yhteisen katalogin `id`-arvoon.
 - `critical`: onko lähde tämän aiheen kattavuuden kannalta kriittinen. Tämä ei ole luotettavuusarvosana.
-- `last_checked_at`: milloin lähde viimeksi tarkistettiin tämän tehtävän yhteydessä. `null) tarkoittaa, ettei tarkistusaikaa ole kirjattu.
+- `last_checked_at`: milloin lähde viimeksi tarkistettiin tämän tehtävän yhteydessä. `null` tarkoittaa, ettei tarkistusaikaa ole kirjattu.
 - `access_limit`: käyttöä rajaava huomio, esimerkiksi sivuston esto tai se, että lähde toimii vain uutisvihjeenä.
 
 Tehtäväkohtaisuus on tärkeää: jos sama sivusto tarkistetaan Tolkien- ja Muumi-seurannassa, Tolkien-rekisterin tarkistusaika ei automaattisesti päivitä Muumien rekisteriä.
@@ -141,10 +141,10 @@ Käyttörekisteri on hakujen lähtölista, ei suljettu sallittujen lähteiden lu
 
 ## 5. Ajokohtainen lähdetarkistusloki: mitä oikeasti tarkistettiin?
 
-Tiedosto: [`data/lahdetarkistukset.json`](../data/lahdetarkistukset.json)  
-Skeema: [`schemas/lahdetarkistukset.schema.json`](../schemas/lahdetarkistukset.schema.json)
+Tiedosto: [`data/lahdetarkistukset.json`](../data/lahdetarkistukset.json`  
+Skeema: [`schemas/lahdetarkistukset.schema.json`](../schemas/lahdetarkistukset.schema.json`
 
-Tämä tiedosto vastaa eri kysymykseen kuin käyttörekisterin `last_checked_at): se kuvaa yksittäisen ajon lähdekattavuutta.
+Tämä tiedosto vastaa eri kysymykseen kuin käyttörekisterin `last_checked_at`: se kuvaa yksittäisen ajon lähdekattavuutta.
 
 Yksinkertaistettu ote Tolkien-ajosta:
 
@@ -171,14 +171,14 @@ Yksinkertaistettu ote Tolkien-ajosta:
 
 Tässä esimerkissä:
 
-- `run_id) yksilöi yhden ajon.
-- `task_id) kertoo, mitä aihetta ajo käsitteli.
-- `status) kertoo lähdetarkistuksen kattavuuden: `complete), `partial) tai `failed).
-- `checked_source_ids) sisältää lähteet, joiden alkuperäinen sisältö avattiin ja tarkistettiin.
-- `unchecked_sources) sisältää lähteet, joita ei saatu tarkistettua, sekä syyn.
-- `coverage_notes) selittää kattavuuteen vaikuttavia asioita, kuten kieli- tai aluepuutteita.
+- `run_id` yksilöi yhden ajon.
+- `task_id` kertoo, mitä aihetta ajo käsitteli.
+- `status` kertoo lähdetarkistuksen kattavuuden: `complete`, `partial` tai `failed`.
+- `checked_source_ids` sisältää lähteet, joiden alkuperäinen sisältö avattiin ja tarkistettiin.
+- `unchecked_sources` sisältää lähteet, joita ei saatu tarkistettua, sekä syyn.
+- `coverage_notes` selittää kattavuuteen vaikuttavia asioita, kuten kieli- tai aluepuutteita.
 
-Uusissa lokimerkinnöissä `registry_source_ids) tallentaa kyseisen ajon lähderekisterin lähdejoukon. Se on ajon aikainen tilannekuva: jos rekisteriä myöhemmin muutetaan, vanhan ajon lähdejoukkoa ei päätellä uudelleen nykyisestä rekisteristä.
+Uusissa lokimerkinnöissä `registry_source_ids` tallentaa kyseisen ajon lähderekisterin lähdejoukon. Se on ajon aikainen tilannekuva: jos rekisteriä myöhemmin muutetaan, vanhan ajon lähdejoukkoa ei päätellä uudelleen nykyisestä rekisteristä.
 
 ### Yhden ajon lähteiden käsittely
 
@@ -199,21 +199,21 @@ flowchart TD
 
 Tarkistamattomuuden syy on olennainen tieto. Esimerkiksi 403-esto ei tarkoita, että lähde olisi tarkistettu. Myöskään hakutuloskatkelma ei yksin riitä tarkistetuksi lähteeksi.
 
-**Älä tulkitse lokin tilaa koko automaation julkaisutilaksi.** `complete), `partial) ja `failed) kuvaavat lähdetarkistuksen kattavuutta. Ne eivät yksin kerro, julkaistiinko RSS-artikkeli tai onnistuiko koko automaatio.
+**Älä tulkitse lokin tilaa koko automaation julkaisutilaksi.** `complete`, `partial` ja `failed` kuvaavat lähdetarkistuksen kattavuutta. Ne eivät yksin kerro, julkaistiinko RSS-artikkeli tai onnistuiko koko automaatio.
 
 ## 6. Seurantatila: mikä on viimeisin tunnettu järjestelmätila?
 
-Tiedosto: [`data/seurantatila.json`](../data/seurantatila.json)  
-Skeema: [`schemas/seurantatila.schema.json`](../schemas/seurantatila.schema.json)
+Tiedosto: [`data/seurantatila.json`](../data/seurantatila.json`  
+Skeema: [`schemas/seurantatila.schema.json`](../schemas/seurantatila.schema.json`
 
 Seurantatila on tiivis tilannekuva, ei kaikkien ajojen tapahtumaloki. Se sisältää esimerkiksi:
 
 - `rotation.next_task`: seuraava aihekierroksen tehtävä.
 - `rotation.tasks`: kunkin aiheen viimeisin tunnettu onnistuminen, seurantajakso, tulos, julkaistujen itemien määrä, tarkistettujen lähteiden määrä ja virheet.
 - `separate_screening_watch`: erillisen päivittäisen näytösvahdin viimeisin tunnettu tila.
-- `automation_instructions): pääautomaation ohjeversion tiedot.
-- `quality_check_instructions): viikoittaisen laatutarkistuksen ohjeversion tiedot.
-- `updated_at): koko seurantatiedoston viimeisin päivitysaika.
+- `automation_instructions`: pääautomaation ohjeversion tiedot.
+- `quality_check_instructions`: viikoittaisen laatutarkistuksen ohjeversion tiedot.
+- `updated_at`: koko seurantatiedoston viimeisin päivitysaika.
 
 Esimerkki yhdestä tehtävästä:
 
@@ -231,7 +231,7 @@ Esimerkki yhdestä tehtävästä:
 }
 ```
 
-Tässä `last_successful_check) on onnistuneen tarkistuksen ajankohta. `last_period_start) ja `last_period_end) kuvaavat tarkasteltua uutisjaksoa; jos niiden arvo on `null), tarkkaa ajanjaksoa ei ole tallennettu. Älä täydennä puuttuvaa ajanjaksoa päättelemällä.
+Tässä `last_successful_check` on onnistuneen tarkistuksen ajankohta. `last_period_start` ja `last_period_end` kuvaavat tarkasteltua uutisjaksoa; jos niiden arvo on `null`, tarkkaa ajanjaksoa ei ole tallennettu. Älä täydennä puuttuvaa ajanjaksoa päättelemällä.
 
 Seurantatila ei tällä hetkellä tallenna kaikkien löydettyjen uutisehdokkaiden määriä eikä jokaisen ajon julkaisemien GUIDien luetteloa. Näiden jäljitettävyys on tunnistettu jatkokehitykseksi (#55).
 
@@ -251,16 +251,16 @@ Näytösvahti ei kuluta aihekierroksen vuoroa. Intialaisen elokuvan uutisseurant
 
 ## 7. Näytöshistorian JSON: nykytila ja tapahtumat
 
-Tiedosto: [`data/naytosten-muutoshistoria.json`](../data/naytosten-muutoshistoria.json)  
-Skeema: [`schemas/naytosten-muutoshistoria.schema.json`](../schemas/naytosten-muutoshistoria.schema.json)  
-Yksityiskohtainen ohje: [`docs/naytoshistorian-rakenne.md`](naytoshistorian-rakenne.md)
+Tiedosto: [`data/naytosten-muutoshistoria.json`](../data/naytosten-muutoshistoria.json`  
+Skeema: [`schemas/naytosten-muutoshistoria.schema.json`](../schemas/naytosten-muutoshistoria.schema.json`  
+Yksityiskohtainen ohje: [`docs/naytoshistorian-rakenne.md`](naytoshistorian-rakenne.md`
 
 Näytöshistorian rakenne eroaa uutisseurannan tilatiedostoista:
 
-- `screenings) sisältää kunkin tunnetun näytöksen viimeisimmän tilan.
-- `events) sisältää tapahtumat, jotka selittävät, miten nykytilaan päädyttiin.
-- Tapahtumaloki on append-only: vanhoja tapahtumia ei poisteta eikä muokata. Virhe korjataan lisäämällä uusi `correction)-tapahtuma.
-- Näytöksen `screening_id) säilyy, vaikka näytösaika tai sali muuttuu.
+- `screenings` sisältää kunkin tunnetun näytöksen viimeisimmän tilan.
+- `events` sisältää tapahtumat, jotka selittävät, miten nykytilaan päädyttiin.
+- Tapahtumaloki on append-only: vanhoja tapahtumia ei poisteta eikä muokata. Virhe korjataan lisäämällä uusi `correction`-tapahtuma.
+- Näytöksen `screening_id` säilyy, vaikka näytösaika tai sali muuttuu.
 
 ```mermaid
 flowchart LR
@@ -290,8 +290,8 @@ Jokaisella koneellisella tietomallilla on oma skeemansa:
 JSON Schema voi tarkistaa esimerkiksi, että:
 - pakollinen kenttä on olemassa;
 - päivämääräkenttä on oikean tyyppinen;
-- `critical) on totuusarvo;
-- `source_type) on jokin sallituista arvoista;
+- `critical` on totuusarvo;
+- `source_type` on jokin sallituista arvoista;
 - tapahtuman tyyppi kuuluu sallittuun joukkoon.
 
 JSON Schema ei voi todistaa, että:
@@ -308,9 +308,9 @@ Näitä asioita arvioidaan automaation työohjeiden ja myöhemmin toteutettavien
 Tiedostojen tunnisteet ovat eri käyttötarkoituksiin. Älä päättele niitä pelkästään näyttönimestä:
 
 - `data/seurantatila.json` käyttää kiertojonon yhdeksännen uutistehtävän avaimena historiallista nimeä `intialaiset_elokuvat`.
-- Uutisten lähdekäyttörekisterin `task_id) on `intialaiset_elokuvat_uutiset`.
-- Näytösvahdin lähdekäyttörekisterin `task_id) on `intialaiset_elokuvat_naytokset`.
-- Ajolokin `task_id) käyttää lähderekistereissä määriteltyjä tehtävätunnisteita.
+- Uutisten lähdekäyttörekisterin `task_id` on `intialaiset_elokuvat_uutiset`.
+- Näytösvahdin lähdekäyttörekisterin `task_id` on `intialaiset_elokuvat_naytokset`.
+- Ajolokin `task_id` käyttää lähderekistereissä määriteltyjä tehtävätunnisteita.
 
 Tämä erottelu pitää uutisraportin ja näytösseurannan erillään, vaikka molemmat liittyvät intialaiseen elokuvaan. Kun lisäät tai muutat tehtäviä, tarkista aina kyseisen JSON-tiedoston oma skeema.
 
@@ -318,7 +318,7 @@ Tämä erottelu pitää uutisraportin ja näytösseurannan erillään, vaikka mo
 
 On tärkeää tunnistaa myös rajat, jotta käyttöliittymä tai lukija ei päättele tietoa, jota ei ole tallennettu.
 
-- **Lähteen A–D-luotettavuusluokitus:** ei vielä toteutettu. Nykyinen `source_type) on vain lähdetyyppi.
+- **Lähteen A–D-luotettavuusluokitus:** ei vielä toteutettu. Nykyinen `source_type` on vain lähdetyyppi.
 - **Uutisväitteiden varmennustaso rakenteisena kenttänä:** ei vielä kattavasti mallinnettu.
 - **Kaikki löydetyt uutisehdokkaat ja niiden hylkäyssyyt:** eivät sisälly nykyiseen ajolokiin; kehitystiketti #55.
 - **Jokaisen ajon julkaisemat GUIDit:** niitä ei tällä hetkellä tallenneta ajokohtaisena listana; kehitystiketti #55.
@@ -329,9 +329,9 @@ On tärkeää tunnistaa myös rajat, jotta käyttöliittymä tai lukija ei pää
 
 Jos haluat ymmärtää yhden aiheen lähteiden toimintaa, avaa nämä tässä järjestyksessä:
 
-1. [Yhteinen lähdekatalogi](../data/source-catalog.json) – etsi lähteen `id).
-2. [Tolkienin lähdekäyttörekisteri](../data/sources/tolkien.json) – etsi sama `source_id).
-3. [Ajokohtainen lähdetarkistusloki](../data/lahdetarkistukset.json) – etsi kyseisen tehtävän viimeisin `run_id) ja tarkista, löytyykö lähde tarkistetuista vai tarkistamatta jääneistä.
+1. [Yhteinen lähdekatalogi](../data/source-catalog.json) – etsi lähteen `id`.
+2. [Tolkienin lähdekäyttörekisteri](../data/sources/tolkien.json) – etsi sama `source_id`.
+3. [Ajokohtainen lähdetarkistusloki](../data/lahdetarkistukset.json) – etsi kyseisen tehtävän viimeisin `run_id` ja tarkista, löytyykö lähde tarkistetuista vai tarkistamatta jääneistä.
 4. [Lähdekatalogin skeema](../schemas/lahdekatalogi.schema.json) ja [käyttörekisterin skeema](../schemas/lahderekisteri.schema.json) – katso, mitä kenttiä tiedostoissa saa olla.
 
 Jos haluat ymmärtää automaation tilan, avaa [seurantatila](../data/seurantatila.json) ja [sen skeema](../schemas/seurantatila.schema.json).
