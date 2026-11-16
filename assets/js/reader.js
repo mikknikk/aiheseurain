@@ -120,16 +120,6 @@ function childText(parent, tagName) {
   return element ? element.textContent || "" : "";
 }
 
-/** Etsii kuvauksen ensimmäisen turvallisen lähdelinkin. */
-function parsedFirstSafeLink(html) {
-  const parsed = parseHtmlFragment(html);
-  for (const link of parsed.querySelectorAll("a")) {
-    const href = link.getAttribute("href");
-    if (isSafeArticleUrl(href)) return href;
-  }
-  return null;
-}
-
 /**
  * Muuntaa yhden RSS-syötteen itemit artikkelitietueiksi.
  * Virheellinen XML hylätään kokonaisena; tyhjät syötteet palauttavat tyhjän listan.
@@ -152,8 +142,7 @@ export function parseFeedXml(xmlText, feed) {
       pubDate,
       timestamp: Number.isFinite(timestamp) ? timestamp : 0,
       feedId: feed.id,
-      feedTitle: feed.title,
-      sourceUrl: parsedFirstSafeLink(description)
+      feedTitle: feed.title
     };
   });
 }
@@ -199,14 +188,6 @@ function renderArticles() {
     if (article.excerpt) details.appendChild(element("p", "reader-excerpt", article.excerpt));
 
     const body = element("div", "reader-article-body");
-    if (article.sourceUrl) {
-      const source = element("p", "reader-source");
-      const link = element("a", "", "Alkuperäinen lähde: " + article.title);
-      link.href = article.sourceUrl;
-      link.rel = "noopener noreferrer";
-      source.appendChild(link);
-      body.appendChild(source);
-    }
     body.appendChild(sanitizeArticleHtml(article.description));
     details.appendChild(body);
     card.appendChild(details);
