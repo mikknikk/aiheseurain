@@ -1,6 +1,6 @@
 # Aiheseuraimen kehityssuunnitelma
 
-**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) ja siirto omalle sivulleen (#38) on yhdistetty. RSS-lukijan vähimmäisversio (#31) on toteutuksessa.  
+**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) ja siirto omalle sivulleen (#38) on yhdistetty. RSS-lukijan vähimmäisversio (#31) ja Kehitysjonon kanbanin vähimmäisversio (#35) ovat toteutettuina omissa PR-muutoksissaan.  
 **Päivitetty:** 2026-11-16
 
 Tämä dokumentti kuvaa koko GitHub Pages -sivuston tavoitetilan, osioiden vastuut, tekniset periaatteet ja vaiheistuksen. Yksittäisten kehitystehtävien ajantasainen tila ylläpidetään GitHub Issues -tiketteinä; tätä dokumenttia ei käytetä rinnakkaisena tehtävälistana. Suunnitelman kirjaaminen ei tarkoita, että ominaisuus olisi jo käytössä.
@@ -311,10 +311,13 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 ### Vaihe 3 – Kehitysjonon kanban-näkymän vähimmäisversio (tiketti #35)
 
-- [ ] Näytä GitHub Issues -tiketit tilasarakkeissa ja prioriteeteittain.
-- [ ] Lisää haku, aihealue- ja prioriteettisuodatus sekä linkit alkuperäisiin tiketteihin.
-- [ ] Näytä päivityksen ajankohta ja GitHub API -virheet.
-- [ ] Tarjoa kanbanin rinnalla saavutettava lista- tai taulukkonäkymä.
+- [x] Näytä GitHub Issues -tiketit sovituissa tilasarakkeissa ja prioriteeteittain.
+- [x] Lisää otsikko-/numerohaku, aihealue- ja prioriteettisuodatus sekä linkit alkuperäisiin tiketteihin.
+- [x] Näytä viimeisin onnistunut päivitysaika, API-virheet ja välimuistissa olevan tiedon ikä.
+- [x] Tarjoa kanbanin rinnalla saavutettava taulukkonäkymä.
+- [x] Rajaa selainkäyttöliittymä vain luku -toiminnoksi; GitHubiin ei lähetetä kirjoituspyyntöjä eikä sivulle lisätä tunnuksia tai tokeneita.
+
+**Toteutustilanne:** vähimmäisversio on toteutettu PR:ssä. Näkymä hakee avoimet ja suljetut issuet GitHubin julkisesta APIsta, jättää pull requestit pois, näyttää suljetut tehtävät Valmis-sarakkeessa ja käsittelee puuttuvat tai ristiriitaiset tilat erillisenä huomautuksena. Aihealue suodatetaan aihe- ja alue-alkuisilla GitHub-labeleilla. Selaimen paikallinen välimuisti auttaa API-katkoissa; yli tunnin ikäinen tieto merkitään vanhentuneeksi eikä sitä esitetä tuoreena.
 
 **Hyväksymiskriteeri:** näkymä esittää GitHubin issue-tiedot oikein ja ajantasaisuuden rajat näkyvästi; muokkaus tapahtuu GitHubissa.
 
@@ -350,6 +353,7 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 ## 10. Muutosloki
 
+- **2026-11-16:** Kehitysjonon kanbanin vähimmäisversio toteutettiin omalle `/kehitysjono/`-sivulleen. GitHub Issues säilyy ainoana tehtävätietojen lähteenä; Pages-näkymä on vain luku -muotoinen ja tarjoaa kanbanin rinnalla taulukkonäkymän.
 - **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Aiheseuraimen palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
 
 - **2026-11-16:** ensimmäinen tavoitekuvaus ja vaiheistettu kehityssuunnitelma kirjattu Valvomolle ja RSS-lukijalle.
