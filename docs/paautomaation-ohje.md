@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.0.1
+Ohjeversion tunniste: 1.0.2
 Viimeksi päivitetty: 2026-11-16
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -24,8 +24,9 @@ Noudata joka ajolla tätä järjestystä:
 5. Lue `docs/kehityskaytannot.md), jos muutat skriptejä tai ylläpitokoodia.
 6. Valitse seuraava tehtävä `docs/tehtavajono.md`:stä ja varmista, että se vastaa JSONin `rotation.next_task`-arvoa. Jos arvot eroavat, keskeytä ennen hakuja; älä arvaa kumpi on oikein.
 7. Lue valitun aiheen ohjeet ja seurantaloki. Tehtävässä 9 lue kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`. Älä lue tai muuta näytösvahdin ohjeita tai historiaa uutisautomaatiossa.
-8. Lue valitun tehtävän RSS-syöte ja vertaa aiempia itemeitä/GUIDeja. Lue muita syötteitä vain deduplikoinnin ja aiherajauksen kannalta tarpeellisessa laajuudessa; älä muuta muiden tehtävien sisältöä.
-9. Käytä dokumentaatiota ensisijaisena muistijälkenä, älä aiempien keskustelujen tai vanhan automaatiokehotteen muistikuvaa.
+8. Lue kaikki kymmenen RSS-tiedostoa kokonaan tai hae niiden kaikki itemit: kahdeksan muuta aihefeed-tiedostoa, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml`. Näytösfeed luetaan vain aiemman historian/GUIDien säilyttämiseksi; älä tee siihen liittyviä hakuja tai muutoksia.
+9. Vertaa valitun tehtävän feediä aiempiin itemeihin ja GUIDeihin. Varmista globaalisti, ettei uusi GUID toistu missään kymmenestä syötteestä. Älä muuta muiden tehtävien sisältöä.
+10. Käytä dokumentaatiota ensisijaisena muistijälkenä, älä aiempien keskustelujen tai vanhan automaatiokehotteen muistikuvaa.
 
 ## 3. Yhdeksän tehtävän aiheiden rajaukset
 
@@ -35,9 +36,9 @@ Tehtävien kiertojärjestys ja seuraava vuoro määritellään vain tiedostossa 
 2. **Taylor Swift:** musiikki, julkaisut, kiertueet, esiintymiset, elokuva/TV, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura. Vältä vähäpätöistä yksityiselämän juoruilua ja vahvistamattomia suhdeväitteitä.
 3. **Saint Dr. Gurmeet Ram Rahim Singh Ji Insan:** julkinen toiminta, viralliset ja oikeudelliset kehitykset, lausunnot, tuotannot, elokuvahankkeet ja julkaisut. Hae englanniksi, hindiksi ja pandžabiksi sekä nimivariantit/translitteroinnit. Varmista henkilön identiteetti. Erota syytteet, tuomiot, valitukset, viranomaistoimet ja oikeuden ratkaisut.
 4. **Muumit:** Tove Janssonin teokset ja perintö, Moomin Characters ja oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, TV, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja liiketoiminta. Hae suomeksi, ruotsiksi, englanniksi ja japaniksi; käytä myös kirjoitusasuja Muumit/Moomin/Moomins/ムーミン. Erota virallinen uutinen fanisisällöstä.
-5. **Wakaliwood:** elokuvateollisuus ja studio, Nabwana I.G.G. ja muut keskeiset tekijät, tuotannot, festivaalit, levitys, näytökset, kansainväliset kiertueet, rahoitus, dokumentit ja Wakaliwoodiin liittyvä Ugandan elokuvakulttuuri. Hae Ugandasta, Itä-Afrikasta ja kansainvälisistä genre- ja festivaalilähteistä sekä soveltuvilla paikalliskielillä.
+5. **Wakaliwood:** elokuvateollisuus ja studio, Nabwana I.G.G. ja muut keskeiset tekijät, tuotannot, festivaalit, levitys, näytökset, kansainväliset kiertueet, rahoitus, dokumentit ja Wakaliwoodiin liittyvä Ugandan elokuvakulttuuri. Hae Ugandasta, Itä-Afrikasta ja kansainvälisistä genre- ja festivaalilähteistä sekä soveltuvilla paikalliskielillä. Seuraa myös Suomessa järjestettäviä Wakaliwood-näytöksiä.
 6. **Euroviisut:** Eurovision Song Contest, kaikkien maiden kansalliset valinnat ja karsinnat, esikarsinnat, artisti- ja kappalejulkistukset, säännöt, järjestelyt, tulokset, delegaatiot sekä oheis- ja aluekilpailut. Sisällytä Eurovision Song Contest Asia ja muut olennaiset aluekilpailut; älä rajaa seurantaa Euroopan maantieteeseen. Hae eri maiden omilla kielillä ja yleisradioyhtiöiden lähteistä. Seuraa Yleä, UMK:ta, suomalaisia artisteja ja Suomessa järjestettäviä tapahtumia.
-7. **Sompote Sands:** thaimaalainen elokuvaohjaaja ja tuottaja, myös Sompote Saengduenchai (สมโพธิ แสงเดือนฉาย) ja muut translitteroinnit. Seuraa elokuvia, tuotantoja, studiohistoriaa, restaurointeja, arkistointia, julkaisuja, näytöksiä, festivaaleja, oikeuksia, levitystä, retrospektiivejä ja tutkimusta. Hae thaiksi ja englanniksi.
+7. **Sompote Sands:** thaimaalainen elokuvaohjaaja ja tuottaja, myös Sompote Saengduenchai (สมโพธิ แสงเดือนฉาย) ja muut translitteroinnit. Seuraa elokuvia, tuotantoja, Krua/Chaiyo-studioihin liittyvää relevanttia historiaa, restaurointeja, arkistointia, julkaisuja, näytöksiä, festivaaleja, oikeuksia, levitystä, retrospektiivejä ja tutkimusta. Hae thaiksi ja englanniksi.
 8. **Shakkidraamat:** merkittävät shakin kiistat, huijaus-/vilppisyytökset, kurinpitomenettelyt, oikeusjutut, järjestö- ja hallintokiistat, pelaajien/järjestäjien konfliktit, turnausten vakavat tapahtumat sekä sääntö- ja reilun pelin kiistat. Seuraa FIDEä, kansallisia liittoja, järjestäjiä, pelaajien lausuntoja ja riippumatonta mediaa. Erota väitteet, vastineet, tutkinta, väliaikaiset päätökset ja lopulliset ratkaisut.
 9. **Intialaisen elokuvan uutisraportti:** noudata kokonaan tehtäväkohtaisia intialaisen elokuvan uutisohjeita. Päivitä vain `feeds/intialaiset-elokuvat.xml` ja uutishistorian osio `docs/intialaisen-elokuvan-seuranta.md`:ssä.
 
@@ -58,7 +59,7 @@ Tehtävien kiertojärjestys ja seuraava vuoro määritellään vain tiedostossa 
 - Julkaise vain olennaisia uusia tai merkittävästi muuttuneita, lähteistettyjä tapahtumia. Yhdistä saman tapahtuman lähteet yhdeksi RSS-itemiksi.
 - Älä toista muuttumatonta taustatietoa, vanhoja huhuja, fanispekulaatiota, markkinointihypetystä, vähäarvoisia yksityiselämäjuoruja tai päivittäisiä “ei uutisia” -itemeitä.
 - Jos aiempi väite osoittautuu vääräksi tai saa olennaisen vahvistuksen/kiistämisen, julkaise selkeä korjaus/päivitys ja viittaa aiempaan itemiin.
-- Päivitä `docs/seuranta.md`:hen aihekohtainen tapahtumaloki. Tehtävässä 9 päivitä `docs/intialaisen-elokuvan-seuranta.md`: tapahtuma, tapahtuma- ja julkaisupäivä, luotettavuusluokka, tila, lähteet ja niiden riippumattomuus, RSS GUID ja seuraava tarkistustarve. Älä tee päivittäisiä “ei uutisia” -merkintöjä.
+- Päivitä `docs/seuranta.md`:hen aihekohtainen tapahtumaloki ja `docs/lahteet.md`:hen uudet olennaiset lähteet sekä niiden käyttöä koskevat muutokset. Tehtävässä 9 päivitä `docs/intialaisen-elokuvan-seuranta.md`: tapahtuma, tapahtuma- ja julkaisupäivä, luotettavuusluokka, tila, lähteet ja niiden riippumattomuus, RSS GUID ja seuraava tarkistustarve. Älä tee päivittäisiä “ei uutisia” -merkintöjä. Päivitä README, jos repositorion rakenne tai automaatioiden työnjako muuttuu.
 
 ## 6. RSS-julkaisu ja tarkistukset
 
@@ -107,3 +108,4 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Jokainen onnistunut pääautomaation ajo kirjaa käytetyn version ja ajoajan koneelliseen seurantatilaan. Näin tulos voidaan jälkikäteen yhdistää täsmälliseen ohjeversioon.
 - Tämä versionhallinta koskee pääautomaatiota. Näytösvahdin tehtävä, hakusäännöt ja ajastus säilyvät ennallaan. Sen kehotteeseen lisättiin vain yhteensopivuusvarmistus: se säilyttää `automation_instructions`-osion muuttumattomana, kun se päivittää samaa JSON-seurantatiedostoa.
 - Versio 1.0.1: täsmennettiin erillisen näytösvahdin JSON-kenttien säilytys uuden pääautomaation versionhallintaosion käyttöönoton jälkeen.
+- Versio 1.0.2: säilytettiin aiempi vaatimus lukea kaikki kymmenen RSS-syötettä jokaisella ajolla ja täsmennettiin globaalin GUID-tarkistuksen sekä lähderekisterin ylläpidon vastuut.
