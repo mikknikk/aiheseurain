@@ -31,9 +31,9 @@ Katselmointi tehtiin 17.11.2026 GitHubin lähdetiedostoista. Käytössä ei ollu
 
 1. Etusivun aihekorttien RSS-linkeillä oli keskenään sama teksti. Linkkitekstit muutettiin nimeämään kyseinen aihe ja syöte, jotta linkin tarkoitus käy ilmi myös linkkiluettelossa.
 2. RSS-lukijan artikkelien lähdelinkki käytti samaa yleistä nimeä jokaisessa artikkelissa. Linkkiteksti sisältää nyt myös artikkelin otsikon.
-3. RSS-sisällössä oli useita `h1`-otsikoita. Niiden näyttäminen sellaisinaan loisi lukijasivulle useita päätason otsikoita. Sanitointi muuntaa artikkelisisällön `h1`-otsikot `h2`-tasolle.
+3. RSS-sisällön otsikkotasot siirtyvät sanitoinnissa yhden tason syvemmälle: `h1` → `h2`, `h2` → `h3`, `h3` → `h4`, `h4` → `h5` ja `h5` → `h6`. Alkuperäinen `h6` säilyy `h6`-tasolla, koska HTML-standardissa ei ole `h7`-elementtiä. Näin artikkelin otsikkohierarkia säilyy suhteellisena eikä RSS-sisältö tuo lukijasivulle sen omaa päätason otsikkoa ylempiä tasoja.
 
-Korjauksille lisättiin regressiotestit RSS-lukijan testitiedostoon. Testien suoritus varmistetaan PR:n GitHub Actions -tuloksista.
+Korjauksille lisättiin regressiotestit RSS-lukijan testitiedostoon. Otsikkotasojen testissä tarkistetaan kaikki kuusi HTML-otsikkotyyppiä. Testien suoritus varmistetaan PR:n GitHub Actions -tuloksista.
 
 ## CSS-värien kontrastilaskelmat
 
