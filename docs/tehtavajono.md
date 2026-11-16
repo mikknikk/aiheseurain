@@ -27,5 +27,4 @@ Tämä tiedosto on tehtäväjonon ensisijainen totuuslähde: se määrittää yh
 - Älä muuta tehtävien järjestystä ilman käyttäjän nimenomaista pyyntöä. Älä luo rinnakkaisia automaatioita.
 - Nykyinen automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki. Koska jonossa on yhdeksän tehtävää, kukin tehtävä tarkistetaan normaalisti noin yhdeksän päivän välein. Päivittäinen käynnistys ei tarkoita päivittäistä seurantaa jokaiselle aiheelle.
 
-
-
+Intialaisen elokuvan uutisraportti on jonon yhdeksäs tehtävä. Intialaisten elokuvien näytösseuranta ei kuulu tähän jonoon: sitä hoitaa erillinen päivittäinen Intialaisten elokuvien näytösvahti -automaatio. Näytösvahti ei kuluta aihekierroksen vuoroa.
