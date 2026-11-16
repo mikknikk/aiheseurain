@@ -131,4 +131,4 @@ Lisää tarvittaessa kunkin aiheen alle:
 
 ## Intialaisen elokuvan seuranta (päivittäinen)
 
-Intialaisen elokuvan uutis- ja näytösseuranta suoritetaan joka päivä saman automaation yhteydessä. Yksityiskohtainen uutis- ja näytöshistoria on tiedostossa `docs/docs/INDIAN_FILM_TRACKING.md`; älä korvaa sitä tällä yleisellä kiertojonolla. Lähteet ovat tiedostossa `docs/docs/INDIAN_FILM_SOURCES.md`. Uutisraportti julkaistaan tiedostoon `feeds/indian-films.xml` ja näytöspäivitykset tiedostoon `feeds/indian-film-screenings.xml`. Molemmat moduulit tarkistetaan joka päivä, myös silloin kun kahdeksan aiheen kiertojonossa käsitellään muuta aihetta.
+Intialaisen elokuvan uutis- ja näytösseuranta suoritetaan joka päivä saman automaation yhteydessä. Yksityiskohtainen uutis- ja näytöshistoria on tiedostossa `INDIAN_FILM_TRACKING.md`; älä korvaa sitä tällä yleisellä kiertojonolla. Lähteet ovat tiedostossa `INDIAN_FILM_SOURCES.md`. Uutisraportti julkaistaan tiedostoon `feeds/indian-films.xml` ja näytöspäivitykset tiedostoon `feeds/indian-film-screenings.xml`. Molemmat moduulit tarkistetaan joka päivä, myös silloin kun kahdeksan aiheen kiertojonossa käsitellään muuta aihetta.
