@@ -128,7 +128,7 @@
   },
   "automation_instructions": {
     "document": "docs/paautomaation-ohje.md",
-    "current_version": "1.0.1",
+    "current_version": "1.0.2",
     "last_successful_run_version": null,
     "last_successful_run_at": null
   }
