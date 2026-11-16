@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.0.2
+Ohjeversion tunniste: 1.0.3
 Viimeksi päivitetty: 2026-11-16
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -20,7 +20,7 @@ Noudata joka ajolla tätä järjestystä:
 1. Lue `README.md` ja tämä käsikirja kokonaan.
 2. Lue `data/seurantatila.json`. Tarkista, että `automation_instructions.document` osoittaa tähän tiedostoon ja että `current_version` vastaa tämän dokumentin Ohjeversion tunnistetta.
 3. Jos GitHub ei ole käytettävissä, käsikirja tai seurantatila puuttuu tai versiot eivät täsmää, keskeytä ajo. Älä käytä vanhaa promptia, arvattua versiota tai vanhentunutta ohjetta. Älä tee hakuja, julkaisuja, onnistumismerkintöjä tai vuoron siirtoa.
-4. Lue kokonaan `docs/tehtavajono.md`, `docs/seuranta.md`, `docs/lahteet.md` ja `docs/saavutettavuus.md`.
+4. Lue kokonaan `docs/tehtavajono.md`, `docs/seuranta.md`, `docs/lahteet.md` ja `docs/saavutettavuus.md`. Lue myös `data/lahderekisteri.json` valitun tehtävän lähteiden tunnistamiseksi.
 5. Lue `docs/kehityskaytannot.md), jos muutat skriptejä tai ylläpitokoodia.
 6. Valitse seuraava tehtävä `docs/tehtavajono.md`:stä ja varmista, että se vastaa JSONin `rotation.next_task`-arvoa. Jos arvot eroavat, keskeytä ennen hakuja; älä arvaa kumpi on oikein.
 7. Lue valitun aiheen ohjeet ja seurantaloki. Tehtävässä 9 lue kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`. Älä lue tai muuta näytösvahdin ohjeita tai historiaa uutisautomaatiossa.
@@ -85,6 +85,7 @@ Myös onnistunut haku ilman julkaistavaa uutista kuluttaa vuoron. Onnistuneen aj
 
 Päivitä onnistuneen ajon lopuksi `data/seurantatila.json`:
 - valitun tehtävän `last_successful_check`, `last_period_start`, `last_period_end`, `last_result` (published/no_news), `published_items`, `sources_checked` ja `errors` (tyhjä taulukko);
+- lisää yksi ajo `data/lahdetarkistukset.json`-tiedostoon: `task_id`, aloitus- ja päättymisajat, tila, tarkistettujen lähteiden ID:t, tarkistamatta jääneet lähteet syineen sekä lyhyet kieli-/aluekattavuuden huomiot. Päivitä `latest_by_task` vastaamaan saman tehtävän uusinta ajoa. Älä merkitse lähdettä tarkistetuksi, jos vain hakutuloskatkelma löytyi tai alkuperäistä sisältöä ei voitu tarkistaa.
 - ylätason `updated_at` ja `rotation.next_task`, joiden pitää vastata tehtäväjonon seuraavaa vuoroa;
 - `automation_instructions.last_successful_run_version` ja `last_successful_run_at`. Kirjaa täsmälleen se `current_version`, jonka vastaavuus käsikirjaan tarkistettiin ajon alussa.
 
@@ -99,7 +100,16 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 4. Korjaa ristiriidat saman työvaiheen aikana tai dokumentoi tarkoitukselliset erot.
 5. Hae muutetut dokumentit GitHubista takaisin ja varmista tallennettu sisältö.
 
-## 10. Versionumeron muuttaminen
+## 10. Lähteiden kattavuus ja ajokohtainen loki
+
+- `data/lahderekisteri.json` on yhdeksän aihekierroksen ja erillisen näytösvahdin yhteinen tekninen rekisteri. Intialaisen elokuvan uutisilla ja näytösseurannalla on eri tehtävätunnisteet: `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset`.
+- Rekisterin lähde on lähtöpiste, ei suljettu lista eikä luotettavuusleima. Lisää löydetyt olennaiset lähteet rekisteriin vasta, kun nimi, URL, aihe, kieli/alue ja lähdetyyppi on tarkistettu. Älä keksi osoitteita.
+- `data/lahdetarkistukset.json` säilyttää ajokohtaisen jäljen. Kirjaa kaikki kyseisen tehtävän kriittiset lähteet joko tarkistetuiksi tai tarkistamatta jääneiksi syineen. Lisää myös muut todella tarkistetut lähteet. Osittainen tai epäonnistunut ajo merkitään vastaavasti; se ei saa näyttää täydelliseltä kattavuudelta.
+- `complete` tarkoittaa, että tehtävän suunnitellut kriittiset lähteet on käsitelty; se ei todista kaikkien mahdollisten lähteiden tai koko kieli-/maantieteellisen alueen kattavuutta. Kirjaa kattavuushuomiot ja tunnistetut puutteet.
+- `data/seurantatila.json`-tiedoston `sources_checked` säilyy yhteenvetolukuna. Yksittäiset lähteet ja epäonnistumissyyt löytyvät ajolokista.
+- Älä muuta toisen tehtävän tai toisen automaation lokia. Pääautomaation uutisajo ei kirjaa näytösvahtia eikä tee näytöslähteiden tarkistuksia.
+
+## 11. Versionumeron muuttaminen
 
 - Käytä semanttista versiota MAJOR.MINOR.PATCH.
 - PATCH tarkoittaa täsmennystä/virheenkorjausta, MINOR uutta taaksepäin yhteensopivaa sääntöä ja MAJOR olennaista muutosta tehtävän rakenteeseen, rajaukseen tai toimintalogiikkaan.
@@ -109,3 +119,4 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Tämä versionhallinta koskee pääautomaatiota. Näytösvahdin tehtävä, hakusäännöt ja ajastus säilyvät ennallaan. Sen kehotteeseen lisättiin vain yhteensopivuusvarmistus: se säilyttää `automation_instructions`-osion muuttumattomana, kun se päivittää samaa JSON-seurantatiedostoa.
 - Versio 1.0.1: täsmennettiin erillisen näytösvahdin JSON-kenttien säilytys uuden pääautomaation versionhallintaosion käyttöönoton jälkeen.
 - Versio 1.0.2: säilytettiin aiempi vaatimus lukea kaikki kymmenen RSS-syötettä jokaisella ajolla ja täsmennettiin globaalin GUID-tarkistuksen sekä lähderekisterin ylläpidon vastuut.
+- Versio 1.0.3: otettiin käyttöön yhtenäinen lähderekisteri ja ajokohtainen lähdetarkistusloki; uutiskierron intialaiset uutislähteet erotettiin näytösvahtia varten olevista lähteistä.
