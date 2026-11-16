@@ -1150,6 +1150,7 @@ def main():
     print("OK: kuvausten HTML-rakenne, linkit, otsikkotasot, alt-attribuutit ja lähdeluettelot.")
     print("OK: README, tehtäväjono, feed-polut, seurantatila ja käynnistyskehotteiden tunnisteet ovat yhdenmukaiset.")
     print("OK: aikaleimat, seurantajaksot, erillinen näytösvahti ja näytösten muutoshistoria.")
+    print("OK: seurantatila vastaa JSON Schema Draft 2020-12 -määrittelyä.")
     print("OK: näytöshistoria vastaa JSON Schema Draft 2020-12 -määrittelyä.")
     print("OK: RSS:n historialliset näytösajat vastaavat JSON-historian completed-tietueita.")
 
