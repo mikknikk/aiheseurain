@@ -336,7 +336,7 @@ async function renderActions() {
   }
 }
 
-async function loadDashboard() {
+export async function loadDashboard() {
   const button = document.getElementById("refresh-button");
   button.disabled = true;
   button.textContent = "Päivitetään…";
