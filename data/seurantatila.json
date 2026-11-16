@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "timezone": "Europe/Helsinki",
+  "updated_at": null,
+  "notes": [
+    "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
+    "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
+    "Näytösseuranta on erillinen päivittäinen prosessi eikä kuluta yhdeksän tehtävän kiertoa."
+  ],
+  "rotation": {
+    "next_task": "tolkien",
+    "tasks": {
+      "tolkien": {
+        "name": "J. R. R. Tolkien",
+        "feed": "feeds/tolkien.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "taylor_swift": {
+        "name": "Taylor Swift",
+        "feed": "feeds/taylor-swift.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "gurmeet_ram_rahim_singh": {
+        "name": "Saint Dr. Gurmeet Ram Rahim Singh Ji Insan",
+        "feed": "feeds/gurmeet-ram-rahim-singh.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "muumit": {
+        "name": "Muumit",
+        "feed": "feeds/muumit.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "wakaliwood": {
+        "name": "Wakaliwood",
+        "feed": "feeds/wakaliwood.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "euroviisut": {
+        "name": "Euroviisut ja kansalliset karsinnat",
+        "feed": "feeds/euroviisut.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "sompote_sands": {
+        "name": "Sompote Sands",
+        "feed": "feeds/sompote-sands.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "shakkidraamat": {
+        "name": "Shakkidraamat",
+        "feed": "feeds/shakkidraamat.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      },
+      "intialaiset_elokuvat": {
+        "name": "Intialaisen elokuvan uutisraportti",
+        "feed": "feeds/intialaiset-elokuvat.xml",
+        "last_successful_check": null,
+        "last_period_start": null,
+        "last_period_end": null,
+        "last_result": "not_recorded",
+        "published_items": null,
+        "sources_checked": null,
+        "errors": []
+      }
+    }
+  },
+  "separate_screening_watch": {
+    "name": "Intialaisten elokuvien näytösvahti",
+    "feed": "feeds/intialaisten-elokuvien-naytokset.xml",
+    "cadence": "daily",
+    "last_successful_check": null,
+    "last_period_start": null,
+    "last_period_end": null,
+    "last_result": "not_recorded",
+    "published_items": null,
+    "sources_checked": null,
+    "errors": []
+  }
+}
