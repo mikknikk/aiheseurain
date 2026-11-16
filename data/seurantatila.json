@@ -6,7 +6,8 @@
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
     "Näytösseuranta on erillinen päivittäinen prosessi eikä kuluta yhdeksän tehtävän kiertoa.",
-    "Näytösseurannan näytöskohtainen nykytila ja append-only-muutosloki ovat tiedostossa data/naytosten-muutoshistoria.json; ensimmäinen varmennettu lähtötilanne on vielä muodostamatta."
+    "Näytösseurannan näytöskohtainen nykytila ja append-only-muutosloki ovat tiedostossa data/naytosten-muutoshistoria.json; ensimmäinen varmennettu lähtötilanne on vielä muodostamatta.",
+    "Pääautomaation ohjeistus ylläpidetään versionhallittuna GitHub-käsikirjana docs/paautomaation-ohje.md; onnistuneen ajon käyttämä versio ja aika kirjataan automation_instructions-osioon."
   ],
   "rotation": {
     "next_task": "tolkien",
@@ -123,5 +124,11 @@
     "published_items": null,
     "sources_checked": null,
     "errors": []
+  },
+  "automation_instructions": {
+    "document": "docs/paautomaation-ohje.md",
+    "current_version": "1.0.0",
+    "last_successful_run_version": null,
+    "last_successful_run_at": null
   }
 }
