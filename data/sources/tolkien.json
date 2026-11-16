@@ -7,7 +7,8 @@
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
     "Kattavuutta laajennettu 16.11.2026: lisätty kustantajia Yhdysvalloista, Ranskasta, Espanjasta ja Brasiliasta; Tolkien-yhteisöjä Saksasta, Ranskasta, Italiasta, Espanjasta ja Suomesta; suomalainen toimituksellinen media, espanjankielinen erikoismedia, vertaisarvioitu tutkimusjulkaisu ja englanninkielinen adaptaatiouutisten erikoissivusto.",
     "Kattavuus ei ole maailmanlaajuisesti täydellinen: erityisesti Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet vaativat jatkotyötä. Fanisivustot ja yhdistykset ovat uutisvihjeitä tai yhteisölähteitä, eivät riippumattomia vahvistuksia.",
-    "16.11.2026: lähderekisteriin lisättiin EHU/TARTALO-konferenssiohjelma, The Mythopoeic Society, File 770, GamesRadar+ ja New Zealand Film Map. Vain EHU:n virallinen PDF avattiin suoraan; neljän muun uuden lähteen artikkeliteksti näkyi hakutulosotteessa mutta suora avaus ei onnistunut, joten niiden last_checked_at jätettiin null-arvoon ja ne kirjattiin ajolokissa tarkistamatta jääneiksi."
+    "16.11.2026: lähderekisteriin lisättiin EHU/TARTALO-konferenssiohjelma, The Mythopoeic Society, File 770, GamesRadar+ ja New Zealand Film Map. Vain EHU:n virallinen PDF avattiin suoraan; neljän muun uuden lähteen artikkeliteksti näkyi hakutulosotteessa mutta suora avaus ei onnistunut, joten niiden last_checked_at jätettiin null-arvoon ja ne kirjattiin ajolokissa tarkistamatta jääneiksi.",
+    "Suomen tapahtumahaun yleiset löytölähteet on lisätty rekisteriin. Lipunmyyntipalvelut ovat hakuvihjeitä, eivät tapahtuman ensisijaisia vahvistuslähteitä; tarkista tapahtuma järjestäjän omasta ilmoituksesta."
   ],
   "sources": [
     {
@@ -412,6 +413,51 @@
       "regions": [
         "NZ",
         "GLOBAL"
+      ]
+    },
+    {
+      "id": "lippu-fi-events",
+      "name": "Lippu.fi – tapahtumahaku",
+      "url": "https://www.lippu.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "ticketmaster-fi-events",
+      "name": "Ticketmaster Suomi – tapahtumahaku",
+      "url": "https://www.ticketmaster.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "regions": [
+        "FI"
+      ]
+    },
+    {
+      "id": "tiketti-fi-events",
+      "name": "Tiketti – tapahtumahaku",
+      "url": "https://www.tiketti.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "regions": [
+        "FI"
       ]
     }
   ]
