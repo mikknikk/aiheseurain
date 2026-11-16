@@ -118,7 +118,25 @@ def validate_source_coverage():
         for source_id in kaikki_idt:
             if source_id not in tehtavan_lahteet:
                 raise ValueError(f"{ajo['run_id']}: lähde {source_id} ei kuulu tehtävän {tehtava} rekisteriin")
-        for source_id, kaytto in tehtavan_lahteet.items():
+
+        # Uusissa ajoissa tarkistetaan lokin täydellisyys ajon oman rekisteri-
+        # snapshotin perusteella. Vanhoissa merkinnöissä snapshot puuttuu,
+        # joten säilytetään aiempi yhteensopiva kriittisten lähteiden tarkistus.
+        if "registry_source_ids" in ajo:
+            snapshot_ids = ajo["registry_source_ids"]
+            if set(kaikki_idt) != set(snapshot_ids):
+                puuttuvat = sorted(set(snapshot_ids) - set(kaikki_idt))
+                ylimaaraiset = sorted(set(kaikki_idt) - set(snapshot_ids))
+                raise ValueError(
+                    f"{ajo['run_id']}: checked/unchecked ei vastaa registry_source_ids-kenttää; "
+                    f"puuttuvat={puuttuvat}, ylimääräiset={ylimaaraiset}"
+                )
+            kriittiset_idt = snapshot_ids
+        else:
+            kriittiset_idt = tehtavan_lahteet.keys()
+
+        for source_id in kriittiset_idt:
+            kaytto = tehtavan_lahteet[source_id]
             if kaytto["critical"] and source_id not in kaikki_idt and ajo["status"] == "complete":
                 raise ValueError(f"{ajo['run_id']}: kriittinen lähde {source_id} puuttuu sekä tarkistetuista että tarkistamatta jääneistä lähteistä")
 

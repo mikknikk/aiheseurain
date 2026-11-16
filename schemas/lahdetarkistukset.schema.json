@@ -108,6 +108,14 @@
           "items": {
             "type": "string"
           }
+        },
+        "registry_source_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       },
       "additionalProperties": false

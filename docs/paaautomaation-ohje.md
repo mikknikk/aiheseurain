@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.2.0
+Ohjeversion tunniste: 1.2.1
 Viimeksi päivitetty: 2026-11-16
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -85,7 +85,7 @@ Myös onnistunut haku ilman julkaistavaa uutista kuluttaa vuoron. Onnistuneen aj
 
 Päivitä onnistuneen ajon lopuksi `data/seurantatila.json`:
 - valitun tehtävän `last_successful_check`, `last_period_start`, `last_period_end`, `last_result` (published/no_news), `published_items`, `sources_checked` ja `errors` (tyhjä taulukko);
-- lisää yksi ajo `data/lahdetarkistukset.json`-tiedostoon: `task_id`, aloitus- ja päättymisajat, tila, tarkistettujen lähteiden ID:t, tarkistamatta jääneet lähteet syineen sekä lyhyet kieli-/aluekattavuuden huomiot. Päivitä `latest_by_task` vastaamaan saman tehtävän uusinta ajoa. Älä merkitse lähdettä tarkistetuksi, jos vain hakutuloskatkelma löytyi tai alkuperäistä sisältöä ei voitu tarkistaa.
+- lisää yksi ajo `data/lahdetarkistukset.json`-tiedostoon: `task_id`, aloitus- ja päättymisajat, tila, `registry_source_ids`, tarkistettujen lähteiden ID:t, tarkistamatta jääneet lähteet syineen sekä lyhyet kieli-/aluekattavuuden huomiot. Päivitä `latest_by_task` vastaamaan saman tehtävän uusinta ajoa. Älä merkitse lähdettä tarkistetuksi, jos vain hakutuloskatkelma löytyi tai alkuperäistä sisältöä ei voitu tarkistaa.
 - ylätason `updated_at` ja `rotation.next_task`, joiden pitää vastata tehtäväjonon seuraavaa vuoroa;
 - `automation_instructions.last_successful_run_version` ja `last_successful_run_at`. Kirjaa täsmälleen se `current_version`, jonka vastaavuus käsikirjaan tarkistettiin ajon alussa.
 
@@ -104,8 +104,8 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 
 - Kaikki lähteiden yhteiset perustiedot ylläpidetään kerran tiedostossa `data/source-catalog.json` (`schemas/lahdekatalogi.schema.json`). Kymmenen tehtäväkohtaista käyttörekisteriä ovat `data/sources/{task_id}.json` (`schemas/lahderekisteri.schema.json`); niissä on vain `source_id`-viittaus sekä tehtäväkohtaiset `critical`-, `last_checked_at`- ja `access_limit`-kentät. Yhdistä viittaukset katalogiin ID:n perusteella. Katalogin lähteitä ei pidä automaattisesti tarkistaa kaikissa tehtävissä. Intialaisen elokuvan uutisilla ja erillisellä näytösseurannalla on eri käyttörekisterit ja tehtävätunnisteet.
 - Rekisterin lähde on lähtöpiste, ei suljettu lista eikä luotettavuusleima. Lisää löydetyt olennaiset lähteet rekisteriin vasta, kun nimi, URL, aihe, kieli/alue ja lähdetyyppi on tarkistettu. Älä keksi osoitteita.
-- `data/lahdetarkistukset.json` säilyttää ajokohtaisen jäljen. Kirjaa kaikki kyseisen tehtävän kriittiset lähteet joko tarkistetuiksi tai tarkistamatta jääneiksi syineen. Lisää myös muut todella tarkistetut lähteet. Osittainen tai epäonnistunut ajo merkitään vastaavasti; se ei saa näyttää täydelliseltä kattavuudelta.
-- `complete` tarkoittaa, että tehtävän suunnitellut kriittiset lähteet on käsitelty; se ei todista kaikkien mahdollisten lähteiden tai koko kieli-/maantieteellisen alueen kattavuutta. Kirjaa kattavuushuomiot ja tunnistetut puutteet.
+- `data/lahdetarkistukset.json` säilyttää ajokohtaisen jäljen. Lue valitun tehtävän käyttörekisteri ennen lähdehakua ja tallenna sen `source_id`-arvot ajon alun lähdejoukoksi. Lue sama rekisteri uudelleen juuri ennen ajolokin kirjoittamista. Kirjaa `registry_source_ids`-kenttään näiden kahden lukukerran ID-joukkojen unioni, jotta myös ajon aikana lisätyt viittaukset jäävät näkyviin. Kirjaa jokainen `registry_source_ids`-arvo täsmälleen joko `checked_source_ids`- tai `unchecked_sources`-kenttään. Jos lähde lisättiin rekisteriin ajon alettua eikä sitä ehditty tarkistaa, kirjaa se tarkistamatta jääneeksi ja syyksi, että se lisättiin ajon aikana. Älä poista lähdeviittauksia käyttörekisteristä kesken aktiivisen ajon; tee rekisterin ylläpitomuutokset vasta ajon päätyttyä. Älä merkitse lähdettä tarkistetuksi, jos vain hakutuloskatkelma löytyi tai alkuperäistä sisältöä ei voitu tarkistaa. Osittainen tai epäonnistunut ajo merkitään vastaavasti; se ei saa näyttää täydelliseltä kattavuudelta.
+- `complete` tarkoittaa, että ajon aikana havaitun lähdejoukon kriittiset lähteet on käsitelty; se ei todista kaikkien mahdollisten lähteiden tai koko kieli-/maantieteellisen alueen kattavuutta. Ajon aikana lisätty ei-kriittinen lähde voidaan kirjata tarkistamatta jääneeksi perusteluineen ilman, että se yksin muuttaa ajon osittaiseksi. Kirjaa kattavuushuomiot ja tunnistetut puutteet.
 - `data/seurantatila.json`-tiedoston `sources_checked` säilyy yhteenvetolukuna. Yksittäiset lähteet ja epäonnistumissyyt löytyvät ajolokista.
 - Älä muuta toisen tehtävän tai toisen automaation lokia. Pääautomaation uutisajo ei kirjaa näytösvahtia eikä tee näytöslähteiden tarkistuksia.
 

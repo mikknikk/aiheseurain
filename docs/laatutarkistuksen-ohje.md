@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.2
+Ohjeversion tunniste: 1.0.3
 
 ## 1. Tehtävä ja rajaus
 
@@ -48,7 +48,7 @@ Tarkista jokaisesta syötteestä XML/RSS-rakenne, GUIDien olemassaolo ja yksilö
 
 ### 4.3 Koneellinen tila, lähderekisteri ja ajoloki
 - Tarkista lähderekisterin pysyvät ID:t, URL:t, tehtävärajaukset, kieli-/aluekuvaukset ja kriittisyysmerkinnät.
-- Vertaa ajolokin tarkistettuja ja tarkistamatta jääneitä lähteitä rekisteriin. Etsi puuttuvia kriittisiä lähteitä, tuntemattomia ID:itä ja virheellisiä `latest_by_task`-arvoja.
+- Vertaa uusien ajolokimerkintöjen `checked_source_ids`- ja `unchecked_sources`-luetteloita `registry_source_ids`-kenttään; näiden joukkojen pitää vastata toisiaan täsmälleen. Vertaa `registry_source_ids`-kenttää kyseisen ajon lähderekisteriin ja tarkista tuntemattomat ID:t sekä virheelliset `latest_by_task`-arvot. Vanhoissa ajomerkinnöissä, joilta `registry_source_ids` puuttuu, älä oleta nykyisen rekisterin vastaavan ajonaikaista rekisteriä. Tarkista lähderekisterin `updated_at`, ajon aikaleimat ja Git-historia, jos saatavilla; jos alkuperäistä lähdejoukkoa ei voi varmistaa, kirjaa se historialliseksi epävarmuudeksi äläkä luokittele lähteitä puuttuviksi ilman näyttöä.
 - Arvioi kieli- ja maantieteelliset puutteet erikseen; älä päättele kattavuutta pelkästä lähteiden määrästä.
 - Varmista, että uutisraportin ja erillisen näytösvahdin intialaiset lähteet pysyvät eri tehtävätunnisteiden alla.
 
