@@ -17,7 +17,6 @@ export const STATUS_COLUMNS = [
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
 const API_URL = "https://api.github.com/repos/mikknikk/aiheseurain/issues";
 const CACHE_KEY = "aiheseurain.kanban.cache.v1";
-const CACHE_TTL_MS = 5 * 60 * 1000;
 const STALE_AFTER_MS = 60 * 60 * 1000;
 const MAX_PAGES = 10;
 
@@ -32,7 +31,7 @@ export function normalizeIssue(issue) {
   const labels = labelNames(issue);
   const statusLabels = STATUS_COLUMNS.filter((column) => labels.includes(column.issueLabel));
   const priorityLabels = PRIORITIES.filter((priority) => labels.includes(priority));
-  const areaLabels = labels.filter((label) => /^(aihe|alue):/i.test(label));
+  const areaLabels = labels.filter((label) => /^aihe:/i.test(label));
 
   // Suljettu issue on aina valmis, vaikka sen tilatunniste olisi vanhentunut.
   const status = issue.state === "closed"
@@ -48,7 +47,7 @@ export function normalizeIssue(issue) {
     priority: priorityLabels.length === 1 ? priorityLabels[0] : null,
     area: areaLabels.length === 1 ? areaLabels[0] : null,
     areaName: areaLabels.length === 1
-      ? areaLabels[0].replace(/^(aihe|alue):/i, "").replace(/[-_]/g, " ")
+      ? areaLabels[0].replace(/^aihe:/i, "").replace(/[-_]/g, " ")
       : null,
     labels,
     updatedAt: issue.updated_at || null
