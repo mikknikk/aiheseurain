@@ -5,24 +5,9 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 
 ## Yleiset seurantamerkinnät
 
-## Aiheajojen kiertojono
+## Tehtäväjonon muistutus
 
-Yksi ajastettu automaatio käsittelee kullakin käynnistyskerralla vain yhden aiheen. Vuorojärjestys on kiinteä:
-
-1. J. R. R. Tolkien — `feeds/tolkien.xml`
-2. Taylor Swift — `feeds/taylor-swift.xml`
-3. Saint Dr. Gurmeet Ram Rahim Singh Ji Insan — `feeds/gurmeet-ram-rahim-singh.xml`
-4. Muumit — `feeds/muumit.xml`
-5. Wakaliwood — `feeds/wakaliwood.xml`
-6. Euroviisut — `feeds/euroviisut.xml`
-7. Sompote Sands — `feeds/sompote-sands.xml`
-8. Shakkidraamat — `feeds/shakkidraamat.xml`
-
-**Vuorossa seuraavaksi: J. R. R. Tolkien.**
-
-Ajon alussa tarkista tämä kohta ja käsittele vain seuraavaksi merkitty aihe. Älä tee muiden seitsemän aiheen uutishakuja kyseisellä ajokerralla. Onnistuneen ajon jälkeen (myös silloin, kun aiheesta ei löydy julkaistavaa uutista) siirrä seuraava-aihemerkintä yhden kohdan eteenpäin kiertojärjestyksessä. Jos haku, julkaisu tai pakollinen takaisinlukutarkistus epäonnistuu tai jää olennaisesti kesken, älä siirrä vuoroa: sama aihe käsitellään seuraavalla käynnistyskerralla uudelleen. Päivitä jonon tila tässä tiedostossa ajon lopuksi.
-
-Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellään yhdellä ajokerralla ja koko kahdeksan aiheen kierros kestää kahdeksan päivää. Älä muuta ajastusta tai luo rinnakkaisia automaatioita tämän jonon perusteella.
+Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan. Niiden ainoa totuuslähde on [docs/tehtavajono.md](tehtavajono.md). Päivitä tähän tiedostoon tehtäväkohtaiset löydökset, tarkistuspäivät ja seurantahistoria. Jokaisen tehtävän raportissa ilmoitetaan tehtäväkohtainen seurantajakso.
 
 
 - Ensimmäinen seurantapohja luotu 2026-11-16.
