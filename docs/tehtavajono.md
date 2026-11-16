@@ -16,7 +16,7 @@ Tämä tiedosto on tehtäväjonon ensisijainen totuuslähde: se määrittää yh
 
 ## Seuraava tehtävä
 
-**Vuorossa seuraavaksi: J. R. R. Tolkien.**
+**Vuorossa seuraavaksi: Taylor Swift.**
 
 ## Kiertoperiaate
 
