@@ -9,7 +9,7 @@ Tämä dokumentti kuvaa koko GitHub Pages -sivuston tavoitetilan, osioiden vastu
 
 Tavoitteena on yksi GitHub Pages -sivusto, jonka kolme toisiinsa liittyvää osiota ovat:
 
-1. **Seurannan tila (valvomo):** näyttää automaatioiden todellisen etenemisen, viimeisimmät ajot, virheet, aihekierroksen tilanteen ja lähteiden tarkistuksen kattavuuden.
+1. **Valvomo:** näyttää automaatioiden todellisen etenemisen, viimeisimmät ajot, virheet, aihekierroksen tilanteen ja lähteiden tarkistuksen kattavuuden.
 2. **RSS-lukija:** kokoaa repositorion RSS-syötteet yhteen käyttöliittymään ja tarjoaa aiheen, ajan ja lukutilan mukaisen selailun.
 3. **Kehitysjono:** näyttää GitHub Issues -tiketteihin perustuvan kanban-taulun, josta näkee suunnitellut, työn alla olevat, estyneet ja valmiit kehitystehtävät.
 
