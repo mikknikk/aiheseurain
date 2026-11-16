@@ -125,7 +125,7 @@
         "en"
       ],
       "source_type": "primary",
-      "critical": true,
+      "critical": false,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -206,7 +206,7 @@
         "en"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -243,7 +243,7 @@
         "en"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -264,7 +264,7 @@
         "en"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -303,7 +303,7 @@
         "kn"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -322,7 +322,7 @@
         "en"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -341,7 +341,7 @@
         "fi"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -359,7 +359,7 @@
         "fi"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -874,7 +874,7 @@
         "ja"
       ],
       "source_type": "primary",
-      "critical": true,
+      "critical": false,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1019,7 +1019,7 @@
         "en"
       ],
       "source_type": "primary",
-      "critical": true,
+      "critical": false,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1366,7 +1366,7 @@
         "en"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1385,7 +1385,7 @@
         "hi"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1460,7 +1460,7 @@
         "te"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1519,7 +1519,7 @@
         "ta"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1576,7 +1576,7 @@
         "kn"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1631,7 +1631,7 @@
         "en"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1690,7 +1690,7 @@
         "bn"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1726,7 +1726,7 @@
         "mr"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1780,7 +1780,7 @@
         "pa"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1836,7 +1836,7 @@
         "as"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1854,7 +1854,7 @@
         "or"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1890,7 +1890,7 @@
         "fi"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1908,7 +1908,7 @@
         "fi"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
@@ -1926,7 +1926,7 @@
         "fi"
       ],
       "source_type": "editorial",
-      "critical": false,
+      "critical": true,
       "last_checked_at": null,
       "access_limit": null,
       "regions": [
