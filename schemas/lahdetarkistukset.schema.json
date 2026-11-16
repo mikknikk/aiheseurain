@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Lähdetarkistusten ajoloki",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "timezone",
+    "runs",
+    "latest_by_task"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "timezone": {
+      "const": "Europe/Helsinki"
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    },
+    "latest_by_task": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "format": "date-time"
+      }
+    }
+  },
+  "$defs": {
+    "run": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "task_id",
+        "started_at",
+        "ended_at",
+        "status",
+        "checked_source_ids",
+        "unchecked_sources",
+        "coverage_notes"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "task_id": {
+          "enum": [
+            "tolkien",
+            "taylor_swift",
+            "gurmeet_ram_rahim_singh",
+            "muumit",
+            "wakaliwood",
+            "euroviisut",
+            "sompote_sands",
+            "shakkidraamat",
+            "intialaiset_elokuvat_uutiset",
+            "intialaiset_elokuvat_naytokset"
+          ]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ended_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed"
+          ]
+        },
+        "checked_source_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "unchecked_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "source_id",
+              "reason"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "coverage_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
