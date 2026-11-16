@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "timezone": "Europe/Helsinki",
-  "updated_at": null,
+  "updated_at": "2026-11-16T18:00:19+02:00",
   "notes": [
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
@@ -14,17 +14,17 @@
     "Tehtäväkohtaiset lähderekisterit ovat data/sources/{task_id}.json ja ajokohtainen tarkistusloki data/lahdetarkistukset.json; uutiskierron ja erillisen näytösvahdin intialaiset tehtävätunnisteet ovat erilliset."
   ],
   "rotation": {
-    "next_task": "tolkien",
+    "next_task": "taylor_swift",
     "tasks": {
       "tolkien": {
         "name": "J. R. R. Tolkien",
         "feed": "feeds/tolkien.xml",
-        "last_successful_check": null,
+        "last_successful_check": "2026-11-16T18:00:19+02:00",
         "last_period_start": null,
-        "last_period_end": null,
-        "last_result": "not_recorded",
-        "published_items": null,
-        "sources_checked": null,
+        "last_period_end": "2026-11-16T18:00:19+02:00",
+        "last_result": "published",
+        "published_items": 3,
+        "sources_checked": 13,
         "errors": []
       },
       "taylor_swift": {
@@ -138,8 +138,8 @@
   "automation_instructions": {
     "document": "docs/paaautomaation-ohje.md",
     "current_version": "1.0.4",
-    "last_successful_run_version": null,
-    "last_successful_run_at": null
+    "last_successful_run_version": "1.0.4",
+    "last_successful_run_at": "2026-11-16T18:00:19+02:00"
   },
   "quality_check_instructions": {
     "document": "docs/laatutarkistuksen-ohje.md",
