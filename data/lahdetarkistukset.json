@@ -6,23 +6,7 @@
       "run_id": "tolkien-20261116T175100-0200",
       "task_id": "tolkien",
       "started_at": "2026-11-16T17:51:00+02:00",
-      "finished_at": "2026-11-16T18:00:19+02:00",
       "status": "complete",
-      "checked_sources": [
-        "tolkien-estate",
-        "harpercollins-tolkien",
-        "tolkiengateway",
-        "theguardian-books",
-        "christian-bourgois-tolkien",
-        "planeta-minotauro-tolkien",
-        "harpercollins-brasil-tolkien",
-        "deutsche-tolkien-gesellschaft",
-        "sociedad-tolkien-espanola",
-        "suomen-tolkien-seura",
-        "yle-tolkien",
-        "journal-tolkien-research",
-        "ehu-tartalo-programme"
-      ],
       "unchecked_sources": [
         {
           "source_id": "tolkien-society",
@@ -78,10 +62,26 @@
         "Alueet: Britannia, Yhdysvallat, Saksa, Ranska, Espanja, Italia, Suomi, Brasilia ja Uusi-Seelanti; mukana myös globaalit adaptaatio- ja kirjallisuuslähteet.",
         "Kaikki yhdeksän kriittistä lähdettä käsiteltiin: seitsemän avattiin ja tarkistettiin, kaksi jäi tarkistamatta täsmällisesti kirjattujen käyttörajoitteiden vuoksi.",
         "Hakutulosotteista saatuja tietoja ei merkitty tarkistetuiksi lähteiksi. Gollum-kuvausuutisen kolme artikkelia perustuvat samaan The Morning Mosh Pit -haastatteluun."
+      ],
+      "ended_at": "2026-11-16T18:00:19+02:00",
+      "checked_source_ids": [
+        "tolkien-estate",
+        "harpercollins-tolkien",
+        "tolkiengateway",
+        "theguardian-books",
+        "christian-bourgois-tolkien",
+        "planeta-minotauro-tolkien",
+        "harpercollins-brasil-tolkien",
+        "deutsche-tolkien-gesellschaft",
+        "sociedad-tolkien-espanola",
+        "suomen-tolkien-seura",
+        "yle-tolkien",
+        "journal-tolkien-research",
+        "ehu-tartalo-programme"
       ]
     }
   ],
   "latest_by_task": {
-    "tolkien": "tolkien-20261116T175100-0200"
+    "tolkien": "2026-11-16T18:00:19+02:00"
   }
 }
