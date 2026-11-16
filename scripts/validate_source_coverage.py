@@ -58,7 +58,7 @@ def validate_source_coverage():
     kaikki_tunnisteet = set()
     rekisteripolut = sorted((ROOT / "data" / "sources").glob("*.json"))
     if not rekisteripolut:
-        raise ValueError("data/sources/ ei sisällä aihekohtaisia lähderekistereitä")
+        raise ValueError("data/sources/ ei sisällä yhtään aihekohtaista lähderekisteriä")
 
     for polku in rekisteripolut:
         suhteellinen = polku.relative_to(ROOT).as_posix()
