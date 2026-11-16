@@ -31,7 +31,7 @@ Katselmointi tehtiin 17.11.2026 GitHubin lähdetiedostoista. Käytössä ei ollu
 
 1. Etusivun aihekorttien RSS-linkeillä oli keskenään sama teksti. Linkkitekstit muutettiin nimeämään kyseinen aihe ja syöte, jotta linkin tarkoitus käy ilmi myös linkkiluettelossa.
 2. RSS-lukijan artikkelien lähdelinkki käytti samaa yleistä nimeä jokaisessa artikkelissa. Linkkiteksti sisältää nyt myös artikkelin otsikon.
-3. RSS-sisällössä oli useita `h1`-otsikoita. Niiden näyttäminen sellaisinaan loisi lukijasivulle useita päätason otsikoita. Sanitointi muuntaa artikkelisisällön `h1`-otsikot `h2)-tasolle.
+3. RSS-sisällössä oli useita `h1`-otsikoita. Niiden näyttäminen sellaisinaan loisi lukijasivulle useita päätason otsikoita. Sanitointi muuntaa artikkelisisällön `h1`-otsikot `h2`-tasolle.
 
 Korjauksille lisättiin regressiotestit RSS-lukijan testitiedostoon. Testien suoritus varmistetaan PR:n GitHub Actions -tuloksista.
 
