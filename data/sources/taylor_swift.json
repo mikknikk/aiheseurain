@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "taylor_swift",
   "updated_at": null,
   "notes": [
@@ -9,145 +9,58 @@
   ],
   "sources": [
     {
-      "id": "taylor-swift-official",
-      "name": "Taylor Swift official",
-      "url": "https://www.taylorswift.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "taylor-swift-official",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "umg-news",
-      "name": "Universal Music Group – News",
-      "url": "https://www.universalmusic.com/news/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "umg-news",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "republic-records",
-      "name": "Republic Records",
-      "url": "https://www.republicrecords.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "republic-records",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "billboard",
-      "name": "Billboard",
-      "url": "https://www.billboard.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "billboard",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "ap-entertainment",
-      "name": "Associated Press – Entertainment",
-      "url": "https://apnews.com/entertainment",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "ap-entertainment",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "rolling-stone",
-      "name": "Rolling Stone",
-      "url": "https://www.rollingstone.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "rolling-stone",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "US",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "lippu-fi-events",
-      "name": "Lippu.fi – tapahtumahaku",
-      "url": "https://www.lippu.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "lippu-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
-      "id": "ticketmaster-fi-events",
-      "name": "Ticketmaster Suomi – tapahtumahaku",
-      "url": "https://www.ticketmaster.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "ticketmaster-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
-      "id": "tiketti-fi-events",
-      "name": "Tiketti – tapahtumahaku",
-      "url": "https://www.tiketti.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "tiketti-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     }
   ]
 }
