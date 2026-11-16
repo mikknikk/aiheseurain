@@ -76,7 +76,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 
 - RSS: `feeds/tolkien.xml`
 - Lähtötilanne 2026-11-16: ensimmäinen tarkistus tehtiin; sitä ennen Tolkien-RSS-syöte oli tyhjä.
-- Seuranta: elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, adaptaatiot (elokuva, televisio, pelit), näyttelyt ja tapahtumat.
+- Seuranta: elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, adaptaatiot (elokuva, televisio, pelit), näyttelyt ja tapahtumat. Tarkista erikseen Suomessa järjestettävät Tolkien-aiheiset tapahtumat, kuten näyttelyt, conit, luennot, elokuvanäytökset ja yleisötilaisuudet.
 - Erota Tolkienin itse kirjoittamat teokset myöhemmästä toimituksellisesta aineistosta ja adaptaatioista.
 - **11.11.2026 – MEDIAN RAPORTOIMA:** Andy Serkis kertoi The Morning Mosh Pit -haastattelussa, että *The Lord of the Rings: The Hunt for Gollum* -elokuvan pääkuvaukset ovat päättyneet. Lausunto julkaistiin 11.11.; toimitukselliset raportit ilmestyivät 12.11. Serkis ei ilmoittanut tarkkaa viimeistä kuvauspäivää, eikä Warner Brosin erillistä kuvausten päättymistä koskevaa tiedotetta saatu tarkistettua. New Zealand Film Map, GamesRadar+ ja The One Ring raportoivat samasta haastattelusta, joten kyse ei ole kolmesta toisistaan riippumattomasta vahvistuksesta. Alkuperäistä videota ei saatu avattua.
   - RSS GUID: `urn:uutiset:tolkien:2026-11-12:hunt-for-gollum-wrap`; `feeds/tolkien.xml`.
@@ -92,7 +92,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 
 - RSS: `feeds/taylor-swift.xml`
 - Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
-- Seuranta: musiikki ja julkaisut, kiertueet ja esiintymiset, elokuva/TV, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura.
+- Seuranta: musiikki ja julkaisut, kiertueet ja esiintymiset, elokuva/TV, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura. Hae erikseen Suomessa järjestettävät konsertit, fanitapahtumat, kuuntelutilaisuudet, elokuvanäytökset, näyttelyt ja muut viralliset tapahtumat.
 - Vältä vähäarvoista yksityiselämää koskevaa juoruilua ja vahvistamattomia parisuhdeväitteitä.
 - Tapahtumaloki: ei vielä merkintöjä.
 
@@ -100,7 +100,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 
 - RSS: `feeds/gurmeet-ram-rahim-singh.xml`
 - Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
-- Seuranta: julkinen toiminta, oikeudelliset ja viralliset tapahtumat, lausunnot, tuotannot/elokuvahankkeet ja julkaisut.
+- Seuranta: julkinen toiminta, oikeudelliset ja viralliset tapahtumat, lausunnot, tuotannot/elokuvahankkeet ja julkaisut sekä musiikki, kappaleet, musiikkivideot ja soundtrackit. Kirjaa myös merkittävät musiikin julkaisu-, levitys- ja vastaanottouutiset.
 - Käytä nimen variantteja ja translitterointeja. Varmista, ettei uutinen koske samannimistä henkilöä.
 - Oikeusasioissa erottele täsmällisesti syytteet, tuomiot, valitukset, viranomaistoimet ja tuomioistuinratkaisut. Älä esitä syytettä tuomiona.
 - Tapahtumaloki: ei vielä merkintöjä.
@@ -109,7 +109,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 
 - RSS: `feeds/muumit.xml`
 - Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
-- Seuranta: Tove Janssonin teokset ja perintö, Moomin Characters ja oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja kulttuurihankkeet.
+- Seuranta: Tove Janssonin teokset ja perintö, Moomin Characters ja oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja kulttuurihankkeet. Tarkista erikseen Suomessa järjestettävät Muumi-näyttelyt, museo- ja teemapuistotapahtumat, teatteri, konsertit, elokuvanäytökset, festivaalit ja perhetapahtumat.
 - Käytä hakusanoja Muumit, Moomin, Moomins ja ムーミン sekä tarvittaessa paikallisia kielimuotoja.
 - Erota virallinen uutinen fanisisällöstä.
 - **16.11.2026 – VIRALLISESTI VAHVISTETTU:** Moominin virallinen japanilainen sivusto ilmoitti julkaisujuhlasta pelille *Muumit: Muumilaakson kesäjuhlat*. Maksuton tapahtuma järjestetään Cocoon Cityssä Saitamassa 21.–22.11.2026; ohjelmassa on pelin kokeilua ja muuta teemaan liittyvää toimintaa.
@@ -131,7 +131,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 - Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta kattaa Eurovision Song Contestin, kaikki osallistujamaiden kansalliset valinnat ja karsinnat, esikarsinnat, valintaprosessit, artisti- ja kappalejulkistukset, sääntömuutokset, järjestelyt, lähetykset, tulokset, delegaatiot sekä oheis- ja aluekilpailut.
 - Sisällytä Eurovision Song Contest Asia ja sen mahdolliset kansalliset karsinnat/valinnat sekä muut Eurovision-brändiin tai euroviisuyhteisöön liittyvät alueelliset kilpailut. Älä rajaa seurantaa Euroopan maantieteeseen.
-- Seuraa kaikkia maita ja kielialueita, ei vain Suomen tai suurten osallistujamaiden uutisia. Suomen UMK, Yle, suomalaiset artistit ja Suomessa järjestettävät Euroviisu-aiheiset tapahtumat nostetaan esiin, kun niistä on uutista.
+- Seuraa kaikkia maita ja kielialueita, ei vain Suomen tai suurten osallistujamaiden uutisia. Suomen UMK, Yle, suomalaiset artistit ja Suomessa järjestettävät Euroviisu-konsertit, fanitapahtumat, katselujuhlat, näyttelyt, kilpailut ja muut yleisötilaisuudet nostetaan esiin, kun niistä on uutista. Tarkista tapahtumat myös järjestäjien, tapahtumapaikkojen ja lipunmyyjien omista kalentereista.
 - Erota viralliset EBU-/järjestäjätiedot, kansallisten yleisradioyhtiöiden ilmoitukset, median raportit ja fanihuhut.
 - **14.11.2026 – VIRALLISESTI VAHVISTETTU:** Filippiinejä edustanut CARMELLE voitti ensimmäisen Eurovision Song Contest Asian kappaleella *Sobra-Sobra* ja sai 211 pistettä (93 raadilta, 118 yleisöltä). Finaalissa oli 11 maan edustajat; EBU:n mukaan ääniä annettiin 183 maasta ja alueelta.
 - Ensisijainen lähde: EBU/Eurovisionin virallinen tiedote, https://www.eurovision.com/newsroom/release/carmelle-from-philippines-wins-inaugural-eurovision-song-contest-asia-in-bangkok/. Riippumattomat toimitukselliset vahvistukset: AFP (https://origin-zh9p7m-www.afp.com/en/philippines-wins-eurovisions-first-asia-contest) ja Associated Press (https://apnews.com/article/099ca558c4638949e637d3a8f8061d6d).
@@ -150,7 +150,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 
 - RSS: `feeds/shakkidraamat.xml`
 - Lähtötilanne 2026-11-16: uusi seuranta; julkaistuja RSS-artikkeleita ei vielä ole.
-- Seuranta: shakin maailmaan liittyvät merkittävät kiistat ja draamat, kuten huijaus- ja vilppisyytökset, kurinpitomenettelyt, oikeusjutut, järjestö- ja hallintokiistat, pelaajien ja järjestäjien julkiset konfliktit, turnausten vakavat tapahtumat sekä sääntöjen ja reilun pelin kiistat.
+- Seuranta: shakkimaailman todelliset ajankohtaiset kiistat, draamat, konfliktit ja kohut – ei fiktiiviset shakkiaiheiset elokuvat eikä tavalliset turnaustulokset. Mukaan kuuluvat huijaus- ja vilppisyytökset sekä vastineet ja ratkaisut, pelaajien ja FIDEn/liittojen jännitteet (esim. Carlsen–FIDE ja Jeansgate), Kramnikin ja Hans Niemannin tapaiset vilppikiistat, Danya/Daniel Naroditskyn kuolemaan liittyvät luotettavasti raportoidut kehitykset, kurinpitomenettelyt, oikeusjutut, järjestö- ja hallintokiistat, turnaus- ja sääntökiistat sekä julkiset konfliktit. Seuraa myös tunnettujen shakkisisällöntuottajien ja -kommentaattorien olennaisia julkisia somelausuntoja, keskusteluja ja konflikteja; älä kerää rutiinipostauksia.
 - Käsittele väitteet neutraalisti ja täsmällisesti. Erota vahvistettu näyttö, väitteet, vastineet, tutkinta, väliaikaiset päätökset ja lopulliset ratkaisut. Älä esitä syytöstä todettuna vilppinä ilman ratkaisua tai vahvaa näyttöä.
 - Seuraa maailmanlaajuisesti eri kielillä; huomioi FIDE, kansalliset liitot, turnausjärjestäjät, pelaajien lausunnot ja riippumaton shakki- ja yleismedia.
 - Tapahtumaloki: ei vielä merkintöjä.
