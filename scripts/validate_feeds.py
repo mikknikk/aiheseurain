@@ -543,6 +543,29 @@ def validate_docs(state):
             f"ei vastaa JSON-tilaa ({expected})"
         )
 
+    # Tehtäväjono pidetään suppeana: yhteiset säännöt kuuluvat omiin ohjedokumentteihinsa.
+    for obsolete_heading in (
+        "## Seurantajakson aikaväli",
+        "## Skriptien kommentointi",
+        "## Koneellinen seurantatila",
+    ):
+        if obsolete_heading.lower() in queue.lower():
+            fail(f"tehtäväjonossa on yhteinen sääntö, joka kuuluu erilliseen ohjeeseen: {obsolete_heading}")
+
+    tracking_guide = ROOT / "docs/seuranta.md"
+    development_guide = ROOT / "docs/kehityskaytannot.md"
+    if not tracking_guide.is_file() or not development_guide.is_file():
+        fail("docs/seuranta.md tai docs/kehityskaytannot.md puuttuu")
+
+    tracking_text = tracking_guide.read_text(encoding="utf-8").lower()
+    development_text = development_guide.read_text(encoding="utf-8").lower()
+    for required_phrase in ("seurantajakso", "rotation.next_task", "data/seurantatila.json", "github actions", "scripts/validate_feeds.py"):
+        if required_phrase not in tracking_text:
+            fail(f"docs/seuranta.md: pakollinen toimintaperiaate puuttuu: {required_phrase}")
+    for required_phrase in ("python-skriptien kommentointi", "docstring", "suomeksi", "tarkistus ennen muutoksen valmistumista"):
+        if required_phrase not in development_text:
+            fail(f"docs/kehityskaytannot.md: kommentointikäytäntö puuttuu: {required_phrase}")
+
     # README:n pitää luetella kaikki kymmenen syötettä – myös erillinen näytösfeed.
     readme_feeds = set(re.findall(r"\]\((feeds/[^)]+\.xml)\)", readme))
     if readme_feeds != set(FEEDS):
