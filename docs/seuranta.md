@@ -5,6 +5,28 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 
 ## Yleiset seurantamerkinnät
 
+## Yleiset raportointisäännöt
+
+### Tehtäväkohtainen seurantajakso
+
+- Ilmoita jokaisessa seurantaraportissa seurantajakson alku ja loppu muodossa `Seurantajakso: 16.11.2026 klo 12.00 – 26.11.2026 klo 12.00 (Europe/Helsinki)`.
+- Jakso alkaa kyseisen tehtävän edellisestä onnistuneesta tarkistuksesta ja päättyy nykyiseen tarkistushetkeen. Älä käytä edellisen automaatioajon ajankohtaa, jos kyseinen tehtävä ei ollut silloin vuorossa.
+- Ensimmäisessä tarkistuksessa käytä dokumentoitua seurannan aloituspäivää ja kerro, että kyseessä on ensimmäinen tarkistus.
+- Jos tarkkaa aiempaa kellonaikaa ei ole dokumentoitu, ilmoita tunnettu päivämäärä ja merkitse kellonaika tuntemattomaksi. Älä keksi aikaväliä.
+- Erota uutisen julkaisu- ja tapahtumapäivä seurantajakson aikavälistä.
+- Ilmoita aikaväli myös silloin, kun uutta merkittävää tietoa ei löydy tai RSS:ää ei päivitetä.
+- Päivitä tehtäväkohtainen viimeisin onnistunut tarkistus ja sen aikaleima vasta onnistuneen ajon jälkeen.
+
+## Koneellinen seurantatila ja automaattiset testit
+
+- `data/seurantatila.json` on koneellisesti luettava rinnakkaistila. Sen `rotation.next_task`-arvon pitää vastata [tehtäväjonon](tehtavajono.md) seuraava-tehtävä-merkintää.
+- Päivitä kyseisen tehtävän `last_successful_check`, `last_period_start`, `last_period_end`, `last_result`, `published_items` ja `sources_checked` vasta, kun tarkistus on onnistunut ja kaikki tarvittavat GitHub-kirjoitukset on luettu takaisin.
+- Käytä ISO 8601 -aikaleimoja aikavyöhyketietoineen. Älä päättele vanhoja tarkkoja aikoja jälkikäteen. Tuntematon arvo säilyy `null`-arvona.
+- Erillisen näytösvahdin tila kirjataan JSON-tiedoston `separate_screening_watch`-osioon. Se ei muuta `rotation.next_task`-arvoa.
+- GitHub Actions ajaa `scripts/validate_feeds.py`-testin push- ja pull request -muutoksissa. Testi tarkistaa RSS/XML-rakenteet, GUIDit, item-linkkien kiellon, CDATA-descriptionit, kuvausten sisäisen HTML-rakenteen, linkkien URL-muodot, otsikkotasot, kuvien alt-attribuutit ja lähdeluettelot. Lisäksi se vertaa README:n syötetietoja, tehtäväjonon yhdeksää tehtävää ja JSON-seurantatilan kiertojärjestystä sekä tarkistaa aikaleimojen aikavyöhykkeet, seurantajaksojen johdonmukaisuuden ja näytösvahdin erillisyyden.
+- Jos automaattinen testi epäonnistuu, korjaa virhe ennen julkaisun pitämistä valmiina. Testin läpäisy ei kuitenkaan todista uutisten faktatarkkuutta eikä WCAG AAA -vaatimusten täyttymistä.
+
+
 ## Tehtäväjonon muistutus
 
 Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan. Niiden ainoa totuuslähde on [docs/tehtavajono.md](tehtavajono.md). Päivitä tähän tiedostoon tehtäväkohtaiset löydökset, tarkistuspäivät ja seurantahistoria. Jokaisen tehtävän raportissa ilmoitetaan tehtäväkohtainen seurantajakso.
