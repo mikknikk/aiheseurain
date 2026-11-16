@@ -18,7 +18,7 @@ Kartoitus 16.11.2026:
 - GitHubin automaattinen `pages build and deployment` -ajo käynnistyi `main`-haaran päivityksistä. Viimeisimmän tarkistetun julkaisun ajo 16.11.2026 (`43939321329`) käytti vaiheita `Build with Jekyll`, `Upload artifact` ja `Deploy to GitHub Pages`; kaikki vaiheet onnistuivat.
 - Repositorion juuresta löytyy `README.md`, mutta ei erillistä `index.html`- tai `index.md`-käyttöliittymää. Nykyinen Pages-sivusto on siten repositorion staattinen, Jekyllillä rakennettava sisältöjulkaisu, ei oma sovelluskehys tai räätälöity Actions-buildi.
 
-Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajulkaisu `main`-haaran juuresta. Pages-asetusten tarkkaa branch/folder-valintaa ei voitu lukea käytettävissä olevan GitHub-yhteyden kautta; asetuksen lopullinen UI-varmistus tehdään tarvittaessa repositorion Settings → Pages -näkymässä. Nykyinen julkaisutapa ja RSS-polut säilytetään tässä kehitysvaiheessa.
+Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajulkaisu `main`-haaran juuresta. Pages-buildin ajoloki vahvistaa myös lähdepolun: `actions/jekyll-build-pages` sai asetuksen `source: .` (repositoriojuuri). Pages-asetusten hallintasivua ei tarvinnut muuttaa tai lukea erikseen, koska toteutunut build-ajo vahvistaa käytössä olevan lähdepolun. Nykyinen julkaisutapa ja RSS-polut säilytetään tässä kehitysvaiheessa.
 
 ## 2. Hyväksytyt tekniset ratkaisut
 
