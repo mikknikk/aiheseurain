@@ -113,6 +113,23 @@ function nextRotationSlot(now) {
   return slot;
 }
 
+/** Muuntaa päivittäisen vuoron seuraavan kalenteripäivän samaksi paikalliseksi kellonajaksi. */
+function addHelsinkiDays(date, days) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: ROTATION_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, Number(part.value)]));
+  const nextDay = new Date(Date.UTC(values.year, values.month - 1, values.day + days));
+  return helsinkiDateTimeToUtc(
+    nextDay.getUTCFullYear(), nextDay.getUTCMonth() + 1, nextDay.getUTCDate(),
+    ROTATION_HOUR, 0
+  );
+}
+
 /**
  * Arvioi aiheiden seuraavat käsittelyajat jonon osoittamasta seuraavasta aiheesta.
  * Arvioita ei tehdä, jos seurantatila on vanha tai virheellinen. Epäonnistunut
@@ -148,7 +165,7 @@ export function estimateNextTaskUpdates(state, now = new Date()) {
         reason: "Edellinen vuoro epäonnistui tai jäi osittaiseksi; jonon myöhempi eteneminen on epävarmaa."
       };
     }
-    const estimatedAt = new Date(firstSlot.getTime() + offset * 24 * 60 * 60 * 1000);
+    const estimatedAt = addHelsinkiDays(firstSlot, offset);
     return {
       id,
       estimatedAt,
