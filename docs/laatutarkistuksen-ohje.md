@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.0
+Ohjeversion tunniste: 1.0.1
 
 ## 1. Tehtävä ja rajaus
 
@@ -28,9 +28,9 @@ Tarkista, että käsikirjan versionumero vastaa JSONin `quality_check_instructio
 
 Tarkasta ajantasainen main-haara. Tarkastele vähintään:
 - README, tehtäväjono ja kaikki seuranta-, lähde-, aihe- ja kehitysohjeet
-- `data/seurantatila.json`, `data/naytosten-muutoshistoria.json`, `data/lahderekisteri.json` ja `data/lahdetarkistukset.json`
+- `data/seurantatila.json`, `data/naytosten-muutoshistoria.json`, `data/source-catalog.json`, kaikki `data/sources/*.json`-tehtävärekisterit ja `data/lahdetarkistukset.json`
 - kaikki `feeds/*.xml`-syötteet
-- `scripts/validate_feeds.py`
+- `scripts/validate_feeds.py` ja sen käyttämä `scripts/validate_source_coverage.py` sekä niiden käyttämät JSON Schema -skeemat, erityisesti `schemas/lahdekatalogi.schema.json`, `schemas/lahderekisteri.schema.json` ja `schemas/lahdetarkistukset.schema.json`
 - kaikki `.github/workflows/`-työnkulut
 - GitHub Actions -ajojen viimeisin tila ja tarvittaessa aiemmat ajot toistuvien virheiden löytämiseksi.
 
@@ -60,13 +60,13 @@ Tarkista jokaisesta syötteestä XML/RSS-rakenne, GUIDien olemassaolo ja yksilö
 - Älä hyväksy arvattuja aikaleimoja tai historiatapahtumia.
 - Tarkista pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversioiden vastaavuus.
 
-### 4.4 Dokumentaation yhdenmukaisuus
+### 4.5 Dokumentaation yhdenmukaisuus
 Vertaa README:tä, tehtäväjonoa, seurantadokumentteja, aihekohtaisia ohjeita ja automaatioiden työnjakoa. Pääkierto käsittelee yhden yhdeksästä tehtävästä päivässä; näytösvahti on erillinen päivittäinen tehtävä eikä kuluta kiertovuoroa. Uutis- ja näytös-RSS:t sekä seurantalokit eivät saa sekoittua. Etsi ristiriitaiset, vanhentuneet, päällekkäiset ja puuttuvat ohjeet.
 
-### 4.5 Saavutettavuus
+### 4.6 Saavutettavuus
 Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
 
-### 4.6 Lähteet ja sisältö
+### 4.7 Lähteet ja sisältö
 Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja. Merkitse saavuttamattomat kohteet tarkistamatta jääneiksi; älä luokittele niitä automaattisesti virheiksi.
 
 ## 5. Raportointi
