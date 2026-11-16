@@ -142,6 +142,7 @@ function sampleState() {
     rotation: { next_task: "taylor_swift", tasks },
     automation_instructions: { current_version: "1.2.1", last_successful_run_version: "1.0.4" },
     separate_screening_watch: {
+      cadence: "daily",
       last_result: "success",
       last_successful_check: "2026-11-16T17:00:00+02:00",
       automation_instructions: { current_version: "1.4.1", last_successful_run_version: "1.0.0" }
