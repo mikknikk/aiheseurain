@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "muumit",
   "updated_at": null,
   "notes": [
@@ -9,154 +9,52 @@
   ],
   "sources": [
     {
-      "id": "moomin-official",
-      "name": "Moomin Characters",
-      "url": "https://www.moomin.com/",
-      "language_regions": [
-        "fi",
-        "sv",
-        "en",
-        "ja"
-      ],
-      "source_type": "primary",
+      "source_id": "moomin-official",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI",
-        "SE",
-        "UK",
-        "JP",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "moomin-museum",
-      "name": "Moomin Museum",
-      "url": "https://www.muumimuseo.fi/en/",
-      "language_regions": [
-        "fi",
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "moomin-museum",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI",
-        "SE",
-        "UK",
-        "JP",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "moomin-characters-news",
-      "name": "Moomin Characters",
-      "url": "https://www.moomin.com/en/",
-      "language_regions": [
-        "en",
-        "fi",
-        "sv",
-        "ja"
-      ],
-      "source_type": "primary",
+      "source_id": "moomin-characters-news",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI",
-        "SE",
-        "UK",
-        "JP",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "tove-jansson-society",
-      "name": "Tove Jansson Society",
-      "url": "https://tovejansson.com/",
-      "language_regions": [
-        "fi",
-        "sv",
-        "en"
-      ],
-      "source_type": "other",
+      "source_id": "tove-jansson-society",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI",
-        "SE",
-        "UK",
-        "JP",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "yle-culture",
-      "name": "Yle – Culture",
-      "url": "https://yle.fi/aihe/kulttuuri",
-      "language_regions": [
-        "fi",
-        "sv"
-      ],
-      "source_type": "editorial",
+      "source_id": "yle-culture",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "FI",
-        "SE",
-        "UK",
-        "JP",
-        "GLOBAL"
-      ]
+      "access_limit": null
     },
     {
-      "id": "lippu-fi-events",
-      "name": "Lippu.fi – tapahtumahaku",
-      "url": "https://www.lippu.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "lippu-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
-      "id": "ticketmaster-fi-events",
-      "name": "Ticketmaster Suomi – tapahtumahaku",
-      "url": "https://www.ticketmaster.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "ticketmaster-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
-      "id": "tiketti-fi-events",
-      "name": "Tiketti – tapahtumahaku",
-      "url": "https://www.tiketti.fi/",
-      "language_regions": [
-        "fi"
-      ],
-      "source_type": "other",
+      "source_id": "tiketti-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
-      "regions": [
-        "FI"
-      ]
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     }
   ]
 }
