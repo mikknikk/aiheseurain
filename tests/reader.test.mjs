@@ -69,7 +69,7 @@ test("sanitointi pudottaa aktiiviset elementit ja tapahtumankäsittelijät", () 
     assert.doesNotMatch(text, /alert|attacker|javascript|onclick|style/);
     assert.match(text, /Turvallinen teksti/);
     assert.match(text, /Turvallinen lähde/);
-    assert.match(text, /https://example.com/source/);
+    assert.match(text, /https:\/\/example\.com\/source/);
     assert.equal(ALLOWED_TAGS.has("p"), true);
     assert.equal(DROP_TAGS.has("script"), true);
     assert.equal(DROP_TAGS.has("iframe"), true);

@@ -87,7 +87,7 @@ export function sanitizeArticleHtml(html) {
     target.appendChild(clean);
   }
 
-  for (const child of parsed.body.childNodes) copyNode(child, fragment);
+  for (const child of parsed.childNodes) copyNode(child, fragment);
   return fragment;
 }
 
