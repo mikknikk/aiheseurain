@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>{% if page.title %}{{ page.title | escape }} – {% endif %}Uutisvahti</title>
+    <meta name="description" content="Uutisvahdin Valvomo ja seurannan tilannekuva.">
+    <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+    {% if page.dashboard %}
+    <script type="module" src="{{ '/assets/js/valvomo.js' | relative_url }}"></script>
+    {% endif %}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Siirry pääsisältöön</a>
+    {% include site-header.html %}
+    <main id="main" class="site-main">
+      {{ content }}
+    </main>
+    {% include site-footer.html %}
+  </body>
+</html>

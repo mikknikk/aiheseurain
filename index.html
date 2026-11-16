@@ -1,0 +1,90 @@
+---
+layout: site
+title: Valvomo
+dashboard: true
+---
+<section class="page-intro" aria-labelledby="page-title">
+  <p class="eyebrow">Uutisvahti / seuranta</p>
+  <h1 id="page-title">Valvomo</h1>
+  <p>Automaatiot näkyvät erillisinä. Näytämme vain tiedot, jotka koneelliset seurantatiedot tai GitHub todentavat.</p>
+</section>
+
+<section class="update-panel" aria-labelledby="update-title">
+  <div>
+    <h2 id="update-title">Tilatiedot</h2>
+    <p id="data-updated" class="large-value">Ladataan…</p>
+    <p id="data-age" class="muted">Haetaan julkaistua seurantatilaa.</p>
+  </div>
+  <button id="refresh-button" class="refresh-button" type="button">Päivitä näkymä</button>
+</section>
+
+<section aria-labelledby="automations-title">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Kolme erillistä kokonaisuutta</p>
+      <h2 id="automations-title">Automaatiot</h2>
+    </div>
+  </div>
+  <div class="automation-grid">
+    <article class="automation-card" id="main-automation" aria-labelledby="main-title">
+      <h3 id="main-title">Pääautomaatio – yhdeksän aiheen kierto</h3>
+      <p id="main-status" class="status-line" role="status">Ladataan tilaa…</p>
+      <dl id="main-details" class="detail-list"></dl>
+      <div id="main-issues"></div>
+    </article>
+    <article class="automation-card" id="screening-automation" aria-labelledby="screening-title">
+      <h3 id="screening-title">Intialaisten elokuvien näytösvahti</h3>
+      <p id="screening-status" class="status-line" role="status">Ladataan tilaa…</p>
+      <dl id="screening-details" class="detail-list"></dl>
+      <div id="screening-issues"></div>
+    </article>
+    <article class="automation-card" id="quality-automation" aria-labelledby="quality-title">
+      <h3 id="quality-title">Viikoittainen laatutarkistus</h3>
+      <p id="quality-status" class="status-line" role="status">Ladataan tilaa…</p>
+      <dl id="quality-details" class="detail-list"></dl>
+      <div id="quality-issues"></div>
+    </article>
+  </div>
+</section>
+
+<section aria-labelledby="rotation-title" class="content-section">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Pääautomaation eteneminen</p>
+      <h2 id="rotation-title">Aihekierto</h2>
+    </div>
+    <p id="next-task" class="next-task">Seuraava aihe: ladataan…</p>
+  </div>
+  <ol id="rotation-list" class="rotation-list">
+    <li>Haetaan tehtäväkiertoa…</li>
+  </ol>
+</section>
+
+<section aria-labelledby="alerts-title" class="content-section">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Poikkeamat ja huomiot</p>
+      <h2 id="alerts-title">Virheet ja varoitukset</h2>
+    </div>
+  </div>
+  <div id="alerts-content" class="alerts-content" aria-live="polite">
+    <p>Haetaan mahdollisia huomioita…</p>
+  </div>
+</section>
+
+<section aria-labelledby="actions-title" class="content-section">
+  <div class="section-heading">
+    <div>
+      <p class="eyebrow">Repositorion tekniset työnkulut</p>
+      <h2 id="actions-title">GitHub Actions</h2>
+    </div>
+  </div>
+  <p class="section-note">Nämä ovat GitHubissa suoritettavia testaus-, linkkitarkistus- ja Pages-julkaisuajoja. Ne eivät ole pääautomaation, näytösvahdin tai laatutarkistuksen omia ajoja.</p>
+  <div id="actions-content" class="actions-content" aria-live="polite">
+    <p>Haetaan viimeisimpiä työnkulkuja…</p>
+  </div>
+</section>
+
+<noscript>
+  <p class="notice notice-error">Valvomon tiedot vaativat JavaScriptin. RSS-syötteet ovat käytettävissä myös ilman tätä näkymää.</p>
+</noscript>

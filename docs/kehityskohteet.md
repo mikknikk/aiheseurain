@@ -2,7 +2,16 @@
 
 Tämä dokumentti on repositorion kehitystyön ajantasainen työlista. Se erottaa jo toteutetut parannukset avoimista tehtävistä ja auttaa valitsemaan seuraavan työn ilman, että valmiita asioita ehdotetaan uudelleen.
 
-Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen prioriteetti vaihtuu. Älä merkitse tehtävää valmiiksi pelkän suunnitelman tai osittaisen toteutuksen perusteella.
+Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen prioriteetti vaihtuu. Älä merkitse tehtävää valmiiksi pelkän suunnitelman tai osittaisen toteutuksen perusteella. Yksittäisten tehtävien ensisijaiset tilat ovat GitHub Issues -tiketeissä.
+
+## Nykyinen kehitystilanne
+
+- **#29 – Pages-kartoitus ja Valvomon tietomalli:** valmis ja yhdistetty `main`-haaraan.
+- **#30 – Valvomon vähimmäisversio:** työn alla; [PR #30](https://github.com/mikknikk/uutiset/pull/30) on avoinna.
+- **#31 – RSS-lukijan vähimmäisversio:** backlogissa, ei vielä toteutuksessa.
+- **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** backlogissa, ei vielä toteutuksessa.
+
+Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
 ## Tavoitetila
 
@@ -113,15 +122,15 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 
 **Tavoite:** rakentaa GitHub Pagesiin yhteinen käyttöliittymä, jossa voi seurata automaatioiden etenemistä ja lukea kaikkia repositorion RSS-syötteitä. Tekninen tavoitekuvaus, turvallisuusrajaukset, hyväksymiskriteerit ja vaiheistus ovat dokumentissa [julkinen valvomo ja RSS-lukija](julkinen-valvomo-ja-rss-lukija.md).
 
-**Tila:** suunnitelma kirjattu 16.11.2026. Toteutusta ei ole aloitettu.
+**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on toteutuksessa PR:ssä; RSS-lukijan (#31) ja kehitysjonon (#35) käyttöliittymät ovat vielä backlogissa.
 
 - [x] Kirjaa tavoitearkkitehtuuri: yksi staattinen Pages-sivusto, valvomo ja RSS-lukija erillisinä osioina.
 - [x] Määrittele valvomon näyttämät automaatiot, ajovaiheet, aihekierroksen eteneminen, lähdekattavuuden käsitteet sekä virhe- ja varoitushistoria.
 - [x] Määrittele RSS-lukijan perustoiminnot, suodatus, lukutila ja HTML-sisällön turvallisen käsittelyn periaatteet.
 - [x] Kirjaa alustavat julkiset tietotiedostot ja vaihtoehtoiset Pages-julkaisumallit.
 - [x] Kirjaa vaiheittainen toteutusjärjestys ja hyväksymiskriteerit.
-- [ ] Vaihe 0: kartoita nykyinen Pages-julkaisutyönkulku, sivuston rakenne, RSS-syötteet, automaatiot ja koneelliset seurantatiedot.
-- [ ] Vaihe 0: hyväksy tietomallit, JSON Schema -skeemat, julkaisupolku, datan säilytys ja julkistettavien kenttien rajaus.
+- [x] Vaihe 0: kartoita nykyinen Pages-julkaisutyönkulku, sivuston rakenne, RSS-syötteet, automaatiot ja koneelliset seurantatiedot.
+- [x] Vaihe 0: hyväksy tietomallit, JSON Schema -skeemat, julkaisupolku, datan säilytys ja julkistettavien kenttien rajaus.
 - [ ] Vaihe 1: toteuta valvomon vähimmäisversio ja sitä tukevat koneelliset tilatiedot.
 - [ ] Vaihe 2: toteuta kaikkien nykyisten syötteiden RSS-lukijan vähimmäisversio ja turvallinen lukutila.
 - [ ] Vaihe 3: lisää haku, aikasuodatus, luettu-/tallennustila sekä lähderekisterin selaus.
