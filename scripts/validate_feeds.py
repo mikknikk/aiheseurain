@@ -565,6 +565,11 @@ def validate_docs(state):
     if not version_match:
         fail("pääautomaation käsikirjasta puuttuu kelvollinen MAJOR.MINOR.PATCH-versio")
 
+    if "docs/paautomaation-ohje.md" not in readme:
+        fail("README ei linkitä pääautomaation versionhallittua käsikirjaa")
+    if "## pääautomaation lukujärjestys ja tehtäväkierto" not in readme.lower():
+        fail("README:stä puuttuu pääautomaation lukujärjestys")
+
     if automation_version.get("document") != "docs/paautomaation-ohje.md":
         fail("seurantatilan pääautomaation käsikirjan polku on virheellinen")
     if automation_version.get("current_version") != version_match.group(1):
