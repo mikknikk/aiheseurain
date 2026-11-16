@@ -81,8 +81,13 @@ def tee_pyyntö(url, method, timeout):
     request = urllib.request.Request(
         url, method=method,
         headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
-    with urllib.request.urlopen(request, timeout=timeout) as response:
-        return response.status, response.geturl()
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            return response.status, response.geturl()
+    except urllib.error.HTTPError as error:
+        # HTTP-virhe on silti palvelimen vastaus: palauta sen koodi,
+        # jotta esimerkiksi 403 ja 404 eivät muutu verkkoyhteysvirheiksi.
+        return error.code, error.geturl()
 
 
 def tarkista_osoite(kohde, timeout):

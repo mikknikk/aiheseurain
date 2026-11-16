@@ -1,6 +1,6 @@
 """Yksikkötestit verkkolinkkien tarkistimen peruslogiikalle."""
 import unittest
-from scripts.check_links import LinkParser, luokittele_vastaus
+from urllib.error import HTTPError\nfrom unittest.mock import patch\n\nfrom scripts.check_links import LinkParser, luokittele_vastaus, tee_pyyntö
 
 
 class LinkCheckerTests(unittest.TestCase):
@@ -20,6 +20,12 @@ class LinkCheckerTests(unittest.TestCase):
     def test_erottaa_estot_ja_nopeusrajat(self):
         self.assertEqual(luokittele_vastaus(403, "https://a.example", "https://a.example"), "blocked")
         self.assertEqual(luokittele_vastaus(429, "https://a.example", "https://a.example"), "rate_limited")
+
+    def test_http_virhe_palautetaan_tilakoodina(self):
+        virhe = HTTPError("https://example.com", 404, "Not Found", None, None)
+        with patch("scripts.check_links.urllib.request.urlopen", side_effect=virhe):
+            self.assertEqual(tee_pyyntö("https://example.com", "HEAD", 2),
+                             (404, "https://example.com"))
 
     def test_palvelinvirhe_on_erillinen(self):
         self.assertEqual(luokittele_vastaus(503, "https://a.example", "https://a.example"), "server_error")
