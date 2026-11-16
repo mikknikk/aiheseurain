@@ -81,7 +81,7 @@ RSS-JULKAISU
 RSS: https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml
 Kun GitHub-julkaisu on käytettävissä, julkaise yksi RSS <item> koko raportista. <description> sisältää koko artikkelin HTML:n, ei tiivistelmää. Säilytä otsikot, kappaleet, luettelot, kuvat ja YouTube-linkit. Lähteet artikkelin lopussa. Käytä yksilöllistä GUID-tunnistetta ja oikeaa pubDate-arvoa. Tarkista julkaisun jälkeen feedin sisältö ja itemin yksilöllisyys. Älä väitä julkaisua onnistuneeksi ilman vahvistettua kirjoitusta ja tarkistusta. Jos julkaisu ei onnistu, toimita valmis artikkeli ja kerro RSS-tilanne.
 
-PÄIVITTÄINEN UUTUUSARVO
+SEURANTAJAKSON UUTUUSARVO
 Raportoi edellisen raportin jälkeen julkaistut uutiset / noin viimeisen 24 tunnin uudet kehitykset. Jos olennainen uutinen jäi aiemmin käsittelemättä, voit sisällyttää sen mutta kerro julkaisupäivä. Älä kierrätä vanhaa tietoa. Jos uutistarjonta on vähäistä, pidä raportti lyhyenä ja kerro lähdehaun kattavuuden rajoitteista.
 
 Esitystapa: selkeä pääotsikko, päiväys, informatiivinen aloitus, kuvaavat väliotsikot, maltillinen lihavointi ja helposti luettavat kappaleet.
