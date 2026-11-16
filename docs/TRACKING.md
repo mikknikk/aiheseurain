@@ -9,14 +9,14 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 
 Yksi ajastettu automaatio käsittelee kullakin käynnistyskerralla vain yhden aiheen. Vuorojärjestys on kiinteä:
 
-1. J. R. R. Tolkien — `tolkien.xml`
-2. Taylor Swift — `taylor-swift.xml`
-3. Saint Dr. Gurmeet Ram Rahim Singh Ji Insan — `gurmeet-ram-rahim-singh.xml`
-4. Muumit — `muumit.xml`
-5. Wakaliwood — `wakaliwood.xml`
-6. Euroviisut — `euroviisut.xml`
-7. Sompote Sands — `sompote-sands.xml`
-8. Shakkidraamat — `shakkidraamat.xml`
+1. J. R. R. Tolkien — `feeds/tolkien.xml`
+2. Taylor Swift — `feeds/taylor-swift.xml`
+3. Saint Dr. Gurmeet Ram Rahim Singh Ji Insan — `feeds/gurmeet-ram-rahim-singh.xml`
+4. Muumit — `feeds/muumit.xml`
+5. Wakaliwood — `feeds/wakaliwood.xml`
+6. Euroviisut — `feeds/euroviisut.xml`
+7. Sompote Sands — `feeds/sompote-sands.xml`
+8. Shakkidraamat — `feeds/shakkidraamat.xml`
 
 **Vuorossa seuraavaksi: J. R. R. Tolkien.**
 
@@ -39,7 +39,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### J. R. R. Tolkien
 
-- RSS: `tolkien.xml`
+- RSS: `feeds/tolkien.xml`
 - Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, adaptaatiot (elokuva, televisio, pelit), näyttelyt ja tapahtumat.
 - Erota Tolkienin itse kirjoittamat teokset myöhemmästä toimituksellisesta aineistosta ja adaptaatioista.
@@ -47,7 +47,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### Taylor Swift
 
-- RSS: `taylor-swift.xml`
+- RSS: `feeds/taylor-swift.xml`
 - Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: musiikki ja julkaisut, kiertueet ja esiintymiset, elokuva/TV, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura.
 - Vältä vähäarvoista yksityiselämää koskevaa juoruilua ja vahvistamattomia parisuhdeväitteitä.
@@ -55,7 +55,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### Saint Dr. Gurmeet Ram Rahim Singh Ji Insan
 
-- RSS: `gurmeet-ram-rahim-singh.xml`
+- RSS: `feeds/gurmeet-ram-rahim-singh.xml`
 - Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: julkinen toiminta, oikeudelliset ja viralliset tapahtumat, lausunnot, tuotannot/elokuvahankkeet ja julkaisut.
 - Käytä nimen variantteja ja translitterointeja. Varmista, ettei uutinen koske samannimistä henkilöä.
@@ -64,7 +64,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### Muumit
 
-- RSS: `muumit.xml`
+- RSS: `feeds/muumit.xml`
 - Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta: Tove Janssonin teokset ja perintö, Moomin Characters ja oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja kulttuurihankkeet.
 - Käytä hakusanoja Muumit, Moomin, Moomins ja ムーミン sekä tarvittaessa paikallisia kielimuotoja.
@@ -76,7 +76,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### Wakaliwood
 
-- RSS: `wakaliwood.xml`
+- RSS: `feeds/wakaliwood.xml`
 - Lähtötilanne 2026-11-16: uusi seuranta; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: Wakaliwood-elokuvateollisuus ja -studio, Nabwana I.G.G. ja muut keskeiset tekijät, uudet ja vanhat tuotannot silloin kun niihin liittyy uusi kehitys, festivaalit, levityssopimukset, näytökset, kansainväliset kiertueet, rahoitus, dokumentit ja Ugandan elokuvakulttuurin uutiset, jotka liittyvät suoraan Wakaliwoodiin.
 - Erota vahvistetut tuotantotiedot, festivaaliohjelmat, huhut ja fanisisältö.
@@ -84,7 +84,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### Euroviisut ja kansalliset karsinnat
 
-- RSS: `euroviisut.xml`
+- RSS: `feeds/euroviisut.xml`
 - Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta kattaa Eurovision Song Contestin, kaikki osallistujamaiden kansalliset valinnat ja karsinnat, esikarsinnat, valintaprosessit, artisti- ja kappalejulkistukset, sääntömuutokset, järjestelyt, lähetykset, tulokset, delegaatiot sekä oheis- ja aluekilpailut.
 - Sisällytä Eurovision Song Contest Asia ja sen mahdolliset kansalliset karsinnat/valinnat sekä muut Eurovision-brändiin tai euroviisuyhteisöön liittyvät alueelliset kilpailut. Älä rajaa seurantaa Euroopan maantieteeseen.
@@ -97,7 +97,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### Sompote Sands
 
-- RSS: `sompote-sands.xml`
+- RSS: `feeds/sompote-sands.xml`
 - Lähtötilanne 2026-11-16: uusi seuranta; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: thaimaalainen elokuvaohjaaja ja tuottaja Sompote Sands (myös Sompote Saengduenchai ja muut asianmukaiset translitteroinnit), hänen elokuvansa ja tuotantonsa, Krua/Chaiyo-elokuvastudioihin liittyvä relevantti historia, elokuvien restaurointi, arkistointi, julkaisut, esitykset, festivaalit, oikeudet, kansainvälinen levitys, retrospektiivit ja hänen työnsä uusi tutkimus tai kulttuurinen vastaanotto.
 - Hae thaiksi ja englanniksi sekä muilla asiaankuuluvilla kielillä. Varmista henkilön ja teosten nimien kirjoitusasut luotettavista lähteistä.
@@ -105,7 +105,7 @@ Nykyinen automaatio käynnistyy kerran päivässä. Siksi yksi aihe käsitellä�
 
 ### Shakkidraamat
 
-- RSS: `shakkidraamat.xml`
+- RSS: `feeds/shakkidraamat.xml`
 - Lähtötilanne 2026-11-16: uusi seuranta; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: shakin maailmaan liittyvät merkittävät kiistat ja draamat, kuten huijaus- ja vilppisyytökset, kurinpitomenettelyt, oikeusjutut, järjestö- ja hallintokiistat, pelaajien ja järjestäjien julkiset konfliktit, turnausten vakavat tapahtumat sekä sääntöjen ja reilun pelin kiistat.
 - Käsittele väitteet neutraalisti ja täsmällisesti. Erota vahvistettu näyttö, väitteet, vastineet, tutkinta, väliaikaiset päätökset ja lopulliset ratkaisut. Älä esitä syytöstä todettuna vilppinä ilman ratkaisua tai vahvaa näyttöä.
@@ -131,4 +131,4 @@ Lisää tarvittaessa kunkin aiheen alle:
 
 ## Intialaisen elokuvan seuranta (päivittäinen)
 
-Intialaisen elokuvan uutis- ja näytösseuranta suoritetaan joka päivä saman automaation yhteydessä. Yksityiskohtainen uutis- ja näytöshistoria on tiedostossa `INDIAN_FILM_TRACKING.md`; älä korvaa sitä tällä yleisellä kiertojonolla. Lähteet ovat tiedostossa `INDIAN_FILM_SOURCES.md`. Uutisraportti julkaistaan tiedostoon `indian-films.xml` ja näytöspäivitykset tiedostoon `indian-film-screenings.xml`. Molemmat moduulit tarkistetaan joka päivä, myös silloin kun kahdeksan aiheen kiertojonossa käsitellään muuta aihetta.
+Intialaisen elokuvan uutis- ja näytösseuranta suoritetaan joka päivä saman automaation yhteydessä. Yksityiskohtainen uutis- ja näytöshistoria on tiedostossa `docs/docs/INDIAN_FILM_TRACKING.md`; älä korvaa sitä tällä yleisellä kiertojonolla. Lähteet ovat tiedostossa `docs/docs/INDIAN_FILM_SOURCES.md`. Uutisraportti julkaistaan tiedostoon `feeds/indian-films.xml` ja näytöspäivitykset tiedostoon `feeds/indian-film-screenings.xml`. Molemmat moduulit tarkistetaan joka päivä, myös silloin kun kahdeksan aiheen kiertojonossa käsitellään muuta aihetta.
