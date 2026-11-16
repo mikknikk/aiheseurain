@@ -78,7 +78,15 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 - Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, adaptaatiot (elokuva, televisio, pelit), näyttelyt ja tapahtumat.
 - Erota Tolkienin itse kirjoittamat teokset myöhemmästä toimituksellisesta aineistosta ja adaptaatioista.
-- Tapahtumaloki: ei vielä merkintöjä.
+- **11.11.2026 – MEDIAN RAPORTOIMA:** Andy Serkis kertoi The Morning Mosh Pit -haastattelussa, että *The Lord of the Rings: The Hunt for Gollum* -elokuvan pääkuvaukset ovat päättyneet. Lausunto julkaistiin 11.11.; toimitukselliset raportit ilmestyivät 12.11. Serkis ei ilmoittanut tarkkaa viimeistä kuvauspäivää, eikä Warner Brosin erillistä kuvausten päättymistä koskevaa tiedotetta saatu tarkistettua. New Zealand Film Map, GamesRadar+ ja The One Ring raportoivat samasta haastattelusta, joten kyse ei ole kolmesta toisistaan riippumattomasta vahvistuksesta. Alkuperäistä videota ei saatu avattua.
+  - RSS GUID: `urn:uutiset:tolkien:2026-11-12:hunt-for-gollum-wrap`; `feeds/tolkien.xml`.
+  - Seuraava tarkistus: virallinen Warner Brosin tai Serkisin tiedote, mahdolliset lisäkuvaukset ja siirtyminen jälkituotantoon.
+- **9.11.2026 – MEDIAN RAPORTOIMA:** Tolkien-tutkija David Bratman kuoli 9.11.2026 69-vuotiaana. File 770 (9.11.) ja Elfenomeno (10.11.) raportoivat kuolemasta ja hänen pitkästä Tolkien-tutkimuksen urastaan. Mythopoeic Societyn kotisivun hakutulosotteessa näkyi järjestön suru-uutinen, mutta ilmoitusta ei saatu esiin avatulla sivulla; sitä ei lasketa suoraksi ensisijaislähteen tarkistukseksi.
+  - RSS GUID: `urn:uutiset:tolkien:2026-11-10:david-bratman`; `feeds/tolkien.xml`.
+  - Seuraava tarkistus: mahdolliset merkittävät muistotilaisuudet, muistokirjoitukset tai hänen työnsä postuumit julkaisut.
+- **16.11.2026 – VIRALLISESTI VAHVISTETTU:** EHU:n julkaisema TARTALO-konferenssin ohjelma vahvistaa neljä Tolkien-aiheista tutkimusesitelmää ja kuvittaja Anke Eissmannin keynote-puheenvuoron Vitoria-Gasteizissa 18. ja 20.11.2026.
+  - RSS GUID: `urn:uutiset:tolkien:2026-11-16:tartalo-conference`; `feeds/tolkien.xml`.
+  - Seuraava tarkistus: tapahtuman toteutuminen 20.11. jälkeen sekä mahdolliset tallenteet, julkaisut tai konferenssijulkaisut.
 
 ### Taylor Swift
 
