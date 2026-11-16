@@ -1,4 +1,4 @@
-Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
+Tehtävä: seuraa tehtäväjonon mukaisella vuorolla Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
 
 TARKOITUS JA RAJAUS
 - Etsi kaikkien Intian elokuvateollisuuksien elokuvien näytöksiä Suomessa: esimerkiksi hindi-, telugu-, tamil-, kannada-, malajalam-, bengali-, marathi-, punjabi- ja muut intialaiset elokuvat.
@@ -21,8 +21,8 @@ NÄYTÖKSEN HYVÄKSYMISKRITEERIT
 - Älä keksi näytöksiä, kellonaikoja, osoitteita, linkkejä, tekstitystietoja tai lipun saatavuutta. Jos jokin tieto ei ole saatavilla, jätä se pois tai merkitse tuntemattomaksi.
 - Facebook-sivujen saavutettavuus tai hakukoneindeksoinnin puutteet eivät todista, ettei näytöksiä olisi. Kerro tarkistusrajoitteesta raportissa, jos se vaikuttaa kattavuuteen.
 
-PÄIVITTÄINEN TARKISTUS
-- Tarkista uudet ja muuttuneet näytöstiedot sekä aiemmin löydettyjen näytösten voimassaolo.
+TEHTÄVÄKOHTAINEN TARKISTUS
+- Tarkista uudet ja muuttuneet näytöstiedot edellisen onnistuneen näytösseurantavuoron jälkeen. Ilmoita raportissa täsmällinen seurantajakso alku- ja loppuaikoineen Europe/Helsinki-ajassa.
 - Etsi vain tulevia näytöksiä aktiiviseen RSS-syötteeseen. Poista menneet, perutut ja muuten vanhentuneet näytösajat.
 - Vertaile löydöksiä nykyiseen feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen ja aiempiin tarkistustuloksiin. Älä ilmoita samaa muuttumatonta näytöstä uudelleen uutena.
 - Ilmoita käyttäjälle vain uusista näytöksistä ja olennaisista muutoksista, kuten ajan, paikan, tekstityksen, lipputilanteen tai peruutuksen muutoksista. Jos uusia tai muuttuneita tietoja ei löydy, älä lähetä turhaa ilmoitusta.
@@ -91,4 +91,4 @@ Kaiken GitHub-repositorioon julkaistavan sisällön, HTML:n, RSS-syötteiden, do
 - Päivitä tarvittaessa docs/intialaisen-elokuvan-ohje.md:n saavutettavuusohje ja docs/intialaisen-elokuvan-seuranta.md:n testitiedot. Älä merkitse testaamatonta tarkistusta hyväksytyksi.
 
 YHDISTETTY AJOSYKLI
-Tämä näytösseuranta suoritetaan joka päivä saman automaation yhteydessä kuin intialaisen elokuvan uutisraportointi. Uutisraportin ohjeet ovat docs/intialaisen-elokuvan-uutiset.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
+Tämä näytösseuranta on uutisraportista erillinen tehtävä tehtäväjonossa. Suorita se vain, kun näytösseuranta on jonossa seuraavana. Uutisraportin ohjeet ovat docs/intialaisen-elokuvan-uutiset.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
