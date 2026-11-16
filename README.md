@@ -147,3 +147,5 @@ Skriptien kommentointi- ja ylläpitovaatimukset on määritelty sitovasti tiedos
 GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ja suorittaa `scripts/validate_feeds.py`-testit push- ja pull request -muutoksissa. Näytöshistorian rakenteen tarkistus tehdään lisäksi virallista JSON Schema -määrittelyä vasten. Ne tarkistavat RSS/XML- ja kuvausten HTML-rakenteet, GUIDit, lähdeluettelot, syötteiden aihe-erottelun sekä dokumentaation ja koneellisen seurantatilan keskinäisen yhdenmukaisuuden. Tarkempi testikattavuus ja sen rajat on kuvattu [seurantaohjeessa](docs/seuranta.md).
 
 Automaattiset testit eivät todista uutisväitteiden paikkansapitävyyttä, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään erikseen.
+
+<!-- Tilapäinen CI-palautumistesti; poistetaan PR:n sulkemisen yhteydessä. -->
