@@ -4,8 +4,8 @@ Tämä projekti kokoaa suomeksi intialaisen elokuvan uutisia ja julkaisee niist�
 
 - **Julkaisurytmi:** päivittäin klo 12.00 (Europe/Helsinki), saman uutis- ja näytösseurantatehtävän yhteydessä.
 - **Raportointijakso:** ensisijaisesti edellisen raportin jälkeen julkaistut uutiset / viimeisin vuorokausi.
-- **RSS-syöte:** [feed.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml)
-- **Projektin sivu:** [GitHub Pages](https://mikknikk.github.io/elokuvaraportti/)
+- **RSS-syöte:** [indian-films.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml)
+- **Projektin sivu:** [GitHub Pages](https://mikknikk.github.io/uutiset/)
 
 Päivittäinen raportti voi olla viikkokatsausta lyhyempi, jos uutisia on vähän. Sisältöä ei täydennetä vanhoilla uutisilla vain pituuden vuoksi.
 
@@ -141,7 +141,7 @@ Julisteet upotetaan RSS-artikkeliin kuvina vain, jos käytettävissä on luotett
 
 Jokaisessa päivittäisessä raportissa on oma osio suomalaisessa mediassa julkaistuista intialaisia elokuvia, intialaisia elokuvantekijöitä tai intialaisen elokuvan ilmiöitä käsittelevistä jutuista.
 
-- Seuraa suomalaisia uutis- ja kulttuurimedioita sekä elokuva-alan julkaisuja. Lähtökohtia ovat esimerkiksi Yle, Helsingin Sanomat, Episodi, Elokuvauutiset ja muut SOURCES.md-tiedostoon kirjatut lähteet.
+- Seuraa suomalaisia uutis- ja kulttuurimedioita sekä elokuva-alan julkaisuja. Lähtökohtia ovat esimerkiksi Yle, Helsingin Sanomat, Episodi, Elokuvauutiset ja muut INDIAN_FILM_SOURCES.md-tiedostoon kirjatut lähteet.
 - Hae sekä elokuvien alkuperäisillä nimillä että Suomessa käytetyillä nimillä, henkilöiden nimillä ja termeillä kuten intialainen elokuva, Bollywood, Tollywood, tamilielokuva ja eteläintialainen elokuva.
 - Sisällytä uutiset, haastattelut, arviot, festivaali- ja levitysuutiset sekä muu toimituksellisesti merkittävä sisältö. Älä listaa pelkkiä somejulkaisuja suomalaisena mediana.
 - Kerro jutun otsikko, media, kirjoittaja ja julkaisupäivä, jos saatavilla, sekä suora linkki. Tiivistä lyhyesti, mitä suomalaisessa jutussa käsitellään.
@@ -150,7 +150,7 @@ Jokaisessa päivittäisessä raportissa on oma osio suomalaisessa mediassa julka
 
 ## Suomalaiset intialaisissa elokuvissa
 
-Jokaisessa raportissa tarkistetaan, onko uusissa tai aiemmin seuratuissa intialaisissa elokuvissa suomalaisia näyttelijöitä tai muita tekijöitä. Tarkistus kattaa näyttelijät, ohjaajat, käsikirjoittajat, kuvaajat, säveltäjät, tuottajat, stunt- ja VFX-ammattilaiset sekä muun kuvaus- ja taiteellisen työryhmän. Suomalaisuus varmistetaan luotettavasta lähteestä, eikä sitä päätellä nimestä tai asuinpaikasta. Raportissa erotetaan Suomen kansalaisuus, suomalainen tausta ja Suomessa asuminen lähteen täsmällisen sanamuodon mukaan. Osallistuminen elokuvaan varmistetaan erikseen esimerkiksi lopputeksteistä, tuotantoyhtiön ilmoituksesta tai luotettavasta haastattelusta. Ensimmäinen kirjattu esimerkki on Sodankylästä kotoisin oleva Antti Jääskeläinen, jonka Cinema Express listaa Demonte Colony 3:n näyttelijäkaartiin; hänen Suomen kansalaisuuttaan ei ole vahvistettu. Uudet löydökset kirjataan TRACKING.md:n omaan suomalaisten kytkösten seurantaan.
+Jokaisessa raportissa tarkistetaan, onko uusissa tai aiemmin seuratuissa intialaisissa elokuvissa suomalaisia näyttelijöitä tai muita tekijöitä. Tarkistus kattaa näyttelijät, ohjaajat, käsikirjoittajat, kuvaajat, säveltäjät, tuottajat, stunt- ja VFX-ammattilaiset sekä muun kuvaus- ja taiteellisen työryhmän. Suomalaisuus varmistetaan luotettavasta lähteestä, eikä sitä päätellä nimestä tai asuinpaikasta. Raportissa erotetaan Suomen kansalaisuus, suomalainen tausta ja Suomessa asuminen lähteen täsmällisen sanamuodon mukaan. Osallistuminen elokuvaan varmistetaan erikseen esimerkiksi lopputeksteistä, tuotantoyhtiön ilmoituksesta tai luotettavasta haastattelusta. Ensimmäinen kirjattu esimerkki on Sodankylästä kotoisin oleva Antti Jääskeläinen, jonka Cinema Express listaa Demonte Colony 3:n näyttelijäkaartiin; hänen Suomen kansalaisuuttaan ei ole vahvistettu. Uudet löydökset kirjataan INDIAN_FILM_TRACKING.md:n omaan suomalaisten kytkösten seurantaan.
 
 ## Näytösseuranta samassa tehtävässä
 
@@ -176,7 +176,7 @@ Raportissa käytetään selkeää otsikointia, päiväystä, informatiivista alo
 
 Raportit julkaistaan GitHub Pagesin RSS-syötteessä:
 
-**Päivittäinen uutiskooste:** [feed.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml)
+**Päivittäinen uutiskooste:** [indian-films.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml)
 
 - Yksi RSS `<item>` vastaa yhtä kokonaista päivittäistä raporttia.
 - Suomen näytöksillä on oma erillinen syöte ja näytösvahti; ne eivät kuulu tähän uutisraporttiin tai sen RSS-syötteeseen.
@@ -199,12 +199,12 @@ Dokumentaatioon ei tallenneta salasanoja, API-avaimia, käyttöoikeustunnisteita
 
 Raportoinnin työvälineinä käytetään kahta ylläpidettävää tiedostoa:
 
-- [SOURCES.md](SOURCES.md) sisältää kielialueittaisen lähdehakemiston, paikalliskielisten hakujen sanastoa ja lähteen arviointikriteerit. Lista on lähtökohta, ei suljettu lähdejoukko eikä automaattinen laatuleima.
-- [TRACKING.md](TRACKING.md) sisältää henkilöiden ja erityisseurattavien projektien jatkuvan seurannan rakenteen, uutistapahtumien historiakirjan sekä juliste-, video- ja lipputulolähteiden kirjausohjeet.
+- [INDIAN_FILM_SOURCES.md](INDIAN_FILM_SOURCES.md) sisältää kielialueittaisen lähdehakemiston, paikalliskielisten hakujen sanastoa ja lähteen arviointikriteerit. Lista on lähtökohta, ei suljettu lähdejoukko eikä automaattinen laatuleima.
+- [INDIAN_FILM_TRACKING.md](INDIAN_FILM_TRACKING.md) sisältää henkilöiden ja erityisseurattavien projektien jatkuvan seurannan rakenteen, uutistapahtumien historiakirjan sekä juliste-, video- ja lipputulolähteiden kirjausohjeet.
 
 Uusia lähteitä lisätään vasta, kun niiden toimituksellinen tausta ja käyttökelpoisuus on arvioitu. Seurantalokia päivitetään vain lähteistetyillä muutoksilla. Puuttuvaa historiaa ei täytetä arvauksilla. Tärkeiden uutisten riippumattomuus arvioidaan alkuperäislähteiden ja lähdeketjujen, ei pelkän julkaisujen lukumäärän perusteella.
 
-Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [SOURCES.md](SOURCES.md)-tiedostoon. Näytösvahti käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
+Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [INDIAN_FILM_SOURCES.md](INDIAN_FILM_SOURCES.md)-tiedostoon. Näytösvahti käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
 
 Lipputuloissa erotetaan markkina-alue, brutto/netto, aikajakso ja arvioiden/virallisten lukujen status. Julisteiden ja videoiden lähde sekä julkaisija tarkistetaan ja kirjataan.
 
@@ -249,7 +249,7 @@ Kaiken tässä repositoriossa julkaistavan sisällön ja käyttöliittymän tule
 
 - Uutisraportin ohjeet: `INDIAN_FILM_NEWS.md`.
 - Suomen näytösseurannan ohjeet: `INDIAN_FILM_SCREENINGS.md`.
-- Intialaisen elokuvan seurantaloki: `INDIAN_FILM_TRACKING.md`.
-- Intialaisen elokuvan lähderekisteri: `INDIAN_FILM_SOURCES.md`.
+- Intialaisen elokuvan seurantaloki: `INDIAN_FILM_INDIAN_FILM_TRACKING.md`.
+- Intialaisen elokuvan lähderekisteri: `INDIAN_FILM_INDIAN_FILM_SOURCES.md`.
 - Uutisraportin RSS: `indian-films.xml`.
 - Näytösten RSS: `indian-film-screenings.xml`.
