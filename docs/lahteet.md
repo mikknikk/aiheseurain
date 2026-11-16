@@ -15,10 +15,13 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 
 ## Tolkien
 
-- Ensisijaiset: Tolkien Estate (tolkienestate.com), HarperCollinsin ja muiden julkaisijoiden viralliset tiedotteet, Tolkien Society (tolkiensociety.org), adaptaatioiden tuotantoyhtiöiden ja levittäjien tiedotteet.
-- Toimitukselliset: vakiintuneet kirjallisuus-, kulttuuri-, elokuva- ja pelimediat sekä yleisuutismediat.
-- Hakusanat: “J. R. R. Tolkien”, “Tolkien Estate”, Tolkien, Middle-earth, sekä teos-, henkilö- ja adaptaatiokohtaiset termit.
-- Painota kansainvälisiä englanninkielisiä lähteitä; tarkista uutisten taustalla olevat viralliset ilmoitukset.
+- **Ensisijaiset ja oikeudenhaltijat:** Tolkien Estate; HarperCollins (Britannia ja kansainvälinen kustannus); Houghton Mifflin Harcourt (Yhdysvallat); Christian Bourgois éditeur (Ranska); Ediciones Minotauro / Planeta de Libros (Espanja); HarperCollins Brasil (Brasilia); adaptaatioiden tuotantoyhtiöiden, oikeudenhaltijoiden ja levittäjien viralliset tiedotteet. Tolkien Estate listaa HMH:n, Christian Bourgois'n ja Minotauron omalla kustantajalinkkisivullaan.
+- **Tolkien-yhteisöt ja erikoislähteet:** Tolkien Society (Britannia), Deutsche Tolkien Gesellschaft (saksa/englanti), Tolkiendil (ranska), Società Tolkieniana Italiana (italia), Sociedad Tolkien Española (espanja), Suomen Tolkien-seura Kontu (suomi/englanti) sekä Elfenomeno (espanja/englanti). The One Ring on fanien ylläpitämä adaptaatio- ja yhteisöuutisten lähde: käytä sitä uutisvihjeenä, älä yksinään vahvistuksena.
+- **Toimituksellinen ja tutkimuksellinen seuranta:** Ylen Tolkien-aihesivu (suomi), The Guardianin kirjallisuussivu ja Variety (elokuva); Journal of Tolkien Research on vertaisarvioitu tutkimusjulkaisu, ei nopean uutisvirran lähde.
+- **Kielet ja alueet:** hae vähintään englanniksi, suomeksi, saksaksi, ranskaksi, espanjaksi, italiaksi ja brasilianportugaliksi. Tarkista myös Svenska Ylen suomenruotsalainen kulttuurijournalismi sekä tilanteen mukaan muiden maiden paikalliset julkaisut. Käytä Tolkienin nimeä ja teosten paikallisia nimiä, esimerkiksi *Der Herr der Ringe*, *Le Seigneur des Anneaux*, *El Señor de los Anillos*, *Il Signore degli Anelli* ja *O Senhor dos Anéis*.
+- **Hakuteemat:** “J. R. R. Tolkien”, “Tolkien Estate”, Tolkien, Middle-earth / Mittelerde / Terre du Milieu / Tierra Media / Terra di Mezzo, sekä teos-, henkilö-, kustantaja-, tutkimus- ja adaptaatiokohtaiset termit. Hae erikseen kirjojen ja postuumien toimitettujen teosten julkaisuista, tutkimuksesta, oikeuksista, elokuvista, televisiosta, peleistä, näyttelyistä ja tapahtumista.
+- **Varmennus:** yhdistysten ja fanisivustojen uutiset ovat yhteisö- tai uutisvihjelähteitä. Varmista tuotanto-, julkaisu-, oikeus- ja sopimusväitteet ensisijaisesta tiedotteesta tai riippumattomasta toimituksellisesta mediasta. Älä käsittele fanispekulaatiota vahvistettuna uutisena.
+- **Jäljellä olevat aukot:** lähtörekisteri on laajentunut seitsemästä kahteenkymmeneen lähteeseen, mutta Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet ovat edelleen ohuita. Täydennä niitä vain, kun lähteen toiminta, URL ja Tolkien-aiheen relevanssi voidaan tarkistaa.
 
 ## Taylor Swift
 
@@ -81,11 +84,11 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-`data/sources/`-hakemistossa on kymmenen tehtäväkohtaista rekisteriä, joissa on yhteensä 101 lähdemerkintää (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, nimi, URL, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: `language_regions` kertoo julkaisun kielet ja `regions` sen maantieteellisen painopisteen.
+`data/sources/`-hakemistossa on kymmenen tehtäväkohtaista rekisteriä, joissa on yhteensä 114 lähdemerkintää (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, nimi, URL, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: `language_regions` kertoo julkaisun kielet ja `regions` sen maantieteellisen painopisteen.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
-| Tolkien | 7 | englanti; Britannia, Yhdysvallat, globaali | Lähinnä englanninkielinen; muiden kielialueiden erikoismediaa täydennettävä. |
+| Tolkien | 20 | englanti, suomi, saksa, ranska, espanja, italia, brasilianportugali; Britannia, Yhdysvallat, Saksa, Ranska, Espanja, Italia, Suomi, Brasilia, globaali | Kattavuus on laajentunut Euroopan kieliin ja Brasiliaan; Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskielinen toimituksellinen seuranta on yhä ohut. |
 | Taylor Swift | 6 | englanti; Yhdysvallat, globaali | Lähinnä englanninkielinen ja Yhdysvalta-painotteinen. |
 | Gurmeet Ram Rahim Singh | 7 | englanti, hindi, pandžabi; Haryana, Punjab, Chandigarh, Intian valtakunnallinen | Alueellisten hindin- ja pandžabinkielisten lähteiden saavutettavuus vaihtelee. |
 | Muumit | 5 | suomi, ruotsi, englanti, japani; Suomi, Ruotsi, Britannia, Japani, globaali | Pohjoismaiden ja Japanin lisäksi muita lisenssimarkkinoita voidaan lisätä. |
