@@ -1,6 +1,6 @@
 # Tehtäväjono ja seurantavuorot
 
-Tämä tiedosto on tehtäväjonon ainoa ensisijainen totuuslähde. Jonossa on kymmenen erillistä seurantatehtävää. Yksi automaation käynnistyskerta käsittelee vain yhden tehtävän.
+Tämä tiedosto on tehtäväjonon ainoa ensisijainen totuuslähde. Jonossa on yhdeksän erillistä seurantatehtävää. Yksi automaation käynnistyskerta käsittelee vain yhden tehtävän.
 
 ## Kiinteä kiertojärjestys
 
@@ -13,7 +13,6 @@ Tämä tiedosto on tehtäväjonon ainoa ensisijainen totuuslähde. Jonossa on ky
 7. Sompote Sands — `feeds/sompote-sands.xml`
 8. Shakkidraamat — `feeds/shakkidraamat.xml`
 9. Intialaisen elokuvan uutisraportti — `feeds/intialaiset-elokuvat.xml`
-10. Intialaisten elokuvien näytökset Suomessa — `feeds/intialaisten-elokuvien-naytokset.xml`
 
 ## Seuraava tehtävä
 
@@ -22,11 +21,11 @@ Tämä tiedosto on tehtäväjonon ainoa ensisijainen totuuslähde. Jonossa on ky
 ## Kiertoperiaate
 
 - Käsittele kullakin käynnistyskerralla täsmälleen yksi seuraavaksi merkitty tehtävä. Älä suorita muiden jonotehtävien varsinaisia hakuja samalla ajolla.
-- Onnistuneen tehtävän jälkeen siirrä seuraava-tehtävä-merkintä täsmälleen yhden kohdan eteenpäin. Kymmenennen tehtävän jälkeen kierto alkaa jälleen Tolkienista.
+- Onnistuneen tehtävän jälkeen siirrä seuraava-tehtävä-merkintä täsmälleen yhden kohdan eteenpäin. Yhdeksännen tehtävän jälkeen kierto alkaa jälleen Tolkienista.
 - Jos tehtävän haku, arviointi, mahdollinen julkaisu tai pakollinen takaisinlukutarkistus epäonnistuu tai jää olennaisesti kesken, älä siirrä vuoroa.
 - Myös onnistunut tarkistus, jossa ei löydy julkaistavaa uutta tietoa, kuluttaa vuoron.
 - Älä muuta tehtävien järjestystä ilman käyttäjän nimenomaista pyyntöä. Älä luo rinnakkaisia automaatioita.
-- Nykyinen automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki. Koska jonossa on kymmenen tehtävää, kukin tehtävä tarkistetaan normaalisti noin kymmenen päivän välein. Päivittäinen käynnistys ei tarkoita päivittäistä seurantaa jokaiselle aiheelle.
+- Nykyinen automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki. Koska jonossa on yhdeksän tehtävää, kukin tehtävä tarkistetaan normaalisti noin yhdeksän päivän välein. Päivittäinen käynnistys ei tarkoita päivittäistä seurantaa jokaiselle aiheelle.
 
 ## Seurantajakson aikaväli – pakollinen raportointisääntö
 
@@ -38,4 +37,4 @@ Tämä tiedosto on tehtäväjonon ainoa ensisijainen totuuslähde. Jonossa on ky
 - Ilmoita aikaväli myös silloin, kun uutta merkittävää tietoa ei löydy tai RSS:ää ei päivitetä.
 - Päivitä tehtäväkohtainen viimeisin onnistunut tarkistus ja sen aikaleima dokumentaatioon.
 
-Intialaisen elokuvan uutisraportti ja intialaisten elokuvien näytösseuranta ovat eri jonotehtäviä. Niitä ei tehdä samalla ajolla. Kummankin omat sisältö-, lähde-, saavutettavuus- ja RSS-ohjeet ovat omissa dokumenteissaan.
+Intialaisen elokuvan uutisraportti on jonon yhdeksäs tehtävä. Intialaisten elokuvien näytösseuranta EI kuulu tähän jonoon: sitä hoitaa erillinen päivittäinen Intialaisten elokuvien näytösvahti -automaatio, joka käyttää samaa uutiset-repositoriota. Näytösvahti tarkistaa näytökset päivittäin eikä kuluta aihekierroksen vuoroa.
