@@ -99,12 +99,6 @@ export function sanitizeArticleHtml(html) {
   return fragment;
 }
 
-/** Poimii turvallisen tekstikatkelman artikkelikortin ingressiksi. */
-function plainText(html) {
-  const parsed = parseHtmlFragment(html);
-  return (parsed.textContent || "").replace(/\s+/g, " ").trim();
-}
-
 /** Muotoilee RSS:n päiväyksen suomenkieliseen esitystapaan. */
 function formatDate(value) {
   const date = new Date(value);
@@ -134,11 +128,9 @@ export function parseFeedXml(xmlText, feed) {
     const description = childText(item, "description");
     const pubDate = childText(item, "pubDate").trim();
     const timestamp = Date.parse(pubDate);
-    const text = plainText(description);
     return {
       id: feed.id + ":" + (childText(item, "guid").trim() || String(index)),
       title, description,
-      excerpt: text.length > 360 ? text.slice(0, 357) + "…" : text,
       pubDate,
       timestamp: Number.isFinite(timestamp) ? timestamp : 0,
       feedId: feed.id,
@@ -185,8 +177,6 @@ function renderArticles() {
       element("span", "reader-item-meta", article.feedTitle + " · " + formatDate(article.pubDate))
     );
     details.appendChild(summary);
-    if (article.excerpt) details.appendChild(element("p", "reader-excerpt", article.excerpt));
-
     const body = element("div", "reader-article-body");
     body.appendChild(sanitizeArticleHtml(article.description));
     details.appendChild(body);
