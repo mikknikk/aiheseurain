@@ -1,7 +1,7 @@
 Tehtävä: ylläpidä repositorion mikknikk/uutiset erillistä päivittäistä intialaisten elokuvien näytösseurantaa Suomessa.
 
 ENSISIJAINEN OHJE
-Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md. Käsikirjan ohjeversion tulee olla 1.4.0. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele sen sisältöä tästä kehotteesta.
+Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele sen sisältöä tästä kehotteesta. Älä sido käynnistyskehotetta tiettyyn käsikirjan versionumeroon.
 
 AJON ESITARKISTUS
 Lue GitHubista main-haarasta seuraavat tiedostot tässä järjestyksessä:
@@ -21,8 +21,9 @@ schemas/lahderekisteri.schema.json
 13. data/lahdetarkistukset.json
 
 Tarkista ennen hakujen aloittamista, että:
-- käsikirjan Ohjeversion tunniste on täsmälleen 1.4.0;
-- data/seurantatila.jsonin separate_screening_watch.automation_instructions.current_version vastaa käsikirjan versiota;
+- käsikirjan Ohjeversion tunniste on olemassa ja kelvollinen;
+- data/seurantatila.jsonin separate_screening_watch.automation_instructions.current_version vastaa täsmälleen käsikirjan versiota;
+- käsikirjan polku vastaa JSONin separate_screening_watch.automation_instructions.document-arvoa;
 - separate_screening_watch.automation_instructions.document on täsmälleen docs/intialaisten-elokuvien-naytosseuranta.md;
 - kaikki esitarkistuksessa tarvittavat tiedostot ovat olemassa ja luettavissa;
 - näytöshistoria validoidaan schemas/naytosten-muutoshistoria.schema.json -skeemaa vasten ennen kirjoituksia.
@@ -82,7 +83,7 @@ Repositoryn main-haara on suojattu aktiivisella rulesetillä "Suojaa main – PR
 - Jos tässä automaatiossa ei ole repositoryyn kirjoitettavaa muutosta, älä luo tyhjää PR:ää; suorita vain käsikirjan sallimat tarkistukset ja raportoi tulos.
 
 
-VIRHEISTÄ PALAUTUMINEN – KÄYTÄ KÄSIKIRJAN VERSIOTA 1.4.0
+VIRHEISTÄ PALAUTUMINEN – NOUDATA GITHUBISTA LUETTUA AJANTASAISTA KÄSIKIRJAA
 Noudata käsikirjan rajattuja uusintayrityksiä: tilapäinen verkkoluku tai GitHub-luku/kirjoitus enintään kolme yritystä, pysyviä virheitä ei toisteta. Jos GitHub-kirjoituksen tulos on epäselvä, lue tiedosto/haara takaisin ennen uusintaa. Älä yritä peittää validointivirhettä sokkona uusimalla; korjaa virheen syy työhaarassa ja odota uuden commitin CI-tarkistus.
 
 Jos ajo epäonnistuu tai jää osittaiseksi, älä siirrä separate_screening_watch.last_successful_check-, last_period_start-, last_period_end- tai last_successful_run_* -kenttiä. Seuraava ajo aloittaa seurantajakson viimeisimmästä onnistuneesta last_successful_check-arvosta ja tarkistaa koko väliin jääneen jakson nykyhetkeen asti. Vertaa nykyistä näytöshistoriaa ja RSS:n kaikkia olennaisia julkaisuversioita; käytä pysyviä screening_id-tunnisteita ja deterministisiä event_id/GUID-tunnisteita, jotta uusintakäsittely ei tee duplikaatteja. Älä merkitse saavuttamatonta lähdettä näytösten puuttumiseksi äläkä poista sen aiempia näytöksiä. Säilytä aiempi main-haaran RSS ja historia, kunnes PR:n pakollinen validointi onnistuu ja PR on yhdistetty. Päivitä onnistumisen tarkistuspiste ja ohjeversion onnistumistiedot vasta koko palautumisjakson, julkaisun ja GitHub-takaisinluvun jälkeen. Jos palautuminen jää kesken, säilytä tarkistuspiste seuraavaa ajoa varten ja raportoi käsittelemättä jäänyt väli/lähteet.
