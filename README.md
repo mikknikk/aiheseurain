@@ -104,6 +104,10 @@ Tämän repositorion saavutettavuuden tavoitetaso on WCAG 2.2 AAA kaikilta sovel
 
 RSS-itemissä ei käytetä item-kohtaista `<link>`-elementtiä. Jokaisen itemin koko raportti julkaistaan `<description>`-elementissä CDATA-alueen semanttisena HTML-sisältönä. Raportin lopussa on otsikoitu lähdeluettelo, jossa linkkitekstit kertovat lähteen nimen ja tarvittaessa julkaisupäivän. Kanavatason `<link>` ja Atomin kanavatason `atom:link` ovat sallittuja syötteen metatietoja.
 
+## Näytösseurannan muutoshistoria
+
+Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaan tiedostoon [data/naytosten-muutoshistoria.json](data/naytosten-muutoshistoria.json). Tietomalli ja käyttöönoton rajaukset on kuvattu tiedostossa [docs/nayostohistorian-rakenne.md](docs/nayostohistorian-rakenne.md), ja päivittäisen näytösvahdin on noudatettava [näytösseurannan työohjetta](docs/intialaisten-elokuvien-naytosseuranta.md). Ensimmäinen varmennettu lähtötilanne muodostetaan seuraavassa onnistuneessa näytösvahdin ajossa; vanhoista RSS-teksteistä ei arvata takautuvia tapahtumia.
+
 ## Koneellisesti luettava seurantatila
 
 data/seurantatila.json on aihekohtaisten tarkistusten koneellisesti luettava tilatiedosto. Se sisältää yhdeksän kiertotehtävän viimeisimmät onnistuneet tarkistusajat ja seurantajaksot sekä erillisen näytösvahdin tilan. Aikaleimat ovat aluksi null-arvoja, koska vanhoja tehtäväkohtaisia kellonaikoja ei ole luotettavasti vahvistettu. Niitä ei saa täydentää arvauksilla.
