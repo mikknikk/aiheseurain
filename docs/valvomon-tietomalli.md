@@ -12,17 +12,17 @@ Repositorion Pages-osoite on [https://mikknikk.github.io/uutiset/](https://mikkn
 
 Kartoitus 16.11.2026:
 
-- Repositorion juurihakemistossa ovat `README.md`, `index.html` (Aiheseurainin etusivu), `valvomo/` (Valvomon sivu), `feeds/`, `data/`, `docs/`, `schemas/`, `scripts/` ja muut projektin hakemistot.
+- Repositorion juurihakemistossa ovat `README.md`, `index.html` (Aiheseuraimen etusivu), `valvomo/` (Valvomon sivu), `feeds/`, `data/`, `docs/`, `schemas/`, `scripts/` ja muut projektin hakemistot.
 - RSS-tiedostot ovat juuren `feeds/`-hakemistossa, ja niiden kanoniset osoitteet ovat muotoa `https://mikknikk.github.io/uutiset/feeds/{tiedosto}.xml`.
 - Repositorion omissa työnkuluissa ei ole Pages-julkaisua tekevää workflow-tiedostoa. `.github/workflows/` sisältää RSS-/dokumentaatiotestit ja viikoittaisen linkkitarkistuksen.
 - GitHubin automaattinen `pages build and deployment` -ajo käynnistyi `main`-haaran päivityksistä. Viimeisimmän tarkistetun julkaisun ajo 16.11.2026 (`43939321329`) käytti vaiheita `Build with Jekyll`, `Upload artifact` ja `Deploy to GitHub Pages`; kaikki vaiheet onnistuivat.
-- Repositorion juuressa on nyt Aiheseurainin etusivu (`index.html`) ja Valvomo julkaistaan omassa `valvomo/index.html`-tiedostossaan osoitteessa `/valvomo/`. Sivusto on edelleen staattinen, Jekyllillä rakennettava julkaisu, ei oma sovelluskehys tai räätälöity Actions-buildi.
+- Repositorion juuressa on nyt Aiheseuraimen etusivu (`index.html`) ja Valvomo julkaistaan omassa `valvomo/index.html`-tiedostossaan osoitteessa `/valvomo/`. Sivusto on edelleen staattinen, Jekyllillä rakennettava julkaisu, ei oma sovelluskehys tai räätälöity Actions-buildi.
 
 Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajulkaisu `main`-haaran juuresta. Pages-buildin ajoloki vahvistaa myös lähdepolun: `actions/jekyll-build-pages` sai asetuksen `source: .` (repositoriojuuri). Pages-asetusten hallintasivua ei tarvinnut muuttaa tai lukea erikseen, koska toteutunut build-ajo vahvistaa käytössä olevan lähdepolun. Nykyinen julkaisutapa ja RSS-polut säilytetään tässä kehitysvaiheessa.
 
 ## 2. Sivurakenne ja reitit
 
-- `/` on Aiheseurainin erillinen etusivu.
+- `/` on Aiheseuraimen erillinen etusivu.
 - `/valvomo/` on Valvomon varsinainen osoite. Valvomon sisältö ja selainlogiikka säilyvät ennallaan; JavaScript ladataan vain Valvomon sivulla.
 - Sivut käyttävät samaa Jekyll-sivupohjaa, otsaketta, navigaatiota, alatunnistetta ja CSS-tiedostoa. Nykyisessä navigaatiossa RSS-lukija ja Kehitysjono esitetään tulossa olevina, kunnes niiden omat näkymät valmistuvat.
 - Vanha juuriosoite ei enää näytä Valvomoa, vaan etusivu tarjoaa suoran linkin uuteen `/valvomo/`-osoitteeseen. Erillistä uudelleenohjausta ei tehdä, koska juuri on tarkoituksella varattu sivuston etusivulle.
@@ -120,7 +120,7 @@ Tämä jako pitää tietolähteet yksiselitteisinä ja estää käyttöliittymä
 
 ## 9. Valvomon ensimmäinen käyttöliittymä
 
-Valvomo julkaistaan omassa `valvomo/index.html`-sivussaan osoitteessa `/valvomo/`, ja repositorion juuren `index.html` on Aiheseurainin etusivu. Molemmat käyttävät yhteistä Jekyll-sivustorunkoa (`_layouts/site.html` ja `_includes/`-osat). Tyylit ja selainlogiikka ovat `assets/`-hakemistossa. Sivusto pysyy staattisena eikä lisää palvelinta, tietokantaa tai selaimen GitHub-kirjoitusoikeuksia.
+Valvomo julkaistaan omassa `valvomo/index.html`-sivussaan osoitteessa `/valvomo/`, ja repositorion juuren `index.html` on Aiheseuraimen etusivu. Molemmat käyttävät yhteistä Jekyll-sivustorunkoa (`_layouts/site.html` ja `_includes/`-osat). Tyylit ja selainlogiikka ovat `assets/`-hakemistossa. Sivusto pysyy staattisena eikä lisää palvelinta, tietokantaa tai selaimen GitHub-kirjoitusoikeuksia.
 
 Käyttöliittymä lukee seuraavat tiedot:
 

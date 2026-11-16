@@ -1,4 +1,4 @@
-# Aiheseurainin kehityssuunnitelma
+# Aiheseuraimen kehityssuunnitelma
 
 **Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) on yhdistetty ja Valvomon siirto omalle sivulleen (#38) on toteutuksessa.  
 **Päivitetty:** 2026-11-16
@@ -17,7 +17,7 @@ Raporttiarkisto on mahdollinen myöhempi ominaisuus, ei oma ensisijainen osionsa
 
 Käyttöliittymä on staattinen GitHub Pages -sivusto. Se lukee automaatioiden tuottamia julkisia JSON-tiedostoja ja RSS-syötteitä, mutta ei tarvitse selaimessa GitHub-kirjoitusoikeuksia, salaisuuksia tai käyttäjätunnistusta. Automaatiot ja niiden tietojen keruu pysyvät erillään käyttöliittymästä.
 
-Sivuston juuri (`/`) toimii Aiheseurainin etusivuna. Valvomolla on oma osoite `/valvomo/`; RSS-lukijalle ja Kehitysjonolle varataan omat reitit niiden valmistuessa. Kaikki sivut käyttävät samaa Jekyll-sivupohjaa ja navigaatiota. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
+Sivuston juuri (`/`) toimii Aiheseuraimen etusivuna. Valvomolla on oma osoite `/valvomo/`; RSS-lukijalle ja Kehitysjonolle varataan omat reitit niiden valmistuessa. Kaikki sivut käyttävät samaa Jekyll-sivupohjaa ja navigaatiota. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
 
 ## 2. Valvomo: seurannan tila
 
@@ -350,7 +350,7 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 ## 10. Muutosloki
 
-- **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Aiheseurainin palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
+- **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Aiheseuraimen palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
 
 - **2026-11-16:** ensimmäinen tavoitekuvaus ja vaiheistettu kehityssuunnitelma kirjattu Valvomolle ja RSS-lukijalle.
 - **2026-11-16:** kehitysjono lisätty kolmanneksi osioksi. GitHub Issues määritelty tikettien ensisijaiseksi tietolähteeksi; yksittäisten tikettien siirto backlogiin on seuraava työvaihe.
