@@ -47,7 +47,7 @@ RAPORTTIEN MUUTOSPERIAATE – ÄLÄ TOISTA MUUTTUMATTOMIA HUOMIOITA
 - Raportoi ensisijaisesti uudet tapahtumat, uudet lähteet ja olennaiset muutokset edelliseen raporttiin tai seurantalokin viimeisimpään tilaan verrattuna.
 - Älä toista jokaisessa raportissa vanhaa epävarmuutta, selvittämätöntä taustatietoa, lähdehaun puuttuvia osumia tai aiemmin ilmoitettua tarkistusrajoitetta, jos tilanteeseen ei ole tullut muutosta. Esimerkiksi aiemmin mainittua Antti Jääskeläisen kansalaisuuden vahvistamattomuutta tai sitä, ettei suomalaisesta mediasta löytynyt uusia osumia, ei tarvitse toistaa päivästä toiseen.
 - Mainitse tällainen asia uudelleen vain, jos siihen tulee uusi tieto, uusi luotettava lähde, ristiriita, olennainen muutos tai se on välttämätön uuden uutisen ymmärtämiseksi. Jos uusi tieto muuttaa aiempaa käsitystä, kerro selvästi mikä muuttui.
-- Seurattavan henkilön tai projektin osalta ei tarvitse listata joka päivä erikseen, ettei uutta ole tapahtunut. Säilytä kattavuus sisäisessä seurannassa, mutta pidä julkaistu raportti uutisarvoisena ja tiiviinä. Älä luo tyhjiä osioita tai toista vakiomuotoista "ei uusia osumia" -lausetta jokaiseen raporttiin.
+- Seurattavan henkilön tai projektin osalta ei tarvitse listata jokaisessa raportissa erikseen, ettei uutta ole tapahtunut. Säilytä kattavuus sisäisessä seurannassa, mutta pidä julkaistu raportti uutisarvoisena ja tiiviinä. Älä luo tyhjiä osioita tai toista vakiomuotoista "ei uusia osumia" -lausetta jokaiseen raporttiin.
 - Jos lähdehaun tekninen rajoite vaikuttaa juuri tämän raportin kattavuuteen tai jättää olennaisen alueen tarkistamatta, kerro rajoitteesta kerran kyseisessä raportissa. Älä kierrätä vanhaa rajoitetta seuraaviin raportteihin ilman uutta vaikutusta.
 
 UUTISTEN JATKUVUUS JA PÄÄLLEKKÄISYYDET
@@ -79,7 +79,7 @@ Kirjaa kuvan/video-linkin yhteyteen lähde ja julkaisupäivä, jos saatavilla. J
 
 RSS-JULKAISU
 RSS: https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml
-Kun GitHub-julkaisu on käytettävissä, julkaise yksi RSS <item> koko päivittäisestä raportista. <description> sisältää koko artikkelin HTML:n, ei tiivistelmää. Säilytä otsikot, kappaleet, luettelot, kuvat ja YouTube-linkit. Lähteet artikkelin lopussa. Käytä yksilöllistä GUID-tunnistetta ja oikeaa pubDate-arvoa. Tarkista julkaisun jälkeen feedin sisältö ja itemin yksilöllisyys. Älä väitä julkaisua onnistuneeksi ilman vahvistettua kirjoitusta ja tarkistusta. Jos julkaisu ei onnistu, toimita valmis artikkeli ja kerro RSS-tilanne.
+Kun GitHub-julkaisu on käytettävissä, julkaise yksi RSS <item> koko raportista. <description> sisältää koko artikkelin HTML:n, ei tiivistelmää. Säilytä otsikot, kappaleet, luettelot, kuvat ja YouTube-linkit. Lähteet artikkelin lopussa. Käytä yksilöllistä GUID-tunnistetta ja oikeaa pubDate-arvoa. Tarkista julkaisun jälkeen feedin sisältö ja itemin yksilöllisyys. Älä väitä julkaisua onnistuneeksi ilman vahvistettua kirjoitusta ja tarkistusta. Jos julkaisu ei onnistu, toimita valmis artikkeli ja kerro RSS-tilanne.
 
 PÄIVITTÄINEN UUTUUSARVO
 Raportoi edellisen raportin jälkeen julkaistut uutiset / noin viimeisen 24 tunnin uudet kehitykset. Jos olennainen uutinen jäi aiemmin käsittelemättä, voit sisällyttää sen mutta kerro julkaisupäivä. Älä kierrätä vanhaa tietoa. Jos uutistarjonta on vähäistä, pidä raportti lyhyenä ja kerro lähdehaun kattavuuden rajoitteista.
@@ -125,7 +125,7 @@ Luokittele löydökset sisäisesti yhdellä tai useammalla yllä olevalla teemal
 
 Lisää raporttiin oma osio "Genre- ja teemat seurannassa". Nosta siinä vain raportointijakson uudet tai olennaisesti päivittyneet löydökset, ryhmiteltynä kiinnostuksen kohteittain. Mainitse kunkin kohdalla elokuvan nimi, kieli/teollisuusalue, genreperustelu, tuotannon/julkaisun tila, uutisen päiväys ja lähteet sekä luotettavuusluokitus. Jos jostakin teemasta ei löydy uutta olennaista tietoa, älä täytä osiota vanhoilla nimikkeillä; voit mainita lyhyesti, ettei uutta löytynyt. Dedupikoi nämä uutiset pääuutisosioon: samaa uutista ei tarvitse kertoa kahteen kertaan, vaan lisää siihen genremerkintä ja käytä genreosiota löydösten koontiin.
 
-Päivitä docs/intialaisen-elokuvan-seuranta.md:hen genre-/teemaseurannan rakenne ja lisää nimikkeitä vain, kun niistä löytyy lähteistettyä tietoa. Päivitä tarvittaessa docs/intialaisen-elokuvan-ohje.md ja index.html kuvaamaan myös genreperustaista seurantaa. Säilytä kaikki nykyiset henkilö-, projekti-, kielialue-, suomalaismedia-, lähde-, uutis-RSS- ja saavutettavuusvaatimukset. Näytösseuranta tehdään saman päivittäisen automaation erillisessä moduulissa docs/intialaisten-elokuvien-naytosseuranta.md:n mukaisesti.
+Päivitä docs/intialaisen-elokuvan-seuranta.md:hen genre-/teemaseurannan rakenne ja lisää nimikkeitä vain, kun niistä löytyy lähteistettyä tietoa. Päivitä tarvittaessa docs/intialaisen-elokuvan-ohje.md ja index.html kuvaamaan myös genreperustaista seurantaa. Säilytä kaikki nykyiset henkilö-, projekti-, kielialue-, suomalaismedia-, lähde-, uutis-RSS- ja saavutettavuusvaatimukset. Näytösseuranta on erillinen tehtäväjonon tehtävä docs/intialaisten-elokuvien-naytosseuranta.md:n mukaisesti.
 
 
 ERITYISSEURANTA: DEMONTE COLONY -ELOKUVASARJA
