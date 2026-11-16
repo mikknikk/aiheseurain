@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { classifyFreshness, latestRotationTask, validateStateShape, TASK_ORDER } from "../assets/js/valvomo.js";
+import { classifyFreshness, latestRotationTask, validateStateShape, TASK_ORDER, loadDashboard } from "../assets/js/valvomo.js";
 
 test("tuoreus erottaa tuoreen, vanhentuneen ja tuntemattoman ajan", () => {
   const now = Date.parse("2026-11-16T20:00:00+02:00");
@@ -50,4 +50,123 @@ test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
   assert.match(footer, /<footer/);
   assert.match(page, /id="rotation-list"/);
   assert.match(page, /id="actions-content"/);
+});
+
+function fakeDom() {
+  const elements = new Map();
+  return {
+    elements,
+    getElementById(id) {
+      if (!elements.has(id)) {
+        elements.set(id, {
+          textContent: "",
+          innerHTML: "",
+          className: "",
+          disabled: false,
+          replaceChildren() { this.innerHTML = ""; },
+          insertAdjacentHTML(_position, html) { this.innerHTML += html; }
+        });
+      }
+      return elements.get(id);
+    }
+  };
+}
+
+function sampleState() {
+  const tasks = Object.fromEntries(TASK_ORDER.map((id) => [id, { last_result: "not_recorded" }]));
+  tasks.tolkien = {
+    name: "J. R. R. Tolkien",
+    last_result: "published",
+    last_successful_check: "2026-11-16T18:00:00+02:00",
+    last_period_start: "2026-11-15T00:00:00+02:00",
+    last_period_end: "2026-11-16T18:00:00+02:00",
+    published_items: 2,
+    sources_checked: 8
+  };
+  return {
+    schema_version: 1,
+    updated_at: "2026-11-16T18:00:00+02:00",
+    rotation: { next_task: "taylor_swift", tasks },
+    automation_instructions: { current_version: "1.2.1", last_successful_run_version: "1.0.4" },
+    separate_screening_watch: {
+      last_result: "success",
+      last_successful_check: "2026-11-16T17:00:00+02:00",
+      automation_instructions: { current_version: "1.4.1", last_successful_run_version: "1.0.0" }
+    },
+    quality_check_instructions: {
+      current_version: "1.0.4",
+      last_successful_run_version: "1.0.1",
+      last_successful_run_at: "2026-11-16T19:00:00+02:00",
+      startup_prompt_id: "quality-check-test"
+    }
+  };
+}
+
+test("Valvomo näyttää kolme automaatiota erillään ja ilmoittaa ohjeversioiden eroista", async () => {
+  const oldDocument = globalThis.document;
+  const oldFetch = globalThis.fetch;
+  const dom = fakeDom();
+  const state = sampleState();
+  globalThis.document = dom;
+  globalThis.fetch = async (url) => ({
+    ok: true,
+    async json() {
+      if (url.includes("seurantatila")) return state;
+      return {
+        runs: [{
+          task_id: "tolkien",
+          status: "complete",
+          checked_source_ids: ["source-a"],
+          unchecked_sources: [{ source_id: "source-b", reason: "Palvelin ei vastannut" }]
+        }]
+      };
+    }
+  });
+  try {
+    await loadDashboard();
+    assert.match(dom.getElementById("main-status").textContent, /aiempaa ohjeversiota/);
+    assert.match(dom.getElementById("screening-status").textContent, /aiempaa ohjeversiota/);
+    assert.match(dom.getElementById("quality-status").textContent, /vanhempaa ohjeversiota/);
+    assert.match(dom.getElementById("main-details").innerHTML, /Ajovaiheet/);
+    assert.match(dom.getElementById("rotation-list").innerHTML, /Taylor Swift/);
+    assert.match(dom.getElementById("alerts-content").innerHTML, /source-b/);
+    assert.equal(dom.getElementById("refresh-button").disabled, false);
+  } finally {
+    globalThis.document = oldDocument;
+    globalThis.fetch = oldFetch;
+  }
+});
+
+test("Valvomo näyttää virhetilan, jos ensisijainen seurantatiedosto ei lataudu", async () => {
+  const oldDocument = globalThis.document;
+  const oldFetch = globalThis.fetch;
+  const dom = fakeDom();
+  globalThis.document = dom;
+  globalThis.fetch = async () => ({ ok: false, async json() { return {}; } });
+  try {
+    await loadDashboard();
+    assert.equal(dom.getElementById("main-status").textContent, "Tilatieto ei käytettävissä");
+    assert.match(dom.getElementById("alerts-content").innerHTML, /ei saanut kelvollista seurantatiedostoa/);
+  } finally {
+    globalThis.document = oldDocument;
+    globalThis.fetch = oldFetch;
+  }
+});
+
+test("lähdetarkistuslokin virhe ei piilota automaatioiden tilatietoja", async () => {
+  const oldDocument = globalThis.document;
+  const oldFetch = globalThis.fetch;
+  const dom = fakeDom();
+  globalThis.document = dom;
+  globalThis.fetch = async (url) => url.includes("seurantatila")
+    ? { ok: true, async json() { return sampleState(); } }
+    : { ok: true, async json() { throw new Error("Virheellinen JSON"); } };
+  try {
+    await loadDashboard();
+    assert.match(dom.getElementById("main-status").textContent, /aiempaa ohjeversiota/);
+    assert.match(dom.getElementById("alerts-content").innerHTML, /Lähdetarkistusten yhteenvetoa ei voitu ladata/);
+  } finally {
+    globalThis.document = oldDocument;
+    globalThis.fetch = oldFetch;
+  }
 });
