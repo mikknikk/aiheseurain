@@ -199,35 +199,22 @@ Ensimmäiseen backlogiin kuuluvat vähintään aiemmin tunnistetut Valvomon tiet
 
 ## 5. Tietomalli ja datan tuottaminen
 
-Ehdotetut koneellisesti luettavat julkiset tiedostot:
+Valvomon tietomalli ja nykyisen GitHub Pages -julkaisun kartoitus on määritelty ensisijaisesti dokumentissa [Valvomon tietomalli ja julkaisutapa](valvomon-tietomalli.md).
 
-| Tiedosto | Sisältö |
-|---|---|
-| status/overview.json | Valvomon yhteenveto: automaatioiden viimeisin tila ja viimeisin päivitysaika |
-| status/runs.json | Rajattu viimeaikainen ajohistoria ja vaihekohtaiset tulokset |
-| status/sources.json | Lähteiden tarkistustulokset ja kattavuuden yhteenveto |
-| status/rotation.json | Aihekierron järjestys, viimeisimmät tulokset ja seuraava vuoro |
-| feeds/index.json | RSS-syötteiden katalogi: tunniste, nimi, aihe, URL ja automaatiovastuu |
+Kanoniset tietolähteet ovat:
 
-Nämä ovat alustavia polkuja, eivät vielä olemassa olevia tiedostoja tai hyväksyttyjä skeemoja. Ennen toteutusta määritellään jokaiselle tiedostolle JSON Schema, versiointi, pakolliset kentät, aikaleimojen formaatti, päivitysvastuu ja vanhentuneen datan käsittely.
+- `data/seurantatila.json`: pääautomaation aihekierros, aihekohtaiset viimeisimmät onnistumiset, erillinen näytösvahti sekä automaatio-ohjeiden versiot.
+- `data/lahdetarkistukset.json`: lähdetarkistusten ajokohtaiset tulokset ja lähdekohtainen kattavuus.
+- `data/naytosten-muutoshistoria.json`: näytösseurannan oma nykytila ja muutostapahtumat.
+- GitHub Actionsin julkinen API: tämän repositorion testien, viikoittaisen linkkitarkistuksen ja Pages-julkaisun tilat.
 
-### 4.1 Datan alkuperä ja vastuut
+Näiden tietolähteiden päälle ei rakenneta rinnakkaisia `status/overview.json`-, `runs.json`-, `sources.json`- tai `rotation.json`-kopioita. Valvomo muodostaa esitysnäkymän selaimessa alkuperäisistä tiedoista. Näin vältetään ylimääräinen tietokanta, turhat status-commitit ja eri tiedostojen väliset synkronointivirheet.
 
-- Automaatiot tuottavat ajokohtaiset tapahtumat ja lopputulokset oman käsikirjansa mukaisesti.
-- Yhteinen julkaisuvaihe kokoaa sallitut, validoidut tiedot julkisiksi JSON-tiedostoiksi.
-- GitHub Pagesin selainkäyttöliittymä lukee julkaistua dataa; se ei kirjoita repositorioon.
-- RSS-syötteet pysyvät artikkeleiden ensisijaisina jakelutiedostoina.
-- feeds/index.json muodostetaan nykyisestä syötekatalogista tai validoidaan sitä vasten, jotta syötteiden nimet ja URL-osoitteet eivät erkane README:stä ja muusta dokumentaatiosta.
+`data/seurantatila.json` validoidaan skeemalla `schemas/seurantatila.schema.json`. Lähdetarkistusloki ja näytöshistoria validoidaan omilla jo olemassa olevilla skeemoillaan. Rakennemuutokset tehdään versionhallittuina ja päivitetään tuottajiin, skeemoihin, validointiin ja dokumentaatioon samassa muutossarjassa.
 
-Älä lisää jokaiseen automaatioajoon tarpeetonta commitia main-haaraan vain tilan näyttämiseksi. Ennen toteutusta vertaile vähintään seuraavia julkaisutapoja: GitHub Actionsin Pages-artifact, erillinen automaation tuottama status-haara tai julkisen GitHub Actions -rajapinnan lukeminen selaimesta. Huomioi API:n rajoitukset, saatavuus ja käyttöliittymän riippuvuus ulkoisesta rajapinnasta.
+Nykyinen Pages-julkaisu säilyy `main`-haaran juuresta GitHubin hallitsemalla Jekyll-buildillä. Erillistä julkaisun haaraa tai uutta Pages-deploy-workflow'ta ei lisätä vain Valvomon vuoksi. Automaatioiden seurantatiedot julkaistaan nykyisten hyväksyttyjen repositoriomuutosten mukana; selainkäyttöliittymä lukee vain julkisia tietoja eikä sisällä kirjoitusoikeuksia tai salaisuuksia.
 
-Valitse ratkaisu, joka minimoi commit-kohinan, säilyttää automaatioiden erilliset oikeudet ja julkaisee tilatiedot atomisesti. Älä julkaise raakaa lokia tai salaisuuksia.
-
-### 4.2 Päivitys ja vanhentunut tila
-
-Jokaisessa tilannekuvassa on oltava muodostamisaika ja tarvittaessa lähdeajon tunniste. Käyttöliittymän tulee näyttää, milloin tiedot on viimeksi päivitetty. Jos tietoa ei ole saatavilla tai se on liian vanhaa, näytä se vanhentuneena tai tuntemattomana; älä esitä viimeisintä tunnettua onnistumista käynnissä olevana ajona.
-
-Jos julkaisu epäonnistuu, edellinen toimiva tilannekuva säilytetään eikä sivusto saa näyttää keskeneräistä tai virheellistä JSONia onnistuneena tilana.
+Viimeisimmän onnistumisen puuttuminen näytetään tuntemattomana, aikataulun ylittänyt onnistuminen vanhentuneena. Viimeisintä onnistumista ei tulkita käynnissä olevaksi ajoksi. Nykyiset koneelliset tiedot eivät sisällä vaihekohtaista ajohistoriaa, joten vaihetiloja ei näytetä ennen kuin automaatiot tuottavat niistä erikseen varmennetun tiedon. Tuoreusrajat ja GitHub API:n välimuistiperiaatteet on määritelty Valvomon tietomallidokumentissa.
 
 ## 6. Käyttöliittymä, saavutettavuus ja tietosuoja
 
