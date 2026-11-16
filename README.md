@@ -64,6 +64,10 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 - Tarkista jokaisen muutoksen jälkeen XML:n kelvollisuus, GUID-tunnisteiden yksilöllisyys, vanhojen artikkeleiden säilyminen ja aiherajaus.
 - Älä koskaan väitä tiedoston päivittyneen ennen kuin GitHub-kirjoitus ja muutoksen jälkeinen takaisinluku on onnistunut.
 
+## Kehityksen tilanne
+
+Ajantasainen lista toteutetuista parannuksista ja avoimista kehityskohteista on tiedostossa [docs/kehityskohteet.md](docs/kehityskohteet.md). Päivitä listaa aina kehitystyön edetessä.
+
 ## Tiedostojen vastuut
 
 - `docs/tehtavajono.md`: tehtäväjärjestys, seuraava vuoro ja seurantajaksojen raportointisääntö.
