@@ -8,7 +8,7 @@ GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/)
 
 - `index.html` – Aiheseuraimen etusivu; `valvomo/index.html` – Valvomon sivu osoitteessa `/valvomo/`; `lukija/index.html` – RSS-lukijan sivu osoitteessa `/lukija/`; `kehitysjono/index.html` – GitHub Issues -kanban osoitteessa `/kehitysjono/`; `_layouts/`, `_includes/` ja `assets/` – yhteinen sivustorunko ja käyttöliittymän resurssit.
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
-- `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
+- `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. JSON-tiedostojen suhteet ja prosessikaaviot on koottu tiedostoon `docs/tietomallit-ja-prosessit.md`.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
 - `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
 - `schemas/` – koneellisten lähdetietojen ja näytöshistorian skeemat.
@@ -49,7 +49,7 @@ Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon
 2. `docs/paaautomaation-ohje.md` – pääautomaation täydellinen, versioitu toimintakäsikirja.
 3. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
 4. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
-5. `docs/lahteet.md`, `data/source-catalog.json` ja valitun tehtävän `data/sources/{task_id}.json` – yleiset lähdeperiaatteet, yhteiset lähdetiedot ja tehtäväkohtaiset lähdekäytöt.
+5. `docs/lahteet.md`, `docs/tietomallit-ja-prosessit.md`, `data/source-catalog.json` ja valitun tehtävän `data/sources/{task_id}.json` – yleiset lähdeperiaatteet, JSON-tietomallien suhteet, yhteiset lähdetiedot ja tehtäväkohtaiset lähdekäytöt.
 6. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
 7. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
 8. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.
@@ -104,6 +104,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.
 - `docs/valvomon-tietomalli.md`: nykyinen GitHub Pages -julkaisutapa, Valvomon kanoniset tietolähteet, skeemat, julkistettavat kentät, ajantasaisuuden tulkinta ja API:n käyttöperiaatteet.
+- `docs/tietomallit-ja-prosessit.md`: JSON-tiedostojen tarkoitukset ja keskinäiset viittaukset, lähdetietojen kulku, ajolokin tulkinta, näytöshistorian rakenne sekä Mermaid-prosessikaaviot.
 - `index.html`: Aiheseuraimen etusivu.
 - `valvomo/index.html`: Valvomon käyttöliittymä osoitteessa `/valvomo/`.
 - `lukija/index.html` ja `assets/js/reader.js`: RSS-lukijan sivu ja selainpuolen RSS-jäsennys, syötesuodatus sekä HTML-sisällön sanitointi.

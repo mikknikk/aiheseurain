@@ -1,19 +1,19 @@
 # Valvomon tietomalli ja julkaisutapa
 
-**Tila:** tietomalli hyväksytty; Valvomon vähimmäisnäkymä (#30) yhdistetty; sivurakenteen erottaminen (#38) toteutuksessa  
-**Päivitetty:** 2026-11-16  
-**Liittyvät tehtävät:** [#29 – Pages-kartoitus ja tietomalli](https://github.com/mikknikk/uutiset/issues/29), [#30 – Valvomon vähimmäisversio](https://github.com/mikknikk/uutiset/issues/30)
+**Tila:** nykyisen Valvomon tietolähteet ja tulkintasäännöt; JSON-tiedostojen visuaalinen kokonaiskuva on dokumentissa [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md)  
+**Päivitetty:** 2026-11-17  
+**Liittyvät tehtävät:** [#29 – Pages-kartoitus ja tietomalli](https://github.com/mikknikk/aiheseurain/issues/29), [#30 – Valvomon vähimmäisversio](https://github.com/mikknikk/aiheseurain/issues/30)
 
-Tämä dokumentti määrittää Valvomon tietolähteet, julkaisutavan, tietojen tulkinnan ja julkistamisen rajat. Käyttöliittymän nykyinen toteutus ja sen tunnetut tietorajoitteet kuvataan luvussa 9.
+Tämä dokumentti määrittää Valvomon tietolähteet, julkaisutavan, tietojen tulkinnan ja julkistamisen rajat. JSON-tiedostojen keskinäiset suhteet ja lähdetietojen prosessikaaviot on kuvattu erillisessä [teknisessä tietomallioppaassa](tietomallit-ja-prosessit.md). Käyttöliittymän nykyinen toteutus ja sen tunnetut tietorajoitteet kuvataan luvussa 9.
 
 ## 1. Nykyinen GitHub Pages -julkaisu
 
-Repositorion Pages-osoite on [https://mikknikk.github.io/uutiset/](https://mikknikk.github.io/uutiset/). Repositorio on julkinen ja sen oletushaara on `main`.
+Repositorion Pages-osoite on [https://mikknikk.github.io/aiheseurain/](https://mikknikk.github.io/aiheseurain/). Repositorio on julkinen ja sen oletushaara on `main`.
 
 Kartoitus 16.11.2026:
 
 - Repositorion juurihakemistossa ovat `README.md`, `index.html` (Aiheseuraimen etusivu), `valvomo/` (Valvomon sivu), `feeds/`, `data/`, `docs/`, `schemas/`, `scripts/` ja muut projektin hakemistot.
-- RSS-tiedostot ovat juuren `feeds/`-hakemistossa, ja niiden kanoniset osoitteet ovat muotoa `https://mikknikk.github.io/uutiset/feeds/{tiedosto}.xml`.
+- RSS-tiedostot ovat juuren `feeds/`-hakemistossa, ja niiden kanoniset osoitteet ovat muotoa `https://mikknikk.github.io/aiheseurain/feeds/{tiedosto}.xml`.
 - Repositorion omissa työnkuluissa ei ole Pages-julkaisua tekevää workflow-tiedostoa. `.github/workflows/` sisältää RSS-/dokumentaatiotestit ja viikoittaisen linkkitarkistuksen.
 - GitHubin automaattinen `pages build and deployment` -ajo käynnistyi `main`-haaran päivityksistä. Viimeisimmän tarkistetun julkaisun ajo 16.11.2026 (`43939321329`) käytti vaiheita `Build with Jekyll`, `Upload artifact` ja `Deploy to GitHub Pages`; kaikki vaiheet onnistuivat.
 - Repositorion juuressa on nyt Aiheseuraimen etusivu (`index.html`) ja Valvomo julkaistaan omassa `valvomo/index.html`-tiedostossaan osoitteessa `/valvomo/`. Sivusto on edelleen staattinen, Jekyllillä rakennettava julkaisu, ei oma sovelluskehys tai räätälöity Actions-buildi.
@@ -24,7 +24,7 @@ Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajul
 
 - `/` on Aiheseuraimen erillinen etusivu.
 - `/valvomo/` on Valvomon varsinainen osoite. Valvomon sisältö ja selainlogiikka säilyvät ennallaan; JavaScript ladataan vain Valvomon sivulla.
-- Sivut käyttävät samaa Jekyll-sivupohjaa, otsaketta, navigaatiota, alatunnistetta ja CSS-tiedostoa. Nykyisessä navigaatiossa RSS-lukija ja Kehitysjono esitetään tulossa olevina, kunnes niiden omat näkymät valmistuvat.
+- Sivut käyttävät samaa Jekyll-sivupohjaa, otsaketta, navigaatiota, alatunnistetta ja CSS-tiedostoa. RSS-lukija sijaitsee osoitteessa `/lukija/` ja kehitysjono osoitteessa `/kehitysjono/`.
 - Vanha juuriosoite ei enää näytä Valvomoa, vaan etusivu tarjoaa suoran linkin uuteen `/valvomo/`-osoitteeseen. Erillistä uudelleenohjausta ei tehdä, koska juuri on tarkoituksella varattu sivuston etusivulle.
 
 ## Hyväksytyt tekniset ratkaisut
@@ -56,7 +56,7 @@ Myöskään `feeds/index.json` ei kuulu Valvomon tietomalliin. RSS-lukijan syöt
 - `data/lahdetarkistukset.json` käyttää `schema_version: 1` -versiota ja sitä validoidaan jo olemassa olevalla `schemas/lahdetarkistukset.schema.json`-tiedostolla.
 - Näytösten muutoshistoria validoidaan erillisellä `schemas/naytosten-muutoshistoria.schema.json`-skeemalla.
 - JSON Schema on koneellisesti tarkistettava rakenteen sopimus. `scripts/validate_feeds.py` tarkistaa seurantatilan skeeman ja lisäksi projektin semanttiset ehdot, kuten yhdeksän kiertotehtävän ja syötepolkujen vastaavuuden.
-- Rakennetta muuttava laajennus kasvattaa `schema_version)-arvoa, päivittää skeeman, tuottavat automaatiot, validoinnin, dokumentaation ja testit samassa muutossarjassa. Yhteensopiva, valinnainen kenttä voidaan lisätä saman version sisällä vain, jos skeema ja tuottajat käsittelevät sitä turvallisesti.
+- Rakennetta muuttava laajennus kasvattaa `schema_version`-arvoa, päivittää skeeman, tuottavat automaatiot, validoinnin, dokumentaation ja testit samassa muutossarjassa. Yhteensopiva, valinnainen kenttä voidaan lisätä saman version sisällä vain, jos skeema ja tuottajat käsittelevät sitä turvallisesti.
 
 Skeemat kuvaavat nykyisiä tallennettuja tietoja. Ne eivät väitä, että jokaisesta ajosta olisi jo saatavilla vaihekohtainen tapahtumahistoria.
 
