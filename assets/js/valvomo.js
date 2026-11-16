@@ -109,16 +109,17 @@ function renderMain(state, sourceLog) {
   const latest = latestRotationTask(tasks);
   const nextId = state.rotation.next_task;
   const latestTask = latest?.task;
+  const nextTask = tasks[nextId];
   const freshness = classifyFreshness(latestTask?.last_successful_check, 36);
   let status = freshness;
-  if (latestTask?.last_result === "failed") status = { key: "error", label: "Viimeisin aiheajo epäonnistui" };
-  else if (latestTask?.last_result === "partial") status = { key: "warning", label: "Viimeisin aiheajo jäi osittaiseksi" };
+  if (nextTask?.last_result === "failed") status = { key: "error", label: "Seuraavan vuoron viimeisin ajo epäonnistui" };
+  else if (nextTask?.last_result === "partial") status = { key: "warning", label: "Seuraavan vuoron viimeisin ajo jäi osittaiseksi" };
   else if (state.automation_instructions.current_version !== state.automation_instructions.last_successful_run_version && latestTask?.last_successful_check) status = { key: "warning", label: "Viimeisin ajo käytti aiempaa ohjeversiota" };
   else if (latestTask?.last_result === "published" && freshness.key === "good") status = { key: "good", label: "Viimeisin onnistuminen on tuore" };
   setStatus("main-status", status);
 
   document.getElementById("main-details").innerHTML = detailRows([
-    ["Viimeksi käsitelty aihe", latest ? (latest.task.name || TASK_NAMES[latest.id]) : "Ei onnistumista kirjattu"],
+    ["Viimeisin onnistunut aihe", latest ? (latest.task.name || TASK_NAMES[latest.id]) : "Ei onnistumista kirjattu"],
     ["Viimeisin onnistuminen", dateText(latestTask?.last_successful_check)],
     ["Seuraava aihe", TASK_NAMES[nextId] || "Tuntematon tehtävä"],
     ["Julkaistut itemit", latestTask?.published_items ?? "Ei tietoa"],
@@ -135,7 +136,7 @@ function renderMain(state, sourceLog) {
   if (latestRun?.status) sourceNotes.push(`Lähdetarkistuksen tulos: ${latestRun.status === "complete" ? "kattavuuden käsittely valmis" : latestRun.status}`);
   if (latestRun?.checked_source_ids?.length) sourceNotes.push(`Tarkistettuja lähteitä: ${latestRun.checked_source_ids.length}`);
   if (latestRun?.unchecked_sources?.length) sourceNotes.push(`Tarkistamatta jäi ${latestRun.unchecked_sources.length} lähdettä; tarkemmat syyt ovat huomioissa.`);
-  addNotes("main-issues", [...errorsFrom(latestTask), ...sourceNotes]);
+  addNotes("main-issues", [...errorsFrom(nextTask), ...errorsFrom(latestTask), ...sourceNotes]);
   renderRotation(state);
 }
 
@@ -193,7 +194,7 @@ function renderRotation(state) {
     const task = tasks[id];
     const isNext = id === nextId;
     const hasRun = Boolean(task.last_successful_check);
-    const last = hasRun ? dateText(task.last_successful_check) : "Ei onnistumista kirjattu";
+    const last = hasRun ? `Viimeisin onnistuminen: ${dateText(task.last_successful_check)}` : "Onnistumisaikaa ei ole kirjattu";
     const result = task.last_result === "published" ? "Onnistui"
       : task.last_result === "partial" ? "Osittainen"
       : task.last_result === "failed" ? "Epäonnistui"
@@ -201,7 +202,7 @@ function renderRotation(state) {
     const completed = latest && latest.id === id;
     return `<li class="${isNext ? "is-next" : ""} ${completed ? "is-completed" : ""}">
       <span>${escapeHtml(TASK_NAMES[id])}</span>
-      <span class="rotation-meta">${isNext ? "Seuraava vuoro · " : ""}${escapeHtml(result)} · ${escapeHtml(last)}</span>
+      <span class="rotation-meta">${isNext ? "Seuraava vuoro · " : ""}Viimeisin tulos: ${escapeHtml(result)} · ${escapeHtml(last)}</span>
     </li>`;
   }).join("");
   document.getElementById("rotation-list").innerHTML = list;
