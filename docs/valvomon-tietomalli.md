@@ -1,6 +1,6 @@
 # Valvomon tietomalli ja julkaisutapa
 
-**Tila:** tietomalli hyväksytty; Valvomon vähimmäisnäkymä toteutettu tässä kehityshaarassa, jatkokehitys erillisissä tiketeissä  
+**Tila:** tietomalli hyväksytty; Valvomon vähimmäisnäkymä (#30) yhdistetty; sivurakenteen erottaminen (#38) toteutuksessa  
 **Päivitetty:** 2026-11-16  
 **Liittyvät tehtävät:** [#29 – Pages-kartoitus ja tietomalli](https://github.com/mikknikk/uutiset/issues/29), [#30 – Valvomon vähimmäisversio](https://github.com/mikknikk/uutiset/issues/30)
 
