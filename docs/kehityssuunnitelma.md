@@ -1,7 +1,7 @@
 # Aiheseuraimen kehityssuunnitelma
 
 **Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) ja siirto omalle sivulleen (#38) on yhdistetty. RSS-lukijan vähimmäisversio (#31) ja Kehitysjonon kanbanin vähimmäisversio (#35) ovat toteutettuina omissa PR-muutoksissaan.  
-**Päivitetty:** 2026-11-16
+**Päivitetty:** 2026-11-17
 
 Tämä dokumentti kuvaa koko GitHub Pages -sivuston tavoitetilan, osioiden vastuut, tekniset periaatteet ja vaiheistuksen. Yksittäisten kehitystehtävien ajantasainen tila ylläpidetään GitHub Issues -tiketteinä; tätä dokumenttia ei käytetä rinnakkaisena tehtävälistana. Suunnitelman kirjaaminen ei tarkoita, että ominaisuus olisi jo käytössä.
 
@@ -65,6 +65,9 @@ Pelkkä GitHub Actions -työn vihreä tila ei riitä osoittamaan koko toimituske
 Valvomon tulee näyttää kaikki yhdeksän aihekierroksen tehtävää todellisessa järjestyksessään, viimeisin onnistunut tarkistus aiheittain, nykyinen tai viimeksi käsitelty tehtävä, seuraavaksi vuorossa oleva tehtävä sekä epäonnistuneet, keskeytyneet ja perustellusti ohitetut vuorot.
 
 Aiheen vuoroa ei saa merkitä valmiiksi pelkän käynnistymisen tai osittaisen haun perusteella. Vuoro siirtyy vasta, kun tehtävän onnistumiskriteerit täyttyvät, tarvittavat julkaisut on tehty ja tulokset on luettu takaisin. Valvomon tieto johdetaan ensisijaisesti repositorion koneellisesta seurantatilasta ja varmennetuista ajotiedoista; sitä ei ylläpidetä käsin erillisenä totuutena.
+
+
+Valvomo näyttää kullekin aiheelle myös arvioidun seuraavan käsittelyajan. Arvio perustuu `rotation.next_task` -kenttään, kiinteään jonojärjestykseen ja dokumentoituun päivittäiseen klo 12.00 Europe/Helsinki -aikatauluun. Se on nimenomaisesti arvio, ei vahvistettu ajoaika. Vanhentunut tai puuttuva jonotieto sekä epäonnistunut seuraava vuoro tuottavat epävarmuusviestin; epäonnistuneen vuoron jälkeen myöhempien aiheiden aikoja ei ennusteta. Erillinen päivittäinen näytösvahti näytetään omalla rytmillään, mutta sille ei näytetä kellonaikaa, jota seurantatieto ei sisällä. Tämä voidaan toteuttaa nykyisellä seurantatilalla ilman tiketin #37 vaihekohtaista ajohistoriaa.
 
 ### 2.4 Lähteiden tarkistus ja kattavuus
 
