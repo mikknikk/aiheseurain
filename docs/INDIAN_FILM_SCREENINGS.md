@@ -61,12 +61,12 @@ RSS-SYÖTTEEN RAKENNE JA PÄIVITYS
 - Tarkista ennen kirjoitusta, ettei täsmälleen sama päivitysitem ole jo julkaistu. Varmista XML:n jäsennettävyys, GUIDien yksilöllisyys, aikaleimat, muutoslistan oikeellisuus ja item-tason <link>-elementtien puuttuminen.
 
 ENNEN JOKAISTA AJOA – DOKUMENTAATION ESITARKISTUS
-- Avaa repositorion mikknikk/uutiset ajon alussa ja lue aina ajantasaiset docs/INDIAN_FILM_GUIDE.md-, docs/INDIAN_FILM_SOURCES.md- ja docs/INDIAN_FILM_TRACKING.md-tiedostot ennen näytöshakua.
+- Avaa repositorion mikknikk/uutiset ajon alussa ja lue aina ajantasaiset INDIAN_FILM_GUIDE.md-, INDIAN_FILM_SOURCES.md- ja INDIAN_FILM_TRACKING.md-tiedostot ennen näytöshakua.
 - Noudata niiden voimassa olevia näytösseurannan rajauksia, lähteitä, hyväksymiskriteerejä, deduplikointia ja RSS-julkaisuohjeita. Älä luota pelkästään aiempaan ajokertaan tai promptin muistikuviin.
 - Jos dokumentaatio ei ole saatavilla, älä oleta sen sisältöä; kerro rajoitteesta vain, jos se vaikuttaa haun kattavuuteen tai julkaisuun.
 
 LÄHTEET JA DOKUMENTOINTI
-- Noudata repositorion docs/INDIAN_FILM_GUIDE.md-, docs/INDIAN_FILM_SOURCES.md- ja docs/INDIAN_FILM_TRACKING.md-tiedostojen voimassa olevia ohjeita ja pidä näytösvahtiin liittyvät lähdetiedot ajan tasalla, jos löydät uusia luotettavia lähteitä.
+- Noudata repositorion INDIAN_FILM_GUIDE.md-, INDIAN_FILM_SOURCES.md- ja INDIAN_FILM_TRACKING.md-tiedostojen voimassa olevia ohjeita ja pidä näytösvahtiin liittyvät lähdetiedot ajan tasalla, jos löydät uusia luotettavia lähteitä.
 - Älä muuta uutisraportin sisältöä tai sen RSS-syötettä tässä tehtävässä; tämä automaatio vastaa vain näytösseurannasta ja indian-film-screenings.xml-syötteestä.
 - Käytä Suomen paikallista aikaa (Europe/Helsinki) näytösaikojen esittämiseen.
 - Jos päivän tarkistuksessa ei löydy uutta tai muuttunutta tietoa, älä julkaise tarpeetonta ilmoitusta.
@@ -88,7 +88,7 @@ Kaiken GitHub-repositorioon julkaistavan sisällön, HTML:n, RSS-syötteiden, do
 - Sivun tulee toimia näppäimistöllä, ruudunlukijalla, vähintään 320 CSS-pikselin leveydellä ja 200–400 % suurennuksella. Fokus on näkyvä; käytä sivulla ohituslinkkiä ja semanttisia maamerkkejä.
 - Vältä automaattisesti käynnistyvää mediaa, vilkkumista ja tarpeettomia aikarajoja. Huomioi käyttäjän liike- ja kontrastiasetukset.
 - Ennen julkaisua validoi XML/HTML ja tarkista otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritys, kontrasti, näppäimistökäyttö, responsiivisuus ja ruudunlukijanäkymä mahdollisuuksien mukaan. Lighthouse/axe ei yksin todista AAA-tasoa.
-- Päivitä tarvittaessa docs/INDIAN_FILM_GUIDE.md:n saavutettavuusohje ja docs/INDIAN_FILM_TRACKING.md:n testitiedot. Älä merkitse testaamatonta tarkistusta hyväksytyksi.
+- Päivitä tarvittaessa INDIAN_FILM_GUIDE.md:n saavutettavuusohje ja INDIAN_FILM_TRACKING.md:n testitiedot. Älä merkitse testaamatonta tarkistusta hyväksytyksi.
 
 YHDISTETTY AJOSYKLI
-Tämä näytösseuranta suoritetaan joka päivä saman automaation yhteydessä kuin intialaisen elokuvan uutisraportointi. Uutisraportin ohjeet ovat docs/INDIAN_FILM_NEWS.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
+Tämä näytösseuranta suoritetaan joka päivä saman automaation yhteydessä kuin intialaisen elokuvan uutisraportointi. Uutisraportin ohjeet ovat INDIAN_FILM_NEWS.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
