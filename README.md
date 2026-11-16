@@ -108,6 +108,6 @@ Päivitä tilatiedosto vasta onnistuneen tarkistuksen ja mahdollisen RSS-julkais
 
 ## Automaattiset laatutestit
 
-GitHub Actions suorittaa scripts/validate_feeds.py-testin main-haaraan kohdistuvissa push- ja pull request -muutoksissa. Testi tarkistaa kaikki kymmenen RSS-syötettä: XML:n jäsennettävyyden, item-määrän, GUIDien olemassaolon ja yksilöllisyyden, item-kohtaisten linkkien puuttumisen, CDATA-muotoiset descriptionit sekä raporttien lähdeluettelot linkkeineen. Se tarkistaa myös seurantatilan JSON-rakenteen perusavaimet.
+GitHub Actions suorittaa scripts/validate_feeds.py-testin main-haaraan kohdistuvissa push- ja pull request -muutoksissa. Testi tarkistaa kaikki kymmenen RSS-syötettä: XML:n jäsennettävyyden, item-määrän, GUIDien olemassaolon ja yksilöllisyyden, item-kohtaisten linkkien puuttumisen, CDATA-muotoiset descriptionit sekä kuvausten HTML-rakenteen, linkkien URL-muodot, otsikkotasot ja kuvien alt-attribuutit. Lisäksi testi vertaa README:n syötetaulukkoa, tehtäväjonon yhdeksää tehtävää ja JSON-seurantatilan kiertojärjestystä sekä tarkistaa aikaleimojen aikavyöhykkeet, seurantajaksojen johdonmukaisuuden ja erillisen näytösvahdin määritykset.
 
 Testit eivät varmista uutisväitteiden paikkansapitävyyttä, linkkien saavutettavuutta, lähteiden riippumattomuutta tai WCAG 2.2 AAA -vaatimusten täyttymistä. Saavutettavuuden manuaaliset testit tehdään edelleen erikseen.
