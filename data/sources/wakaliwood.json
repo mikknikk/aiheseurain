@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task_id": "wakaliwood",
   "updated_at": null,
   "notes": [
@@ -8,84 +8,34 @@
   ],
   "sources": [
     {
-      "id": "wakaliwood-official",
-      "name": "Wakaliwood",
-      "url": "https://wakaliwood.com/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "wakaliwood-official",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UG",
-        "EAST-AFRICA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "wakaliwood-supa-store",
-      "name": "Wakaliwood Supa Store / studio channel",
-      "url": "https://supastore.wakaliwood.com/pages/frontpage",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "wakaliwood-supa-store",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UG",
-        "EAST-AFRICA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "new-vision-uganda",
-      "name": "New Vision – Uganda",
-      "url": "https://www.newvision.co.ug/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "new-vision-uganda",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UG",
-        "EAST-AFRICA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "daily-monitor-uganda",
-      "name": "Daily Monitor – Uganda",
-      "url": "https://www.monitor.co.ug/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "editorial",
+      "source_id": "daily-monitor-uganda",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UG",
-        "EAST-AFRICA"
-      ]
+      "access_limit": null
     },
     {
-      "id": "ugandan-film-festival",
-      "name": "Uganda Communications Commission – Film Festival",
-      "url": "https://www.ucc.co.ug/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
+      "source_id": "ugandan-film-festival",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null,
-      "regions": [
-        "UG",
-        "EAST-AFRICA"
-      ]
+      "access_limit": null
     }
   ]
 }
