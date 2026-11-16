@@ -37,6 +37,7 @@ function fakeElement(tag, attrs = {}, children = []) {
 test("sanitointi pudottaa aktiiviset elementit ja tapahtumankäsittelijät", () => {
   const tree = fakeElement("div", {}, [
     new FakeNode(3, "", "Turvallinen teksti "),
+    fakeElement("h1", {}, [new FakeNode(3, "", "Artikkelin otsikko")]),
     fakeElement("script", {}, [new FakeNode(3, "", "alert(1)")]),
     fakeElement("iframe", { src: "https://attacker.example/" }),
     fakeElement("p", { onclick: "alert(2)" }, [
@@ -68,6 +69,7 @@ test("sanitointi pudottaa aktiiviset elementit ja tapahtumankäsittelijät", () 
     const text = JSON.stringify(result, (key, value) => key === "parent" ? undefined : value);
     assert.doesNotMatch(text, /alert|attacker|javascript|onclick|style/);
     assert.match(text, /Turvallinen teksti/);
+    assert.match(text, /"tagName":"H2"/);
     assert.match(text, /Turvallinen lähde/);
     assert.match(text, /https:\/\/example\.com\/source/);
     assert.equal(ALLOWED_TAGS.has("p"), true);
@@ -107,4 +109,14 @@ test("tyhjä RSS-syöte tuottaa tyhjän artikkelilistan", () => {
   } finally {
     globalThis.DOMParser = oldParser;
   }
+});
+
+
+test("etusivun RSS-linkit nimeävät kohdesyötteen ja lukijan lähdelinkki artikkelin", () => {
+  const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  const script = readFileSync(new URL("../assets/js/reader.js", import.meta.url), "utf8");
+  assert.doesNotMatch(home, />Avaa RSS-syöte</);
+  assert.match(home, /Avaa J\\. R\\. R\\. Tolkienin RSS-syöte/);
+  assert.match(home, /Avaa intialaisten elokuvien näytösseurannan RSS-syöte/);
+  assert.match(script, /Alkuperäinen lähde: \\"? \\+ article\\.title/);
 });
