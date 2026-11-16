@@ -110,6 +110,7 @@ function renderMain(state, sourceLog) {
   let status = freshness;
   if (latestTask?.last_result === "failed") status = { key: "error", label: "Viimeisin aiheajo epäonnistui" };
   else if (latestTask?.last_result === "partial") status = { key: "warning", label: "Viimeisin aiheajo jäi osittaiseksi" };
+  else if (state.automation_instructions.current_version !== state.automation_instructions.last_successful_run_version && latestTask?.last_successful_check) status = { key: "warning", label: "Viimeisin ajo käytti aiempaa ohjeversiota" };
   else if (latestTask?.last_result === "published" && freshness.key === "good") status = { key: "good", label: "Viimeisin onnistuminen on tuore" };
   setStatus("main-status", status);
 
@@ -121,11 +122,13 @@ function renderMain(state, sourceLog) {
     ["Tarkistetut lähteet", latestTask?.sources_checked ?? "Ei tietoa"],
     ["Seurantajakso", latestTask?.last_period_start && latestTask?.last_period_end
       ? `${dateText(latestTask.last_period_start)} – ${dateText(latestTask.last_period_end)}`
-      : "Ei kirjattu"]
+      : "Ei kirjattu"],
+    ["Ajovaiheet", "Ei tallenneta vielä koneelliseen seurantatilaan"]
   ]);
 
   const latestRun = (sourceLog?.runs || []).find((run) => run.task_id === latest?.id);
   const sourceNotes = [];
+  if (state.automation_instructions.current_version !== state.automation_instructions.last_successful_run_version) sourceNotes.push(`Viimeisin onnistunut ajo käytti ohjeversiota ${state.automation_instructions.last_successful_run_version}; nykyinen versio on ${state.automation_instructions.current_version}.`);
   if (latestRun?.status) sourceNotes.push(`Lähdetarkistuksen tulos: ${latestRun.status === "complete" ? "kattavuuden käsittely valmis" : latestRun.status}`);
   if (latestRun?.checked_source_ids?.length) sourceNotes.push(`Tarkistettuja lähteitä: ${latestRun.checked_source_ids.length}`);
   if (latestRun?.unchecked_sources?.length) sourceNotes.push(`Tarkistamatta jäi ${latestRun.unchecked_sources.length} lähdettä; tarkemmat syyt ovat huomioissa.`);
@@ -139,6 +142,7 @@ function renderScreening(state) {
   let status = freshness;
   if (watch.last_result === "failed") status = { key: "error", label: "Viimeisin näytösvahtiajo epäonnistui" };
   else if (watch.last_result === "partial") status = { key: "warning", label: "Viimeisin näytösvahtiajo jäi osittaiseksi" };
+  else if (watch.automation_instructions?.current_version !== watch.automation_instructions?.last_successful_run_version && watch.last_successful_check) status = { key: "warning", label: "Viimeisin ajo käytti aiempaa ohjeversiota" };
   else if (watch.last_result === "success" && freshness.key === "good") status = { key: "good", label: "Viimeisin onnistuminen on tuore" };
   setStatus("screening-status", status);
   document.getElementById("screening-details").innerHTML = detailRows([
@@ -149,9 +153,12 @@ function renderScreening(state) {
       ? `${dateText(watch.last_period_start)} – ${dateText(watch.last_period_end)}`
       : "Ei kirjattu"],
     ["Ohjeversio", watch.automation_instructions?.current_version || "Ei tietoa"],
-    ["Viimeksi käytetty versio", watch.automation_instructions?.last_successful_run_version || "Ei tietoa"]
+    ["Viimeksi käytetty versio", watch.automation_instructions?.last_successful_run_version || "Ei tietoa"],
+    ["Ajovaiheet", "Ei tallenneta vielä koneelliseen seurantatilaan"]
   ]);
-  addNotes("screening-issues", errorsFrom(watch));
+  const screeningNotes = errorsFrom(watch);
+  if (watch.automation_instructions?.current_version !== watch.automation_instructions?.last_successful_run_version) screeningNotes.push(`Viimeisin onnistunut ajo käytti ohjeversiota ${watch.automation_instructions?.last_successful_run_version}; nykyinen versio on ${watch.automation_instructions?.current_version}.`);
+  addNotes("screening-issues", screeningNotes);
 }
 
 function renderQuality(state) {
@@ -166,7 +173,8 @@ function renderQuality(state) {
     ["Viimeisin onnistuminen", dateText(quality.last_successful_run_at)],
     ["Nykyinen ohjeversio", quality.current_version || "Ei tietoa"],
     ["Viimeksi käytetty versio", quality.last_successful_run_version || "Ei tietoa"],
-    ["Käynnistyskehotteen tunniste", quality.startup_prompt_id || "Ei tietoa"]
+    ["Käynnistyskehotteen tunniste", quality.startup_prompt_id || "Ei tietoa"],
+    ["Ajovaiheet", "Ei tallenneta vielä koneelliseen seurantatilaan"]
   ]);
   addNotes("quality-issues", versionMismatch
     ? [`Viimeisin onnistunut ajo käytti versiota ${quality.last_successful_run_version}; nykyinen käsikirja on ${quality.current_version}.`]
@@ -330,8 +338,8 @@ async function loadDashboard() {
   button.textContent = "Päivitetään…";
   try {
     const [stateResponse, sourceResponse] = await Promise.allSettled([
-      fetch("../data/seurantatila.json", { cache: "no-cache" }),
-      fetch("../data/lahdetarkistukset.json", { cache: "no-cache" })
+      fetch("data/seurantatila.json", { cache: "no-cache" }),
+      fetch("data/lahdetarkistukset.json", { cache: "no-cache" })
     ]);
     if (stateResponse.status !== "fulfilled" || !stateResponse.value.ok) {
       throw new Error("Seurantatiedoston lataus epäonnistui.");
