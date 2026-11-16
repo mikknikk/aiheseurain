@@ -304,6 +304,177 @@ def validate_state():
     return state
 
 
+
+def validate_screening_history():
+    """Tarkistaa näytösseurannan erillisen, tapahtumapohjaisen muutoshistorian.
+
+    RSS-syöte säilyttää lukijalle julkaistut versiot. Tämä JSON-tiedosto
+    puolestaan tallentaa koneellisesti nykyiset näytöstiedot ja jokaisen
+    myöhemmin havaitun muutoksen. Tapahtumalokia saa vain täydentää.
+    """
+    path = ROOT / "data/naytosten-muutoshistoria.json"
+
+    if not path.is_file():
+        fail("data/naytosten-muutoshistoria.json puuttuu")
+
+    try:
+        history = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        fail(f"näytösten muutoshistorian JSON virheellinen: {exc}")
+
+    if not isinstance(history, dict) or history.get("schema_version") != 1:
+        fail("näytösten muutoshistorian pitää olla schema_version 1 -JSON-olio")
+
+    if history.get("timezone") != "Europe/Helsinki":
+        fail("näytösten muutoshistorian timezone pitää olla Europe/Helsinki")
+
+    if history.get("baseline_status") not in {
+        "pending_first_verified_run", "active"
+    }:
+        fail("näytösten muutoshistorian baseline_status on virheellinen")
+
+    screenings = history.get("screenings")
+    events = history.get("events")
+
+    if not isinstance(screenings, list) or not isinstance(events, list):
+        fail("näytösten muutoshistorian screenings ja events pitää olla listoja")
+
+    # Näytöksen tunniste säilyy samana, vaikka sen aikaa tai muita tietoja
+    # muutetaan. Tunnistetta ei saa luoda uudelleen jokaisessa päivityksessä.
+    screening_ids = set()
+    allowed_statuses = {"scheduled", "cancelled", "removed", "completed"}
+    allowed_claim_types = {
+        "TEATTERIN VAHVISTAMA",
+        "JÄRJESTÄJÄN ILMOITTAMA",
+        "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+    }
+
+    for number, screening in enumerate(screenings, 1):
+        label = f"screenings[{number}]"
+
+        if not isinstance(screening, dict):
+            fail(f"{label} ei ole JSON-olio")
+
+        for field in ("screening_id", "film", "venue", "city", "status"):
+            if not isinstance(screening.get(field), str) or not screening[field].strip():
+                fail(f"{label}.{field} puuttuu tai on tyhjä")
+
+        screening_id = screening["screening_id"]
+        if screening_id in screening_ids:
+            fail(f"näytöksen tunniste toistuu: {screening_id}")
+        screening_ids.add(screening_id)
+
+        if screening["status"] not in allowed_statuses:
+            fail(f"{label}.status on virheellinen")
+
+        timestamp(screening.get("starts_at"), label + ".starts_at")
+
+        if screening.get("source_claim_type") not in allowed_claim_types:
+            fail(f"{label}.source_claim_type on virheellinen")
+
+        sources = screening.get("sources")
+        if not isinstance(sources, list) or not sources:
+            fail(f"{label}.sources pitää sisältää vähintään yksi lähde")
+
+        for source_number, source in enumerate(sources, 1):
+            source_label = f"{label}.sources[{source_number}]"
+            if not isinstance(source, dict):
+                fail(f"{source_label} ei ole JSON-olio")
+
+            for field in ("publisher", "url", "checked_at", "claim_type"):
+                if not isinstance(source.get(field), str) or not source[field].strip():
+                    fail(f"{source_label}.{field} puuttuu")
+
+            parsed_url = urlsplit(source["url"])
+            if parsed_url.scheme not in {"http", "https"} or not parsed_url.netloc:
+                fail(f"{source_label}.url ei ole kelvollinen HTTP(S)-osoite")
+
+            timestamp(source["checked_at"], source_label + ".checked_at")
+            timestamp(source.get("published_at"), source_label + ".published_at")
+
+            if source["claim_type"] not in allowed_claim_types:
+                fail(f"{source_label}.claim_type on virheellinen")
+
+    # Tapahtumaloki on append-only: tapahtumilla on yksilöllinen tunniste,
+    # aikaleima, tyyppi ja tieto siitä, mitä näytöstä muutos koskee.
+    allowed_event_types = {
+        "baseline_created",
+        "added",
+        "time_changed",
+        "venue_changed",
+        "details_changed",
+        "cancelled",
+        "removed_from_listing",
+        "reinstated",
+        "correction",
+    }
+    event_ids = set()
+
+    for number, event in enumerate(events, 1):
+        label = f"events[{number}]"
+
+        if not isinstance(event, dict):
+            fail(f"{label} ei ole JSON-olio")
+
+        for field in ("event_id", "observed_at", "type", "note"):
+            if not isinstance(event.get(field), str) or not event[field].strip():
+                fail(f"{label}.{field} puuttuu tai on tyhjä")
+
+        if event["event_id"] in event_ids:
+            fail(f"muutoshistorian event_id toistuu: {event['event_id']}")
+        event_ids.add(event["event_id"])
+
+        timestamp(event["observed_at"], label + ".observed_at")
+
+        if event["type"] not in allowed_event_types:
+            fail(f"{label}.type on tuntematon: {event['type']}")
+
+        if event["type"] != "baseline_created":
+            screening_id = event.get("screening_id")
+            if not isinstance(screening_id, str) or not screening_id.strip():
+                fail(f"{label}.screening_id puuttuu")
+            if screening_id not in screening_ids:
+                fail(f"{label} viittaa tuntemattomaan näytökseen: {screening_id}")
+
+        sources = event.get("sources")
+        if not isinstance(sources, list):
+            fail(f"{label}.sources pitää olla lista")
+
+        if event["type"] not in {"baseline_created", "correction"} and not sources:
+            fail(f"{label}: muutostapahtuma tarvitsee vähintään yhden lähteen")
+
+        for source_number, source in enumerate(sources, 1):
+            source_label = f"{label}.sources[{source_number}]"
+            if not isinstance(source, dict):
+                fail(f"{source_label} ei ole JSON-olio")
+            for field in ("publisher", "url", "checked_at", "claim_type"):
+                if not isinstance(source.get(field), str) or not source[field].strip():
+                    fail(f"{source_label}.{field} puuttuu")
+            parsed_url = urlsplit(source["url"])
+            if parsed_url.scheme not in {"http", "https"} or not parsed_url.netloc:
+                fail(f"{source_label}.url ei ole kelvollinen HTTP(S)-osoite")
+            timestamp(source["checked_at"], source_label + ".checked_at")
+            timestamp(source.get("published_at"), source_label + ".published_at")
+            if source["claim_type"] not in allowed_claim_types:
+                fail(f"{source_label}.claim_type on virheellinen")
+
+        for field in ("previous", "current"):
+            value = event.get(field)
+            if value is not None and not isinstance(value, dict):
+                fail(f"{label}.{field} pitää olla JSON-olio tai null")
+
+    # Lähtötason pitää olla selvästi keskeneräinen, kun historia on tyhjä.
+    # Aktiivinen historia edellyttää nimenomaista lähtötason luontitapahtumaa.
+    baseline_events = [event for event in events if event["type"] == "baseline_created"]
+    if history["baseline_status"] == "pending_first_verified_run":
+        if screenings or events:
+            fail("odottavassa lähtötilassa screenings ja events pitää olla tyhjiä")
+    elif len(baseline_events) != 1:
+        fail("aktiivisessa muutoshistoriassa pitää olla täsmälleen yksi baseline_created-tapahtuma")
+
+    return history
+
+
 def validate_docs(state):
     """Vertaa README:tä ja tehtäväjonoa koneelliseen seurantatilaan."""
     queue_path = ROOT / "docs/tehtavajono.md"
@@ -512,6 +683,9 @@ def main():
     # Seuraavaksi tarkistetaan dokumenttien ja seurantatilan yhdenmukaisuus.
     validate_docs(state)
 
+    # Tarkistetaan myös näytösseurannan koneellisesti luettava muutoshistoria.
+    validate_screening_history()
+
     # Lopuksi käydään RSS-syötteet ja niiden julkaistut itemit läpi.
     total, unique = validate_feeds()
 
@@ -519,7 +693,7 @@ def main():
     print(f"OK: {len(FEEDS)} syötettä, {total} itemiä, {unique} yksilöllistä GUIDia.")
     print("OK: kuvausten HTML-rakenne, linkit, otsikkotasot, alt-attribuutit ja lähdeluettelot.")
     print("OK: README, tehtäväjono, feed-polut ja seurantatila ovat yhdenmukaiset.")
-    print("OK: aikaleimat, seurantajaksot ja erillinen näytösvahti.")
+    print("OK: aikaleimat, seurantajaksot, erillinen näytösvahti ja näytösten muutoshistoria.")
 
 
 # Tämä ehto tarkoittaa, että main()-funktio suoritetaan vain, kun tiedosto
