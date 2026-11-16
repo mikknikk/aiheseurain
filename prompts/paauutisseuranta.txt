@@ -1,0 +1,33 @@
+Tehtävä: suorita repositorion mikknikk/uutiset pääasiallinen päivittäinen uutisseurannan aihekierros.
+
+ENSISIJAINEN OHJE
+Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin tiedostossa docs/paaautomaation-ohje.md (tiedostonimessä on kaksi a-kirjainta alussa: paaautomaation). Tämä käynnistyskehote on vain käynnistysosoite; älä kopioi tai päättele tehtävän sisältöä siitä.
+
+Ajon alussa:
+1. Lue GitHubin main-haarasta README.md, docs/paaautomaation-ohje.md kokonaan, data/seurantatila.json, data/sources/{task_id}.json, schemas/lahderekisteri.schema.json ja data/lahdetarkistukset.json.
+2. Tarkista, että käsikirjan Ohjeversion tunniste vastaa JSONin automation_instructions.current_version-arvoa ja että automation_instructions.document on täsmälleen docs/paaautomaation-ohje.md.
+3. Jos jokin tiedosto puuttuu, ei ole luettavissa, GitHub ei ole käytettävissä tai polku/versio ei täsmää, keskeytä ennen uutishakuja ja kirjoituksia. Älä käytä vanhaa kehotetta tai arvaa oikeaa versiota. Älä muuta onnistumistietoja tai tehtävävuoroa.
+4. Noudata käsikirjan lukujärjestystä, tehtävävalintaa, sisältö-, lähde-, julkaisu- ja tarkistussääntöjä kokonaan. Kirjaa tämän ajon lähdetarkistukset vain valitun aihekierroksen tehtävätunnisteelle; älä tarkista tai kirjaa näytösvahtia.
+
+RAJAUS
+Käsittele täsmälleen yksi käsikirjan ja docs/tehtavajono.md:n mukainen yhdeksän tehtävän aihekierroksen tehtävä. Älä tee näytöshakuja äläkä muuta erillisen Intialaisten elokuvien näytösvahdin tehtävää, ajastusta, ohjeita, RSS-syötettä tai näytöshistoriaa. Näytösvahti ei kuulu aihekierrokseen.
+
+LÄHTEIDEN KATTAVUUSLOKI
+Jokaisesta ajosta lisää yksi merkintä data/lahdetarkistukset.json-tiedostoon käyttäen data/sources/{task_id}.jsonin pysyviä lähde-ID-tunnisteita. Kirjaa tarkistetut lähteet vain, kun alkuperäinen sisältö on avattu ja tarkistettu; kirjaa tavoittamatta jääneet lähteet unchecked_sources-taulukkoon täsmällisine syineen. Lisää task_id, aloitus- ja päättymisaika, complete/partial/failed-tila sekä lyhyet kieli- ja maantieteellisen kattavuuden huomiot. Päivitä latest_by_task vastaamaan tämän tehtävän uusinta ajoa. Päivitä rekisterin last_checked_at vain lähteille, jotka todella tarkistettiin. Älä kirjaa intialaisen elokuvan näytöslähteitä tähän uutisajoon. Säilytä lokin aiemmat merkinnät.
+
+ONNISTUMISEN KIRJAUS
+Vasta käsikirjan kaikkien onnistumisehtojen täytyttyä päivitä data/seurantatila.jsonin automation_instructions.last_successful_run_version täsmälleen tarkistettuun current_version-arvoon ja last_successful_run_at onnistuneen ajon aikaleimaan. Päivitä tehtäväkohtaiset tiedot ja siirrä vuoroa vain käsikirjan mukaisesti. Säilytä JSONin separate_screening_watch- ja quality_check_instructions-osiot muuttumattomina. Hae kaikki muutetut tiedostot takaisin GitHubista ja varmista kirjoitukset. Jos ajo epäonnistuu tai jää kesken, älä muuta viimeisimmän onnistuneen ajon tietoja tai tehtävävuoroa.
+
+Älä tee mitään tämän käynnistyskehotteen lisäksi ilman GitHubista luettua ajantasaista käsikirjaa.
+
+GITHUBIN MAIN-HAARAN SUOJAUS – PAKOLLINEN JULKAISUPROSESSI
+Repositoryn main-haara on suojattu aktiivisella rulesetillä "Suojaa main – PR ja validointi". Älä yritä kirjoittaa suoraan main-haaraan äläkä kierrä suojausta.
+- Tee kaikki tämän ajon repository-muutokset omassa uudessa työhaarassa, joka luodaan ajantasaisesta main-haarasta. Käytä yksilöllistä, kuvaavaa haaranimeä.
+- Tee kaikki ajon muutokset työhaaraan. Sisällytä samaan muutossarjaan kaikki tämän automaation sallimat tiedostot ja mahdollinen tämän automaation oma onnistumismetatieto.
+- Luo työhaarasta pull request main-haaraan. Älä merkitse ajoa onnistuneeksi PR:n luonnin tai työhaaran kirjoitusten perusteella.
+- Odota PR:n pakollisen status checkin "Tarkista RSS, HTML, dokumentaatio ja seurantatila" valmistumista. Tarkista PR:n uusimman commitin tulos. Yhdistä PR vasta, kun vaadittu tarkistus on nimenomaisesti onnistunut (success). Jos tarkistus epäonnistuu, jää odottamaan, peruuntuu tai sen tulosta ei voi varmistaa, älä yhdistä PR:ää äläkä julkaise onnistumistietoja.
+- Jos tarkistus epäonnistuu, raportoi virhe ja sen olennaiset lokitiedot käyttäjälle. Korjaa vain tämän automaation vastuulla olevat virheet työhaarassa, luo uusi commit ja odota uuden commitin tarkistuksen onnistumista. Älä muuta rajauksia tai poista testejä virheen peittämiseksi.
+- Yhdistä PR vasta onnistuneen tarkistuksen jälkeen käyttäen sallittua merge-menetelmää. Jos yhdistäminen ei onnistu, älä ohita sääntöjä; raportoi PR:n tila ja syy.
+- Yhdistämisen jälkeen lue kaikki muutetut tiedostot takaisin main-haarasta ja varmista niiden sisältö. Vasta onnistuneen takaisinluvun jälkeen raportoi julkaisu ja päivitä ajon tulos onnistuneeksi.
+- Jos ajon sisältötyö tai validointi epäonnistuu, älä yhdistä PR:ää äläkä kirjaa main-haaraan onnistunutta tarkistusaikaa, ohjeversiota tai tehtävävuoron siirtymää. Säilytä aiemmat onnistumistiedot.
+- Jos tässä automaatiossa ei ole repositoryyn kirjoitettavaa muutosta, älä luo tyhjää PR:ää; suorita vain käsikirjan sallimat tarkistukset ja raportoi tulos.

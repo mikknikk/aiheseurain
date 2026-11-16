@@ -1,0 +1,26 @@
+Tehtävä: suorita viikoittainen järjestelmän laatutarkistus GitHub-repositoriolle mikknikk/uutiset.
+
+ENSISIJAINEN OHJE
+Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/laatutarkistuksen-ohje.md. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele tarkastussisältöä tästä kehotteesta.
+
+Ajon alussa lue GitHubista README.md, docs/laatutarkistuksen-ohje.md kokonaan ja data/seurantatila.json sekä noudata käsikirjan muuta esitarkistuslistaa. Tarkista, että käsikirjan Ohjeversion tunniste vastaa JSONin quality_check_instructions.current_version-arvoa ja että document-polku on täsmälleen docs/laatutarkistuksen-ohje.md. Jos jokin esitarkistuksen tiedosto puuttuu, ei ole luettavissa tai polku/versio ei täsmää, keskeytä auditointi ja onnistumistietojen päivitys. Älä arvaa tai käytä vanhaa ohjetta.
+
+Noudata käsikirjan koko tarkastusalaa, raportointia ja onnistumisehtoja. Tämä on vain auditointi: älä korjaa havaintoja, älä muuta automaatioita tai asetuksia äläkä tee korjaavia committeja, issueita tai pull requesteja.
+
+Repositoryn ainoa sallittu kirjoitus on käsikirjan nimenomaisesti sallima quality_check_instructions.last_successful_run_version- ja last_successful_run_at-kenttien päivitys data/seurantatila.json-tiedostossa kattavan onnistuneen auditoinnin jälkeen. Säilytä kaikki muut JSON-kentät täsmälleen ennallaan, erityisesti pääautomaation automation_instructions- ja näytösvahdin separate_screening_watch-osiot. Hae JSON takaisin GitHubista ja varmista, että vain sallitut kaksi kenttää muuttuivat.
+
+Jos auditointi jää kesken tai jokin olennainen tarkastuskohde jää pääsyrajoitteen vuoksi tarkistamatta, älä päivitä onnistumistietoja. Raportoi tarkistetut kohteet, löydökset, rajoitteet ja suositellut korjaukset käsikirjan mukaisesti.
+
+Älä tee mitään tämän käynnistyskehotteen lisäksi ilman GitHubista luettua ajantasaista käsikirjaa.
+
+GITHUBIN MAIN-HAARAN SUOJAUS – PAKOLLINEN JULKAISUPROSESSI
+Repositoryn main-haara on suojattu aktiivisella rulesetillä "Suojaa main – PR ja validointi". Älä yritä kirjoittaa suoraan main-haaraan äläkä kierrä suojausta.
+- Tee kaikki tämän ajon repository-muutokset omassa uudessa työhaarassa, joka luodaan ajantasaisesta main-haarasta. Käytä yksilöllistä, kuvaavaa haaranimeä.
+- Tee kaikki ajon muutokset työhaaraan. Sisällytä samaan muutossarjaan kaikki tämän automaation sallimat tiedostot ja mahdollinen tämän automaation oma onnistumismetatieto.
+- Luo työhaarasta pull request main-haaraan. Älä merkitse ajoa onnistuneeksi PR:n luonnin tai työhaaran kirjoitusten perusteella.
+- Odota PR:n pakollisen status checkin "Tarkista RSS, HTML, dokumentaatio ja seurantatila" valmistumista. Tarkista PR:n uusimman commitin tulos. Yhdistä PR vasta, kun vaadittu tarkistus on nimenomaisesti onnistunut (success). Jos tarkistus epäonnistuu, jää odottamaan, peruuntuu tai sen tulosta ei voi varmistaa, älä yhdistä PR:ää äläkä julkaise onnistumistietoja.
+- Jos tarkistus epäonnistuu, raportoi virhe ja sen olennaiset lokitiedot käyttäjälle. Korjaa vain tämän automaation vastuulla olevat virheet työhaarassa, luo uusi commit ja odota uuden commitin tarkistuksen onnistumista. Älä muuta rajauksia tai poista testejä virheen peittämiseksi.
+- Yhdistä PR vasta onnistuneen tarkistuksen jälkeen käyttäen sallittua merge-menetelmää. Jos yhdistäminen ei onnistu, älä ohita sääntöjä; raportoi PR:n tila ja syy.
+- Yhdistämisen jälkeen lue kaikki muutetut tiedostot takaisin main-haarasta ja varmista niiden sisältö. Vasta onnistuneen takaisinluvun jälkeen raportoi julkaisu ja päivitä ajon tulos onnistuneeksi.
+- Jos ajon sisältötyö tai validointi epäonnistuu, älä yhdistä PR:ää äläkä kirjaa main-haaraan onnistunutta tarkistusaikaa, ohjeversiota tai tehtävävuoron siirtymää. Säilytä aiemmat onnistumistiedot.
+- Jos tässä automaatiossa ei ole repositoryyn kirjoitettavaa muutosta, älä luo tyhjää PR:ää; suorita vain käsikirjan sallimat tarkistukset ja raportoi tulos.
