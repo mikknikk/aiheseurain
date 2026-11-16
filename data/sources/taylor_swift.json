@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "task_id": "taylor_swift",
+  "updated_at": null,
+  "notes": [
+    "Aihekohtainen lähderekisteri: Taylor Swift. Käyttää yhteistä JSON Schema -skeemaa.",
+    "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
+  ],
+  "sources": [
+    {
+      "id": "taylor-swift-official",
+      "name": "Taylor Swift official",
+      "url": "https://www.taylorswift.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "umg-news",
+      "name": "Universal Music Group – News",
+      "url": "https://www.universalmusic.com/news/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "republic-records",
+      "name": "Republic Records",
+      "url": "https://www.republicrecords.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "primary",
+      "critical": true,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "billboard",
+      "name": "Billboard",
+      "url": "https://www.billboard.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "ap-entertainment",
+      "name": "Associated Press – Entertainment",
+      "url": "https://apnews.com/entertainment",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    },
+    {
+      "id": "rolling-stone",
+      "name": "Rolling Stone",
+      "url": "https://www.rollingstone.com/",
+      "language_regions": [
+        "en"
+      ],
+      "source_type": "editorial",
+      "critical": false,
+      "last_checked_at": null,
+      "access_limit": null,
+      "regions": [
+        "US",
+        "GLOBAL"
+      ]
+    }
+  ]
+}
