@@ -20,4 +20,4 @@ Tämä hakemisto sisältää `mikknikk/uutiset`-repositorioon liittyvien kolmen 
 - Jos käsikirjan polku tai versionumero muuttuu, päivitä käynnistyskehote vain samassa muutossarjassa ja tarkista, että se vastaa `data/seurantatila.json`-tiedoston vastaavaa ohjeversiota.
 - Säilytä pääuutisseurannan, näytösvahdin ja laatutarkistuksen rajat erillisinä. Älä yhdistä niiden käynnistyskehotteita yhdeksi yleiseksi promptiksi.
 
-Tiedostot sisältävät automaatioiden asetuksissa 16.11.2026 tallennettuina olleet käynnistyskehotteet. Niitä ei ole tässä muutoksessa muutettu sisällöllisesti.
+Pääuutisseurannan käynnistyskehotetta on päivitetty vastaamaan lähdekatalogin ja tehtäväkohtaisten käyttörekisterien uutta rakennetta. Kopioi päivitetty `paauutisseuranta.txt` kokonaisuudessaan pääautomaation asetuksiin ja varmista, että tallennettu teksti vastaa tiedostoa. Muut käynnistyskehotteet eivät muutu tämän lähdetietomallin uudistuksen vuoksi.
