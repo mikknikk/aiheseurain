@@ -27,7 +27,7 @@ Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajul
 - Sivut käyttävät samaa Jekyll-sivupohjaa, otsaketta, navigaatiota, alatunnistetta ja CSS-tiedostoa. Nykyisessä navigaatiossa RSS-lukija ja Kehitysjono esitetään tulossa olevina, kunnes niiden omat näkymät valmistuvat.
 - Vanha juuriosoite ei enää näytä Valvomoa, vaan etusivu tarjoaa suoran linkin uuteen `/valvomo/`-osoitteeseen. Erillistä uudelleenohjausta ei tehdä, koska juuri on tarkoituksella varattu sivuston etusivulle.
 
-## 3. Hyväksytyt tekniset ratkaisut
+## Hyväksytyt tekniset ratkaisut
 
 1. **Yksi staattinen Pages-sivusto.** Valvomo, RSS-lukija ja Kehitysjono ovat saman sivuston osioita. Nykyisiä RSS-osoitteita ei siirretä.
 2. **Nykyinen julkaisutapa säilyy.** Julkaisu jatkuu `main`-haaran juuresta GitHub Pagesin hallitsemalla Jekyll-buildillä. Erillistä `gh-pages`-haaraa tai uutta Pages-deploy-workflow'ta ei oteta käyttöön vain Valvomon vuoksi.
@@ -37,7 +37,7 @@ Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajul
 6. **Sama-origin JSON on ensisijainen selaimen datalähde.** Valvomo lukee julkaistut tiedostot Pages-osoitteesta. GitHubin julkista APIa käytetään vain tietoihin, joita nykyiset JSON-tiedostot eivät sisällä, kuten GitHub Actions -validointien ja Pages-julkaisujen ajoihin. API-kutsut rajataan, tulokset välimuistitetaan ja virhetilanteet näytetään.
 7. **Ei selaimeen tunnuksia tai salaisuuksia.** Julkinen Pages-sivu käyttää vain julkista dataa ja anonyymejä lukuoikeuksia. Raakoja Actions-lokeja tai API-virheiden raakasisältöä ei julkaista.
 
-## 4. Kanoniset tietolähteet
+## 3. Kanoniset tietolähteet
 
 | Tietolähde | Vastuu | Valvomon käyttötarkoitus |
 |---|---|---|
@@ -120,7 +120,7 @@ Tämä jako pitää tietolähteet yksiselitteisinä ja estää käyttöliittymä
 
 ## 9. Valvomon ensimmäinen käyttöliittymä
 
-Valvomon ensimmäinen versio on repositorion juuren `index.html`-sivu, joka käyttää yhteistä Jekyll-sivustorunkoa (`_layouts/site.html` ja `_includes/`-osat). Tyylit ja selainlogiikka ovat `assets/`-hakemistossa. Sivusto pysyy staattisena eikä lisää palvelinta, tietokantaa tai selaimen GitHub-kirjoitusoikeuksia.
+Valvomo julkaistaan omassa `valvomo/index.html`-sivussaan osoitteessa `/valvomo/`, ja repositorion juuren `index.html` on Uutisvahdin etusivu. Molemmat käyttävät yhteistä Jekyll-sivustorunkoa (`_layouts/site.html` ja `_includes/`-osat). Tyylit ja selainlogiikka ovat `assets/`-hakemistossa. Sivusto pysyy staattisena eikä lisää palvelinta, tietokantaa tai selaimen GitHub-kirjoitusoikeuksia.
 
 Käyttöliittymä lukee seuraavat tiedot:
 
