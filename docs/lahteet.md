@@ -23,7 +23,7 @@ Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa
 - **Kielet ja alueet:** hae vähintään englanniksi, suomeksi, saksaksi, ranskaksi, espanjaksi, italiaksi ja brasilianportugaliksi. Tarkista baskinkieliset ja muut paikalliset lähteet erityisesti Baskimaahan liittyvien tapahtumien yhteydessä sekä Svenska Ylen suomenruotsalainen kulttuurijournalismi. Käytä Tolkienin nimeä ja teosten paikallisia nimiä, esimerkiksi *Der Herr der Ringe*, *Le Seigneur des Anneaux*, *El Señor de los Anillos*, *Il Signore degli Anelli* ja *O Senhor dos Anéis*.
 - **Hakuteemat:** “J. R. R. Tolkien”, “Tolkien Estate”, Tolkien, Middle-earth / Mittelerde / Terre du Milieu / Tierra Media / Terra di Mezzo, sekä teos-, henkilö-, kustantaja-, tutkimus- ja adaptaatiokohtaiset termit. Hae erikseen kirjojen ja postuumien toimitettujen teosten julkaisuista, tutkimuksesta, oikeuksista, elokuvista, televisiosta, peleistä, näyttelyistä ja tapahtumista.
 - **Varmennus:** yhdistysten ja fanisivustojen uutiset ovat yhteisö- tai uutisvihjelähteitä. Varmista tuotanto-, julkaisu-, oikeus- ja sopimusväitteet ensisijaisesta tiedotteesta tai riippumattomasta toimituksellisesta mediasta. Älä käsittele fanispekulaatiota vahvistettuna uutisena.
-- **Jäljellä olevat aukot:** Tolkienin lähderekisterissä on nyt 25 lähdettä. Lisäykset kattavat EHU/TARTALO-konferenssiohjelman, The Mythopoeic Societyn, File 770:n, GamesRadar+:n ja New Zealand Film Mapin. Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet ovat edelleen ohuita. Täydennä niitä vain, kun lähteen toiminta, URL ja Tolkien-aiheen relevanssi voidaan tarkistaa.
+- **Jäljellä olevat aukot:** Tolkienin aihekohtaisessa käyttörekisterissä on nyt 28 lähdeviittausta. Lisäykset kattavat EHU/TARTALO-konferenssiohjelman, The Mythopoeic Societyn, File 770:n, GamesRadar+:n ja New Zealand Film Mapin. Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet ovat edelleen ohuita. Täydennä niitä vain, kun lähteen toiminta, URL ja Tolkien-aiheen relevanssi voidaan tarkistaa.
 
 ## Taylor Swift
 
@@ -113,7 +113,7 @@ Oikeudellisten ja virallisten tapahtumien rinnalla seuraa henkilön elokuva- ja 
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-`data/sources/`-hakemistossa on kymmenen tehtäväkohtaista rekisteriä, joissa on yhteensä 131 lähdemerkintää (yhdeksän aihekierrosta sekä erillinen näytösvahti). Jokaisella merkinnällä on pysyvä ID, nimi, URL, kielikoodit, maantieteelliset alueet, lähdetyyppi ja kriittisyys. Kieli- ja aluekattavuus ovat erillisiä kenttiä: `language_regions` kertoo julkaisun kielet ja `regions` sen maantieteellisen painopisteen.
+`data/source-catalog.json` sisältää 122 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 131 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi ja alueet ylläpidetään kerran; käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
@@ -154,7 +154,7 @@ Tämä kartoitus on alkuarvio julkaisujen toimituksellisesta painopisteestä, ei
 
 ## Koneellinen lähderekisteri ja kattavuusloki
 
-`data/sources/{task_id}.json` on valitun tehtävän tekninen lähderekisteri. Tiedoston `task_id` vastaa tiedostonimeä ja automaation tehtävätunnistetta. Kaikilla aiheilla, myös näytösseurannalla, on sama rakenne ja yhteinen JSON Schema. Rekisteritiedostoja ei yhdistetä ajolokissa: kukin ajo viittaa vain oman tehtävänsä lähde-ID:ihin. Rekisterit eivät korvaa alla olevia aihekohtaisia ohjeita eivätkä ole suljettuja sallittujen lähteiden listoja.
+`data/source-catalog.json` on kaikkien aiheiden yhteinen perustietokatalogi. `data/sources/{task_id}.json` on valitun tehtävän käyttörekisteri: tiedoston `task_id` vastaa tiedostonimeä ja automaation tehtävätunnistetta, ja sen `source_id`-arvot viittaavat katalogin `id`-arvoihin. Katalogi ja käyttörekisterit validoidaan erillisillä JSON Schema -skeemoilla (`schemas/lahdekatalogi.schema.json` ja `schemas/lahderekisteri.schema.json`). Kriittisyys, tarkistusaika ja käyttörajoite ovat tehtäväkohtaisia. Lähteen tarkistus yhdessä tehtävässä ei tarkoita, että se olisi tarkistettu toisessa tehtävässä. Ajoloki viittaa vain oman tehtävänsä käyttörekisterin lähteisiin. Rekisterit eivät korvaa alla olevia aihekohtaisia ohjeita eivätkä ole suljettuja sallittujen lähteiden listoja.
 
 `data/lahdetarkistukset.json` sisältää ajokohtaisen lokin. Jokaisesta ajosta kirjataan lähde-ID:t, joiden sisältö tarkistettiin, sekä lähteet, joita ei voitu tarkistaa ja syy. Pelkkä hakutuloksen näkeminen ei ole lähteen tarkistus. Kirjaa myös lyhyt huomio kieli- ja maantieteellisen kattavuuden puutteista. Lähteiden määrä ei yksin mittaa kattavuutta.
 
