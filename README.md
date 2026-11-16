@@ -35,13 +35,13 @@ Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon
 1. `README.md` – repositorion yleiskuva, tiedostojen vastuut ja julkaisuperiaatteet.
 2. `docs/paautomaation-ohje.md` – pääautomaation täydellinen, versioitu toimintakäsikirja.
 3. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
-3. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
-4. `docs/lahteet.md` – yleiset lähdeperiaatteet ja aihekohtaiset lähteiden lähtöpisteet.
-5. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
-6. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
-7. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.
+4. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
+5. `docs/lahteet.md` – yleiset lähdeperiaatteet ja aihekohtaiset lähteiden lähtöpisteet.
+6. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
+7. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
+8. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.
 
-Lue ennen julkaisua kyseisen tehtävän RSS-syöte ja `data/seurantatila.json`. Tarkista myös muiden syötteiden GUID- ja aihe-erotteluperiaatteet muuttamatta muiden tehtävien sisältöä. Näytösvahti ja sen dokumentit ovat erillisen automaation vastuulla; pääautomaatio ei tee näytöshakuja eikä muuta näytösfeedin tai näytöshistorian sisältöä. Näytöshistorian tietomalli on dokumentoitu tiedostossa `docs/nayostohistorian-rakenne.md`, ja se kuuluu näytösvahdin lukemistoon.
+Lue ennen julkaisua kaikki kymmenen RSS-tiedostoa kokonaan tai hae niiden kaikki itemit. Näytösfeed luetaan vain historian säilyttämiseksi; älä tee näytöshakuja tai muuta näytösfeedin sisältöä. Tarkista kaikkien kymmenen syötteen GUIDien yksilöllisyys muuttamatta muiden tehtävien sisältöä. Näytösvahti ja sen dokumentit ovat erillisen automaation vastuulla; pääautomaatio ei tee näytöshakuja eikä muuta näytösfeedin tai näytöshistorian sisältöä. Näytöshistorian tietomalli on dokumentoitu tiedostossa `docs/nayostohistorian-rakenne.md`, ja se kuuluu näytösvahdin lukemistoon.
 
 Dokumenttien vastuut ja tarkempi lukujärjestys on koottu tämän README:n **Tiedostojen vastuut** -osioon. Aiheiden, syötteiden tai automaatioiden muuttuessa päivitä kaikki niitä koskevat ensisijaiset dokumentit ja niitä tarkistavat testit.
 
