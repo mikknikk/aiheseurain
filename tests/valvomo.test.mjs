@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { classifyFreshness, latestRotationTask, validateStateShape, TASK_ORDER, loadDashboard } from "../assets/js/valvomo.js";
+import { classifyFreshness, latestRotationTask, estimateNextTaskUpdates, validateStateShape, TASK_ORDER, loadDashboard } from "../assets/js/valvomo.js";
 
 test("tuoreus erottaa tuoreen, vanhentuneen ja tuntemattoman ajan", () => {
   const now = Date.parse("2026-11-16T20:00:00+02:00");
@@ -19,6 +19,51 @@ test("viimeisin aiheajo valitaan onnistumisajan perusteella", () => {
   };
   assert.equal(latestRotationTask(tasks).id, "tolkien");
   assert.equal(latestRotationTask({}), null);
+});
+
+test("seuraavat aiheajat lasketaan jonon järjestyksestä ja Helsingin päivittäisestä ajoajasta", () => {
+  const tasks = Object.fromEntries(TASK_ORDER.map((id) => [id, { last_result: "not_recorded" }]));
+  const state = {
+    updated_at: "2026-11-17T10:00:00+02:00",
+    rotation: { next_task: "taylor_swift", tasks }
+  };
+  const estimates = estimateNextTaskUpdates(state, new Date("2026-11-17T10:00:00Z"));
+  assert.equal(estimates.find((item) => item.id === "taylor_swift").estimatedAt.toISOString(), "2026-11-18T10:00:00.000Z");
+  assert.equal(estimates.find((item) => item.id === "gurmeet_ram_rahim_singh").estimatedAt.toISOString(), "2026-11-19T10:00:00.000Z");
+  assert.equal(estimates.find((item) => item.id === "tolkien").estimatedAt.toISOString(), "2026-11-26T10:00:00.000Z");
+});
+
+test("seuraavan aiheen arvio huomioi kesäajan ja saman päivän tulevan ajovuoron", () => {
+  const tasks = Object.fromEntries(TASK_ORDER.map((id) => [id, { last_result: "not_recorded" }]));
+  const state = { updated_at: "2026-07-01T10:00:00+03:00", rotation: { next_task: "tolkien", tasks } };
+  const estimate = estimateNextTaskUpdates(state, new Date("2026-07-01T08:00:00Z"))[0];
+  assert.equal(estimate.estimatedAt.toISOString(), "2026-07-01T09:00:00.000Z");
+});
+
+test("päivittäinen klo 12 säilyy paikallisena kellonaikana kesäaikaan siirryttäessä", () => {
+  const tasks = Object.fromEntries(TASK_ORDER.map((id) => [id, { last_result: "not_recorded" }]));
+  const state = { updated_at: "2026-03-28T10:30:00+02:00", rotation: { next_task: "tolkien", tasks } };
+  const estimates = estimateNextTaskUpdates(state, new Date("2026-03-28T09:00:00Z"));
+  assert.equal(estimates[0].estimatedAt.toISOString(), "2026-03-28T10:00:00.000Z");
+  assert.equal(estimates[1].estimatedAt.toISOString(), "2026-03-29T09:00:00.000Z");
+  assert.equal(estimates[2].estimatedAt.toISOString(), "2026-03-30T09:00:00.000Z");
+});
+
+test("vanhentunut jonotieto ei tuota näennäisen tarkkoja aihekohtaisia aikoja", () => {
+  const tasks = Object.fromEntries(TASK_ORDER.map((id) => [id, { last_result: "not_recorded" }]));
+  const state = { updated_at: "2026-11-15T00:00:00+02:00", rotation: { next_task: "tolkien", tasks } };
+  const estimates = estimateNextTaskUpdates(state, new Date("2026-11-17T10:00:00Z"));
+  assert.equal(estimates.every((item) => item.estimatedAt === null), true);
+  assert.match(estimates[0].reason, /vanhentunut/);
+});
+
+test("epäonnistunut seuraava vuoro estää myöhempien aiheiden aikojen ennustamisen", () => {
+  const tasks = Object.fromEntries(TASK_ORDER.map((id) => [id, { last_result: "not_recorded" }]));
+  tasks.taylor_swift.last_result = "failed";
+  const state = { updated_at: "2026-11-17T10:00:00+02:00", rotation: { next_task: "taylor_swift", tasks } };
+  const estimates = estimateNextTaskUpdates(state, new Date("2026-11-17T10:00:00Z"));
+  assert.ok(estimates.find((item) => item.id === "taylor_swift").estimatedAt);
+  assert.equal(estimates.find((item) => item.id === "gurmeet_ram_rahim_singh").estimatedAt, null);
 });
 
 test("seurantatiedon rakenteen tarkistus edellyttää kaikkia yhdeksää kiertotehtävää", () => {
@@ -97,6 +142,7 @@ function sampleState() {
     rotation: { next_task: "taylor_swift", tasks },
     automation_instructions: { current_version: "1.2.1", last_successful_run_version: "1.0.4" },
     separate_screening_watch: {
+      cadence: "daily",
       last_result: "success",
       last_successful_check: "2026-11-16T17:00:00+02:00",
       automation_instructions: { current_version: "1.4.1", last_successful_run_version: "1.0.0" }
@@ -137,6 +183,8 @@ test("Valvomo näyttää kolme automaatiota erillään ja ilmoittaa ohjeversioid
     assert.match(dom.getElementById("quality-status").textContent, /vanhempaa ohjeversiota/);
     assert.match(dom.getElementById("main-details").innerHTML, /Ajovaiheet/);
     assert.match(dom.getElementById("rotation-list").innerHTML, /Taylor Swift/);
+    assert.match(dom.getElementById("rotation-list").innerHTML, /Arvioitu seuraava käsittely/);
+    assert.match(dom.getElementById("screening-details").innerHTML, /kellonaikaa ei ole julkaistu/);
     assert.match(dom.getElementById("alerts-content").innerHTML, /source-b/);
     assert.equal(dom.getElementById("refresh-button").disabled, false);
   } finally {

@@ -57,6 +57,124 @@ export function latestRotationTask(tasks) {
     .sort((a, b) => Date.parse(b.task.last_successful_check) - Date.parse(a.task.last_successful_check))[0] || null;
 }
 
+const ROTATION_TIMEZONE = "Europe/Helsinki";
+const ROTATION_HOUR = 12;
+
+/**
+ * Muuntaa Helsinki-paikallisen päivämäärän ja kellonajan yksiselitteiseksi UTC-ajaksi.
+ * Aikavyöhykkeen offset lasketaan Intl-rajapinnasta, joten kesä- ja talviaika
+ * huomioidaan ilman selaimen oman aikavyöhykkeen oletuksia.
+ */
+function helsinkiDateTimeToUtc(year, month, day, hour, minute) {
+  const targetAsUtc = Date.UTC(year, month - 1, day, hour, minute);
+  let result = new Date(targetAsUtc);
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: ROTATION_TIMEZONE,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hourCycle: "h23"
+    }).formatToParts(result);
+    const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+    const representedAsUtc = Date.UTC(
+      Number(values.year), Number(values.month) - 1, Number(values.day),
+      Number(values.hour), Number(values.minute), Number(values.second)
+    );
+    result = new Date(targetAsUtc - (representedAsUtc - result.getTime()));
+  }
+
+  return result;
+}
+
+/** Palauttaa seuraavan päivittäisen klo 12.00 Europe/Helsinki -ajon ajan. */
+function nextRotationSlot(now) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: ROTATION_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(now);
+  const values = Object.fromEntries(parts.map((part) => [part.type, Number(part.value)]));
+  let day = new Date(Date.UTC(values.year, values.month - 1, values.day));
+
+  let slot = helsinkiDateTimeToUtc(values.year, values.month, values.day, ROTATION_HOUR, 0);
+  if (slot <= now) {
+    day = new Date(day.getTime() + 24 * 60 * 60 * 1000);
+    slot = helsinkiDateTimeToUtc(day.getUTCFullYear(), day.getUTCMonth() + 1, day.getUTCDate(), ROTATION_HOUR, 0);
+  }
+  return slot;
+}
+
+/** Muuntaa päivittäisen vuoron seuraavan kalenteripäivän samaksi paikalliseksi kellonajaksi. */
+function addHelsinkiDays(date, days) {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: ROTATION_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hourCycle: "h23"
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, Number(part.value)]));
+  const nextDay = new Date(Date.UTC(values.year, values.month - 1, values.day + days));
+  return helsinkiDateTimeToUtc(
+    nextDay.getUTCFullYear(), nextDay.getUTCMonth() + 1, nextDay.getUTCDate(),
+    ROTATION_HOUR, 0
+  );
+}
+
+/**
+ * Arvioi aiheiden seuraavat käsittelyajat jonon osoittamasta seuraavasta aiheesta.
+ * Arvioita ei tehdä, jos seurantatila on vanha tai virheellinen. Epäonnistunut
+ * seuraava vuoro voi viivästyttää koko loppujonoa, joten silloin vain uusintayritys
+ * arvioidaan ja muiden aiheiden ajat jätetään tuntemattomiksi.
+ */
+export function estimateNextTaskUpdates(state, now = new Date()) {
+  const nextId = state?.rotation?.next_task;
+  const tasks = state?.rotation?.tasks;
+  if (!TASK_ORDER.includes(nextId) || !tasks || !Number.isFinite(now.getTime())) {
+    return TASK_ORDER.map((id) => ({ id, estimatedAt: null, reason: "Jonotietoa ei ole saatavilla." }));
+  }
+
+  const freshness = classifyFreshness(state.updated_at, 36, now.getTime());
+  if (freshness.key !== "good") {
+    const reason = freshness.key === "warning"
+      ? "Jonotieto on vanhentunut."
+      : "Jonotiedon ajantasaisuutta ei voida varmentaa.";
+    return TASK_ORDER.map((id) => ({ id, estimatedAt: null, reason }));
+  }
+
+  const nextIndex = TASK_ORDER.indexOf(nextId);
+  const firstSlot = nextRotationSlot(now);
+  const nextTask = tasks[nextId];
+  const retryPending = nextTask?.last_result === "failed" || nextTask?.last_result === "partial";
+
+  return TASK_ORDER.map((id) => {
+    const offset = (TASK_ORDER.indexOf(id) - nextIndex + TASK_ORDER.length) % TASK_ORDER.length;
+    if (retryPending && offset > 0) {
+      return {
+        id,
+        estimatedAt: null,
+        reason: "Edellinen vuoro epäonnistui tai jäi osittaiseksi; jonon myöhempi eteneminen on epävarmaa."
+      };
+    }
+    const estimatedAt = addHelsinkiDays(firstSlot, offset);
+    return {
+      id,
+      estimatedAt,
+      label: retryPending && offset === 0 ? "Arvioitu seuraava yritys" : "Arvioitu seuraava käsittely",
+      reason: null
+    };
+  });
+}
+
 export function validateStateShape(state) {
   if (!state || typeof state !== "object" || state.schema_version !== 1) return false;
   if (!state.rotation || !state.rotation.tasks || !TASK_ORDER.includes(state.rotation.next_task)) return false;
@@ -162,6 +280,7 @@ function renderScreening(state) {
       : "Ei kirjattu"],
     ["Ohjeversio", watch.automation_instructions?.current_version || "Ei tietoa"],
     ["Viimeksi käytetty versio", watch.automation_instructions?.last_successful_run_version || "Ei tietoa"],
+    ["Tarkistusrytmi", watch.cadence === "daily" ? "Päivittäin; kellonaikaa ei ole julkaistu" : "Aikataulua ei ole määritelty"],
     ["Ajovaiheet", "Ei tallenneta vielä koneelliseen seurantatilaan"]
   ]);
   const screeningNotes = errorsFrom(watch);
@@ -193,6 +312,7 @@ function renderRotation(state) {
   const nextId = state.rotation.next_task;
   const tasks = state.rotation.tasks;
   const latest = latestRotationTask(tasks);
+  const estimates = new Map(estimateNextTaskUpdates(state).map((item) => [item.id, item]));
   document.getElementById("next-task").textContent = `Seuraava aihe: ${TASK_NAMES[nextId] || "Tuntematon"}`;
   const list = TASK_ORDER.map((id) => {
     const task = tasks[id];
@@ -204,9 +324,14 @@ function renderRotation(state) {
       : task.last_result === "failed" ? "Epäonnistui"
       : "Tuntematon";
     const completed = latest && latest.id === id;
+    const estimate = estimates.get(id);
+    const nextUpdate = estimate?.estimatedAt
+      ? `${estimate.label}: ${dateText(estimate.estimatedAt)}`
+      : `Seuraava käsittely: ei arvioitavissa – ${estimate?.reason || "aikataulutietoa ei ole"}`;
     return `<li class="${isNext ? "is-next" : ""} ${completed ? "is-completed" : ""}">
       <span>${escapeHtml(TASK_NAMES[id])}</span>
       <span class="rotation-meta">${isNext ? "Seuraava vuoro · " : ""}Viimeisin tulos: ${escapeHtml(result)} · ${escapeHtml(last)}</span>
+      <span class="rotation-meta">${escapeHtml(nextUpdate)}</span>
     </li>`;
   }).join("");
   document.getElementById("rotation-list").innerHTML = list;

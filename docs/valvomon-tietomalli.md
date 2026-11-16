@@ -135,3 +135,19 @@ Automaatiokorttien tuoreusrajat ovat 36 tuntia päivittäisille automaatioille j
 GitHub API:n tulokset välimuistitetaan välilehden istunnossa enintään viideksi minuutiksi. API-virhe näytetään erillään automaatioiden tilasta; se ei muuta JSON-tietojen perusteella muodostettua tilaa. Näkymä ei hae raakoja Actions-lokeja.
 
 Valvomon automaattiset JavaScript-testit suoritetaan komennolla `node --test tests/valvomo.test.mjs`. Sivun ja skriptin rakenne tarkistetaan CI-ajossa. Tämä ei korvaa manuaalista näppäimistö-, ruudunlukija-, suurennus- tai kontrastitestausta.
+
+## 10. Aihekohtaisten seuraavien päivitysten arviot
+
+Valvomo arvioi kunkin yhdeksän aihekierroksen seuraavan käsittelyajan seuraavien tietojen perusteella:
+
+- `docs/tehtavajono.md` määrittää kiinteän aihejärjestyksen ja päivittäisen klo 12.00 Europe/Helsinki -käynnistysajan.
+- `data/seurantatila.json` -tiedoston `rotation.next_task` osoittaa jonon seuraavan tehtävän. Muiden aiheiden arvioidut ajat saadaan laskemalla päivittäiset vuorot tästä kohdasta eteenpäin.
+- Seurantatiedoston `updated_at` kertoo, kuinka tuoreeseen jonotietoon arvio perustuu. Yli 36 tuntia vanhasta tai virheellisestä tiedosta ei muodosteta kellonaikoja.
+
+Aika lasketaan selaimessa aikavyöhykkeen `Europe/Helsinki` mukaan. Kesä- ja talviaika huomioidaan erikseen; selaimen käyttäjän oma aikavyöhyke ei muuta tulosta. Arvio on seuraava suunniteltu käsittelyvuoro, ei vahvistus siitä, että automaatio käynnistyy tai valmistuu kyseisenä aikana.
+
+Jos jonon seuraavan tehtävän viimeisin tulos on `failed` tai `partial`, Valvomo arvioi vain kyseisen tehtävän seuraavan uusintayrityksen. Myöhempien aiheiden ajat jätetään tuntemattomiksi, koska epäonnistunut vuoro voi siirtää koko loppujonoa. Puuttuva, vanhentunut tai virheellinen jonotieto tuottaa samoin selkeän epävarmuusviestin kellonajan sijasta.
+
+Näytösvahti ei kuulu yhdeksän aiheen kiertoon. Sen koneellinen tieto kertoo rytmin olevan päivittäinen, mutta julkaistussa seurantatilassa ei ole tarkkaa kellonaikaa. Valvomo näyttää siksi vain tiedon päivittäisestä rytmistä eikä keksi näytösvahdille kellonaikaa.
+
+Arvioiden laskenta on käyttöliittymän johdettua tietoa: uutta status-JSONia, erillistä ajohistoriaa tai rinnakkaista aikataulutietokantaa ei tarvita. Ominaisuus toimii ilman tiketin #37 vaihekohtaista ajohistoriaa. Se ei kuitenkaan pysty havaitsemaan reaaliaikaista käynnissä olevaa ajoa tai odottamatonta aikataulumuutosta ennen kuin muutos näkyy koneellisessa seurantatilassa tai dokumentoidussa jonossa.
