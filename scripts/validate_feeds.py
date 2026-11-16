@@ -43,7 +43,7 @@ FEEDS = [
 ROTATION_FEEDS = FEEDS[:-1]
 
 # GitHub Pages on kaikkien RSS-syötteiden kanoninen julkinen jakelukanava.
-PAGES_BASE_URL = "https://mikknikk.github.io/uutiset"
+PAGES_BASE_URL = "https://mikknikk.github.io/aiheseurain"
 PAGES_SITE_URL = PAGES_BASE_URL + "/"
 
 # HTML:ssä on elementtejä, joilla ei ole erillistä sulkutagia.
@@ -903,7 +903,7 @@ def validate_docs(state):
     for feed in FEEDS:
         if f"{PAGES_BASE_URL}/{feed}" not in readme:
             fail(f"README:stä puuttuu GitHub Pages -RSS-osoite: {feed}")
-    if "raw.githubusercontent.com/mikknikk/uutiset" in readme:
+    if "raw.githubusercontent.com/mikknikk/aiheseurain" in readme:
         fail("README sisältää vanhentuneen raw.githubusercontent.com-RSS-osoitteen")
 
     # Varmistamme, että README kertoo yhdeksän aiheen kierrosta ja näytösvahdin

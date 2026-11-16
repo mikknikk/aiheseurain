@@ -1,4 +1,4 @@
-Tehtävä: ylläpidä repositorion mikknikk/uutiset erillistä päivittäistä intialaisten elokuvien näytösseurantaa Suomessa.
+Tehtävä: ylläpidä repositorion mikknikk/aiheseurain erillistä päivittäistä intialaisten elokuvien näytösseurantaa Suomessa.
 
 KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: naytosvahti-2026-11-16-01
