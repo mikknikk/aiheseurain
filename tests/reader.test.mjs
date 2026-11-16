@@ -116,7 +116,7 @@ test("etusivun RSS-linkit nimeävät kohdesyötteen ja lukijan lähdelinkki arti
   const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
   const script = readFileSync(new URL("../assets/js/reader.js", import.meta.url), "utf8");
   assert.doesNotMatch(home, />Avaa RSS-syöte</);
-  assert.match(home, /Avaa J\\. R\\. R\\. Tolkienin RSS-syöte/);
+  assert.ok(home.includes("Avaa J. R. R. Tolkienin RSS-syöte"));
   assert.match(home, /Avaa intialaisten elokuvien näytösseurannan RSS-syöte/);
-  assert.match(script, /Alkuperäinen lähde: \\"? \\+ article\\.title/);
+  assert.ok(script.includes('element("a", "", "Alkuperäinen lähde: " + article.title)'));
 });
