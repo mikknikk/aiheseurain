@@ -106,6 +106,10 @@ data/seurantatila.json on aihekohtaisten tarkistusten koneellisesti luettava til
 
 Päivitä tilatiedosto vasta onnistuneen tarkistuksen ja mahdollisen RSS-julkaisun jälkeen, kun GitHubiin tehty muutos on luettu takaisin ja tarkistettu. Epäonnistunut tai kesken jäänyt ajo ei muuta viimeisintä onnistunutta tarkistusta eikä tehtäväjonon vuoroa. Käytä ISO 8601 -aikaleimoja aikavyöhyketietoineen. Päivitä rotation.next_task samaan aikaan kuin docs/tehtavajono.md:n seuraava tehtävä.
 
+## Skriptien kehityskäytännöt
+
+Kaikki uudet skriptit kirjoitetaan alusta lähtien suomeksi kommentoituina ja dokumentoituina samalla perusteellisuudella kuin `scripts/validate_feeds.py`. Kommenttien tulee auttaa myös Pythonia vähemmän osaavaa lukijaa ymmärtämään tiedoston tarkoitus, keskeiset funktiot, toimintavaiheet ja ei-ilmeiset ratkaisut. Kommentit pidetään ajan tasalla koodin muuttuessa. Tarkempi sitova ohje ja tarkistuslista: [docs/kehityskaytannot.md](docs/kehityskaytannot.md).
+
 ## Automaattiset laatutestit
 
 GitHub Actions suorittaa scripts/validate_feeds.py-testin main-haaraan kohdistuvissa push- ja pull request -muutoksissa. Testi tarkistaa kaikki kymmenen RSS-syötettä: XML:n jäsennettävyyden, item-määrän, GUIDien olemassaolon ja yksilöllisyyden, item-kohtaisten linkkien puuttumisen, CDATA-muotoiset descriptionit sekä kuvausten HTML-rakenteen, linkkien URL-muodot, otsikkotasot ja kuvien alt-attribuutit. Lisäksi testi vertaa README:n syötetaulukkoa, tehtäväjonon yhdeksää tehtävää ja JSON-seurantatilan kiertojärjestystä sekä tarkistaa aikaleimojen aikavyöhykkeet, seurantajaksojen johdonmukaisuuden ja erillisen näytösvahdin määritykset.
