@@ -82,7 +82,9 @@ def validate_source_coverage():
             raise ValueError(f"Tuntematon tehtävä ajolokissa: {ajo['task_id']}")
         tarkista_aikaleima(ajo["started_at"], f"{ajo['run_id']}.started_at")
         tarkista_aikaleima(ajo["ended_at"], f"{ajo['run_id']}.ended_at")
-        if ajo["ended_at"] < ajo["started_at"]:
+        aloitus = datetime.fromisoformat(ajo["started_at"].replace("Z", "+00:00"))
+        paattyminen = datetime.fromisoformat(ajo["ended_at"].replace("Z", "+00:00"))
+        if paattyminen < aloitus:
             raise ValueError(f"{ajo['run_id']}: päättymisaika on ennen aloitusaikaa")
 
         kaikki_idt = ajo["checked_source_ids"] + [
@@ -93,6 +95,11 @@ def validate_source_coverage():
         for source_id in kaikki_idt:
             if source_id not in lahde_idt:
                 raise ValueError(f"{ajo['run_id']}: tuntematon lähde-ID {source_id}")
+            lahde = next(item for item in lahteet if item["id"] == source_id)
+            if ajo["task_id"] not in lahde["topics"]:
+                raise ValueError(
+                    f"{ajo['run_id']}: lähde {source_id} ei kuulu tehtävään {ajo['task_id']}"
+                )
         for lahde in lahteet:
             if ajo["task_id"] in lahde["topics"] and lahde["critical"]:
                 if lahde["id"] not in kaikki_idt and ajo["status"] == "complete":
@@ -100,11 +107,16 @@ def validate_source_coverage():
                         f"{ajo['run_id']}: kriittinen lähde {lahde['id']} puuttuu "
                         "sekä tarkistetuista että tarkistamatta jääneistä lähteistä"
                     )
-        viimeisin[ajo["task_id"]] = max(
-            viimeisin.get(ajo["task_id"], ""), ajo["ended_at"]
-        )
+        nykyinen = datetime.fromisoformat(ajo["ended_at"].replace("Z", "+00:00"))
+        aiempi = viimeisin.get(ajo["task_id"])
+        if aiempi is None or nykyinen > aiempi:
+            viimeisin[ajo["task_id"]] = nykyinen
 
-    if loki["latest_by_task"] != viimeisin:
+    odotetut = {
+        tehtava: aika.isoformat()
+        for tehtava, aika in viimeisin.items()
+    }
+    if loki["latest_by_task"] != odotetut:
         raise ValueError("latest_by_task ei vastaa ajolokin uusimpia ajoja")
 
     print(
