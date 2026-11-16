@@ -1,5 +1,8 @@
 Tehtävä: ylläpidä repositorion mikknikk/uutiset erillistä päivittäistä intialaisten elokuvien näytösseurantaa Suomessa.
 
+KÄYNNISTYSKEHOTTEEN TUNNISTE
+Käynnistyskehotteen tunniste: naytosvahti-2026-11-16-01
+
 ENSISIJAINEN OHJE
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele sen sisältöä tästä kehotteesta. Älä sido käynnistyskehotetta tiettyyn käsikirjan versionumeroon.
 
@@ -22,13 +25,14 @@ schemas/lahderekisteri.schema.json
 
 Tarkista ennen hakujen aloittamista, että:
 - käsikirjan Ohjeversion tunniste on olemassa ja kelvollinen;
+- tämän käynnistyskehotteen tunniste vastaa täsmälleen data/seurantatila.jsonin separate_screening_watch.automation_instructions.startup_prompt_id-arvoa;
 - data/seurantatila.jsonin separate_screening_watch.automation_instructions.current_version vastaa täsmälleen käsikirjan versiota;
 - käsikirjan polku vastaa JSONin separate_screening_watch.automation_instructions.document-arvoa;
 - separate_screening_watch.automation_instructions.document on täsmälleen docs/intialaisten-elokuvien-naytosseuranta.md;
 - kaikki esitarkistuksessa tarvittavat tiedostot ovat olemassa ja luettavissa;
 - näytöshistoria validoidaan schemas/naytosten-muutoshistoria.schema.json -skeemaa vasten ennen kirjoituksia.
 
-Jos jokin tiedosto puuttuu, ei ole luettavissa, GitHub ei ole käytettävissä tai polku/versio ei täsmää, keskeytä ennen näytöshakuja ja kirjoituksia. Älä arvaa, ohita tarkistusta tai käytä vanhaa ohjetta.
+Jos jokin tiedosto puuttuu, ei ole luettavissa, GitHub ei ole käytettävissä tai polku/versio/kehotetunniste ei täsmää, keskeytä ennen näytöshakuja ja kirjoituksia. Älä arvaa, ohita tarkistusta tai käytä vanhaa ohjetta.
 
 SEURANNAN RAJAUS
 Käytä lähdekattavuuden kirjaamiseen vain tehtävätunnistetta intialaiset_elokuvat_naytokset. Kirjaa tarkistetut lähde-ID:t, tarkistamatta jääneet lähteet ja syyt, ajon tila sekä kieli-/aluekattavuuden huomiot data/lahdetarkistukset.json-tiedostoon. Tarkista rekisterin kaikki tämän tehtävän kriittiset lähteet; älä tulkitse tavoittamatonta lähdettä tyhjäksi ohjelmistoksi. Päivitä last_checked_at vain aidosti tarkistetuille lähteille ja latest_by_task vain näytösvahdin omalle tunnisteelle. Säilytä kaikki aiemmat lokimerkinnät. Älä kirjoita uutisautomaation tehtävien lähdetarkistuksia tai muuta sen tehtävätilaa.
