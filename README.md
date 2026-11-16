@@ -1,6 +1,6 @@
 # Uutisseuranta – kahdeksan aihekohtaista RSS-syötettä
 
-Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä, suomenkielistä uutisseurantaa. Päivittäinen ajo on ajastettu klo 12.00 aikavyöhykkeellä Europe/Helsinki.
+Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä, suomenkielistä uutisseurantaa. Yksi automaatio käynnistyy päivittäin klo 12.00 aikavyöhykkeellä Europe/Helsinki. Kukin ajo käsittelee vain yhden aiheen TRACKING.md-tiedostossa olevan kiertojonon mukaisesti; kahdeksan aiheen kierros kestää kahdeksan päivää.
 
 ## Syötteet
 
@@ -17,7 +17,7 @@ Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä, suomenkielistä
 
 Syötteet on alustettu tyhjinä RSS 2.0 -tiedostoina. Niihin lisätään vain tarkistetut, olennaiset uutiset; tyhjä syöte ei tarkoita virhettä eikä sinne lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
-## Ajon pakollinen esitietojen lukujärjestys
+## Ajon pakollinen esitietojen lukujärjestys ja aihekierto
 
 Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kahdeksan RSS-syötteen nykyinen sisältö:
 
@@ -26,7 +26,7 @@ Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sek
 3. `SOURCES.md` – lähdepolitiikka ja lähdehakujen lähtöpisteet.
 4. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml` – julkaistut uutiset ja GUID-tunnisteet.
 
-Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten kukin aihe käsitellään noin kahdeksan päivän välein. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
 ## Dokumentaation ajantasaisuuden loppukatselmus
 
