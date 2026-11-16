@@ -35,13 +35,13 @@ Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sek
 4. `docs/INDIAN_FILM_GUIDE.md`, `docs/INDIAN_FILM_NEWS.md`, `docs/INDIAN_FILM_SCREENINGS.md`, `docs/INDIAN_FILM_TRACKING.md` ja `docs/INDIAN_FILM_SOURCES.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
 5. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/indian-films.xml` ja `feeds/indian-film-screenings.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
-Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
 ## Dokumentaation ajantasaisuuden loppukatselmus
 
 Aina kun mitä tahansa dokumentaatiotiedostoa muutetaan tai lisätään, tee ennen työn päättämistä koko dokumentaation ajantasaisuuden katselmus:
 
-1. Lue muutoksen jälkeen README.md, TRACKING.md ja SOURCES.md kokonaan sekä kaikki muut aiheeseen liittyvät dokumentit.
+1. Lue muutoksen jälkeen README.md, docs/TRACKING.md ja docs/SOURCES.md kokonaan sekä kaikki muut aiheeseen liittyvät dokumentit.
 2. Tarkista, että kaikki aihe-, tiedosto-, RSS-URL-, aikataulu-, lähde- ja toimintatapatiedot ovat keskenään yhdenmukaisia. Esimerkiksi aiheiden tai syötteiden lisäys tai poisto päivitetään kaikkialle, missä niitä luetellaan.
 3. Etsi vanhentuneet, päällekkäiset, ristiriitaiset ja puuttuvat tiedot myös muista dokumenteista; älä tyydy tarkistamaan vain juuri muokattua kohtaa.
 4. Korjaa havaitut ristiriidat saman muutossarjan yhteydessä. Jos jokin tieto on tarkoituksella erilainen eri tiedostoissa, selitä ero.
@@ -73,7 +73,7 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku ei rajoitu englanninkieliseen mediaan: käytä aiheen kannalta olennaisia paikalliskieliä, alkuperäisiä kirjoitusasuja, translitterointeja ja alueellisia lähteitä. Tarkista myös Suomen media, viralliset suomalaiset järjestäjät, tapahtumapaikat, levittäjät ja kulttuuritoimijat. Nosta uutisissa selvästi esiin Suomeen liittyvät tapahtumat, suomalaiset toimijat ja Suomessa järjestettävät konsertit, elokuvanäytökset, kilpailut, fanitapahtumat tai muut tapahtumat. Jos tällaista Suomen-yhteyttä ei löydy, älä lisää raporttiin erillistä mainintaa sen puuttumisesta.
 
-Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, TRACKING.md, SOURCES.md ja kaikki viisi INDIAN_FILM_*.md-dokumenttia.
+Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, docs/TRACKING.md, docs/SOURCES.md ja kaikki viisi INDIAN_FILM_*.md-dokumenttia.
 
 
 ## Intialaisen elokuvan päivittäiset seurantamoduulit
