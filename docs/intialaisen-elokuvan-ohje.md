@@ -1,8 +1,8 @@
 # Intialaisen elokuvan uutiskooste
 
-Tämä projekti kokoaa suomeksi intialaisen elokuvan uutisia ja julkaisee niistä päivittäisen, pitkämuotoisen artikkelin RSS-syötteessä.
+Tämä projekti kokoaa suomeksi intialaisen elokuvan uutisia ja julkaisee pitkämuotoisen artikkelin RSS-syötteessä tehtäväjonon mukaisella vuorolla.
 
-- **Julkaisurytmi:** päivittäin klo 12.00 (Europe/Helsinki), saman uutis- ja näytösseurantatehtävän yhteydessä.
+- **Julkaisurytmi:** tehtäväjonon mukaisesti, normaalisti noin kymmenen päivän välein. Uutisraportti ja näytösseuranta ovat eri tehtäviä.
 - **Raportointijakso:** ensisijaisesti edellisen raportin jälkeen julkaistut uutiset / viimeisin vuorokausi.
 - **RSS-syöte:** [intialaiset-elokuvat.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml)
 - **Projektin sivu:** [uutiset-repositorio](https://github.com/mikknikk/uutiset)
@@ -139,7 +139,7 @@ Julisteet upotetaan RSS-artikkeliin kuvina vain, jos käytettävissä on luotett
 
 ## Suomi: intialaiselokuvat suomalaisessa mediassa
 
-Jokaisessa päivittäisessä raportissa on oma osio suomalaisessa mediassa julkaistuista intialaisia elokuvia, intialaisia elokuvantekijöitä tai intialaisen elokuvan ilmiöitä käsittelevistä jutuista.
+Jokaisessa raportissa on oma osio suomalaisessa mediassa julkaistuista intialaisia elokuvia, intialaisia elokuvantekijöitä tai intialaisen elokuvan ilmiöitä käsittelevistä jutuista.
 
 - Seuraa suomalaisia uutis- ja kulttuurimedioita sekä elokuva-alan julkaisuja. Lähtökohtia ovat esimerkiksi Yle, Helsingin Sanomat, Episodi, Elokuvauutiset ja muut docs/intialaisen-elokuvan-lahteet.md-tiedostoon kirjatut lähteet.
 - Hae sekä elokuvien alkuperäisillä nimillä että Suomessa käytetyillä nimillä, henkilöiden nimillä ja termeillä kuten intialainen elokuva, Bollywood, Tollywood, tamilielokuva ja eteläintialainen elokuva.
@@ -154,7 +154,7 @@ Jokaisessa raportissa tarkistetaan, onko uusissa tai aiemmin seuratuissa intiala
 
 ## Näytösseuranta samassa tehtävässä
 
-Suomen intialaisten elokuvien näytökset tarkistetaan päivittäin saman automaation yhteydessä kuin uutisraportointi. Näytösseuranta on silti toimituksellisesti ja teknisesti erillinen uutisraportoinnista: se ylläpitää omaa [intialaisten-elokuvien-naytokset.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml)-syötettään, eikä näytöslistoja lisätä uutisraportin RSS-itemeihin. Näytösseurannan yksityiskohtaiset hyväksymis-, lähde-, muutoshistoria- ja julkaisuohjeet ovat tiedostossa `docs/intialaisten-elokuvien-naytosseuranta.md`; uutisraportin ohjeet ovat tiedostossa `docs/intialaisen-elokuvan-uutiset.md`.
+Suomen intialaisten elokuvien näytökset tarkistetaan tehtäväjonon omalla vuorolla, erillään uutisraportoinnista. Näytösseuranta on silti toimituksellisesti ja teknisesti erillinen uutisraportoinnista: se ylläpitää omaa [intialaisten-elokuvien-naytokset.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml)-syötettään, eikä näytöslistoja lisätä uutisraportin RSS-itemeihin. Näytösseurannan yksityiskohtaiset hyväksymis-, lähde-, muutoshistoria- ja julkaisuohjeet ovat tiedostossa `docs/intialaisten-elokuvien-naytosseuranta.md`; uutisraportin ohjeet ovat tiedostossa `docs/intialaisen-elokuvan-uutiset.md`.
 
 ## Raportin rakenne
 
