@@ -1,4 +1,4 @@
-Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-film-screenings.xml.
+Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
 
 TARKOITUS JA RAJAUS
 - Etsi kaikkien Intian elokuvateollisuuksien elokuvien näytöksiä Suomessa: esimerkiksi hindi-, telugu-, tamil-, kannada-, malajalam-, bengali-, marathi-, punjabi- ja muut intialaiset elokuvat.
@@ -24,7 +24,7 @@ NÄYTÖKSEN HYVÄKSYMISKRITEERIT
 PÄIVITTÄINEN TARKISTUS
 - Tarkista uudet ja muuttuneet näytöstiedot sekä aiemmin löydettyjen näytösten voimassaolo.
 - Etsi vain tulevia näytöksiä aktiiviseen RSS-syötteeseen. Poista menneet, perutut ja muuten vanhentuneet näytösajat.
-- Vertaile löydöksiä nykyiseen indian-film-screenings.xml-syötteeseen ja aiempiin tarkistustuloksiin. Älä ilmoita samaa muuttumatonta näytöstä uudelleen uutena.
+- Vertaile löydöksiä nykyiseen feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen ja aiempiin tarkistustuloksiin. Älä ilmoita samaa muuttumatonta näytöstä uudelleen uutena.
 - Ilmoita käyttäjälle vain uusista näytöksistä ja olennaisista muutoksista, kuten ajan, paikan, tekstityksen, lipputilanteen tai peruutuksen muutoksista. Jos uusia tai muuttuneita tietoja ei löydy, älä lähetä turhaa ilmoitusta.
 - Jos lähteiden tiedot ovat ristiriidassa, älä ratkaise ristiriitaa arvaamalla. Näytä ristiriita ja lähteet.
 
@@ -37,8 +37,8 @@ KINOON-LÖYTÖJEN TEATTERILINKKIEN JÄLJITTÄMINEN
 
 
 RSS-SYÖTTEEN RAKENNE JA PÄIVITYS
-- Päivitä repositorion indian-film-screenings.xml-tiedosto suoraan GitHubiin, jos käytettävissä olevat oikeudet ja työkalut sen sallivat. Älä väitä päivitystä tehdyksi, ellei GitHub-palvelu ole vahvistanut muutosta.
-- RSS-syötteessä julkaistaan ensimmäisellä löytymiskerralla yksi <item> per elokuva. Kun saman elokuvan näytöstiedoissa tapahtuu myöhemmin muutos, älä korvaa aiempaa itemiä: lisää samaan indian-film-screenings.xml-syötteeseen uusi item, jossa on koko ajantasainen näytöslista.
+- Päivitä repositorion feeds/intialaisten-elokuvien-naytokset.xml-tiedosto suoraan GitHubiin, jos käytettävissä olevat oikeudet ja työkalut sen sallivat. Älä väitä päivitystä tehdyksi, ellei GitHub-palvelu ole vahvistanut muutosta.
+- RSS-syötteessä julkaistaan ensimmäisellä löytymiskerralla yksi <item> per elokuva. Kun saman elokuvan näytöstiedoissa tapahtuu myöhemmin muutos, älä korvaa aiempaa itemiä: lisää samaan feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen uusi item, jossa on koko ajantasainen näytöslista.
 - Säilytä kaikki aiemmat julkaisuversiot syötteessä muutoshistoriana. Aiemmat versiot ovat vertailupohjia, vaikka niiden näytösajat olisivat sittemmin menneitä tai poistuneita; vain uusimmassa versiossa näytetään voimassa olevat tulevat näytökset.
 - Jokaisen uuden päivitysitemin otsikossa on elokuvan nimi ja selkeä päivitysaika Suomen paikallisessa ajassa, esimerkiksi "Klara ja aurinko – näytöstiedot päivitetty 15.11.2026 klo 19.30".
 - Jokaisen itemin kuvauksessa esitä ensin koko julkaisuhetken ajantasainen näytöslista. Lisää sen jälkeen erillinen osio "Muutokset edelliseen julkaisuun", jossa eritellään lisätyt, poistetut/perutut ja muuttuneet näytökset sekä muuttuneet teatteri-, aika-, esityskieli-, tekstitys- ja linkkitiedot.
@@ -61,13 +61,13 @@ RSS-SYÖTTEEN RAKENNE JA PÄIVITYS
 - Tarkista ennen kirjoitusta, ettei täsmälleen sama päivitysitem ole jo julkaistu. Varmista XML:n jäsennettävyys, GUIDien yksilöllisyys, aikaleimat, muutoslistan oikeellisuus ja item-tason <link>-elementtien puuttuminen.
 
 ENNEN JOKAISTA AJOA – DOKUMENTAATION ESITARKISTUS
-- Avaa repositorion mikknikk/uutiset ajon alussa ja lue aina ajantasaiset INDIAN_FILM_GUIDE.md-, INDIAN_FILM_SOURCES.md- ja INDIAN_FILM_TRACKING.md-tiedostot ennen näytöshakua.
+- Avaa repositorion mikknikk/uutiset ajon alussa ja lue aina ajantasaiset docs/intialaisen-elokuvan-ohje.md-, INDIAN_FILM_docs/lahteet.md- ja INDIAN_FILM_docs/seuranta.md-tiedostot ennen näytöshakua.
 - Noudata niiden voimassa olevia näytösseurannan rajauksia, lähteitä, hyväksymiskriteerejä, deduplikointia ja RSS-julkaisuohjeita. Älä luota pelkästään aiempaan ajokertaan tai promptin muistikuviin.
 - Jos dokumentaatio ei ole saatavilla, älä oleta sen sisältöä; kerro rajoitteesta vain, jos se vaikuttaa haun kattavuuteen tai julkaisuun.
 
 LÄHTEET JA DOKUMENTOINTI
-- Noudata repositorion INDIAN_FILM_GUIDE.md-, INDIAN_FILM_SOURCES.md- ja INDIAN_FILM_TRACKING.md-tiedostojen voimassa olevia ohjeita ja pidä näytösvahtiin liittyvät lähdetiedot ajan tasalla, jos löydät uusia luotettavia lähteitä.
-- Älä muuta uutisraportin sisältöä tai sen RSS-syötettä tässä tehtävässä; tämä automaatio vastaa vain näytösseurannasta ja indian-film-screenings.xml-syötteestä.
+- Noudata repositorion docs/intialaisen-elokuvan-ohje.md-, INDIAN_FILM_docs/lahteet.md- ja INDIAN_FILM_docs/seuranta.md-tiedostojen voimassa olevia ohjeita ja pidä näytösvahtiin liittyvät lähdetiedot ajan tasalla, jos löydät uusia luotettavia lähteitä.
+- Älä muuta uutisraportin sisältöä tai sen RSS-syötettä tässä tehtävässä; tämä automaatio vastaa vain näytösseurannasta ja feeds/intialaisten-elokuvien-naytokset.xml-syötteestä.
 - Käytä Suomen paikallista aikaa (Europe/Helsinki) näytösaikojen esittämiseen.
 - Jos päivän tarkistuksessa ei löydy uutta tai muuttunutta tietoa, älä julkaise tarpeetonta ilmoitusta.
 
@@ -88,7 +88,7 @@ Kaiken GitHub-repositorioon julkaistavan sisällön, HTML:n, RSS-syötteiden, do
 - Sivun tulee toimia näppäimistöllä, ruudunlukijalla, vähintään 320 CSS-pikselin leveydellä ja 200–400 % suurennuksella. Fokus on näkyvä; käytä sivulla ohituslinkkiä ja semanttisia maamerkkejä.
 - Vältä automaattisesti käynnistyvää mediaa, vilkkumista ja tarpeettomia aikarajoja. Huomioi käyttäjän liike- ja kontrastiasetukset.
 - Ennen julkaisua validoi XML/HTML ja tarkista otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritys, kontrasti, näppäimistökäyttö, responsiivisuus ja ruudunlukijanäkymä mahdollisuuksien mukaan. Lighthouse/axe ei yksin todista AAA-tasoa.
-- Päivitä tarvittaessa INDIAN_FILM_GUIDE.md:n saavutettavuusohje ja INDIAN_FILM_TRACKING.md:n testitiedot. Älä merkitse testaamatonta tarkistusta hyväksytyksi.
+- Päivitä tarvittaessa docs/intialaisen-elokuvan-ohje.md:n saavutettavuusohje ja INDIAN_FILM_docs/seuranta.md:n testitiedot. Älä merkitse testaamatonta tarkistusta hyväksytyksi.
 
 YHDISTETTY AJOSYKLI
-Tämä näytösseuranta suoritetaan joka päivä saman automaation yhteydessä kuin intialaisen elokuvan uutisraportointi. Uutisraportin ohjeet ovat INDIAN_FILM_NEWS.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.
+Tämä näytösseuranta suoritetaan joka päivä saman automaation yhteydessä kuin intialaisen elokuvan uutisraportointi. Uutisraportin ohjeet ovat docs/intialaisen-elokuvan-uutiset.md. Pidä uutis- ja näytös-RSS:t, seurantalokit ja raportointi erillään.

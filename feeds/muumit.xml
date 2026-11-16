@@ -5,12 +5,11 @@
     <link>https://github.com/mikknikk/uutiset</link>
     <description>Suomenkielinen, maailmanlaajuinen ja lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
-    <atom:link href="https://raw.githubusercontent.com/mikknikk/uutiset/main/muumit.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/muumit.xml" rel="self" type="application/rss+xml" />
     <lastBuildDate>Mon, 16 Nov 2026 10:39:00 +0200</lastBuildDate>
     <item>
       <title>Muumien uusi peli saa julkaisujuhlan Saitamassa 21.–22. marraskuuta</title>
-      <link>https://www.moomin.co.jp/news/events/6ae85147d7289</link>
-      <guid isPermaLink="false">urn:uutiset:muumit:2026-11-16:cocoon-city-launch-event</guid>
+<guid isPermaLink="false">urn:uutiset:muumit:2026-11-16:cocoon-city-launch-event</guid>
       <pubDate>Mon, 16 Nov 2026 10:39:00 +0200</pubDate>
       <description><![CDATA[
         <article>
@@ -20,7 +19,11 @@
           <p>Peli julkaistiin 12. marraskuuta Nintendo Switchille, Switch 2:lle ja Steam-palveluun. Tapahtuma järjestetään Cocoon 2 -rakennuksen ensimmäisen kerroksen Omotenashi Plazalla klo 11–18 molempina päivinä. Sisäänpääsy on maksuton.</p>
           <p><strong>Luotettavuus:</strong> VIRALLISESTI VAHVISTETTU. Tapahtuman järjestelytiedot on julkaistu Moominin virallisella japanilaisella verkkosivustolla.</p>
           <p><strong>Lähde:</strong> <a href="https://www.moomin.co.jp/news/events/6ae85147d7289">Moomin Official Website, 16.11.2026</a>.</p>
-        </article>
+        
+<section aria-labelledby="lahdeluettelo"><h2 id="lahdeluettelo">Lähdeluettelo</h2><ul>
+<li><a href="https://www.moomin.co.jp/news/events/6ae85147d7289">Moomin Official Website, 16.11.2026</a></li>
+</ul></section>
+</article>
       ]]></description>
     </item>
   </channel>

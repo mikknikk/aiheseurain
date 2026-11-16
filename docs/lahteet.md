@@ -11,7 +11,7 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 5. Jos sivuston sisäinen haku ei toimi, tee hakukonehaku sivustorajauksella, esimerkiksi `site:yle.fi hakusanat`, `site:hs.fi hakusanat` tai vastaava.
 6. Älä käytä hakutuloskatkelmaa ainoana lähteenä. Avaa alkuperäinen juttu ja tarkista sisältö.
 7. Jos lähdettä ei voi avata tai väitettä ei voi varmistaa, älä esitä sitä vahvistettuna.
-8. Kirjaa lähteiden riippuvuudet ja mahdolliset ristiriidat `TRACKING.md`-tiedostoon.
+8. Kirjaa lähteiden riippuvuudet ja mahdolliset ristiriidat `docs/seuranta.md`-tiedostoon.
 
 ## Tolkien
 
@@ -77,7 +77,7 @@ Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat haku
 
 - Tee jokaisesta aiheesta kansainvälisiä hakuja eri maanosista; älä tyydy englanninkielisiin suuriin medioihin. Käytä paikallisia kieliä, alueellisia uutistoimistoja, kansallisia yleisradioyhtiöitä, erikoisjulkaisuja ja virallisia lähteitä.
 - Tarkista Suomen yhteys kaikissa aiheissa: suomalaiset uutislähteet, järjestäjät, tapahtumapaikat, festivaalit, elokuvateatterit, konsertit, kilpailut ja muut tapahtumat. Mainitse Suomi-yhteys, kun sellainen löytyy ja on uutisarvoinen. Älä koskaan lisää täytehuomiota siitä, ettei Suomi-yhteyttä löytynyt.
-- Kirjaa uusia hyödyllisiä lähteitä ja niiden luotettavuus tähän tiedostoon sekä lähderiippuvuudet TRACKING.md:hen.
+- Kirjaa uusia hyödyllisiä lähteitä ja niiden luotettavuus tähän tiedostoon sekä lähderiippuvuudet docs/seuranta.md:hen.
 
 ## Lähdekohtainen historiakirjaus
 
@@ -93,4 +93,4 @@ Kun lähde tuottaa olennaista uutistietoa, kirjaa tarvittaessa:
 
 ## Intialaisen elokuvan lähderekisteri
 
-Koko Intian elokuvateollisuuden uutis- ja Suomen näytöslähteiden laaja lähderekisteri on siirretty tiedostoon `INDIAN_FILM_SOURCES.md`. Käytä sitä päivittäisessä intialaisen elokuvan uutis- ja näytösseurannassa. Lähderekisteri on lähtökohta, ei suljettu lista.
+Koko Intian elokuvateollisuuden uutis- ja Suomen näytöslähteiden laaja lähderekisteri on siirretty tiedostoon `INDIAN_FILM_docs/lahteet.md`. Käytä sitä päivittäisessä intialaisen elokuvan uutis- ja näytösseurannassa. Lähderekisteri on lähtökohta, ei suljettu lista.

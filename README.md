@@ -5,7 +5,7 @@ Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä aihekohtaista uu
 ## Hakemistorakenne
 
 - `feeds/` – kaikki kymmenen RSS-syötettä.
-- `docs/` – seurannan yleiset ja intialaisen elokuvan ohje-, lähde- ja historiadokumentit.
+- `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
 
 ## Syötteet
@@ -20,8 +20,8 @@ Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä aihekohtaista uu
 | Euroviisut ja kansalliset karsinnat | [euroviisut.xml](feeds/euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/euroviisut.xml |
 | Sompote Sands | [sompote-sands.xml](feeds/sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/sompote-sands.xml |
 | Shakkidraamat | [shakkidraamat.xml](feeds/shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/shakkidraamat.xml |
-| Intialaisen elokuvan uutisraportti | [indian-films.xml](feeds/indian-films.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-films.xml |
-| Intialaisten elokuvien näytökset Suomessa | [indian-film-screenings.xml](feeds/indian-film-screenings.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-film-screenings.xml |
+| Intialaisen elokuvan uutisraportti | [feeds/intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml |
+| Intialaisten elokuvien näytökset Suomessa | [feeds/intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml |
 
 Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olennaisia uutisia ei löydy. Intialaisen elokuvan kaksi syötettä siirrettiin aiemmasta repositoriosta historiallisine itemeineen. Yhteenkään syötteeseen ei lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
@@ -30,18 +30,18 @@ Kahdeksan aihekohtaisen seurannan syötteet voivat olla tyhjiä, jos uusia olenn
 Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kymmenen RSS-syötteen nykyinen sisältö:
 
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
-2. `docs/TRACKING.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
-3. `docs/SOURCES.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
-4. `docs/INDIAN_FILM_GUIDE.md`, `docs/INDIAN_FILM_NEWS.md`, `docs/INDIAN_FILM_SCREENINGS.md`, `docs/INDIAN_FILM_TRACKING.md` ja `docs/INDIAN_FILM_SOURCES.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
-5. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/indian-films.xml` ja `feeds/indian-film-screenings.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
+2. `docs/seuranta.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
+3. `docs/lahteet.md` – yleinen lähdepolitiikka ja lähdehakujen lähtöpisteet.
+4. `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisten-elokuvien-naytosseuranta.md`, `docs/INDIAN_FILM_docs/seuranta.md` ja `docs/INDIAN_FILM_docs/lahteet.md` – intialaisen elokuvan uutis- ja näytösseurannan yksityiskohtaiset ohjeet, historia ja lähteet.
+5. `feeds/tolkien.xml`, `feeds/taylor-swift.xml`, `feeds/gurmeet-ram-rahim-singh.xml`, `feeds/muumit.xml`, `feeds/wakaliwood.xml`, `feeds/euroviisut.xml`, `feeds/sompote-sands.xml`, `feeds/shakkidraamat.xml`, `feeds/intialaiset-elokuvat.xml` ja `feeds/intialaisten-elokuvien-naytokset.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
-Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista docs/seuranta.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
 ## Dokumentaation ajantasaisuuden loppukatselmus
 
 Aina kun mitä tahansa dokumentaatiotiedostoa muutetaan tai lisätään, tee ennen työn päättämistä koko dokumentaation ajantasaisuuden katselmus:
 
-1. Lue muutoksen jälkeen README.md, docs/TRACKING.md ja docs/SOURCES.md kokonaan sekä kaikki muut aiheeseen liittyvät dokumentit.
+1. Lue muutoksen jälkeen README.md, docs/seuranta.md ja docs/lahteet.md kokonaan sekä kaikki muut aiheeseen liittyvät dokumentit.
 2. Tarkista, että kaikki aihe-, tiedosto-, RSS-URL-, aikataulu-, lähde- ja toimintatapatiedot ovat keskenään yhdenmukaisia. Esimerkiksi aiheiden tai syötteiden lisäys tai poisto päivitetään kaikkialle, missä niitä luetellaan.
 3. Etsi vanhentuneet, päällekkäiset, ristiriitaiset ja puuttuvat tiedot myös muista dokumenteista; älä tyydy tarkistamaan vain juuri muokattua kohtaa.
 4. Korjaa havaitut ristiriidat saman muutossarjan yhteydessä. Jos jokin tieto on tarkoituksella erilainen eri tiedostoissa, selitä ero.
@@ -64,8 +64,8 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 ## Tiedostojen vastuut
 
-- `docs/TRACKING.md`: aihekohtainen uutisseurannan tila, aiemmin käsitellyt tapahtumat, luotettavuus, lähteet ja seuraava olennainen tarkistustarve.
-- `docs/SOURCES.md`: lähdeluettelo ja hakustrategiat. Lista on lähtökohta, ei suljettu sallittujen lähteiden luettelo.
+- `docs/seuranta.md`: aihekohtainen uutisseurannan tila, aiemmin käsitellyt tapahtumat, luotettavuus, lähteet ja seuraava olennainen tarkistustarve.
+- `docs/lahteet.md`: lähdeluettelo ja hakustrategiat. Lista on lähtökohta, ei suljettu sallittujen lähteiden luettelo.
 - RSS-tiedostot: julkaistut uutisartikkelit.
 
 
@@ -73,17 +73,26 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku ei rajoitu englanninkieliseen mediaan: käytä aiheen kannalta olennaisia paikalliskieliä, alkuperäisiä kirjoitusasuja, translitterointeja ja alueellisia lähteitä. Tarkista myös Suomen media, viralliset suomalaiset järjestäjät, tapahtumapaikat, levittäjät ja kulttuuritoimijat. Nosta uutisissa selvästi esiin Suomeen liittyvät tapahtumat, suomalaiset toimijat ja Suomessa järjestettävät konsertit, elokuvanäytökset, kilpailut, fanitapahtumat tai muut tapahtumat. Jos tällaista Suomen-yhteyttä ei löydy, älä lisää raporttiin erillistä mainintaa sen puuttumisesta.
 
-Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, docs/TRACKING.md, docs/SOURCES.md ja kaikki viisi INDIAN_FILM_*.md-dokumenttia.
+Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, docs/seuranta.md, docs/lahteet.md ja kaikki viisi INDIAN_FILM_*.md-dokumenttia.
 
 
 ## Intialaisen elokuvan päivittäiset seurantamoduulit
 
 Sama automaatio tekee jokaisella päivittäisellä ajolla myös koko Intian elokuvateollisuuden uutisraportin ja Suomessa järjestettävien intialaisten elokuvien näytösten tarkistuksen. Moduulit ovat toisistaan erillisiä, mutta eivät erillisiä automaatioita.
 
-- Uutisraportin RSS: [indian-films.xml](feeds/indian-films.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-films.xml
-- Näytösten RSS: [indian-film-screenings.xml](feeds/indian-film-screenings.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/indian-film-screenings.xml
-- Ohjeet: `docs/INDIAN_FILM_GUIDE.md`, `docs/INDIAN_FILM_NEWS.md` ja `docs/INDIAN_FILM_SCREENINGS.md`.
-- Seurantaloki: `docs/INDIAN_FILM_TRACKING.md`.
-- Lähderekisteri: `docs/INDIAN_FILM_SOURCES.md`.
+- Uutisraportin RSS: [feeds/intialaiset-elokuvat.xml](feeds/intialaiset-elokuvat.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaiset-elokuvat.xml
+- Näytösten RSS: [feeds/intialaisten-elokuvien-naytokset.xml](feeds/intialaisten-elokuvien-naytokset.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml
+- Ohjeet: `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md` ja `docs/intialaisten-elokuvien-naytosseuranta.md`.
+- Seurantaloki: `docs/INDIAN_FILM_docs/seuranta.md`.
+- Lähderekisteri: `docs/INDIAN_FILM_docs/lahteet.md`.
 
 Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Uutisraportti ja näytösseuranta julkaisevat vain omiin syötteisiinsä.
+
+
+## Saavutettavuus
+
+Tämän repositorion saavutettavuuden tavoitetaso on WCAG 2.2 AAA kaikilta soveltuvilta osin, kuten aiemmassa elokuvaraportti-repositoriossa. Tavoitetason saavuttamista ei väitetä ilman asianmukaista testausta. Yksityiskohtaiset vaatimukset ovat tiedostossa [docs/saavutettavuus.md](docs/saavutettavuus.md).
+
+## RSS-itemien sisältö ja lähteet
+
+RSS-itemissä ei käytetä item-kohtaista `<link>`-elementtiä. Jokaisen itemin koko raportti julkaistaan `<description>`-elementissä CDATA-alueen semanttisena HTML-sisältönä. Raportin lopussa on otsikoitu lähdeluettelo, jossa linkkitekstit kertovat lähteen nimen ja tarvittaessa julkaisupäivän. Kanavatason `<link>` ja Atomin kanavatason `atom:link` ovat sallittuja syötteen metatietoja.
