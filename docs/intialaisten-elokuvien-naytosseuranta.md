@@ -36,6 +36,18 @@ KINOON-LÖYTÖJEN TEATTERILINKKIEN JÄLJITTÄMINEN
 - Kirjaa sisäiseen seurantaan myös Kinoon-löydön rinnalla tarkistettu teatterin oma linkki tai tieto siitä, ettei sopivaa linkkiä löytynyt.
 
 
+MUUTOSHISTORIAN KONEELLINEN YLLÄPITO
+- Ylläpidä näytöskohtaista nykytilaa ja vain lisäämällä ylläpidettävää muutoslokia tiedostossa data/naytosten-muutoshistoria.json. Tietomallin yksityiskohdat ovat docs/nayostohistorian-rakenne.md-tiedostossa.
+- Lue jokaisen ajon alussa koko muutoshistoria sekä näytös-RSS:n viimeisimmät julkaisuversiot. Vertaa uusia havaintoja JSON-tiedoston screenings-listan edelliseen tilaan.
+- Pidä screening_id pysyvänä, vaikka näytöksen kellonaika, päivämäärä tai paikka muuttuu. Älä luo muutokselle uutta tunnistetta.
+- Lisää jokaisesta todellisesta muutoksesta oma tapahtuma events-listaan. Tapahtumassa on yksilöllinen event_id, observed_at-aikaleima, tyyppi, näytöstunniste, previous- ja current-tilanne, lähteet sekä lyhyt selitys. Muodosta event_id deterministisesti, jotta saman ajon uusintakäsittely ei lisää duplikaattia.
+- Sallitut tapahtumatyypit ovat baseline_created, added, time_changed, venue_changed, details_changed, cancelled, removed_from_listing, reinstated ja correction. Älä muuta tai poista aiempia tapahtumia; korjaa virhe uudella correction-tapahtumalla.
+- Erota nimenomainen peruutus ohjelmistosta katoamisesta. Käytä cancelled-tyyppiä vain, kun lähde kertoo peruutuksesta. Jos näytös on kadonnut ohjelmistosta eikä peruutusta vahvisteta, käytä removed_from_listing-tyyppiä ja removed-tilaa.
+- Säilytä jokaisen näytöstietueen ja tapahtuman yhteydessä lähteen julkaisija, suora URL, tarkistusaika, mahdollinen julkaisuaika ja vahvistustaso (TEATTERIN VAHVISTAMA, JÄRJESTÄJÄN ILMOITTAMA tai KOLMANNEN OSAPUOLEN ILMOITTAMA). Älä korota vahvistustasoa.
+- Päivitä screenings-lista viimeisimpään varmennettuun tilaan. Älä lisää tapahtumaa muuttumattomasta näytöksestä. Jos lähteet ovat ristiriidassa, säilytä ristiriita ja lähteet.
+- Nykyistä RSS-historiaa ei saa muuntaa takautuviksi tapahtumiksi ilman luotettavaa näyttöä. Ensimmäisessä onnistuneessa ajossa muodosta nykyisistä lähteistä ja viimeisimmästä RSS-versiosta lähtötilanne, lisää yksi baseline_created-tapahtuma ja vaihda baseline_status arvoon active. Älä väitä aiempien muutosten tarkkoja aikoja tunnetuiksi.
+- Älä merkitse näytösvahdin ajoa onnistuneeksi äläkä päivitä data/seurantatila.json-tiedoston näytösvahdin aikaleimoja ennen kuin muutoshistoria, mahdolliset RSS-muutokset ja muutetut tiedostot on kirjoitettu GitHubiin ja luettu takaisin onnistuneesti.
+
 RSS-SYÖTTEEN RAKENNE JA PÄIVITYS
 - Päivitä repositorion feeds/intialaisten-elokuvien-naytokset.xml-tiedosto suoraan GitHubiin, jos käytettävissä olevat oikeudet ja työkalut sen sallivat. Älä väitä päivitystä tehdyksi, ellei GitHub-palvelu ole vahvistanut muutosta.
 - RSS-syötteessä julkaistaan ensimmäisellä löytymiskerralla yksi <item> per elokuva. Kun saman elokuvan näytöstiedoissa tapahtuu myöhemmin muutos, älä korvaa aiempaa itemiä: lisää samaan feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen uusi item, jossa on koko ajantasainen näytöslista.
