@@ -1,6 +1,6 @@
 # Uutisseurannan kehityssuunnitelma
 
-**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio on toteutuksessa PR:ssä #30.  
+**Tila:** tavoitekuvaus ja kehitysjono määritelty; Valvomon vähimmäisversio (#30) on yhdistetty ja Valvomon siirto omalle sivulleen (#38) on toteutuksessa.  
 **Päivitetty:** 2026-11-16
 
 Tämä dokumentti kuvaa koko GitHub Pages -sivuston tavoitetilan, osioiden vastuut, tekniset periaatteet ja vaiheistuksen. Yksittäisten kehitystehtävien ajantasainen tila ylläpidetään GitHub Issues -tiketteinä; tätä dokumenttia ei käytetä rinnakkaisena tehtävälistana. Suunnitelman kirjaaminen ei tarkoita, että ominaisuus olisi jo käytössä.
@@ -17,7 +17,7 @@ Raporttiarkisto on mahdollinen myöhempi ominaisuus, ei oma ensisijainen osionsa
 
 Käyttöliittymä on staattinen GitHub Pages -sivusto. Se lukee automaatioiden tuottamia julkisia JSON-tiedostoja ja RSS-syötteitä, mutta ei tarvitse selaimessa GitHub-kirjoitusoikeuksia, salaisuuksia tai käyttäjätunnistusta. Automaatiot ja niiden tietojen keruu pysyvät erillään käyttöliittymästä.
 
-Tarkat tiedostonimet, teknologiat ja hakemistorakenne päätetään ennen toteutusta nykyisen Pages-julkaisun ja repositorion rakenteen tarkistamisen jälkeen. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
+Sivuston juuri (`/`) toimii Uutisvahdin etusivuna. Valvomolla on oma osoite `/valvomo/`; RSS-lukijalle ja Kehitysjonolle varataan omat reitit niiden valmistuessa. Kaikki sivut käyttävät samaa Jekyll-sivupohjaa ja navigaatiota. Sivuston rakentaminen ei saa rikkoa nykyistä RSS-jakelua tai sen kanonisia Pages-osoitteita.
 
 ## 2. Valvomo: seurannan tila
 
@@ -349,6 +349,8 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 - Ei erillistä tiketöintitietokantaa tai selainpuolen GitHub-kirjoitusoikeuksia; GitHub Issues on kehitystehtävien ensisijainen tietolähde.
 
 ## 10. Muutosloki
+
+- **2026-11-16:** Valvomo siirrettiin suunnitelman mukaisesti omalle `/valvomo/`-sivulle; juuriosoite varattiin Uutisvahdin etusivulle.
 
 - **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Uutisvahdin palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
 
