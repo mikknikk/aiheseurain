@@ -82,7 +82,7 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 ## Kehityksen tilanne
 
-Ajantasainen lista toteutetuista parannuksista ja avoimista kehityskohteista on tiedostossa [docs/kehityskohteet.md](docs/kehityskohteet.md). Päivitä listaa aina kehitystyön edetessä. Julkisen valvomon ja RSS-lukijan tavoitekuvaus sekä vaiheittainen toteutusseuranta ovat dokumentissa [docs/julkinen-valvomo-ja-rss-lukija.md](docs/julkinen-valvomo-ja-rss-lukija.md).
+Ajantasainen lista toteutetuista parannuksista ja avoimista kehityskohteista on tiedostossa [docs/kehityskohteet.md](docs/kehityskohteet.md). Päivitä listaa aina kehitystyön edetessä. Koko sivuston ja kehitysjärjestelmän tavoitekuvaus on dokumentissa [docs/kehityssuunnitelma.md](docs/kehityssuunnitelma.md). Kehitystehtävät ja niiden tilat ylläpidetään GitHub Issues -tiketteinä.
 
 ## Tiedostojen vastuut
 
@@ -99,7 +99,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/saavutettavuus.md`: kaikkien julkaisujen ja Markdown-dokumentaation saavutettavuustavoitteet ja testausperiaatteet.
 - `docs/kehityskaytannot.md`: dokumentaation luokat ja kirjoitustavat, käynnistyskehotteiden ylläpito, skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
-- `docs/julkinen-valvomo-ja-rss-lukija.md`: julkisen GitHub Pages -valvomon ja RSS-lukijan tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä vaiheittainen toteutusseuranta.
+- `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
 - `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/naytoshistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
 - `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila sekä pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversiot ja viimeksi onnistuneesti käytetyt versiot.
