@@ -114,6 +114,6 @@ Lisää tarvittaessa kunkin aiheen alle:
 Älä lisää päivittäisiä “ei uutisia” -merkintöjä. Kirjaa hakurajoite vain, jos se vaikutti olennaisesti kyseisen ajon kattavuuteen.
 
 
-## Intialaisen elokuvan seuranta (päivittäinen)
+## Intialaisen elokuvan seuranta (tehtäväkierron mukainen)
 
 Intialaisen elokuvan uutisraportti ja näytösseuranta ovat erilliset tehtävät docs/tehtavajono.md:n kymmenen tehtävän kierrossa. Yksityiskohtainen uutis- ja näytöshistoria on tiedostossa `docs/intialaisen-elokuvan-seuranta.md`. Lähteet ovat tiedostossa `docs/intialaisen-elokuvan-lahteet.md`. Uutisraportti julkaistaan tiedostoon `feeds/intialaiset-elokuvat.xml` ja näytöspäivitykset tiedostoon `feeds/intialaisten-elokuvien-naytokset.xml`. Kumpaakaan ei tarkisteta päivittäin: kumpikin tulee vuoroon normaalisti noin kymmenen päivän välein.
