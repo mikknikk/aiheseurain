@@ -76,7 +76,7 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 
 Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku ei rajoitu englanninkieliseen mediaan: käytä aiheen kannalta olennaisia paikalliskieliä, alkuperäisiä kirjoitusasuja, translitterointeja ja alueellisia lähteitä. Tarkista myös Suomen media, viralliset suomalaiset järjestäjät, tapahtumapaikat, levittäjät ja kulttuuritoimijat. Nosta uutisissa selvästi esiin Suomeen liittyvät tapahtumat, suomalaiset toimijat ja Suomessa järjestettävät konsertit, elokuvanäytökset, kilpailut, fanitapahtumat tai muut tapahtumat. Jos tällaista Suomen-yhteyttä ei löydy, älä lisää raporttiin erillistä mainintaa sen puuttumisesta.
 
-Päivitä yllä oleva syötetaulukko, docs/tehtavajono.md ja esitietojen lukujärjestys aina, kun tehtäviä lisätään tai poistetaan. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, docs/seuranta.md, docs/lahteet.md ja docs/tehtavajono.md, docs/saavutettavuus.md ja kaikki viisi intialaisen elokuvan docs/-dokumenttia.
+Päivitä yllä oleva syötetaulukko, docs/tehtavajono.md ja esitietojen lukujärjestys aina, kun tehtäviä lisätään tai poistetaan. Ennen jokaista ajoa on luettava kaikki kymmenen RSS-tiedostoa sekä README.md, docs/tehtavajono.md, docs/seuranta.md, docs/lahteet.md, docs/saavutettavuus.md ja kaikki viisi intialaisen elokuvan docs/-dokumenttia.
 
 
 ## Intialaisen elokuvan seurantatehtävät
