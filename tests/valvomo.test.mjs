@@ -44,6 +44,7 @@ test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
   const footer = readFileSync(new URL("../_includes/site-footer.html", import.meta.url), "utf8");
   const page = readFileSync(new URL("../valvomo/index.html", import.meta.url), "utf8");
   const home = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  const script = readFileSync(new URL("../assets/js/valvomo.js", import.meta.url), "utf8");
   assert.match(layout, /<html lang="fi">/);
   assert.match(layout, /href="#main"/);
   assert.match(header, /<nav aria-label="Päänavigaatio">/);
@@ -55,6 +56,8 @@ test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
   assert.match(home, /section: home/);
   assert.match(home, /\/valvomo\//);
   assert.match(header, /\/valvomo\//);
+  assert.match(script, /new URL\("\.\.\/\.\.\/data\/seurantatila\.json", import\.meta\.url\)/);
+  assert.match(script, /new URL\("\.\.\/\.\.\/data\/lahdetarkistukset\.json", import\.meta\.url\)/);
 });
 
 function fakeDom() {
