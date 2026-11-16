@@ -1,6 +1,6 @@
-# Uutisseuranta – kahdeksan aihekohtaista RSS-syötettä
+# Uutisseuranta – kahdeksan aihekohtaista RSS-syötettä sekä intialainen elokuva
 
-Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä, suomenkielistä uutisseurantaa. Yksi automaatio käynnistyy päivittäin klo 12.00 aikavyöhykkeellä Europe/Helsinki. Kukin ajo käsittelee vain yhden aiheen TRACKING.md-tiedostossa olevan kiertojonon mukaisesti; kahdeksan aiheen kierros kestää kahdeksan päivää.
+Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä aihekohtaista uutisseurantaa sekä kahta päivittäin suoritettavaa intialaisen elokuvan seurantamoduulia: uutisraportointia ja Suomessa järjestettävien näytösten seurantaa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki. Kukin ajo käsittelee lisäksi yhden kahdeksasta kiertojonoaiheesta; kierto kestää kahdeksan päivää. Intialaisen elokuvan uutis- ja näytösseuranta suoritetaan joka päivä tämän kierron rinnalla.
 
 ## Syötteet
 
@@ -14,19 +14,21 @@ Tämä repositorio ylläpitää kahdeksaa toisistaan erillistä, suomenkielistä
 | Euroviisut ja kansalliset karsinnat | [euroviisut.xml](euroviisut.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/euroviisut.xml |
 | Sompote Sands | [sompote-sands.xml](sompote-sands.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/sompote-sands.xml |
 | Shakkidraamat | [shakkidraamat.xml](shakkidraamat.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/shakkidraamat.xml |
+| Intialaisen elokuvan uutisraportti | [indian-films.xml](indian-films.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml |
+| Intialaisten elokuvien näytökset Suomessa | [indian-film-screenings.xml](indian-film-screenings.xml) | https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-film-screenings.xml |
 
 Syötteet on alustettu tyhjinä RSS 2.0 -tiedostoina. Niihin lisätään vain tarkistetut, olennaiset uutiset; tyhjä syöte ei tarkoita virhettä eikä sinne lisätä keinotekoisia “ei uutisia” -artikkeleita.
 
 ## Ajon pakollinen esitietojen lukujärjestys ja aihekierto
 
-Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kahdeksan RSS-syötteen nykyinen sisältö:
+Ennen jokaista ajoa lue aina tämänhetkinen versio seuraavista tiedostoista sekä kaikkien kymmenen RSS-syötteen nykyinen sisältö:
 
 1. `README.md` – kokonaisuus, tiedostopolut ja julkaisuperiaatteet.
 2. `TRACKING.md` – aihekohtainen aiempi uutisointi, viimeisin luotettava tilanne ja duplikaattien esto.
 3. `SOURCES.md` – lähdepolitiikka ja lähdehakujen lähtöpisteet.
-4. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml` – julkaistut uutiset ja GUID-tunnisteet.
+4. `tolkien.xml`, `taylor-swift.xml`, `gurmeet-ram-rahim-singh.xml`, `muumit.xml`, `wakaliwood.xml`, `euroviisut.xml`, `sompote-sands.xml`, `shakkidraamat.xml`, `indian-films.xml` ja `indian-film-screenings.xml` – julkaistut uutiset, näytöspäivitykset ja GUID-tunnisteet.
 
-Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä, joten kukin aihe käsitellään noin kahdeksan päivän välein. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
+Tiedostot ovat ajon ensisijainen muistijälki. Älä nojaa pelkästään edellisen ajon keskustelumuistiin. Tarkista TRACKING.md:n "Aiheajojen kiertojono" -kohta ja tee varsinaiset haut vain siinä seuraavaksi merkitylle yhdelle aiheelle. Onnistuneen ajon jälkeen siirrä vuoro seuraavaan aiheeseen; epäonnistuneen tai kesken jääneen ajon jälkeen pidä sama aihe vuorossa. Nykyinen automaatio käynnistyy kerran päivässä. Kahdeksan kiertojonoaihetta käsitellään vuorotellen noin kahdeksan päivän välein; intialaisen elokuvan uutis- ja näytösseuranta tehdään jokaisella päivittäisellä ajolla. Päivitä dokumentaatiota, kun seurannan rajaus, lähteet tai uutisten tila muuttuu.
 
 ## Dokumentaation ajantasaisuuden loppukatselmus
 
@@ -65,3 +67,16 @@ Dokumentaatiomuutosta ei pidetä valmiina ennen tätä loppukatselmusta.
 Kaikissa kahdeksassa kategoriassa etsitään uutisia maailmanlaajuisesti. Haku ei rajoitu englanninkieliseen mediaan: käytä aiheen kannalta olennaisia paikalliskieliä, alkuperäisiä kirjoitusasuja, translitterointeja ja alueellisia lähteitä. Tarkista myös Suomen media, viralliset suomalaiset järjestäjät, tapahtumapaikat, levittäjät ja kulttuuritoimijat. Nosta uutisissa selvästi esiin Suomeen liittyvät tapahtumat, suomalaiset toimijat ja Suomessa järjestettävät konsertit, elokuvanäytökset, kilpailut, fanitapahtumat tai muut tapahtumat. Jos tällaista Suomen-yhteyttä ei löydy, älä lisää raporttiin erillistä mainintaa sen puuttumisesta.
 
 Päivitä yllä oleva syötetaulukko ja esitietojen lukujärjestys aina, kun aiheita lisätään. Ennen jokaista ajoa on luettava kaikki kahdeksan RSS-tiedostoa sekä README.md, TRACKING.md ja SOURCES.md.
+
+
+## Intialaisen elokuvan päivittäiset seurantamoduulit
+
+Sama automaatio tekee jokaisella päivittäisellä ajolla myös koko Intian elokuvateollisuuden uutisraportin ja Suomessa järjestettävien intialaisten elokuvien näytösten tarkistuksen. Moduulit ovat toisistaan erillisiä, mutta eivät erillisiä automaatioita.
+
+- Uutisraportin RSS: [indian-films.xml](indian-films.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml
+- Näytösten RSS: [indian-film-screenings.xml](indian-film-screenings.xml) – https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-film-screenings.xml
+- Ohjeet: `INDIAN_FILM_GUIDE.md`, `INDIAN_FILM_NEWS.md` ja `INDIAN_FILM_SCREENINGS.md`.
+- Seurantaloki: `INDIAN_FILM_TRACKING.md`.
+- Lähderekisteri: `INDIAN_FILM_SOURCES.md`.
+
+Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Uutisraportti ja näytösseuranta julkaisevat vain omiin syötteisiinsä.
