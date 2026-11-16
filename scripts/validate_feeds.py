@@ -583,6 +583,56 @@ def validate_docs(state):
     if (automation_version.get("last_successful_run_version") is None) != (automation_version.get("last_successful_run_at") is None):
         fail("pääautomaation viimeisimmän onnistuneen version ja ajan pitää olla molemmat asetettuja tai null")
 
+    # Näytösvahdilla on oma versioitu käsikirja ja sen tila on erillään uutiskierron tilasta.
+    screening_instructions = state["separate_screening_watch"].get("automation_instructions")
+    if not isinstance(screening_instructions, dict):
+        fail("näytösvahdin ohjeversion seurantatila puuttuu")
+    screening_version = re.search(
+        r"^Ohjeversion tunniste:\\s*(\\d+\\.\\d+\\.\\d+)\\s*$",
+        screening_guide.read_text(encoding="utf-8"),
+        re.M,
+    )
+    if not screening_version:
+        fail("näytösvahdin käsikirjasta puuttuu kelvollinen MAJOR.MINOR.PATCH-versio")
+    if screening_instructions.get("document") != "docs/intialaisten-elokuvien-naytosseuranta.md":
+        fail("näytösvahdin käsikirjan polku on virheellinen")
+    if screening_instructions.get("current_version") != screening_version.group(1):
+        fail("näytösvahdin käsikirjan ja JSONin nykyiset ohjeversiot eivät täsmää")
+    if "docs/intialaisten-elokuvien-naytosseuranta.md" not in readme:
+        fail("README ei viittaa näytösvahdin käsikirjaan")
+    for field in ("last_successful_run_version",):
+        value = screening_instructions.get(field)
+        if value is not None and not re.fullmatch(r"\\d+\\.\\d+\\.\\d+", value):
+            fail("screening automation_instructions." + field + " ei ole kelvollinen versiotunniste")
+    timestamp(screening_instructions.get("last_successful_run_at"), "screening.automation_instructions.last_successful_run_at")
+    if (screening_instructions.get("last_successful_run_version") is None) != (screening_instructions.get("last_successful_run_at") is None):
+        fail("näytösvahdin viimeisimmän onnistuneen version ja ajan pitää olla molemmat asetettuja tai null")
+
+    # Viikoittaisen laatutarkistuksen käsikirjan version on vastattava koneellista tilaa.
+    quality_guide = ROOT / "docs/laatutarkistuksen-ohje.md"
+    quality_instructions = state.get("quality_check_instructions")
+    if not quality_guide.is_file() or not isinstance(quality_instructions, dict):
+        fail("laatutarkistuksen käsikirja tai sen versionhallinnan tila puuttuu")
+    quality_version = re.search(
+        r"^Ohjeversion tunniste:\\s*(\\d+\\.\\d+\\.\\d+)\\s*$",
+        quality_guide.read_text(encoding="utf-8"),
+        re.M,
+    )
+    if not quality_version:
+        fail("laatutarkistuksen käsikirjasta puuttuu kelvollinen MAJOR.MINOR.PATCH-versio")
+    if quality_instructions.get("document") != "docs/laatutarkistuksen-ohje.md":
+        fail("laatutarkistuksen käsikirjan polku on virheellinen")
+    if quality_instructions.get("current_version") != quality_version.group(1):
+        fail("laatutarkistuksen käsikirjan ja JSONin nykyiset ohjeversiot eivät täsmää")
+    if "docs/laatutarkistuksen-ohje.md" not in readme:
+        fail("README ei viittaa laatutarkistuksen käsikirjaan")
+    value = quality_instructions.get("last_successful_run_version")
+    if value is not None and not re.fullmatch(r"\\d+\\.\\d+\\.\\d+", value):
+        fail("quality_check_instructions.last_successful_run_version ei ole kelvollinen versiotunniste")
+    timestamp(quality_instructions.get("last_successful_run_at"), "quality_check_instructions.last_successful_run_at")
+    if (quality_instructions.get("last_successful_run_version") is None) != (quality_instructions.get("last_successful_run_at") is None):
+        fail("laatutarkistuksen viimeisimmän onnistuneen version ja ajan pitää olla molemmat asetettuja tai null")
+
     tracking_guide = ROOT / "docs/seuranta.md"
     development_guide = ROOT / "docs/kehityskaytannot.md"
     if not tracking_guide.is_file() or not development_guide.is_file():
