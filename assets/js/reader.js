@@ -12,7 +12,7 @@ const CATALOG_URL = new URL("../../data/feed-catalog.json", import.meta.url).hre
 // Artikkelisisällössä sallitaan vain tavalliset tekstin ja rakenteen elementit.
 // Kuvia, tyylejä, lomakkeita, upotuksia tai aktiivista sisältöä ei ladata.
 export const ALLOWED_TAGS = new Set([
-  "article", "section", "div", "p", "h1", "h2", "h3", "h4",
+  "article", "section", "div", "p", "h1", "h2", "h3", "h4", "h5", "h6",
   "ul", "ol", "li", "strong", "b", "em", "i", "blockquote",
   "br", "hr", "a", "table", "thead", "tbody", "tr", "th", "td",
   "dl", "dt", "dd", "sup", "sub", "small", "code", "pre"
