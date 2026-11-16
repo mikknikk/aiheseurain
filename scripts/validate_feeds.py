@@ -419,9 +419,9 @@ def validate_screening_history_rss(history):
         actual = {}
         for row in parser.historical_rows:
             match = re.search(
-                r"(?P<date>\d{1,2}\.\d{1,2}\.)\\s*klo\\s*"
-                r"(?P<time>\d{1,2}\.\d{2})\\s*[–-]\\s*"
-                r"(?P<venue>.*?)\\s*\\((?P<city>[^()]+)\\)",
+                r"(?P<date>\d{1,2}\.\d{1,2}\.)\s*klo\s*"
+                r"(?P<time>\d{1,2}\.\d{2})\s*[–-]\s*"
+                r"(?P<venue>.*?)\s*\((?P<city>[^()]+)\)",
                 row,
             )
             if not match:
