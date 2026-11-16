@@ -6,11 +6,11 @@
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
     "Näytösseuranta on erillinen päivittäinen prosessi eikä kuluta yhdeksän tehtävän kiertoa.",
-    "Näytösseurannan näytöskohtainen nykytila ja append-only-muutosloki ovat tiedostossa data/naytosten-muutoshistoria.json; ensimmäinen varmennettu lähtötilanne on vielä muodostamatta.",
     "Pääautomaation ohjeistus ylläpidetään versionhallittuna GitHub-käsikirjana docs/paaautomaation-ohje.md; onnistuneen ajon käyttämä versio ja aika kirjataan automation_instructions-osioon.",
     "Näytösvahdin JSON-päivitysohje säilyttää automation_instructions-versionhallintaosion ennallaan.",
     "Näytösvahdin täydellinen tehtäväohje on versionhallittu tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md; sen onnistuneen ajon käyttämä ohjeversio ja aika kirjataan separate_screening_watch.automation_instructions-osioon.",
-    "Viikoittaisen laatutarkistuksen käsikirja on versionhallittu tiedostossa docs/laatutarkistuksen-ohje.md; sen onnistuneen ajon käyttämä ohjeversio ja aika kirjataan quality_check_instructions-osioon. Laatutarkistus saa muuttaa vain näitä kahta seurantakenttää."
+    "Viikoittaisen laatutarkistuksen käsikirja on versionhallittu tiedostossa docs/laatutarkistuksen-ohje.md; sen onnistuneen ajon käyttämä ohjeversio ja aika kirjataan quality_check_instructions-osioon. Laatutarkistus saa muuttaa vain näitä kahta seurantakenttää.",
+    "Näytösvahdin epäonnistunut tai osittainen ajo ei siirrä last_successful_check-tarkistuspistettä; seuraava ajo käsittelee koko välin edellisestä onnistumisesta."
   ],
   "rotation": {
     "next_task": "tolkien",
@@ -129,7 +129,7 @@
     "errors": [],
     "automation_instructions": {
       "document": "docs/intialaisten-elokuvien-naytosseuranta.md",
-      "current_version": "1.1.0",
+      "current_version": "1.2.0",
       "last_successful_run_version": "1.0.0",
       "last_successful_run_at": "2026-11-16T15:24:00+02:00"
     }

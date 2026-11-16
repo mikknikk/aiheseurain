@@ -1,4 +1,4 @@
-Ohjeversion tunniste: 1.1.0
+Ohjeversion tunniste: 1.2.0
 
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://raw.githubusercontent.com/mikknikk/uutiset/main/feeds/intialaisten-elokuvien-naytokset.xml.
 
@@ -29,6 +29,25 @@ TEHTÄVÄKOHTAINEN TARKISTUS
 - Vertaile löydöksiä nykyiseen feeds/intialaisten-elokuvien-naytokset.xml-syötteeseen ja aiempiin tarkistustuloksiin. Älä ilmoita samaa muuttumatonta näytöstä uudelleen uutena.
 - Ilmoita käyttäjälle vain uusista näytöksistä ja olennaisista muutoksista, kuten ajan, paikan, tekstityksen, lipputilanteen tai peruutuksen muutoksista. Jos uusia tai muuttuneita tietoja ei löydy, älä lähetä turhaa ilmoitusta.
 - Jos lähteiden tiedot ovat ristiriidassa, älä ratkaise ristiriitaa arvaamalla. Näytä ristiriita ja lähteet.
+
+VIRHETILANTEET, RAJATUT UUDELLEENYRITYKSET JA PALAUTUMINEN
+- Käsittele tilapäisinä virheinä verkkoyhteyden aikakatkaisut, HTTP 429 -vastaukset, HTTP 5xx -palvelinvirheet sekä GitHub-rajapinnan tilapäiset palveluvirheet. Yritä tällaista yksittäistä lukua tai kirjoitusta enintään kolme kertaa yhteensä. Käytä lyhyttä kasvavaa odotusta yritysten välillä, jos suoritusympäristö sallii sen. Älä jää odottamaan loputtomasti.
+- Älä toista automaattisesti pysyvästi epäonnistunutta pyyntöä (esimerkiksi virheellinen pyyntö, puuttuva tiedosto tai käyttöoikeuden puute). Kirjaa epäonnistuminen ja sen vaikutus tarkistuksen kattavuuteen.
+- Jos lähde ei vastaa kolmen yrityksen jälkeen, merkitse se tarkistamatta jääneeksi ja jatka muita lähteitä, jos se on turvallista. Älä tulkitse saavuttamatonta lähdettä näytösten puuttumiseksi. Älä merkitse sen aiemmin ilmoittamia näytöksiä poistuneiksi tai perutuiksi pelkän saavuttamattomuuden perusteella.
+- Jos kriittinen lähde tai muu puute estää luotettavan kokonaisvertailun, älä julkaise keskeneräistä korvaavaa näytöslistaa äläkä merkitse ajoa onnistuneeksi. Voit julkaista vain sellaiset erilliset, varmennetut lisäykset tai korjaukset, jotka eivät vaaranna aiempien tietojen säilymistä; tällöinkin onnistumisen tarkistuspistettä ei saa siirtää.
+- Jos GitHub-kirjoituksen tulos jää epäselväksi (esimerkiksi yhteys katkeaa vastauksen aikana), lue kohdetiedosto ja haara GitHubista ennen uutta kirjoitusyritystä. Älä tee sokeaa uusintakirjoitusta. Tarkista, ehtiikö ensimmäinen kirjoitus jo toteutua.
+- Älä yritä korjata validointivirhettä pelkällä saman tarkistuksen uusinnalla. Lue virheloki, korjaa virheen aiheuttanut sisältö työhaarassa, tee uusi commit ja odota uuden commitin pakollinen tarkistus. Älä yhdistä PR:ää ennen nimenomaista onnistunutta status checkiä.
+- Julkaisu on atominen: nykyinen main-haaran RSS ja muutoshistoria säilyvät ennallaan, kunnes PR:n validointi on onnistunut ja PR on yhdistetty. Epäonnistunut ajo tai hylätty PR ei saa tyhjentää, korvata eikä muuten vahingoittaa aiemmin julkaistua syötettä.
+
+PALAUTUMISJAKSO JA SEURAAVAN AJON TOIMINTA
+- data/seurantatila.json-tiedoston separate_screening_watch.last_successful_check on ainoa hyväksytty onnistuneen tarkistuksen tarkistuspiste. Älä korvaa sitä viimeisimmän yrityksen ajalla, ajastetun vuoron päivämäärällä tai osittaisen tarkistuksen ajalla.
+- Jos ajo epäonnistuu tai jää osittaiseksi, säilytä last_successful_check, last_period_start, last_period_end ja viimeisimmän onnistuneen ajon ohjeversiotiedot ennallaan. Kirjaa last_result ja errors vain, jos käsikirjan sallima tilapäivitys voidaan tehdä ilman onnistumistietojen muuttamista. Jos tilapäivitys ei ole turvallinen tai julkaistavissa, raportoi virhe äläkä tee tilamerkintää.
+- Seuraavan ajon seurantajakso alkaa aina edellisestä last_successful_check-arvosta, ei epäonnistuneen yrityksen ajasta. Näin epäonnistuneen jakson tapahtumat eivät putoa välistä. Ilmoita raportissa todellinen pidempi palautumisjakso.
+- Palautumisajossa tarkista koko väli edellisestä onnistuneesta tarkistuspisteestä nykyhetkeen, mukaan lukien epäonnistuneen ajon aikana julkaistut tai muuttuneet näytösilmoitukset. Älä rajoita hakua vain edellisen vuorokauden tapahtumiin.
+- Vertaa palautumisajon havaintoja sekä nykyiseen screenings-tilaan että RSS:n viimeisimpiin julkaisuversioihin. Käytä pysyviä screening_id-tunnisteita, deterministisiä event_id- ja GUID-tunnisteita sekä olemassa olevia julkaisuja, jotta uudelleen käsittely ei lisää samoja muutoksia tai itemeitä kahdesti.
+- Jos aiempi ajo ehti luoda työhaaran tai PR:n, tarkista ennen uuden muutossarjan tekemistä, onko muutos jo julkaistu tai onko aiempi PR edelleen avoinna. Jatka tai korjaa olemassa olevaa muutossarjaa, jos se on turvallista; älä luo rinnakkaisia ristiriitaisia julkaisuja.
+- Vasta kun palautumisjakson vaaditut lähteet on tarkistettu, historia ja RSS ovat eheät, kaikki muutokset on yhdistetty main-haaraan ja muutetut tiedostot on luettu takaisin, päivitä last_successful_check nykyhetkeen ja raportoi palautuminen onnistuneeksi.
+- Jos palautuminen ei onnistu, säilytä sama onnistumisen tarkistuspiste seuraavaa ajoa varten. Kerro täsmällisesti, mikä väli ja mitkä lähteet jäivät vielä käsittelemättä.
 
 KINOON-LÖYTÖJEN TEATTERILINKKIEN JÄLJITTÄMINEN
 - Kun löydät näytöksen Kinoon-sivustolta, älä tyydy käyttämään Kinoon-linkkiä. Etsi aina lisäksi kyseisen elokuvan tai näytöksen vastaava sivu teatterin omilta verkkosivuilta tai lipunmyynnistä (esimerkiksi Finnkino, BioRex, Kino Regina, Cinema Orion tai Kino Myyri).
