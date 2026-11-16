@@ -16,6 +16,7 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from urllib.parse import urlsplit
 
 
@@ -318,6 +319,7 @@ class ScreeningHistoryHTMLParser(HTMLParser):
         self.current_li = []
         self.historical_rows = []
         self.historical_section_seen = False
+        self.in_historical_section = False
 
     def handle_starttag(self, tag, attrs):
         if tag == "h2":
@@ -329,11 +331,14 @@ class ScreeningHistoryHTMLParser(HTMLParser):
 
     def handle_endtag(self, tag):
         if tag == "h2":
-            if self.current_heading.strip().casefold() == "historialliset näytösajat":
-                self.historical_section_seen = True
+            is_history_heading = (
+                self.current_heading.strip().casefold() == "historialliset näytösajat"
+            )
+            self.historical_section_seen = self.historical_section_seen or is_history_heading
+            self.in_historical_section = is_history_heading
             self.in_h2 = False
         elif tag == "li":
-            if self.in_li and self.historical_section_seen:
+            if self.in_li and self.in_historical_section:
                 row = " ".join("".join(self.current_li).split())
                 if row:
                     self.historical_rows.append(row)
@@ -402,7 +407,7 @@ def validate_screening_history_rss(history):
                 screening["starts_at"],
                 f"{film}/{screening['screening_id']}.starts_at",
             )
-            local = starts.astimezone()
+            local = starts.astimezone(ZoneInfo("Europe/Helsinki"))
             # Näytösten RSS käyttää Suomen paikallista aikaa.
             date_text = f"{local.day}.{local.month}."
             time_text = f"{local.hour:02d}.{local.minute:02d}"
