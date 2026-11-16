@@ -6,6 +6,7 @@ Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdess
 
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, ohje- ja saavutettavuusdokumentit.
+- `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
 - `data/sources/*.json` ja `data/lahdetarkistukset.json` – aihekohtaiset lähderekisterit yhteisellä skeemalla ja ajokohtainen lähdekattavuusloki; uutis- ja näytösseurannan tehtävät pidetään erillisinä.
 - `schemas/` – koneellisten lähdetietojen ja näytöshistorian skeemat.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
@@ -32,7 +33,7 @@ Kahdeksan muuta aihekierroksen syötettä voivat olla tyhjiä, jos uusia olennai
 
 ## Pääautomaation lukujärjestys ja tehtäväkierto
 
-Pääautomaation varsinainen tehtävä- ja toimintakuvaus on versionhallittu tiedostossa [docs/paaautomaation-ohje.md](docs/paaautomaation-ohje.md). ChatGPT-automaation asetuksissa on vain lyhyt käynnistyskehote. Ohjeversion tunniste ja viimeisimmän onnistuneen ajon käyttämä versio tallennetaan `data/seurantatila.json`-tiedoston `automation_instructions`-osioon. Jos käsikirjan ja JSONin nykyversiot eivät täsmää, pääautomaatio keskeyttää ajon.
+Pääautomaation varsinainen tehtävä- ja toimintakuvaus on versionhallittu tiedostossa [docs/paaautomaation-ohje.md](docs/paaautomaation-ohje.md). ChatGPT-automaation asetuksissa käytettävän lyhyen käynnistyskehotteen kanoninen teksti on `prompts/paauutisseuranta.txt`-tiedostossa. Kopioi tiedoston sisältö automaation asetuksiin; pidä tiedosto ja asetuksiin tallennettu kehote täsmälleen samoina. Ohjeversion tunniste ja viimeisimmän onnistuneen ajon käyttämä versio tallennetaan `data/seurantatila.json`-tiedoston `automation_instructions`-osioon. Jos käsikirjan ja JSONin nykyversiot eivät täsmää, pääautomaatio keskeyttää ajon.
 
 Myös erillisellä näytövahdilla ja viikoittaisella laatutarkistuksella on omat GitHubissa ylläpidettävät käsikirjansa:
 - Näytösvahti: `docs/intialaisten-elokuvien-naytosseuranta.md`. Ohjeversion tunniste ja viimeisin onnistunut käyttöaika ovat `separate_screening_watch.automation_instructions`-osiossa.
@@ -88,14 +89,15 @@ Ajantasainen lista toteutetuista parannuksista ja avoimista kehityskohteista on 
 Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat siihen sen sijaan, että kopioisivat saman säännön kokonaisuudessaan.
 
 - `README.md`: repositorion yleiskuva, hakemistorakenne, RSS-syötteiden luettelo, automaatioiden työnjako ja dokumentaation lukujärjestys.
-- `docs/paaautomaation-ohje.md`: pääautomaation täydellinen tehtävä- ja toimintakuvaus sekä sen versionhallinnan säännöt. ChatGPT-automaation kehote on vain lyhyt käynnistysosoite.
+- `docs/paaautomaation-ohje.md`: pääautomaation täydellinen tehtävä- ja toimintakuvaus sekä sen versionhallinnan säännöt.
+- `prompts/README.md` ja `prompts/*.txt`: automaatioiden asetuksiin kopioitavat käynnistyskehotteet ja niiden ylläpitomenettely. Tekstit säilytetään sellaisinaan.
 - `docs/intialaisten-elokuvien-naytosseuranta.md`: näytösvahdin täydellinen, versioitu tehtävä- ja toimintakuvaus.
 - `docs/laatutarkistuksen-ohje.md`: viikoittaisen laatutarkistuksen täydellinen, versioitu tehtävä- ja toimintakuvaus.
 - `docs/tehtavajono.md`: yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja vuoron siirtämisen ehdot. Ei yleisiä raportointi- tai koodauskäytäntöjä.
 - `docs/seuranta.md`: tehtäväkohtaiset seurantajaksot, onnistuneiden tarkistusten tila, uutistapahtumien historia ja luotettavuusluokat.
 - `docs/lahteet.md`: yleiset lähdeperiaatteet ja kaikkien yhdeksän aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
-- `docs/saavutettavuus.md`: kaikkien julkaisujen saavutettavuustavoitteet ja testausperiaatteet.
-- `docs/kehityskaytannot.md`: skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
+- `docs/saavutettavuus.md`: kaikkien julkaisujen ja Markdown-dokumentaation saavutettavuustavoitteet ja testausperiaatteet.
+- `docs/kehityskaytannot.md`: dokumentaation luokat ja kirjoitustavat, käynnistyskehotteiden ylläpito, skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/julkinen-valvomo-ja-rss-lukija.md`: julkisen GitHub Pages -valvomon ja RSS-lukijan tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä vaiheittainen toteutusseuranta.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
@@ -106,7 +108,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `scripts/validate_feeds.py` ja `.github/workflows/validate-feeds.yml`: automaattiset rakennetarkistukset ja niiden suoritus.
 - `feeds/*.xml`: julkaistut RSS-artikkelit; jokainen syöte sisältää vain sille kuuluvan aiheen.
 
-Yleiset raportointisäännöt ovat `docs/seuranta.md`:ssä, eivät tehtäväjonossa. Skriptien kommentointikäytäntö on `docs/kehityskaytannot.md`:ssä. Näytösvahti on erillinen automaatio eikä kuulu pääautomaation lukujärjestykseen tai tehtäväkiertoon.
+Yleiset raportointisäännöt ovat `docs/seuranta.md`:ssä, eivät tehtäväjonossa. Dokumentaation ja skriptien kehityskäytännöt ovat `docs/kehityskaytannot.md`:ssä. Automaation asetuksiin kopioitavien käynnistyskehotteiden ensisijaiset tekstit ovat `prompts/`-hakemistossa; automaatioiden tehtäväkäsikirjat pysyvät `docs/`-hakemistossa. Näytösvahti on erillinen automaatio eikä kuulu pääautomaation lukujärjestykseen tai tehtäväkiertoon.
 
 ## Laaja kansainvälinen haku ja Suomi-näkökulma
 
