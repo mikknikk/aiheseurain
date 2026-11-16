@@ -75,7 +75,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 ### J. R. R. Tolkien
 
 - RSS: `feeds/tolkien.xml`
-- Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
+- Lähtötilanne 2026-11-16: ensimmäinen tarkistus tehtiin; sitä ennen Tolkien-RSS-syöte oli tyhjä.
 - Seuranta: elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, adaptaatiot (elokuva, televisio, pelit), näyttelyt ja tapahtumat.
 - Erota Tolkienin itse kirjoittamat teokset myöhemmästä toimituksellisesta aineistosta ja adaptaatioista.
 - **11.11.2026 – MEDIAN RAPORTOIMA:** Andy Serkis kertoi The Morning Mosh Pit -haastattelussa, että *The Lord of the Rings: The Hunt for Gollum* -elokuvan pääkuvaukset ovat päättyneet. Lausunto julkaistiin 11.11.; toimitukselliset raportit ilmestyivät 12.11. Serkis ei ilmoittanut tarkkaa viimeistä kuvauspäivää, eikä Warner Brosin erillistä kuvausten päättymistä koskevaa tiedotetta saatu tarkistettua. New Zealand Film Map, GamesRadar+ ja The One Ring raportoivat samasta haastattelusta, joten kyse ei ole kolmesta toisistaan riippumattomasta vahvistuksesta. Alkuperäistä videota ei saatu avattua.
