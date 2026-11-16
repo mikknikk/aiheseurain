@@ -207,6 +207,34 @@ def validate_state():
     except (json.JSONDecodeError, UnicodeDecodeError) as exc:
         fail(f"seurantatilan JSON virheellinen: {exc}")
 
+    # Tarkistamme seurantatilan ensin virallista JSON Schema -määrittelyä vasten.
+    # Tämä varmistaa tallennetun rakenteen ennen alla olevia projektikohtaisia
+    # eheystarkistuksia, kuten kiertotehtävien ja RSS-polkujen vastaavuutta.
+    schema_path = ROOT / "schemas/seurantatila.schema.json"
+    if not schema_path.is_file():
+        fail("seurantatilan JSON Schema -määrittely puuttuu")
+
+    try:
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator.check_schema(schema)
+        schema_validator = jsonschema.Draft202012Validator(
+            schema, format_checker=jsonschema.FormatChecker()
+        )
+        schema_errors = sorted(
+            schema_validator.iter_errors(state),
+            key=lambda error: list(error.absolute_path),
+        )
+    except (json.JSONDecodeError, UnicodeDecodeError, jsonschema.SchemaError) as exc:
+        fail(f"seurantatilan JSON Schema on virheellinen: {exc}")
+
+    if schema_errors:
+        first = schema_errors[0]
+        location = ".".join(str(part) for part in first.absolute_path) or "(juuri)"
+        fail(
+            "seurantatila ei vastaa JSON Schemaa kohdassa "
+            f"{location}: {first.message}"
+        )
+
     # Ylimmän tason pitää olla JSON-olio ja sen rakenteen version pitää olla 1.
     if not isinstance(state, dict) or state.get("schema_version") != 1:
         fail("seurantatilan pitää olla schema_version 1 -JSON-olio")
