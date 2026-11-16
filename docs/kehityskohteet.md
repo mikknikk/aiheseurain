@@ -21,19 +21,13 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 - [x] **Dokumentaation ja seurantatilan yhdenmukaisuustestit.** Testi vertaa README:n syötetaulukkoa, tehtäväjonon yhdeksää tehtävää ja JSON-tilatiedoston kiertojärjestystä sekä tarkistaa seurantajaksojen aikaleimojen aikavyöhykkeet ja näytösvahdin erillisyyden.
 - [x] **Aloittelijaystävällinen skriptidokumentointi.** `scripts/validate_feeds.py` sisältää suomenkieliset docstring-kuvaukset ja kommentit, jotka selittävät myös Pythonia vähemmän osaavalle lukijalle keskeisen toiminnan.
 - [x] **Uusien skriptien kommentointisääntö.** `docs/kehityskaytannot.md`, README ja tämä kehityskohdelista edellyttävät, että kaikki uudet skriptit kommentoidaan vastaavalla perusteellisuudella ja kommentit pidetään ajan tasalla.
-- [x] **Näytösseurannan muutoshistorian tietomalli ja validointi.** `data/naytosten-muutoshistoria.json` erottaa näytösten nykytilan append-only-tapahtumalokista. `docs/nayostohistorian-rakenne.md` määrittelee tunnisteet, lähdetiedot, muutostyypit, peruutusten ja ohjelmistosta poistumisen eron sekä ensimmäisen lähtötilan muodostamisen. `scripts/validate_feeds.py` tarkistaa JSON-rakenteen, aikaleimat, tunnisteet, tilat, tapahtumatyypit ja lähdeosoitteet.
+- [x] **Näytösseurannan muutoshistorian tietomalli ja JSON Schema -validointi.** `data/naytosten-muutoshistoria.json` erottaa näytösten nykytilan append-only-tapahtumalokista. `schemas/naytosten-muutoshistoria.schema.json` määrittelee rakenteen JSON Schema Draft 2020-12 -muodossa. `scripts/validate_feeds.py` suorittaa skeemavalidoinnin ja täydentää sitä projektikohtaisilla eheystarkistuksilla; GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ennen testejä.
 
 ## Avoimet kehityskohteet
 
-### Käyttöönoton viimeistely – näytösseurannan muutoshistoria
+### Näytösseurannan muutoshistorian käyttöönotto
 
-**Tietomalli, dokumentointi ja automaattinen rakennetarkistus on toteutettu.** Avoinna on enää ensimmäisen todellisen lähtötilanteen muodostaminen päivittäisen näytösvahdin seuraavassa onnistuneessa ajossa.
-
-- [ ] Muodosta ensimmäinen varmennettu screenings-nykytila vertaamalla ajantasaisia lähteitä ja nykyisen RSS-syötteen viimeisimpiä julkaisuversioita.
-- [ ] Lisää yksi baseline_created-tapahtuma ja aseta baseline_status arvoon active. Älä luo takautuvia muutostapahtumia, joiden tarkkaa havaintoaikaa tai sisältöä ei voida todentaa.
-- [ ] Varmista seuraavassa ajossa vähintään yhden todellisen muutostyypin tai muuttumattoman tilanteen oikea käsittely sekä GitHubiin kirjoituksen jälkeinen takaisinluku.
-
-**Valmistumiskriteeri:** lähtötilanne on lähteillä varmennettu, myöhemmät muutokset voidaan jäljittää tapahtumakohtaisesti ja RSS:n aiemmat julkaisuversiot säilyvät muuttumattomina.
+**Valmis:** ensimmäinen varmennettu lähtötilanne muodostettiin 16.11.2026. `baseline_status` on `active`, ja nykytila sekä tapahtumaloki ovat käytössä. Jatkuva seuranta varmistaa käytännössä uusien muutostyyppien ja takaisinluvun toiminnan.
 
 ### Prioriteetti 2 – lähteiden kattavuuden seuranta
 
