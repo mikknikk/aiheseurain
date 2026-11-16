@@ -5,7 +5,7 @@ Tämä projekti kokoaa suomeksi intialaisen elokuvan uutisia ja julkaisee niist�
 - **Julkaisurytmi:** päivittäin klo 12.00 (Europe/Helsinki), saman uutis- ja näytösseurantatehtävän yhteydessä.
 - **Raportointijakso:** ensisijaisesti edellisen raportin jälkeen julkaistut uutiset / viimeisin vuorokausi.
 - **RSS-syöte:** [indian-films.xml](https://raw.githubusercontent.com/mikknikk/uutiset/main/indian-films.xml)
-- **Projektin sivu:** [GitHub Pages](https://mikknikk.github.io/uutiset/)
+- **Projektin sivu:** [uutiset-repositorio](https://github.com/mikknikk/uutiset)
 
 Päivittäinen raportti voi olla viikkokatsausta lyhyempi, jos uutisia on vähän. Sisältöä ei täydennetä vanhoilla uutisilla vain pituuden vuoksi.
 
@@ -204,7 +204,7 @@ Raportoinnin työvälineinä käytetään kahta ylläpidettävää tiedostoa:
 
 Uusia lähteitä lisätään vasta, kun niiden toimituksellinen tausta ja käyttökelpoisuus on arvioitu. Seurantalokia päivitetään vain lähteistetyillä muutoksilla. Puuttuvaa historiaa ei täytetä arvauksilla. Tärkeiden uutisten riippumattomuus arvioidaan alkuperäislähteiden ja lähdeketjujen, ei pelkän julkaisujen lukumäärän perusteella.
 
-Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [INDIAN_FILM_SOURCES.md](INDIAN_FILM_SOURCES.md)-tiedostoon. Näytösvahti käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
+Suomen mediaosumien lähteet ja tarkistusohjeet on kirjattu [INDIAN_FILM_SOURCES.md](INDIAN_FILM_SOURCES.md)-tiedostoon. Näytösseuranta on saman päivittäisen automaation erillinen moduuli ja käyttää omaa lähde- ja seurantatietoa; sen näytöstietoja ei sisällytetä uutisraportin seurantaan.
 
 Lipputuloissa erotetaan markkina-alue, brutto/netto, aikajakso ja arvioiden/virallisten lukujen status. Julisteiden ja videoiden lähde sekä julkaisija tarkistetaan ja kirjataan.
 
