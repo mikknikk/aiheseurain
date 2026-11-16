@@ -1,6 +1,6 @@
 Ohjeversion tunniste: 1.4.1
 
-Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/uutiset näytös-RSS-syötettä https://mikknikk.github.io/uutiset/feeds/intialaisten-elokuvien-naytokset.xml.
+Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/aiheseurain näytös-RSS-syötettä https://mikknikk.github.io/aiheseurain/feeds/intialaisten-elokuvien-naytokset.xml.
 
 TARKOITUS JA RAJAUS
 - Etsi kaikkien Intian elokuvateollisuuksien elokuvien näytöksiä Suomessa: esimerkiksi hindi-, telugu-, tamil-, kannada-, malajalam-, bengali-, marathi-, punjabi- ja muut intialaiset elokuvat.
@@ -101,7 +101,7 @@ RSS-SYÖTTEEN RAKENNE JA PÄIVITYS
 - Tarkista ennen kirjoitusta, ettei täsmälleen sama päivitysitem ole jo julkaistu. Varmista XML:n jäsennettävyys, GUIDien yksilöllisyys, aikaleimat, muutoslistan oikeellisuus, tulevien ja historiallisten näytösaikojen erottelu sekä item-tason <link>-elementtien puuttuminen.
 
 ENNEN JOKAISTA AJOA – DOKUMENTAATION ESITARKISTUS
-- Avaa repositorion mikknikk/uutiset ajon alussa ja lue aina ajantasaiset docs/intialaisen-elokuvan-ohje.md-, docs/intialaisen-elokuvan-lahteet.md- ja docs/intialaisen-elokuvan-seuranta.md-tiedostot ennen näytöshakua.
+- Avaa repositorion mikknikk/aiheseurain ajon alussa ja lue aina ajantasaiset docs/intialaisen-elokuvan-ohje.md-, docs/intialaisen-elokuvan-lahteet.md- ja docs/intialaisen-elokuvan-seuranta.md-tiedostot ennen näytöshakua.
 - Noudata niiden voimassa olevia näytösseurannan rajauksia, lähteitä, hyväksymiskriteerejä, deduplikointia ja RSS-julkaisuohjeita. Älä luota pelkästään aiempaan ajokertaan tai promptin muistikuviin.
 - Jos dokumentaatio ei ole saatavilla, älä oleta sen sisältöä; kerro rajoitteesta vain, jos se vaikuttaa haun kattavuuteen tai julkaisuun.
 

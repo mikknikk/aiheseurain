@@ -1,4 +1,4 @@
-Tehtävä: suorita viikoittainen järjestelmän laatutarkistus GitHub-repositoriolle mikknikk/uutiset.
+Tehtävä: suorita viikoittainen järjestelmän laatutarkistus GitHub-repositoriolle mikknikk/aiheseurain.
 
 KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: laatutarkistus-2026-11-16-01

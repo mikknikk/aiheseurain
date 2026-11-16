@@ -7,7 +7,7 @@ Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. Chat
 
 ## 1. Järjestelmän rajat
 
-- Repository: `mikknikk/uutiset`.
+- Repository: `mikknikk/aiheseurain`.
 - Pääautomaatio käynnistyy päivittäin noin klo 12.00 Europe/Helsinki ja käsittelee täsmälleen yhden yhdeksästä tehtävästä.
 - Intialaisten elokuvien näytösseuranta on erillinen päivittäinen automaatio noin klo 05.00 Europe/Helsinki. Se ei kuulu tehtäväkiertoon.
 - Pääautomaatio ei tee näytöshakuja eikä muuta `feeds/intialaisten-elokuvien-naytokset.xml`-syötettä tai näytöshistoriaa. Älä sekoita uutis- ja näytösseurantaa.

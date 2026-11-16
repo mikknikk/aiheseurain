@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/mikknikk/uutiset/main/schemas/naytosten-muutoshistoria.schema.json",
+  "$id": "https://raw.githubusercontent.com/mikknikk/aiheseurain/main/schemas/naytosten-muutoshistoria.schema.json",
   "title": "Näytösten muutoshistorian tietomalli",
   "description": "Näytösten nykytilan ja append-only-muutostapahtumien rakenteen tarkistus.",
   "type": "object",

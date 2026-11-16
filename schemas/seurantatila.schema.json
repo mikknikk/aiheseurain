@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/mikknikk/uutiset/main/schemas/seurantatila.schema.json",
+  "$id": "https://raw.githubusercontent.com/mikknikk/aiheseurain/main/schemas/seurantatila.schema.json",
   "title": "Uutisseurannan koneellinen seurantatila",
   "description": "Pääautomaation kiertotila, erillisen näytösvahdin tila ja automaatio-ohjeiden versiot.",
   "type": "object",

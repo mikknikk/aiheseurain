@@ -18,7 +18,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-USER_AGENT = "Uutisvahti-link-checker/1.0 (+https://github.com/mikknikk/uutiset)"
+USER_AGENT = "Aiheseurain-link-checker/1.0 (+https://github.com/mikknikk/aiheseurain)"
 
 
 class LinkParser(HTMLParser):
@@ -117,7 +117,7 @@ def kirjoita_raportit(tulokset, output_dir):
     aika = datetime.now(timezone.utc).isoformat()
     counts = {tila: sum(t["result"] == tila for t in tulokset)
               for tila in sorted({t["result"] for t in tulokset})}
-    raportti = {"checked_at": aika, "repository": "mikknikk/uutiset",
+    raportti = {"checked_at": aika, "repository": "mikknikk/aiheseurain",
                 "total": len(tulokset), "counts": counts, "results": tulokset}
     (output_dir / "link-check.json").write_text(
         json.dumps(raportti, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

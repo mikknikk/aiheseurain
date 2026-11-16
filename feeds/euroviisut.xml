@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Euroviisut ja kansalliset karsinnat – uutisseuranta</title>
-    <link>https://mikknikk.github.io/uutiset/</link>
+    <link>https://mikknikk.github.io/aiheseurain/</link>
     <description>Suomenkielinen, maailmanlaajuinen ja lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
-    <atom:link href="https://mikknikk.github.io/uutiset/feeds/euroviisut.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://mikknikk.github.io/aiheseurain/feeds/euroviisut.xml" rel="self" type="application/rss+xml" />
     <lastBuildDate>Mon, 16 Nov 2026 10:39:00 +0200</lastBuildDate>
     <item>
       <title>Filippiinit voitti ensimmäisen Eurovision Song Contest Asian – CARMELLE keräsi 211 pistettä</title>

@@ -1,4 +1,4 @@
-Tehtävä: suorita repositorion mikknikk/uutiset pääasiallinen päivittäinen uutisseurannan aihekierros.
+Tehtävä: suorita repositorion mikknikk/aiheseurain pääasiallinen päivittäinen uutisseurannan aihekierros.
 
 KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: uutispaakierto-2026-11-16-01
