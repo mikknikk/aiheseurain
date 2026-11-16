@@ -146,7 +146,7 @@
   },
   "quality_check_instructions": {
     "document": "docs/laatutarkistuksen-ohje.md",
-    "current_version": "1.0.0",
+    "current_version": "1.0.1",
     "last_successful_run_version": null,
     "last_successful_run_at": null,
     "startup_prompt_id": "laatutarkistus-2026-11-16-01"
