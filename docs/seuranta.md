@@ -116,4 +116,4 @@ Lisää tarvittaessa kunkin aiheen alle:
 
 ## Intialaisen elokuvan seuranta (tehtäväkierron mukainen)
 
-Intialaisen elokuvan uutisraportti ja näytösseuranta ovat erilliset tehtävät docs/tehtavajono.md:n kymmenen tehtävän kierrossa. Yksityiskohtainen uutis- ja näytöshistoria on tiedostossa `docs/intialaisen-elokuvan-seuranta.md`. Lähteet ovat tiedostossa `docs/intialaisen-elokuvan-lahteet.md`. Uutisraportti julkaistaan tiedostoon `feeds/intialaiset-elokuvat.xml` ja näytöspäivitykset tiedostoon `feeds/intialaisten-elokuvien-naytokset.xml`. Kumpaakaan ei tarkisteta päivittäin: kumpikin tulee vuoroon normaalisti noin kymmenen päivän välein.
+Intialaisen elokuvan uutisraportti on docs/tehtavajono.md:n yhdeksäs tehtävä. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla eikä kuulu aihekierrokseen. Yksityiskohtainen uutis- ja näytöshistoria on tiedostossa `docs/intialaisen-elokuvan-seuranta.md`. Lähteet ovat tiedostossa `docs/intialaisen-elokuvan-lahteet.md`. Uutisraportti julkaistaan tiedostoon `feeds/intialaiset-elokuvat.xml` ja näytöspäivitykset tiedostoon `feeds/intialaisten-elokuvien-naytokset.xml`.
