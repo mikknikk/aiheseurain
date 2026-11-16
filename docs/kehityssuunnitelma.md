@@ -274,10 +274,10 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 ### Vaihe 0 – nykytilan kartoitus, tikettien perustaminen ja tietomallin hyväksyntä
 
 - [x] Kartoita nykyinen GitHub Pages -julkaisu, Jekyll-build ja repositorion työnkulut; Pages-asetuksen tarkka kansiovalinta on merkitty erikseen UI-varmistettavaksi.
-- [ ] Luo GitHubiin kanban-tilojen ja prioriteettien tunnisteet.
-- [ ] Siirrä aiemmissa keskusteluissa ja kehitysdokumenteissa olevat avoimet suunnitelmat GitHub Issues -backlogiin ja tarkista, ettei päällekkäisiä tikettejä synny.
+- [x] Luo GitHubiin kanban-tilojen ja prioriteettien tunnisteet.
+- [x] Siirrä aiemmissa keskusteluissa ja kehitysdokumenteissa olevat avoimet suunnitelmat GitHub Issues -backlogiin ja tarkista, ettei päällekkäisiä tikettejä synny.
 - [ ] Tarkista nykyiset RSS-syötteet, niiden URLit, kaikki automaatiotyönkulut ja koneelliset seurantatiedostot.
-- [ ] Päätä sivuston teknologia ja kansiorakenne nykyisen toteutuksen perusteella.
+- [x] Päätä sivuston teknologia ja kansiorakenne nykyisen toteutuksen perusteella: GitHub Pagesin nykyinen Jekyll-julkaisu ja staattinen sivustorunko.
 - [x] Määrittele ja dokumentoi nykyisten kanonisten seurantatiedostojen tietomalli ja JSON Schema -validointi; vältä rinnakkaisia status- ja syötekatalogikopioita.
 - [x] Määrittele automaatioiden nykyiset tiedonkeruuvastuut ja julkaisutapa; vaihekohtaisen ajotiedon keruu jää Valvomon toteutusvaiheeseen.
 - [x] Valitse nykyisten JSON-tiedostojen lukeminen Pagesistä ja rajattu GitHub Actions API -luku workflow-tiloille; erillistä status-haaraa tai Pages-artifactia ei lisätä.
