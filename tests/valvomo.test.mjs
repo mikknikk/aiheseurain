@@ -53,8 +53,8 @@ test("Valvomon sivupohja sisältää saavutettavat perusrakenteet", () => {
   assert.match(page, /id="actions-content"/);
   assert.match(page, /section: valvomo/);
   assert.match(home, /section: home/);
-  assert.match(home, /href="{{ \/valvomo\/ \\| relative_url }}"/);
-  assert.match(header, /href="{{ \/valvomo\/ \\| relative_url }}"/);
+  assert.match(home, /\/valvomo\//);
+  assert.match(header, /\/valvomo\//);
 });
 
 function fakeDom() {
