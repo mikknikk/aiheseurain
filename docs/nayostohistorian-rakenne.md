@@ -90,6 +90,10 @@ Kun näytöstietue ja RSS julkaisu päivitetään samalla ajolla, tee muutokset 
 
 Tietomallin virallinen rakenteellinen määrittely on `schemas/naytosten-muutoshistoria.schema.json` (JSON Schema Draft 2020-12). Se määrittelee pakolliset kentät, tietotyypit, sallitut tilat ja tapahtumatyypit sekä lähdetietueiden ja tapahtumien rakenteet. `scripts/validate_feeds.py` validoi muutoshistorian ensin tätä skeemaa vasten ja tekee sen jälkeen lisäksi projektikohtaiset eheys- ja ristiriitatarkistukset. `jsonschema`-riippuvuus asennetaan `requirements.txt`-tiedostosta GitHub Actions -työnkulussa.
 
+## RSS-historian ja JSON-tilan vastaavuus
+
+`validate_feeds.py` vertaa jokaisen elokuvan uusimman RSS-itemin **Historialliset näytösajat** -osion rivejä JSON-historian `completed`-tietueisiin. Vertailu käyttää näytöksen päivämäärää, kellonaikaa, teatteria ja kaupunkia Suomen aikavyöhykkeellä. Tarkistus on kaksisuuntainen: kaikki päättyneet JSON-tietueet on esitettävä RSS:n historiassa täsmälleen kerran, eikä RSS-osiossa saa olla ylimääräisiä rivejä. Näin myös vahingossa pois jääneet tai kahdentuneet historialliset näytökset pysäyttävät GitHub Actions -validoinnin.
+
 ## Laatutarkistukset
 
 `scripts/validate_feeds.py` tarkistaa JSON Schema -määrittelyn lisäksi aikaleimojen aikavyöhykkeet, tunnisteiden yksilöllisyyden, sallitut tilat ja tapahtumatyypit sekä lähteiden URL-osoitteiden muodon. Automaattinen testi ei kuitenkaan pysty todistamaan, että lähde todella tukee väitettä tai että kaksi eri lähdettä ovat riippumattomia. Nämä tarkistetaan näytösvahdin työohjeen mukaisesti.
