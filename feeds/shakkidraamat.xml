@@ -2,9 +2,9 @@
 <rss version="2.0">
   <channel>
     <title>Shakkidraamat – uutisseuranta</title>
-    <link>https://mikknikk.github.io/uutiset/</link>
+    <link>https://mikknikk.github.io/aiheseurain/</link>
     <description>Suomenkielinen, maailmanlaajuinen ja lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
-    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/uutiset/feeds/shakkidraamat.xml" rel="self" type="application/rss+xml" />
+    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/aiheseurain/feeds/shakkidraamat.xml" rel="self" type="application/rss+xml" />
     </channel>
 </rss>
