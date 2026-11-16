@@ -50,6 +50,8 @@ Automaattiset testit tarkistavat RSS/XML:n rakenteen ja viittaukset sekä Valvom
 
 ## Manuaalisen saavutettavuustestauksen menettely
 
+17.11.2026 tehdyn lähdekoodikatselmoinnin rajaus, havainnot, korjaukset ja tekemättä jääneet manuaaliset testit on kirjattu [saavutettavuuskatselmoinnin raporttiin](saavutettavuuskatselmointi-2026-11-17.md). Raportti ei ole WCAG-vaatimustenmukaisuustodistus.
+
 Automaattiset testit eivät korvaa manuaalista arviointia. Testaa vähintään GitHubissa renderöidyt keskeiset Markdown-dokumentit sekä RSS-sisältöä näyttävä käytännössä käytetty lukija. Repositorion oma Valvomo on lisättävä testattaviin kohteisiin. Testaa myös sen lataus- ja virhetilat, automaatiokorttien erillisyys, aihekierron esitystapa ja GitHub Actions -vaiheiden ymmärrettävyys. Älä yleistä yhden selaimen tai ruudunlukijan tulosta kaikkiin käyttöympäristöihin.
 
 ### Testausympäristön kirjaaminen
