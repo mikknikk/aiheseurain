@@ -36,7 +36,7 @@ Tapahtumahistoria sisältää yksilöllisen deterministisen tunnisteen, havainto
 
 Tapahtumatyyppi määritellään JSON-tiedostona, joka validoidaan schemas/event-watch/event-type.schema.json -skeemalla. Määritys kertoo pysyvän tapahtumatyyppitunnisteen ja semanttisen version, identiteetin muodostamiseen käytettävät kentät, pakolliset attribuutit, seurattavat attribuutit ja niiden muutosten luokat sekä sallitut tilat.
 
-Tapahtumatyypin lisääminen edellyttää uuden määrityksen ja tarvittaessa uuden lähdesovittimen lisäämistä. Yhteisen ytimen lähdekoodia ei tarvitse muuttaa, jos havainto voidaan tuottaa olemassa olevalla yleisellä sovittimella. Erityinen identiteettilogiikka kapseloidaan tapahtumatyypin sovittimeen, ei yhteiseen ytimeen. Poistaminen tehdään poistamalla tyyppi aktiivisesta moduulirekisteristä erillisessä hyväksytyssä muutoksessa; vanhaa historiaa ei poisteta.
+Tapahtumatyypin lisääminen edellyttää uuden määrityksen ja tarvittaessa uuden lähdesovittimen lisäämistä. Lähdesovittimet toteuttavat scripts/event_watch.py-tiedoston EventSourceAdapter-sopimuksen: ne tekevät oman hakunsa, vastaavat rajatuista uusintayrityksistä ja palauttavat normalisoidut havainnot. collect_from_adapters eristää yhden lähteen virheen ja palauttaa osittaisen tuloksen sekä epäonnistuneiden lähteiden tunnisteet. Yhteisen ytimen lähdekoodia ei tarvitse muuttaa, jos havainto voidaan tuottaa olemassa olevalla yleisellä sovittimella. Erityinen identiteettilogiikka kapseloidaan tapahtumatyypin sovittimeen, ei yhteiseen ytimeen. Poistaminen tehdään poistamalla tyyppi aktiivisesta moduulirekisteristä erillisessä hyväksytyssä muutoksessa; vanhaa historiaa ei poisteta.
 
 ## 5. Yhteisen käsittelyn vaiheet
 
