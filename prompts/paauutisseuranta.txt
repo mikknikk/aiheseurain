@@ -1,10 +1,14 @@
 Tehtävä: suorita repositorion mikknikk/aiheseurain pääasiallinen päivittäinen uutisseurannan aihekierros.
 
 KÄYNNISTYSKEHOTTEEN TUNNISTE
-Käynnistyskehotteen tunniste: uutispaakierto-2026-11-16-01
+Käynnistyskehotteen tunniste: uutispaakierto-2026-11-17-02
 
 ENSISIJAINEN OHJE
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin tiedostossa docs/paaautomaation-ohje.md (tiedostonimessä on kaksi a-kirjainta alussa: paaautomaation). Tämä käynnistyskehote on vain käynnistysosoite; älä kopioi tai päättele tehtävän sisältöä siitä.
+
+AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
+
+Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioden asetuksia.
 
 Ajon alussa:
 1. Lue GitHubin main-haarasta README.md, docs/paaautomaation-ohje.md kokonaan, data/seurantatila.json, data/source-catalog.json, data/sources/{task_id}.json, schemas/lahdekatalogi.schema.json, schemas/lahderekisteri.schema.json ja data/lahdetarkistukset.json.
