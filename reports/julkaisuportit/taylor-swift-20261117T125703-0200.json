@@ -3,11 +3,11 @@
   "run_id": "taylor-swift-20261117T125703-0200",
   "task_id": "taylor-swift",
   "feed_path": "feeds/taylor-swift.xml",
-  "checked_at": "2026-11-17T13:00:26+02:00",
+  "checked_at": "2026-11-17T13:03:45+02:00",
   "checklist": {
     "sources_opened": {
       "status": "pass",
-      "note": "Recording Academyn alkuperäiset ehdokassivut sekä AP:n, Reutersin ja UOLin alkuperäiset artikkelit avattiin ja tarkistettiin.",
+      "note": "Recording Academyn alkuperäiset ehdokassivut, UMG:n levy-yhtiötiedote sekä AP:n, Reutersin ja UOLin alkuperäiset artikkelit avattiin ja tarkistettiin.",
       "evidence": [
         "https://www.grammy.com/news/grammy-award-for-record-of-the-year-meet-the-2027-nominees/",
         "https://www.grammy.com/news/grammy-awards-for-song-of-the-year-meet-the-2027-nominees/",
@@ -15,7 +15,8 @@
         "https://www.grammy.com/songs/the-life-of-a-showgirl/",
         "https://apnews.com/article/grammy-nominations-2027-927a42594517e9a9bf17936f1891a96f",
         "https://www.reuters.com/business/media-telecom/raye-and-rosalia-lead-nominations-for-musics-grammy-awards-2026-11-16/",
-        "https://www.uol.com.br/splash/noticias/2026/11/16/taylor-swift-bate-recorde-com-5-indicacao-ao-trio-principal-do-grammy.ghtm"
+        "https://www.uol.com.br/splash/noticias/2026/11/16/taylor-swift-bate-recorde-com-5-indicacao-ao-trio-principal-do-grammy.ghtm",
+        "https://www.universalmusic.com/universal-music-groups-family-of-artists-songwriters-labels-and-distributed-partners-nominated-across-all-genres-for-the-69th-annual-grammy-awards/"
       ]
     },
     "claim_support": {
@@ -25,7 +26,8 @@
         "Album of the Year ja Record of the Year: https://www.grammy.com/albums/the-life-of-a-showgirl/",
         "Best Pop Duo/Group Performance: https://www.grammy.com/songs/the-life-of-a-showgirl/",
         "Song of the Year ja Best Song Written for Visual Media: https://www.grammy.com/news/grammy-awards-for-song-of-the-year-meet-the-2027-nominees/",
-        "Viisi ehdokkuutta: https://www.reuters.com/business/media-telecom/raye-and-rosalia-lead-nominations-for-musics-grammy-awards-2026-11-16/"
+        "Viisi ehdokkuutta: https://www.reuters.com/business/media-telecom/raye-and-rosalia-lead-nominations-for-musics-grammy-awards-2026-11-16/",
+        "Viisi ehdokkuutta ja viides peräkkäinen vuoden albumi -ehdokkuus: https://www.universalmusic.com/universal-music-groups-family-of-artists-songwriters-labels-and-distributed-partners-nominated-across-all-genres-for-the-69th-annual-grammy-awards/"
       ]
     },
     "source_independence": {
@@ -47,7 +49,7 @@
     },
     "tracking_period": {
       "status": "pass",
-      "note": "Ensimmäisen tarkistuksen aloituspäivä 16.11.2026 tunnetaan, mutta kellonaikaa ei ole dokumentoitu; loppu on 17.11.2026 klo 13.00. Sama jakso ilmoitetaan RSS-artikkelissa."
+      "note": "Ensimmäisen tarkistuksen aloituspäivä 16.11.2026 tunnetaan, mutta kellonaikaa ei ole dokumentoitu; loppu on 17.11.2026 klo 13:03. Sama jakso ilmoitetaan RSS-artikkelissa."
     },
     "duplicates": {
       "status": "pass",
