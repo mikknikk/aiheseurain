@@ -72,7 +72,7 @@ class ReliabilityClassificationTests(unittest.TestCase):
 
     def test_claim_assessment_accepts_valid_catalog_source(self):
         """Kelvollinen väitearvio ja katalogiin kuuluva lähde hyväksytään."""
-        source_id, source = next(iter(self.sources_by_id.items()))
+        source_id, source = next((key, value) for key, value in self.sources_by_id.items() if value["reliability_class"] == "A")
         assessment = {
             "claim_id": "claim-test",
             "claim": "Esimerkkiväite.",
