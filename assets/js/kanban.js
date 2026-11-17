@@ -440,8 +440,8 @@ async function refreshIssues() {
     populateAreaFilter();
     render();
     document.getElementById("kanban-api-error").hidden = true;
-    updateDependencyStatus("Kaikki riippuvuudet sisältyvät samaan täydelliseen aineistoon. Muodostettu "
-      + formatDate(generatedAt) + ".");
+    // Riippuvuuksien lataustila näkyy jo yläpuolen aineiston päivitystiedossa.
+    updateDependencyStatus("");
     const stale = Date.now() - generatedAt > STALE_AFTER_MS;
     updateFreshness((stale ? "Julkaistu aineisto on vanhentunut. " : "Julkaistu aineisto on käytössä. ")
       + "Aineisto muodostettiin " + formatDate(generatedAt) + " ("
