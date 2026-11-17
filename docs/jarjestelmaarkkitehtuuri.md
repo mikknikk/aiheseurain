@@ -3,7 +3,7 @@
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
 **Versio:** 1.7.0  
-**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -661,7 +661,7 @@ Nykyisten yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijako, ehdotet
 
 Inventaario erottaa yhdeksän topic-moduulia ja yhden process-moduulin. Näytösvahti ei kuulu uutisaiheiden kiertoon. Intialaisen elokuvan uutis- ja näytösseurannan lähteet, historiat ja julkaisut pysyvät erillisinä. Yhteinen lähdekatalogi, tehtäväkohtaiset lähdekäyttörekisterit, tehtäväjono, seurantatila, RSS-historia ja näytösten append-only-tapahtumaloki säilyttävät nykyisen omistajuutensa siirtymävaiheen ajan.
 
-Tämä inventaario ei aktivoi moduuleja eikä muuta tuotantorekisteriä, automaatioiden asetuksia tai sisältörajauksia. Varsinaiset määritykset ja passiiviset rekisterimerkinnät on toteutettu #105:ssä. Moduulikohtainen tila kuuluu #106:een; yhteinen tapahtumavahti on toteutettu #109:ssä.
+Tämä inventaario ei aktivoi moduuleja eikä muuta automaatioiden asetuksia tai sisältörajauksia. Varsinaiset määritykset ja passiiviset rekisterimerkinnät on toteutettu #105:ssä. Moduulikohtainen tila kuuluu #106:een; yhteinen tapahtumavahti on toteutettu #109:ssä.
 
 ### 8.15 Yleinen tapahtumavahti
 
