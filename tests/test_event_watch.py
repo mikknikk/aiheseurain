@@ -78,12 +78,12 @@ class EventWatchTests(unittest.TestCase):
         """Ristiriita säilyttää molemmat vaihtoehdot eikä valitse viimeistä lähdettä."""
         first = observation("film-1", self.base, [source("Lähde A", "https://a.example/event")])
         other = deepcopy(self.base)
-        other["city"] = "Espoo"
+        other["language"] = "englanti"
         second = observation("film-1", other, [source("Lähde B", "https://b.example/event")])
         state = reconcile(self.state, [first, second], self.film, NOW)
         current = state["current_events"][0]
-        self.assertEqual(current["attributes"]["city"], "Helsinki")
-        self.assertEqual(current["conflicts"][0]["field"], "city")
+        self.assertNotIn("language", current["attributes"])
+        self.assertEqual(current["conflicts"][0]["field"], "language")
         self.assertEqual(len(current["conflicts"][0]["values"]), 2)
 
 
