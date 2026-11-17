@@ -1,0 +1,168 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "taylor-swift",
+  "module_type": "topic",
+  "definition_version": "1.0.0",
+  "name": "Taylor Swift",
+  "description": "Taylor Swiftin musiikkiin, julkiseen uraan, tuotantoihin, liiketoimintaan ja tapahtumiin kohdistuva kansainvälinen uutisseuranta.",
+  "capabilities": [
+    {
+      "id": "research.search",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "report.finnish",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
+  ],
+  "interfaces": {
+    "input": {
+      "id": "research.request",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "report.article",
+      "version": "1.0.0"
+    }
+  },
+  "source_refs": [
+    {
+      "source_id": "taylor-swift-official",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "umg-news",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "republic-records",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "billboard",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "ap-entertainment",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "rolling-stone",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "lippu-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "ticketmaster-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "tiketti-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "uol-splash",
+      "role": "secondary",
+      "required": false
+    }
+  ],
+  "search_profiles": [
+    {
+      "id": "taylor-swift-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Taylor Swift",
+        "Taylor Swift new album song release",
+        "Taylor Swift tour concert announcement",
+        "Taylor Swift film television business rights",
+        "Taylor Swift Grammy awards philanthropy",
+        "Taylor Swift Finland concert event"
+      ],
+      "languages": [
+        "en",
+        "fi",
+        "pt-BR"
+      ],
+      "regions": [
+        "BR",
+        "FI",
+        "GLOBAL",
+        "US"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    },
+    {
+      "id": "taylor-swift-finland",
+      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
+      "query_terms": [
+        "Suomi Finland Taylor Swift",
+        "Taylor Swift tapahtuma Suomi Finland"
+      ],
+      "languages": [
+        "en",
+        "fi"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "avoid-private-rumours",
+      "category": "exclusion",
+      "instruction": "Älä sisällytä vähäarvoisia yksityiselämän juoruja tai vahvistamattomia parisuhdeväitteitä.",
+      "severity": "required"
+    },
+    {
+      "id": "official-announcements",
+      "category": "verification",
+      "instruction": "Suosi artistin, levy-yhtiön, järjestäjän ja palkintojen myöntäjän ensisijaisia tiedotteita.",
+      "severity": "required"
+    },
+    {
+      "id": "regional-coverage",
+      "category": "inclusion",
+      "instruction": "Hae myös Suomen ja muiden kuin Yhdysvaltojen tapahtumia sekä alueellista uutisointia.",
+      "severity": "required"
+    }
+  ],
+  "topic": {
+    "scope": "Musiikki ja julkaisut, kiertueet ja esiintymiset, elokuva- ja televisiotuotannot, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura. Huomioi Suomessa järjestettävät tapahtumat.",
+    "include": [
+      "Uudet albumit, kappaleet, musiikkivideot ja viralliset julkaisut",
+      "Konsertit, kiertueet, esiintymiset ja viralliset fanitapahtumat",
+      "Elokuva-, televisio- ja muut audiovisuaaliset tuotannot",
+      "Liiketoiminta, oikeudet, palkinnot ja hyväntekeväisyys",
+      "Suomen konsertit, näytökset, näyttelyt ja yleisötapahtumat"
+    ],
+    "exclude": [
+      "Vähäarvoinen yksityiselämää koskeva juoruilu",
+      "Vahvistamattomat parisuhde- ja yksityiselämää koskevat väitteet"
+    ],
+    "entities": [
+      {
+        "entity_id": "taylor-swift",
+        "entity_type": "person",
+        "label": "Taylor Swift",
+        "aliases": [
+          "Taylor Alison Swift"
+        ]
+      }
+    ]
+  }
+}
