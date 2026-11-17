@@ -87,6 +87,9 @@ Kirjaa raporttiin ristiriidat, puuttuvat tai moninkertaiset tilalabelit sekä ni
 
 Kun laatutarkistus itse ottaa tiketin toteutukseen, sen on noudatettava samaa työn aloitus- ja valmistumissääntöä kuin muunkin toteutustyön yhteydessä. Pelkkä auditointi ei kuitenkaan tarkoita, että kaikki havaitut tiketit otetaan työn alle.
 
+### 4.8 Lähteet ja sisältö
+Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Tarkista viimeisin viikoittaisen linkkitarkistuksen artefakti, jos se on saatavilla. Erota 404/410-virheet uudelleenohjauksista, estetyistä pyynnöistä (401/403), nopeusrajoituksista (429), palvelinvirheistä ja verkkoyhteysongelmista. Älä tulkitse estettyä tai tilapäisesti saavuttamatonta sivua automaattisesti rikkinäiseksi. Jos tarkistus tai artefakti puuttuu, kirjaa se tarkistamatta jääneeksi. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja.
+
 ### 4.9 Nimen kirjoitusasu ja taivutus
 
 Tarkista koko repositorion käyttäjälle näkyvä suomenkielinen sisältö, mukaan lukien README, dokumentaatio, verkkosivujen tekstit, RSS-syötteet ja raportit, Aiheseurain-nimen oikean kirjoitusasun ja taivutuksen osalta.
@@ -94,9 +97,6 @@ Tarkista koko repositorion käyttäjälle näkyvä suomenkielinen sisältö, muk
 Nimen perusmuoto on **Aiheseurain** ja genetiivi **Aiheseuraimen**. Nimeä taivutetaan vartalolla *Aiheseuraime-*, esimerkiksi *Aiheseuraimen*, *Aiheseuraimessa* ja *Aiheseuraimelle*. Muotoa *Aiheseurainin* ei käytetä. Tarkista myös muut mahdolliset virheelliset taivutusmuodot asiayhteyden perusteella.
 
 Kirjaa löydetyt virheet raporttiin täsmällisine tiedostopolkuineen ja riveineen sekä ehdota oikeaa muotoa. Älä muuta tiedostoja laatutarkistuksen yhteydessä; korjaukset tehdään erillisessä hyväksytyssä muutoksessa. Älä merkitse virhettä, jos kyse on kirjaimellisesta esimerkistä, jossa väärä muoto on nimenomaan dokumentoitu vältettäväksi muodoksi.
-
-### 4.8 Lähteet ja sisältö
-Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Tarkista viimeisin viikoittaisen linkkitarkistuksen artefakti, jos se on saatavilla. Erota 404/410-virheet uudelleenohjauksista, estetyistä pyynnöistä (401/403), nopeusrajoituksista (429), palvelinvirheistä ja verkkoyhteysongelmista. Älä tulkitse estettyä tai tilapäisesti saavuttamatonta sivua automaattisesti rikkinäiseksi. Jos tarkistus tai artefakti puuttuu, kirjaa se tarkistamatta jääneeksi. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja.
 
 ## 5. Raportointi
 
