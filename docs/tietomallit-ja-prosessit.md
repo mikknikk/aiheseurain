@@ -338,7 +338,7 @@ JSON Schema ei voi todistaa, että:
 - lähderekisteri kattaa kaikki maailman olennaiset lähteet;
 - automaatio on tehnyt hyvän toimituksellisen ratkaisun.
 
-Näitä asioita arvioidaan automaation työohjeiden ja myöhemmin toteutettavien raporttikohtaisten laadunvarmistusten avulla.
+Näitä asioita arvioidaan automaation työohjeiden ja raporttikohtaisen julkaisulaadun portin avulla. Portti dokumentoi toimituksellisen arvion, mutta ei todista sen oikeellisuutta automaattisesti.
 
 ## 10. Tunnisteet: miksi eri tiedostoissa on hieman eri nimet?
 
