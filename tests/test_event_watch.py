@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import unittest
 
-from scripts.event_watch import EventWatchError, empty_state, load_event_type, reconcile, validate_state
+from scripts.event_watch import (EventWatchError, collect_from_adapters, empty_state, load_event_type, reconcile, validate_state)
 from scripts.event_watch_adapters import screening_history_to_generic_state, screening_to_observation
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -138,6 +138,27 @@ class EventWatchTests(unittest.TestCase):
         result = reconcile(state, [observation("conf-a1", attrs, event_type="conference-session")],
                            self.conference, NOW)
         self.assertEqual(result["current_events"][0]["attributes"]["conference"], "Teknologiakonferenssi")
+
+
+    def test_source_adapter_interface_isolates_partial_failures(self):
+        """Yhden lähdeadapterin virhe ei estä muiden havaintojen keräämistä."""
+        class WorkingAdapter:
+            source_id = "source-a"
+            event_type_id = "film-screening"
+            def collect(self, search_context):
+                return [observation("film-1", self_test.base)]
+
+        class FailingAdapter:
+            source_id = "source-b"
+            event_type_id = "film-screening"
+            def collect(self, search_context):
+                raise RuntimeError("Lähde ei vastaa")
+
+        self_test = self
+        result = collect_from_adapters([FailingAdapter(), WorkingAdapter()], {}, "film-screening")
+        self.assertFalse(result["complete"])
+        self.assertEqual(result["failed_sources"], ["source-b"])
+        self.assertEqual(len(result["observations"]), 1)
 
     def test_timezone_is_mandatory(self):
         """Aikaleima ilman aikavyöhykettä hylätään."""
