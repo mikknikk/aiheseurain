@@ -124,7 +124,7 @@ test("hylkää puuttuvan tiketin ja pull requestin", async () => {
 
 test("julkaisutyönkulku varmistetaan päivittäin eikä 15 minuutin välein", async () => {
   const workflow = readFileSync(new URL("../.github/workflows/publish-pages.yml", import.meta.url), "utf8");
-  assert.match(workflow, /cron: "17 3 \\* \\* \\*"/);
+  assert.ok(workflow.includes('cron: "17 3 * * *"'));
   assert.equal(workflow.includes('cron: "*/15 * * * *"'), false);
 });
 
