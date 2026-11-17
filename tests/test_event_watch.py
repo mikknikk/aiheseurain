@@ -76,6 +76,31 @@ class EventWatchTests(unittest.TestCase):
         self.assertEqual(current["conflicts"][0]["field"], "city")
         self.assertEqual(len(current["conflicts"][0]["values"]), 2)
 
+
+    def test_conflicting_required_field_is_rejected_for_new_event(self):
+        """Uutta tapahtumaa ei luoda, jos pakollisesta kentästä ei ole yksimielistä tietoa."""
+        other = deepcopy(self.base)
+        other["status"] = "cancelled"
+        first = observation("film-1", self.base, [source("Lähde A", "https://a.example/event")])
+        second = observation("film-1", other, [source("Lähde B", "https://b.example/event")])
+        with self.assertRaises(EventWatchError):
+            reconcile(self.state, [first, second], self.film, NOW)
+
+    def test_old_conflicts_are_not_erased_by_an_unrelated_single_source_read(self):
+        """Aiempi ristiriita säilyy, kunnes sitä voidaan ratkaista nimenomaisesti."""
+        first = observation("film-1", self.base)
+        state = reconcile(self.state, [first], self.film, NOW)
+        other = deepcopy(self.base)
+        other["city"] = "Espoo"
+        state = reconcile(state, [
+            observation("film-1", self.base, [source("Lähde A", "https://a.example/event")]),
+            observation("film-1", other, [source("Lähde B", "https://b.example/event")])
+        ], self.film, "2026-11-18T13:00:00+02:00")
+        self.assertTrue(state["current_events"][0]["conflicts"])
+        state = reconcile(state, [observation("film-1", self.base)], self.film,
+                          "2026-11-18T14:00:00+02:00")
+        self.assertTrue(state["current_events"][0]["conflicts"])
+
     def test_partial_source_failure_does_not_remove_existing_events(self):
         """Osittainen haku kirjataan eikä puuttuvaa havaintoa tulkita poistumaksi."""
         state = reconcile(self.state, [observation("film-1", self.base)], self.film, NOW)
