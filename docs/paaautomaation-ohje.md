@@ -143,7 +143,7 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Versio 1.1.0: laajennettiin Tolkienin, Taylor Swiftin, Muumien ja Euroviisujen Suomen-tapahtumaseurantaa; täsmennettiin Gurmeet Ram Rahim Singhin musiikkiseurantaa sekä Shakkidraamojen todellisten kiistojen ja shakkisisällöntuottajien sosiaalisen median seurantaa.
 - Versio 1.2.2: otettiin käyttöön kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva ajastusten, asetusten ja kohdekeskustelujen suojaus; ohjeen yksityiskohdat ovat yhteisessä hallintaperiaatedokumentissa.
 
-## 9. ChatGPT-ajon vaihekohtainen ajohistoria
+## 12. ChatGPT-ajon vaihekohtainen ajohistoria
 
 Noudata yhteistä [ajohistorian tietomallia](ajohistoria.md). Pääautomaation historiatiedosto on haarassa `run-history/main-automation`, polussa `history.json`, ja tunniste on `main_automation`.
 
