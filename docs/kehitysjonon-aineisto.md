@@ -44,7 +44,7 @@ Skeema tarkistetaan tavallisessa CI-ajossa. Jokainen julkaisuajo validoi muodost
 - varmistava ajastus 15 minuutin välein;
 - manuaalinen `workflow_dispatch`.
 
-GitHubin issue-webhookien ei oleteta kattavan kaikkia natiivien riippuvuuksien muutoksia. #79:n välitystyönkulun kommentti käynnistää päivityksen heti sen jälkeen, kun välitys on valmis. Suoraan GitHubissa tehdyt riippuvuusmuutokset varmistetaan viimeistään seuraavalla 15 minuutin ajolla.
+GitHubin issue-webhookien ei oleteta kattavan kaikkia natiivien riippuvuuksien muutoksia. #79:n välitystyönkulun kommentti käynnistää päivityksen heti sen jälkeen, kun välitys on valmis. Suoraan GitHubissa tehdyt riippuvuusmuutokset havaitaan varmistavassa 15 minuutin välein ajoitetussa tarkistuksessa. GitHub Actionsin ajastus voi ruuhkatilanteessa viivästyä, joten kyse ei ole reaaliaikaisesta tai ehdottomasta 15 minuutin palvelutasolupauksesta.
 
 Kaikki Pages-ajot käyttävät samaa `github-pages`-concurrency-ryhmää, eikä käynnissä olevaa ajoa peruta uuden vuoksi. Näin julkaisut eivät aja päällekkäin. Jokainen ajo hakee lähdetiedot uudelleen vasta oman vuoronsa alussa; vanhemman ajon tulos ei voi valmistua uudemman ajon jälkeen ja korvata sitä.
 
