@@ -38,11 +38,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Aseta Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Asenna JSON Schema -validaattori
+        run: python -m pip install jsonschema
       - name: Muodosta täydellinen Kehitysjonon aineisto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: node scripts/build_kanban_data.mjs
+      - name: Validoi muodostettu JSON-aineisto
+        run: python scripts/validate_kanban_data.py
       - name: Aseta GitHub Pages
         uses: actions/configure-pages@v5
       - name: Rakenna Jekyll-sivusto
@@ -50,6 +58,8 @@ jobs:
         with:
           source: .
           destination: ./_site
+      - name: Varmista, että JSON-aineisto sisältyy julkaisuun
+        run: test -s ./_site/data/kehitysjono.json
       - name: Lataa Pages-julkaisu
         uses: actions/upload-pages-artifact@v3
         with:
