@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "run_id": "taylor-swift-20261117T125703-0200",
+  "task_id": "taylor-swift",
+  "feed_path": "feeds/taylor-swift.xml",
+  "checked_at": "2026-11-17T12:57:03+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Recording Academyn alkuperäiset ehdokassivut sekä AP:n, Reutersin ja UOLin alkuperäiset artikkelit avattiin ja tarkistettiin.",
+      "evidence": [
+        "https://www.grammy.com/news/grammy-award-for-record-of-the-year-meet-the-2027-nominees/",
+        "https://www.grammy.com/news/grammy-awards-for-song-of-the-year-meet-the-2027-nominees/",
+        "https://www.grammy.com/albums/the-life-of-a-showgirl/",
+        "https://www.grammy.com/songs/the-life-of-a-showgirl/",
+        "https://apnews.com/article/grammy-nominations-2027-927a42594517e9a9bf17936f1891a96f",
+        "https://www.reuters.com/business/media-telecom/raye-and-rosalia-lead-nominations-for-musics-grammy-awards-2026-11-16/",
+        "https://www.uol.com.br/splash/noticias/2026/11/16/taylor-swift-bate-recorde-com-5-indicacao-ao-trio-principal-do-grammy.ghtm"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Viisi ehdokkuutta ja kategoriat vastaavat Recording Academyn sivuja; AP ja Reuters vahvistavat kokonaismäärän ja ehdokasjulkistuksen.",
+      "evidence": [
+        "Album of the Year ja Record of the Year: https://www.grammy.com/albums/the-life-of-a-showgirl/",
+        "Best Pop Duo/Group Performance: https://www.grammy.com/songs/the-life-of-a-showgirl/",
+        "Song of the Year ja Best Song Written for Visual Media: https://www.grammy.com/news/grammy-awards-for-song-of-the-year-meet-the-2027-nominees/",
+        "Viisi ehdokkuutta: https://www.reuters.com/business/media-telecom/raye-and-rosalia-lead-nominations-for-musics-grammy-awards-2026-11-16/"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Associated Press, Reuters ja UOL ovat eri toimituksia; virallinen Recording Academy -aineisto on ensisijainen lähde.",
+      "evidence": [
+        "https://apnews.com/article/grammy-nominations-2027-927a42594517e9a9bf17936f1891a96f",
+        "https://www.reuters.com/business/media-telecom/raye-and-rosalia-lead-nominations-for-musics-grammy-awards-2026-11-16/",
+        "https://www.uol.com.br/splash/noticias/2026/11/16/taylor-swift-bate-recorde-com-5-indicacao-ao-trio-principal-do-grammy.ghtm"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Ehdokkuudet on erotettu gaalan tulevista tuloksista; voittajia ei ennakoida."
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Ehdokasjulkistus 16.11.2026, RSS-julkaisu 17.11.2026 ja gaala 7.2.2027 on erotettu."
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Ensimmäisen tarkistuksen aloituspäivä 16.11.2026 tunnetaan, mutta kellonaikaa ei ole dokumentoitu; loppu on 17.11.2026 klo 12:57 (Europe/Helsinki)."
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Taylor Swift -syöte oli ennen ajoa tyhjä; uusi tapahtuma julkaistaan yhdellä yksilöllisellä GUID-tunnisteella."
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Saman PR:n CI vertaa kaikkien vanhojen GUIDien säilymisen kohdehaaraan; Taylor Swift -syötteessä ei ollut aiempia itemeitä."
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "Saman PR:n CI tarkistaa RSS/XML:n ja description-elementin HTML-rakenteen."
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Saman PR:n CI tarkistaa yksilölliset GUIDit, item-tason link-elementin puuttumisen ja koko raportin sijoittamisen description-elementtiin."
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Item sisältää otsikon, julkaisupäivän, tapahtuman päivämäärät, kaikki viisi ehdokkuutta ja otsikoidun lähdeluettelon."
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "Artikkeli käyttää semanttista article-, h2-, p- ja ul-rakennetta sekä kuvaavia linkkitekstejä; kuvia ei käytetä."
+    }
+  },
+  "decision": "approved",
+  "reviewer_notes": [
+    "Toimituksellinen portti hyväksytty. Automaattiset kohdat ovat saman PR:n pakollisen CI-tarkistuksen piirissä; yhdistäminen sallitaan vasta, kun vaadittu status check on success."
+  ]
+}
