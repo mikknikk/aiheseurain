@@ -4,6 +4,8 @@ KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: uutispaakierto-2026-11-17-03
 
 ENSISIJAINEN OHJE
+Noudata myös docs/ajohistoria.md-tiedoston vaihekohtaista kirjausmallia. Kirjaa tämän ajon tila ja vaiheet vain haaraan run-history/main-automation; älä kirjoita ajohistoriaa main-haaraan.
+
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin tiedostossa docs/paaautomaation-ohje.md (tiedostonimessä on kaksi a-kirjainta alussa: paaautomaation). Tämä käynnistyskehote on vain käynnistysosoite; älä kopioi tai päättele tehtävän sisältöä siitä.
 
 AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
