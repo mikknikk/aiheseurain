@@ -1,7 +1,7 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.2.1
-Viimeksi päivitetty: 2026-11-16
+Ohjeversion tunniste: 1.3.0
+Viimeksi päivitetty: 2026-11-17
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
 
@@ -73,6 +73,20 @@ Tehtävien kiertojärjestys ja seuraava vuoro määritellään vain tiedostossa 
 - Noudata `docs/saavutettavuus.md`:n ohjeita: selkeä suomi, semanttinen HTML, looginen otsikkohierarkia, kuvaavat linkit ja alt-tekstit. Tavoittele WCAG 2.2 AAA -tasoa soveltuvin osin, mutta älä väitä tasoa saavutetuksi ilman asianmukaista testausta.
 - Jos julkaisu epäonnistuu, toimita valmis artikkeli ja nimeä epäonnistunut tiedosto. Älä väitä julkaisua onnistuneeksi ilman GitHub-kirjoitusta ja takaisinlukutarkistusta.
 
+## 6.1. Raporttikohtainen julkaisulaadun portti
+
+Jokainen RSS-syötteen muutos on hyväksytettävä raporttikohtaisessa portissa ennen PR:n yhdistämistä. Noudata kokonaan dokumenttia [RSS-raportin julkaisua edeltävä laadunvarmistus](julkaisuportti.md).
+
+1. Luo jokaiselle muutettavalle syötteelle oma JSON-tarkistusraportti hakemistoon `reports/julkaisuportit/{run_id}.json`. Raportin pitää olla samassa PR:ssä syötemuutoksen kanssa.
+2. Arvioi jokainen skeeman määrittelemä kohta. Lähteiden avaaminen, väitteiden vastaavuus, riippumattomuus, epävarmuudet, ajankohdat, seurantajakso, duplikaatit, raportin täydellisyys ja saavutettavuus ovat toimituksellisia arvioita; älä väitä rakennetestin todistavan niitä.
+3. Merkitse automaattiset kohdat (`guid_preservation`, `xml_html`, `rss_structure`) hyväksytyiksi vain, kun saman PR:n CI suorittaa niitä vastaavat tarkistukset. CI tarkistaa vanhojen GUIDien säilymisen kohdehaaraan verraten.
+4. Jokaisen kohdan tulos on `pass`, `fail` tai `not_applicable`. Ei-soveltuvuudelle annetaan konkreettinen perustelu. Yksikin hylkäys estää hyväksynnän.
+5. Jos päätös on `rejected`, älä yhdistä PR:ää, julkaise RSS-muutosta, päivitä viimeisintä onnistunutta tarkistuspistettä tai siirrä tehtäväkierron vuoroa. Korjaa sisältö ja tee uusi tarkistus. Epäonnistunut raportti säilyy PR:n muutoksissa ja CI-artefaktissa tarkasteltavana.
+6. Merkitse päätös `approved` vasta, kun kaikki kohdat on hyväksytty. PR:n pakollisen CI-tarkistuksen on silti onnistuttava; hyväksytty toimituksellinen lomake ei ohita automaattisia testejä.
+7. Portti koskee kaikkia kymmentä RSS-syötettä. Näytösvahti säilyy erillisenä automaationa, mutta sen syötemuutoksen PR:ssä käytetään samaa julkaisulaadun porttia.
+
+Porttiraportit ovat ajokohtaista auditointijälkeä. Niitä ei kirjoiteta `data/seurantatila.json`-tiedoston viimeisimmän onnistumisen kenttien päälle. Epäonnistunut portti ei muuta viimeisintä onnistunutta tarkistuspistettä. Automaattinen tarkistin varmistaa raportin rakenteen, hyväksyntätilan, automaattisten ehtojen tuloksen ja GUIDien säilymisen; se ei arvioi uutisväitteiden totuutta tai lähteiden riippumattomuutta.
+
 ## 7. Tehtäväkohtainen raportti
 
 Toimita tiivis suomenkielinen kooste vain tämän ajon valitusta tehtävästä. Ilmoita seurantajakson alku ja loppu Europe/Helsinki-ajassa. Jos löytyi merkittävä uutinen, linkitä julkaistuun uutiseen ja syötteeseen; nosta Suomi-yhteys näkyvästi esiin. Jos merkittävää uutista ei löytynyt eikä julkaisuongelmia ole, kerro lyhyesti, ettei tämän aiheen osalta löytynyt uutta merkittävää uutista. Älä raportoi muiden aiheiden tilanteesta.
@@ -122,4 +136,5 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Versio 1.0.3: otettiin käyttöön yhtenäinen lähderekisteri ja ajokohtainen lähdetarkistusloki; uutiskierron intialaiset uutislähteet erotettiin näytösvahtia varten olevista lähteistä.
 - Versio 1.0.4: jaettiin lähderekisterit tehtäväkohtaisiin JSON-tiedostoihin yhteisen skeeman alle, täsmennettiin valitun tehtävän rekisterin lukemista ja päivitettiin ajokohtaisen lähdekattavuuslokin validointi.
 - Versio 1.2.0: erotettiin lähteiden yhteiset perustiedot yhteen lähdekatalogiin ja tehtäväkohtaiset käyttöasetukset kymmeneen viittausrekisteriin; päivitettiin skeemat, validointi, ajolokien tarkistus ja automaatio-ohje.
+- Versio 1.3.0: otettiin käyttöön raporttikohtainen julkaisulaadun portti, JSON-tarkistusraportit, PR:n CI-portti ja vanhojen GUIDien säilymisen automaattinen vertailu.
 - Versio 1.1.0: laajennettiin Tolkienin, Taylor Swiftin, Muumien ja Euroviisujen Suomen-tapahtumaseurantaa; täsmennettiin Gurmeet Ram Rahim Singhin musiikkiseurantaa sekä Shakkidraamojen todellisten kiistojen ja shakkisisällöntuottajien sosiaalisen median seurantaa.
