@@ -14,7 +14,7 @@ Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation luku
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
 - `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot ja A–D-luokka kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
 - `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin, näytöshistorian ja Kehitysjonon julkaistun aineiston skeemat.
-- `scripts/build_kanban_data.mjs` ja `.github/workflows/publish-pages.yml` – muodostavat GitHub Issues -tietojen ja natiivien riippuvuuksien täydellisen Kehitysjono-aineiston ja julkaisevat saman Jekyll/Pages-sivuston.
+- `scripts/build_kanban_data.mjs`, `scripts/validate_kanban_data.py` ja `.github/workflows/publish-pages.yml` – muodostavat ja validoivat GitHub Issues -tietojen sekä natiivien riippuvuuksien täydellisen Kehitysjono-aineiston ja julkaisevat saman Jekyll/Pages-sivuston.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `docs/kehitysjonon-aineisto.md` – Kehitysjonon johdetun JSON-aineiston rakenne, päivityskäynnistimet, virhetilat ja Pages-julkaisun käyttöönotto.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
