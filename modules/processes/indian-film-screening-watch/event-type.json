@@ -1,7 +1,7 @@
 {
   "event_type_id": "film-screening",
   "version": "1.0.0",
-  "description": "Näytösvahdin tapahtumatyyppi; passiivinen esimerkki.",
+  "description": "Intialaisten elokuvien näytösvahtiprosessin tapahtumatyyppimääritys. Moduuli ja sen tapahtumatyyppi ovat rekisterissä inactive-tilassa, kunnes erillinen käyttöönotto hyväksytään.",
   "identity_fields": [
     "title",
     "venue",
