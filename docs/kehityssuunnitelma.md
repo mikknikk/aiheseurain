@@ -144,6 +144,18 @@ Kullakin avoimella tiketillä on täsmälleen yksi tilatunniste:
 
 Tilan vaihtuessa vanha tilatunniste poistetaan ja uusi lisätään. Valmiiksi merkitty tiketti suljetaan. Jos suljettu tiketti avataan uudelleen, sille asetetaan tilanteeseen sopiva avoimen työn tilatunniste.
 
+### 4.2.1 Tiketin tilan päivittäminen työn edetessä
+
+Tiketin `tila:*`-labelin on kuvattava työn todellista vaihetta. Tiketin käsittelijä päivittää labelin aina, kun työ siirtyy vaiheesta toiseen:
+
+1. **Työ aloitetaan:** vaihda tilaksi `tila:in-progress` heti, kun tiketti otetaan aktiiviseen toteutukseen. Poista samalla aiempi `tila:ready`- tai `tila:backlog`-label.
+2. **Työ estyy:** jos toteutus ei voi jatkua ratkaisemattoman riippuvuuden, päätöksen tai muun esteen vuoksi, käytä `tila:blocked`-labelia ja kirjaa este tikettiin. Kun este poistuu, palauta tiketti tilanteen mukaan `tila:in-progress`- tai `tila:ready`-tilaan.
+3. **Työ keskeytyy ilman estettä:** älä jätä tikettiä virheellisesti työn alle. Palauta se `tila:ready`-tilaan, jos toteutus on edelleen aloitusvalmis, tai `tila:backlog`-tilaan, jos määrittely tai päätökset ovat jälleen kesken. Kerro tarvittaessa keskeytyksen syy tiketin kommentissa.
+4. **Työ valmistuu:** vaihda tilaksi `tila:done` vasta, kun hyväksymiskriteerit täyttyvät, muutokset on yhdistetty kohdehaaraan ja olennaiset tarkistukset on tehty. Sulje tiketti tämän jälkeen.
+
+Tiketillä säilytetään aina täsmälleen yksi `tila:*`-label. Tilan vaihdossa vanha tilalabel poistetaan ja uusi lisätään samassa päivityksessä. Prioriteetti- ja aihelabelit säilytetään. Pelkkä toteutuksen valmistuminen työhaarassa tai PR:n avaaminen ei oikeuta `tila:done`-labeliin. Jos tiketti suljetaan tekemättä työtä, älä esitä sitä toteutettuna: sulkemisen syy ja tilalabelin oikeellisuus arvioidaan erikseen.
+
+
 ### 4.3 Prioriteetit
 
 Jokaisella tiketillä on täsmälleen yksi prioriteettitunniste:
@@ -355,6 +367,8 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 - Ei erillistä tiketöintitietokantaa tai selainpuolen GitHub-kirjoitusoikeuksia; GitHub Issues on kehitystehtävien ensisijainen tietolähde.
 
 ## 10. Muutosloki
+
+- **2026-11-17:** Tikettien tilalabelien päivittäminen sidottiin työn todelliseen etenemiseen: aktiivisen työn aloitus, estyminen, keskeytys ja varmennettu valmistuminen saavat omat tilasiirtymänsä.
 
 - **2026-11-16:** Kehitysjonon kanbanin vähimmäisversio toteutettiin omalle `/kehitysjono/`-sivulleen. GitHub Issues säilyy ainoana tehtävätietojen lähteenä; Pages-näkymä on vain luku -muotoinen ja tarjoaa kanbanin rinnalla taulukkonäkymän.
 - **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Aiheseuraimen palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
