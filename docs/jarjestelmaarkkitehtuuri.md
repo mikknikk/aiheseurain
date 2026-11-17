@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Liittyvä kehitystehtävä:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75)
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -14,7 +14,7 @@ Järjestelmän suunnitteluperiaate on erottaa toisistaan:
 2. **Miten seuranta tehdään:** yhteinen haku-, arviointi-, varmennus-, raportointi- ja jatkotoimintamalli.
 3. **Millä tekniikalla se tehdään:** ajastin, tekoälypalvelu, suoritusympäristö, integraatiot, tallennus, testaus ja julkaisu.
 
-Erottelu mahdollistaa aiheiden kehittämisen ilman, että jokainen muutos vaatii teknisen järjestelmän uudelleenohjelmointia. Se myös rajaa aihekohtaisen poikkeuslogiikan vaikutukset kyseiseen aiheeseen.
+Erottelu mahdollistaa aiheiden kehittämisen ilman, että jokainen muutos vaatii teknisen järjestelmän uudelleenohjelmointia. Se myös rajaa aihekohtaisen poikkeuslogiikan vaikutukset kyseiseen aiheeseen. Tavoitearkkitehtuurissa tämä viedään moduulitasolle: jokainen aihe tai erillinen seurantaprosessi on itsenäinen kokonaisuus, jonka voi liittää yhteiseen ytimeen sovitulla sopimuksella.
 
 ## 2. Järjestelmäriippumaton toimintamalli
 
@@ -91,7 +91,7 @@ Aihekerros määrittelee seurannan kohteen, ei sitä, millä ohjelmistolla seura
 
 Nykyisessä repositoriossa aihekohtaiset ohjeet ovat `docs/`-hakemiston dokumenteissa. Yhteiset lähdetiedot ovat `data/source-catalog.json`-tiedostossa ja tehtäväkohtaiset lähdekäyttövalinnat `data/sources/{task_id}.json`-tiedostoissa. Yhdeksän aihekierroksen järjestys on `docs/tehtavajono.md`-tiedostossa ja sen koneellisesti ylläpidetty rinnakkaistieto on `data/seurantatila.json`-tiedostossa.
 
-Tavoitetilassa aiheiden rajaukset, hakusanat, kieli- ja aluevalinnat sekä lähdeviittaukset voidaan pitää rakenteisina määrityksinä. Kaikkea ei kuitenkaan pidä pakottaa yhteen skeemaan: esimerkiksi intialaisten elokuvien näytösvahti on erillinen prosessi, koska sillä on oma päivittäinen näytöslogiikka, tapahtumahistoria ja jakelusyöte.
+Tavoitetilassa aiheiden rajaukset, hakusanat, kieli- ja aluevalinnat sekä lähdeviittaukset voidaan pitää rakenteisina määrityksinä. Kaikkea ei kuitenkaan pidä pakottaa yhteen skeemaan: esimerkiksi intialaisten elokuvien näytösvahti on erillinen prosessi, koska sillä on oma päivittäinen näytöslogiikka, tapahtumahistoria ja jakelusyöte. Tavoitetilassa kumpikin mallinnetaan omana moduulinaan. Nykyiset erilliset dokumentit ja JSON-rekisterit ovat tähän siirtymisen lähtöaineistoa, eivät vielä todiste valmiista moduulirajapinnoista.
 
 ### 3.2 Yhteinen seurantakerros
 
@@ -311,7 +311,93 @@ Tavoitetilassa järjestelmä muodostuu kolmesta erotetusta kokonaisuudesta:
 
 Kerrokset kommunikoivat määriteltyjen tietosopimusten ja rajapintojen kautta. Aihekohtainen määritys ei sisällä palveluntarjoajan tunnuksia tai ajastimen asetuksia. Tekninen adapteri ei päätä uutisen uutisarvosta eikä muuta aiheen rajausta.
 
-### 8.1 Tavoiteltu kokonaisrakenne ja vastuut
+### 8.2 Aihemoduulit ja niiden itsenäisyys
+
+Tavoitetilan perusyksikkö on **seurantamoduuli**. Moduuli kuvaa yhden seurattavan aiheen tai yhden erillisen seurantaprosessin. Moduulilla on pysyvä tunniste, oma määritysversio ja määritelty sopimus yhteisen järjestelmän kanssa. Moduulin nimi tai kuvaus voi muuttua ilman, että sen pysyvä tunniste tai siihen liittyvä historia vaihtuu.
+
+Aihemoduuli omistaa sen, **mitä seurataan ja millä aihekohtaisilla ehdoilla**. Sen määritykseen kuuluvat tarpeen mukaan:
+
+- pysyvä moduulitunniste, moduulityyppi ja määrityksen versio;
+- seurannan kohde, sisällyttävät rajaukset ja poissulkusäännöt;
+- nimivariantit, hakusanat, kielet, alueet ja hakuprofiilit;
+- aihekohtaiset lähdeviittaukset, lähteiden käyttörajoitteet ja täydentävät hakulähteet;
+- aihekohtaiset toimitukselliset säännöt, uutisarvon painotukset ja raportointiprofiili;
+- moduulin tarvitsemat syöte- ja tulostietojen rakenteet sekä niiden sopimusversiot;
+- moduulin omistaman seurannan jatkuvuustiedot, kuten aiheen tarkistuspisteet ja tapahtumahistorian tunnisteet.
+
+Moduuli **ei omista eikä määrittele** ajastinta, jonotuspalvelua, tekoälymallia tai -tarjoajaa, tutkimuspalvelun teknistä toteutusta, suoritusympäristöä, tunnuksia, tallennustekniikkaa eikä julkaisualustaa. Ne valitaan yhteisen järjestelmän asetuksissa ja adaptereissa. Moduulin määritys voi ilmoittaa tarvitsemansa kyvykkyydet ja sopimusversiot, mutta ei sisällä palveluntarjoajan salaisuuksia tai palvelukohtaisia käyttöliittymäasetuksia.
+
+Yhteinen ydin vastaa yleisestä ajon elinkaaresta, tietosopimusten validoinnista, haun ja käsittelyn orkestroinnista, laadunvarmistuksesta, tallennuksen rajapinnoista, julkaisusta ja valvonnasta. Se ei sisällä esimerkiksi Tolkieniin, Euroviisuihin tai näytösvahtiin liittyviä kovakoodattuja hakusanoja, lähteitä tai toimituksellisia poikkeuksia. Aihekohtainen toiminta tulee moduulin määrityksestä tai moduulityypin versionhallituista laajennuksista.
+
+Moduuli liittyy yhteiseen ytimeen seuraavan sopimuksen kautta:
+
+1. **Suorituspyyntö:** yhteinen ajonhallinta välittää moduulitunnisteen, määritys- ja sopimusversiot, ajotunnisteen, seurantajakson sekä moduulille kuuluvan tarkistuspisteen viitteen.
+2. **Määrityksen ratkaisu:** määrityspalvelu palauttaa validoidun moduulimäärityksen ja siihen kuuluvat lähde- ja raportointiprofiilit. Määritys ei paljasta teknisiä salaisuuksia.
+3. **Kyvykkyyksien valinta:** yhteisen järjestelmän reititin valitsee yhteensopivan haku-, tekoäly- ja suoritusadapterin moduulin vaatimusten, käyttöoikeuksien, kustannusrajojen ja operatiivisen konfiguraation perusteella. Valinta ei muuta moduulin sisältöä.
+4. **Tuloksen palautus:** suorittaja palauttaa sovitun rakenteiset löydökset, lähdehavainnot, raporttiluonnoksen ja käsittelyn metatiedot. Laadunvarmistus käsittelee tuloksen samalla yhteisellä hyväksymisportilla.
+5. **Tilapäivitys:** moduulin oma tarkistuspiste ja aihekohtainen tapahtumahistoria päivitetään vasta yhteisten onnistumisehtojen täytyttyä. Ajon tekninen loki ja yleinen ajotila kuuluvat yhteiselle ajonhallinnalle.
+
+Tietojen omistajuus erotetaan seuraavasti:
+
+| Tietokokonaisuus | Omistaja | Rajaus |
+|---|---|---|
+| Aiheen rajaukset, hakuprofiilit ja erityissäännöt | Aihemoduuli | Sisältö säilyy teknologian ja suorittajan vaihtuessa |
+| Moduulin pysyvä tunniste ja määritysversiot | Moduulirekisteri | Tunniste ei riipu nimestä, polusta tai palveluntarjoajasta |
+| Moduulin tarkistuspiste ja aihekohtainen tapahtumahistoria | Moduulin tilarekisteri | Moduulin historia ei sekoitu muiden moduulien historiaan |
+| Ajon tunniste, vaihetilat, tekniset lokit ja suoritusmittarit | Yhteinen ajonhallinta ja valvonta | Ajon tiedot viittaavat moduuliin ja sen määritysversioon |
+| Palveluntarjoajan valinta, tunnukset ja tekniset asetukset | Tekninen konfiguraatio ja adapterit | Ei tallenneta aihemoduulin sisältömääritykseen |
+| Hyväksytty raportti ja jakelukanavan tunniste | Julkaisu- ja sisältöarkisto | Julkaisu viittaa moduuliin, ajotunnisteeseen ja lähdehavaintoihin |
+
+Moduulin lisääminen tarkoittaa uuden moduulimäärittelyn rekisteröintiä ja sen sopimusten validointia. Poistaminen tarkoittaa moduulin poistamista uusien ajojen valinnasta; aiempia raportteja, tapahtumia tai tarkistuspisteitä ei hävitetä. Korvaaminen tai siirtäminen säilyttää pysyvän tunnisteen ja historian, jos kyse on saman seurannan jatkumisesta. Uusi, sisällöllisesti eri seuranta saa uuden tunnisteen. Yhteisen sopimuksen rikkova muutos versioidaan ja yhteensopivuus käsitellään hallitusti.
+
+Moduulien ja teknisten palvelujen riippumattomuus on tavoitetilan hyväksymisperiaate:
+
+- uuden aiheen lisääminen tai aiheen poistaminen ei edellytä yhteisen ytimen ohjelmakoodin muuttamista;
+- yhden aiheen määritysten muuttaminen ei muuta muiden moduulien määrityksiä tai tilaa;
+- tekoäly- tai tutkimuspalvelun vaihtaminen ei muuta aihemoduulien sisältömäärityksiä;
+- yhden moduulin voi reitittää eri yhteensopivalle suorittajalle kuin muut moduulit;
+- moduulin voi siirtää toiseen suoritusympäristöön säilyttäen tunnisteet, sopimukset, historian ja hyväksymisehdot;
+- moduulin virhe, poistaminen tai version päivitys ei saa vahingoittaa muiden moduulien ajoja tai tarkistuspisteitä.
+
+Esimerkiksi intialaisten elokuvien näytösvahti on oma prosessimoduulinsa. Se voi määritellä oman päivittäisen rytminsä, näytöstapahtumien tietomallinsa ja RSS-julkaisunsa, mutta käyttää yhteisiä lähde-, tallennus-, laadunvarmistus-, julkaisu- ja valvontapalveluja. Sen erityinen näytöslogiikka ei kuulu yhteiseen ytimeen eikä uutisaiheiden moduuleihin.
+
+Seuraava kaavio havainnollistaa riippumattomuuden tavoitetta:
+
+```mermaid
+flowchart TB
+    subgraph MODULES["Itsenäiset seurantamoduulit"]
+      M1["Aihemoduuli A<br/>oma määritys ja tila"]
+      M2["Aihemoduuli B<br/>oma määritys ja tila"]
+      M3["Erillisprosessin moduuli<br/>oma työnkulku ja historia"]
+    end
+    subgraph CORE["Yhteinen ydin ja sopimukset"]
+      REG["Moduulirekisteri ja määritysten validointi"]
+      ORCH["Ajonhallinta ja orkestrointi"]
+      GATE["Yhteinen laadunvarmistus"]
+      STORE["Tallennus- ja julkaisusopimukset"]
+    end
+    subgraph ADAPTERS["Vaihdettavat tekniset adapterit"]
+      ROUTE["Suorittimen reititys"]
+      AI1["Tekoälypalvelu A"]
+      AI2["Tekoälypalvelu B"]
+      SEARCH["Tutkimus- ja hakupalvelut"]
+      RUNTIME["Suoritusympäristö ja ajastin"]
+    end
+    M1 --> REG
+    M2 --> REG
+    M3 --> REG
+    REG --> ORCH
+    ORCH --> ROUTE
+    ROUTE --> AI1
+    ROUTE --> AI2
+    ROUTE --> SEARCH
+    RUNTIME --> ORCH
+    ORCH --> GATE --> STORE
+```
+
+Kaavio kuvaa tavoitetta, ei nykyistä toteutusta. Moduulien määrä, teknisten palvelujen valinta ja moduulikohtainen reititys ovat konfiguroitavia. Yhteinen ydin ei saa edellyttää, että kaikki moduulit käyttävät samaa tekoälypalvelua tai samaa erillisprosessin työnkulkua.
+
+### 8.3 Tavoiteltu kokonaisrakenne ja vastuut
 
 ~~~mermaid
 flowchart TB
@@ -359,7 +445,7 @@ Vastuut:
 
 | Kokonaisuus | Vastuu | Ei kuulu vastuulle |
 |---|---|---|
-| Aihekohtainen määritys | Seurannan kohde, rajaukset, hakusanat, kielet, alueet, lähdeviittaukset ja erityissäännöt | Salaisuudet, ajastimen toteutus tai palvelukohtaiset API-kutsut |
+| Aihemoduuli | Pysyvä tunniste, versioidut rajaukset, hakuprofiilit, lähdeviittaukset, erityissäännöt ja moduulin omat seurantatiedot | Ajastin, tekoälypalvelu, tekniset tunnukset tai palvelukohtaiset API-kutsut |
 | Tehtäväjono | Tehtävien järjestys, valintakelpoisuus, prioriteetti ja erillisten prosessien tunnistaminen | Varsinainen tiedonhaku tai raportin kirjoittaminen |
 | Ajonhallinta | Ajon tunniste, tila, vaiheiden järjestys, aikakatkaisut ja tarkistuspisteet | Aihekohtainen uutisarvopäätös |
 | Tutkimus ja arviointi | Haku, alkuperäislähteiden tarkistus, löydösten deduplikointi ja väitteiden arviointi | Julkaisukanavan tekninen toteutus |
@@ -389,7 +475,7 @@ Tehtäväjonon tilat erotetaan yksittäisen ajon tiloista. Jonossa tehtävä voi
 
 Ajastuksen tekninen toteutus voidaan vaihtaa, mutta tehtävien aikavyöhykkeet, päällekkäisten ajojen esto, uusintayritykset, tehtävien erillisyys ja käyttäjän valtuutusrajoitukset säilyvät tietosopimuksina. Ajastimen vaihtaminen ei itsessään oikeuta muuttamaan käyttäjän hyväksymää aikataulua.
 
-### 8.3 Kanoniset tallennuspaikat ja tietomallien vastuut
+### 8.4 Kanoniset tallennuspaikat ja tietomallien vastuut
 
 Tavoitetilassa jokaisella tiedolla on yksi ensisijainen omistaja ja kanoninen tallennuspaikka. Käyttöliittymien, raporttien ja välimuistien muodostamat johdetut näkymät eivät muutu rinnakkaisiksi totuuden lähteiksi.
 
@@ -410,7 +496,7 @@ Nykyiset tiedostot ovat näiden tietoluokkien lähtökohta, eivät lupaus siitä
 
 Ajon tapahtumaloki on ensisijaisesti vain lisäävä. Korjaus tai uudelleenluokittelu kirjataan uutena tapahtumana, joka viittaa korjattuun tapahtumaan; aiempaa havaintoa ei hävitetä jälkiä jättämättä. Raportin nykytila voidaan muodostaa tapahtumista tai tallentaa suorituskyvyn vuoksi johdettuna näkymänä, mutta johdettu näkymä voidaan aina rakentaa uudelleen kanonisesta historiasta.
 
-### 8.4 Tavoitellut rajapinnat ja teknologioiden vaihdettavuus
+### 8.5 Tavoitellut rajapinnat ja teknologioiden vaihdettavuus
 
 Toteutuksen osat kommunikoivat versionhallituilla tietosopimuksilla. Tavoiteltuja loogisia rajapintoja ovat:
 
@@ -432,7 +518,7 @@ Tekoälypalvelu ei ole järjestelmän ainoa paikka, jossa toimitukselliset sää
 
 GitHub on nykyinen versionhallinta- ja yhteistyöalusta. Tavoitearkkitehtuuri ei edellytä sen vaihtamista. Jos versionhallinta tai julkaisualusta myöhemmin vaihtuu, GitHub-kohtainen API- ja Actions-logiikka rajataan adaptereihin; aihe- ja tietomäärityksiä ei kirjoiteta uudelleen vain alustan vaihtamisen vuoksi.
 
-### 8.5 Tietovirrat päästä päähän
+### 8.6 Tietovirrat päästä päähän
 
 ```mermaid
 sequenceDiagram
@@ -468,7 +554,7 @@ sequenceDiagram
 
 Jokaisen tietovirran mukana kulkee riittävä alkuperätieto: tehtävä-ID, ajotunniste, määritysversio, seurantajakso, lähde-ID:t ja julkaisun yksilöivä tunniste. Näin raportin voi jäljittää siihen, millä ohjeilla ja lähteillä se muodostettiin. Salaisuuksia, tunnuksia tai tarpeettomia henkilötietoja ei sisällytetä raportteihin tai julkisiin tilatietoihin.
 
-### 8.6 Virheistä palautuminen, jäljitettävyys ja turvallisuus
+### 8.7 Virheistä palautuminen, jäljitettävyys ja turvallisuus
 
 Tavoitetilan virheenkäsittely perustuu siihen, ettei epäonnistunut tai epäselvä vaihe saa näyttää onnistumiselta.
 
@@ -485,7 +571,7 @@ Jokaisesta ajosta tulee voida vastata vähintään: mikä tehtävä suoritettiin
 
 Käyttöoikeudet jaetaan tehtävä- ja komponenttikohtaisesti vähimmän tarpeen periaatteella. Julkinen verkkosivusto saa lukea vain julkistettavaksi hyväksyttyä aineistoa. Sillä ei ole kirjoitustunnuksia. Tunnukset säilytetään suoritusympäristön salaisuuksien hallinnassa, niitä ei tulosteta lokeihin eikä välitetä tekoälymallille tarpeettomasti. Auditointitehtävällä on vain ne kirjoitusoikeudet, joita sen rajattu tilakirjaus edellyttää.
 
-### 8.7 Testaus, valvonta ja julkaisun hyväksymisehdot
+### 8.8 Testaus, valvonta ja julkaisun hyväksymisehdot
 
 Testaus on kerroksittaista:
 
@@ -508,11 +594,11 @@ Julkaisu hyväksytään vain, kun:
 
 Valvonta näyttää erikseen ajon käynnistymisen, vaiheet, viimeisimmän onnistumisen, varoitukset, virheet, lähdekattavuuden ja julkaisun tilan. Puuttuvaa vaihedataa ei päätellä eikä esitetä onnistuneena. Valvomon julkiset tiedot rajataan niin, etteivät lokit tai virhevastaukset paljasta salaisuuksia.
 
-### 8.8 Nykytilan ja tavoitetilan erot
+### 8.9 Nykytilan ja tavoitetilan erot
 
 | Osa | Nykytila (varmennettu tässä dokumentissa) | Tavoitetila | Muutoksen luonne |
 |---|---|---|---|
-| Aiheiden määritykset | Ohjeet ovat pääosin Markdown-dokumenteissa; osa tilasta ja lähteistä on JSON-muodossa | Selkeästi versioidut, validoidut aihe- ja hakuprofiilit; poikkeukset voivat säilyä dokumentoituina | Rakenteistaminen vaiheittain, ei kaiken pakottaminen yhteen skeemaan |
+| Aihemoduulit | Ohjeet ovat pääosin Markdown-dokumenteissa; osa tilasta ja lähteistä on JSON-muodossa, eikä itsenäistä moduulisopimusta ole vielä toteutettu | Pysyvästi tunnisteelliset ja versioidut moduulit, omat rajaukset, lähdeprofiilit, tila ja historia; yhteiseen ytimeen vain versionhallituilla sopimuksilla | Moduulirajojen ja omistajuuden määrittely sekä nykyisten tietojen vaiheittainen siirto |
 | Ajastus | ChatGPT:n kolme ajoitettua tehtävää; asetukset ovat ChatGPT-palvelussa | Vaihdettava ajastinadapteri ja eksplisiittinen tehtävien käynnistys-/lukitusmalli | Ajastuksen ja tehtävälogiikan erottaminen |
 | Tehtäväjono | Yhdeksän aiheen kierto on dokumentoitu ja koneellinen tila on data/seurantatila.json-tiedostossa | Jonon oma versioitu tietosopimus, tilasiirtymät ja varausmekanismi | Nykyisen tilan täsmentäminen ja rinnakkaisten ajojen esto |
 | Suoritus | Haku, arviointi ja raportointi tehdään ChatGPT:ssä; Actions hoitaa teknisiä työnkulkuja | Yhteisen prosessin vaiheet määritellyillä adapterirajapinnoilla | Suorituksen siirrettävyys ja vaiheiden eksplisiittisyys |
@@ -523,11 +609,11 @@ Valvonta näyttää erikseen ajon käynnistymisen, vaiheet, viimeisimmän onnist
 
 Nykytilan taulukko kuvaa repositoriosta ja aiemmin dokumentoiduista toteutuksista varmennettuja asioita. Se ei väitä, että kaikkien ChatGPT-palvelun sisäisiä toteutustietoja tai tallennettuja ajastusasetuksia olisi tarkistettu.
 
-### 8.9 Siirtymävaiheet
+### 8.10 Siirtymävaiheet
 
 Tavoitetilaan siirrytään pienin, palautettavin muutoksin. Nykyistä tuotantopolkua ei korvata ennen kuin uuden osan sopivuus on osoitettu.
 
-1. **Tietosopimusten täsmennys:** inventoidaan nykyiset JSON-tiedostot, Markdown-määritykset, RSS-rakenteet ja ajohistorian tiedot. Määritellään omistajuus, tunnisteet, versiot ja yhteensopivuussäännöt. Nykyisiä kanonisia tiedostoja ei kopioida rinnakkaiseen rekisteriin.
+1. **Moduulirajojen ja tietosopimusten täsmennys:** inventoidaan nykyiset JSON-tiedostot, Markdown-määritykset, RSS-rakenteet ja ajohistorian tiedot. Määritellään moduulien pysyvät tunnisteet, määritysversiot, omistajuus, yhteiset rajapinnat ja yhteensopivuussäännöt. Nykyisiä kanonisia tiedostoja ei kopioida rinnakkaiseen rekisteriin.
 2. **Aihe- ja lähdemääritysten validointi:** rakenteistetaan vain ne kentät, joiden koneellinen käsittely hyödyttää toistettavuutta. Markdown jää ihmiselle sopivaksi selittäväksi dokumentaatioksi ja poikkeusten kuvaukseksi.
 3. **Ajon elinkaaren ja tapahtumakirjausten yhdenmukaistaminen:** käytetään yhteistä ajotunnistetta, täsmennetään vaihetilat, lähdehavainnot, idempotenssi ja tarkistuspisteiden päivitysehdot. Nykyinen erillinen näytösvahti säilyy omana tehtävätyyppinään.
 4. **Adapterirajapintojen käyttöönotto nykyisen teknologian ympärille:** rajataan ajastin, tutkimuspalvelut, tekoäly, GitHub, tallennus ja julkaisu omiin sovittimiinsa. Ensimmäinen adapteri voi käyttää nykyisiä palveluja; vaihdon edellyttämää uutta palvelua ei tarvitse hankkia.
@@ -537,7 +623,7 @@ Tavoitetilaan siirrytään pienin, palautettavin muutoksin. Nykyistä tuotantopo
 
 Vaiheita ei sidota tässä tiettyihin kalenteripäiviin tai palveluvalintoihin. Kukin vaihe pilkotaan GitHub Issues -tehtäviksi, kun sen edellytykset, laajuus ja hyväksymiskriteerit tunnetaan. Siirtymä ei muuta automaatioiden ajastuksia tai kohdekeskusteluja ilman erillistä nimenomaista lupaa.
 
-### 8.10 Avoimet arkkitehtuuripäätökset
+### 8.11 Avoimet arkkitehtuuripäätökset
 
 Seuraavia valintoja ei ole vielä perusteltua lukita:
 
@@ -545,7 +631,8 @@ Seuraavia valintoja ei ole vielä perusteltua lukita:
 - Tarvitaanko pysyvä työjono ja erillinen suorituspalvelu vai voidaanko nykyinen tehtäväkierto säilyttää kevyempänä.
 - Milloin JSON-tiedostot eivät enää riitä kanoniseksi tallennukseksi ja millä mitattavilla perusteilla tietokanta olisi perusteltu.
 - Kuinka pitkään yksityiskohtaisia ajolokeja, hakutuloksia ja väliaikaisia raporttiluonnoksia säilytetään.
-- Tarvitaanko useita tekoäly- tai tutkimuspalveluja rinnakkain, ja miten niiden tuloksia vertaillaan.
+- Tarvitaanko useita tekoäly- tai tutkimuspalveluja rinnakkain, miten moduulikohtainen reititys määritellään ja miten tuloksia vertaillaan.
+- Mitkä moduulityypit ja yhteiset sopimusversiot tarvitaan, ja miten moduulien taaksepäin yhteensopivuus sekä tunnisteiden elinkaari hallitaan.
 - Mitkä tehtävät voidaan suorittaa rinnakkain ilman lähde-, tila- tai julkaisukonflikteja.
 - Miten kustannuksia, suoritusrajoja, käyttöoikeuksia ja palvelukatkoja valvotaan.
 - Mitkä tavoitetilan osat ovat yhteisiä kaikille tehtävätyypeille ja mitkä jäävät tarkoituksella näytösvahdin kaltaisiksi erillisprosesseiksi.
@@ -566,6 +653,7 @@ Päätökset tehdään vasta, kun käytännön kuormitus, virhetilanteet, ylläp
 ### 9.2 Arkkitehtuuripäätelmät ja suositukset
 
 - Aihekohtaiset määritykset kannattaa pitää mahdollisimman rakenteisina ja erottaa yhteisistä toimituksellisista säännöistä.
+- Jokainen aihe tai erillinen seurantaprosessi kannattaa mallintaa itsenäiseksi, pysyvästi tunnisteelliseksi moduuliksi, jonka määritykset, tila ja historia eivät riipu teknisestä suorittajasta.
 - Ajastin, tekoälypalvelu, tallennus, GitHub-integraatio ja julkaisu kannattaa mallintaa vaihdettavina adaptereina.
 - Teknologian vaihto tulee toteuttaa hallittuna migraationa, ei asetuksen vaihtona.
 - Uusi toteutus tulee hyväksyä vasta, kun tietojen eheys, idempotenssi, virhetilanteet ja julkaisun takaisinluku on testattu.
@@ -577,7 +665,7 @@ Nämä ovat suunnittelupäätelmiä ja tulevan kehityksen suosituksia, eivät v�
 - ChatGPT:n kolmen ajoitetun tehtävän tallennetut tarkat aikataulut, aikavyöhykkeet, aktiivisuus ja kohdekeskustelut tulee tarkistaa ChatGPT:n tehtäväasetuksista. Niitä ei voi vahvistaa GitHubin tiedostoista.
 - GitHub-integraation käyttäjäkohtainen repositorioiden valinta ja todelliset tehokkaat käyttöoikeudet tulee tarkistaa GitHub-sovelluksen ja ChatGPT-yhteyden asetuksista.
 - Vaihtoehtoisen tekoälypalvelun tai ajastimen valintaa ei ole tehty.
-- Adapterirajapintoja, migraatiotyökaluja tai toista suoritusympäristöä ei ole tämän dokumentin yhteydessä toteutettu.
+- Adapterirajapintoja, moduulirekisteriä, moduulien sopimusvalidointia, migraatiotyökaluja tai toista suoritusympäristöä ei ole tämän dokumentin yhteydessä toteutettu.
 - Nykyisten aihekohtaisten ohjeiden täydellinen muuttaminen koneellisesti luettaviksi määrityksiksi vaatisi erillisen kartoituksen. Kaikki poikkeukset eivät välttämättä sovellu rakenteiseen yhteiseen malliin.
 
 ## 10. Automaatioiden hallinnan rajat
@@ -601,6 +689,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.2.0 – 2026-11-17:** täsmennettiin tavoitearkkitehtuurin itsenäiset aihe- ja prosessimoduulit, niiden omistamat tiedot, pysyvät tunnisteet, versiointi, yhteiset rajapinnat, moduulikohtainen suorittimien reititys ja riippumattomuuden hyväksymisperiaatteet.
 - **1.1.1 – 2026-11-17:** korjattiin luvun 9 alaotsikoiden numerointi.
 - **1.1.0 – 2026-11-17:** lisättiin tavoitearkkitehtuuri, komponenttien vastuut ja rajapinnat, tietovirrat, kanonisen tiedon omistajuus, virheistä palautuminen, hyväksymisehdot, nykytila–tavoitetila-vertailu, siirtymävaiheet ja avoimet päätökset.
 - **1.0.0 – 2026-11-17:** kuvattiin järjestelmäriippumaton toimintamalli, kolmen arkkitehtuurikerroksen vastuut, nykyinen ChatGPT/GitHub-toteutus, tietovirrat sekä teknologioiden vaihdettavuuden edellytykset. Erotettiin repositoriosta varmennetut tosiasiat, päätelmät ja erikseen tarkistettavat asetukset.
