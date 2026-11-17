@@ -48,23 +48,10 @@ class ModuleRegistryTests(unittest.TestCase):
         )
 
     def fixture_entries(self):
-        """Palauta testien kaksi erilaista moduuliviitettä."""
-        return [
-            {
-                "module_id": "tolkien",
-                "module_type": "topic",
-                "definition_version": "1.0.0",
-                "path": "examples/seurantamoduulit/tolkien.topic.json",
-                "status": "active",
-            },
-            {
-                "module_id": "indian-film-screening-watch",
-                "module_type": "process",
-                "definition_version": "1.0.0",
-                "path": "examples/seurantamoduulit/intialaisten-elokuvien-naytosvahti.process.json",
-                "status": "active",
-            },
-        ]
+        """Lue versionhallittu kahden moduulityypin rekisteritestiaineisto."""
+        fixture_path = ROOT / "tests/fixtures/module-registry.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        return deepcopy(fixture["modules"])
 
     def test_loads_topic_and_process_modules(self):
         """Aihe- ja prosessimoduulit latautuvat omien skeemojensa avulla."""
@@ -99,7 +86,8 @@ class ModuleRegistryTests(unittest.TestCase):
         entries[0]["path"] = "../outside.json"
         self.write_registry(entries)
         result = load_registry(self.registry_path, self.temp_root)
-        self.assertEqual(result.modules[1].status, "invalid")
+        statuses = {item.module_id: item.status for item in result.modules}
+        self.assertEqual(statuses["tolkien"], "invalid")
         entries[0]["path"] = str((self.temp_root / "outside.json").resolve())
         self.write_registry(entries)
         result = load_registry(self.registry_path, self.temp_root)
@@ -122,12 +110,17 @@ class ModuleRegistryTests(unittest.TestCase):
         result = load_registry(self.registry_path, self.temp_root)
         self.assertEqual(result.modules[1].status, "invalid")
 
-    def test_unknown_contract_version_is_invalid_but_isolated(self):
-        """Tuntematon sopimusversio ei estä muiden merkintöjen tilan raportointia."""
-        self.write_registry(self.fixture_entries(), contract_version="99.0.0")
+    def test_unknown_module_contract_version_is_invalid_but_isolated(self):
+        """Tuntematon moduulin sopimusversio eristetään muista moduuleista."""
+        entries = self.fixture_entries()
+        topic_path = self.temp_root / entries[0]["path"]
+        definition = json.loads(topic_path.read_text(encoding="utf-8"))
+        definition["contract_version"] = "99.0.0"
+        topic_path.write_text(json.dumps(definition), encoding="utf-8")
+        self.write_registry(entries)
         result = load_registry(self.registry_path, self.temp_root)
-        self.assertEqual(len(result.invalid_modules), 2)
-        self.assertEqual(result.active_modules, {})
+        self.assertEqual(len(result.invalid_modules), 1)
+        self.assertIn("indian-film-screening-watch", result.active_modules)
 
     def test_invalid_module_file_does_not_abort_registry(self):
         """Virheellinen JSON tai puuttuva tiedosto tuottaa moduulikohtaisen virheen."""
@@ -153,7 +146,8 @@ class ModuleRegistryTests(unittest.TestCase):
         process_path.write_text(json.dumps(definition), encoding="utf-8")
         self.write_registry(entries)
         result = load_registry(self.registry_path, self.temp_root)
-        self.assertEqual(result.modules[0].status, "invalid")
+        statuses = {item.module_id: item.status for item in result.modules}
+        self.assertEqual(statuses["indian-film-screening-watch"], "invalid")
         self.assertEqual(len(result.active_modules), 1)
 
     def test_registry_order_does_not_change_result_order(self):
