@@ -12,13 +12,13 @@ Yksi tiedosto koskee yhtä RSS-syötettä. Jos sama PR muuttaa useita syötteit�
 
 ## Tarkistuskohdat
 
-Jokaisella kohdalla on oltava tulos `pass`, `fail` tai `not_applicable`. Ei-soveltuvalle kohdalle kirjoitetaan perustelu. Yksikin `fail` estää hyväksynnän.
+Jokaisella kohdalla on oltava tulos `pass`, `fail` tai `not_applicable`. Ei-soveltuvalle kohdalle kirjoitetaan perustelu. Lähteiden avaamisen, väitteiden vastaavuuden ja riippumattomuuden kohdissa `evidence`-taulukko on pakollinen ja sen pitää sisältää tarkistettavat lähde- tai väiteviitteet. Yksikin `fail` estää hyväksynnän.
 
 | Tunniste | Tarkistettava asia | Luonne |
 |---|---|---|
-| `sources_opened` | Jokaisen olennaisen väitteen alkuperäinen lähdesivu on avattu ja tarkistettu. Hakutuloskatkelma ei riitä. | Toimituksellinen |
-| `claim_support` | Raportin väitteet, nimet, luvut ja lainaukset vastaavat lähteitä. | Toimituksellinen |
-| `source_independence` | Vahvistuksiksi lasketut toimitukselliset lähteet ovat aidosti riippumattomia; saman uutistoimiston kopioita tai saman tiedotteen toisintoja ei lasketa erikseen. | Toimituksellinen |
+| `sources_opened` | Jokaisen olennaisen väitteen alkuperäinen lähdesivu on avattu ja tarkistettu. Hakutuloskatkelma ei riitä. Lisää näyttöön tarkistetut lähde-URL:t tai lähdetunnisteet. | Toimituksellinen |
+| `claim_support` | Raportin väitteet, nimet, luvut ja lainaukset vastaavat lähteitä. Lisää näyttöön väite- ja lähdeviittaukset. | Toimituksellinen |
+| `source_independence` | Vahvistuksiksi lasketut toimitukselliset lähteet ovat aidosti riippumattomia; saman uutistoimiston kopioita tai saman tiedotteen toisintoja ei lasketa erikseen. Lisää näyttöön vertailtujen lähteiden tunnisteet tai URL:t. | Toimituksellinen |
 | `uncertainty` | Ristiriidat, epävarmuudet, väitteet ja viralliset ratkaisut erotetaan täsmällisesti. | Toimituksellinen |
 | `dates` | Julkaisupäivä, tapahtuma-aika ja lähteen raportointiaika eivät sekoitu. | Toimituksellinen |
 | `tracking_period` | Raportin seurantajakso vastaa tehtävän edellistä onnistunutta tarkistusta ja nykyistä päättymisaikaa. | Toimituksellinen |
@@ -58,9 +58,9 @@ Alla on havainnollistava rakenne. Korvaa esimerkkitiedot todellisella ajolla ja 
   "feed_path": "feeds/tolkien.xml",
   "checked_at": "2026-11-17T12:00:00+02:00",
   "checklist": {
-    "sources_opened": {"status": "pass", "note": "Kaikki väitteiden lähteet avattiin."},
-    "claim_support": {"status": "pass", "note": "Väitteet tarkistettiin alkuperäisistä sisällöistä."},
-    "source_independence": {"status": "pass", "note": "Vahvistukset ovat eri toimituksista."},
+    "sources_opened": {"status": "pass", "note": "Kaikki väitteiden lähteet avattiin.", "evidence": ["lähde-URL-1", "lähde-URL-2"]},
+    "claim_support": {"status": "pass", "note": "Väitteet tarkistettiin alkuperäisistä sisällöistä.", "evidence": ["väite 1 → lähde-URL-1"]},
+    "source_independence": {"status": "pass", "note": "Vahvistukset ovat eri toimituksista.", "evidence": ["lähde-URL-1", "lähde-URL-2"]},
     "uncertainty": {"status": "pass", "note": "Epävarmuudet ja väitteet on eroteltu."},
     "dates": {"status": "pass", "note": "Julkaisu- ja tapahtuma-ajat on erotettu."},
     "tracking_period": {"status": "pass", "note": "Seurantajakso vastaa edellistä onnistumista."},
