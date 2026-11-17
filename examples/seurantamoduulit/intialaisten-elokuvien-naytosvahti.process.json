@@ -1,0 +1,64 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "indian-film-screening-watch",
+  "module_type": "process",
+  "definition_version": "1.0.0",
+  "name": "Intialaisten elokuvien näytösvahti",
+  "description": "Suomessa järjestettävien intialaisten elokuvien näytösten erillinen seuranta ja muutosten historian ylläpito.",
+  "replaces": [],
+  "capabilities": [
+    { "id": "event.discover", "minimum_version": "1.0.0", "required": true },
+    { "id": "event.history", "minimum_version": "1.0.0", "required": true }
+  ],
+  "interfaces": {
+    "input": { "id": "process.request", "version": "1.0.0" },
+    "output": { "id": "event.report", "version": "1.0.0" }
+  },
+  "source_refs": [
+    { "source_id": "finnkino", "role": "discovery", "required": true },
+    { "source_id": "biorex", "role": "discovery", "required": false }
+  ],
+  "search_profiles": [
+    {
+      "id": "indian-film-screenings-finland",
+      "purpose": "Etsi tulevia ja muuttuneita intialaisten elokuvien näytöksiä Suomessa.",
+      "query_terms": ["Indian film screening", "intialainen elokuva näytös"],
+      "languages": ["fi", "en"],
+      "regions": ["FI"]
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "keep-expired-screenings",
+      "category": "reporting",
+      "instruction": "Säilytä menneet näytökset historiassa erillään tulevista näytöksistä.",
+      "severity": "required"
+    },
+    {
+      "id": "avoid-uncertain-merges",
+      "category": "uncertainty",
+      "instruction": "Älä yhdistä epävarmoja elokuvan tai näytöksen tunnistuksia automaattisesti.",
+      "severity": "required"
+    }
+  ],
+  "process_extension": {
+    "extension_id": "event-watch.film-screenings",
+    "extension_version": "1.0.0",
+    "schema_uri": "https://mikknikk.github.io/aiheseurain/schemas/module-extensions/event-watch-film-screenings.schema.json",
+    "configuration": {
+      "event_types": ["film_screening"],
+      "geography": {
+        "country": "FI",
+        "regions": ["Finland"]
+      },
+      "identity": {
+        "event_key_fields": ["film", "venue", "start_time"],
+        "uncertain_match_policy": "do_not_merge_automatically"
+      },
+      "history": {
+        "retain_changes": true,
+        "retain_cancelled": true
+      }
+    }
+  }
+}
