@@ -37,7 +37,14 @@ flowchart TB
       F --> XML
     end
 
-    subgraph PORTTI[\"Raporttikohtainen julkaisun hyväksyntä\"]\n      G[\"reports/julkaisuportit/{run_id}.json<br/>Toimitukselliset tarkistukset ja päätös\"]\n      GS[\"schemas/julkaisuportti.schema.json<br/>Porttiraportin rakenne\"]\n      G -->|\"hyväksyntä PR:ssä\"| XML\n      GS -. \"validoi raportin\" .-> G\n    end\n\n    subgraph NAYTOS["Erillinen näytösvahti"]
+    subgraph PORTTI["Raporttikohtainen julkaisun hyväksyntä"]
+      G["reports/julkaisuportit/{run_id}.json<br/>Toimitukselliset tarkistukset ja päätös"]
+      GS["schemas/julkaisuportti.schema.json<br/>Porttiraportin rakenne"]
+      G -->|"hyväksyntä PR:ssä"| XML
+      GS -. "validoi raportin" .-> G
+    end
+
+    subgraph NAYTOS["Erillinen näytösvahti"]
       N["data/naytosten-muutoshistoria.json<br/>Näytösten nykytila ja tapahtumat"]
     end
 
