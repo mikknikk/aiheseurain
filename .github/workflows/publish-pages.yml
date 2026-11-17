@@ -1,0 +1,60 @@
+name: Kehitysjonon aineisto ja Pages-julkaisu
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled, deleted]
+  issue_comment:
+    types: [created, edited]
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+  pages: write
+  id-token: write
+
+# Kaikki lähteet julkaistaan saman Pages-julkaisujonon kautta.
+# Kesken olevan vanhemman ajon annetaan valmistua ennen uusinta tilannekuvaa.
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    # Issue-kommentit päivittävät myös #79:n riippuvuusvälityksen jälkeen.
+    # PR-kommentit eivät käynnistä turhaa sivustojulkaisua.
+    if: github.event_name != 'issue_comment' || !github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae repositorio
+        uses: actions/checkout@v4
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Muodosta täydellinen Kehitysjonon aineisto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/build_kanban_data.mjs
+      - name: Aseta GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Rakenna Jekyll-sivusto
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: .
+          destination: ./_site
+      - name: Lataa Pages-julkaisu
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+      - name: Julkaise Pagesiin
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        id: deployment
+        uses: actions/deploy-pages@v4
