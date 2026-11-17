@@ -4,7 +4,7 @@ Sovitin säilyttää näytös-ID:t ja lähteiden alkuperäiset vahvistusluokat. 
 kirjoita nykyistä näytöshistoriaa uudelleen eikä muuta automaation asetuksia.
 """
 from copy import deepcopy
-from scripts.event_watch import empty_state, _identity, _sources
+from scripts.event_watch import empty_state, _identity, _sources, reconcile
 
 CLAIM_LEVELS = {"TEATTERIN VAHVISTAMA": "official",
                 "JÄRJESTÄJÄN ILMOITTAMA": "organizer",
@@ -55,3 +55,19 @@ def screening_history_to_generic_state(history, definition):
             "previous": deepcopy(old.get("previous")), "current": deepcopy(old.get("current")),
             "sources": sources, "note": old.get("note") or "Vanha historiatapahtuma säilytetty lukutilassa."})
     return state
+
+
+def reconcile_screening_observations(history, screenings, observed_at, definition,
+                                    *, scan_complete=False, failed_sources=None):
+    """Käsittele näytöshavainnot yleisellä ytimellä vain muistissa.
+
+    Funktio muodostaa lähtötilan nykyisestä näytöshistoriasta, muuntaa annetut
+    näytöstietueet yleisiksi havainnoiksi ja kutsuu yhteistä reconcile-funktiota.
+    Se ei kirjoita JSONia tai RSS:ää eikä muuta automaation onnistumispistettä.
+    """
+    if definition.get("event_type_id") != "film-screening":
+        raise ValueError("Näytösadapteri tarvitsee film-screening-tapahtumatyypin.")
+    state = screening_history_to_generic_state(history, definition)
+    observations = [screening_to_observation(item, observed_at) for item in screenings]
+    return reconcile(state, observations, definition, observed_at,
+                     scan_complete=scan_complete, failed_sources=failed_sources)
