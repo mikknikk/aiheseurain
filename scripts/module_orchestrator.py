@@ -170,7 +170,7 @@ class RunRecorder(Protocol):
 
 
 class EventObservationProvider(Protocol):
-    def collect(self, definition: dict[str, Any], request: ModuleRunRequest, provider_router: Any) -> dict[str, Any]: ...
+    def collect(self, definition: dict[str, Any], request: ModuleRunRequest, provider_router: Any) -> "ObservationBatch": ...
 
 
 class EventWatchModuleExecutor:
@@ -192,16 +192,16 @@ class EventWatchModuleExecutor:
             raise OrchestrationError("Tapahtumatyypin viite poistuu repositoriosta tai tiedostoa ei löydy.")
         event_type = load_event_type(event_path)
         batch = self.observation_provider.collect(definition, request, provider_router)
-        if not isinstance(batch, dict) or not isinstance(batch.get("observations"), list):
+        if not isinstance(batch, ObservationBatch):
             raise OrchestrationError("Tapahtumahavaintojen lähde palautti virheellisen tuloksen.")
-        observed_at = batch.get("observed_at") or request.requested_at
+        observed_at = batch.observed_at or request.requested_at
         state = self.state_loader(definition["module_id"], event_type["event_type_id"])
         updated = reconcile(
-            state, batch["observations"], event_type, observed_at,
-            scan_complete=bool(batch.get("complete")),
-            failed_sources=batch.get("failed_sources", [])
+            state, list(batch.observations), event_type, observed_at,
+            scan_complete=batch.complete,
+            failed_sources=list(batch.failed_sources)
         )
-        complete = bool(batch.get("complete"))
+        complete = batch.complete
         report = {
             "event_type_id":event_type["event_type_id"],
             "new_history_events":len(updated["events"])-len(state["events"]),
@@ -212,8 +212,8 @@ class EventWatchModuleExecutor:
             status="succeeded" if complete else "partial", source_scan_complete=complete,
             checked_at=observed_at, period_start=request.period_start, period_end=request.period_end,
             report_content=json.dumps(report,ensure_ascii=False,sort_keys=True),
-            published_items=None, sources_checked=batch.get("sources_checked"),
-            source_check_run_refs=tuple(batch.get("source_check_run_refs",[])),
+            published_items=None, sources_checked=batch.sources_checked,
+            source_check_run_refs=batch.source_check_run_refs,
             artifacts={"event_state":updated},
             metadata={"event_type_id":event_type["event_type_id"]}
         )
@@ -289,11 +289,19 @@ class ModuleOrchestrator:
                 quality_passed: bool | None=None, published: bool=False,
                 checkpoint_updated: bool=False, comparison: ShadowComparison | None=None,
                 error_code: str | None=None) -> ModuleRunResult:
+        # Virheellisestä pyynnöstäkin muodostetaan turvallinen, skeeman mukainen
+        # virhetulos. Alkuperäinen virhe kuvataan error_code-kentässä.
+        version_pattern = __import__("re").compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
+        safe_mode = request.mode if request.mode in {"shadow","production"} else "shadow"
+        safe_period_start = request.period_start if isinstance(request.period_start,str) and "T" in request.period_start else "1970-01-01T00:00:00+00:00"
+        safe_period_end = request.period_end if isinstance(request.period_end,str) and "T" in request.period_end else safe_period_start
         result=ModuleRunResult(
-            module_id=request.module_id,module_type=module_type,
-            module_definition_version=request.module_definition_version,
-            contract_version=request.contract_version,run_id=request.run_id,
-            period_start=request.period_start,period_end=request.period_end,mode=request.mode,
+            module_id=request.module_id if isinstance(request.module_id,str) and request.module_id else "unknown-module",
+            module_type=module_type if module_type in {"topic","process"} else "topic",
+            module_definition_version=request.module_definition_version if isinstance(request.module_definition_version,str) and version_pattern.fullmatch(request.module_definition_version) else "0.0.0",
+            contract_version=request.contract_version if isinstance(request.contract_version,str) and version_pattern.fullmatch(request.contract_version) else "0.0.0",
+            run_id=request.run_id if isinstance(request.run_id,str) and len(request.run_id)>=3 else "invalid-run",
+            period_start=safe_period_start,period_end=safe_period_end,mode=safe_mode,
             status=status,phase=phase,started_at=started,finished_at=_now(),
             source_scan_complete=source_scan_complete,quality_passed=quality_passed,
             published=published,checkpoint_updated=checkpoint_updated,
