@@ -40,10 +40,11 @@ description: Aiheseuraimen GitHub Issues -pohjainen, vain luku -muotoinen kehity
 
 <section class="kanban-status-panel" aria-label="Tietojen päivitystila">
   <p id="kanban-freshness" class="kanban-freshness" role="status" aria-live="polite">Haetaan tikettejä GitHubista…</p>
-  <button id="kanban-refresh" class="refresh-button" type="button">Päivitä tiketit</button>
+  <div class="kanban-dependency-controls"><button id="kanban-refresh" class="refresh-button" type="button">Päivitä tiketit</button><button id="kanban-dependencies" class="refresh-button" type="button">Näytä riippuvuudet</button></div>
 </section>
 <div id="kanban-api-error" class="notice notice-warning" role="alert" hidden></div>
 <div id="kanban-classification-warning" class="notice notice-warning" role="status" hidden></div>
+<p id="kanban-dependency-status" class="kanban-dependency-status" role="status" aria-live="polite">Riippuvuuksia ei ole vielä haettu.</p>
 
 <section class="content-section" aria-labelledby="view-title">
   <div class="section-heading">
@@ -68,14 +69,16 @@ description: Aiheseuraimen GitHub Issues -pohjainen, vain luku -muotoinen kehity
           <th scope="col">Prioriteetti</th>
           <th scope="col">Aihealue</th>
           <th scope="col">Tila</th>
+          <th scope="col">Riippuvuudet</th>
         </tr>
       </thead>
       <tbody id="kanban-table-body"></tbody>
     </table>
   </div>
+  <section id="kanban-dependency-details" class="kanban-dependency-details" aria-label="Valitun tiketin riippuvuudet" aria-live="polite" hidden></section>
 </section>
 
-<p class="kanban-help">Aihealue suodatetaan GitHub-labelien <code>aihe:</code> perusteella. Jos tiketiltä puuttuu tila tai prioriteetti, sitä ei luokitella arvaamalla. Suljetut GitHub-issuet näkyvät Valmis-sarakkeessa.</p>
+<p class="kanban-help">Riippuvuudet luetaan GitHubin omista issue-riippuvuuksista. Edeltäjä estää tämän tiketin etenemisen; Estää kertoo, mitä töitä tämän tiketin valmistuminen vapauttaa. Riippuvuustiedot ladataan erikseen, jotta sivun tavallinen lataus ei tee yhtä API-pyyntöä jokaista tikettiä kohti. Aihealue suodatetaan GitHub-labelien <code>aihe:</code> perusteella. Jos tiketiltä puuttuu tila tai prioriteetti, sitä ei luokitella arvaamalla. Suljetut GitHub-issuet näkyvät Valmis-sarakkeessa.</p>
 
 <noscript>
   <p class="notice notice-error">Kehitysjono tarvitsee JavaScriptin ja GitHubin julkisen rajapinnan. Voit tarkastella ja ylläpitää tikettejä suoraan <a href="https://github.com/mikknikk/aiheseurain/issues">GitHub Issuesissa</a>.</p>
