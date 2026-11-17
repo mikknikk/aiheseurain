@@ -59,7 +59,7 @@ Muista, että lähdeluettelo ei ole suljettu sallittujen lähteiden luettelo. L�
 
 Lue tämä opas kokonaan:
 
-- [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md).
+- [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md), erityisesti kohta 2.1 hakukriteerien, löydösrekisterin ja kriteerikohtaisten jatkotoimien erottelusta.
 
 Se kannattaa lukea vasta edellisten vaiheiden jälkeen, koska silloin esimerkiksi tehtävä, lähde ja ajokohtainen tarkistus ovat jo käsitteinä tuttuja.
 
