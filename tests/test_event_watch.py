@@ -76,7 +76,9 @@ class EventWatchTests(unittest.TestCase):
 
     def test_conflicting_sources_are_not_silently_merged(self):
         """Ristiriita säilyttää molemmat vaihtoehdot eikä valitse viimeistä lähdettä."""
-        first = observation("film-1", self.base, [source("Lähde A", "https://a.example/event")])
+        first_attributes = deepcopy(self.base)
+        first_attributes["language"] = "suomi"
+        first = observation("film-1", first_attributes, [source("Lähde A", "https://a.example/event")])
         other = deepcopy(self.base)
         other["language"] = "englanti"
         second = observation("film-1", other, [source("Lähde B", "https://b.example/event")])
