@@ -4,6 +4,8 @@ KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: naytosvahti-2026-11-17-02
 
 ENSISIJAINEN OHJE
+Noudata myös docs/ajohistoria.md-tiedoston vaihekohtaista kirjausmallia. Kirjaa tämän ajon tila ja vaiheet vain haaraan run-history/screening-watch; älä kirjoita ajohistoriaa main-haaraan.
+
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele sen sisältöä tästä kehotteesta. Älä sido käynnistyskehotetta tiettyyn käsikirjan versionumeroon.
 
 AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
