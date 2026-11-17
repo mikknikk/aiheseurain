@@ -13,8 +13,10 @@ Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation luku
 - `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. RSS-julkaisujen tarkistusportti on kuvattu tiedostossa [docs/julkaisuportti.md](docs/julkaisuportti.md). Ihmiselle tarkoitettu vaiheittainen lukupolku on tiedostossa [docs/aloitus-ja-lukujarjestys.md](docs/aloitus-ja-lukujarjestys.md); JSON-tiedostojen suhteet ja prosessikaaviot ovat tiedostossa `docs/tietomallit-ja-prosessit.md`.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
 - `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot ja A–D-luokka kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
-- `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin ja näytöshistorian skeemat.
+- `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin, näytöshistorian ja Kehitysjonon julkaistun aineiston skeemat.
+- `scripts/build_kanban_data.mjs`, `scripts/validate_kanban_data.py` ja `.github/workflows/publish-pages.yml` – muodostavat ja validoivat GitHub Issues -tietojen sekä natiivien riippuvuuksien täydellisen Kehitysjono-aineiston ja julkaisevat saman Jekyll/Pages-sivuston.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
+- `docs/kehitysjonon-aineisto.md` – Kehitysjonon johdetun JSON-aineiston rakenne, päivityskäynnistimet, virhetilat ja Pages-julkaisun käyttöönotto.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
 
 ## Syötteet
@@ -108,6 +110,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/lahteet.md`: yleiset lähdeperiaatteet ja kaikkien yhdeksän aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
 - `docs/luotettavuusluokitus.md`: lähteiden yleiset A–D-luokat, väitekohtaiset varmennustasot ja lähderiippuvuuksien arviointi.
 - `docs/saavutettavuus.md`: kaikkien julkaisujen ja Markdown-dokumentaation saavutettavuustavoitteet ja testausperiaatteet.
+- `docs/kehitysjonon-aineisto.md`: Kehitysjonon GitHub Issues -pohjaisen aineiston muodostus, julkaisu ja virheistä palautuminen.
 - `docs/kehityskaytannot.md`: dokumentaation luokat ja kirjoitustavat, käynnistyskehotteiden ylläpito, skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.\n- `docs/github-riippuvuuksien-hallinta.md`: GitHubin natiivien issue-riippuvuuksien automaattisen lisäämisen ja erikseen pyydetyn poistamisen toimintatapa, pyyntölohko ja oikeusrajaukset.

@@ -1,0 +1,81 @@
+name: Kehitysjonon aineisto ja Pages-julkaisu
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled, deleted]
+  issue_comment:
+    types: [created, edited]
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: read
+  pages: write
+  id-token: write
+
+# Kaikki tuotannon Pages-ajot kulkevat saman jonon kautta.
+# Käynnissä olevaa ajoa ei peruta; jonossa uusin ajo lukee aina tuoreimman lähdetilan.
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'github-pages-production' }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Issue-kommentit päivittävät myös #79:n riippuvuusvälityksen jälkeen.
+    # PR-kommentit eivät käynnistä turhaa sivustorakennusta.
+    if: github.event_name != 'issue_comment' || !github.event.issue.pull_request
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae repositorio
+        uses: actions/checkout@v4
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Aseta Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Asenna JSON Schema -validaattori
+        run: python -m pip install jsonschema
+      - name: Muodosta täydellinen Kehitysjonon aineisto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/build_kanban_data.mjs
+      - name: Validoi muodostettu JSON-aineisto
+        run: python scripts/validate_kanban_data.py
+      - name: Aseta GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Rakenna Jekyll-sivusto
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: .
+          destination: ./_site
+      - name: Varmista, että JSON-aineisto sisältyy julkaisuun
+        run: test -s ./_site/data/kehitysjono.json
+      - name: Lataa Pages-julkaisu
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Julkaise Pagesiin
+        id: deployment
+        uses: actions/deploy-pages@v4

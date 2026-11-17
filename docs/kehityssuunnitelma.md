@@ -122,7 +122,7 @@ Sisältösuojaus ja sanitointi testataan erillisillä haitallisen HTML:n testita
 
 ### 4.1 Tietolähde ja vastuunjako
 
-GitHub Issues on kehitystehtävien ensisijainen ja kanoninen tietolähde. Jokainen tehtävä on yksi GitHub-issue, jonka pysyvä tunniste on repositorion issue-numero (esimerkiksi `#42`). Valvomon kehitysjono-osio lukee avoimet ja suljetut tiketit GitHubin julkisesta rajapinnasta ja esittää ne kanban-tauluna.
+GitHub Issues on kehitystehtävien ensisijainen ja kanoninen tietolähde. Jokainen tehtävä on yksi GitHub-issue, jonka pysyvä tunniste on repositorion issue-numero (esimerkiksi `#42`). Valvomon kehitysjono-osio lukee avoimet ja suljetut tiketit sekä niiden natiivit riippuvuudet GitHub Actionsin muodostamasta täydellisestä JSON-aineistosta ja esittää ne kanban-tauluna.
 
 - Tiketit luodaan, niitä muokataan ja ne suljetaan GitHubissa. Kanban-näkymä on aluksi vain luku -käyttöliittymä; selaimessa ei ole GitHub-kirjoitusoikeuksia eikä tunnisteita tai salaisuuksia.
 - GitHub-issue on aina tiketin ensisijainen sisältö. Kanban ei ylläpidä erillistä kopiota tiketin otsikosta, kuvauksesta, tilasta tai prioriteetista.
@@ -241,7 +241,7 @@ Näiden tietolähteiden päälle ei rakenneta rinnakkaisia `status/overview.json
 
 `data/seurantatila.json` validoidaan skeemalla `schemas/seurantatila.schema.json`. Lähdetarkistusloki ja näytöshistoria validoidaan omilla jo olemassa olevilla skeemoillaan. Rakennemuutokset tehdään versionhallittuina ja päivitetään tuottajiin, skeemoihin, validointiin ja dokumentaatioon samassa muutossarjassa.
 
-Nykyinen Pages-julkaisu säilyy `main`-haaran juuresta GitHubin hallitsemalla Jekyll-buildillä. Erillistä julkaisun haaraa tai uutta Pages-deploy-workflow'ta ei lisätä vain Valvomon vuoksi. Automaatioiden seurantatiedot julkaistaan nykyisten hyväksyttyjen repositoriomuutosten mukana; selainkäyttöliittymä lukee vain julkisia tietoja eikä sisällä kirjoitusoikeuksia tai salaisuuksia.
+Kehitysjonon aineisto edellyttää, että nykyinen GitHubin hallitsema branch-pohjainen Pages-julkaisu korvataan yhdellä repositorion omalla `.github/workflows/publish-pages.yml`-työnkululla. Se rakentaa saman Jekyll-sivuston ja julkaisee sen samaan Pages-osoitteeseen, mutta muodostaa `data/kehitysjono.json`-tiedoston ennen Jekyll-buildiä. Erillistä julkaisun haaraa tai rinnakkaista sivustoa ei luoda. Pages-asetuksen Source on vaihdettava GitHub Actionsiin. Selainkäyttöliittymä lukee vain julkisia tietoja eikä sisällä kirjoitusoikeuksia tai salaisuuksia.
 
 Viimeisimmän onnistumisen puuttuminen näytetään tuntemattomana, aikataulun ylittänyt onnistuminen vanhentuneena. Viimeisintä onnistumista ei tulkita käynnissä olevaksi ajoksi. Nykyiset koneelliset tiedot eivät sisällä vaihekohtaista ajohistoriaa, joten vaihetiloja ei näytetä ennen kuin automaatiot tuottavat niistä erikseen varmennetun tiedon. Tuoreusrajat ja GitHub API:n välimuistiperiaatteet on määritelty Valvomon tietomallidokumentissa.
 
@@ -288,13 +288,14 @@ Tietosuoja:
 Jokaisessa muutoksessa tarkistetaan myös muutoksen vaikutus koko repositorion viittauksiin:
 
 1. Uusien tiedostojen ja URL-osoitteiden kaikki viittaukset ovat oikein.
-2. Muuttuneita tai poistettuja polkuja ei käytetä enää vanhoissa ohjeissa, skripteissä, testeissä tai asetuksissa.
-3. README, Pages-julkaisun asetukset, työnkulut, syötekatalogi ja testit osoittavat samoihin tiedostoihin.
-4. Testit tarkistavat koneellisesti keskeiset viittaukset ja skeemat.
-5. Muutetut tiedostot luetaan takaisin GitHubista ja niiden sisältö tarkistetaan.
-6. Pages-julkaisun jälkeen tarkistetaan, että sivusto ja julkiset JSON-/RSS-osoitteet todella toimivat.
+2. Kehitysjonon julkaistu JSON-aineisto muodostuu täydellisenä ja sen skeema sekä riippuvuussuhteet täsmäävät GitHubin lähdetietoihin.
+3. Muuttuneita tai poistettuja polkuja ei käytetä enää vanhoissa ohjeissa, skripteissä, testeissä tai asetuksissa.
+4. README, Pages-julkaisun asetukset, työnkulut, syötekatalogi ja testit osoittavat samoihin tiedostoihin.
+5. Testit tarkistavat koneellisesti keskeiset viittaukset ja skeemat.
+6. Muutetut tiedostot luetaan takaisin GitHubista ja niiden sisältö tarkistetaan.
+7. Pages-julkaisun jälkeen tarkistetaan, että sivusto ja julkiset JSON-/RSS-osoitteet todella toimivat.
 
-Tarkista muutoksen jälkeen myös nykyisen Pages-julkaisun rakenne ja työnkulut; älä oleta, että ehdotetut hakemistot tai julkaisumekanismit ovat jo käytössä.
+Tarkista muutoksen jälkeen myös nykyisen Pages-julkaisun rakenne ja työnkulut; älä oleta, että ehdotetut hakemistot tai julkaisumekanismit ovat jo käytössä. Kehitysjonon aineiston käynnistimet, virheestä palautuminen ja Pages-asetuksen käyttöönotto on kuvattu [Kehitysjonon aineisto-ohjeessa](kehitysjonon-aineisto.md).
 
 ## 8. Kehitysvaiheet ja etenemisen seuranta
 
