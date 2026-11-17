@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/seurantamoduulirekisteri.schema.json",
+  "title": "Aiheseuraimen seurantamoduulirekisteri",
+  "description": "Rekisterin tekniset viitteet moduulien muuttumattomiin määritysjulkaisuihin. Ajastus- ja palveluntarjoaja-asetukset eivät kuulu rekisteriin.",
+  "type": "object",
+  "required": ["registry_version", "contract_version", "modules"],
+  "properties": {
+    "registry_version": { "const": "1.0.0" },
+    "contract_version": { "const": "1.0.0" },
+    "modules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/registryEntry" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "registryEntry": {
+      "type": "object",
+      "required": ["module_id", "module_type", "definition_version", "path", "status"],
+      "properties": {
+        "module_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$",
+          "maxLength": 120
+        },
+        "module_type": { "enum": ["topic", "process"] },
+        "definition_version": { "$ref": "#/$defs/semanticVersion" },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Repositorion juuresta alkava suhteellinen polku. Absoluuttiset polut ja hakemiston ulkopuolelle poistuminen kielletään lataajassa."
+        },
+        "status": { "enum": ["active", "inactive"] }
+      },
+      "additionalProperties": false
+    }
+  }
+}
