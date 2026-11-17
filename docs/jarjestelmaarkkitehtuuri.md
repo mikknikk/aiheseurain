@@ -481,11 +481,11 @@ Tavoitetilassa jokaisella tiedolla on yksi ensisijainen omistaja ja kanoninen ta
 
 | Tieto | Kanoninen omistaja tavoitetilassa | Tietosisältö ja sääntö |
 |---|---|---|
-| Aiheiden määritykset | Aihekonfiguraatioiden versioitu rekisteri | Aihe-ID, rajaus, hakuprofiilit, kielet, alueet, poikkeukset ja raportointiprofiili |
+| Aihemoduulien määritykset | Moduulirekisterin versioitu tietovarasto | Pysyvä moduuli-ID, moduulityyppi, määritysversio, rajaus, hakuprofiilit, lähteet, poikkeukset ja sopimusversiot |
 | Lähteiden perustiedot | Yhteinen lähdekatalogi | Yksilöllinen lähde-ID, nimi, URL, lähdetyyppi ja yhteinen arvio |
 | Tehtäväkohtaiset lähdekäytöt | Tehtäväkohtainen lähderekisteri | Viittaukset lähdekatalogiin, kriittisyys, käyttörajoitteet ja tehtäväkohtaiset asetukset |
 | Tehtäväjono | Tehtäväjonon kanoninen tila | Tehtävien järjestys, tyyppi, valintakelpoisuus ja seuraava vuoro |
-| Ajon tila ja tarkistuspisteet | Ajonhallinnan tilarekisteri | Ajotunniste, tehtävä, vaiheet, aloitus/lopetus, tulos ja viimeisin onnistunut tarkistuspiste |
+| Ajon tila ja tarkistuspisteet | Yhteinen ajonhallinnan tilarekisteri sekä moduulikohtainen tilarekisteri | Ajotunniste, tehtävä, moduuli-ID ja määritysversio, vaiheet, tulos sekä moduulin viimeisin onnistunut tarkistuspiste |
 | Lähdetarkistukset | Ajon lähdehavaintojen loki | Tarkistetut lähteet, tarkistusajankohta, tulos ja tarkistamatta jäämisen syy |
 | Raportit ja julkaisut | Julkaisuarkisto tai kanoninen jakelukanava | Raportin sisältö, yksilöllinen tunniste, seurantajakso, lähteet ja julkaisun tila |
 | Tapahtumahistoria | Tehtäväkohtainen append-only-tapahtumaloki | Havaitut lisäykset, muutokset, poistumat ja niiden alkuperä |
@@ -504,9 +504,9 @@ Toteutuksen osat kommunikoivat versionhallituilla tietosopimuksilla. Tavoiteltuj
 |---|---|---|
 | Scheduler | Tehtävän tunniste tai käynnistystapa | Käynnistystapahtuma ja ajastusmetatiedot |
 | Queue | Tehtävätyypit, jonotila ja riippuvuudet | Valittu tehtävä ja varaus |
-| ConfigurationProvider | Tehtävä-ID ja määritysversio | Validoitu aihe- ja lähdemääritys |
-| ResearchProvider | Hakuprofiili, lähteet ja seurantajakso | Lähdeviitteelliset löydökset ja tarkistustulokset |
-| AIProcessor | Löydökset, lähdesisällöt ja toimitukselliset säännöt | Arvioidut väitteet, deduplikoidut tapahtumat ja raporttiluonnos |
+| ModuleRegistry / ConfigurationProvider | Moduuli-ID, määritysversio ja sopimusversio | Validoitu moduulimääritys, moduulityyppi ja siihen kuuluvat lähde- ja raportointiprofiilit |
+| ResearchProvider | Moduulin hakuprofiili, lähteet, seurantajakso ja vaaditut kyvykkyydet | Lähdeviitteelliset löydökset ja tarkistustulokset sovitussa rakenteessa |
+| ExecutionRouter / AIProcessor | Moduulin vaatimukset, löydökset, lähdesisällöt ja toimitukselliset säännöt | Yhteensopivan suorittajan valinta sekä arvioidut väitteet, deduplikoidut tapahtumat ja raporttiluonnos |
 | QualityGate | Raportti ja hyväksymissäännöt | Hyväksyntä tai hylkäys perusteluineen |
 | StateStore | Ajon tapahtumat ja tilapäivitykset | Pysyvä tila, tarkistuspisteet ja historiatiedot |
 | Publisher | Hyväksytty julkaisu ja idempotenssiavain | Julkaisutunniste ja takaisinlukutulos |
@@ -575,12 +575,14 @@ Käyttöoikeudet jaetaan tehtävä- ja komponenttikohtaisesti vähimmän tarpeen
 
 Testaus on kerroksittaista:
 
-1. **Määritysten ja skeemojen testit:** virheelliset aiherajaukset, lähdeviittaukset, tilat ja versiot hylätään ennen ajoa.
-2. **Yksikkötestit:** tehtäväjono, aikavälit, deduplikointi, tilasiirtymät, idempotenssi ja virheiden käsittely.
-3. **Integraatiotestit:** haku-, tallennus-, versionhallinta- ja julkaisusovittimien sopimukset testataan erikseen.
-4. **Regressiotestit:** vanhojen raporttien, GUIDien, tapahtumien ja tarkistuspisteiden säilyminen varmistetaan.
-5. **Päästä päähän -testit:** rajattu testiajo osoittaa koko polun käynnistyksestä takaisinluettuun julkaisuun. Testiympäristö ei saa muuttaa tuotannon tehtäväjonoa tai tarkistuspisteitä.
-6. **Manuaaliset hyväksyntätestit:** käyttöliittymän saavutettavuus, raportin luettavuus ja todellisten lähteiden asianmukainen tulkinta arvioidaan siltä osin kuin niitä ei voi luotettavasti automatisoida.
+1. **Määritysten ja skeemojen testit:** virheelliset moduulitunnisteet, määritys- ja sopimusversiot, aiherajaukset, lähdeviittaukset ja tilat hylätään ennen ajoa.
+2. **Moduulien eristystestit:** yhden moduulin lisääminen, poistaminen, version vaihto tai virhe ei muuta muiden moduulien määrityksiä, tilaa tai ajoja eikä edellytä yhteisen ytimen aihekohtaista koodimuutosta.
+3. **Reitityksen sopimustestit:** vähintään yhden moduulin voi ohjata vaihtoehtoiselle yhteensopivalle tekoäly- tai tutkimusadapterille muuttamatta moduulin sisältömääritystä; tulos läpäisee saman tietosopimuksen ja laadunvarmistuksen.
+4. **Yksikkötestit:** tehtäväjono, aikavälit, deduplikointi, tilasiirtymät, idempotenssi ja virheiden käsittely.
+5. **Integraatiotestit:** haku-, tallennus-, versionhallinta- ja julkaisusovittimien sopimukset testataan erikseen.
+6. **Regressiotestit:** vanhojen raporttien, GUIDien, tapahtumien ja tarkistuspisteiden säilyminen varmistetaan.
+7. **Päästä päähän -testit:** rajattu testiajo osoittaa koko polun käynnistyksestä takaisinluettuun julkaisuun. Testiympäristö ei saa muuttaa tuotannon tehtäväjonoa tai tarkistuspisteitä.
+8. **Manuaaliset hyväksyntätestit:** käyttöliittymän saavutettavuus, raportin luettavuus ja todellisten lähteiden asianmukainen tulkinta arvioidaan siltä osin kuin niitä ei voi luotettavasti automatisoida.
 
 Julkaisu hyväksytään vain, kun:
 
@@ -602,6 +604,7 @@ Valvonta näyttää erikseen ajon käynnistymisen, vaiheet, viimeisimmän onnist
 | Ajastus | ChatGPT:n kolme ajoitettua tehtävää; asetukset ovat ChatGPT-palvelussa | Vaihdettava ajastinadapteri ja eksplisiittinen tehtävien käynnistys-/lukitusmalli | Ajastuksen ja tehtävälogiikan erottaminen |
 | Tehtäväjono | Yhdeksän aiheen kierto on dokumentoitu ja koneellinen tila on data/seurantatila.json-tiedostossa | Jonon oma versioitu tietosopimus, tilasiirtymät ja varausmekanismi | Nykyisen tilan täsmentäminen ja rinnakkaisten ajojen esto |
 | Suoritus | Haku, arviointi ja raportointi tehdään ChatGPT:ssä; Actions hoitaa teknisiä työnkulkuja | Yhteisen prosessin vaiheet määritellyillä adapterirajapinnoilla | Suorituksen siirrettävyys ja vaiheiden eksplisiittisyys |
+| Tekoälyn ja tutkimuksen reititys | ChatGPT ja käytettävissä olevat työkalut muodostavat nykyisen suorituspolun; moduulikohtaista reititystä ei ole toteutettu | Moduulin vaatimuksiin perustuva, palveluntarjoajista riippumaton adapterivalinta | Palveluvalintojen erottaminen moduulien sisältömäärityksistä |
 | Ajohistoria | ChatGPT-automaatioiden vaihehistoria on erillisissä haaroissa; koneellisten tietojen kattavuus on osittainen | Yhtenäinen ajotunniste, vaihe- ja lähdekohtainen auditointijälki | Tietomallin ja kirjaamisen yhdenmukaistaminen |
 | Tallennus | Versionhallittu GitHub-repositorio ja JSON-tiedostot | Kanoniset tallennusrajapinnat; tallennuspalvelu vaihdettavissa tietosopimuksia säilyttäen | Adapteri ja mahdollinen migraatio vasta tarpeen mukaan |
 | Julkaisu | RSS ja GitHub Pages; hyväksymisportti ja takaisinlukumenettely | Julkaisukanavasta riippumaton julkaisuadapteri, idempotenssi ja takaisinlukutodiste | Nykyisen laadunvarmistuksen säilyttäminen eri kanavissa |
