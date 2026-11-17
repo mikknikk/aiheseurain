@@ -110,7 +110,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/kehityskaytannot.md`: dokumentaation luokat ja kirjoitustavat, käynnistyskehotteiden ylläpito, skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.
-- `docs/ajohistoria.md`: ChatGPT-automaatioden erillisten ajohistoriahaarojen tietomalli ja kirjausmenettely.\n- `docs/valvomon-tietomalli.md`: nykyinen GitHub Pages -julkaisutapa, Valvomon kanoniset tietolähteet, skeemat, julkistettavat kentät, ajantasaisuuden tulkinta ja API:n käyttöperiaatteet.
+- `docs/ajohistoria.md`: ChatGPT-automaatioiden erillisten ajohistoriahaarojen tietomalli ja kirjausmenettely.\n- `docs/valvomon-tietomalli.md`: nykyinen GitHub Pages -julkaisutapa, Valvomon kanoniset tietolähteet, skeemat, julkistettavat kentät, ajantasaisuuden tulkinta ja API:n käyttöperiaatteet.
 - `docs/tietomallit-ja-prosessit.md`: JSON-tiedostojen tarkoitukset ja keskinäiset viittaukset, lähdetietojen kulku, ajolokin tulkinta, näytöshistorian rakenne sekä Mermaid-prosessikaaviot.
 - `index.html`: Aiheseuraimen etusivu.
 - `valvomo/index.html`: Valvomon käyttöliittymä osoitteessa `/valvomo/`.
@@ -168,7 +168,7 @@ Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaa
 
 ## Koneellisesti luettava seurantatila
 
-ChatGPT-automaatioden vaihekohtainen ajohistoria tallennetaan erillisiin `run-history/main-automation`, `run-history/screening-watch` ja `run-history/quality-check` -haaroihin. Valvomo lukee niiden `history.json`-tiedostot julkisina tietoina; ne eivät ole GitHub Actions -ajoja eivätkä muuta `main`-haaran RSS-julkaisuja. Tietomalli ja kirjausmenettely: [docs/ajohistoria.md](docs/ajohistoria.md).
+ChatGPT-automaatioiden vaihekohtainen ajohistoria tallennetaan erillisiin `run-history/main-automation`, `run-history/screening-watch` ja `run-history/quality-check` -haaroihin. Valvomo lukee niiden `history.json`-tiedostot julkisina tietoina; ne eivät ole GitHub Actions -ajoja eivätkä muuta `main`-haaran RSS-julkaisuja. Tietomalli ja kirjausmenettely: [docs/ajohistoria.md](docs/ajohistoria.md).
 
 `data/seurantatila.json` tallentaa yhdeksän kiertotehtävän ja erillisen näytösvahdin koneellisesti luettavan tilan. Sen tehtäväkierron on vastattava `docs/tehtavajono.md`:tä. Seurantajaksojen, aikaleimojen ja päivitysten tarkat säännöt ovat [seurantaohjeessa](docs/seuranta.md).
 
