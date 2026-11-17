@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.4
+Ohjeversion tunniste: 1.0.5
 
 ## 1. Tehtävä ja rajaus
 
@@ -9,6 +9,10 @@ Tämä on automaation **Viikoittainen järjestelmän laatutarkistus** täydellin
 Tarkista `mikknikk/aiheseurain` kerran viikossa ajon aikana luetun main-haaran ja GitHub Actions -ajojen perusteella. Älä nojaa vanhoihin keskusteluihin tai oletuksiin.
 
 Tämä on auditointi, ei korjaava ylläpito. Älä muuta RSS-syötteitä, skriptejä, työnkulkuja, automaatioita tai asetuksia äläkä tee korjaavia issueita tai pull requesteja. Älä korjaa löydöksiä itse. Sallitut repository-kirjoitukset ovat vain (1) tämän käsikirjan version ja onnistuneen tarkistuksen aikaleiman kirjaaminen `data/seurantatila.json`-tiedoston `quality_check_instructions`-osioon kohdan 8 mukaisesti sekä (2) auditointiraportin lisääminen `reports/laatutarkistukset/`-hakemistoon kohdan 5 mukaisesti. Älä muuta saman JSONin muita kenttiä.
+
+## 1.1. Ajastusten ja asetusten hallinnan suojaus
+
+Noudata kaikkia Aiheseurainin automaatioita koskevaa [hallintaperiaatetta](automaation-hallintaperiaatteet.md). Laatutarkistuksen suorittaminen ei anna lupaa muuttaa tämän tai muiden automaatioiden ajastusta, aktiivisuutta, aikataulua, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Auditoinnissa havaitut ongelmat raportoidaan käyttäjälle; niitä ei korjata muuttamalla ajastuksia tai asetuksia. GitHubiin tehty auditointiraportti tai seurantatilan päivitys ei muuta ChatGPT:n tehtäväasetuksia.
 
 ## 2. Ajon alun esitarkistus
 
