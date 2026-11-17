@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { filterIssues, normalizeIssue, normalizeIssues, STATUS_COLUMNS, fetchAllIssues, buildDependencyGraph, fetchAllDependencies } from "../assets/js/kanban.js";
+import { filterIssues, normalizeIssue, normalizeIssues, STATUS_COLUMNS, fetchPublishedDataset, buildDependencyGraph } from "../assets/js/kanban.js";
 
 const makeIssue = (overrides = {}) => ({
   number: 12,
@@ -61,21 +61,6 @@ test("haku ja prioriteetti- sekä aihealue-suodattimet toimivat yhdessä", () =>
   assert.deepEqual(filterIssues(issues, { query: "12" }).map((issue) => issue.number), [12]);
 });
 
-test("API-haku hakee seuraavan sivun, jos ensimmäinen sivu on täynnä", async () => {
-  const calls = [];
-  const fetchMock = async (url) => {
-    calls.push(String(url));
-    const page = new URL(url).searchParams.get("page");
-    const items = page === "1"
-      ? Array.from({ length: 100 }, (_, index) => makeIssue({ number: index + 1 }))
-      : [makeIssue({ number: 101 })];
-    return { ok: true, json: async () => items };
-  };
-  const issues = await fetchAllIssues(fetchMock);
-  assert.equal(calls.length, 2);
-  assert.equal(issues.length, 101);
-});
-
 test("Kehitysjono-sivu ja navigaatio tarjoavat saavutettavan vain luku -osion", () => {
   const page = readFileSync(new URL("../kehitysjono/index.html", import.meta.url), "utf8");
   const header = readFileSync(new URL("../_includes/site-header.html", import.meta.url), "utf8");
@@ -85,17 +70,44 @@ test("Kehitysjono-sivu ja navigaatio tarjoavat saavutettavan vain luku -osion", 
   assert.match(page, /aria-labelledby="filters-title"/);
   assert.match(page, /aria-pressed="true"/);
   assert.match(page, /kanban-table/);
-  assert.match(page, /kanban-dependencies/);
+  assert.match(page, /kanban-refresh/);
   assert.match(page, /kanban-dependency-details/);
   assert.match(script, /dependencies\/blocked_by/);
   assert.match(script, /data-issue-number/);
-  assert.match(script, /Tämän suunnan riippuvuustietoja ei saatu kokonaan haettua/);
+  assert.doesNotMatch(script, /api\\.github\\.com\\/repos|dependencies\\/blocked_by/);
   assert.match(header, /\/kehitysjono\//);
   assert.match(header, /page\.section == "kehitysjono"/);
   assert.match(layout, /assets\/js\/kanban\.js/);
   assert.doesNotMatch(script, /Authorization\s*:|Bearer\s+[A-Za-z0-9_-]+|method\s*:\s*[\"'](?:POST|PATCH|DELETE)[\"']/i);
 });
 
+
+test("julkaistun täydellisen aineiston haku hyväksyy versionoidun JSONin", async () => {
+  const dataset = {
+    schema_version: 1, status: "complete", generated_at: "2026-11-17T10:00:00.000Z",
+    issue_count: 1, issues: [makeIssue()], dependencies: [{ issueNumber: 12, blockedBy: [] }]
+  };
+  const calls = [];
+  const result = await fetchPublishedDataset(async (url, options) => {
+    calls.push({ url, options });
+    return { ok: true, json: async () => dataset };
+  }, "/data/kehitysjono.json");
+  assert.equal(result.issue_count, 1);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].url, "/data/kehitysjono.json");
+  assert.equal(calls[0].options.cache, "no-store");
+});
+
+test("puutteellista tai väärin versioitua julkaistua aineistoa ei hyväksytä", async () => {
+  const incomplete = {
+    schema_version: 1, status: "partial", generated_at: "2026-11-17T10:00:00.000Z",
+    issue_count: 0, issues: [], dependencies: []
+  };
+  await assert.rejects(
+    fetchPublishedDataset(async () => ({ ok: true, json: async () => incomplete }), "/data.json"),
+    /virheellinen tai puutteellinen/
+  );
+});
 
 test("riippuvuusverkko johtaa käänteiset estävät suhteet samasta GitHub-tiedosta", () => {
   const first = normalizeIssue(makeIssue({ number: 12, title: "Edeltävä työ" }));
