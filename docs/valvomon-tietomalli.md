@@ -16,9 +16,9 @@ Kartoitus 16.11.2026:
 - RSS-tiedostot ovat juuren `feeds/`-hakemistossa, ja niiden kanoniset osoitteet ovat muotoa `https://mikknikk.github.io/aiheseurain/feeds/{tiedosto}.xml`.
 - Ennen tiketin #83 toteutusta repositorion omissa työnkuluissa ei ollut Pages-julkaisua tekevää workflow-tiedostoa. GitHubin hallitsema `pages build and deployment` -ajo rakensi `main`-haaran juuren Jekyll-sivuston.
 - Tiketin #83 ratkaisu korvaa tämän yhden Pages-julkaisupolun repositorion `.github/workflows/publish-pages.yml`-työnkululla, jotta Actions-ajon aikana muodostettu `data/kehitysjono.json` voidaan sisällyttää samaan sivustoon. Pages-asetuksen Source on vaihdettava GitHub Actionsiin käyttöönoton yhteydessä.
-- Repositorion juuressa on nyt Aiheseuraimen etusivu (`index.html`) ja Valvomo julkaistaan omassa `valvomo/index.html`-tiedostossaan osoitteessa `/valvomo/`. Sivusto on edelleen staattinen, Jekyllillä rakennettava julkaisu, ei oma sovelluskehys tai räätälöity Actions-buildi.
+- Repositorion juuressa on nyt Aiheseuraimen etusivu (`index.html`) ja Valvomo julkaistaan omassa `valvomo/index.html`-tiedostossaan osoitteessa `/valvomo/`. Sivusto pysyy staattisena Jekyll-julkaisuna. Rakennus suoritetaan Actionsissa, jotta ajonaikainen Kehitysjono-aineisto voidaan sisällyttää julkaisuun.
 
-Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajulkaisu `main`-haaran juuresta. Pages-buildin ajoloki vahvistaa myös lähdepolun: `actions/jekyll-build-pages` sai asetuksen `source: .` (repositoriojuuri). Pages-asetusten hallintasivua ei tarvinnut muuttaa tai lukea erikseen, koska toteutunut build-ajo vahvistaa käytössä olevan lähdepolun. Nykyinen julkaisutapa ja RSS-polut säilytetään tässä kehitysvaiheessa.
+Lähtötilanteen Pages-build käytti asetusta `source: .` (repositoriojuuri). Uusi workflow käyttää samaa Jekyll-lähdepolkua, mutta muodostaa Kehitysjonon JSON-aineiston ennen build-vaihetta. Julkaisun lähde vaihtuu GitHub Actionsiin; Pages-osoite, Jekyll-sivusto ja RSS-polut säilyvät.
 
 ## 2. Sivurakenne ja reitit
 
