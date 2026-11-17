@@ -175,7 +175,7 @@ def main() -> None:
 
     missing = changed_feeds - covered
     if missing:
-        fail("Julkaisuportriraportti puuttuu syötteiltä: " + ", ".join(sorted(missing)))
+        fail("Julkaisulaadun porttiraportti puuttuu syötteiltä: " + ", ".join(sorted(missing)))
 
     print(f"OK: {len(covered)} RSS-syötteen raporttikohtainen julkaisulaadun portti hyväksytty.")
     print("OK: toimitukselliset kohdat hyväksytty, automaattiset RSS-testit läpäisty ja vanhat GUIDit säilytetty.")
