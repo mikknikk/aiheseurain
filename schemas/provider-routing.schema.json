@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/provider-routing.schema.json",
+  "title": "Tekoäly- ja tutkimuspalvelujen tekninen reitityskonfiguraatio",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "providers",
+    "routes",
+    "default_route"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provider"
+      }
+    },
+    "routes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/route"
+      }
+    },
+    "default_route": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/route"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "route": {
+      "type": "object",
+      "required": [
+        "ai_processor",
+        "research_provider"
+      ],
+      "properties": {
+        "ai_processor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "research_provider": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "provider": {
+      "type": "object",
+      "required": [
+        "provider_id",
+        "provider_type",
+        "adapter_id",
+        "capabilities",
+        "credential_env",
+        "timeout_seconds",
+        "retry_policy",
+        "cost_limit",
+        "enabled"
+      ],
+      "properties": {
+        "provider_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,63}$"
+        },
+        "provider_type": {
+          "enum": [
+            "ai_processor",
+            "research_provider"
+          ]
+        },
+        "adapter_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]{1,100}$"
+        },
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]{1,100}$"
+          }
+        },
+        "credential_env": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z_][A-Z0-9_]{1,100}$"
+          }
+        },
+        "timeout_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 300
+        },
+        "retry_policy": {
+          "type": "object",
+          "required": [
+            "max_attempts",
+            "base_delay_seconds",
+            "max_delay_seconds"
+          ],
+          "properties": {
+            "max_attempts": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "base_delay_seconds": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 30
+            },
+            "max_delay_seconds": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 120
+            }
+          },
+          "additionalProperties": false
+        },
+        "cost_limit": {
+          "type": "object",
+          "required": [
+            "per_run"
+          ],
+          "properties": {
+            "per_run": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "enabled": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

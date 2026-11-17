@@ -1,0 +1,1 @@
+"""Palveluntarjoajien adapterit ja testitoteutukset."""

@@ -325,6 +325,10 @@ Näytösvahti ei kuluta aihekierroksen vuoroa. Intialaisen elokuvan uutisseurant
 
 Moduulikohtaisen tilan skeema ja päivityssäännöt on kuvattu [erillisessä dokumentissa](moduulikohtainen-tila.md). Tämänhetkinen migraatio säilyttää vanhan seurantatilan yhteensopivuuslähteenä; automaatioiden kirjoituspolku vaihdetaan vasta yhteisen orkestroinnin käyttöönotossa.
 
+### 7.2 Palveluntarjoajien tekninen reititys
+
+`data/provider-routing.json` on erillinen tekninen konfiguraatio. Moduulit määrittelevät vaaditut kyvykkyydet, mutta reititys valitsee AIProcessor- ja ResearchProvider-adapterit. Konfiguraatio sisältää vain ympäristömuuttujien nimiä, aikakatkaisut, rajatut uusinnat ja kustannusrajat; salaisuuksien arvoja ei tallenneta. Tuotannon reititys on toistaiseksi tyhjä. Sopimukset ja testiadapterit on kuvattu [palveluadapterien dokumentissa](palveluadapterit.md).
+
 ## 8. Näytöshistorian JSON: nykytila ja tapahtumat
 
 Tiedosto: [`data/naytosten-muutoshistoria.json`](../data/naytosten-muutoshistoria.json`  
