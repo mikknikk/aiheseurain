@@ -58,7 +58,7 @@ Esimerkki: `examples/seurantamoduulit/tolkien.topic.json`.
 
 Prosessimoduulin `module_type` on `process`, ja sillä on `process_extension`. Laajennus nimeää oman tunnisteensa ja versionsa sekä osoittaa oman skeemansa `schema_uri`-kentässä. Sen `configuration` validoidaan kyseistä laajennusta vasten erikseen.
 
-Näin prosessimoduulin sisältöä ei yritetä puristaa aiheen `scope`-, `include`- ja `exclude`-kenttiin. Uusi prosessityyppi voi tuoda oman laajennusskeemansa muuttamatta kaikkien muiden moduulien rakennetta. Yhteinen moduulisopimus validoi laajennuksen rajapinnan; rekisterin myöhempi toteutus vastaa laajennuksen tunnistamisesta ja oikean skeeman valinnasta.
+Näin prosessimoduulin sisältöä ei yritetä puristaa aiheen `scope`-, `include`- ja `exclude`-kenttiin. Uusi prosessityyppi voi tuoda oman laajennusskeemansa muuttamatta kaikkien muiden moduulien rakennetta. Yhteinen moduulisopimus validoi laajennuksen rajapinnan. Moduulirekisteri tunnistaa paikallisen laajennusskeeman sen $id-tunnisteella ja tarkistaa myös laajennuksen oman tunnisteen ja version.
 
 Esimerkki: `examples/seurantamoduulit/intialaisten-elokuvien-naytosvahti.process.json` käyttää laajennusta `event-watch.film-screenings`, jonka rakenne määritellään tiedostossa `schemas/module-extensions/event-watch-film-screenings.schema.json`. Esimerkki osoittaa laajennusmekanismin, ei vielä yleistä tapahtumavahtimoottoria eikä tuotantoon siirrettyä näytösvahtia.
 
@@ -116,11 +116,11 @@ CI suorittaa saman validoinnin PR-testeissä. Testit kattavat:
 - tuntemattoman prosessilaajennuksen kentän;
 - prosessilaajennukseen sopimattoman tapahtumatyypin.
 
-Testit todistavat skeeman ja esimerkkien rakenteellisen yhteensopivuuden. Ne eivät vielä testaa moduulirekisteriä, lähde-ID:iden olemassaoloa, kyvykkyyksien toteutusta, ajonaikaista reititystä tai tuotantomoduulien migraatiota.
+Testit todistavat skeeman ja esimerkkien rakenteellisen yhteensopivuuden. Moduulirekisterin latausta, tiloja ja virheiden eristystä testataan lisäksi dokumentissa [Seurantamoduulirekisteri](seurantamoduulirekisteri.md). Lähde-ID:iden olemassaolon, kyvykkyyksien toteutuksen, ajonaikaisen reitityksen ja tuotantomoduulien migraation tarkistukset kuuluvat myöhempiin vaiheisiin.
 
 ## 9. Seuraavat toteutusvaiheet
 
-- #103 toteuttaa rekisterin, joka lukee ja validoi määritykset, ratkaisee laajennusskeemat ja hallitsee moduulien aktiivisuutta.
+- #103 toteuttaa rekisterin, joka lukee ja validoi määritykset, ratkaisee paikalliset laajennusskeemat ja eristää moduulikohtaiset virheet. Tuotantorekisteri pidetään tyhjänä, kunnes nykyisten moduulien siirtymä on suunniteltu ja hyväksytty.
 - #104 kartoittaa nykyisten aiheiden ja erillisten prosessien siirtymän.
 - #105 siirtää nykyiset aiheet ja näytösvahdin varsinaisiin moduulimäärittelyihin.
 - #106 erottaa moduulikohtaisen tilan, tarkistuspisteet ja tapahtumahistorian.
