@@ -102,8 +102,6 @@ class ProviderRouter:
     def _resolve(self, module_id: str, provider_type: str, required: tuple[str, ...]):
         if provider_type not in {"ai_processor", "research_provider"}:
             raise ProviderContractError(f"Tuntematon palvelutyyppi: {provider_type}.")
-        if provider_type not in {"ai_processor", "research_provider"}:
-            raise ProviderContractError(f"Tuntematon palvelutyyppi: {provider_type}.")
         route = self.config["routes"].get(module_id, self.config["default_route"])
         if route is None:
             raise ProviderUnavailableError(f"Moduulille {module_id} ei ole määritelty palvelureittiä.")
@@ -126,6 +124,8 @@ class ProviderRouter:
 
     def budget_for(self, module_id: str, provider_type: str) -> CostBudget:
         """Luo palvelun teknisen per-ajon kustannusrajan mukaisen budjetin."""
+        if provider_type not in {"ai_processor", "research_provider"}:
+            raise ProviderContractError(f"Tuntematon palvelutyyppi: {provider_type}.")
         route = self.config["routes"].get(module_id, self.config["default_route"])
         if route is None:
             raise ProviderUnavailableError(f"Moduulille {module_id} ei ole määritelty palvelureittiä.")
