@@ -33,7 +33,7 @@ class PublicationGateTests(unittest.TestCase):
     def test_approved_report_passes(self):
         record = approved_record()
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "gate.json"
+            path = Path(directory) / "test-run-001.json"
             path.write_text(json.dumps(record), encoding="utf-8")
             result = gate.validate_record(path, {"tolkien": "feeds/tolkien.xml"})
         self.assertEqual(result["decision"], "approved")
@@ -44,7 +44,7 @@ class PublicationGateTests(unittest.TestCase):
             "status": "fail", "note": "Väite ei vastaa lähdettä."
         }
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "gate.json"
+            path = Path(directory) / "test-run-001.json"
             path.write_text(json.dumps(record), encoding="utf-8")
             with self.assertRaises(SystemExit):
                 gate.validate_record(path, {"tolkien": "feeds/tolkien.xml"})
@@ -55,7 +55,7 @@ class PublicationGateTests(unittest.TestCase):
             "status": "not_applicable", "note": " "
         }
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "gate.json"
+            path = Path(directory) / "test-run-001.json"
             path.write_text(json.dumps(record), encoding="utf-8")
             with self.assertRaises(SystemExit):
                 gate.validate_record(path, {"tolkien": "feeds/tolkien.xml"})
@@ -66,7 +66,7 @@ class PublicationGateTests(unittest.TestCase):
             "status": "not_applicable", "note": "Automaattinen testi ohitettiin."
         }
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "gate.json"
+            path = Path(directory) / "test-run-001.json"
             path.write_text(json.dumps(record), encoding="utf-8")
             with self.assertRaises(SystemExit):
                 gate.validate_record(path, {"tolkien": "feeds/tolkien.xml"})
@@ -75,7 +75,7 @@ class PublicationGateTests(unittest.TestCase):
         record = approved_record()
         record["feed_path"] = "feeds/taylor-swift.xml"
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "gate.json"
+            path = Path(directory) / "test-run-001.json"
             path.write_text(json.dumps(record), encoding="utf-8")
             with self.assertRaises(SystemExit):
                 gate.validate_record(path, {"tolkien": "feeds/tolkien.xml"})
