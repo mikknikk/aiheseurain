@@ -87,7 +87,7 @@
         "html_url": {
           "type": "string",
           "format": "uri",
-          "pattern": "^https://github\\\\.com/"
+          "pattern": "^https://github\\.com/"
         },
         "state": {
           "enum": [
