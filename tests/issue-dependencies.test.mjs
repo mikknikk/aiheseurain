@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   parseDependencyRequest,
   hasDependencyCycle,
@@ -131,7 +132,7 @@ test("onnistunut riippuvuuksien välitys käynnistää Pages-julkaisun workflow_
   const workflow = readFileSync(new URL("../.github/workflows/sync-issue-dependencies.yml", import.meta.url), "utf8");
   const scriptSource = readFileSync(new URL("../.github/scripts/sync_issue_dependencies.mjs", import.meta.url), "utf8");
   assert.match(workflow, /actions: write/);
-  assert.match(scriptSource, /actions\\/workflows\\/publish-pages\\.yml\\/dispatches/);
+  assert.ok(scriptSource.includes("/actions/workflows/publish-pages.yml/dispatches"));
   let request;
   await dispatchPublication({
     owner: "mikknikk", repo: "aiheseurain", token: "test-token",
