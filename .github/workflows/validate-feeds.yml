@@ -37,6 +37,8 @@ jobs:
         run: python -m scripts.validate_module_registry
       - name: Tarkista nykyisten moduulien migraatio ja lähdeviitteet
         run: python -m scripts.validate_module_migration
+      - name: Tarkista moduulikohtaiset checkpointit ja historiaviitteet
+        run: python -m scripts.validate_module_state
       - name: Tarkista RSS-raporttien julkaisulaadun portti
         if: github.event_name == 'pull_request'
         run: python scripts/validate_publication_gate.py
