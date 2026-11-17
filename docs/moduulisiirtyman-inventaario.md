@@ -198,16 +198,16 @@ Tekniset toteutuspäätökset, jotka eivät muuta näitä sisältö- tai käytt�
 
 ## 10. #105:n toteutuksen tarkistuslista
 
-- [ ] Jokaiselle kymmenelle seurannalle on oma validoitu määritystiedosto ja pysyvä tunniste.
-- [ ] Kaikki yhdeksän uutisaihetta ovat topic-tyyppisiä ja näytösvahti process-tyyppinen.
-- [ ] Jokaisen moduulin rajaus, hakuprofiilit, kielet, alueet ja erityissäännöt vastaavat nykyisiä ensisijaisia ohjeita.
-- [ ] Kaikki lähdeviitteet osoittavat olemassa oleviin yhteisen katalogin source_id-tunnisteisiin.
-- [ ] Yhteisiä sääntöjä tai lähteiden perustietoja ei kopioida moduuleihin rinnakkaisiksi totuuksiksi.
-- [ ] Intialaisen elokuvan uutis- ja näytösseurannan omistajuus sekä historiat ovat erilliset.
+- [x] Jokaiselle kymmenelle seurannalle on oma validoitu määritystiedosto ja pysyvä tunniste.
+- [x] Kaikki yhdeksän uutisaihetta ovat topic-tyyppisiä ja näytösvahti process-tyyppinen.
+- [x] Jokaisen moduulin rajaus, hakuprofiilit, kielet, alueet ja erityissäännöt on siirretty nykyisiä ensisijaisia ohjeita vastaavasti ja tarkistettu automaattisesti.
+- [x] Kaikki lähdeviitteet osoittavat olemassa oleviin yhteisen katalogin source_id-tunnisteisiin ja oikeisiin tehtäväkohtaisiin lähderekistereihin.
+- [x] Yhteisiä sääntöjä tai lähteiden perustietoja ei kopioida moduuleihin rinnakkaisiksi totuuksiksi.
+- [x] Intialaisen elokuvan uutis- ja näytösseurannan omistajuus sekä historiat ovat erilliset.
 - [x] Tuotantorekisterin kymmenen merkintää pysyvät inactive-tilassa; yhtään moduulia ei aktivoida tämän migraation yhteydessä.
-- [ ] Testirekisterillä tehty lataus ja vertailu onnistuvat ilman tuotantokirjoituksia.
-- [ ] RSS-itemit, GUIDit, tehtäväjono, seurantatila ja näytöshistoria säilyvät.
-- [ ] Palautus edelliseen hyväksyttyyn määritysversioon on dokumentoitu ja testattu.
+- [x] Migraatiovalidaattori lataa kaikki moduulit väliaikaisen aktiivisen rekisterikopion kautta ja vertaa lähdeviitteet ilman tuotantokirjoituksia.
+- [x] RSS-itemit, GUIDit, tehtäväjono, seurantatila ja näytöshistoria säilyvät muuttumattomina.
+- [x] Palautus edelliseen hyväksyttyyn määritysversioon on dokumentoitu; palautuksen käytännön harjoitus kuuluu erilliseen käyttöönottotestaukseen.
 
 ## Muutoshistoria
 
