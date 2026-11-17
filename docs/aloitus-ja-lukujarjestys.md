@@ -25,8 +25,9 @@ Lue tässä järjestyksessä:
 
 1. [README – Aiheseuraimen yleiskuva](../README.md). Tutustu erityisesti ensimmäisiin kappaleisiin, hakemistorakenteeseen ja RSS-syötteiden luetteloon.
 2. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md). Lue järjestelmäriippumaton toimintamalli, nykyinen toteutus ja sen jälkeen tavoitearkkitehtuuri. Kiinnitä huomiota erityisesti itsenäisiin aihe- ja prosessimoduuleihin, niiden rajapintoihin sekä siihen, miten moduulit erotetaan yhteisestä ytimestä ja teknisistä palveluista. Tutustu lopuksi nykytilan ja tavoitetilan eroihin sekä siirtymävaiheisiin.
-3. [Aiheseuraimen etusivu](https://mikknikk.github.io/aiheseurain/). Näet palvelun julkisen sisääntulon.
-4. [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/), [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) ja [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/). Katso, millaisia näkymiä järjestelmä tarjoaa.
+3. [Nykyisten moduulien inventaario ja siirtymäsuunnitelma](moduulisiirtyman-inventaario.md), kun haluat nähdä, miten nykyiset aiheet, lähderekisterit, RSS-historia ja erillinen näytösvahti liittyvät ehdotettuihin moduuleihin.
+4. [Aiheseuraimen etusivu](https://mikknikk.github.io/aiheseurain/). Näet palvelun julkisen sisääntulon.
+5. [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/), [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) ja [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/). Katso, millaisia näkymiä järjestelmä tarjoaa.
 
 Kun olet valmis, osaat vastata kysymyksiin: mitä Aiheseurain seuraa, mitä se julkaisee ja mitä sen verkkosivuston eri osat tekevät?
 
@@ -64,6 +65,7 @@ Lue nämä oppaat:
 - [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md), erityisesti kohta 2.1 hakukriteerien, löydösrekisterin ja kriteerikohtaisten jatkotoimien erottelusta.
 - [Seurantamoduulin tietosopimus](seurantamoduulin-tietosopimus.md), kun haluat ymmärtää tavoitearkkitehtuurin aihe- ja prosessimoduulien tunnisteet, versiot, rajapinnat ja tyypitetyt määritykset.
 - [Seurantamoduulirekisteri](seurantamoduulirekisteri.md), kun haluat ymmärtää, miten moduulimääritykset löydetään, validoidaan ja eristetään toisistaan.
+- [Nykyisten moduulien inventaario ja siirtymäsuunnitelma](moduulisiirtyman-inventaario.md), kun haluat ymmärtää, mitkä nykyiset tiedostot kuuluvat mihinkin moduuliin ja miten historia säilytetään migraatiossa.
 
 Se kannattaa lukea vasta edellisten vaiheiden jälkeen, koska silloin esimerkiksi tehtävä, lähde ja ajokohtainen tarkistus ovat jo käsitteinä tuttuja.
 
@@ -156,6 +158,7 @@ Muiden kahdeksan aihekierroksen tehtävien lähdekohtaiset tiedot löytyvät [yl
 |---|---|
 | Mitä Aiheseurain tekee? | [README](../README.md) ja vaihe 1 |
 | Mikä aihe käsitellään seuraavaksi? | [Tehtäväjono](tehtavajono.md) |
+| Miten nykyiset seurannat siirretään moduuleiksi? | [Moduulisiirtymän inventaario ja suunnitelma](moduulisiirtyman-inventaario.md) |
 | Miten lähteet valitaan ja tarkistetaan? | [Lähteet ja hakustrategia](lahteet.md) |
 | Miksi lähdetiedot ovat useassa JSONissa? | [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md) |
 | Mitä viimeisimmällä ajolla tapahtui? | [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) ja [seurantatila](../data/seurantatila.json) |

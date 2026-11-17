@@ -15,6 +15,16 @@ Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen pri
 
 Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
+## Nykyinen moduulisiirtymän kehitysvaihe
+
+- **#102 – Seurantamoduulin tietosopimus:** valmis ja yhdistetty.
+- **#103 – Moduulirekisteri ja määritysten lataus:** valmis; PR #111 yhdistetty.
+- **#104 – Nykyisten aiheiden ja prosessien hallittu moduulisiirtymä:** inventaario ja migraatiosuunnitelma toteutettu tässä muutossarjassa; lopullinen tila vahvistetaan PR:n yhdistämisen jälkeen.
+- **#109 – Yleinen tapahtumavahti:** erillinen riippuvuus näytösprosessin yleistämiselle.
+- **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** käyttää #104:n siirtokarttaa ja #109:n tapahtumamallin sovitusta.
+
+Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
+
 ## Tavoitetila
 
 Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidettävä. Sen on säilytettävä eri aiheet erillään, osoitettava uutisten lähteet ja seurantajaksot sekä havaittava rakenteelliset virheet automaattisesti. Kehityksessä suositaan pieniä, testattavia muutoksia. Uudet ja muutetut skriptit kommentoidaan suomeksi vähintään `scripts/validate_feeds.py`-tiedoston tasoisesti; tarkempi sääntö on [kehityskäytännöissä](kehityskaytannot.md).
