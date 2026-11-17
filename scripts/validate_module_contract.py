@@ -72,7 +72,7 @@ def validate_examples() -> None:
     # täsmälleen siihen skeemaan, jota tämä tarkistin käyttää.
     if process_metadata["extension_id"] != "event-watch.film-screenings":
         raise AssertionError("Prosessiesimerkin laajennustunniste ei vastaa testattua laajennusta.")
-    if process_metadata["extension_version"] != "1.0.0":
+    if process_metadata["extension_version"] != "1.1.0":
         raise AssertionError("Prosessiesimerkin laajennusversio ei vastaa testattua skeemaversiota.")
     if process_metadata["schema_uri"] != extension_schema.get("$id"):
         raise AssertionError("Prosessiesimerkin schema_uri ei vastaa laajennusskeeman $id-arvoa.")
@@ -109,7 +109,7 @@ def validate_examples() -> None:
 
     # Väärä tapahtumatyyppi ei saa läpäistä elokuvanäytöslaajennuksen validointia.
     invalid_extension = deepcopy(extension_configuration)
-    invalid_extension["event_types"] = ["concert"]
+    invalid_extension["event_type_ref"] = "../outside/event-type.json"
     expect_invalid(extension_validator, invalid_extension, "yhteensopimaton tapahtumatyyppi")
 
 
