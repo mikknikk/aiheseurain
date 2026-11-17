@@ -434,7 +434,7 @@ GitHub on nykyinen versionhallinta- ja yhteistyöalusta. Tavoitearkkitehtuuri ei
 
 ### 8.5 Tietovirrat päästä päähän
 
-~~~mermaid
+```mermaid
 sequenceDiagram
     participant T as Ajastin
     participant Q as Tehtäväjono
@@ -464,7 +464,7 @@ sequenceDiagram
     end
     R->>O: Ajon lopputulos ja mittarit
     R->>Q: Vapauta tehtävä / määritä seuraava tila
-~~~
+```
 
 Jokaisen tietovirran mukana kulkee riittävä alkuperätieto: tehtävä-ID, ajotunniste, määritysversio, seurantajakso, lähde-ID:t ja julkaisun yksilöivä tunniste. Näin raportin voi jäljittää siihen, millä ohjeilla ja lähteillä se muodostettiin. Salaisuuksia, tunnuksia tai tarpeettomia henkilötietoja ei sisällytetä raportteihin tai julkisiin tilatietoihin.
 
