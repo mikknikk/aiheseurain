@@ -56,7 +56,7 @@ Esimerkki: `examples/seurantamoduulit/tolkien.topic.json`.
 
 ### Prosessimoduuli
 
-Prosessimoduulin `module_type` on `process`, ja sillä on `process_extension`. Laajennus nimeää oman tunnisteensa ja versionsa sekä osoittaa oman skeemansa `schema_uri)-kentässä. Sen `configuration` validoidaan kyseistä laajennusta vasten erikseen.
+Prosessimoduulin `module_type` on `process`, ja sillä on `process_extension`. Laajennus nimeää oman tunnisteensa ja versionsa sekä osoittaa oman skeemansa `schema_uri`-kentässä. Sen `configuration` validoidaan kyseistä laajennusta vasten erikseen.
 
 Näin prosessimoduulin sisältöä ei yritetä puristaa aiheen `scope`-, `include`- ja `exclude`-kenttiin. Uusi prosessityyppi voi tuoda oman laajennusskeemansa muuttamatta kaikkien muiden moduulien rakennetta. Yhteinen moduulisopimus validoi laajennuksen rajapinnan; rekisterin myöhempi toteutus vastaa laajennuksen tunnistamisesta ja oikean skeeman valinnasta.
 
@@ -81,7 +81,7 @@ Yhteinen ydin tai sen adapterit ratkaisevat myöhemmin, millä käytettävissä 
 
 - Yhteisen skeeman pakolliset kentät vaaditaan kaikilta moduuleilta. Valinnaiset kentät voidaan jättää pois.
 - Yhteisen skeeman tuntemattomat kentät hylätään (`additionalProperties: false`). Tämä paljastaa kirjoitusvirheet ja estää teknisten asetusten ujuttamisen moduulimäärittelyyn.
-- Prosessilaajennuksen `configuration)-sisältö validoidaan laajennuksen omalla skeemalla. Myös laajennusskeema hylkää tuntemattomat kentät, ellei kyseisen laajennuksen oma versio nimenomaisesti salli niitä.
+- Prosessilaajennuksen `configuration`-sisältö validoidaan laajennuksen omalla skeemalla. Myös laajennusskeema hylkää tuntemattomat kentät, ellei kyseisen laajennuksen oma versio nimenomaisesti salli niitä.
 - Yhteisen sopimuksen MAJOR-version muutos voi rikkoa yhteensopivuuden. MINOR-muutos lisää yhteensopivasti valinnaisia kenttiä tai kyvykkyyksiä; PATCH korjaa sopimuksen tulkintaa muuttamatta sen rakennetta.
 - Moduulin määritysversion MAJOR tarkoittaa yhteensopimatonta sisältömuutosta, MINOR taaksepäin yhteensopivaa sisältölaajennusta ja PATCH korjausta, joka ei muuta määrityksen tarkoitettua toimintaa.
 - Rajapintasopimusten yhteensopivuus arvioidaan niiden omien versioiden ja sopimusten perusteella. Pelkkä moduulin versionumero ei todista rajapintojen yhteensopivuutta.
@@ -94,7 +94,7 @@ Julkaistua moduulimäärittelyä ei muokata paikallaan. Jokainen julkaistu ajo y
 
 Deaktivointi on moduulin rekisteritilan muutos, ei syy poistaa tai muokata vanhaa määritystä. Rekisteri (tiketti #103) omistaa aktiivisuus- ja deaktivointitiedot sekä niiden tapahtumahistorian. Passivoitu moduuli ei kelpaa uusiin ajoihin, mutta sen aiemmat määritysversiot ja ajoviitteet säilyvät tulkittavina.
 
-Korvaava moduuli saa oman pysyvän tunnisteensa ja ilmoittaa `replaces)-kentässä korvaamansa tunnisteet. Korvaaminen ei siirrä vanhoja ajoja uuden moduulin alle eikä muuta vanhan moduulin historiaa. Saman moduulin sisältömuutos tehdään uutena `definition_version)-julkaisuna.
+Korvaava moduuli saa oman pysyvän tunnisteensa ja ilmoittaa `replaces`-kentässä korvaamansa tunnisteet. Korvaaminen ei siirrä vanhoja ajoja uuden moduulin alle eikä muuta vanhan moduulin historiaa. Saman moduulin sisältömuutos tehdään uutena `definition_version`-julkaisuna.
 
 ## 8. Esimerkkien ja testien käyttö
 
