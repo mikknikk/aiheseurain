@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 
 from scripts.event_watch import (EventWatchError, collect_from_adapters, empty_state, load_event_type, reconcile, validate_state)
-from scripts.event_watch_adapters import screening_history_to_generic_state, screening_to_observation
+from scripts.event_watch_adapters import (reconcile_screening_observations, screening_history_to_generic_state, screening_to_observation)
 
 ROOT = Path(__file__).resolve().parents[1]
 FILM = ROOT / "examples/event-types/film-screening.json"
@@ -186,6 +186,22 @@ class ScreeningAdapterTests(unittest.TestCase):
         self.assertEqual(len(state["events"]), len(history["events"]))
         self.assertEqual(history, original)
         validate_state(state, definition)
+
+
+    def test_screening_observations_use_generic_reconciliation_core(self):
+        """Näytöshavainto käyttää yhteistä ydintä ja jättää kanonisen historian ennalleen."""
+        definition = load_event_type(FILM)
+        history = json.loads((ROOT / "data/naytosten-muutoshistoria.json").read_text(encoding="utf-8"))
+        original = deepcopy(history)
+        changed = deepcopy(history["screenings"][0])
+        changed["language"] = "testikieli"
+        state = reconcile_screening_observations(
+            history, [changed], "2026-11-18T13:00:00+02:00", definition,
+            scan_complete=False, failed_sources=["unavailable-source"])
+        self.assertEqual(history, original)
+        self.assertEqual(state["events"][-1]["action"], "changed")
+        self.assertEqual(state["events"][-1]["change_categories"], ["details_changed"])
+        self.assertFalse(state["scans"][-1]["complete"])
 
     def test_source_claim_type_is_preserved(self):
         """Alkuperäinen teatterin vahvistus säilyy yleisen luokan rinnalla."""
