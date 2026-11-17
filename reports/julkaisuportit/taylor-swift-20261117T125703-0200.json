@@ -3,7 +3,7 @@
   "run_id": "taylor-swift-20261117T125703-0200",
   "task_id": "taylor-swift",
   "feed_path": "feeds/taylor-swift.xml",
-  "checked_at": "2026-11-17T12:57:03+02:00",
+  "checked_at": "2026-11-17T13:00:26+02:00",
   "checklist": {
     "sources_opened": {
       "status": "pass",
@@ -47,7 +47,7 @@
     },
     "tracking_period": {
       "status": "pass",
-      "note": "Ensimmäisen tarkistuksen aloituspäivä 16.11.2026 tunnetaan, mutta kellonaikaa ei ole dokumentoitu; loppu on 17.11.2026 klo 12:57 (Europe/Helsinki)."
+      "note": "Ensimmäisen tarkistuksen aloituspäivä 16.11.2026 tunnetaan, mutta kellonaikaa ei ole dokumentoitu; loppu on 17.11.2026 klo 13.00. Sama jakso ilmoitetaan RSS-artikkelissa."
     },
     "duplicates": {
       "status": "pass",
