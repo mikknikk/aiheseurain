@@ -60,6 +60,27 @@ class ModuleRegistryTests(unittest.TestCase):
         self.assertEqual(set(result.active_modules), {"tolkien", "indian-film-screening-watch"})
         self.assertEqual(result.invalid_modules, ())
 
+    def test_new_module_can_be_registered_without_loader_changes(self):
+        """Uusi moduuli voidaan lisätä määritystiedostolla ja rekisterimerkinnällä."""
+        definition_path = self.temp_root / "examples/seurantamoduulit/new-topic.json"
+        definition = json.loads(
+            (self.temp_root / "examples/seurantamoduulit/tolkien.topic.json").read_text(encoding="utf-8")
+        )
+        definition["module_id"] = "new-topic-test"
+        definition["name"] = "Uusi testiaihe"
+        definition_path.write_text(json.dumps(definition), encoding="utf-8")
+        entry = {
+            "module_id": "new-topic-test",
+            "module_type": "topic",
+            "definition_version": "1.0.0",
+            "path": "examples/seurantamoduulit/new-topic.json",
+            "status": "active",
+        }
+        self.write_registry([entry])
+        result = load_registry(self.registry_path, self.temp_root)
+        self.assertEqual(set(result.active_modules), {"new-topic-test"})
+        self.assertEqual(result.invalid_modules, ())
+
     def test_inactive_module_is_not_loaded(self):
         """Passiivinen moduuli säilyy rekisterissä mutta ei päädy aktiivisiin määrityksiin."""
         entries = self.fixture_entries()
