@@ -210,10 +210,6 @@ async function main() {
   if (!owner || !repo) throw new Error("GITHUB_REPOSITORY ei ole muodossa omistaja/repositorio.");
   const issueNumber = event.issue.number;
   const issuePath = `/repos/${owner}/${repo}/issues/${issueNumber}`;
-  const initial = await githubRequest(issuePath, token);
-  const request = parseDependencyRequest(initial.data.body, issueNumber);
-  if (!request) return;
-
   const fetchIssue = async (number) =>
     (await githubRequest(`/repos/${owner}/${repo}/issues/${number}`, token)).data;
   const fetchBlockedBy = (number) =>
@@ -228,6 +224,9 @@ async function main() {
     });
 
   try {
+    const initial = await githubRequest(issuePath, token);
+    const request = parseDependencyRequest(initial.data.body, issueNumber);
+    if (!request) return;
     const targetIssue = await fetchIssue(issueNumber);
     if (!targetIssue || targetIssue.pull_request) {
       throw new Error("Kohde ei ole olemassa oleva GitHub-issue.");
