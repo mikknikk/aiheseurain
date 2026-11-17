@@ -109,7 +109,8 @@ Lue:
 2. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
 3. [Kehityskäytännöt](kehityskaytannot.md) – dokumentoinnin, koodin, testauksen ja ylläpidon säännöt.
 4. [Automaatioiden hallintaperiaatteet](automaation-hallintaperiaatteet.md) – kuka saa muuttaa ajastuksia, asetuksia ja kohdekeskusteluja.
-4. [Saavutettavuuskatselmoinnin raportti](saavutettavuuskatselmointi-2026-11-17.md) – esimerkki siitä, miten tarkastelun havainnot ja testaamatta jääneet asiat kirjataan.
+4. [Julkaisulaadun portti](julkaisuportti.md) – miten yksittäinen RSS-raportti tarkistetaan ennen julkaisemista.
+5. [Saavutettavuuskatselmoinnin raportti](saavutettavuuskatselmointi-2026-11-17.md) – esimerkki siitä, miten tarkastelun havainnot ja testaamatta jääneet asiat kirjataan.
 
 Kun tunnet nämä dokumentit, pystyt seuraamaan kehitystehtäviä ja ymmärtämään, miksi muutokset tehdään versionhallinnan, katselmoinnin ja testien kautta.
 
@@ -154,6 +155,7 @@ Muiden kahdeksan aihekierroksen tehtävien lähdekohtaiset tiedot löytyvät [yl
 | Miten RSS-syötteet on koottu? | README:n [syöteluettelo](../README.md#syotteet) ja [syötekatalogi](../data/feed-catalog.json) |
 | Miten näytösvahti toimii? | [Näytösseurannan käsikirja](intialaisten-elokuvien-naytosseuranta.md) |
 | Miten muutoksia testataan? | [Kehityskäytännöt](kehityskaytannot.md) ja README:n laatutestien osio |
+| Miten uutisraportti hyväksytään ennen julkaisua? | [Julkaisulaadun portti](julkaisuportti.md) |
 | Kuka saa muuttaa automaatioiden ajastuksia tai kohdekeskusteluja? | [Automaatioiden hallintaperiaatteet](automaation-hallintaperiaatteet.md) |
 
 ## Lukemisen jälkeen
