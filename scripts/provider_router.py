@@ -155,7 +155,7 @@ class ProviderRouter:
 
             result = call_with_retry(counted_operation, policy, self.sleep_fn)
             validator(result)
-            actual_cost = result.estimated_cost
+            actual_cost = getattr(result, "estimated_cost", estimate)
             budget.charge(actual_cost)
             self.audit_records.append(ProviderCallRecord(
                 module_id=module_id, run_id=run_id, provider_id=provider_config["provider_id"],
