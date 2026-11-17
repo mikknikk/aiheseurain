@@ -67,6 +67,9 @@ Tarkista jokaisesta syötteestä XML/RSS-rakenne, GUIDien olemassaolo ja yksilö
 ### 4.5 Dokumentaation yhdenmukaisuus
 Vertaa README:tä, tehtäväjonoa, seurantadokumentteja, aihekohtaisia ohjeita ja automaatioiden työnjakoa. Pääkierto käsittelee yhden yhdeksästä tehtävästä päivässä; näytösvahti on erillinen päivittäinen tehtävä eikä kuluta kiertovuoroa. Uutis- ja näytös-RSS:t sekä seurantalokit eivät saa sekoittua. Etsi ristiriitaiset, vanhentuneet, päällekkäiset ja puuttuvat ohjeet.
 
+### 4.6 Saavutettavuus
+Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Tarkista myös manuaalisten testien kirjaukset, ympäristöt, tulokset ja avoimet löydökset. Jos kirjauksia ei ole, ilmoita manuaalinen testaus tekemättömäksi; tyhjä testipohja ei ole testitulos. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
+
 ### 4.7 Kehitysjonon tikettien tilalabelit
 
 Tarkista jokaisesta tarkasteluun kuuluvasta avoimesta ja hiljattain suljetusta tiketistä GitHub-tilan, toteutuneiden PR:ien ja `tila:*`-labelin vastaavuus. Kanoninen tilamalli ja käsittelysäännöt ovat [kehityssuunnitelman kohdissa 4.2 ja 4.2.1](kehityssuunnitelma.md).
@@ -84,9 +87,6 @@ Kirjaa raporttiin ristiriidat, puuttuvat tai moninkertaiset tilalabelit sekä ni
 
 Kun laatutarkistus itse ottaa tiketin toteutukseen, sen on noudatettava samaa työn aloitus- ja valmistumissääntöä kuin muunkin toteutustyön yhteydessä. Pelkkä auditointi ei kuitenkaan tarkoita, että kaikki havaitut tiketit otetaan työn alle.
 
-### 4.6 Saavutettavuus
-Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Tarkista myös manuaalisten testien kirjaukset, ympäristöt, tulokset ja avoimet löydökset. Jos kirjauksia ei ole, ilmoita manuaalinen testaus tekemättömäksi; tyhjä testipohja ei ole testitulos. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
-
 ### 4.9 Nimen kirjoitusasu ja taivutus
 
 Tarkista koko repositorion käyttäjälle näkyvä suomenkielinen sisältö, mukaan lukien README, dokumentaatio, verkkosivujen tekstit, RSS-syötteet ja raportit, Aiheseurain-nimen oikean kirjoitusasun ja taivutuksen osalta.
@@ -95,7 +95,7 @@ Nimen perusmuoto on **Aiheseurain** ja genetiivi **Aiheseuraimen**. Nimeä taivu
 
 Kirjaa löydetyt virheet raporttiin täsmällisine tiedostopolkuineen ja riveineen sekä ehdota oikeaa muotoa. Älä muuta tiedostoja laatutarkistuksen yhteydessä; korjaukset tehdään erillisessä hyväksytyssä muutoksessa. Älä merkitse virhettä, jos kyse on kirjaimellisesta esimerkistä, jossa väärä muoto on nimenomaan dokumentoitu vältettäväksi muodoksi.
 
-### 4.7 Lähteet ja sisältö
+### 4.8 Lähteet ja sisältö
 Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Tarkista viimeisin viikoittaisen linkkitarkistuksen artefakti, jos se on saatavilla. Erota 404/410-virheet uudelleenohjauksista, estetyistä pyynnöistä (401/403), nopeusrajoituksista (429), palvelinvirheistä ja verkkoyhteysongelmista. Älä tulkitse estettyä tai tilapäisesti saavuttamatonta sivua automaattisesti rikkinäiseksi. Jos tarkistus tai artefakti puuttuu, kirjaa se tarkistamatta jääneeksi. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja.
 
 ## 5. Raportointi
