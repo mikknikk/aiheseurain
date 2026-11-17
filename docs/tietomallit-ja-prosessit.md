@@ -76,6 +76,37 @@ Esimerkki: Tolkien-seurannassa käytetään Tolkien Estaten sivustoa.
 
 Yksi lähde voi olla monen aiheen käytössä. Siksi sen perustietoja ei kopioida jokaiseen aihekohtaiseen tiedostoon.
 
+## 2.1 Hakukriteerit, löydökset ja kriteerikohtaiset jatkotoimet
+
+Hakuprosessin kolme osaa pidetään erillään, koska ne vastaavat eri kysymyksiin:
+
+1. **Hakukriteerit määrittävät, mitä etsitään.** Jokaisella kriteerillä on pysyvä tunniste, kuvaus, rajaukset ja tarvittaessa omat hakutapansa.
+2. **Havaintorekisteri kertoo, mitä löydettiin.** Se tallentaa löydetyn kohteen pysyvän tunnisteen, tunnistamiseen tarvittavat tiedot sekä kaikki hakukriteerit, joiden perusteella kohde löytyi.
+3. **Jatkotoimien määritykset kertovat, mitä löydökselle tehdään.** Toiminnot liitetään hakukriteereihin, eivät suoraan yleiseen hakutulokseen. Yhdelle kriteerille voidaan määrittää yksi tai useampi toiminto, eikä kaikkien kriteerien tarvitse käynnistää samoja toimintoja.
+
+Näiden osien välinen suhde on monesta moneen: yksi löydös voi osua useaan hakukriteeriin, ja yksi hakukriteeri voi löytää useita kohteita. Siksi löydöksen yhteydessä säilytetään tieto kaikista siihen osuneista kriteereistä. Kriteerien tunnisteiden tulee olla pysyviä, jotta jatkotoimien määritykset eivät riipu kriteerin muuttuvasta nimestä tai kuvauksesta.
+
+### Esimerkki: elokuva löytyy kahdella hakukriteerillä
+
+Oletetaan, että sama elokuva löytyy sekä näyttelijään perustuvalla kriteerillä että erillisellä elokuvasarjakriteerillä.
+
+- Havaintorekisteriin tallennetaan elokuva kerran ja molemmat osuneet kriteerit.
+- Näyttelijäkriteerille on määritelty Discord-ilmoitus ensimmäisestä näytöshavainnosta.
+- Elokuvasarjakriteerille ei ole määritelty Discord-ilmoitusta, vaan esimerkiksi myöhemmin lisättävä erillinen käsittely.
+- Discord-ilmoitus käynnistyy näyttelijäkriteerin perusteella, mutta ei elokuvasarjakriteerin perusteella.
+
+Näin elokuvan osuminen useaan kriteeriin ei automaattisesti tarkoita, että kaikki kriteereihin liittyvät toiminnot suoritetaan samalla tavalla tai että sama ilmoitus lähetetään useita kertoja.
+
+### Toimintojen suorittamisen periaatteet
+
+- Kunkin toiminnon käynnistymisen syy on jäljitettävissä siihen hakukriteeriin, joka sen aiheutti.
+- Sama kohde ja sama toiminto käsitellään idempotentisti: uudelleenajo tai usean kriteerin osuma ei saa aiheuttaa tahattomia kaksoissuorituksia.
+- Eri kriteerien eri toiminnot voivat silti kaikki toteutua samalle löydökselle.
+- Epävarmoja kohteiden identiteettiosumia ei yhdistetä automaattisesti tavalla, joka voisi käynnistää väärän toiminnon.
+- Hakukriteerien, havaintorekisterin ja jatkotoimien määritysten rakenteet validoidaan erikseen omilla skeemoillaan, kun ne otetaan käyttöön.
+
+Tämä on Aiheseuraimen yleinen tavoitearkkitehtuurin periaate. Se ei tarkoita, että kaikki nämä tietomallit tai toiminnot olisivat jo toteutettu. Esimerkiksi näytösvahdin kehitystehtävät [#66](https://github.com/mikknikk/aiheseurain/issues/66) ja [#67](https://github.com/mikknikk/aiheseurain/issues/67) soveltavat periaatetta elokuvien havaintoihin, hakukriteereihin ja Discord-ilmoituksiin.
+
 ## 3. Yhteinen lähdekatalogi: mikä lähde on?
 
 Tiedosto: [`data/source-catalog.json`](../data/source-catalog.json`  
