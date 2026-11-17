@@ -44,7 +44,8 @@ Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajul
 | `data/seurantatila.json` | Pääautomaation kiertotila, aihekohtaiset viimeisimmät onnistumiset, näytösvahdin tila sekä automaatio-ohjeiden versiot | Automaatiokortit, viimeisin onnistuminen, seuraava aihe ja ohjeversion tila |
 | `data/lahdetarkistukset.json` | Lähdetarkistusten ajokohtaiset tulokset, tarkistetut ja tarkistamatta jääneet lähteet sekä kattavuushuomiot | Lähdetarkistuksen viimeisin tulos ja perustellut kattavuustiedot |
 | `data/naytosten-muutoshistoria.json` | Näytösseurannan nykytila ja muutostapahtumat | Vain näytösseurannan historiatiedon erillisiin näkymiin, ei pääautomaation tilan lähteeksi |
-| `run-history/*/history.json` | ChatGPT-automaatiot kirjaavat ajot ja vaiheet omiin haaroihinsa | Kolmen ChatGPT-automaation nykyinen ja aiempi ajohistoria |\n| GitHub Actionsin julkinen API | Repositorion omien workflow-ajojen tila ja linkit | RSS-/dokumentaatiotestit, viikoittainen linkkitarkistus ja Pages-julkaisu |
+| `run-history/*/history.json` | ChatGPT-automaatiot kirjaavat ajot ja vaiheet omiin haaroihinsa | Kolmen ChatGPT-automaation nykyinen ja aiempi ajohistoria |
+| GitHub Actionsin julkinen API | Repositorion omien workflow-ajojen tila ja linkit | RSS-/dokumentaatiotestit, viikoittainen linkkitarkistus ja Pages-julkaisu |
 
 Nykyiset `data/seurantatila.json` ja `data/lahdetarkistukset.json` ovat automaatioiden viimeisimmän onnistumisen ja lähdekattavuuden tietolähteet. Vaihekohtainen ajohistoria tulee erillisistä `run-history/*`-haaroista, eikä sitä kopioida `main`-haaran JSONiin. Niiden rinnalle ei luoda `status/overview.json`-, `status/runs.json`-, `status/sources.json`- tai `status/rotation.json`-kopioita: ne toistaisivat jo ylläpidettyä tietoa ja lisäisivät synkronointivirheiden sekä ylimääräisten commitien riskiä.
 
@@ -112,7 +113,8 @@ Valvomon ensisijainen automaatiotila ei riipu GitHub Actions -APIsta, koska pä�
 ## 8. Toteutuksen vastuunjako
 
 - **#29:** nykytilan kartoitus, julkaisutavan ja tietomallin päätös, skeemat ja validoinnin perusta.
-- **#30:** Valvomon ensimmäinen käyttöliittymä, koneellisten tietolähteiden lukeminen ja testit.\n- **#37:** ChatGPT-automaatioden ajohistoriahaarojen tietomalli, vaihekirjaukset, Valvomon ajohistorianäkymä ja testit.
+- **#30:** Valvomon ensimmäinen käyttöliittymä, koneellisten tietolähteiden lukeminen ja testit.
+- **#37:** ChatGPT-automaatioiden ajohistoriahaarojen tietomalli, vaihekirjaukset, Valvomon ajohistorianäkymä ja testit.
 - **#31:** RSS-lukijan syötekatalogi ja käyttöliittymä; se ei muuta Valvomon tietomallia.
 - **#33:** lähderekisterin selaus ja kattavuuden laajennettu näkymä.
 
@@ -125,7 +127,8 @@ Valvomo julkaistaan omassa `valvomo/index.html`-sivussaan osoitteessa `/valvomo/
 Käyttöliittymä lukee seuraavat tiedot:
 
 - `data/seurantatila.json`: pääautomaation aihekohtaiset viimeisimmät onnistumiset ja seuraava vuoro, näytösvahdin tila sekä kolmen automaation ohjeversiot.
-- `run-history/{main-automation,screening-watch,quality-check}/history.json`: ChatGPT-automaatioiden ajot ja vaihekohtaiset tilat.\n- `data/lahdetarkistukset.json`: viimeisimmän aiheajon lähdetarkistuksen tulos, tarkistetut lähteet ja tarkistamatta jääneiden lähteiden syyt.
+- `run-history/{main-automation,screening-watch,quality-check}/history.json`: ChatGPT-automaatioiden ajot ja vaihekohtaiset tilat.
+- `data/lahdetarkistukset.json`: viimeisimmän aiheajon lähdetarkistuksen tulos, tarkistetut lähteet ja tarkistamatta jääneiden lähteiden syyt.
 - GitHub Actionsin julkinen API: viimeisimmät RSS-/dokumentaatiotestien, viikoittaisen linkkitarkistuksen ja Pages-julkaisun ajot sekä saatavilla olevat työnvaiheet.
 
 Automaatiokorttien tuoreusrajat ovat 36 tuntia päivittäisille automaatioille ja 10 vuorokautta viikoittaiselle laatutarkistukselle. Puuttuva aikaleima näytetään tuntemattomana. Viimeisin onnistuminen ei tarkoita, että uusi ajo olisi käynnissä.
@@ -136,7 +139,11 @@ GitHub API:n tulokset välimuistitetaan välilehden istunnossa enintään viidek
 
 Valvomon automaattiset JavaScript-testit suoritetaan komennolla `node --test tests/valvomo.test.mjs`. Sivun ja skriptin rakenne tarkistetaan CI-ajossa. Tämä ei korvaa manuaalista näppäimistö-, ruudunlukija-, suurennus- tai kontrastitestausta.
 
-## 10. Ajohistorian tietolähteet\n\nValvomo lukee kolmen automaation julkiset `history.json`-tiedostot suoraan niiden erillisistä Git-haaroista. Lukeminen käyttää vain GitHubin raw-sisältöosoitteita eikä selaimessa ole tunnuksia tai kirjoitusoikeuksia. Ajohistoria validoidaan skeemaa ja automaatiotunnistetta vasten. Jokaisesta haarasta näytetään enintään 30 viimeisintä ajoa; Gitin commit-historia säilyttää aiemmat versiot. Vanhentuneen `running`-merkinnän tila näytetään mahdollisesti keskeytyneenä. Tarkat rajat ovat dokumentissa [ChatGPT-automaatioiden ajohistoria](ajohistoria.md).\n\n## 11. Aihekohtaisten seuraavien päivitysten arviot
+## 10. Ajohistorian tietolähteet
+
+Valvomo lukee kolmen automaation julkiset `history.json`-tiedostot suoraan niiden erillisistä Git-haaroista. Lukeminen käyttää vain GitHubin raw-sisältöosoitteita eikä selaimessa ole tunnuksia tai kirjoitusoikeuksia. Ajohistoria validoidaan skeemaa ja automaatiotunnistetta vasten. Jokaisesta haarasta näytetään enintään 30 viimeisintä ajoa; Gitin commit-historia säilyttää aiemmat versiot. Vanhentuneen `running`-merkinnän tila näytetään mahdollisesti keskeytyneenä. Tarkat rajat ovat dokumentissa [ChatGPT-automaatioiden ajohistoria](ajohistoria.md).
+
+## 11. Aihekohtaisten seuraavien päivitysten arviot
 
 Valvomo arvioi kunkin yhdeksän aihekierroksen seuraavan käsittelyajan seuraavien tietojen perusteella:
 
