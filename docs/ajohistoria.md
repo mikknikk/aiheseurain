@@ -17,7 +17,7 @@ Jokaisella automaatiolla on oma, vain ajohistoriaan käytettävä Git-haara:
 | Intialaisten elokuvien näytösvahti | `run-history/screening-watch` | `screening_watch` |
 | Viikoittainen laatutarkistus | `run-history/quality-check` | `quality_check` |
 
-Kunkin haaran juuritiedosto `history.json` sisältää enintään 30 viimeisintä ajoa ja niiden vaihetilat. Jokainen päivitys on oma Git-commitinsa kyseiseen histori haaraan. Varsinaista `main`-haaraa, RSS-syötteitä tai automaatioiden onnistumisen tarkistuspisteitä ei päivitetä vaihekirjauksilla.
+Kunkin haaran juuritiedosto `history.json` sisältää enintään 30 viimeisintä ajoa ja niiden vaihetilat. Jokainen päivitys on oma Git-commitinsa kyseiseen historiahaaraan. Varsinaista `main`-haaraa, RSS-syötteitä tai automaatioiden onnistumisen tarkistuspisteitä ei päivitetä vaihekirjauksilla.
 
 Valvomo lukee tiedostot GitHubin julkisesta Contents APIsta `ref`-parametrilla. Selain tarvitsee vain anonyymin lukuoikeuden. Se ei saa tunnuksia eikä kirjoitusoikeuksia.
 
