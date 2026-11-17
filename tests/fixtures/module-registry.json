@@ -1,0 +1,20 @@
+{
+  "registry_version": "1.0.0",
+  "contract_version": "1.0.0",
+  "modules": [
+    {
+      "module_id": "tolkien",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "examples/seurantamoduulit/tolkien.topic.json",
+      "status": "active"
+    },
+    {
+      "module_id": "indian-film-screening-watch",
+      "module_type": "process",
+      "definition_version": "1.0.0",
+      "path": "examples/seurantamoduulit/intialaisten-elokuvien-naytosvahti.process.json",
+      "status": "active"
+    }
+  ]
+}
