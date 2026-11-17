@@ -57,7 +57,7 @@
   "publication": {
     "feed_path": "feeds/tolkien.xml",
     "guid_refs": [
-      "urn:aiheseurain:tolkien:2026-11-12:hunt-for-gollum",
+      "urn:aiheseurain:tolkien:2026-11-12:hunt-for-gollum-wrap",
       "urn:aiheseurain:tolkien:2026-11-10:david-bratman",
       "urn:aiheseurain:tolkien:2026-11-16:tartalo-conference"
     ]
