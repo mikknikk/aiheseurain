@@ -124,7 +124,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila sekä pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversiot ja viimeksi onnistuneesti käytetyt versiot.
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
 - `schemas/naytosten-muutoshistoria.schema.json`: näytöshistorian JSON Schema Draft 2020-12 -skeema.
-- `schemas/automation-run-history.schema.json`: ChatGPT-automaatioden yhteisen vaihekohtaisen ajohistorian skeema.
+- `schemas/automation-run-history.schema.json`: ChatGPT-automaatioiden yhteisen vaihekohtaisen ajohistorian skeema.
 - `scripts/validate_feeds.py`, `scripts/validate_publication_gate.py` ja `.github/workflows/validate-feeds.yml`: RSS:n rakennetarkistukset, raporttikohtainen julkaisulaadun portti ja niiden PR-validointi.
 - `reports/julkaisuportit/{run_id}.json` ja `schemas/julkaisuportti.schema.json`: jokaisen RSS-syötemuutoksen ajokohtainen hyväksyntäraportti ja sen rakenne.
 - `scripts/check_links.py` ja `.github/workflows/check-links.yml`: erillinen viikoittainen lähde- ja RSS-linkkien verkkotarkistus; raportti tallennetaan GitHub Actions -artefaktiksi.
