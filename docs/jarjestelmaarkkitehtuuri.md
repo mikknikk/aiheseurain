@@ -299,7 +299,260 @@ Ennen tuotantokäyttöä vaihtoehtoisen toteutuksen tulee osoittaa vähintään:
 9. Uuden toteutuksen integraatio-, regressio- ja päästä päähän -testit kattavat samat kriittiset tapaukset.
 10. Vanha ja uusi toteutus voidaan ajaa rajatusti rinnakkain vertailua varten ennen kuin uusi toteutus ottaa tuotantovastuun.
 
-## 8. Tosiasiat, päätelmät ja avoimet asiat
+## 8. Tavoitearkkitehtuuri
+
+Tässä luvussa kuvataan järjestelmän tavoiteltu kokonaisuus. Se on suunnittelun tavoitetila, ei kuvaus jo käytössä olevasta toteutuksesta. Tavoitteena on tehdä aiheiden lisäämisestä, suoritusympäristön vaihtamisesta, ajon valvonnasta ja tietojen säilyttämisestä hallittua sitomatta toimituksellisia periaatteita yhteen palveluun.
+
+Tavoitetilassa järjestelmä muodostuu kolmesta erotetusta kokonaisuudesta:
+
+1. **Aihekohtaiset määritykset** kertovat, mitä seurataan, millä rajauksilla ja millä lähteillä.
+2. **Yhteinen seurantaprosessi** toteuttaa tehtävien valinnan, haun, arvioinnin, raportoinnin, laadunvarmistuksen ja onnistumisen kirjaamisen.
+3. **Tekninen suoritus- ja integraatiokerros** tarjoaa ajastuksen, jonotuksen, suoritusympäristön, ulkoiset yhteydet, tallennuksen, testauksen, valvonnan ja julkaisun.
+
+Kerrokset kommunikoivat määriteltyjen tietosopimusten ja rajapintojen kautta. Aihekohtainen määritys ei sisällä palveluntarjoajan tunnuksia tai ajastimen asetuksia. Tekninen adapteri ei päätä uutisen uutisarvosta eikä muuta aiheen rajausta.
+
+### 8.1 Tavoiteltu kokonaisrakenne ja vastuut
+
+~~~mermaid
+flowchart TB
+    subgraph CONFIG["Aihekohtaiset määritykset"]
+      TOPICS["Aiheiden rajaukset ja hakuprofiilit"]
+      SOURCES["Lähdekatalogi ja tehtäväkohtaiset lähdekäytöt"]
+      POLICIES["Aihekohtaiset poikkeukset ja raportointiprofiilit"]
+    end
+    subgraph ORCH["Yhteinen seurantaprosessi"]
+      QUEUE["Tehtäväjono ja tehtävän valinta"]
+      RUN["Ajon elinkaari ja tarkistuspiste"]
+      RESEARCH["Haku ja löydösten käsittely"]
+      ASSESS["Lähteiden ja väitteiden arviointi"]
+      REPORT["Raportin muodostus"]
+      GATE["Julkaisulaadun portti"]
+      STATE["Tilapäivitys ja historian kirjaus"]
+    end
+    subgraph PLATFORM["Tekninen suoritus- ja integraatiokerros"]
+      SCHED["Ajastin ja käynnistimet"]
+      WORKER["Suoritusympäristö"]
+      AI["Tekoäly- ja tutkimuspalvelut"]
+      REPO["Versionhallinta- ja repositorioadapteri"]
+      STORE["Tallennusadapteri"]
+      OBS["Lokitus, mittarit ja hälytykset"]
+      PUBLISH["Julkaisuadapteri"]
+    end
+    CONFIG --> QUEUE
+    SCHED --> QUEUE
+    QUEUE --> RUN --> RESEARCH --> ASSESS --> REPORT --> GATE
+    GATE -->|hyväksytty| STATE
+    GATE -->|hylätty| RUN
+    RUN <--> WORKER
+    RESEARCH <--> AI
+    ASSESS <--> AI
+    CONFIG <--> REPO
+    STATE <--> STORE
+    REPORT --> PUBLISH
+    RUN --> OBS
+    RESEARCH --> OBS
+    GATE --> OBS
+    PUBLISH --> OBS
+~~~
+
+Vastuut:
+
+| Kokonaisuus | Vastuu | Ei kuulu vastuulle |
+|---|---|---|
+| Aihekohtainen määritys | Seurannan kohde, rajaukset, hakusanat, kielet, alueet, lähdeviittaukset ja erityissäännöt | Salaisuudet, ajastimen toteutus tai palvelukohtaiset API-kutsut |
+| Tehtäväjono | Tehtävien järjestys, valintakelpoisuus, prioriteetti ja erillisten prosessien tunnistaminen | Varsinainen tiedonhaku tai raportin kirjoittaminen |
+| Ajonhallinta | Ajon tunniste, tila, vaiheiden järjestys, aikakatkaisut ja tarkistuspisteet | Aihekohtainen uutisarvopäätös |
+| Tutkimus ja arviointi | Haku, alkuperäislähteiden tarkistus, löydösten deduplikointi ja väitteiden arviointi | Julkaisukanavan tekninen toteutus |
+| Laadunvarmistus | Sisällölliset ja rakenteelliset hyväksymisehdot sekä hylkäyksen perustelut | Hylätyn sisällön ohittaminen |
+| Tallennus ja historia | Kanonisten tietojen, tarkistuspisteiden ja tapahtumien eheä säilytys | Käyttöliittymän rinnakkaiset totuuden lähteet |
+| Julkaisu | Hyväksytyn raportin toimittaminen ja takaisinlukutarkistus | Julkaisuluvan myöntäminen laadunvarmistuksen ohi |
+| Valvonta | Ajon etenemisen, virheiden, viiveiden ja palveluiden toimintakyvyn näkyvyys | Puuttuvan tiedon tulkitseminen onnistumiseksi |
+
+Näytösvahti säilyy omana tehtävätyyppinään ja omine tapahtumamalleineen. Se voi käyttää yhteisiä ajonhallinnan, lähteiden, tallennuksen ja julkaisun palveluja, mutta sen päivittäistä näytöslogiikkaa ei yhdistetä uutisaiheiden kiertoon. Laatutarkistus on edelleen auditointitehtävä, jolla on erikseen rajatut luku- ja kirjausoikeudet.
+
+### 8.2 Ajastus, tehtäväjono ja ajon elinkaari
+
+Ajastin käynnistää tehtäväjonon käsittelyn tai yksittäisen erillisprosessin. Ajastin ei itse päätä, mitä aihetta seurataan. Tehtäväjono valitsee suoritettavan tehtävän tallennetun jonotilan, tehtävätyypin ja riippuvuuksien perusteella.
+
+Jokainen suoritus muodostaa yksilöllisen ajon. Ajon vähimmäiselinkaari on:
+
+1. Käynnistys vastaanotetaan ja sille luodaan yksilöllinen ajotunniste.
+2. Tehtävä lukitaan tai sille varataan suoritusvuoro, jotta päällekkäiset ajot eivät muuta samaa tarkistuspistettä samanaikaisesti.
+3. Ajon määritykset, ohjeversiot, lähdeprofiili ja edellinen onnistunut tarkistuspiste luetaan ja validoidaan.
+4. Haku, alkuperäislähteiden tarkistus, arviointi ja raportin muodostus suoritetaan vaiheittain.
+5. Laadunvarmistus hyväksyy tai hylkää raportin. Hylkäys ei saa edistää onnistumisen tarkistuspistettä.
+6. Hyväksytty raportti julkaistaan idempotentisti ja luetaan takaisin.
+7. Vasta onnistuneen takaisinluvun jälkeen päivitetään viimeisin onnistuminen, tehtäväjonon tila ja ajon lopputulos.
+8. Ajon tapahtumat, käytetyt määritysversiot, lähdetarkistukset ja julkaisun tunnisteet jäävät jälkikäteen tarkasteltaviksi.
+
+Tehtäväjonon tilat erotetaan yksittäisen ajon tiloista. Jonossa tehtävä voi olla odottava, valittavissa, käynnissä tai estynyt. Ajo voi puolestaan olla käynnissä, onnistunut, epäonnistunut, osittainen tai peruutettu. Näitä ei yhdistetä yhdeksi epäselväksi tilakentäksi.
+
+Ajastuksen tekninen toteutus voidaan vaihtaa, mutta tehtävien aikavyöhykkeet, päällekkäisten ajojen esto, uusintayritykset, tehtävien erillisyys ja käyttäjän valtuutusrajoitukset säilyvät tietosopimuksina. Ajastimen vaihtaminen ei itsessään oikeuta muuttamaan käyttäjän hyväksymää aikataulua.
+
+### 8.3 Kanoniset tallennuspaikat ja tietomallien vastuut
+
+Tavoitetilassa jokaisella tiedolla on yksi ensisijainen omistaja ja kanoninen tallennuspaikka. Käyttöliittymien, raporttien ja välimuistien muodostamat johdetut näkymät eivät muutu rinnakkaisiksi totuuden lähteiksi.
+
+| Tieto | Kanoninen omistaja tavoitetilassa | Tietosisältö ja sääntö |
+|---|---|---|
+| Aiheiden määritykset | Aihekonfiguraatioiden versioitu rekisteri | Aihe-ID, rajaus, hakuprofiilit, kielet, alueet, poikkeukset ja raportointiprofiili |
+| Lähteiden perustiedot | Yhteinen lähdekatalogi | Yksilöllinen lähde-ID, nimi, URL, lähdetyyppi ja yhteinen arvio |
+| Tehtäväkohtaiset lähdekäytöt | Tehtäväkohtainen lähderekisteri | Viittaukset lähdekatalogiin, kriittisyys, käyttörajoitteet ja tehtäväkohtaiset asetukset |
+| Tehtäväjono | Tehtäväjonon kanoninen tila | Tehtävien järjestys, tyyppi, valintakelpoisuus ja seuraava vuoro |
+| Ajon tila ja tarkistuspisteet | Ajonhallinnan tilarekisteri | Ajotunniste, tehtävä, vaiheet, aloitus/lopetus, tulos ja viimeisin onnistunut tarkistuspiste |
+| Lähdetarkistukset | Ajon lähdehavaintojen loki | Tarkistetut lähteet, tarkistusajankohta, tulos ja tarkistamatta jäämisen syy |
+| Raportit ja julkaisut | Julkaisuarkisto tai kanoninen jakelukanava | Raportin sisältö, yksilöllinen tunniste, seurantajakso, lähteet ja julkaisun tila |
+| Tapahtumahistoria | Tehtäväkohtainen append-only-tapahtumaloki | Havaitut lisäykset, muutokset, poistumat ja niiden alkuperä |
+| Skeemat ja sopimukset | Versionhallittu skeemarekisteri | Rakenteet, sallitut arvot, yhteensopivuus ja migraatiot |
+| Auditointi ja tekninen havaittavuus | Ajon loki- ja mittaripalvelu | Vaiheiden tapahtumat, virhekoodit, kesto, uudelleenyritykset ja hälytykset |
+
+Nykyiset tiedostot ovat näiden tietoluokkien lähtökohta, eivät lupaus siitä, että jokainen tuleva tieto sijoitetaan yhteen suureen JSON-tiedostoon. Tallennusratkaisu voidaan myöhemmin vaihtaa esimerkiksi tietokantaan tai objektitallennukseen, jos volyymi, kyselytarpeet tai säilytysvaatimukset sitä edellyttävät. Vaihdon yhteydessä säilytetään tunnisteet, skeemojen semantiikka, tapahtumien järjestys ja palautettavuus.
+
+Ajon tapahtumaloki on ensisijaisesti vain lisäävä. Korjaus tai uudelleenluokittelu kirjataan uutena tapahtumana, joka viittaa korjattuun tapahtumaan; aiempaa havaintoa ei hävitetä jälkiä jättämättä. Raportin nykytila voidaan muodostaa tapahtumista tai tallentaa suorituskyvyn vuoksi johdettuna näkymänä, mutta johdettu näkymä voidaan aina rakentaa uudelleen kanonisesta historiasta.
+
+### 8.4 Tavoitellut rajapinnat ja teknologioiden vaihdettavuus
+
+Toteutuksen osat kommunikoivat versionhallituilla tietosopimuksilla. Tavoiteltuja loogisia rajapintoja ovat:
+
+| Rajapinta | Syöte | Tuloste / vastuu |
+|---|---|---|
+| Scheduler | Tehtävän tunniste tai käynnistystapa | Käynnistystapahtuma ja ajastusmetatiedot |
+| Queue | Tehtävätyypit, jonotila ja riippuvuudet | Valittu tehtävä ja varaus |
+| ConfigurationProvider | Tehtävä-ID ja määritysversio | Validoitu aihe- ja lähdemääritys |
+| ResearchProvider | Hakuprofiili, lähteet ja seurantajakso | Lähdeviitteelliset löydökset ja tarkistustulokset |
+| AIProcessor | Löydökset, lähdesisällöt ja toimitukselliset säännöt | Arvioidut väitteet, deduplikoidut tapahtumat ja raporttiluonnos |
+| QualityGate | Raportti ja hyväksymissäännöt | Hyväksyntä tai hylkäys perusteluineen |
+| StateStore | Ajon tapahtumat ja tilapäivitykset | Pysyvä tila, tarkistuspisteet ja historiatiedot |
+| Publisher | Hyväksytty julkaisu ja idempotenssiavain | Julkaisutunniste ja takaisinlukutulos |
+| Observability | Ajon tapahtumat ja mittarit | Lokit, tilannekuva, hälytykset ja auditointijälki |
+
+Rajapintojen nimet ovat käsitteellisiä sopimuksia, eivät väitteitä nykyisistä ohjelmistoluokista tai valmiista API-rajapinnoista. Niiden konkreettinen toteutus voidaan tehdä funktioina, palveluina tai viestipohjaisina rajapintoina.
+
+Tekoälypalvelu ei ole järjestelmän ainoa paikka, jossa toimitukselliset säännöt sijaitsevat. Aiheiden rajaukset, luotettavuusluokitus, julkaisun hyväksymisehdot ja skeemat ovat erikseen versionhallittuja. Tekoälypalvelun vaihdossa mallikohtaiset kehotteet ja työkalut sovitetaan uudelleen, mutta niiden on tuotettava sama sovittu tietorakenne ja läpäistävä samat laadunvarmistukset.
+
+GitHub on nykyinen versionhallinta- ja yhteistyöalusta. Tavoitearkkitehtuuri ei edellytä sen vaihtamista. Jos versionhallinta tai julkaisualusta myöhemmin vaihtuu, GitHub-kohtainen API- ja Actions-logiikka rajataan adaptereihin; aihe- ja tietomäärityksiä ei kirjoiteta uudelleen vain alustan vaihtamisen vuoksi.
+
+### 8.5 Tietovirrat päästä päähän
+
+~~~mermaid
+sequenceDiagram
+    participant T as Ajastin
+    participant Q as Tehtäväjono
+    participant R as Ajonhallinta
+    participant C as Määritykset ja lähteet
+    participant H as Haku ja arviointi
+    participant G as Laadunvarmistus
+    participant S as Tila ja historia
+    participant P as Julkaisu
+    participant O as Valvonta
+
+    T->>Q: Käynnistys
+    Q->>R: Varaa tehtävä
+    R->>C: Lue versioidut määritykset
+    C-->>R: Määritykset ja tarkistuspiste
+    R->>O: Ajo aloitettu
+    R->>H: Hae ja arvioi
+    H-->>R: Löydökset ja lähdetarkistukset
+    R->>G: Raporttiluonnos
+    G-->>R: Hyväksyntä tai hylkäys
+    alt Hyväksytty
+        R->>P: Julkaise idempotentisti
+        P-->>R: Julkaisutunniste ja takaisinluku
+        R->>S: Kirjaa onnistuminen ja tarkistuspiste
+    else Hylätty tai julkaisu epäonnistuu
+        R->>S: Kirjaa virhe; säilytä vanha tarkistuspiste
+    end
+    R->>O: Ajon lopputulos ja mittarit
+    R->>Q: Vapauta tehtävä / määritä seuraava tila
+~~~
+
+Jokaisen tietovirran mukana kulkee riittävä alkuperätieto: tehtävä-ID, ajotunniste, määritysversio, seurantajakso, lähde-ID:t ja julkaisun yksilöivä tunniste. Näin raportin voi jäljittää siihen, millä ohjeilla ja lähteillä se muodostettiin. Salaisuuksia, tunnuksia tai tarpeettomia henkilötietoja ei sisällytetä raportteihin tai julkisiin tilatietoihin.
+
+### 8.6 Virheistä palautuminen, jäljitettävyys ja turvallisuus
+
+Tavoitetilan virheenkäsittely perustuu siihen, ettei epäonnistunut tai epäselvä vaihe saa näyttää onnistumiselta.
+
+- **Päällekkäinen käynnistys:** tehtävän varaus tai lukitus estää kaksi ajoa päivittämästä samaa tarkistuspistettä samanaikaisesti. Lukituksen vanheneminen ja vapautus ovat jäljitettäviä.
+- **Tilapäinen ulkoinen virhe:** rajatut uusintayritykset käyttävät viiveitä ja enimmäisrajaa. Pysyvä virhe päättää ajon hallitusti.
+- **Osittainen haku:** lähdekohtainen tulos kirjataan. Puuttuva lähde tai alue ei muutu hiljaisesti onnistuneeksi tarkistukseksi.
+- **Tekoälyn tai jäsennyksen virhe:** virheellinen tulos hylätään sopimuksen vastaisena; sitä ei siirretä julkaisuun.
+- **Tallennusvirhe:** onnistumisen tarkistuspistettä ei siirretä. Uusinta käyttää samaa idempotenssiavainta.
+- **Julkaisuvirhe tai epäselvä vastaus:** julkaisun tila selvitetään takaisinluvulla ennen uutta yritystä. Sama julkaisu ei saa syntyä kahdesti.
+- **Laadunvarmistuksen hylkäys:** raportti ja perustelut säilytetään auditointia varten, mutta julkaisu ja onnistumisen tarkistuspiste jäävät tekemättä.
+- **Palautus:** viimeisin tunnettu hyvä tila ja julkaistu aineisto säilytetään. Tietomallin migraatiolla on testattu palautus- tai eteenpäin korjaamisen menettely.
+
+Jokaisesta ajosta tulee voida vastata vähintään: mikä tehtävä suoritettiin, milloin, millä määritys- ja skeemaversiolla, mitkä lähteet tarkistettiin, mitkä jäivät tarkistamatta ja miksi, mitä vaiheita suoritettiin, mikä hyväksyttiin tai hylättiin, mitä julkaistiin ja mikä oli lopputulos.
+
+Käyttöoikeudet jaetaan tehtävä- ja komponenttikohtaisesti vähimmän tarpeen periaatteella. Julkinen verkkosivusto saa lukea vain julkistettavaksi hyväksyttyä aineistoa. Sillä ei ole kirjoitustunnuksia. Tunnukset säilytetään suoritusympäristön salaisuuksien hallinnassa, niitä ei tulosteta lokeihin eikä välitetä tekoälymallille tarpeettomasti. Auditointitehtävällä on vain ne kirjoitusoikeudet, joita sen rajattu tilakirjaus edellyttää.
+
+### 8.7 Testaus, valvonta ja julkaisun hyväksymisehdot
+
+Testaus on kerroksittaista:
+
+1. **Määritysten ja skeemojen testit:** virheelliset aiherajaukset, lähdeviittaukset, tilat ja versiot hylätään ennen ajoa.
+2. **Yksikkötestit:** tehtäväjono, aikavälit, deduplikointi, tilasiirtymät, idempotenssi ja virheiden käsittely.
+3. **Integraatiotestit:** haku-, tallennus-, versionhallinta- ja julkaisusovittimien sopimukset testataan erikseen.
+4. **Regressiotestit:** vanhojen raporttien, GUIDien, tapahtumien ja tarkistuspisteiden säilyminen varmistetaan.
+5. **Päästä päähän -testit:** rajattu testiajo osoittaa koko polun käynnistyksestä takaisinluettuun julkaisuun. Testiympäristö ei saa muuttaa tuotannon tehtäväjonoa tai tarkistuspisteitä.
+6. **Manuaaliset hyväksyntätestit:** käyttöliittymän saavutettavuus, raportin luettavuus ja todellisten lähteiden asianmukainen tulkinta arvioidaan siltä osin kuin niitä ei voi luotettavasti automatisoida.
+
+Julkaisu hyväksytään vain, kun:
+
+- raportin seurantajakso ja tehtävä ovat yksiselitteiset;
+- olennaiset väitteet on arvioitu alkuperäislähteitä vasten ja epävarmuudet ilmaistu;
+- lähdeviitteet ovat mukana ja niiden käyttö on jäljitettävissä;
+- raportin rakenne, kieli, saavutettavuus ja aiherajaus täyttävät sovitut ehdot;
+- skeema-, RSS/XML-, HTML- ja muut soveltuvat rakennetestit läpäisevät;
+- julkaisun yksilöllisyys ja vanhan historian säilyminen on varmistettu;
+- julkaistu sisältö on luettu takaisin ja vastaa hyväksyttyä sisältöä.
+
+Valvonta näyttää erikseen ajon käynnistymisen, vaiheet, viimeisimmän onnistumisen, varoitukset, virheet, lähdekattavuuden ja julkaisun tilan. Puuttuvaa vaihedataa ei päätellä eikä esitetä onnistuneena. Valvomon julkiset tiedot rajataan niin, etteivät lokit tai virhevastaukset paljasta salaisuuksia.
+
+### 8.8 Nykytilan ja tavoitetilan erot
+
+| Osa | Nykytila (varmennettu tässä dokumentissa) | Tavoitetila | Muutoksen luonne |
+|---|---|---|---|
+| Aiheiden määritykset | Ohjeet ovat pääosin Markdown-dokumenteissa; osa tilasta ja lähteistä on JSON-muodossa | Selkeästi versioidut, validoidut aihe- ja hakuprofiilit; poikkeukset voivat säilyä dokumentoituina | Rakenteistaminen vaiheittain, ei kaiken pakottaminen yhteen skeemaan |
+| Ajastus | ChatGPT:n kolme ajoitettua tehtävää; asetukset ovat ChatGPT-palvelussa | Vaihdettava ajastinadapteri ja eksplisiittinen tehtävien käynnistys-/lukitusmalli | Ajastuksen ja tehtävälogiikan erottaminen |
+| Tehtäväjono | Yhdeksän aiheen kierto on dokumentoitu ja koneellinen tila on data/seurantatila.json-tiedostossa | Jonon oma versioitu tietosopimus, tilasiirtymät ja varausmekanismi | Nykyisen tilan täsmentäminen ja rinnakkaisten ajojen esto |
+| Suoritus | Haku, arviointi ja raportointi tehdään ChatGPT:ssä; Actions hoitaa teknisiä työnkulkuja | Yhteisen prosessin vaiheet määritellyillä adapterirajapinnoilla | Suorituksen siirrettävyys ja vaiheiden eksplisiittisyys |
+| Ajohistoria | ChatGPT-automaatioiden vaihehistoria on erillisissä haaroissa; koneellisten tietojen kattavuus on osittainen | Yhtenäinen ajotunniste, vaihe- ja lähdekohtainen auditointijälki | Tietomallin ja kirjaamisen yhdenmukaistaminen |
+| Tallennus | Versionhallittu GitHub-repositorio ja JSON-tiedostot | Kanoniset tallennusrajapinnat; tallennuspalvelu vaihdettavissa tietosopimuksia säilyttäen | Adapteri ja mahdollinen migraatio vasta tarpeen mukaan |
+| Julkaisu | RSS ja GitHub Pages; hyväksymisportti ja takaisinlukumenettely | Julkaisukanavasta riippumaton julkaisuadapteri, idempotenssi ja takaisinlukutodiste | Nykyisen laadunvarmistuksen säilyttäminen eri kanavissa |
+| Testaus ja valvonta | GitHub Actions -rakennetestit, Pages-julkaisun tarkistukset ja erillinen linkkitarkistus; osa manuaalisesta testauksesta avoinna | Sopimustestit, integraatio- ja päästä päähän -testit sekä ajonaikainen valvonta | Testauksen kattavuuden laajentaminen todellisten tarpeiden mukaan |
+
+Nykytilan taulukko kuvaa repositoriosta ja aiemmin dokumentoiduista toteutuksista varmennettuja asioita. Se ei väitä, että kaikkien ChatGPT-palvelun sisäisiä toteutustietoja tai tallennettuja ajastusasetuksia olisi tarkistettu.
+
+### 8.9 Siirtymävaiheet
+
+Tavoitetilaan siirrytään pienin, palautettavin muutoksin. Nykyistä tuotantopolkua ei korvata ennen kuin uuden osan sopivuus on osoitettu.
+
+1. **Tietosopimusten täsmennys:** inventoidaan nykyiset JSON-tiedostot, Markdown-määritykset, RSS-rakenteet ja ajohistorian tiedot. Määritellään omistajuus, tunnisteet, versiot ja yhteensopivuussäännöt. Nykyisiä kanonisia tiedostoja ei kopioida rinnakkaiseen rekisteriin.
+2. **Aihe- ja lähdemääritysten validointi:** rakenteistetaan vain ne kentät, joiden koneellinen käsittely hyödyttää toistettavuutta. Markdown jää ihmiselle sopivaksi selittäväksi dokumentaatioksi ja poikkeusten kuvaukseksi.
+3. **Ajon elinkaaren ja tapahtumakirjausten yhdenmukaistaminen:** käytetään yhteistä ajotunnistetta, täsmennetään vaihetilat, lähdehavainnot, idempotenssi ja tarkistuspisteiden päivitysehdot. Nykyinen erillinen näytösvahti säilyy omana tehtävätyyppinään.
+4. **Adapterirajapintojen käyttöönotto nykyisen teknologian ympärille:** rajataan ajastin, tutkimuspalvelut, tekoäly, GitHub, tallennus ja julkaisu omiin sovittimiinsa. Ensimmäinen adapteri voi käyttää nykyisiä palveluja; vaihdon edellyttämää uutta palvelua ei tarvitse hankkia.
+5. **Integraatio- ja palautumistestit:** testataan virhetilanteet, päällekkäiset ajot, uusintayritykset, osittainen lähdekattavuus, julkaisun epäselvä vastaus ja historian palautus erillisessä testiympäristössä.
+6. **Rajattu rinnakkaisvertailu:** uutta toteutusta voidaan ajaa rajatulla aineistolla ilman tuotantokirjoituksia. Raporttien, lähteiden, tarkistuspisteiden ja ajankäytön erot arvioidaan dokumentoidusti.
+7. **Hallittu tuotantosiirto:** vasta hyväksyttyjen testien ja erillisen käyttäjän päätöksen jälkeen siirretään tuotantovastuu. Siirtoon sisältyvät tietojen migraatio, palautussuunnitelma, käyttöoikeuksien tarkistus ja vanhan polun alasajo.
+
+Vaiheita ei sidota tässä tiettyihin kalenteripäiviin tai palveluvalintoihin. Kukin vaihe pilkotaan GitHub Issues -tehtäviksi, kun sen edellytykset, laajuus ja hyväksymiskriteerit tunnetaan. Siirtymä ei muuta automaatioiden ajastuksia tai kohdekeskusteluja ilman erillistä nimenomaista lupaa.
+
+### 8.10 Avoimet arkkitehtuuripäätökset
+
+Seuraavia valintoja ei ole vielä perusteltua lukita:
+
+- Tarvitaanko nykyisen ChatGPT-ajastuksen rinnalle tai tilalle erillinen ajastuspalvelu, vai riittääkö nykyinen käynnistysmalli.
+- Tarvitaanko pysyvä työjono ja erillinen suorituspalvelu vai voidaanko nykyinen tehtäväkierto säilyttää kevyempänä.
+- Milloin JSON-tiedostot eivät enää riitä kanoniseksi tallennukseksi ja millä mitattavilla perusteilla tietokanta olisi perusteltu.
+- Kuinka pitkään yksityiskohtaisia ajolokeja, hakutuloksia ja väliaikaisia raporttiluonnoksia säilytetään.
+- Tarvitaanko useita tekoäly- tai tutkimuspalveluja rinnakkain, ja miten niiden tuloksia vertaillaan.
+- Mitkä tehtävät voidaan suorittaa rinnakkain ilman lähde-, tila- tai julkaisukonflikteja.
+- Miten kustannuksia, suoritusrajoja, käyttöoikeuksia ja palvelukatkoja valvotaan.
+- Mitkä tavoitetilan osat ovat yhteisiä kaikille tehtävätyypeille ja mitkä jäävät tarkoituksella näytösvahdin kaltaisiksi erillisprosesseiksi.
+
+Päätökset tehdään vasta, kun käytännön kuormitus, virhetilanteet, ylläpitokustannukset ja käyttäjän tarpeet antavat niille perusteen. Teknologian uutuus tai arkkitehtuurin muodollinen monimutkaisuus ei yksin ole syy muutokseen.
+
+## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 8.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
 
@@ -327,13 +580,13 @@ Nämä ovat suunnittelupäätelmiä ja tulevan kehityksen suosituksia, eivät v�
 - Adapterirajapintoja, migraatiotyökaluja tai toista suoritusympäristöä ei ole tämän dokumentin yhteydessä toteutettu.
 - Nykyisten aihekohtaisten ohjeiden täydellinen muuttaminen koneellisesti luettaviksi määrityksiksi vaatisi erillisen kartoituksen. Kaikki poikkeukset eivät välttämättä sovellu rakenteiseen yhteiseen malliin.
 
-## 9. Automaatioiden hallinnan rajat
+## 10. Automaatioiden hallinnan rajat
 
 Tämä arkkitehtuurikuvaus ei anna lupaa muuttaa ChatGPT:n ajastettuja tehtäviä, niiden aktiivisuutta, suoritusvälejä, kellonaikoja, aikavyöhykkeitä, käynnistysohjeita tai kohdekeskusteluja. Se ei myöskään anna lupaa luoda korvaavia automaatioita, vaihtaa tekoälypalvelua, muuttaa GitHub-yhteyden oikeuksia tai ottaa käyttöön uutta suoritusympäristöä.
 
 Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on määritelty ensisijaisesti dokumentissa [Automaatioiden hallinnan suojausperiaatteet](automaation-hallintaperiaatteet.md). Nykyisten automaatioiden yksityiskohtaiset toimintatavat ovat niiden omissa käsikirjoissa.
 
-## 10. Aiheeseen liittyvät ensisijaiset dokumentit
+## 11. Aiheeseen liittyvät ensisijaiset dokumentit
 
 - [Aloitus ja dokumentaation lukujärjestys](aloitus-ja-lukujarjestys.md)
 - [Pääautomaation toimintakäsikirja](paaautomaation-ohje.md)
@@ -346,6 +599,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 - [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md)
 - [Automaatioiden hallinnan suojausperiaatteet](automaation-hallintaperiaatteet.md)
 
-## 11. Muutoshistoria
+## 12. Muutoshistoria
 
+- **1.1.0 – 2026-11-17:** lisättiin tavoitearkkitehtuuri, komponenttien vastuut ja rajapinnat, tietovirrat, kanonisen tiedon omistajuus, virheistä palautuminen, hyväksymisehdot, nykytila–tavoitetila-vertailu, siirtymävaiheet ja avoimet päätökset.
 - **1.0.0 – 2026-11-17:** kuvattiin järjestelmäriippumaton toimintamalli, kolmen arkkitehtuurikerroksen vastuut, nykyinen ChatGPT/GitHub-toteutus, tietovirrat sekä teknologioiden vaihdettavuuden edellytykset. Erotettiin repositoriosta varmennetut tosiasiat, päätelmät ja erikseen tarkistettavat asetukset.
