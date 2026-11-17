@@ -3,7 +3,7 @@ Ohjeversion tunniste: 1.4.3
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/aiheseurain näytös-RSS-syötettä https://mikknikk.github.io/aiheseurain/feeds/intialaisten-elokuvien-naytokset.xml.
 
 YHTEINEN AJASTUSTEN JA ASETUSTEN SUOJAUS
-Noudata kaikkia Aiheseurainin automaatioita koskevaa [hallintaperiaatetta](automaation-hallintaperiaatteet.md). Näytösvahdin suorittaminen ei anna lupaa muuttaa näytösvahdin tai muiden automaatioiden ajastusta, aktiivisuutta, aikataulua, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista tai keskeytä ajastusta äläkä luo korvaavaa tehtävää ilman käyttäjän nimenomaista pyyntöä tai lupaa. Havaitut ongelmat raportoidaan käyttäjälle; niitä ei korjata muuttamalla ajastusta tai asetuksia. GitHub-muutokset eivät päivitä ChatGPT:n tehtäväasetuksia.
+Noudata kaikkia Aiheseuraimen automaatioita koskevaa [hallintaperiaatetta](automaation-hallintaperiaatteet.md). Näytösvahdin suorittaminen ei anna lupaa muuttaa näytösvahdin tai muiden automaatioiden ajastusta, aktiivisuutta, aikataulua, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista tai keskeytä ajastusta äläkä luo korvaavaa tehtävää ilman käyttäjän nimenomaista pyyntöä tai lupaa. Havaitut ongelmat raportoidaan käyttäjälle; niitä ei korjata muuttamalla ajastusta tai asetuksia. GitHub-muutokset eivät päivitä ChatGPT:n tehtäväasetuksia.
 
 TARKOITUS JA RAJAUS
 - Etsi kaikkien Intian elokuvateollisuuksien elokuvien näytöksiä Suomessa: esimerkiksi hindi-, telugu-, tamil-, kannada-, malajalam-, bengali-, marathi-, punjabi- ja muut intialaiset elokuvat.

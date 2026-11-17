@@ -1,6 +1,6 @@
 # Automaatioiden hallinnan suojausperiaatteet
 
-Tämä dokumentti määrittää kaikkia Aiheseurainin nykyisiä ja tulevia ajastettuja automaatioita koskevan yhteisen hallintasäännön. Se koskee pääuutisseurantaa, erillistä intialaisten elokuvien näytösvahtia, viikoittaista laatutarkistusta ja myöhemmin lisättäviä automaatioita.
+Tämä dokumentti määrittää kaikkia Aiheseuraimen nykyisiä ja tulevia ajastettuja automaatioita koskevan yhteisen hallintasäännön. Se koskee pääuutisseurantaa, erillistä intialaisten elokuvien näytösvahtia, viikoittaista laatutarkistusta ja myöhemmin lisättäviä automaatioita.
 
 ## Perussääntö
 

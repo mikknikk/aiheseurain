@@ -12,7 +12,7 @@ Tämä on auditointi, ei korjaava ylläpito. Älä muuta RSS-syötteitä, skript
 
 ## 1.1. Ajastusten ja asetusten hallinnan suojaus
 
-Noudata kaikkia Aiheseurainin automaatioita koskevaa [hallintaperiaatetta](automaation-hallintaperiaatteet.md). Laatutarkistuksen suorittaminen ei anna lupaa muuttaa tämän tai muiden automaatioiden ajastusta, aktiivisuutta, aikataulua, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Auditoinnissa havaitut ongelmat raportoidaan käyttäjälle; niitä ei korjata muuttamalla ajastuksia tai asetuksia. GitHubiin tehty auditointiraportti tai seurantatilan päivitys ei muuta ChatGPT:n tehtäväasetuksia.
+Noudata kaikkia Aiheseuraimen automaatioita koskevaa [hallintaperiaatetta](automaation-hallintaperiaatteet.md). Laatutarkistuksen suorittaminen ei anna lupaa muuttaa tämän tai muiden automaatioiden ajastusta, aktiivisuutta, aikataulua, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Auditoinnissa havaitut ongelmat raportoidaan käyttäjälle; niitä ei korjata muuttamalla ajastuksia tai asetuksia. GitHubiin tehty auditointiraportti tai seurantatilan päivitys ei muuta ChatGPT:n tehtäväasetuksia.
 
 ## 2. Ajon alun esitarkistus
 
