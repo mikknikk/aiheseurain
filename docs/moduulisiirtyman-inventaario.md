@@ -50,6 +50,40 @@ Aihemoduulien sisältöä ei pidä laajentaa tai supistaa migraation yhteydessä
 
 Näytösvahti käyttää erillistä päivittäistä suorituspolkua eikä kuluta yhdeksän tehtävän kiertoa. Sen lähderekisteri, seurantatila, käsikirja, RSS ja muutoshistoria pysyvät erillisinä uutisaiheen vastaavista tiedoista. Olemassa oleva esimerkkimääritys on vain sopimusesimerkki; se ei ole tuotantomääritys eikä osoita yleisen tapahtumavahdin moottorin olevan valmis.
 
+### 2.3 Lähderekisterien kieli- ja aluekattavuuden lähtötilanne
+
+Seuraava yhteenveto on muodostettu kymmenen tehtäväkohtaisen käyttörekisterin source_id-viittauksista ja yhteisen lähdekatalogin kieli-/aluekentistä 17.11.2026. Määrä tarkoittaa rekisterissä olevia lähdeviittauksia, ei lähteiden laatua, tarkistettujen lähteiden määrää eikä kattavuuden prosenttiosuutta.
+
+| Seuranta | Lähdeviittauksia | Katalogiin merkityt kielet | Katalogiin merkityt alueet |
+|---|---:|---|---|
+| Tolkien | 28 | de, en, es, eu, fi, fr, it, pt-BR | BR, DE, ES, FI, FR, GLOBAL, IT, LATAM, NZ, UK, US |
+| Taylor Swift | 10 | en, fi, pt-BR | BR, FI, GLOBAL, US |
+| Gurmeet Ram Rahim Singh | 7 | en, hi, pa | IN-CH, IN-HR, IN-NATIONAL, IN-PB |
+| Muumit | 8 | en, fi, ja, sv | FI, GLOBAL, JP, SE, UK |
+| Wakaliwood | 5 | en | EAST-AFRICA, UG |
+| Euroviisut | 10 | bn, en, fi, ko, ms, ne, sv, th, tl, vi | ASIA, EUROPE, FI, GLOBAL |
+| Sompote Sands | 6 | en, ja, th | JP, TH |
+| Shakkidraamat | 7 | de, en, fi | EUROPE, FI, GLOBAL, NORTH-AMERICA |
+| Intialaisen elokuvan uutiset | 40 | as, bn, en, fi, hi, kn, ml, mr, or, pa, ta, te | FI, IN-AP, IN-AS, IN-KA, IN-KL, IN-MH, IN-NATIONAL, IN-OD, IN-PB, IN-PY, IN-TG, IN-TN, IN-WB |
+| Näytösvahti | 11 | en, fi, ta | FI |
+
+Kielikoodit ovat lähdekatalogin tallentamia tunnisteita (esimerkiksi te = telugu, ta = tamili, kn = kannada, ml = malajalam, bn = bengali, mr = marathi, pa = pandžabi, as = assami ja or = odia). Aluekoodit ovat projektin omia luokittelutunnisteita, eivät hallinnollisten rajojen täydellinen kuvaus.
+
+**Havaitut kattavuusaukot ja tulkintarajat:**
+
+- Tolkienin rekisteri kattaa useita Euroopan kieliä ja lähteitä Brasiliasta, mutta rekisterin omat muistiinpanot nimeävät Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskieliset toimitukselliset lähteet jatkotyöksi.
+- Taylor Swiftin rekisterissä englanti hallitsee; portugali ja suomi ovat mukana, mutta muut kuin englanninkieliset alueelliset lähteet ovat edelleen tunnistettu kehityskohde.
+- Gurmeet Ram Rahim Singhin lähteet painottuvat Pohjois-Intiaan ja englantiin, hindiin sekä pandžabiin.
+- Muumien rekisterissä on suomi, ruotsi, englanti ja japani, mikä vastaa nykyistä lähdepohjaa; muiden kielialueiden lähteitä ei pidä olettaa katetuiksi.
+- Wakaliwoodin lähderekisteri on pieni ja englanninkielinen. Ugandan paikalliskielinen uutis- ja elokuvakulttuurin lähdepohja vaatii jatkotyötä.
+- Euroviisujen rekisteri sisältää eurooppalaisten kielten lisäksi useita Aasian kieliä ja alueellisen kilpailun; kaikkien kansallisten yleisradioyhtiöiden ja maiden kattavuus ei silti ole osoitettu.
+- Sompote Sandsin rekisteri painottuu thaihin, englantiin ja japaniin. Thaikielisten ensisijaisten arkisto- ja kulttuurilähteiden saatavuus on keskeinen.
+- Shakkidraamojen rekisteri painottuu englantiin ja Eurooppaan; Aasian, Afrikan ja Latinalaisen Amerikan lähteet ovat tunnistettu aukko.
+- Intialaisen elokuvan uutisrekisteri kattaa laajimman kieli- ja aluejoukon (mm. telugu, tamili, kannada, malajalam, hindi, bengali, marathi, pandžabi, assami ja odia). Se ei kuitenkaan todista, että kaikkien kielialueiden uutisvirrat tai lähteet olisivat kattavia.
+- Näytösvahdin lähderekisterin maantieteellinen rajaus on tarkoituksella Suomi. Se on prosessimoduulin rajaus, ei puute.
+
+Nämä tiedot siirretään #105:ssä hakuprofiilien lähtötiedoiksi, mutta lähdekatalogi säilyy yhteisenä totuuslähteenä. Kattavuusaukkojen täyttäminen tai lähteiden lisääminen ei kuulu moduulisiirtymän automaattiseen sisältömigraatioon; se vaatii erillisen toimituksellisen päätöksen.
+
 ## 3. Nykyisten tiedostojen ja moduulien siirtokartta
 
 | Nykyinen tieto tai tiedosto | Nykyinen vastuu | Suunniteltu käsittely #105:ssä |
