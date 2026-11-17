@@ -81,8 +81,25 @@ Seuraavat kohdat on jätettävä avoimiksi, kunnes ne suoritetaan oikeilla julka
 | Ruudunlukija ja versio | Ei testattu |
 | Julkaistujen sivujen renderöinti | Ei voitu avata tässä ympäristössä |
 
+## Jatkotarkistus 17.11.2026
+
+PR:n #49 lähdekoodikorjaukset ovat yhdistettyinä `main`-haaraan commitissa `79a6d87918fc0658c40e2ad04a5fd59db5a92310`. Commitin neljä GitHub Actions -check-runia (build, RSS/HTML/dokumentaatio/seurantatila, deploy ja report-build-status) ovat kaikki valmistuneet onnistuneesti.
+
+Tässä jatkotarkistuksessa luettiin uudelleen `main`-haaran yhteinen sivupohja, navigaatio ja alatunniste, kaikkien neljän Pages-näkymän HTML-rakenteet, CSS sekä Valvomon, RSS-lukijan ja Kehitysjonon JavaScript ja niihin liittyvät testit. Lähdekoodista vahvistettiin muun muassa suomenkielinen dokumenttikieli, pääsisältöön siirtyvä linkki, nimetyt navigaatiomaamerkit, sivukohtainen `aria-current`, lomakekenttien labelit, tilaviestien status-/live-alueet ja Kehitysjonon taulukkonäkymän otsikkorakenne.
+
+CSS:n aiemmat kontrastilaskelmat tarkistettiin uudelleen. Lisäksi fokusmerkin kontrastiksi saatiin vaaleassa tilassa 4,66:1 sivun taustaa ja 5,00:1 pintataustaa vasten sekä tummassa tilassa 10,47:1 sivun taustaa ja 9,21:1 pintataustaa vasten. Nämä ovat lähdekoodin väriarvoihin perustuvia laskelmia, eivät renderöidyn käyttöliittymän mittauksia.
+
+Julkaistujen Pages-sivujen avaaminen ei onnistunut käytettävissä olevassa selain-/verkkotestausympäristössä. Siksi todellista renderöintiä, selainkonsolia, näppäimistökäyttöä, 320 CSS px -näkymää, 200/400 % suurennusta, ruudunlukijaa eikä pakotettuja värejä merkitä testatuiksi.
+
+Testaamatta jääville manuaalisille osuuksille on luotu erilliset jatkotiketit:
+- [#85 Kehitysjonon ruudunlukijasaavutettavuus](https://github.com/mikknikk/aiheseurain/issues/85).
+- [#88 Julkaistujen Pages-näkymien näppäimistö, suurennus, responsiivisuus ja kontrastit](https://github.com/mikknikk/aiheseurain/issues/88).
+- [#89 Etusivun, Valvomon, RSS-lukijan ja dokumenttien ruudunlukijatestaus](https://github.com/mikknikk/aiheseurain/issues/89).
+
 ## Johtopäätös
 
-Lähdekoodissa on useita saavutettavuutta tukevia perusrakenteita, ja katselmoinnissa löytyneet kolme linkki- ja otsikkotason ongelmaa korjattiin. Tämä ei kuitenkaan täytä tiketin #25 hyväksymiskriteerejä: julkaistujen sivujen manuaaliset testit, ruudunlukijatestaus, suurennustestaus ja responsiivisuuden tarkistus ovat edelleen tekemättä.
+Lähdekoodikatselmoinnissa havaitut kolme linkki- ja otsikkotason ongelmaa on korjattu ja korjaukset on yhdistetty. Käytettävissä olleet GitHubin automaattiset tarkistukset ovat onnistuneet, yhteinen sivupohja ja neljän näkymän lähdekoodirakenteet on katselmoitu, ja valittujen CSS-väriparien kontrastit on laskettu. Katselmoinnissa ei tunnistettu vakavaa korjaamatonta saavutettavuuden käyttöestettä.
 
-**Tiketin #25 tulee pysyä avoinna**, kunnes puuttuvat testit suoritetaan ja niiden tulokset kirjataan. WCAG 2.2 AAA -tason toteutumista ei tämän katselmoinnin perusteella väitetä.
+Julkaistujen sivujen todellinen selain-, näppäimistö-, ruudunlukija-, zoomaus-, responsiivisuus- ja pakotettujen värien testaus jää kuitenkin tekemättä tässä ympäristössä. Nämä testit on yksilöity jatkotiketeissä #85, #88 ja #89. Niitä ei ole merkitty läpäistyiksi, eikä niiden siirtäminen backlogiin tarkoita, että testit olisi tehty.
+
+Tiketin #25 hyväksyntää voidaan arvioida dokumentissa `docs/saavutettavuus.md` kuvatun 17.11.2026 voimaan tulleen käytännön mukaisesti: tekemättä jäävät testit on siirretty erillisiin jatkotöihin, käytettävissä olevat tarkistukset on tehty eikä katselmoinnissa tunnistettu vakavaa korjaamatonta käyttöestettä. Tämä ei ole WCAG 2.2 AAA -vaatimustenmukaisuustodistus, eikä Aiheseuraimen AAA-tason toteutumista väitetä.
