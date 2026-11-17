@@ -4,7 +4,7 @@
   "title": "Elokuvanäytösten tapahtumavahtilaajennus",
   "x-extension-id": "event-watch.film-screenings",
   "x-extension-version": "1.1.0",
-  "description": "Esimerkki prosessimoduulin omasta, erikseen validoitavasta laajennuksesta. Ei määrittele vielä yleistä tapahtumavahtimoottoria.",
+  "description": "Näytösvahtimoduulin elokuvanäytöskohtainen laajennus yleiseen tapahtumavahtiin. Laajennus viittaa moduulin omaan tapahtumatyyppimääritykseen ja määrittää Suomen maantieteellisen rajauksen, identiteetin ja historian säilyttämisen.",
   "type": "object",
   "required": [
     "event_type_ref",
