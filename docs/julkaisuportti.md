@@ -36,7 +36,7 @@ GitHub Actions suorittaa ennen PR:n yhdistämistä:
 - `python scripts/validate_feeds.py`: XML-, HTML-, GUID-, linkki-, lähdeluettelo-, dokumentaatio- ja tietomallien rakennetarkistukset;
 - `python scripts/validate_publication_gate.py`: porttiraportin skeema ja täydellisyys, hyväksyntäpäätös, soveltumattomuuksien perustelut sekä vanhojen GUIDien säilyminen vertaamalla PR:n syötettä kohdehaaraan.
 
-Automaattinen tarkistus ei avaa uutislähteitä eikä todista väitteiden totuutta, lähteiden riippumattomuutta, uutisen uutisarvoa tai toimituksellisen arvion oikeellisuutta. Se tarkistaa vain luokituksen sallitut arvot ja rakenteen. Uusissa porttiraporteissa `claim_assessments` on pakollinen toimituksellinen työvaihe, vaikka skeema sallii kentän puuttumisen vanhoista historiallisista raporteista. Nämä kohdat tekee automaatio lukemalla lähteet ja vertaamalla niitä raporttiin. Porttiraportti on tämän arvioinnin jäljitettävä merkintä, ei koneellinen todiste väitteiden totuudesta.
+Automaattinen tarkistus ei avaa uutislähteitä eikä todista väitteiden totuutta, lähteiden riippumattomuutta, uutisen uutisarvoa tai toimituksellisen arvion oikeellisuutta. Se tarkistaa vain luokituksen sallitut arvot ja rakenteen. Uusissa porttiraporteissa käytetään skeemaversiota 2, joka edellyttää `claim_assessments`-kenttää. Historialliset skeemaversion 1 raportit säilyvät yhteensopivina. Nämä kohdat tekee automaatio lukemalla lähteet ja vertaamalla niitä raporttiin. Porttiraportti on tämän arvioinnin jäljitettävä merkintä, ei koneellinen todiste väitteiden totuudesta.
 
 ## Julkaisupäätös ja virhetilanne
 
@@ -53,7 +53,7 @@ Alla on havainnollistava rakenne. Korvaa esimerkkitiedot todellisella ajolla ja 
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "run_id": "2026-11-17T12-00-00-tolkien",
   "task_id": "tolkien",
   "feed_path": "feeds/tolkien.xml",
