@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.6.0  
+**Versio:** 1.7.0  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -653,7 +653,7 @@ Tämä on tietosopimuksen ja esimerkkivalidoinnin toteutus. Se ei vielä toteuta
 
 Moduulien tekninen rekisteri on toteutettu tiedostossa `data/module-registry.json`, ja sen rakenne validoidaan skeemalla `schemas/seurantamoduulirekisteri.schema.json`. Lataaja `scripts/module_registry.py` lukee rekisterin deterministisesti, tarkistaa moduulimääritykset #102:n sopimuksella ja prosessilaajennukset niiden paikallisilla, versioiduilla skeemoilla. Moduulikohtaiset virheet eristetään; rekisterin ylätason virhe pysäyttää latauksen turvallisesti. Passiivisia moduuleja ei tuoda aktiivisten määritysten joukkoon.
 
-Tuotantorekisteri on tarkoituksella tyhjä. Tolkien- ja näytösvahtiesimerkit ovat vain testirekisterin kautta käytettyä testiaineistoa, eivät aktiivisia tuotantomoduuleja. Tämä vaihe ei muuta nykyisiä automaatioita eikä käynnistä moduuleja. Nykyisten aiheiden inventaario, siirtosuunnitelma ja tuotantomääritysten migraatio kuuluvat tiketteihin #104 ja #105; suoritusorkestrointi kuuluu myöhempään vaiheeseen.
+Tuotantorekisterissä on kymmenen nykyistä moduulia, mutta kaikki merkinnät ovat inactive-tilassa. Varsinaiset määritykset sijaitsevat modules/-hakemistossa; examples/seurantamoduulit/ sisältää edelleen vain sopimusesimerkkejä. Migraatiovalidaattori tarkistaa myös passiiviset määritykset väliaikaisen aktiivisen rekisterikopion avulla. Tämä vaihe ei muuta nykyisiä automaatioita eikä käynnistä moduuleja.
 
 ### 8.14 Nykyisten aiheiden ja prosessien inventaario
 
@@ -672,6 +672,16 @@ Toteutettu yhteinen ydin käsittelee normalisoituja havaintoja, lähteiden jälj
 Nykyisen näytöshistorian sovitin on vain lukeva. Se muuntaa nykyiset näytöstietueet ja historiatapahtumat yleiseen tilannekuvaan muuttamatta kanonista näytöshistoriaa, RSS-syötettä tai automaation asetuksia. Konferenssiesityksen testitapaus osoittaa, että sama ydin käsittelee olennaisesti erilaista tapahtumatyyppiä.
 
 Toteutus ei vielä sisällä ulkoisia hakuadaptereita, ajon orkestrointia, tuotantohistorian migraatiota eikä näytösvahdin tuotantokäyttöönottoa. Ne säilyvät erillisinä päätöksinä ja kehitysvaiheina.
+
+### 8.16 Nykyisten aiheiden ja prosessien moduulimigraatio
+
+Nykyiset yhdeksän uutisaihetta ja erillinen näytösvahti on kuvattu omissa moduulimäärityksissään modules/-hakemistossa. Määritykset on rekisteröity data/module-registry.json-tiedostoon, mutta kaikki kymmenen merkintää ovat inactive-tilassa. Näin yhteinen rekisteri tunnistaa nykyiset moduulit, mutta niitä ei vielä valita suorituksiin.
+
+Migraation tietosisältö, lähdeviitteiden roolit, hakuprofiilien kieli- ja aluekattavuus sekä palautusmenettely on kuvattu [moduulisiirtymän toteutusdokumentissa](moduulisiirtyman-toteutus.md). scripts/validate_module_migration.py tarkistaa jokaisen määrityksen yhteensopivuuden nykyisen tehtäväkohtaisen lähderekisterin ja yhteisen lähdekatalogin kanssa. Se validoi kaikki moduulit myös passiivisessa tilassa eikä aktivoi niitä.
+
+Näytösvahtimoduulin tapahtumatyyppimääritys sijaitsee moduulin omassa hakemistossa. Sen identiteettikentät ja prosessilaajennuksen viite validoidaan suhteessa #109:n yleiseen tapahtumavahtisopimukseen.
+
+Nykyiset käsikirjat, lähderekisterit, seurantatila, tehtäväjono, RSS-syötteet ja näytöshistoria säilyvät nykyisen tuotantopolun kanonisina tietoina. Moduulimäärittelyt ovat rinnakkainen, validoitu sisältökuvaus. Niiden aktivointi, vanhojen lukijoiden vaihtaminen ja tilahistorian siirto kuuluvat erillisiin hyväksyttyihin kehitysvaiheisiin.
 
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
@@ -699,7 +709,7 @@ Nämä ovat suunnittelupäätelmiä ja tulevan kehityksen suosituksia, eivät v�
 - ChatGPT:n kolmen ajoitetun tehtävän tallennetut tarkat aikataulut, aikavyöhykkeet, aktiivisuus ja kohdekeskustelut tulee tarkistaa ChatGPT:n tehtäväasetuksista. Niitä ei voi vahvistaa GitHubin tiedostoista.
 - GitHub-integraation käyttäjäkohtainen repositorioiden valinta ja todelliset tehokkaat käyttöoikeudet tulee tarkistaa GitHub-sovelluksen ja ChatGPT-yhteyden asetuksista.
 - Vaihtoehtoisen tekoälypalvelun tai ajastimen valintaa ei ole tehty.
-- Moduulirekisteri ja paikallinen määritysten lataaja on toteutettu; tuotantorekisteri on tarkoituksella tyhjä. Laajennusten dynaamista suorituslatausta, nykyisten aiheiden migraatiota, migraatiotyökaluja tai suoritusorkestrointia ei ole vielä toteutettu.
+- Moduulirekisteri ja paikallinen määritysten lataaja on toteutettu. Kymmenen nykyistä moduulimääritystä on rekisteröity inactive-tilassa ja migraation eheys validoidaan erillisellä skriptillä. Moduulien aktiivista suorituslatausta, moduulikohtaisen tilan siirtoa ja yhteistä suoritusorkestrointia ei ole vielä toteutettu.
 - Nykyisten aihekohtaisten ohjeiden täydellinen muuttaminen koneellisesti luettaviksi määrityksiksi vaatisi erillisen kartoituksen. Kaikki poikkeukset eivät välttämättä sovellu rakenteiseen yhteiseen malliin.
 
 ## 10. Automaatioiden hallinnan rajat
@@ -723,6 +733,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.7.0 – 2026-11-18:** lisättiin kymmenen nykyisen seurannan itsenäiset moduulimääritykset ja inactive-rekisterimerkinnät, näytösvahtimoduulin tapahtumatyypin viite sekä lähdeviitteiden ja kieli-/aluekattavuuden migraatiovalidointi.
 - **1.6.0 – 2026-11-18:** dokumentoitiin yleinen tapahtumavahti, tapahtumatyypin laajennussopimus, yhteinen käsittelyydin, nykyisen näytöshistorian vain lukeva sovitin ja konferenssiesityksen testitapaus.
 - **1.5.0 – 2026-11-17:** lisättiin nykyisten aihe- ja prosessimoduulien inventaarioon perustuva siirtokartta, omistajuusrajat, riippuvuudet ja palautettava migraatiomenettely.
 - **1.4.0 – 2026-11-17:** dokumentoitiin toteutettu moduulirekisteri ja paikallinen määritysten lataaja, moduulikohtainen virheiden eristys, passiivisten moduulien käsittely sekä tuotantorekisterin tarkoituksellinen tyhjyys.
