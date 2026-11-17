@@ -85,7 +85,7 @@ test("Kehitysjono-sivu ja navigaatio tarjoavat saavutettavan vain luku -osion", 
 test("julkaistun täydellisen aineiston haku hyväksyy versionoidun JSONin", async () => {
   const dataset = {
     schema_version: 1, status: "complete", generated_at: "2026-11-17T10:00:00.000Z",
-    issue_count: 1, issues: [makeIssue()], dependencies: [{ issueNumber: 12, blockedBy: [] }]
+    issue_count: 1, dependency_relation_count: 0, issues: [makeIssue()], dependencies: [{ issueNumber: 12, blockedBy: [] }]
   };
   const calls = [];
   const result = await fetchPublishedDataset(async (url, options) => {
