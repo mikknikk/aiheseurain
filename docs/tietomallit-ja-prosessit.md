@@ -213,7 +213,7 @@ Tarkistamattomuuden syy on olennainen tieto. Esimerkiksi 403-esto ei tarkoita, e
 
 Jokainen RSS-syötteen muutos saa oman ajokohtaisen JSON-tarkistusraportin. Se ei ole sama asia kuin järjestelmän viimeisin tila eikä viikoittainen laatuauditointi.
 
-- Raportit: `reports/julkaisuportit/{run_id}.json`.
+- Raportit: `reports/julkaisuportit/{run_id}.json`. `task_id` on syötekatalogin `id`-arvo, ei lähderekisterin tehtävätunniste.
 - Rakenne: `schemas/julkaisuportti.schema.json`.
 - Toimituksellinen arviointi: lähteiden avaaminen, väitteiden vastaavuus, lähteiden riippumattomuus, epävarmuudet, ajankohdat, seurantajakso, duplikaatit, sisällön täydellisyys ja saavutettavuus.
 - Automaattinen arviointi: RSS/XML- ja HTML-rakenne, GUIDien yksilöllisyys ja aiempien GUIDien säilyminen.
