@@ -100,6 +100,10 @@ class ProviderRouter:
                 raise ProviderContractError(f"Palvelun {item['provider_id']} adapter_id ei vastaa rekisteröityä toteutusta.")
 
     def _resolve(self, module_id: str, provider_type: str, required: tuple[str, ...]):
+        if provider_type not in {"ai_processor", "research_provider"}:
+            raise ProviderContractError(f"Tuntematon palvelutyyppi: {provider_type}.")
+        if provider_type not in {"ai_processor", "research_provider"}:
+            raise ProviderContractError(f"Tuntematon palvelutyyppi: {provider_type}.")
         route = self.config["routes"].get(module_id, self.config["default_route"])
         if route is None:
             raise ProviderUnavailableError(f"Moduulille {module_id} ei ole määritelty palvelureittiä.")
@@ -170,7 +174,7 @@ class ProviderRouter:
 
     def process_ai(self, request: AIRequest, *, budget: CostBudget) -> AIResult:
         """Käsittele pyyntö valitulla AI-adapterilla ja varmista lähdeviitteiden säilyminen."""
-        if request.contract_version != "1.0.0" or not request.content.strip():
+        if request.contract_version != "1.0.0" or not request.module_id or not request.run_id or not request.content.strip():
             raise ProviderContractError("AI-pyynnön sopimusversio tai sisältö on virheellinen.")
         config, adapter = self._resolve(request.module_id, "ai_processor", request.required_capabilities)
         estimate = adapter.estimate_cost(request)
@@ -184,7 +188,7 @@ class ProviderRouter:
                 raise ProviderContractError("AI-adapterin sisältö tai epävarmuusluokka on virheellinen.")
             if not set(request.source_refs).issubset(set(result.source_refs)):
                 raise ProviderContractError("AI-adapteri kadotti pyynnön lähdeviitteitä.")
-            if result.estimated_cost < 0:
+            if not math.isfinite(result.estimated_cost) or result.estimated_cost < 0:
                 raise ProviderContractError("AI-adapterin kustannusarvio on virheellinen.")
 
         return self._invoke(
@@ -196,7 +200,7 @@ class ProviderRouter:
 
     def search(self, query: ResearchQuery, *, budget: CostBudget) -> ResearchResult:
         """Hae lähteitä ja säilytä alkuperäiset lähdetunnisteet sekä epävarmuus."""
-        if query.contract_version != "1.0.0" or not query.query_terms or query.max_results < 1:
+        if query.contract_version != "1.0.0" or not query.module_id or not query.run_id or not query.query_terms or query.max_results < 1:
             raise ProviderContractError("Tutkimuspyynnön sopimusversio, hakutermit tai tulosraja on virheellinen.")
         config, adapter = self._resolve(query.module_id, "research_provider", query.required_capabilities)
         estimate = adapter.estimate_search_cost(query)
@@ -210,6 +214,8 @@ class ProviderRouter:
                 raise ProviderContractError("Tutkimustuloksen määrä tai kustannusarvio on virheellinen.")
             if result.complete and result.failed_source_ids:
                 raise ProviderContractError("Täydellisessä tutkimustuloksessa ei voi olla epäonnistuneita lähteitä.")
+            if not result.complete and not result.failed_source_ids:
+                raise ProviderContractError("Osittaisessa tutkimustuloksessa pitää nimetä epäonnistuneet lähteet.")
             source_ids = [source.source_id for source in result.sources]
             if len(source_ids) != len(set(source_ids)):
                 raise ProviderContractError("Tutkimustulos sisältää saman lähteen useammin kuin kerran.")
