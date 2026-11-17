@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/kehitysjono.schema.json",
+  "title": "Aiheseuraimen Kehitysjonon julkaistu aineisto",
+  "description": "GitHub Issues -tietolähteestä GitHub Actionsissa muodostettu täydellinen, vain luku -tilannekuva.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "status",
+    "issue_count",
+    "dependency_relation_count",
+    "issues",
+    "dependencies"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "const": "complete"
+    },
+    "issue_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "dependency_relation_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/issue"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "issueNumber",
+          "blockedBy"
+        ],
+        "properties": {
+          "issueNumber": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "blockedBy": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/issue"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "title",
+        "html_url",
+        "state",
+        "labels",
+        "updated_at"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "html_url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://github\\.com/"
+        },
+        "state": {
+          "enum": [
+            "open",
+            "closed"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "updated_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

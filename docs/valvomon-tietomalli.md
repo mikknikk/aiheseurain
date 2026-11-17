@@ -14,11 +14,11 @@ Kartoitus 16.11.2026:
 
 - Repositorion juurihakemistossa ovat `README.md`, `index.html` (Aiheseuraimen etusivu), `valvomo/` (Valvomon sivu), `feeds/`, `data/`, `docs/`, `schemas/`, `scripts/` ja muut projektin hakemistot.
 - RSS-tiedostot ovat juuren `feeds/`-hakemistossa, ja niiden kanoniset osoitteet ovat muotoa `https://mikknikk.github.io/aiheseurain/feeds/{tiedosto}.xml`.
-- Repositorion omissa työnkuluissa ei ole Pages-julkaisua tekevää workflow-tiedostoa. `.github/workflows/` sisältää RSS-/dokumentaatiotestit ja viikoittaisen linkkitarkistuksen.
-- GitHubin automaattinen `pages build and deployment` -ajo käynnistyi `main`-haaran päivityksistä. Viimeisimmän tarkistetun julkaisun ajo 16.11.2026 (`43939321329`) käytti vaiheita `Build with Jekyll`, `Upload artifact` ja `Deploy to GitHub Pages`; kaikki vaiheet onnistuivat.
-- Repositorion juuressa on nyt Aiheseuraimen etusivu (`index.html`) ja Valvomo julkaistaan omassa `valvomo/index.html`-tiedostossaan osoitteessa `/valvomo/`. Sivusto on edelleen staattinen, Jekyllillä rakennettava julkaisu, ei oma sovelluskehys tai räätälöity Actions-buildi.
+- Ennen tiketin #83 toteutusta repositorion omissa työnkuluissa ei ollut Pages-julkaisua tekevää workflow-tiedostoa. GitHubin hallitsema `pages build and deployment` -ajo rakensi `main`-haaran juuren Jekyll-sivuston.
+- Tiketin #83 ratkaisu korvaa tämän yhden Pages-julkaisupolun repositorion `.github/workflows/publish-pages.yml`-työnkululla, jotta Actions-ajon aikana muodostettu `data/kehitysjono.json` voidaan sisällyttää samaan sivustoon. Pages-asetuksen Source on vaihdettava GitHub Actionsiin käyttöönoton yhteydessä.
+- Repositorion juuressa on nyt Aiheseuraimen etusivu (`index.html`) ja Valvomo julkaistaan omassa `valvomo/index.html`-tiedostossaan osoitteessa `/valvomo/`. Sivusto pysyy staattisena Jekyll-julkaisuna. Rakennus suoritetaan Actionsissa, jotta ajonaikainen Kehitysjono-aineisto voidaan sisällyttää julkaisuun.
 
-Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajulkaisu `main`-haaran juuresta. Pages-buildin ajoloki vahvistaa myös lähdepolun: `actions/jekyll-build-pages` sai asetuksen `source: .` (repositoriojuuri). Pages-asetusten hallintasivua ei tarvinnut muuttaa tai lukea erikseen, koska toteutunut build-ajo vahvistaa käytössä olevan lähdepolun. Nykyinen julkaisutapa ja RSS-polut säilytetään tässä kehitysvaiheessa.
+Lähtötilanteen Pages-build käytti asetusta `source: .` (repositoriojuuri). Uusi workflow käyttää samaa Jekyll-lähdepolkua, mutta muodostaa Kehitysjonon JSON-aineiston ennen build-vaihetta. Julkaisun lähde vaihtuu GitHub Actionsiin; Pages-osoite, Jekyll-sivusto ja RSS-polut säilyvät.
 
 ## 2. Sivurakenne ja reitit
 
@@ -30,7 +30,7 @@ Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajul
 ## Hyväksytyt tekniset ratkaisut
 
 1. **Yksi staattinen Pages-sivusto.** Valvomo, RSS-lukija ja Kehitysjono ovat saman sivuston osioita. Nykyisiä RSS-osoitteita ei siirretä.
-2. **Nykyinen julkaisutapa säilyy.** Julkaisu jatkuu `main`-haaran juuresta GitHub Pagesin hallitsemalla Jekyll-buildillä. Erillistä `gh-pages`-haaraa tai uutta Pages-deploy-workflow'ta ei oteta käyttöön vain Valvomon vuoksi.
+2. **Yksi Pages-julkaisupolku.** `.github/workflows/publish-pages.yml` korvaa GitHubin hallitseman branch-pohjaisen Jekyll-julkaisun. Se rakentaa saman Jekyll-sivuston ja julkaisee sen samaan Pages-osoitteeseen; erillistä `gh-pages`-haaraa tai rinnakkaista sivustoa ei luoda. Pages-asetuksen Source on GitHub Actions.
 3. **Ei erillistä status-tietokantaa eikä rinnakkaisia tilannekuvakopioita.** Valvomo lukee nykyisiä koneellisia tietolähteitä suoraan Pagesin saman alkuperän JSON-tiedostoina.
 4. **Automaatiot säilyttävät kirjoitusvastuunsa.** Pääautomaatio, näytösvahti ja laatutarkistus päivittävät omia nykyisiä seurantatietojaan omien käsikirjojensa mukaisesti. Valvomon selain ei kirjoita repositorioon.
 5. **Vaihekohtainen ajohistoria tallennetaan erillisiin haaroihin.** ChatGPT-automaatiot päivittävät omia `run-history/*`-haarojaan ajon aikana. Nämä commitit eivät koske `main`-haaraa eivätkä synnytä PR:iä. Varsinaiset julkaisut ja seurantatilan onnistumispisteet pysyvät normaalissa PR- ja CI-prosessissa. Valvomon lukeminen ei kirjoita mitään.
@@ -106,6 +106,8 @@ Lähdetarkistusten syyt ovat käyttäjälle tarkoitettuja selitteitä, eivät ra
 
 ## 7. GitHub API ja välimuisti
 
+Kehitysjono on poikkeus Valvomon selaimen suorista GitHub API -luvuista: se ei tee selainpyyntöjä Issues- tai riippuvuusrajapintoihin. GitHub Actions muodostaa täydellisen `data/kehitysjono.json`-aineiston, joka julkaistaan Pagesissa. Aineiston rakenne, käynnistimet, 15 minuutin varmistusajo, täydellisyysvaatimukset ja paikallinen välimuisti kuvataan ensisijaisesti [Kehitysjonon aineisto-ohjeessa](kehitysjonon-aineisto.md).
+
 GitHub Actionsin ajoja haetaan julkisesta repositoriosta vain Valvomon tarvitsemiin workflow-tunnisteisiin rajaten. Käyttöliittymä ei hae raakaa lokisisältöä. API-vastaukset välimuistitetaan selaimessa lyhyeksi ajaksi; alustava päivitysväli on viisi minuuttia. API-rajoituksen tai verkkovirheen aikana näytetään viimeisin onnistunut hakuaika ja selkeä virheilmoitus. Vanhaa API-tulosta ei merkitä tuoreeksi.
 
 Valvomon ensisijainen automaatiotila ei riipu GitHub Actions -APIsta, koska pääautomaatio, näytösvahti ja laatutarkistus ovat ChatGPT:n ajoitettuja tehtäviä, eivät tämän repositorion GitHub Actions -workflown suorituksia. Actions-API kertoo vain GitHubissa suoritettavien testien, linkkitarkistuksen ja Pages-julkaisun tilan.
@@ -129,13 +131,14 @@ Käyttöliittymä lukee seuraavat tiedot:
 - `data/seurantatila.json`: pääautomaation aihekohtaiset viimeisimmät onnistumiset ja seuraava vuoro, näytösvahdin tila sekä kolmen automaation ohjeversiot.
 - `run-history/{main-automation,screening-watch,quality-check}/history.json`: ChatGPT-automaatioiden ajot ja vaihekohtaiset tilat.
 - `data/lahdetarkistukset.json`: viimeisimmän aiheajon lähdetarkistuksen tulos, tarkistetut lähteet ja tarkistamatta jääneiden lähteiden syyt.
+- `data/kehitysjono.json`: Actionsissa GitHub Issues -tietojen ja natiivien riippuvuuksien pohjalta muodostettu, vain täydellisenä julkaistava Kehitysjonon aineisto.
 - GitHub Actionsin julkinen API: viimeisimmät RSS-/dokumentaatiotestien, viikoittaisen linkkitarkistuksen ja Pages-julkaisun ajot sekä saatavilla olevat työnvaiheet.
 
 Automaatiokorttien tuoreusrajat ovat 36 tuntia päivittäisille automaatioille ja 10 vuorokautta viikoittaiselle laatutarkistukselle. Puuttuva aikaleima näytetään tuntemattomana. Viimeisin onnistuminen ei tarkoita, että uusi ajo olisi käynnissä.
 
 **Ajovaiheiden lähde:** ChatGPT-automaatiot kirjaavat ajot ja vaiheet omiin `run-history/*`-haaroihinsa. Valvomo näyttää vain näistä tiedostoista luetun, skeeman mukaisen ja riittävän tuoreen tiedon. GitHub Actions -vaiheet näytetään edelleen erillisessä teknisten työnkulkujen osiossa. Puuttuva historiatiedosto tai vanhentunut ajo ei muutu käynnissä-tilaksi.
 
-GitHub API:n tulokset välimuistitetaan välilehden istunnossa enintään viideksi minuutiksi. API-virhe näytetään erillään automaatioiden tilasta; se ei muuta JSON-tietojen perusteella muodostettua tilaa. Näkymä ei hae raakoja Actions-lokeja.
+GitHub API:n tulokset välimuistitetaan välilehden istunnossa enintään viideksi minuutiksi. API-virhe näytetään erillään automaatioiden tilasta; se ei muuta JSON-tietojen perusteella muodostettua tilaa. Näkymä ei hae raakoja Actions-lokeja. Kehitysjonon oma aineisto muodostetaan palvelinpuolella Actionsissa; selaimen paikallinen välimuisti on vain varajärjestely.
 
 Valvomon automaattiset JavaScript-testit suoritetaan komennolla `node --test tests/valvomo.test.mjs`. Sivun ja skriptin rakenne tarkistetaan CI-ajossa. Tämä ei korvaa manuaalista näppäimistö-, ruudunlukija-, suurennus- tai kontrastitestausta.
 

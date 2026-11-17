@@ -1,9 +1,9 @@
 /**
  * Aiheseuraimen Kehitysjonon selainpuolen toiminta.
  *
- * Lukee tämän repositorion julkiset GitHub Issues -tiketit vain luku -tilassa.
- * Selain ei käytä tunnuksia, tokeneita eikä GitHubin kirjoitusrajapintoja.
- * GitHub Issues säilyy tehtävien ainoana ensisijaisena tietolähteenä.
+ * Lukee GitHub Actionsin muodostaman täydellisen, GitHub Pagesissa julkaistun JSON-aineiston.
+ * Selain ei kutsu GitHubin issue- tai riippuvuusrajapintoja eikä käytä tunnuksia.
+ * GitHub Issues ja natiivit riippuvuudet säilyvät kanonisina tietolähteinä.
  */
 
 export const STATUS_COLUMNS = [
@@ -15,10 +15,8 @@ export const STATUS_COLUMNS = [
 ];
 
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
-const API_URL = "https://api.github.com/repos/mikknikk/aiheseurain/issues";
 const CACHE_KEY = "aiheseurain.kanban.cache.v1";
 const STALE_AFTER_MS = 60 * 60 * 1000;
-const MAX_PAGES = 10;
 
 function labelNames(issue) {
   return (Array.isArray(issue?.labels) ? issue.labels : [])
@@ -54,7 +52,7 @@ export function normalizeIssue(issue) {
   };
 }
 
-/** Jättää GitHubin issues-rajapinnan palauttamat pull requestit pois. */
+/** Jättää aineistoon mahdollisesti päätyneet pull requestit pois. */
 export function normalizeIssues(payload) {
   if (!Array.isArray(payload)) throw new Error("GitHub palautti odottamattoman vastausrakenteen.");
   return payload
@@ -78,6 +76,70 @@ export function filterIssues(issues, filters = {}) {
   });
 }
 
+/** Muodostaa riippuvuusverkon GitHubin blocked_by-suhteista. */
+export function buildDependencyGraph(issues, payloads, complete = true) {
+  const directory = new Map(issues.map((issue) => [issue.number, issue]));
+  const relations = new Map();
+  for (const payload of payloads) {
+    const number = Number(payload.issueNumber);
+    const blockers = (Array.isArray(payload.blockedBy) ? payload.blockedBy : [])
+      .filter((item) => item && Number.isInteger(Number(item.number)))
+      .map(normalizeIssue);
+    relations.set(number, { blockedBy: blockers, blocking: [] });
+    for (const blocker of blockers) if (!directory.has(blocker.number)) directory.set(blocker.number, blocker);
+  }
+  for (const issue of directory.values()) {
+    if (!relations.has(issue.number)) relations.set(issue.number, { blockedBy: [], blocking: [] });
+  }
+  for (const [number, value] of relations) {
+    for (const blocker of value.blockedBy) relations.get(blocker.number).blocking.push(directory.get(number));
+  }
+  return {
+    byIssue: Object.fromEntries([...relations].map(([number, value]) => [number, {
+      blockedBy: value.blockedBy.sort((a, b) => a.number - b.number),
+      blocking: value.blocking.filter(Boolean).sort((a, b) => a.number - b.number)
+    }])),
+    issueDirectory: Object.fromEntries(directory),
+    complete
+  };
+}
+
+/** Hakee vain täydellisen, Actionsissa muodostetun Pages-aineiston. */
+export async function fetchPublishedDataset(fetchImpl = fetch, url = null) {
+  const configuredUrl = url || (typeof document !== "undefined"
+    ? document.querySelector("[data-kanban-data-url]")?.dataset.kanbanDataUrl
+    : null);
+  if (!configuredUrl) throw new Error("Kehitysjonon julkaistun aineiston osoite puuttuu.");
+  const response = await fetchImpl(configuredUrl, {
+    headers: { Accept: "application/json" },
+    cache: "no-store"
+  });
+  if (!response.ok) {
+    throw new Error("Kehitysjonon julkaistun aineiston haku epäonnistui (HTTP " + response.status + ").");
+  }
+  const dataset = await response.json();
+  if (!dataset || dataset.schema_version !== 1 || dataset.status !== "complete"
+      || !Array.isArray(dataset.issues) || !Array.isArray(dataset.dependencies)
+      || dataset.issue_count !== dataset.issues.length
+      || dataset.dependencies.length !== dataset.issues.length
+      || !Number.isFinite(Date.parse(dataset.generated_at))) {
+    throw new Error("Kehitysjonon aineisto on virheellinen tai puutteellinen; sitä ei käytetä.");
+  }
+  const issueNumbers = new Set(dataset.issues.map((issue) => Number(issue.number)));
+  const dependencyNumbers = new Set(dataset.dependencies.map((item) => Number(item.issueNumber)));
+  const relationCount = dataset.dependencies.reduce((sum, item) =>
+    sum + (Array.isArray(item.blockedBy) ? item.blockedBy.length : 0), 0);
+  if (issueNumbers.size !== dataset.issues.length
+      || dependencyNumbers.size !== dataset.dependencies.length
+      || dependencyNumbers.size !== issueNumbers.size
+      || relationCount !== dataset.dependency_relation_count
+      || dataset.dependencies.some((item) => !issueNumbers.has(Number(item.issueNumber))
+        || !Array.isArray(item.blockedBy))) {
+    throw new Error("Kehitysjonon aineiston tiketti- tai riippuvuustiedot eivät täsmää.");
+  }
+  return dataset;
+}
+
 function safeReadCache() {
   try {
     const raw = globalThis.localStorage?.getItem(CACHE_KEY);
@@ -91,9 +153,9 @@ function safeReadCache() {
   }
 }
 
-function safeWriteCache(issues, savedAt) {
+function safeWriteCache(issues, savedAt, dependencies = dependencyGraph, dependenciesSavedAt = dependencySavedAt) {
   try {
-    globalThis.localStorage?.setItem(CACHE_KEY, JSON.stringify({ issues, savedAt }));
+    globalThis.localStorage?.setItem(CACHE_KEY, JSON.stringify({ issues, savedAt, dependencies, dependenciesSavedAt }));
   } catch {
     // Välimuisti on vain käyttömukavuutta varten; API-haku toimii ilman sitä.
   }
@@ -117,37 +179,6 @@ function formatAge(timestamp, now = Date.now()) {
   return days + (days === 1 ? " päivä sitten" : " päivää sitten");
 }
 
-/** Hakee kaikki sivut, jotta myös vanhemmat ja suljetut tiketit tulevat mukaan. */
-export async function fetchAllIssues(fetchImpl = fetch) {
-  const all = [];
-  for (let page = 1; page <= MAX_PAGES; page += 1) {
-    const url = new URL(API_URL);
-    url.search = new URLSearchParams({
-      state: "all",
-      per_page: "100",
-      sort: "updated",
-      direction: "desc",
-      page: String(page)
-    }).toString();
-
-    const response = await fetchImpl(url, {
-      headers: { Accept: "application/vnd.github+json" },
-      cache: "no-store"
-    });
-    if (!response.ok) {
-      if (response.status === 403 || response.status === 429) {
-        throw new Error("GitHub API rajoitti pyyntöä. Yritä myöhemmin uudelleen.");
-      }
-      throw new Error("GitHub Issues -tietojen haku epäonnistui (HTTP " + response.status + ").");
-    }
-    const pageItems = await response.json();
-    if (!Array.isArray(pageItems)) throw new Error("GitHub palautti odottamattoman vastausrakenteen.");
-    all.push(...pageItems);
-    if (pageItems.length < 100) return normalizeIssues(all);
-  }
-  throw new Error("Tikettejä on yli 1 000. Näkymä keskeytettiin, jotta tuloksia ei esitettäisi täydellisinä.");
-}
-
 function makeElement(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -157,6 +188,9 @@ function makeElement(tag, className, text) {
 
 let allIssues = [];
 let savedAt = null;
+let dependencyGraph = null;
+let dependencySavedAt = null;
+let selectedDependencyIssue = null;
 let activeView = "board";
 
 function currentFilters() {
@@ -213,6 +247,17 @@ function renderBoard(issues) {
       meta.appendChild(makeElement("span", "kanban-area",
         issue.areaName || "Aihealuetta ei merkitty"));
       item.append(number, title, meta);
+      if (dependencyGraph) {
+        const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
+        item.appendChild(makeElement("p", "kanban-dependency-summary",
+          (dependencyGraph.complete ? "Edeltäjiä: " : "Edeltäjiä vähintään: ") + relations.blockedBy.length +
+          (dependencyGraph.complete ? " · Estää: " : " · Estää vähintään: ") + relations.blocking.length));
+        const detailButton = makeElement("button", "kanban-dependency-button", "Avaa riippuvuudet");
+        detailButton.type = "button";
+        detailButton.dataset.issueNumber = String(issue.number);
+        detailButton.setAttribute("aria-label", "Näytä tiketin #" + issue.number + " riippuvuudet");
+        item.appendChild(detailButton);
+      }
       cards.appendChild(item);
     }
     section.appendChild(cards);
@@ -236,15 +281,77 @@ function renderTable(issues) {
     titleLink.href = issue.url;
     titleLink.rel = "noopener noreferrer";
     titleCell.appendChild(titleLink);
+    const dependencyCell = document.createElement("td");
+    if (dependencyGraph) {
+      const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
+      dependencyCell.appendChild(makeElement("span", "",
+        (dependencyGraph.complete ? "Edeltäjiä: " : "Edeltäjiä vähintään: ") + relations.blockedBy.length +
+        (dependencyGraph.complete ? "; estää: " : "; estää vähintään: ") + relations.blocking.length + ". "));
+      const detailButton = makeElement("button", "kanban-dependency-button", "Avaa");
+      detailButton.type = "button";
+      detailButton.dataset.issueNumber = String(issue.number);
+      detailButton.setAttribute("aria-label", "Näytä tiketin #" + issue.number + " riippuvuudet");
+      dependencyCell.appendChild(detailButton);
+    } else dependencyCell.textContent = "Ei ladattu";
     row.append(
-      numberCell,
-      titleCell,
+      numberCell, titleCell,
       makeElement("td", "", issue.priority || "Ei määritelty"),
       makeElement("td", "", issue.areaName || "Ei merkitty"),
-      makeElement("td", "", STATUS_COLUMNS.find((column) => column.id === issue.status)?.label || "Tila puuttuu")
+      makeElement("td", "", STATUS_COLUMNS.find((column) => column.id === issue.status)?.label || "Tila puuttuu"),
+      dependencyCell
     );
     target.appendChild(row);
   }
+}
+
+
+function dependencyStatus(issue) {
+  if (issue.state === "closed") return "Valmis (suljettu)";
+  return STATUS_COLUMNS.find((column) => column.id === issue.status)?.label || "Tila puuttuu";
+}
+function renderDependencyPanel() {
+  const target = document.getElementById("kanban-dependency-details");
+  target.replaceChildren();
+  if (!dependencyGraph || !selectedDependencyIssue) { target.hidden = true; return; }
+  const issue = dependencyGraph.issueDirectory[selectedDependencyIssue];
+  if (!issue) { target.hidden = true; return; }
+  const relations = dependencyGraph.byIssue[selectedDependencyIssue] || { blockedBy: [], blocking: [] };
+  target.append(
+    makeElement("h3", "", "Tiketin #" + issue.number + " riippuvuudet"),
+    makeElement("p", "", "Edeltävä työ = tiketti, jonka valmistumista tämä työ odottaa. Estää = tiketti, jonka etenemistä tämä työ estää.")
+  );
+  if (!dependencyGraph.complete) target.appendChild(makeElement("p", "kanban-dependency-warning",
+    "Riippuvuustietojen haku jäi osittaiseksi. Alla näkyvät vain onnistuneesti haetut suhteet; lukumäärät voivat olla puutteellisia."));
+  for (const group of [
+    { title: "Edeltävä työ (tämä tiketti odottaa näitä)", items: relations.blockedBy },
+    { title: "Tämä tiketti estää seuraavia töitä", items: relations.blocking }
+  ]) {
+    const list = document.createElement("ul");
+    if (!group.items.length) list.appendChild(makeElement("li", "", dependencyGraph.complete
+      ? "GitHubiin ei ole kirjattu tähän suuntaan riippuvuuksia."
+      : "Tämän suunnan riippuvuustietoja ei saatu kokonaan haettua."));
+    for (const related of group.items) {
+      const item = document.createElement("li");
+      const link = makeElement("a", "", "#" + related.number + " – " + related.title);
+      link.href = related.url || ("https://github.com/mikknikk/aiheseurain/issues/" + related.number);
+      link.rel = "noopener noreferrer";
+      item.append(link, document.createTextNode(" (" + dependencyStatus(related) + ")"));
+      list.appendChild(item);
+    }
+    target.append(makeElement("h4", "", group.title), list);
+  }
+  target.hidden = false;
+}
+function updateDependencyStatus(message, warning = false) {
+  const status = document.getElementById("kanban-dependency-status");
+  status.textContent = message;
+  status.className = warning ? "kanban-dependency-status kanban-dependency-warning" : "kanban-dependency-status";
+}
+function showIssueDependencies(issueNumber) {
+  if (!dependencyGraph) return;
+  selectedDependencyIssue = Number(issueNumber);
+  renderDependencyPanel();
+  document.getElementById("kanban-dependency-details").scrollIntoView?.({ block: "nearest" });
 }
 
 function render() {
@@ -262,6 +369,7 @@ function render() {
     : "";
 
   document.getElementById("kanban-empty").hidden = filtered.length > 0;
+  renderDependencyPanel();
   document.getElementById("kanban-board").hidden = activeView !== "board";
   document.getElementById("kanban-list-view").hidden = activeView !== "list";
   document.getElementById("view-board").setAttribute("aria-pressed", String(activeView === "board"));
@@ -290,51 +398,76 @@ function updateFreshness(message, kind = "info") {
 function showCachedData(cache, isError = false) {
   allIssues = cache.issues;
   savedAt = cache.savedAt;
+  dependencyGraph = cache.dependencies && typeof cache.dependencies.byIssue === "object"
+    ? cache.dependencies : null;
+  dependencySavedAt = Number.isFinite(cache.dependenciesSavedAt)
+    ? cache.dependenciesSavedAt : null;
   populateAreaFilter();
   render();
-  const age = Date.now() - cache.savedAt;
+  const age = Number.isFinite(cache.savedAt) ? Date.now() - cache.savedAt : Infinity;
   const stale = age > STALE_AFTER_MS;
-  const prefix = stale ? "Vanhentunut välimuistitieto" : "Välimuistissa oleva tieto";
-  updateFreshness(prefix + ". Viimeisin onnistunut päivitys " +
-    formatDate(cache.savedAt) + " (" + formatAge(cache.savedAt) + ")." +
-    (isError ? " Uutta tietoa ei saatu haettua." : " Tarkistetaan GitHubista uusinta tilaa."),
-    stale || isError ? "warning" : "info");
+  updateFreshness(
+    (isError ? "Julkaistun aineiston haku epäonnistui. " : "")
+      + (stale ? "Vanhentunut paikallinen välimuistitieto. " : "Paikallinen välimuistitieto. ")
+      + "Viimeisin onnistunut aineisto muodostettiin "
+      + formatDate(cache.savedAt) + " (" + formatAge(cache.savedAt) + ").",
+    "warning"
+  );
+  updateDependencyStatus(dependencyGraph
+    ? "Riippuvuudet ovat paikalliseen välimuistiin tallennetusta aineistosta ("
+      + formatDate(dependencySavedAt || cache.savedAt) + ")."
+    : "Välimuistissa ei ole riippuvuustietoja.", true);
 }
 
 async function refreshIssues() {
   const button = document.getElementById("kanban-refresh");
   button.disabled = true;
-  button.textContent = "Päivitetään…";
+  button.textContent = "Haetaan aineistoa…";
   try {
-    const issues = await fetchAllIssues();
+    const dataset = await fetchPublishedDataset();
+    const issues = normalizeIssues(dataset.issues);
+    if (issues.length !== dataset.issue_count) {
+      throw new Error("Julkaistun aineiston issue-määrä ei vastaa sen sisältöä.");
+    }
+    const graph = buildDependencyGraph(issues, dataset.dependencies, true);
+    const generatedAt = Date.parse(dataset.generated_at);
     allIssues = issues;
-    savedAt = Date.now();
-    safeWriteCache(issues, savedAt);
+    savedAt = generatedAt;
+    dependencyGraph = graph;
+    dependencySavedAt = generatedAt;
+    selectedDependencyIssue = null;
+    safeWriteCache(issues, generatedAt, graph, generatedAt);
     populateAreaFilter();
     render();
-    updateFreshness("Päivitetty onnistuneesti " + formatDate(savedAt) + ".");
     document.getElementById("kanban-api-error").hidden = true;
+    updateDependencyStatus("Kaikki riippuvuudet sisältyvät samaan täydelliseen aineistoon. Muodostettu "
+      + formatDate(generatedAt) + ".");
+    const stale = Date.now() - generatedAt > STALE_AFTER_MS;
+    updateFreshness((stale ? "Julkaistu aineisto on vanhentunut. " : "Julkaistu aineisto on käytössä. ")
+      + "Aineisto muodostettiin " + formatDate(generatedAt) + " ("
+      + formatAge(generatedAt) + ").", stale ? "warning" : "info");
   } catch (error) {
     const cache = safeReadCache();
-    if (cache) {
-      showCachedData(cache, true);
-    }
-    const message = error instanceof Error ? error.message : "GitHub API -päivitys epäonnistui.";
+    if (cache) showCachedData(cache, true);
+    const message = error instanceof Error ? error.message : "Julkaistun aineiston haku epäonnistui.";
     const errorPanel = document.getElementById("kanban-api-error");
     errorPanel.hidden = false;
     errorPanel.textContent = message + (cache
-      ? " Näytämme erikseen merkittyä välimuistitietoa."
-      : " Tikettejä ei voida näyttää ilman onnistunutta hakua.");
+      ? " Näytämme erikseen merkityn paikallisen välimuistin."
+      : " Käyttökelpoista välimuistia ei ole saatavilla.");
     if (!cache) {
       allIssues = [];
+      dependencyGraph = null;
       render();
       document.getElementById("kanban-empty").hidden = false;
-      document.getElementById("kanban-empty").textContent = "Tikettejä ei voitu ladata. Yritä päivittää näkymä uudelleen.";
-      updateFreshness("Päivitys ei ole onnistunut; tietojen ajantasaisuutta ei voida vahvistaa.", "warning");
+      document.getElementById("kanban-empty").textContent =
+        "Tikettejä ei voitu ladata. Yritä hakea julkaistu aineisto uudelleen.";
+      updateFreshness("Päivitys ei onnistunut; tietojen ajantasaisuutta ei voida vahvistaa.", "warning");
+      updateDependencyStatus("Riippuvuustietoja ei ole käytettävissä.", true);
     }
   } finally {
     button.disabled = false;
-    button.textContent = "Päivitä tiketit";
+    button.textContent = "Päivitä aineisto";
   }
 }
 
@@ -353,6 +486,14 @@ function initializeKanban() {
     render();
   });
   document.getElementById("kanban-refresh").addEventListener("click", refreshIssues);
+  document.getElementById("kanban-board").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-issue-number]");
+    if (button) showIssueDependencies(button.dataset.issueNumber);
+  });
+  document.getElementById("kanban-table-body").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-issue-number]");
+    if (button) showIssueDependencies(button.dataset.issueNumber);
+  });
   refreshIssues();
 }
 

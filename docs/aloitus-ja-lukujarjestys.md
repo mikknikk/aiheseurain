@@ -48,8 +48,9 @@ Tärkeä ero: yhdeksän uutistehtävää käsitellään vuorotellen, mutta intia
 Lue:
 
 1. [Lähteet ja hakustrategia](lahteet.md) – yleiset lähdeperiaatteet sekä aihekohtaiset hakujen lähtöpisteet.
-2. [Saavutettavuusperiaatteet](saavutettavuus.md) – millä periaatteilla raportit ja dokumentaatio kirjoitetaan.
-3. Halutessasi [Uutisseurannan seurantaohjeen](seuranta.md) yleiset raportointisäännöt uudelleen – erityisesti seurantajakson ja uutisen julkaisu- ja tapahtumapäivän ero.
+2. [Uutislähteiden ja uutisväitteiden luotettavuusluokitus](luotettavuusluokitus.md) – lähteen A–D-luokka ja yksittäisen väitteen varmennustaso.
+3. [Saavutettavuusperiaatteet](saavutettavuus.md) – millä periaatteilla raportit ja dokumentaatio kirjoitetaan.
+4. Halutessasi [Uutisseurannan seurantaohjeen](seuranta.md) yleiset raportointisäännöt uudelleen – erityisesti seurantajakson ja uutisen julkaisu- ja tapahtumapäivän ero.
 
 Muista, että lähdeluettelo ei ole suljettu sallittujen lähteiden luettelo. Lähteiden alkuperäinen sisältö ja uutisväitteet tarkistetaan; pelkkä hakutuloskatkelma ei riitä.
 
@@ -107,10 +108,12 @@ Lue:
 
 1. [Kehityssuunnitelma](kehityssuunnitelma.md) – järjestelmän tavoitearkkitehtuuri ja kehityksen toimintamalli.
 2. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
-3. [Kehityskäytännöt](kehityskaytannot.md) – dokumentoinnin, koodin, testauksen ja ylläpidon säännöt.
-4. [Automaatioiden hallintaperiaatteet](automaation-hallintaperiaatteet.md) – kuka saa muuttaa ajastuksia, asetuksia ja kohdekeskusteluja.
-5. [Julkaisulaadun portti](julkaisuportti.md) – miten yksittäinen RSS-raportti tarkistetaan ennen julkaisemista.
-6. [Saavutettavuuskatselmoinnin raportti](saavutettavuuskatselmointi-2026-11-17.md) – esimerkki siitä, miten tarkastelun havainnot ja testaamatta jääneet asiat kirjataan.
+3. [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md) – miten GitHub Issues ja natiivit riippuvuudet muodostetaan Pagesissa käytettäväksi JSON-aineistoksi.
+4. [Kehityskäytännöt](kehityskaytannot.md) – dokumentoinnin, koodin, testauksen ja ylläpidon säännöt. Kehitysjonon Kanban näyttää myös GitHubiin kirjatut tikettien riippuvuudet; suhteen tarkka suunta ja tietolähde on kuvattu [kehityssuunnitelmassa](kehityssuunnitelma.md).
+5. [GitHub-tikettien riippuvuuksien hallinta](github-riippuvuuksien-hallinta.md) – miten ChatGPT pyytää natiivien riippuvuuksien lisäämistä tai poistamista ja miten GitHub Actions välittää pyynnön turvallisesti.
+6. [Automaatioiden hallintaperiaatteet](automaation-hallintaperiaatteet.md) – kuka saa muuttaa ajastuksia, asetuksia ja kohdekeskusteluja.
+7. [Julkaisulaadun portti](julkaisuportti.md) – miten yksittäinen RSS-raportti tarkistetaan ennen julkaisemista.
+8. [Saavutettavuuskatselmoinnin raportti](saavutettavuuskatselmointi-2026-11-17.md) – esimerkki siitä, miten tarkastelun havainnot ja testaamatta jääneet asiat kirjataan.
 
 Kun tunnet nämä dokumentit, pystyt seuraamaan kehitystehtäviä ja ymmärtämään, miksi muutokset tehdään versionhallinnan, katselmoinnin ja testien kautta.
 
@@ -154,7 +157,7 @@ Muiden kahdeksan aihekierroksen tehtävien lähdekohtaiset tiedot löytyvät [yl
 | Mitä viimeisimmällä ajolla tapahtui? | [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) ja [seurantatila](../data/seurantatila.json) |
 | Miten RSS-syötteet on koottu? | README:n [syöteluettelo](../README.md#syotteet) ja [syötekatalogi](../data/feed-catalog.json) |
 | Miten näytösvahti toimii? | [Näytösseurannan käsikirja](intialaisten-elokuvien-naytosseuranta.md) |
-| Miten muutoksia testataan? | [Kehityskäytännöt](kehityskaytannot.md) ja README:n laatutestien osio |
+| Miten muutoksia testataan? | [Kehityskäytännöt](kehityskaytannot.md) ja README:n laatutestien osio |\n| Miten tikettien riippuvuuksia hallitaan? | [GitHub-tikettien riippuvuuksien hallinta](github-riippuvuuksien-hallinta.md) ja [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md) |
 | Miten uutisraportti hyväksytään ennen julkaisua? | [Julkaisulaadun portti](julkaisuportti.md) |
 | Kuka saa muuttaa automaatioiden ajastuksia tai kohdekeskusteluja? | [Automaatioiden hallintaperiaatteet](automaation-hallintaperiaatteet.md) |
 

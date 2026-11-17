@@ -121,7 +121,8 @@ Katalogi sisältää lähteen yhteiset perustiedot. Yksinkertaistettu esimerkki 
   "url": "https://www.tolkienestate.com/",
   "language_regions": ["en"],
   "source_type": "primary",
-  "regions": ["UK", "GLOBAL", "US"]
+  "regions": ["UK", "GLOBAL", "US"],
+  "reliability_class": "A"
 }
 ```
 
@@ -133,8 +134,10 @@ Kenttien merkitys:
 - `language_regions`: kielet, joilla lähde julkaisee sisältöä.
 - `source_type`: lähteen perustyyppi: `primary`, `editorial` tai `other`.
 - `regions`: alueet, joita lähde kattaa.
+- `reliability_class`: lähteen yleinen A–D-luokka.
+- `reliability_note`: valinnainen huomio lähteen käyttörajoitteesta tai erityisestä todistusroolista.
 
-**Tärkeä rajaus:** `source_type` ei ole A–D-luotettavuusluokitus. Se kertoo lähteen tyypin, ei sitä, kuinka vahvasti yksittäinen uutisväite on vahvistettu. Ehdotettu A–D-luokitus ja väitekohtaiset varmennustasot eivät ole vielä käytössä; niiden suunnittelu on erillisessä kehitystehtävässä #27.
+`source_type` ja `reliability_class` kuvaavat eri asioita. A–D-luokka ei ole yksittäisen uutisväitteen varmennus. Luokkien kriteerit ja kuusi väitekohtaista varmennustasoa on määritelty dokumentissa [Uutislähteiden ja uutisväitteiden luotettavuusluokitus](luotettavuusluokitus.md).
 
 ## 4. Aihekohtainen lähdekäyttörekisteri: miten aihe käyttää lähdettä?
 
@@ -386,8 +389,8 @@ Tämä erottelu pitää uutisraportin ja näytösseurannan erillään, vaikka mo
 
 On tärkeää tunnistaa myös rajat, jotta käyttöliittymä tai lukija ei päättele tietoa, jota ei ole tallennettu.
 
-- **Lähteen A–D-luotettavuusluokitus:** ei vielä toteutettu. Nykyinen `source_type` on vain lähdetyyppi.
-- **Uutisväitteiden varmennustaso rakenteisena kenttänä:** ei vielä kattavasti mallinnettu.
+- **Lähteen yleinen A–D-luokka:** tallennetaan yhteisen lähdekatalogin `reliability_class`-kenttään; se ei ole yksittäisen uutisväitteen luotettavuusarvio.
+- **Väitekohtainen varmennustaso:** uusien julkaisulaadun porttiraporttien `claim_assessments` tallentaa olennaisten väitteiden tilan ja lähteet. RSS-raportissa sama arvio esitetään lukijalle selkokielisesti.
 - **Kaikki löydetyt uutisehdokkaat ja niiden hylkäyssyyt:** eivät sisälly nykyiseen ajolokiin; kehitystiketti #55.
 - **Jokaisen ajon julkaisemat GUIDit:** niitä ei tällä hetkellä tallenneta ajokohtaisena listana; kehitystiketti #55.
 - **Automaation kaikki työvaiheet ja niiden aikaleimat:** eivät sisälly nykyisiin JSON-tiedostoihin. Viimeisin onnistuminen ei tarkoita, että uusi ajo olisi käynnissä.

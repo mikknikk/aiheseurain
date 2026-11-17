@@ -2,7 +2,7 @@
 
 Aiheseurain on henkilökohtainen, moniaiheinen tiedonkeruu- ja seurantapalvelu. Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Yhdeksän tehtävän kierto tarkoittaa, että kukin aihe tarkistetaan normaalisti noin yhdeksän päivän välein. Intialaisen elokuvan uutisraportti on jonon tehtävä 9. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla.
 
-GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) kokoaa kaikki kymmenen syötettä yhteen aikajärjestykseen ja mahdollistaa syötekohtaisen suodatuksen. [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/) näyttää GitHub Issues -tehtävät tilasarakkeissa sekä saavutettavassa listanäkymässä. Valvomo, RSS-lukija ja Kehitysjono ovat vain luku -näkymiä.
+GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) kokoaa kaikki kymmenen syötettä yhteen aikajärjestykseen ja mahdollistaa syötekohtaisen suodatuksen. [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/) näyttää GitHub Issues -tehtävät tilasarakkeissa, niiden GitHubiin kirjatut riippuvuudet sekä saavutettavan listanäkymän. Valvomo, RSS-lukija ja Kehitysjono ovat vain luku -näkymiä.
 
 Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation lukupolusta](docs/aloitus-ja-lukujarjestys.md). Se etenee järjestelmän yleiskuvasta käytännön toimintaan, lähteisiin, JSON-tietomalleihin, verkkosivustoon ja lopuksi ylläpitoon.
 
@@ -12,9 +12,11 @@ Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation luku
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. RSS-julkaisujen tarkistusportti on kuvattu tiedostossa [docs/julkaisuportti.md](docs/julkaisuportti.md). Ihmiselle tarkoitettu vaiheittainen lukupolku on tiedostossa [docs/aloitus-ja-lukujarjestys.md](docs/aloitus-ja-lukujarjestys.md); JSON-tiedostojen suhteet ja prosessikaaviot ovat tiedostossa `docs/tietomallit-ja-prosessit.md`.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
-- `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
-- `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin ja näytöshistorian skeemat.
+- `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot ja A–D-luokka kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
+- `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin, näytöshistorian ja Kehitysjonon julkaistun aineiston skeemat.
+- `scripts/build_kanban_data.mjs`, `scripts/validate_kanban_data.py` ja `.github/workflows/publish-pages.yml` – muodostavat ja validoivat GitHub Issues -tietojen sekä natiivien riippuvuuksien täydellisen Kehitysjono-aineiston ja julkaisevat saman Jekyll/Pages-sivuston.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
+- `docs/kehitysjonon-aineisto.md` – Kehitysjonon johdetun JSON-aineiston rakenne, päivityskäynnistimet, virhetilat ja Pages-julkaisun käyttöönotto.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
 
 ## Syötteet
@@ -54,7 +56,7 @@ Pääautomaatio käsittelee päivittäisellä ajollaan vain yhtä tehtäväjonon
 2. `docs/paaautomaation-ohje.md` – pääautomaation täydellinen, versioitu toimintakäsikirja.
 3. `docs/tehtavajono.md` – kiertojärjestys ja seuraava tehtävä.
 4. `docs/seuranta.md` – tehtäväkohtaiset seurantajaksot, aiempi uutishistoria, koneellinen seurantatila ja raportointisäännöt.
-5. `docs/lahteet.md`, `docs/tietomallit-ja-prosessit.md`, `data/source-catalog.json` ja valitun tehtävän `data/sources/{task_id}.json` – yleiset lähdeperiaatteet, JSON-tietomallien suhteet, yhteiset lähdetiedot ja tehtäväkohtaiset lähdekäytöt.
+5. `docs/lahteet.md`, `docs/luotettavuusluokitus.md`, `docs/tietomallit-ja-prosessit.md`, `data/source-catalog.json` ja valitun tehtävän `data/sources/{task_id}.json` – yleiset lähdeperiaatteet, luotettavuusluokat, JSON-tietomallien suhteet, yhteiset lähdetiedot ja tehtäväkohtaiset lähdekäytöt.
 6. `docs/saavutettavuus.md` – kaikkia julkaisuja koskevat saavutettavuusperiaatteet.
 7. `docs/kehityskaytannot.md` – koodimuutoksia koskevat ylläpitokäytännöt; lue ja noudata niitä aina, jos muutat skriptejä.
 8. Valitun tehtävän aihekohtaiset ohjeet ja seurantaloki. Tehtävässä 9 lue lisäksi kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`.
@@ -106,17 +108,19 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/tehtavajono.md`: yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja vuoron siirtämisen ehdot. Ei yleisiä raportointi- tai koodauskäytäntöjä.
 - `docs/seuranta.md`: tehtäväkohtaiset seurantajaksot, onnistuneiden tarkistusten tila, uutistapahtumien historia ja luotettavuusluokat.
 - `docs/lahteet.md`: yleiset lähdeperiaatteet ja kaikkien yhdeksän aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
+- `docs/luotettavuusluokitus.md`: lähteiden yleiset A–D-luokat, väitekohtaiset varmennustasot ja lähderiippuvuuksien arviointi.
 - `docs/saavutettavuus.md`: kaikkien julkaisujen ja Markdown-dokumentaation saavutettavuustavoitteet ja testausperiaatteet.
+- `docs/kehitysjonon-aineisto.md`: Kehitysjonon GitHub Issues -pohjaisen aineiston muodostus, julkaisu ja virheistä palautuminen.
 - `docs/kehityskaytannot.md`: dokumentaation luokat ja kirjoitustavat, käynnistyskehotteiden ylläpito, skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
-- `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.
+- `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.\n- `docs/github-riippuvuuksien-hallinta.md`: GitHubin natiivien issue-riippuvuuksien automaattisen lisäämisen ja erikseen pyydetyn poistamisen toimintatapa, pyyntölohko ja oikeusrajaukset.
 - `docs/ajohistoria.md`: ChatGPT-automaatioiden erillisten ajohistoriahaarojen tietomalli ja kirjausmenettely.
 - `docs/valvomon-tietomalli.md`: nykyinen GitHub Pages -julkaisutapa, Valvomon kanoniset tietolähteet, skeemat, julkistettavat kentät, ajantasaisuuden tulkinta ja API:n käyttöperiaatteet.
 - `docs/tietomallit-ja-prosessit.md`: JSON-tiedostojen tarkoitukset ja keskinäiset viittaukset, lähdetietojen kulku, ajolokin tulkinta, näytöshistorian rakenne sekä Mermaid-prosessikaaviot.
 - `index.html`: Aiheseuraimen etusivu.
 - `valvomo/index.html`: Valvomon käyttöliittymä osoitteessa `/valvomo/`.
 - `lukija/index.html` ja `assets/js/reader.js`: RSS-lukijan sivu ja selainpuolen RSS-jäsennys, syötesuodatus sekä HTML-sisällön sanitointi.
-- `kehitysjono/index.html` ja `assets/js/kanban.js`: GitHub Issues -pohjainen, vain luku -muotoinen kanban ja sitä vastaava saavutettava taulukkonäkymä; selain käyttää vain GitHubin julkista luku-APIa ja paikallista välimuistia.
+- `kehitysjono/index.html` ja `assets/js/kanban.js`: GitHub Issues -pohjainen, vain luku -muotoinen kanban ja sitä vastaava saavutettava taulukkonäkymä; tikettien riippuvuudet luetaan GitHubin omasta riippuvuusrajapinnasta, ja selain käyttää vain julkisia luku-API-rajapintoja sekä paikallista välimuistia.
 - `data/feed-catalog.json`: kaikkien kymmenen RSS-syötteen kanoninen katalogi, jota lukija ja RSS-validointi käyttävät.
 - `_layouts/site.html`, `_includes/site-header.html`, `_includes/site-footer.html` ja `assets/`: sivujen yhteinen sivustorunko, navigaatio ja selaimen esityskoodi.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.

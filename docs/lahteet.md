@@ -1,6 +1,6 @@
 # Lähteet ja hakustrategia
 
-Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat hakujen lähtöpisteitä, eivät tyhjentävä tai ehdoton sallittujen lähteiden lista. Tarkista aina alkuperäinen julkaisu, päivämäärä, kirjoittaja/julkaisija ja väitteen sisältö.
+Lue tämä tiedosto kokonaan ennen jokaista ajoa. Alla olevat lähteet ovat hakujen lähtöpisteitä, eivät tyhjentävä tai ehdoton sallittujen lähteiden lista. Tarkista aina alkuperäinen julkaisu, päivämäärä, kirjoittaja/julkaisija ja väitteen sisältö. Käytä lähteen yleisen luokan ja yksittäisen väitteen varmennustason erotteluun [luotettavuusluokituksen ohjetta](luotettavuusluokitus.md).
 
 Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa `data/source-catalog.json`. Tehtäväkohtaiset `data/sources/{task_id}.json`-tiedostot viittaavat katalogin lähteisiin ja määrittävät vain kyseisen tehtävän kriittisyyden, tarkistushistorian ja käyttörajoitteet. Yksityiskohtainen selitys JSON-tiedostojen suhteista, ajolokista ja tietojen kulusta on dokumentissa [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md). Tämä dokumentti on toimituksellinen hakustrategia, ei koneellisen katalogin rinnakkaiskopio.
 
@@ -14,6 +14,10 @@ Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa
 6. Älä käytä hakutuloskatkelmaa ainoana lähteenä. Avaa alkuperäinen juttu ja tarkista sisältö.
 7. Jos lähdettä ei voi avata tai väitettä ei voi varmistaa, älä esitä sitä vahvistettuna.
 8. Kirjaa lähteiden riippuvuudet ja mahdolliset ristiriidat `docs/seuranta.md`-tiedostoon.
+9. Arvioi jokaiselle lähteelle A–D-luokka lähdekatalogin ja [luotettavuusluokituksen](luotettavuusluokitus.md) kriteereillä. Älä päättele luokkaa vain `source_type`-kentästä.
+10. Arvioi jokaisen merkittävän uutisväitteen varmennustaso erikseen; lähteen A–D-luokka ei ole väitteen varmennus.
+11. Selvitä, perustuuko useampi julkaisu samaan uutistoimistoon, tiedotteeseen, haastatteluun tai nimettömään lähteeseen. Älä laske kopioita riippumattomiksi vahvistuksiksi.
+12. Kirjaa lähteen omistus, sidonnaisuus, korjauskäytäntö ja olennaiset aiemmat virheet silloin, kun ne vaikuttavat käyttöön. Erota pysyvä lähdehuomio juttukohtaisesta havainnosta.
 
 ## Tolkien
 
@@ -113,7 +117,7 @@ Oikeudellisten ja virallisten tapahtumien rinnalla seuraa henkilön elokuva- ja 
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-`data/source-catalog.json` sisältää 123 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 132 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi ja alueet ylläpidetään kerran; käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
+`data/source-catalog.json` sisältää 123 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 132 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi, alueet ja A–D-luokka ylläpidetään kerran; tarvittaessa mukana on `reliability_note`. Käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
@@ -144,7 +148,7 @@ Uutislähteiden rekisteriin on lisätty alueellisia toimituksia myös valtakunna
 - **Odia – Odisha:** Sambad ja Dharitri.
 - **Suomi:** Yle, Helsingin Sanomat, Episodi, Elokuvauutiset.fi ja Film-O-Holic.
 
-Lähteet ovat ehdokas- ja hakulista, eivät takuu siitä, että jokainen sivusto olisi jokaisella ajolla saavutettavissa tai julkaisee juuri kyseisen alan uutisia. Rekisterin critical=true tarkoittaa operatiivisesti pakollista tarkistettavaa lähtölähdettä, ei lähteen laatua tai puolueettomuutta koskevaa luotettavuusarviota. source_type kuvaa lähteen roolia (ensisijainen, toimituksellinen tai muu), ei yksin yksittäisen väitteen vahvistumista. Älä merkitse last_checked_at-arvoa ennen kuin alkuperäisen lähteen sisältö on kyseisellä ajolla todella tarkistettu. URL-osoitteiden olemassaolo rekisterissä ei itsessään ole linkkitarkistuksen tulos.
+Lähteet ovat ehdokas- ja hakulista, eivät takuu siitä, että jokainen sivusto olisi jokaisella ajolla saavutettavissa tai julkaisee juuri kyseisen alan uutisia. Rekisterin `critical=true` tarkoittaa operatiivisesti pakollista tarkistettavaa lähtölähdettä, ei lähteen laatua tai puolueettomuutta koskevaa luotettavuusarviota. `source_type` kuvaa lähteen roolia (ensisijainen, toimituksellinen tai muu), ja `reliability_class` kuvaa lähteen yleistä luokkaa A–D. Kumpikaan ei yksin vahvista yksittäistä uutisväitettä; väitekohtainen taso arvioidaan erikseen. Älä merkitse last_checked_at-arvoa ennen kuin alkuperäisen lähteen sisältö on kyseisellä ajolla todella tarkistettu. URL-osoitteiden olemassaolo rekisterissä ei itsessään ole linkkitarkistuksen tulos.
 
 ### Maantieteellisten tunnisteiden käytäntö
 
@@ -164,7 +168,7 @@ Intialaisen elokuvan uutisraportilla ja erillisellä näytösvahdilla on omat ti
 
 Kun lähde tuottaa olennaista uutistietoa, kirjaa tarvittaessa:
 - lähteen nimi ja URL
-- lähteen tyyppi (ensisijainen / toimituksellinen / muu)
+- lähteen tyyppi (`source_type`) ja yleinen A–D-luokka (`reliability_class`)
 - aiheet, joihin lähde soveltuu
 - mahdolliset omistukselliset tai lähderiippuvuudet
 - viimeisin tarkistuspäivä ja mahdolliset luotettavuushuomiot

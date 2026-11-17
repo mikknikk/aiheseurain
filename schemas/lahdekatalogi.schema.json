@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Yhteinen lähdekatalogi",
+  "title": "Yhteinen lähdekatalogi ja lähteen yleinen luotettavuusluokka",
   "type": "object",
   "required": [
     "schema_version",
@@ -8,7 +8,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": 1
+      "const": 2
     },
     "sources": {
       "type": "array",
@@ -27,7 +27,8 @@
         "url",
         "language_regions",
         "source_type",
-        "regions"
+        "regions",
+        "reliability_class"
       ],
       "properties": {
         "id": {
@@ -67,6 +68,18 @@
             "type": "string",
             "minLength": 2
           }
+        },
+        "reliability_class": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ]
+        },
+        "reliability_note": {
+          "type": "string",
+          "minLength": 1
         }
       },
       "additionalProperties": false

@@ -394,3 +394,28 @@ p { max-width: 72ch; }
 @media (max-width: 900px) { .run-history-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 620px) { .run-history-grid { grid-template-columns: 1fr; } }
 @media (forced-colors: active) { .run-history-card, .run-history-item details { border: 1px solid CanvasText; } }
+
+
+/* Kehitysjonon riippuvuuksien selkeä tekstimuotoinen esitys */
+.kanban-dependency-controls { display: flex; flex-wrap: wrap; gap: .6rem; }
+.kanban-dependency-status { margin: .5rem 0; color: var(--muted); }
+.kanban-dependency-warning { font-weight: 750; }
+.kanban-dependency-summary { margin: .65rem 0 .35rem; font-size: .86rem; font-weight: 700; }
+.kanban-dependency-button {
+  min-height: 2.35rem; padding: .35rem .65rem; border: 2px solid var(--border);
+  border-radius: .35rem; background: var(--surface); color: var(--text);
+  font: inherit; font-size: .9rem; font-weight: 700; cursor: pointer;
+}
+.kanban-dependency-button:hover { background: var(--surface-muted); }
+.kanban-dependency-details {
+  margin-top: 1.25rem; padding: 1rem 1.2rem; border: 1px solid var(--border);
+  border-radius: .6rem; background: var(--surface);
+}
+.kanban-dependency-details h3 { margin-top: 0; }
+.kanban-dependency-details h4 { margin-bottom: .35rem; }
+.kanban-dependency-details ul { margin-top: .35rem; }
+.kanban-dependency-details li + li { margin-top: .3rem; }
+.kanban-dependency-details li { overflow-wrap: anywhere; }
+@media (forced-colors: active) {
+  .kanban-dependency-button, .kanban-dependency-details { border: 1px solid CanvasText; }
+}

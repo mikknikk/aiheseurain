@@ -122,7 +122,7 @@ Sisältösuojaus ja sanitointi testataan erillisillä haitallisen HTML:n testita
 
 ### 4.1 Tietolähde ja vastuunjako
 
-GitHub Issues on kehitystehtävien ensisijainen ja kanoninen tietolähde. Jokainen tehtävä on yksi GitHub-issue, jonka pysyvä tunniste on repositorion issue-numero (esimerkiksi `#42`). Valvomon kehitysjono-osio lukee avoimet ja suljetut tiketit GitHubin julkisesta rajapinnasta ja esittää ne kanban-tauluna.
+GitHub Issues on kehitystehtävien ensisijainen ja kanoninen tietolähde. Jokainen tehtävä on yksi GitHub-issue, jonka pysyvä tunniste on repositorion issue-numero (esimerkiksi `#42`). Valvomon kehitysjono-osio lukee avoimet ja suljetut tiketit sekä niiden natiivit riippuvuudet GitHub Actionsin muodostamasta täydellisestä JSON-aineistosta ja esittää ne kanban-tauluna.
 
 - Tiketit luodaan, niitä muokataan ja ne suljetaan GitHubissa. Kanban-näkymä on aluksi vain luku -käyttöliittymä; selaimessa ei ole GitHub-kirjoitusoikeuksia eikä tunnisteita tai salaisuuksia.
 - GitHub-issue on aina tiketin ensisijainen sisältö. Kanban ei ylläpidä erillistä kopiota tiketin otsikosta, kuvauksesta, tilasta tai prioriteetista.
@@ -143,6 +143,17 @@ Kullakin avoimella tiketillä on täsmälleen yksi tilatunniste:
 | `tila:done` | Valmis | Hyväksymiskriteerit täyttyvät; tiketti suljetaan |
 
 Tilan vaihtuessa vanha tilatunniste poistetaan ja uusi lisätään. Valmiiksi merkitty tiketti suljetaan. Jos suljettu tiketti avataan uudelleen, sille asetetaan tilanteeseen sopiva avoimen työn tilatunniste.
+
+### 4.2.1 Tiketin tilan päivittäminen työn edetessä
+
+Tiketin `tila:*`-labelin on kuvattava työn todellista vaihetta. Tiketin käsittelijä päivittää labelin aina, kun työ siirtyy vaiheesta toiseen:
+
+1. **Työ aloitetaan:** vaihda tilaksi `tila:in-progress` heti, kun tiketti otetaan aktiiviseen toteutukseen. Poista samalla aiempi `tila:ready`- tai `tila:backlog`-label.
+2. **Työ estyy:** jos toteutus ei voi jatkua ratkaisemattoman riippuvuuden, päätöksen tai muun esteen vuoksi, käytä `tila:blocked`-labelia ja kirjaa este tikettiin. Kun este poistuu, palauta tiketti tilanteen mukaan `tila:in-progress`- tai `tila:ready`-tilaan.
+3. **Työ keskeytyy ilman estettä:** älä jätä tikettiä virheellisesti työn alle. Palauta se `tila:ready`-tilaan, jos toteutus on edelleen aloitusvalmis, tai `tila:backlog`-tilaan, jos määrittely tai päätökset ovat jälleen kesken. Kerro tarvittaessa keskeytyksen syy tiketin kommentissa.
+4. **Työ valmistuu:** vaihda tilaksi `tila:done` vasta, kun hyväksymiskriteerit täyttyvät, muutokset on yhdistetty kohdehaaraan ja olennaiset tarkistukset on tehty. Sulje tiketti tämän jälkeen.
+
+Tiketillä säilytetään aina täsmälleen yksi `tila:*`-label. Tilan vaihdossa vanha tilalabel poistetaan ja uusi lisätään samassa päivityksessä. Prioriteetti- ja aihelabelit säilytetään. Pelkkä toteutuksen valmistuminen työhaarassa tai PR:n avaaminen ei oikeuta `tila:done`-labeliin. Jos tiketti suljetaan tekemättä työtä, älä esitä sitä toteutettuna: sulkemisen syy ja tilalabelin oikeellisuus arvioidaan erikseen.
 
 ### 4.3 Prioriteetit
 
@@ -181,6 +192,21 @@ Kaikkiin tiketteihin ei tarvitse täyttää jokaista kohtaa heti. Backlog-tikett
 - Käytä GitHubin APIa vain julkisten issue-tietojen lukemiseen. Huomioi sivutus, API-rajoitukset ja välimuisti.
 - Kanbanin saavutettavan vaihtoehdon tulee tarjota sama tieto myös tavallisena otsikoituna listana tai taulukkona; drag-and-drop ei saa olla ainoa tapa ymmärtää tai muuttaa tilaa.
 
+
+### 4.5.1 Tikettien väliset riippuvuudet
+
+Kehitysjono lukee riippuvuudet GitHubin omasta Issues-riippuvuusrajapinnasta (dependencies/blocked_by). GitHubin tietomallissa riippuvuus on suunnattu suhde: jos tiketti A on estetty tiketistä B, A:n blocked_by-listassa on B. Sama suhde esitetään B:n näkökulmasta blocking-suhteena A:han. Käyttöliittymä johtaa käänteisen näkymän tästä samasta lähdetiedosta; se ei ylläpidä rinnakkaista riippuvuusrekisteriä.
+
+- **Edeltävä työ / estetty tästä:** tiketti, jonka valmistumista tarkasteltava työ odottaa (blocked_by).
+- **Estää / mahdollistaa jatkotyön:** tiketit, joiden etenemistä tarkasteltava työ estää (blocking). Näiden töiden eteneminen voi jatkua, kun edeltävä työ valmistuu.
+- Riippuvuudet haetaan käyttäjän pyynnöstä erikseen, jotta sivun tavallinen lataus ei tee yhtä API-kutsua jokaista tikettiä kohti.
+- Kortissa ja taulukossa näytetään edeltävien ja estettyjen töiden lukumäärät sekä painike, jolla yksittäisen tiketin suhteet avataan. Yksityiskohtanäkymä näyttää linkit myös suodatuksen ulkopuolella oleviin tiketteihin.
+- Yhdysviivoja ei käytetä, koska sarakkeiden välinen suuri tai suodattuva verkko olisi helposti sekava ja pienillä näytöillä vaikeasti seurattava. Suhteen suunta ilmaistaan tekstillä ja ryhmitellyillä listoilla.
+- Jos osa API-kutsuista epäonnistuu tai GitHub rajoittaa pyyntöjä, käyttöliittymä kertoo tietojen olevan osittaisia. Puuttuvaa tietoa ei tulkita riippuvuuden puuttumiseksi.
+- Kanban-näkymä on vain luku -muotoinen. Riippuvuudet ovat GitHubin natiivia issue-tietoa. ChatGPT voi pyytää niiden lisäämistä tai erikseen pyydettyä poistamista issue-kuvaukseen lisättävällä koneellisella pyyntölohkolla; GitHub Actions tarkistaa pyynnön ja käyttää natiivia riippuvuusrajapintaa. Tarkka pyyntömuoto, oikeudet, syklitarkistus ja virhetilanteet on kuvattu [riippuvuuksien hallintaohjeessa](github-riippuvuuksien-hallinta.md).
+- Riippuvuustiedot tallennetaan vain selaimen välimuistiin käyttömukavuuden vuoksi. GitHub on ainoa kanoninen lähde.
+
+
 ### 4.6 Tunnisteiden hallinta ja eheys
 
 GitHub-repositorioon luodaan tilaa ja prioriteettia kuvaavat tunnisteet ennen tikettien laajaa siirtoa. Jokaisella tiketillä on täsmälleen yksi `tila:*`-tunniste ja yksi `P*`-prioriteettitunniste. Muut tunnisteet kuvaavat aihealuetta tai tehtävätyyppiä, eivätkä korvaa näitä kahta pakollista luokitusta.
@@ -215,7 +241,7 @@ Näiden tietolähteiden päälle ei rakenneta rinnakkaisia `status/overview.json
 
 `data/seurantatila.json` validoidaan skeemalla `schemas/seurantatila.schema.json`. Lähdetarkistusloki ja näytöshistoria validoidaan omilla jo olemassa olevilla skeemoillaan. Rakennemuutokset tehdään versionhallittuina ja päivitetään tuottajiin, skeemoihin, validointiin ja dokumentaatioon samassa muutossarjassa.
 
-Nykyinen Pages-julkaisu säilyy `main`-haaran juuresta GitHubin hallitsemalla Jekyll-buildillä. Erillistä julkaisun haaraa tai uutta Pages-deploy-workflow'ta ei lisätä vain Valvomon vuoksi. Automaatioiden seurantatiedot julkaistaan nykyisten hyväksyttyjen repositoriomuutosten mukana; selainkäyttöliittymä lukee vain julkisia tietoja eikä sisällä kirjoitusoikeuksia tai salaisuuksia.
+Kehitysjonon aineisto edellyttää, että nykyinen GitHubin hallitsema branch-pohjainen Pages-julkaisu korvataan yhdellä repositorion omalla `.github/workflows/publish-pages.yml`-työnkululla. Se rakentaa saman Jekyll-sivuston ja julkaisee sen samaan Pages-osoitteeseen, mutta muodostaa `data/kehitysjono.json`-tiedoston ennen Jekyll-buildiä. Erillistä julkaisun haaraa tai rinnakkaista sivustoa ei luoda. Pages-asetuksen Source on vaihdettava GitHub Actionsiin. Selainkäyttöliittymä lukee vain julkisia tietoja eikä sisällä kirjoitusoikeuksia tai salaisuuksia.
 
 Viimeisimmän onnistumisen puuttuminen näytetään tuntemattomana, aikataulun ylittänyt onnistuminen vanhentuneena. Viimeisintä onnistumista ei tulkita käynnissä olevaksi ajoksi. Nykyiset koneelliset tiedot eivät sisällä vaihekohtaista ajohistoriaa, joten vaihetiloja ei näytetä ennen kuin automaatiot tuottavat niistä erikseen varmennetun tiedon. Tuoreusrajat ja GitHub API:n välimuistiperiaatteet on määritelty Valvomon tietomallidokumentissa.
 
@@ -262,13 +288,14 @@ Tietosuoja:
 Jokaisessa muutoksessa tarkistetaan myös muutoksen vaikutus koko repositorion viittauksiin:
 
 1. Uusien tiedostojen ja URL-osoitteiden kaikki viittaukset ovat oikein.
-2. Muuttuneita tai poistettuja polkuja ei käytetä enää vanhoissa ohjeissa, skripteissä, testeissä tai asetuksissa.
-3. README, Pages-julkaisun asetukset, työnkulut, syötekatalogi ja testit osoittavat samoihin tiedostoihin.
-4. Testit tarkistavat koneellisesti keskeiset viittaukset ja skeemat.
-5. Muutetut tiedostot luetaan takaisin GitHubista ja niiden sisältö tarkistetaan.
-6. Pages-julkaisun jälkeen tarkistetaan, että sivusto ja julkiset JSON-/RSS-osoitteet todella toimivat.
+2. Kehitysjonon julkaistu JSON-aineisto muodostuu täydellisenä ja sen skeema sekä riippuvuussuhteet täsmäävät GitHubin lähdetietoihin.
+3. Muuttuneita tai poistettuja polkuja ei käytetä enää vanhoissa ohjeissa, skripteissä, testeissä tai asetuksissa.
+4. README, Pages-julkaisun asetukset, työnkulut, syötekatalogi ja testit osoittavat samoihin tiedostoihin.
+5. Testit tarkistavat koneellisesti keskeiset viittaukset ja skeemat.
+6. Muutetut tiedostot luetaan takaisin GitHubista ja niiden sisältö tarkistetaan.
+7. Pages-julkaisun jälkeen tarkistetaan, että sivusto ja julkiset JSON-/RSS-osoitteet todella toimivat.
 
-Tarkista muutoksen jälkeen myös nykyisen Pages-julkaisun rakenne ja työnkulut; älä oleta, että ehdotetut hakemistot tai julkaisumekanismit ovat jo käytössä.
+Tarkista muutoksen jälkeen myös nykyisen Pages-julkaisun rakenne ja työnkulut; älä oleta, että ehdotetut hakemistot tai julkaisumekanismit ovat jo käytössä. Kehitysjonon aineiston käynnistimet, virheestä palautuminen ja Pages-asetuksen käyttöönotto on kuvattu [Kehitysjonon aineisto-ohjeessa](kehitysjonon-aineisto.md).
 
 ## 8. Kehitysvaiheet ja etenemisen seuranta
 
@@ -356,6 +383,7 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 
 ## 10. Muutosloki
 
+- **2026-11-17:** Tikettien riippuvuuksien näyttö lisätään GitHubin omien blocked_by-suhteiden pohjalta; käyttöliittymä näyttää kortti- ja taulukkoyhteenvedot sekä valitun tiketin yksityiskohtaiset riippuvuudet.
 - **2026-11-16:** Kehitysjonon kanbanin vähimmäisversio toteutettiin omalle `/kehitysjono/`-sivulleen. GitHub Issues säilyy ainoana tehtävätietojen lähteenä; Pages-näkymä on vain luku -muotoinen ja tarjoaa kanbanin rinnalla taulukkonäkymän.
 - **2026-11-16:** Valvomo erotettiin juurietusivusta omalle `/valvomo/`-sivulleen. Etusivu varattiin Aiheseuraimen palveluvalikolle; yhteinen Jekyll-sivupohja ja nykyinen Pages-julkaisutapa säilyvät.
 

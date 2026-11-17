@@ -8,9 +8,10 @@ Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen pri
 
 - **#29 – Pages-kartoitus ja Valvomon tietomalli:** valmis ja yhdistetty `main`-haaraan.
 - **#30 – Valvomon vähimmäisversio:** valmis ja yhdistetty `main`-haaraan.
-- **#38 – Valvomon siirto omalle sivulleen:** toteutus tässä PR:ssä; odottaa tarkistusta ja yhdistämistä.
-- **#31 – RSS-lukijan vähimmäisversio:** backlogissa, ei vielä toteutuksessa.
-- **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** backlogissa, ei vielä toteutuksessa.
+- **#38 – Valvomon siirto omalle sivulleen:** valmis ja yhdistetty.
+- **#31 – RSS-lukijan vähimmäisversio:** valmis ja yhdistetty.
+- **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** valmis ja yhdistetty.
+- **#83 – Kehitysjonon aineiston muodostus Actionsissa ja Pages-julkaisu:** toteutuksessa.
 
 Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
@@ -19,6 +20,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidettävä. Sen on säilytettävä eri aiheet erillään, osoitettava uutisten lähteet ja seurantajaksot sekä havaittava rakenteelliset virheet automaattisesti. Kehityksessä suositaan pieniä, testattavia muutoksia. Uudet ja muutetut skriptit kommentoidaan suomeksi vähintään `scripts/validate_feeds.py`-tiedoston tasoisesti; tarkempi sääntö on [kehityskäytännöissä](kehityskaytannot.md).
 
 ## Toteutetut kohteet
+
+- [x] **Uutislähteiden ja uutisväitteiden luotettavuusluokitus (#27).** Yhteinen A–D-lähdeluokitus tallennetaan lähdekatalogiin ja kuusi väitekohtaista varmennustasoa kirjataan uusien julkaisulaadun porttiraporttien claim_assessments-kenttään. Ohjeet erottavat lähteen yleisen roolin väitteen näytöstä sekä kuvaavat lähderiippuvuudet, anonyymit lähteet, ristiriidat, sidonnaisuudet ja korjaukset. Skeemat ja rakennetestit tarkistavat sallitut arvot; ne eivät väitä todistavansa uutisten totuutta.
 
 - [x] **Pääautomaation ohjeiden ulkoistus ja versiohistoria.** Pääautomaation koko tehtävä- ja toimintakuvaus on siirretty tiedostoon `docs/paaautomaation-ohje.md`. ChatGPT-automaation kehote on lyhyt käynnistysosoite. `data/seurantatila.json` tallentaa nykyisen ohjeversion sekä viimeisimmän onnistuneen ajon käyttämän version ja ajan; GitHub Actions tarkistaa versioiden yhdenmukaisuuden.
 
@@ -125,7 +128,7 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 
 **Tavoite:** rakentaa GitHub Pagesiin yhteinen käyttöliittymä, jossa voi seurata automaatioiden etenemistä ja lukea kaikkia repositorion RSS-syötteitä. Tekninen tavoitekuvaus, turvallisuusrajaukset, hyväksymiskriteerit ja vaiheistus ovat dokumentissa [julkinen valvomo ja RSS-lukija](julkinen-valvomo-ja-rss-lukija.md).
 
-**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on tässä PR:ssä; RSS-lukijan (#31) ja kehitysjonon (#35) käyttöliittymät ovat vielä toteuttamatta.
+**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on valmis ja yhdistetty; RSS-lukija (#31) ja Kehitysjonon kanban (#35) on toteutettu. Kehitysjonon selainkohtaisten API-hakujen korvaaminen Actionsissa muodostetulla aineistolla on käynnissä tiketissä #83.
 
 - [x] Kirjaa tavoitearkkitehtuuri: yksi staattinen Pages-sivusto, valvomo ja RSS-lukija erillisinä osioina.
 - [x] Määrittele valvomon näyttämät automaatiot, ajovaiheet, aihekierroksen eteneminen, lähdekattavuuden käsitteet sekä virhe- ja varoitushistoria.

@@ -74,11 +74,9 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 - Aiemmin julkaistuja uutisartikkeleita ei ollut pohjaa luotaessa.
 - Ensimmäinen varsinainen uutiskierros aloittaa uutishistorian; älä tulkitse tätä tiedostoa uutisväitteeksi siitä, ettei aiheista olisi uutisoitu.
 
-## Luotettavuusluokat
+## Luotettavuusmerkintöjen käyttö
 
-- **VIRALLISESTI VAHVISTETTU** – ensisijaisen tahon tai viranomaisen vahvistama tieto.
-- **MEDIAN RAPORTOIMA** – luotettavan toimituksellisen median raportoima ja lähteistetty tieto, jota ei ole itsenäisesti vahvistettu ensisijaislähteestä.
-- **VAHVISTAMATON HUH​​U** – väite, jota ei ole luotettavasti vahvistettu. Älä julkaise sitä uutisena; seuraa vain, jos sillä on selvä uutisarvo.
+Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään keskitetysti dokumentissa [Uutislähteiden ja uutisväitteiden luotettavuusluokitus](luotettavuusluokitus.md). Älä tulkitse tämän tiedoston historiallisia merkintöjä takautuvasti uuden mallin mukaisiksi: aiemmat **VIRALLISESTI VAHVISTETTU**, **MEDIAN RAPORTOIMA** ja **VAHVISTAMATON HUH​​U** -merkinnät säilytetään alkuperäisessä muodossaan. Uusissa raporteissa käytetään uuden ohjeen erillisiä lähdeluokka- ja väitekohtaisia merkintöjä.
 
 ## Aihekohtainen seuranta
 

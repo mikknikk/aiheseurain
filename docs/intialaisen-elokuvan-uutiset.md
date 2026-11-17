@@ -59,11 +59,14 @@ UUTISAIHEET
 Nosta uutisarvoltaan merkittävät uudet elokuvajulkistukset, näyttelijä- ja tekijäkiinnitykset, kuvauksien aloitukset/päättymiset, tuotannon muutokset, trailerit/teaserit/first lookit, julkaisupäivien muutokset, lipputulot/ennätykset, OTT-julkaisut, festivaalit, palkinnot, sensuuri ja alan merkittävät tapahtumat. Vältä vähäpätöisiä yksityiselämän juoruja.
 
 LUOTETTAVUUSLUOKITUS
-Merkitse jokainen uutinen:
-- VIRALLISESTI VAHVISTETTU – ensisijainen virallinen lähde tai asianosaisten suora vahvistus.
-- MEDIAN RAPORTOIMA – uskottava media raportoi, mutta virallista vahvistusta ei ole.
-- VAHVISTAMATON HUH​​U – epävarma väite tai huhulähde.
-Älä nosta väitettä vahvistetuksi vain siksi, että useat sivustot toistavat sen. Kerro lähteiden ristiriidat ja epävarmuudet.
+
+Noudata yleistä [uutislähteiden ja uutisväitteiden luotettavuusluokitusta](luotettavuusluokitus.md). Arvioi jokainen olennainen uutisväite erikseen yhdellä kuudesta varmennustasosta. Älä käytä vanhaa kolmiportaista luokitusta uusissa raporteissa.
+
+- Merkitse väitteen yhteydessä **Väitteen varmennustaso: ...**.
+- Merkitse lähdeluettelossa jokaisen lähteen yhteydessä **Lähteen yleinen luotettavuusluokka: A/B/C/D**.
+- Erota virallinen lähde, riippumaton toimituksellinen vahvistus, yhden toimituksen raportti, nimetön lähde, huhu ja ristiriitainen tieto.
+- Arvioi lähderiippuvuudet: useat samaa tiedotetta, uutistoimistoa tai nimetöntä tietolähdettä toistavat julkaisut eivät ole riippumattomia vahvistuksia.
+- Kirjaa lähteen omistukselliset ja muut sidonnaisuudet, korjaukset sekä olennaiset aiemmat luotettavuusongelmat. Älä käsittele huhua uutisfaktana.
 
 RAPORTIN RAKENNE
 1. Päivän tärkeimmät uutiset koko Intian elokuvateollisuudesta.
