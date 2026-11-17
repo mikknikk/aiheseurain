@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { filterIssues, normalizeIssue, normalizeIssues, STATUS_COLUMNS, fetchPublishedDataset, buildDependencyGraph } from "../assets/js/kanban.js";
+import { filterIssues, normalizeIssue, normalizeIssues, STATUS_COLUMNS, fetchPublishedDataset, buildDependencyGraph, summarizePredecessors } from "../assets/js/kanban.js";
 
 const makeIssue = (overrides = {}) => ({
   number: 12,
@@ -134,3 +134,36 @@ test("osittaiset riippuvuustiedot säilyvät osittaisina", () => {
 });
 
 
+
+test("edeltäjien valmius näytetään suhdelukuna täydellisessä aineistossa", () => {
+  const predecessors = [
+    { number: 1, state: "closed", status: "done" },
+    { number: 2, state: "closed", status: "done" }
+  ];
+  assert.equal(summarizePredecessors(predecessors), "Edeltäjiä: 2/2 valmiina");
+});
+
+test("keskeneräiset edeltäjät lasketaan oikein", () => {
+  const predecessors = [
+    { number: 1, state: "closed", status: "done" },
+    { number: 2, state: "open", status: "in-progress" }
+  ];
+  assert.equal(summarizePredecessors(predecessors), "Edeltäjiä: 1/2 valmiina");
+});
+
+test("valmis-tilalabel huomioidaan myös avoimen issuen edeltäjästatuksessa", () => {
+  assert.equal(summarizePredecessors([
+    { number: 1, state: "open", status: "done" }
+  ]), "Edeltäjiä: 1/1 valmiina");
+});
+
+test("ilman edeltäjiä oleva tiketti esitetään yksiselitteisesti", () => {
+  assert.equal(summarizePredecessors([]), "Edeltäjiä: 0");
+});
+
+test("osittainen riippuvuusaineisto ei esitä määrää täydellisenä", () => {
+  assert.equal(summarizePredecessors([
+    { number: 1, state: "closed", status: "done" },
+    { number: 2, state: "open", status: "ready" }
+  ], false), "Edeltäjiä vähintään: 2; valmiina vähintään: 1");
+});
