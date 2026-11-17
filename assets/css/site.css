@@ -386,7 +386,8 @@ p { max-width: 72ch; }
 .run-history-item summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .run-steps { display: grid; gap: .5rem; padding-left: 1.3rem; }
 .run-steps li { overflow-wrap: anywhere; }
-.run-step-status { display: inline-block; margin-left: .5rem; color: var(--muted); font-weight: 700; }\n.run-step-meta { display: block; color: var(--muted); font-size: .88rem; }
+.run-step-status { display: inline-block; margin-left: .5rem; color: var(--muted); font-weight: 700; }
+.run-step-meta { display: block; color: var(--muted); font-size: .88rem; }
 .run-error { color: var(--bad); }
 .run-warning { color: var(--warn); }
 .status-running { color: var(--link); background: var(--surface-muted); border: 1px solid var(--link); }
