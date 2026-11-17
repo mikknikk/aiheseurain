@@ -554,7 +554,7 @@ Päätökset tehdään vasta, kun käytännön kuormitus, virhetilanteet, ylläp
 
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
-### 8.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
+### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
 
 - Repositorio sisältää kolme erillistä ChatGPT-automaatiota varten ylläpidettyä käsikirjaa ja käynnistyskehotetta.
 - Pääautomaation tehtäväjono, lähdekatalogi, tehtäväkohtaiset lähderekisterit ja seurantatila ovat erillisiä tiedostoja.
@@ -563,7 +563,7 @@ Päätökset tehdään vasta, kun käytännön kuormitus, virhetilanteet, ylläp
 - Pages-julkaisu muodostaa ja validoi Kehitysjonon aineiston ennen Jekyll-julkaisua.
 - ChatGPT:n ajastettujen tehtävien asetuksia ei tallenneta GitHub-repositorioon.
 
-### 8.2 Arkkitehtuuripäätelmät ja suositukset
+### 9.2 Arkkitehtuuripäätelmät ja suositukset
 
 - Aihekohtaiset määritykset kannattaa pitää mahdollisimman rakenteisina ja erottaa yhteisistä toimituksellisista säännöistä.
 - Ajastin, tekoälypalvelu, tallennus, GitHub-integraatio ja julkaisu kannattaa mallintaa vaihdettavina adaptereina.
@@ -572,7 +572,7 @@ Päätökset tehdään vasta, kun käytännön kuormitus, virhetilanteet, ylläp
 
 Nämä ovat suunnittelupäätelmiä ja tulevan kehityksen suosituksia, eivät väitteitä jo toteutetuista adaptereista.
 
-### 8.3 Avoimet ja erikseen varmennettavat asiat
+### 9.3 Avoimet ja erikseen varmennettavat asiat
 
 - ChatGPT:n kolmen ajoitetun tehtävän tallennetut tarkat aikataulut, aikavyöhykkeet, aktiivisuus ja kohdekeskustelut tulee tarkistaa ChatGPT:n tehtäväasetuksista. Niitä ei voi vahvistaa GitHubin tiedostoista.
 - GitHub-integraation käyttäjäkohtainen repositorioiden valinta ja todelliset tehokkaat käyttöoikeudet tulee tarkistaa GitHub-sovelluksen ja ChatGPT-yhteyden asetuksista.
@@ -601,5 +601,6 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.1.1 – 2026-11-17:** korjattiin luvun 9 alaotsikoiden numerointi.
 - **1.1.0 – 2026-11-17:** lisättiin tavoitearkkitehtuuri, komponenttien vastuut ja rajapinnat, tietovirrat, kanonisen tiedon omistajuus, virheistä palautuminen, hyväksymisehdot, nykytila–tavoitetila-vertailu, siirtymävaiheet ja avoimet päätökset.
 - **1.0.0 – 2026-11-17:** kuvattiin järjestelmäriippumaton toimintamalli, kolmen arkkitehtuurikerroksen vastuut, nykyinen ChatGPT/GitHub-toteutus, tietovirrat sekä teknologioiden vaihdettavuuden edellytykset. Erotettiin repositoriosta varmennetut tosiasiat, päätelmät ja erikseen tarkistettavat asetukset.
