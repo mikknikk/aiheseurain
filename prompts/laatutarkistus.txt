@@ -4,6 +4,8 @@ KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: laatutarkistus-2026-11-17-02
 
 ENSISIJAINEN OHJE
+Noudata myös docs/ajohistoria.md-tiedoston vaihekohtaista kirjausmallia. Kirjaa tämän ajon tila ja vaiheet vain haaraan run-history/quality-check; älä kirjoita ajohistoriaa main-haaraan.
+
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/laatutarkistuksen-ohje.md. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele tarkastussisältöä tästä kehotteesta.
 
 AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
@@ -14,7 +16,7 @@ Ajon alussa lue GitHubista README.md, docs/laatutarkistuksen-ohje.md kokonaan ja
 
 Noudata käsikirjan koko tarkastusalaa, raportointia ja onnistumisehtoja. Tämä on vain auditointi: älä korjaa havaintoja, älä muuta automaatioita tai asetuksia äläkä tee korjaavia committeja, issueita tai pull requesteja.
 
-Repositoryn ainoa sallittu kirjoitus on käsikirjan nimenomaisesti sallima quality_check_instructions.last_successful_run_version- ja last_successful_run_at-kenttien päivitys data/seurantatila.json-tiedostossa kattavan onnistuneen auditoinnin jälkeen. Säilytä kaikki muut JSON-kentät täsmälleen ennallaan, erityisesti pääautomaation automation_instructions- ja näytösvahdin separate_screening_watch-osiot. Hae JSON takaisin GitHubista ja varmista, että vain sallitut kaksi kenttää muuttuivat.
+Main-haaran ainoa sallittu kirjoitus on käsikirjan nimenomaisesti sallima quality_check_instructions.last_successful_run_version- ja last_successful_run_at-kenttien päivitys data/seurantatila.json-tiedostossa kattavan onnistuneen auditoinnin jälkeen. Säilytä kaikki muut JSON-kentät täsmälleen ennallaan, erityisesti pääautomaation automation_instructions- ja näytösvahdin separate_screening_watch-osiot. Hae JSON takaisin GitHubista ja varmista, että vain sallitut kaksi kenttää muuttuivat.
 
 Jos auditointi jää kesken tai jokin olennainen tarkastuskohde jää pääsyrajoitteen vuoksi tarkistamatta, älä päivitä onnistumistietoja. Raportoi tarkistetut kohteet, löydökset, rajoitteet ja suositellut korjaukset käsikirjan mukaisesti.
 
