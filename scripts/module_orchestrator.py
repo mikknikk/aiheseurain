@@ -9,11 +9,12 @@ from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import re
 from typing import Any, Protocol, Callable
 import jsonschema
 
 from scripts.module_registry import load_registry, RegistryResult, ModuleResult
-from scripts.module_state import commit_successful_checkpoint, validate_module_state
+from scripts.module_state import commit_successful_checkpoint, validate_module_state, StateConflictError
 from scripts.event_watch import load_event_type, empty_state, reconcile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -291,10 +292,21 @@ class ModuleOrchestrator:
                 error_code: str | None=None) -> ModuleRunResult:
         # Virheellisestä pyynnöstäkin muodostetaan turvallinen, skeeman mukainen
         # virhetulos. Alkuperäinen virhe kuvataan error_code-kentässä.
-        version_pattern = __import__("re").compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
+        version_pattern = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
         safe_mode = request.mode if request.mode in {"shadow","production"} else "shadow"
-        safe_period_start = request.period_start if isinstance(request.period_start,str) and "T" in request.period_start else "1970-01-01T00:00:00+00:00"
-        safe_period_end = request.period_end if isinstance(request.period_end,str) and "T" in request.period_end else safe_period_start
+        fallback_time = "1970-01-01T00:00:00+00:00"
+        try:
+            safe_period_start = request.period_start
+            _validate_timestamp(safe_period_start)
+        except Exception:
+            safe_period_start = fallback_time
+        try:
+            safe_period_end = request.period_end
+            _validate_timestamp(safe_period_end)
+        except Exception:
+            safe_period_end = safe_period_start
+        if _validate_timestamp(safe_period_end) < _validate_timestamp(safe_period_start):
+            safe_period_end = safe_period_start
         result=ModuleRunResult(
             module_id=request.module_id if isinstance(request.module_id,str) and request.module_id else "unknown-module",
             module_type=module_type if module_type in {"topic","process"} else "topic",
@@ -411,7 +423,7 @@ class ModuleOrchestrator:
         except ModuleInactiveError as exc:
             return self._result(request,module_type,started,status="rejected",phase=phase,error_code=exc.code)
         except Exception as exc:
-            code=getattr(exc,"code",type(exc).__name__)
+            code=getattr(exc,"code", "state_conflict" if isinstance(exc,StateConflictError) else type(exc).__name__)
             published=phase in {"artifact_persistence","checkpoint"}
             return self._result(request,module_type,started,status="partial" if published else "failed",
                                 phase=phase,published=published,error_code=str(code))
@@ -435,5 +447,3 @@ class ObservationBatch:
     observed_at: str | None = None
 
 
-class GenericEventObservationProvider(Protocol):
-    def collect(self, definition: dict[str, Any], request: ModuleRunRequest, provider_router: Any) -> ObservationBatch: ...
