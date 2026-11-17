@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Näytösvahdin tapahtumatyyppi; passiivinen esimerkki.",
   "identity_fields": [
-    "film",
+    "title",
     "venue",
     "starts_at"
   ],
