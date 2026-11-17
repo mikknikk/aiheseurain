@@ -661,7 +661,7 @@ Nykyisten yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijako, ehdotet
 
 Inventaario erottaa yhdeksän topic-moduulia ja yhden process-moduulin. Näytösvahti ei kuulu uutisaiheiden kiertoon. Intialaisen elokuvan uutis- ja näytösseurannan lähteet, historiat ja julkaisut pysyvät erillisinä. Yhteinen lähdekatalogi, tehtäväkohtaiset lähdekäyttörekisterit, tehtäväjono, seurantatila, RSS-historia ja näytösten append-only-tapahtumaloki säilyttävät nykyisen omistajuutensa siirtymävaiheen ajan.
 
-Tämä inventaario ei aktivoi moduuleja eikä muuta tuotantorekisteriä, automaatioiden asetuksia tai sisältörajauksia. Varsinainen määritysten muodostaminen kuuluu #105:een; moduulikohtainen tila #106:een; tapahtumavahdin yleistäminen #109:ään.
+Tämä inventaario ei aktivoi moduuleja eikä muuta tuotantorekisteriä, automaatioiden asetuksia tai sisältörajauksia. Varsinaiset määritykset ja passiiviset rekisterimerkinnät on toteutettu #105:ssä. Moduulikohtainen tila kuuluu #106:een; yhteinen tapahtumavahti on toteutettu #109:ssä.
 
 ### 8.15 Yleinen tapahtumavahti
 
@@ -669,9 +669,9 @@ Yleisen tapahtumavahdin vastuunjako, yhteinen tapahtumamalli, tapahtumatyypin la
 
 Toteutettu yhteinen ydin käsittelee normalisoituja havaintoja, lähteiden jäljitettävyyttä, muutosten luokittelua, eksplisiittisiä tilasiirtymiä, ristiriitojen säilyttämistä ja append-only-historiaa. Tapahtumatyypin määritys ohjaa identiteettikenttiä, seurattavia attribuutteja ja sallittuja tiloja; yhteinen ydin ei sisällä elokuva-, teatteri- tai konferenssikohtaista logiikkaa.
 
-Nykyisen näytöshistorian sovitin on vain lukeva. Se muuntaa nykyiset näytöstietueet ja historiatapahtumat yleiseen tilannekuvaan muuttamatta kanonista näytöshistoriaa, RSS-syötettä tai automaation asetuksia. Konferenssiesityksen testitapaus osoittaa, että sama ydin käsittelee olennaisesti erilaista tapahtumatyyppiä.
+Nykyisen näytöshistorian sovitin on vain lukeva. Se muuntaa nykyiset näytöstietueet ja historiatapahtumat yleiseen tilannekuvaan ja käsittelee uusia havaintoja yhteisellä ytimellä vain muistissa, muuttamatta kanonista näytöshistoriaa, RSS-syötettä tai automaation asetuksia. Konferenssiesityksen testitapaus osoittaa, että sama ydin käsittelee olennaisesti erilaista tapahtumatyyppiä.
 
-Toteutus ei vielä sisällä ulkoisia hakuadaptereita, ajon orkestrointia, tuotantohistorian migraatiota eikä näytösvahdin tuotantokäyttöönottoa. Ne säilyvät erillisinä päätöksinä ja kehitysvaiheina.
+Toteutus sisältää lähdeadapterin sopimuksen ja virheiden eristämisen, mutta ei vielä konkreettisia ulkoisia hakuadaptereita, ajon orkestrointia, tuotantohistorian migraatiota eikä näytösvahdin tuotantokäyttöönottoa. Ne säilyvät erillisinä päätöksinä ja kehitysvaiheina.
 
 ### 8.16 Nykyisten aiheiden ja prosessien moduulimigraatio
 
