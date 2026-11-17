@@ -1,0 +1,49 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "tolkien",
+  "module_type": "topic",
+  "definition_version": "1.0.0",
+  "name": "J. R. R. Tolkien",
+  "description": "Tolkienin kirjallisuuteen, maailmaan, tekijänoikeuksiin ja aiheeseen liittyviin tapahtumiin kohdistuva uutisseuranta.",
+  "capabilities": [
+    { "id": "research.search", "minimum_version": "1.0.0", "required": true },
+    { "id": "report.finnish", "minimum_version": "1.0.0", "required": true }
+  ],
+  "interfaces": {
+    "input": { "id": "research.request", "version": "1.0.0" },
+    "output": { "id": "report.article", "version": "1.0.0" }
+  },
+  "source_refs": [
+    { "source_id": "tolkien-estate", "role": "primary", "required": true }
+  ],
+  "search_profiles": [
+    {
+      "id": "tolkien-global",
+      "purpose": "Etsi uutta Tolkien-aiheista tietoa maailmanlaajuisesti.",
+      "query_terms": ["J. R. R. Tolkien", "Tolkien Estate", "Middle-earth"],
+      "languages": ["en", "fi", "de"],
+      "regions": ["GLOBAL", "FI"]
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "separate-rumour-from-confirmed",
+      "category": "verification",
+      "instruction": "Erota virallisesti vahvistettu tieto, toimituksellisesti raportoitu tieto ja vahvistamattomat huhut.",
+      "severity": "required"
+    }
+  ],
+  "topic": {
+    "scope": "Tolkienin teokset, niiden viralliset sovitukset, tekijänoikeudet ja merkittävät aiheeseen liittyvät tapahtumat.",
+    "include": ["Viralliset ilmoitukset", "Merkittävät kulttuuritapahtumat"],
+    "exclude": ["Perusteeton fanispekulaatio"],
+    "entities": [
+      {
+        "entity_id": "j-r-r-tolkien",
+        "entity_type": "person",
+        "label": "J. R. R. Tolkien",
+        "aliases": ["John Ronald Reuel Tolkien"]
+      }
+    ]
+  }
+}
