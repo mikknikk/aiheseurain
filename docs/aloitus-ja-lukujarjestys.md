@@ -109,7 +109,7 @@ Lue:
 2. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
 3. [Kehityskäytännöt](kehityskaytannot.md) – dokumentoinnin, koodin, testauksen ja ylläpidon säännöt.
 4. [Julkaisulaadun portti](julkaisuportti.md) – miten yksittäinen RSS-raportti tarkistetaan ennen julkaisemista.
-4. [Saavutettavuuskatselmoinnin raportti](saavutettavuuskatselmointi-2026-11-17.md) – esimerkki siitä, miten tarkastelun havainnot ja testaamatta jääneet asiat kirjataan.
+5. [Saavutettavuuskatselmoinnin raportti](saavutettavuuskatselmointi-2026-11-17.md) – esimerkki siitä, miten tarkastelun havainnot ja testaamatta jääneet asiat kirjataan.
 
 Kun tunnet nämä dokumentit, pystyt seuraamaan kehitystehtäviä ja ymmärtämään, miksi muutokset tehdään versionhallinnan, katselmoinnin ja testien kautta.
 
