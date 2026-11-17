@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.7
+Ohjeversion tunniste: 1.0.8
 
 ## 1. Tehtävä ja rajaus
 
@@ -64,8 +64,28 @@ Tarkista jokaisesta syötteestä XML/RSS-rakenne, GUIDien olemassaolo ja yksilö
 - Älä hyväksy arvattuja aikaleimoja tai historiatapahtumia.
 - Tarkista pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversioiden vastaavuus.
 
-### 4.5 Dokumentaation yhdenmukaisuus
-Vertaa README:tä, tehtäväjonoa, seurantadokumentteja, aihekohtaisia ohjeita ja automaatioiden työnjakoa. Pääkierto käsittelee yhden yhdeksästä tehtävästä päivässä; näytösvahti on erillinen päivittäinen tehtävä eikä kuluta kiertovuoroa. Uutis- ja näytös-RSS:t sekä seurantalokit eivät saa sekoittua. Etsi ristiriitaiset, vanhentuneet, päällekkäiset ja puuttuvat ohjeet.
+### 4.5 Dokumentaation ajantasaisuus ja vastaavuus toteutukseen
+
+Tarkista dokumentaation keskinäisen yhdenmukaisuuden lisäksi, että se kuvaa repositorion ja julkaistun järjestelmän todellista, nykyistä toimintaa. Dokumentaatio voi olla keskenään johdonmukaista mutta silti vanhentunutta suhteessa koodiin tai käyttöliittymään.
+
+Vertaa dokumentaatiota sen kuvaamiin ensisijaisiin toteutuslähteisiin vähintään seuraavasti:
+- **Koodi ja skriptit:** tarkista dokumentoitujen toimintojen, komentojen, parametrien, tiedostopolkujen, oletusten, validointien ja virhetilanteiden vastaavuus nykyiseen toteutukseen.
+- **GitHub Actions ja muu automaatio:** vertaa kuvattuja käynnistimiä, aikatauluja, riippuvuuksia, työvaiheita, käyttöoikeuksia, artefakteja ja julkaisuehtoja työnkulkutiedostoihin. Älä päättele ChatGPT:n ajoitettujen tehtävien asetuksia GitHub-tiedostoista.
+- **Tietomallit ja skeemat:** varmista, että dokumentoidut JSON-kentät, tunnisteet, tilasiirtymät, tiedostojen väliset viittaukset ja validointisäännöt vastaavat nykyisiä JSON-tiedostoja ja skeemoja.
+- **Verkkosivusto ja käyttöliittymät:** vertaa dokumentoituja sivuja, näkymiä, suodattimia, navigaatiota, tietolähteitä ja käyttäjälle näkyviä toimintoja nykyisiin HTML-, JavaScript-, CSS- ja sivustokonfiguraatiotiedostoihin sekä julkaistuun sivustoon, jos se on saavutettavissa.
+- **Julkaisu- ja ylläpitoprosessit:** varmista, että ohjeiden mukaiset PR-, CI-, validointi-, RSS-julkaisu-, raportointi- ja palautumismenettelyt ovat edelleen toteutettavissa nykyisillä työnkuluilla ja työkaluilla.
+
+Tarkista myös README:n, tehtäväjonon, seuranta- ja lähdedokumenttien, aihekohtaisten ohjeiden sekä automaatioiden työnjaon keskinäinen vastaavuus. Pääkierto käsittelee yhden yhdeksästä tehtävästä päivässä; näytösvahti on erillinen päivittäinen tehtävä eikä kuluta kiertovuoroa. Uutis- ja näytös-RSS:t sekä seurantalokit eivät saa sekoittua.
+
+Etsi ristiriitaiset, vanhentuneet, päällekkäiset ja puuttuvat ohjeet sekä toteutuksen ominaisuudet, joista puuttuu tarpeellinen dokumentaatio. Tarkista erityisesti dokumentoidut tiedostopolut ja linkit sekä esimerkkien, komentojen ja kenttänimien oikeellisuus.
+
+Luokittele havainnot:
+- **Vanhentunut tai virheellinen tieto:** dokumentaatio väittää toiminnon tai rakenteen olevan olemassa, vaikka toteutus ei tue sitä, tai kuvaa sen väärin.
+- **Dokumentoimaton toteutus:** toteutuksessa on olennainen käyttäjälle tai ylläpidolle näkyvä toiminto, tietomalli tai menettely, jota dokumentaatio ei selitä.
+- **Suunniteltu mutta toteuttamaton:** dokumentaatio kuvaa tavoitetta tai suunnitelmaa; varmista, että se on selvästi merkitty suunnitelmaksi eikä nykyiseksi toiminnoksi.
+- **Todentamatta jäänyt:** toteutusta tai julkaistua toimintaa ei voitu tarkistaa esimerkiksi puuttuvan pääsyn tai ympäristörajoitteen vuoksi.
+
+Älä päättele dokumentaatiota vanhentuneeksi pelkästään siksi, että toteutuksen tarkoitus ei käy koodista ilmi. Kirjaa epävarmuus ja pyydä tarvittaessa täsmennystä. Erota nykytila, suunniteltu toiminnallisuus, käytöstä poistettu toiminnallisuus ja tarkistamatta jäänyt asia toisistaan. Raportoi löydöksistä täsmälliset dokumentti- ja toteutuspolut, tarvittaessa rivit, sekä ehdotettu korjaus. Älä muuta dokumentaatiota tai toteutusta laatutarkistuksen aikana.
 
 ### 4.6 Saavutettavuus
 Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Tarkista myös manuaalisten testien kirjaukset, ympäristöt, tulokset ja avoimet löydökset. Jos kirjauksia ei ole, ilmoita manuaalinen testaus tekemättömäksi; tyhjä testipohja ei ole testitulos. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
