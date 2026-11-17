@@ -84,9 +84,20 @@ class ProviderRouter:
         self.config = config
         self.ai_processors = {item.provider_id: item for item in ai_processors}
         self.research_providers = {item.provider_id: item for item in research_providers}
+        if len(self.ai_processors) != len(ai_processors) or len(self.research_providers) != len(research_providers):
+            raise ProviderContractError("Adapterrekisterissä on duplikaatti provider_id.")
         self.sleep_fn = sleep_fn
         self.audit_records: list[ProviderCallRecord] = []
         self._provider_configs = {item["provider_id"]: item for item in config["providers"]}
+        for item in config["providers"]:
+            if not item["enabled"]:
+                continue
+            adapters = self.ai_processors if item["provider_type"] == "ai_processor" else self.research_providers
+            adapter = adapters.get(item["provider_id"])
+            if adapter is None:
+                raise ProviderContractError(f"Aktiiviselle palvelulle {item['provider_id']} ei ole rekisteröity adapteria.")
+            if getattr(adapter, "adapter_id", None) != item["adapter_id"]:
+                raise ProviderContractError(f"Palvelun {item['provider_id']} adapter_id ei vastaa rekisteröityä toteutusta.")
 
     def _resolve(self, module_id: str, provider_type: str, required: tuple[str, ...]):
         route = self.config["routes"].get(module_id, self.config["default_route"])
@@ -101,6 +112,8 @@ class ProviderRouter:
         adapter = adapters.get(provider_id)
         if adapter is None:
             raise ProviderUnavailableError(f"Palvelun {provider_id} adapteria ei ole rekisteröity tähän suoritusympäristöön.")
+        if getattr(adapter, "adapter_id", None) != config["adapter_id"]:
+            raise ProviderContractError(f"Palvelun {provider_id} adapteritunniste ei vastaa konfiguraatiota.")
         declared = set(config["capabilities"])
         actual = set(adapter.capabilities)
         if not set(required).issubset(declared) or not set(required).issubset(actual):
@@ -204,7 +217,7 @@ class ProviderRouter:
             for source in result.sources:
                 if allowed and source.source_id not in allowed:
                     raise ProviderContractError(f"Tutkimusadapteri palautti rekisteröimättömän lähteen {source.source_id}.")
-                if urlparse(source.url).scheme not in {"http", "https"} or not source.title:
+                if urlparse(source.url).scheme not in {"http", "https"} or not urlparse(source.url).netloc or not source.title:
                     raise ProviderContractError("Tutkimustuloksen lähdeviite tai URL ei ole kelvollinen.")
                 if source.reliability_class not in {"A", "B", "C", "D"}:
                     raise ProviderContractError("Lähteen luotettavuusluokka ei ole A–D.")
