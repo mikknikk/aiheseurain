@@ -1,0 +1,278 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "tolkien",
+  "module_type": "topic",
+  "definition_version": "1.0.0",
+  "name": "J. R. R. Tolkien",
+  "description": "Tolkienin kirjallisuuteen, maailmaan, oikeudenhaltijoihin, tutkimukseen ja aiheeseen liittyviin tapahtumiin kohdistuva kansainvälinen uutisseuranta.",
+  "capabilities": [
+    {
+      "id": "research.search",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "report.finnish",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
+  ],
+  "interfaces": {
+    "input": {
+      "id": "research.request",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "report.article",
+      "version": "1.0.0"
+    }
+  },
+  "source_refs": [
+    {
+      "source_id": "tolkien-estate",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "tolkien-society",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "harpercollins-tolkien",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "warnerbros-newsroom",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "tolkiengateway",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "theguardian-books",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "variety-film",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "hmh-books-tolkien",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "christian-bourgois-tolkien",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "planeta-minotauro-tolkien",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "harpercollins-brasil-tolkien",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "deutsche-tolkien-gesellschaft",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "tolkiendil",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "societa-tolkieniana-italiana",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "sociedad-tolkien-espanola",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "suomen-tolkien-seura",
+      "role": "discovery",
+      "required": true
+    },
+    {
+      "source_id": "yle-tolkien",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "elfenomeno",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "journal-tolkien-research",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "the-one-ring",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "ehu-tartalo-programme",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "mythopoeic-society",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "file770",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "gamesradar-film",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "new-zealand-film-map",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "lippu-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "ticketmaster-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "tiketti-fi-events",
+      "role": "discovery",
+      "required": false
+    }
+  ],
+  "search_profiles": [
+    {
+      "id": "tolkien-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "J. R. R. Tolkien",
+        "Tolkien Estate Middle-earth",
+        "Tolkien books publication research",
+        "Tolkien film television game adaptation",
+        "Tolkien exhibition conference event",
+        "Tolkien tapahtuma näyttely luento Suomi"
+      ],
+      "languages": [
+        "de",
+        "en",
+        "es",
+        "eu",
+        "fi",
+        "fr",
+        "it",
+        "pt-BR"
+      ],
+      "regions": [
+        "BR",
+        "DE",
+        "ES",
+        "FI",
+        "FR",
+        "GLOBAL",
+        "IT",
+        "LATAM",
+        "NZ",
+        "UK",
+        "US"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    },
+    {
+      "id": "tolkien-finland",
+      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
+      "query_terms": [
+        "Suomi Finland J. R. R. Tolkien",
+        "J. R. R. Tolkien tapahtuma Suomi Finland"
+      ],
+      "languages": [
+        "en",
+        "fi"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "separate-work-types",
+      "category": "verification",
+      "instruction": "Erota Tolkienin itse kirjoittamat teokset, myöhemmät toimitetut julkaisut, tutkimus ja adaptaatiot toisistaan.",
+      "severity": "required"
+    },
+    {
+      "id": "verify-rights",
+      "category": "verification",
+      "instruction": "Varmista oikeus-, sopimus- ja tuotantoväitteet ensisijaisesta tiedotteesta tai riippumattomasta toimituksellisesta lähteestä.",
+      "severity": "required"
+    },
+    {
+      "id": "fan-content",
+      "category": "exclusion",
+      "instruction": "Fanisivustot ja yhteisöt voivat antaa uutisvihjeitä, mutta niitä ei käsitellä yksinään riippumattomana vahvistuksena.",
+      "severity": "required"
+    }
+  ],
+  "topic": {
+    "scope": "Tolkienin elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, viralliset adaptaatiot (elokuva, televisio ja pelit), näyttelyt sekä tapahtumat. Erota Tolkienin itse kirjoittamat teokset myöhemmästä toimituksellisesta aineistosta ja adaptaatioista.",
+    "include": [
+      "Tolkienin teokset, postuumit julkaisut ja tutkimus",
+      "Oikeudenhaltijoiden, kustantajien ja adaptaatioiden viralliset ilmoitukset",
+      "Elokuva-, televisio- ja pelisovitukset sekä niiden tuotantovaiheet",
+      "Näyttelyt, konferenssit, luennot, conit ja muut Tolkien-aiheiset tapahtumat",
+      "Suomessa järjestettävät Tolkien-aiheiset tapahtumat"
+    ],
+    "exclude": [
+      "Perusteeton fanispekulaatio ja huhut ilman uutisarvoa",
+      "Tavallinen fantasia- ja pelialan uutisointi ilman Tolkien-yhteyttä"
+    ],
+    "entities": [
+      {
+        "entity_id": "j-r-r-tolkien",
+        "entity_type": "person",
+        "label": "J. R. R. Tolkien",
+        "aliases": [
+          "John Ronald Reuel Tolkien"
+        ]
+      },
+      {
+        "entity_id": "tolkien-estate",
+        "entity_type": "organization",
+        "label": "Tolkien Estate",
+        "aliases": [
+          "The Tolkien Estate"
+        ]
+      }
+    ]
+  }
+}
