@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { classifyFreshness, latestRotationTask, estimateNextTaskUpdates, validateStateShape, TASK_ORDER, loadDashboard } from "../assets/js/valvomo.js";
+import { classifyFreshness, latestRotationTask, estimateNextTaskUpdates, validateStateShape, TASK_ORDER, loadDashboard, validateRunHistory, displayRunStatus } from "../assets/js/valvomo.js";
 
 test("tuoreus erottaa tuoreen, vanhentuneen ja tuntemattoman ajan", () => {
   const now = Date.parse("2026-11-16T20:00:00+02:00");
@@ -225,4 +225,45 @@ test("lähdetarkistuslokin virhe ei piilota automaatioiden tilatietoja", async (
     globalThis.document = oldDocument;
     globalThis.fetch = oldFetch;
   }
+});
+
+
+function sampleRunHistory() {
+  return {
+    schema_version: 1,
+    automation_id: "main_automation",
+    updated_at: "2026-11-17T10:00:00Z",
+    runs: [{
+      run_id: "20261117T100000Z-test001",
+      automation_id: "main_automation",
+      status: "running",
+      started_at: "2026-11-17T10:00:00Z",
+      finished_at: null,
+      updated_at: "2026-11-17T10:00:00Z",
+      source: "chatgpt_scheduled_task",
+      summary: "Ajo käynnissä",
+      steps: [{
+        id: "preflight", name: "Esitarkistus", status: "succeeded",
+        started_at: "2026-11-17T10:00:00Z", finished_at: "2026-11-17T10:00:05Z",
+        updated_at: "2026-11-17T10:00:05Z", warnings: [], errors: []
+      }],
+      warnings: [], errors: []
+    }]
+  };
+}
+
+test("ajohistorian rakenne sidotaan oikeaan automaatioon ja sisältää vaiheet", () => {
+  const history = sampleRunHistory();
+  assert.equal(validateRunHistory(history, "main_automation"), true);
+  assert.equal(validateRunHistory(history, "screening_watch"), false);
+  history.runs[0].steps[0].status = "invented";
+  assert.equal(validateRunHistory(history, "main_automation"), false);
+});
+
+test("vanhentunutta running-tilaa ei näytetä käynnissä olevana", () => {
+  const run = sampleRunHistory().runs[0];
+  const now = Date.parse("2026-11-20T10:00:00Z");
+  assert.equal(displayRunStatus(run, 36, now).label, "Päivitys vanhentunut – mahdollisesti keskeytynyt");
+  run.updated_at = "2026-11-20T09:30:00Z";
+  assert.equal(displayRunStatus(run, 36, now).label, "Käynnissä");
 });
