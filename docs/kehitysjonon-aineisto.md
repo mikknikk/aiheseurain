@@ -11,6 +11,7 @@ GitHub Actions muodostaa näistä lähteistä yhden johdetun JSON-tilannekuvan:
 
 - `scripts/build_kanban_data.mjs` hakee kaikki avoimet ja suljetut issue-tiketit sekä kunkin tiketin `blocked_by`-suhteet.
 - `schemas/kehitysjono.schema.json` määrittelee julkaistavan aineiston rakenteen.
+- `scripts/validate_kanban_data.py` validoi muodostetun JSONin skeemaa ja projektikohtaisia eheysvaatimuksia vasten ennen Pages-buildiä.
 - `data/kehitysjono.json` syntyy Pages-buildin työtilaan ajon aikana. Sitä ei ylläpidetä käsin eikä commitata repositorioon.
 - `assets/js/kanban.js` lukee aineiston GitHub Pagesista ja muodostaa siitä Kanban- ja listanäkymän sekä riippuvuusverkon.
 
@@ -31,7 +32,7 @@ Pull requestit suodatetaan issue-listasta pois. Haku sivutetaan sekä issueille 
 
 Muodostus keskeytyy, jos yksikin sivu, riippuvuustietue tai rakennetarkistus epäonnistuu. Osittaista aineistoa ei merkitä täydelliseksi eikä sitä julkaista. Pages-julkaisun vaiheet suoritetaan vasta onnistuneen muodostuksen jälkeen, joten epäonnistunut ajo jättää viimeisimmän onnistuneen sivustojulkaisun voimaan.
 
-Skeema tarkistetaan tavallisessa CI-ajossa. Aineiston tuottajan testit tarkistavat sivutuksen, riippuvuudet, muodostusajan, täydellisyystilan ja virheestä keskeyttämisen.
+Skeema tarkistetaan tavallisessa CI-ajossa. Jokainen julkaisuajo validoi muodostetun JSONin skeemaa ja semanttisia ehtoja vasten sekä varmistaa, että tiedosto päätyy Jekyll-buildin julkaistavaan hakemistoon. Aineiston tuottajan testit tarkistavat sivutuksen, riippuvuudet, muodostusajan, täydellisyystilan ja virheestä keskeyttämisen.
 
 ## 3. Päivitysten käynnistyminen
 
