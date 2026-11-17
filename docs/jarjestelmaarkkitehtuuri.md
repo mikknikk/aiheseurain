@@ -2,7 +2,8 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100)
+**Versio:** 1.3.0  
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -642,6 +643,12 @@ Seuraavia valintoja ei ole vielä perusteltua lukita:
 
 Päätökset tehdään vasta, kun käytännön kuormitus, virhetilanteet, ylläpitokustannukset ja käyttäjän tarpeet antavat niille perusteen. Teknologian uutuus tai arkkitehtuurin muodollinen monimutkaisuus ei yksin ole syy muutokseen.
 
+### 8.12 Toteutettu seurantamoduulin tietosopimus
+
+Moduulien yhteinen koneellisesti validoitava tietosopimus on määritelty dokumentissa [Seurantamoduulin tietosopimus](seurantamoduulin-tietosopimus.md). Yhteinen JSON Schema erottaa pysyvän moduulitunnisteen, moduulin määritysversion, yhteisen sopimusversion ja sisään-/ulostulorajapintojen versiot. Aihemoduulin sisältö validoidaan omassa topic-rakenteessaan; prosessimoduuli käyttää erikseen versioitua laajennusskeemaa. Esimerkit ja positiiviset sekä negatiiviset validointitestit suoritetaan CI:ssä.
+
+Tämä on tietosopimuksen ja esimerkkivalidoinnin toteutus. Se ei vielä toteuta moduulirekisteriä, laajennusten dynaamista latausta, nykyisten aiheiden migraatiota tai suoritusorkestrointia. Prosessilaajennuksen esimerkki osoittaa tyypitetyn laajennusmallin, ei vielä yleistä tapahtumavahtimoottoria.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -668,7 +675,7 @@ Nämä ovat suunnittelupäätelmiä ja tulevan kehityksen suosituksia, eivät v�
 - ChatGPT:n kolmen ajoitetun tehtävän tallennetut tarkat aikataulut, aikavyöhykkeet, aktiivisuus ja kohdekeskustelut tulee tarkistaa ChatGPT:n tehtäväasetuksista. Niitä ei voi vahvistaa GitHubin tiedostoista.
 - GitHub-integraation käyttäjäkohtainen repositorioiden valinta ja todelliset tehokkaat käyttöoikeudet tulee tarkistaa GitHub-sovelluksen ja ChatGPT-yhteyden asetuksista.
 - Vaihtoehtoisen tekoälypalvelun tai ajastimen valintaa ei ole tehty.
-- Adapterirajapintoja, moduulirekisteriä, moduulien sopimusvalidointia, migraatiotyökaluja tai toista suoritusympäristöä ei ole tämän dokumentin yhteydessä toteutettu.
+- Moduulirekisteriä, laajennusten dynaamista latausta, migraatiotyökaluja tai toista suoritusympäristöä ei ole tämän dokumentin yhteydessä toteutettu. Yhteinen moduulisopimus, sen tyypitetty prosessilaajennus sekä esimerkkien rakenteellinen validointi on toteutettu erikseen.
 - Nykyisten aihekohtaisten ohjeiden täydellinen muuttaminen koneellisesti luettaviksi määrityksiksi vaatisi erillisen kartoituksen. Kaikki poikkeukset eivät välttämättä sovellu rakenteiseen yhteiseen malliin.
 
 ## 10. Automaatioiden hallinnan rajat
@@ -692,6 +699,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.3.0 – 2026-11-17:** lisättiin toteutettuun seurantamoduulin tietosopimukseen viittaava arkkitehtuurikuvaus; erotettiin yhteinen moduulisopimus, aihemoduulin määritys ja erikseen validoitavat prosessilaajennukset. Moduulirekisteri ja migraatio säilyvät myöhempinä vaiheina.
 - **1.2.0 – 2026-11-17:** täsmennettiin tavoitearkkitehtuurin itsenäiset aihe- ja prosessimoduulit, niiden omistamat tiedot, pysyvät tunnisteet, versiointi, yhteiset rajapinnat, moduulikohtainen suorittimien reititys ja riippumattomuuden hyväksymisperiaatteet.
 - **1.1.1 – 2026-11-17:** korjattiin luvun 9 alaotsikoiden numerointi.
 - **1.1.0 – 2026-11-17:** lisättiin tavoitearkkitehtuuri, komponenttien vastuut ja rajapinnat, tietovirrat, kanonisen tiedon omistajuus, virheistä palautuminen, hyväksymisehdot, nykytila–tavoitetila-vertailu, siirtymävaiheet ja avoimet päätökset.

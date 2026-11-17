@@ -59,9 +59,10 @@ Muista, että lähdeluettelo ei ole suljettu sallittujen lähteiden luettelo. L�
 
 **Tavoite:** ymmärrä, miksi koneelliset tiedot on jaettu useaan tiedostoon ja miten ne viittaavat toisiinsa.
 
-Lue tämä opas kokonaan:
+Lue nämä oppaat:
 
 - [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md), erityisesti kohta 2.1 hakukriteerien, löydösrekisterin ja kriteerikohtaisten jatkotoimien erottelusta.
+- [Seurantamoduulin tietosopimus](seurantamoduulin-tietosopimus.md), kun haluat ymmärtää tavoitearkkitehtuurin aihe- ja prosessimoduulien tunnisteet, versiot, rajapinnat ja tyypitetyt määritykset.
 
 Se kannattaa lukea vasta edellisten vaiheiden jälkeen, koska silloin esimerkiksi tehtävä, lähde ja ajokohtainen tarkistus ovat jo käsitteinä tuttuja.
 
