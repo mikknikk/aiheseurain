@@ -259,7 +259,9 @@ async function main() {
 
     // GITHUB_TOKEN ei käynnistä tavallisia uusia workflow-ajoja; workflow_dispatch on poikkeus.
     // Käynnistä julkaisu ennen pyyntömerkin poistamista, jotta dispatch-virheen voi yrittää uudelleen.
-    await dispatchPublication({ owner, repo, token });
+    if (result.added.length > 0 || result.removed.length > 0) {
+      await dispatchPublication({ owner, repo, token });
+    }
 
     // Hae kuvaus uudelleen ennen markerin poistoa, jotta väliin tullut käyttäjän
     // muokkaus ei yliaja tuoreempaa sisältöä. Poista vain täsmälleen käsitelty pyyntö.
