@@ -1506,6 +1506,19 @@
       ]
     },
     {
+      "id": "uol-splash",
+      "name": "UOL Splash",
+      "url": "https://www.uol.com.br/splash/",
+      "language_regions": [
+        "pt-BR"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "BR",
+        "GLOBAL"
+      ]
+    },
+    {
       "id": "us-chess",
       "name": "US Chess Federation",
       "url": "https://www.uschess.org/",
