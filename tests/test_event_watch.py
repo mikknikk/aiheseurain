@@ -43,6 +43,16 @@ class EventWatchTests(unittest.TestCase):
         self.assertEqual(len(again["events"]), 1)
         self.assertEqual(result["events"][0]["event_id"], again["events"][0]["event_id"])
 
+
+    def test_exact_identity_duplicates_from_different_sources_are_merged(self):
+        """Sama tapahtuma yhdistetään eri lähteiden eri tunnisteistä huolimatta."""
+        first = observation("source-a-event-1", self.base, [source("Lähde A", "https://a.example/event")])
+        second = observation("source-b-event-9", self.base, [source("Lähde B", "https://b.example/event")])
+        state = reconcile(self.state, [first, second], self.film, NOW)
+        self.assertEqual(len(state["current_events"]), 1)
+        self.assertEqual(len(state["current_events"][0]["sources"]), 2)
+        self.assertEqual(len(state["events"]), 1)
+
     def test_change_and_cancellation_are_tracked(self):
         """Ajan muutos ja nimenomainen peruutus kirjataan erillisinä tapahtumina."""
         state = reconcile(self.state, [observation("film-1", self.base)], self.film, NOW)
