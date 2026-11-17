@@ -24,7 +24,7 @@ flowchart TD
 Lue tässä järjestyksessä:
 
 1. [README – Aiheseuraimen yleiskuva](../README.md). Tutustu erityisesti ensimmäisiin kappaleisiin, hakemistorakenteeseen ja RSS-syötteiden luetteloon.
-2. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md). Lue järjestelmäriippumaton toimintamalli, nykyinen toteutus ja sen jälkeen erillinen tavoitearkkitehtuuri, nykytilan ja tavoitetilan erot sekä siirtymävaiheet.
+2. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md). Lue järjestelmäriippumaton toimintamalli, nykyinen toteutus ja sen jälkeen tavoitearkkitehtuuri. Kiinnitä huomiota erityisesti itsenäisiin aihe- ja prosessimoduuleihin, niiden rajapintoihin sekä siihen, miten moduulit erotetaan yhteisestä ytimestä ja teknisistä palveluista. Tutustu lopuksi nykytilan ja tavoitetilan eroihin sekä siirtymävaiheisiin.
 3. [Aiheseuraimen etusivu](https://mikknikk.github.io/aiheseurain/). Näet palvelun julkisen sisääntulon.
 4. [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/), [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) ja [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/). Katso, millaisia näkymiä järjestelmä tarjoaa.
 
