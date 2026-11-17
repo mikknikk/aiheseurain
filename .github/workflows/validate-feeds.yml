@@ -41,6 +41,8 @@ jobs:
         run: python -m scripts.validate_module_state
       - name: Tarkista tekoäly- ja tutkimuspalvelujen reititys
         run: python -m scripts.validate_provider_routing
+      - name: Tarkista moduuliorchestratorin sopimukset ja käyttöönoton portit
+        run: python -m scripts.validate_module_orchestrator
       - name: Tarkista RSS-raporttien julkaisulaadun portti
         if: github.event_name == 'pull_request'
         run: python scripts/validate_publication_gate.py
