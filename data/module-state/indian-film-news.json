@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "module_id": "indian-film-news",
+  "module_definition_version": "1.0.0",
+  "checkpoint": {
+    "last_successful_run": {
+      "run_id": null,
+      "run_history_ref": null,
+      "definition_version": null,
+      "checked_at": null,
+      "period": {
+        "start": null,
+        "end": null
+      },
+      "result": "not_recorded",
+      "published_items": null,
+      "sources_checked": null,
+      "errors": []
+    }
+  },
+  "checkpoint_history": [],
+  "history": {
+    "document_refs": [
+      {
+        "path": "docs/seuranta.md",
+        "heading": "Intialaisen elokuvan seuranta (tehtäväkierron mukainen)"
+      },
+      {
+        "path": "docs/intialaisen-elokuvan-seuranta.md",
+        "heading": "Seurattavat henkilöt"
+      },
+      {
+        "path": "docs/intialaisen-elokuvan-seuranta.md",
+        "heading": "Erityisseurattavat projektit"
+      },
+      {
+        "path": "docs/intialaisen-elokuvan-seuranta.md",
+        "heading": "Uutistapahtumien historiakirja"
+      },
+      {
+        "path": "docs/intialaisen-elokuvan-seuranta.md",
+        "heading": "Suomalaisen median seuranta"
+      }
+    ],
+    "event_refs": [],
+    "current_record_refs": [],
+    "source_check_run_refs": []
+  },
+  "publication": {
+    "feed_path": "feeds/intialaiset-elokuvat.xml",
+    "guid_refs": [
+      "elokuvaraportti-daily-2026-11-16-1022-eet-varanasi-raaka-kaaka-gadar-di-dhee",
+      "elokuvaraportti-daily-2026-11-16",
+      "elokuvaraportti-daily-2026-11-15",
+      "elokuvaraportti-weekly-2026-11-12",
+      "elokuvaraportti-daily-2026-11-13",
+      "elokuvaraportti-daily-2026-11-14"
+    ]
+  },
+  "references": {
+    "source_registry_ref": "data/sources/intialaiset_elokuvat.json",
+    "source_catalog_ref": "data/source-catalog.json",
+    "feed_catalog_ref": "data/feed-catalog.json",
+    "source_check_log_ref": "data/lahdetarkistukset.json",
+    "legacy_state_pointer": "data/seurantatila.json#/rotation.tasks.intialaiset_elokuvat"
+  },
+  "migration": {
+    "source_task_id": "intialaiset_elokuvat",
+    "source_state_ref": "data/seurantatila.json",
+    "migrated_on": "2026-11-18",
+    "notes": "Tuntemattomat tarkistusajat, seurantajaksot ja ajotunnisteet säilytetään null-arvoina. Vanha seurantatila ja kanoninen historia jäävät yhteensopivuuslähteiksi siirtymäajaksi."
+  }
+}
