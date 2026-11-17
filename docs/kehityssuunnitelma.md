@@ -203,7 +203,7 @@ Kehitysjono lukee riippuvuudet GitHubin omasta Issues-riippuvuusrajapinnasta (de
 - Kortissa ja taulukossa näytetään edeltävien ja estettyjen töiden lukumäärät sekä painike, jolla yksittäisen tiketin suhteet avataan. Yksityiskohtanäkymä näyttää linkit myös suodatuksen ulkopuolella oleviin tiketteihin.
 - Yhdysviivoja ei käytetä, koska sarakkeiden välinen suuri tai suodattuva verkko olisi helposti sekava ja pienillä näytöillä vaikeasti seurattava. Suhteen suunta ilmaistaan tekstillä ja ryhmitellyillä listoilla.
 - Jos osa API-kutsuista epäonnistuu tai GitHub rajoittaa pyyntöjä, käyttöliittymä kertoo tietojen olevan osittaisia. Puuttuvaa tietoa ei tulkita riippuvuuden puuttumiseksi.
-- Näkymä on vain luku -muotoinen. Riippuvuuksien lisääminen, poistaminen tai muuttaminen tehdään GitHubissa; niiden näyttäminen ei muuta tikettien tiloja.
+- Kanban-näkymä on vain luku -muotoinen. Riippuvuudet ovat GitHubin natiivia issue-tietoa. ChatGPT voi pyytää niiden lisäämistä tai erikseen pyydettyä poistamista issue-kuvaukseen lisättävällä koneellisella pyyntölohkolla; GitHub Actions tarkistaa pyynnön ja käyttää natiivia riippuvuusrajapintaa. Tarkka pyyntömuoto, oikeudet, syklitarkistus ja virhetilanteet on kuvattu [riippuvuuksien hallintaohjeessa](github-riippuvuuksien-hallinta.md).
 - Riippuvuustiedot tallennetaan vain selaimen välimuistiin käyttömukavuuden vuoksi. GitHub on ainoa kanoninen lähde.
 
 
