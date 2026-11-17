@@ -33,6 +33,8 @@ jobs:
         run: python scripts/validate_feeds.py
       - name: Tarkista seurantamoduulien tietosopimus ja esimerkit
         run: python scripts/validate_module_contract.py
+      - name: Tarkista seurantamoduulirekisteri ja määritysten lataus
+        run: python -m scripts.validate_module_registry
       - name: Tarkista RSS-raporttien julkaisulaadun portti
         if: github.event_name == 'pull_request'
         run: python scripts/validate_publication_gate.py

@@ -63,6 +63,7 @@ Lue nämä oppaat:
 
 - [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md), erityisesti kohta 2.1 hakukriteerien, löydösrekisterin ja kriteerikohtaisten jatkotoimien erottelusta.
 - [Seurantamoduulin tietosopimus](seurantamoduulin-tietosopimus.md), kun haluat ymmärtää tavoitearkkitehtuurin aihe- ja prosessimoduulien tunnisteet, versiot, rajapinnat ja tyypitetyt määritykset.
+- [Seurantamoduulirekisteri](seurantamoduulirekisteri.md), kun haluat ymmärtää, miten moduulimääritykset löydetään, validoidaan ja eristetään toisistaan.
 
 Se kannattaa lukea vasta edellisten vaiheiden jälkeen, koska silloin esimerkiksi tehtävä, lähde ja ajokohtainen tarkistus ovat jo käsitteinä tuttuja.
 

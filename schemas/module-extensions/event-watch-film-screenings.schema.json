@@ -2,6 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mikknikk.github.io/aiheseurain/schemas/module-extensions/event-watch-film-screenings.schema.json",
   "title": "Elokuvanäytösten tapahtumavahtilaajennus",
+  "x-extension-id": "event-watch.film-screenings",
+  "x-extension-version": "1.0.0",
   "description": "Esimerkki prosessimoduulin omasta, erikseen validoitavasta laajennuksesta. Ei määrittele vielä yleistä tapahtumavahtimoottoria.",
   "type": "object",
   "required": ["event_types", "geography", "identity", "history"],
