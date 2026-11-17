@@ -347,7 +347,7 @@ Toteutus tehdään vaiheittain. Jokainen vaihe saa oman testattavan muutoksensa 
 - [x] Tarjoa kanbanin rinnalla saavutettava taulukkonäkymä.
 - [x] Rajaa selainkäyttöliittymä vain luku -toiminnoksi; GitHubiin ei lähetetä kirjoituspyyntöjä eikä sivulle lisätä tunnuksia tai tokeneita.
 
-**Toteutustilanne:** vähimmäisversio on toteutettu PR:ssä. Näkymä hakee avoimet ja suljetut issuet GitHubin julkisesta APIsta, jättää pull requestit pois, näyttää suljetut tehtävät Valmis-sarakkeessa ja käsittelee puuttuvat tai ristiriitaiset tilat erillisenä huomautuksena. Aihealue suodatetaan aihe-alkuisilla GitHub-labeleilla. Selaimen paikallinen välimuisti auttaa API-katkoissa; yli tunnin ikäinen tieto merkitään vanhentuneeksi eikä sitä esitetä tuoreena.
+**Toteutustilanne:** vähimmäisversio on toteutettu PR:ssä. Näkymä hakee avoimet ja suljetut issuet GitHubin julkisesta APIsta, jättää pull requestit pois, näyttää suljetut tehtävät Valmis-sarakkeessa ja käsittelee puuttuvat tai ristiriitaiset tilat erillisenä huomautuksena. Aihealue suodatetaan aihe-alkuisilla GitHub-labeleilla. Selaimen paikallinen välimuisti auttaa API-katkoissa; yli 30 tunnin ikäinen tieto merkitään vanhentuneeksi eikä sitä esitetä tuoreena.
 
 **Hyväksymiskriteeri:** näkymä esittää GitHubin issue-tiedot oikein ja ajantasaisuuden rajat näkyvästi; muokkaus tapahtuu GitHubissa.
 

@@ -16,7 +16,7 @@ export const STATUS_COLUMNS = [
 
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
 const CACHE_KEY = "aiheseurain.kanban.cache.v1";
-const STALE_AFTER_MS = 60 * 60 * 1000;
+const STALE_AFTER_MS = 30 * 60 * 60 * 1000;
 
 function labelNames(issue) {
   return (Array.isArray(issue?.labels) ? issue.labels : [])
@@ -440,8 +440,8 @@ async function refreshIssues() {
     populateAreaFilter();
     render();
     document.getElementById("kanban-api-error").hidden = true;
-    updateDependencyStatus("Kaikki riippuvuudet sisältyvät samaan täydelliseen aineistoon. Muodostettu "
-      + formatDate(generatedAt) + ".");
+    // Riippuvuuksien lataustila näkyy jo yläpuolen aineiston päivitystiedossa.
+    updateDependencyStatus("");
     const stale = Date.now() - generatedAt > STALE_AFTER_MS;
     updateFreshness((stale ? "Julkaistu aineisto on vanhentunut. " : "Julkaistu aineisto on käytössä. ")
       + "Aineisto muodostettiin " + formatDate(generatedAt) + " ("

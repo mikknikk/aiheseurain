@@ -10,7 +10,7 @@ on:
   issue_comment:
     types: [created, edited]
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -27,8 +27,7 @@ concurrency:
 
 jobs:
   build:
-    # Issue-kommentit päivittävät myös #79:n riippuvuusvälityksen jälkeen.
-    # PR-kommentit eivät käynnistä turhaa sivustorakennusta.
+    # Issue-kommentit ja erillinen workflow_dispatch päivittävät aineiston; PR-kommentit ohitetaan.
     if: github.event_name != 'issue_comment' || !github.event.issue.pull_request
     runs-on: ubuntu-latest
     steps:

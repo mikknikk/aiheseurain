@@ -13,6 +13,11 @@ const makeIssue = (overrides = {}) => ({
   ...overrides
 });
 
+test("vanhentumisraja vastaa päivittäistä varmistusajoa", () => {
+  const source = readFileSync(new URL("../assets/js/kanban.js", import.meta.url), "utf8");
+  assert.match(source, /const STALE_AFTER_MS = 30 \* 60 \* 60 \* 1000;/);
+});
+
 test("tilasarakkeet noudattavat sovittua järjestystä", () => {
   assert.deepEqual(STATUS_COLUMNS.map((column) => column.id),
     ["backlog", "ready", "in-progress", "blocked", "done"]);

@@ -1,9 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   parseDependencyRequest,
   hasDependencyCycle,
-  applyDependencyRequest
+  applyDependencyRequest,
+  dispatchPublication
 } from "../.github/scripts/sync_issue_dependencies.mjs";
 
 const marker = (json) => `<!-- aiheseurain-dependency-request
@@ -117,4 +119,29 @@ test("hylkää puuttuvan tiketin ja pull requestin", async () => {
   await assert.rejects(() => applyDependencyRequest({
     ...common, fetchIssue: async () => ({ id: 260, number: 26, pull_request: {} })
   }), /ei ole olemassa/);
+});
+
+
+test("julkaisutyönkulku varmistetaan päivittäin eikä 15 minuutin välein", async () => {
+  const workflow = readFileSync(new URL("../.github/workflows/publish-pages.yml", import.meta.url), "utf8");
+  assert.ok(workflow.includes('cron: "17 3 * * *"'));
+  assert.equal(workflow.includes('cron: "*/15 * * * *"'), false);
+});
+
+test("onnistunut riippuvuuksien välitys käynnistää Pages-julkaisun workflow_dispatchilla", async () => {
+  const workflow = readFileSync(new URL("../.github/workflows/sync-issue-dependencies.yml", import.meta.url), "utf8");
+  const scriptSource = readFileSync(new URL("../.github/scripts/sync_issue_dependencies.mjs", import.meta.url), "utf8");
+  assert.match(workflow, /actions: write/);
+  assert.ok(scriptSource.includes("/actions/workflows/publish-pages.yml/dispatches"));
+  let request;
+  await dispatchPublication({
+    owner: "mikknikk", repo: "aiheseurain", token: "test-token",
+    fetchImpl: async (url, options) => {
+      request = { url, options };
+      return { ok: true, status: 204 };
+    }
+  });
+  assert.equal(request.url, "https://api.github.com/repos/mikknikk/aiheseurain/actions/workflows/publish-pages.yml/dispatches");
+  assert.equal(request.options.method, "POST");
+  assert.deepEqual(JSON.parse(request.options.body), { ref: "main" });
 });

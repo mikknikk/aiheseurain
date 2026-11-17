@@ -40,11 +40,11 @@ Skeema tarkistetaan tavallisessa CI-ajossa. Jokainen julkaisuajo validoi muodost
 
 - `push` `main`-haaraan: tavalliset sivuston sisältömuutokset;
 - issue avataan, sitä muokataan, suljetaan, avataan uudelleen, sille lisätään tai poistetaan label tai se poistetaan;
-- issue-kommentti luodaan tai sitä muokataan; tämä kattaa myös riippuvuuksien välitystyönkulun (#79) onnistumisviestin;
-- varmistava ajastus 15 minuutin välein;
+- issue-kommentti luodaan tai sitä muokataan;
+- varmistava ajastus kerran vuorokaudessa;
 - manuaalinen `workflow_dispatch`.
 
-GitHubin issue-webhookien ei oleteta kattavan kaikkia natiivien riippuvuuksien muutoksia. #79:n välitystyönkulun kommentti käynnistää päivityksen heti sen jälkeen, kun välitys on valmis. Suoraan GitHubissa tehdyt riippuvuusmuutokset havaitaan varmistavassa 15 minuutin välein ajoitetussa tarkistuksessa. GitHub Actionsin ajastus voi ruuhkatilanteessa viivästyä, joten kyse ei ole reaaliaikaisesta tai ehdottomasta 15 minuutin palvelutasolupauksesta.
+GitHubin issue-webhookien ei oleteta kattavan kaikkia natiivien riippuvuuksien muutoksia. #79:n välitystyönkulku käynnistää onnistuneen riippuvuusmuutoksen jälkeen `publish-pages.yml`-työnkulun nimenomaisella `workflow_dispatch`-tapahtumalla. Tämä on tarpeen, koska `GITHUB_TOKEN`-tunnuksella tehdyt tavalliset API-muutokset ja kommentit eivät yleensä käynnistä uusia työnkulkuja. Välitystyönkululla on siksi rajattu `actions: write` -oikeus dispatch-pyynnön tekemiseen. Suoraan GitHubissa tehdyt riippuvuusmuutokset havaitaan päivittäisessä varmistusajossa. Varmistusajo käynnistyy UTC-aikaa klo 03.17; Suomessa se vastaa talviaikana klo 05.17 ja kesäaikana klo 06.17. GitHub Actionsin ajastus voi ruuhkatilanteessa viivästyä, joten aikataulu ei ole ehdoton palvelutasolupaus.
 
 Kaikki Pages-ajot käyttävät samaa `github-pages`-concurrency-ryhmää, eikä käynnissä olevaa ajoa peruta uuden vuoksi. Näin julkaisut eivät aja päällekkäin. Jokainen ajo hakee lähdetiedot uudelleen vasta oman vuoronsa alussa; vanhemman ajon tulos ei voi valmistua uudemman ajon jälkeen ja korvata sitä.
 
@@ -52,7 +52,7 @@ Kaikki Pages-ajot käyttävät samaa `github-pages`-concurrency-ryhmää, eikä 
 
 Selain hakee yhden saman alkuperän JSON-tiedoston. Tavallinen sivun lataus ei tee GitHubin Issues- tai riippuvuusrajapintaan pyyntöjä. Käyttöliittymän haku, prioriteetti- ja aihealue-suodattimet, Kanban-/listanäkymä sekä riippuvuuksien tarkastelu säilyvät.
 
-Julkaistun aineiston muodostusaika näytetään käyttäjälle. Yli tunnin ikäinen aineisto merkitään vanhentuneeksi. Selaimen paikallinen välimuisti säilyy varajärjestelynä, mutta se merkitään aina paikalliseksi ja sen tallennusaika näytetään. Verkkovirhe ei muuta vanhaa aineistoa tuoreeksi.
+Julkaistun aineiston muodostusaika näytetään käyttäjälle. Yli 30 tunnin ikäinen aineisto merkitään vanhentuneeksi. Raja antaa päivittäiselle varmistusajolle ja sen mahdollisille viiveille pelivaraa; se ei muuta aineiston muodostamisen aikataulua. Selaimen paikallinen välimuisti säilyy varajärjestelynä, mutta se merkitään aina paikalliseksi ja sen tallennusaika näytetään. Verkkovirhe ei muuta vanhaa aineistoa tuoreeksi.
 
 Jos julkaistua aineistoa ei voida hakea eikä käyttökelpoista paikallista välimuistia ole, näkymä kertoo selvästi, ettei tikettejä voida näyttää. Osittaista riippuvuustietoa ei päätellä tyhjiksi suhteiksi.
 
