@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/event-watch/event-history.schema.json",
+  "title": "Yleisen tapahtumavahdin tila ja muutoshistoria",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "event_type_id",
+    "current_events",
+    "events",
+    "scans"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "event_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/currentEvent"
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/historyEvent"
+      }
+    },
+    "scans": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/scan"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": [
+        "publisher",
+        "url",
+        "checked_at",
+        "claim_level"
+      ],
+      "properties": {
+        "publisher": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        },
+        "published_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "claim_level": {
+          "enum": [
+            "official",
+            "organizer",
+            "third_party",
+            "unknown"
+          ]
+        },
+        "original_claim_type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "currentEvent": {
+      "type": "object",
+      "required": [
+        "canonical_event_id",
+        "event_type_id",
+        "identity_key",
+        "attributes",
+        "status",
+        "sources",
+        "first_seen_at",
+        "last_seen_at"
+      ],
+      "properties": {
+        "canonical_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "event_type_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identity_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attributes": {
+          "type": "object"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        },
+        "first_seen_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "last_seen_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "field",
+              "values",
+              "sources"
+            ],
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "values": {
+                "type": "array"
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/source"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "historyEvent": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "observed_at",
+        "event_type_id",
+        "canonical_event_id",
+        "action",
+        "previous",
+        "current",
+        "sources",
+        "note"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "event_type_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "enum": [
+            "created",
+            "changed",
+            "cancelled",
+            "removed",
+            "reinstated",
+            "completed",
+            "source_conflict",
+            "legacy_history_imported"
+          ]
+        },
+        "change_categories": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "time_changed",
+              "place_changed",
+              "details_changed"
+            ]
+          }
+        },
+        "legacy_event_type": {
+          "type": "string"
+        },
+        "previous": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "current": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "scan": {
+      "type": "object",
+      "required": [
+        "observed_at",
+        "complete",
+        "failed_sources"
+      ],
+      "properties": {
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "failed_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
