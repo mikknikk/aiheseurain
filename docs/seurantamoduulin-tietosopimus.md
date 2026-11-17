@@ -60,7 +60,7 @@ Prosessimoduulin `module_type` on `process`, ja sillä on `process_extension`. L
 
 Näin prosessimoduulin sisältöä ei yritetä puristaa aiheen `scope`-, `include`- ja `exclude`-kenttiin. Uusi prosessityyppi voi tuoda oman laajennusskeemansa muuttamatta kaikkien muiden moduulien rakennetta. Yhteinen moduulisopimus validoi laajennuksen rajapinnan. Moduulirekisteri tunnistaa paikallisen laajennusskeeman sen $id-tunnisteella ja tarkistaa myös laajennuksen oman tunnisteen ja version.
 
-Esimerkki: `examples/seurantamoduulit/intialaisten-elokuvien-naytosvahti.process.json` käyttää laajennusta `event-watch.film-screenings`, jonka rakenne määritellään tiedostossa `schemas/module-extensions/event-watch-film-screenings.schema.json`. Esimerkki osoittaa laajennusmekanismin, ei vielä yleistä tapahtumavahtimoottoria eikä tuotantoon siirrettyä näytösvahtia.
+Esimerkki: `examples/seurantamoduulit/intialaisten-elokuvien-naytosvahti.process.json` käyttää laajennusta `event-watch.film-screenings`, jonka rakenne määritellään tiedostossa `schemas/module-extensions/event-watch-film-screenings.schema.json`. Esimerkki osoittaa laajennusmekanismin. Varsinainen näytösvahtimoduuli ja sen tapahtumatyyppimääritys sijaitsevat modules/processes/indian-film-screening-watch/-hakemistossa ja pysyvät inactive-tilassa.
 
 ## 5. Yhteisten palvelujen ja moduulisisällön raja
 
@@ -120,7 +120,7 @@ Testit todistavat skeeman ja esimerkkien rakenteellisen yhteensopivuuden. Moduul
 
 ## 9. Seuraavat toteutusvaiheet
 
-- #103 toteuttaa rekisterin, joka lukee ja validoi määritykset, ratkaisee paikalliset laajennusskeemat ja eristää moduulikohtaiset virheet. Tuotantorekisteri pidetään tyhjänä, kunnes nykyisten moduulien siirtymä on suunniteltu ja hyväksytty.
+- #103 toteuttaa rekisterin, joka lukee ja validoi määritykset, ratkaisee paikalliset laajennusskeemat ja eristää moduulikohtaiset virheet. Nykyiset moduulit on rekisteröity inactive-tilassa; niiden aktiivinen suoritus käyttöönotetaan vasta erillisessä hyväksytyssä vaiheessa.
 - #104 kartoittaa nykyisten aiheiden ja erillisten prosessien siirtymän.
 - #105 siirtää nykyiset aiheet ja näytösvahdin varsinaisiin moduulimäärittelyihin.
 - #106 erottaa moduulikohtaisen tilan, tarkistuspisteet ja tapahtumahistorian.
