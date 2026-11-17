@@ -56,7 +56,7 @@ class PublicationGateTests(unittest.TestCase):
     def test_failed_editorial_check_is_rejected(self):
         record = approved_record()
         record["checklist"]["claim_support"] = {
-            "status": "fail", "note": "Väite ei vastaa lähdettä."
+            "status": "fail", "note": "Väite ei vastaa lähdettä.", "evidence": ["Raportin väite 2 ei vastaa lähteen A sisältöä."]
         }
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "test-run-001.json"
