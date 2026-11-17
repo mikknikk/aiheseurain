@@ -2,8 +2,8 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.4.0  
-**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103)
+**Versio:** 1.5.0  
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -655,6 +655,14 @@ Moduulien tekninen rekisteri on toteutettu tiedostossa `data/module-registry.jso
 
 Tuotantorekisteri on tarkoituksella tyhjä. Tolkien- ja näytösvahtiesimerkit ovat vain testirekisterin kautta käytettyä testiaineistoa, eivät aktiivisia tuotantomoduuleja. Tämä vaihe ei muuta nykyisiä automaatioita eikä käynnistä moduuleja. Nykyisten aiheiden inventaario, siirtosuunnitelma ja tuotantomääritysten migraatio kuuluvat tiketteihin #104 ja #105; suoritusorkestrointi kuuluu myöhempään vaiheeseen.
 
+### 8.14 Nykyisten aiheiden ja prosessien inventaario
+
+Nykyisten yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijako, ehdotetut pysyvät tunnisteet, nykyisten tiedostojen siirtokartta, tietojen omistajuus, päällekkäisyysriskit sekä vaiheittainen palautusmenettely on dokumentoitu erillisessä [moduulisiirtymän inventaariossa](moduulisiirtyman-inventaario.md).
+
+Inventaario erottaa yhdeksän topic-moduulia ja yhden process-moduulin. Näytösvahti ei kuulu uutisaiheiden kiertoon. Intialaisen elokuvan uutis- ja näytösseurannan lähteet, historiat ja julkaisut pysyvät erillisinä. Yhteinen lähdekatalogi, tehtäväkohtaiset lähdekäyttörekisterit, tehtäväjono, seurantatila, RSS-historia ja näytösten append-only-tapahtumaloki säilyttävät nykyisen omistajuutensa siirtymävaiheen ajan.
+
+Tämä inventaario ei aktivoi moduuleja eikä muuta tuotantorekisteriä, automaatioiden asetuksia tai sisältörajauksia. Varsinainen määritysten muodostaminen kuuluu #105:een; moduulikohtainen tila #106:een; tapahtumavahdin yleistäminen #109:ään.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -705,6 +713,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.5.0 – 2026-11-17:** lisättiin nykyisten aihe- ja prosessimoduulien inventaarioon perustuva siirtokartta, omistajuusrajat, riippuvuudet ja palautettava migraatiomenettely.
 - **1.4.0 – 2026-11-17:** dokumentoitiin toteutettu moduulirekisteri ja paikallinen määritysten lataaja, moduulikohtainen virheiden eristys, passiivisten moduulien käsittely sekä tuotantorekisterin tarkoituksellinen tyhjyys.
 - **1.3.0 – 2026-11-17:** lisättiin toteutettuun seurantamoduulin tietosopimukseen viittaava arkkitehtuurikuvaus; erotettiin yhteinen moduulisopimus, aihemoduulin määritys ja erikseen validoitavat prosessilaajennukset. Moduulirekisteri ja migraatio säilyvät myöhempinä vaiheina.
 - **1.2.0 – 2026-11-17:** täsmennettiin tavoitearkkitehtuurin itsenäiset aihe- ja prosessimoduulit, niiden omistamat tiedot, pysyvät tunnisteet, versiointi, yhteiset rajapinnat, moduulikohtainen suorittimien reititys ja riippumattomuuden hyväksymisperiaatteet.
