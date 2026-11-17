@@ -72,9 +72,9 @@ test("Kehitysjono-sivu ja navigaatio tarjoavat saavutettavan vain luku -osion", 
   assert.match(page, /kanban-table/);
   assert.match(page, /kanban-refresh/);
   assert.match(page, /kanban-dependency-details/);
-  assert.match(script, /dependencies\/blocked_by/);
+  assert.match(script, /fetchPublishedDataset/);
   assert.match(script, /data-issue-number/);
-  assert.doesNotMatch(script, /api\\.github\\.com\\/repos|dependencies\\/blocked_by/);
+  assert.doesNotMatch(script, /api\.github\.com\/repos|dependencies\/blocked_by/);
   assert.match(header, /\/kehitysjono\//);
   assert.match(header, /page\.section == "kehitysjono"/);
   assert.match(layout, /assets\/js\/kanban\.js/);
