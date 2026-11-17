@@ -85,3 +85,5 @@ Tarkistuksen tulee kattaa vähintään:
 6. Tekninen toiminta: selainkonsolin uudet virheet, resurssien latautuminen ja käyttöliittymän toiminta.
 
 Tee tarkistus julkaistusta tai muuten selaimessa renderöidystä sivusta aina, kun käytettävissä on sopiva selainympäristö. Jos renderöityä näkymää tai selainkonsolia ei voida tarkistaa, kirjaa selvästi, mitkä tarkistukset tehtiin lähdekoodista ja automaattisilla testeillä ja mitkä jäivät tekemättä. Älä väitä sivun ulkoasua tai selaintoimintaa varmennetuksi ilman renderöidyn sivun tarkistusta.
+
+Jos jokin manuaalinen saavutettavuustesti, kuten näppäimistö- tai ruudunlukijatestaus, ei ole toteuttajan käytettävissä olevilla välineillä mahdollinen, se merkitään tekemättömäksi ja siirretään erilliseen backlog-tikettiin. Tällainen testausrajoite ei yksin estä muutoksen tai tiketin hyväksyntää, kun muut soveltuvat tarkistukset on tehty, niiden tulokset on dokumentoitu eikä tiedossa ole korjaamatonta vakavaa saavutettavuusongelmaa. Testaamatonta kohtaa ei saa merkitä läpäistyksi, eikä backlog-merkintä ole näyttö vaatimuksen täyttymisestä. Noudata tarkempaa menettelyä dokumentissa [saavutettavuusperiaatteet](saavutettavuus.md).
