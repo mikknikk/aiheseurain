@@ -66,6 +66,7 @@ class ReliabilityClassificationTests(unittest.TestCase):
             claim["properties"]["sources"]["items"]["properties"]["source_class"]["enum"]
         )
         self.assertEqual(statuses, CLAIM_STATUSES)
+        self.assertEqual(self.gate_schema["properties"]["schema_version"]["enum"], [1, 2])
         self.assertEqual(source_classes, SOURCE_CLASSES)
         self.assertNotEqual(statuses, source_classes)
 
@@ -117,6 +118,16 @@ class ReliabilityClassificationTests(unittest.TestCase):
         }
         with self.assertRaises(jsonschema.ValidationError):
             jsonschema.validate(assessment, self.claim_schema())
+
+    def test_schema_version_two_requires_claim_assessments(self):
+        """Uusi porttiversio ei läpäise validointia ilman väitearvioita."""
+        report = {
+            "schema_version": 2, "run_id": "test-run-2026", "task_id": "tolkien",
+            "feed_path": "feeds/tolkien.xml", "checked_at": "2026-11-17T12:00:00+02:00",
+            "checklist": {}, "decision": "approved", "reviewer_notes": ["testi"]
+        }
+        with self.assertRaises(jsonschema.ValidationError):
+            jsonschema.validate(report, self.gate_schema)
 
     def test_current_port_reports_remain_schema_valid(self):
         """Historialliset porttiraportit säilyvät kelvollisina ilman uutta kenttää."""
