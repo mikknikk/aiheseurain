@@ -11,11 +11,11 @@ Nykyinen kokonaisuus jakautuu **yhdeksään uutisaiheen moduuliin** ja **yhteen 
 
 Inventaario perustuu 17.11.2026 main-haarasta luettuihin README-, tehtäväjono-, seuranta-, lähde-, automaatio- ja tietomallidokumentteihin, kymmeneen tehtäväkohtaiseen lähdekäyttörekisteriin, yhteiseen lähdekatalogiin, RSS-syötteiden luetteloon, moduulisopimukseen sekä kahteen olemassa olevaan esimerkkimääritykseen. Tämä on dokumenttipohjainen inventaario; se ei väitä, että ChatGPT:n tehtäväasetukset tai niiden tallennetut aikataulut olisi tarkastettu.
 
-Tämän suunnitelman hyväksyminen tai toteuttaminen **ei aktivoi moduuleja**. Tuotantorekisteri data/module-registry.json jää tyhjäksi, kunnes erillinen migraatiototeutus ja sen käyttöönotto hyväksytään. Nykyisiä automaatioita, ajastuksia, aikavyöhykkeitä, ohjeita, kohdekeskusteluja, RSS-sisältöjä tai seurannan sisältöä ei muuteta tämän inventaarion perusteella.
+Tämän suunnitelman hyväksyminen tai toteuttaminen **ei aktivoi moduuleja**. #105:n toteutuksessa data/module-registry.json sisältää kymmenen nykyistä moduulia, mutta kaikki merkinnät ovat inactive-tilassa. Rekisteri ei valitse niitä suorituksiin. Nykyisiä automaatioita, ajastuksia, aikavyöhykkeitä, ohjeita, kohdekeskusteluja, RSS-sisältöjä tai seurannan sisältöä ei muuteta tämän inventaarion perusteella.
 
 ## 2. Nykyisten moduulien inventaario
 
-Pysyvät tunnisteet ovat ehdotuksia #105:n toteutuksen lähtökohdaksi. Ne eivät ole vielä rekisteriin lisättyjä tai aktiivisia moduuleja. Tunnisteet on valittu teknisesti vakaiksi; näyttönimet ja kuvaukset voivat muuttua ilman tunnisteen vaihtoa.
+Pysyvät tunnisteet ovat #105:ssä toteutettuja moduulitunnisteita. Ne on rekisteröity, mutta kaikki moduulit ovat inactive-tilassa. Tunnisteet on valittu teknisesti vakaiksi; näyttönimet ja kuvaukset voivat muuttua ilman tunnisteen vaihtoa.
 
 | Nykyinen seuranta | Ehdotettu moduuli-ID | Tyyppi | Tehtävä-/lähdetunniste | RSS |
 |---|---|---|---|---|
@@ -103,7 +103,9 @@ Nämä tiedot siirretään #105:ssä hakuprofiilien lähtötiedoiksi, mutta läh
 | feeds/*.xml ja data/feed-catalog.json | Julkaistut raportit, GUIDit ja syötekatalogi | Säilyvät julkaisu- ja historiatietona. Moduuli viittaa sovittuun julkaisuun; vanhoja itemeitä tai GUIDeja ei siirretä, generoida uudelleen tai poisteta. |
 | prompts/*.txt | ChatGPT-automaation asetuksiin kopioitavat käynnistyskehotteet | Pysyvät automaatiokohtaisina käynnistysosoitteina; niitä ei muuteta moduulimigraation yhteydessä ilman erillistä päätöstä ja asetusten manuaalista synkronointia. |
 | docs/paaautomaation-ohje.md ja näytösvahdin käsikirja | Nykyisten automaatioiden toiminnan ensisijaiset ohjeet | Yhteiset toimintaperiaatteet ja prosessikohtaiset menettelyt erotellaan. Käsikirjoja ei poisteta ennen kuin korvaava suorituspolku on hyväksytty. |
-| examples/seurantamoduulit/*.json | Sopimuksen esimerkit | Säilyvät esimerkkeinä; niitä ei nosteta tuotantoon sellaisinaan. |
+| modules/topics/*/module.json ja modules/processes/*/module.json | Nykyisten seurantojen koneelliset moduulimääritykset | Kymmenen itsenäistä määritystä; rekisteröity inactive-tilassa ja validoitu nykyisiä lähderekistereitä vasten. |
+| modules/processes/indian-film-screening-watch/event-type.json | Näytösvahtimoduulin tapahtumatyyppi | Viittaa #109:n yleiseen film-screening-tyyppiin; passiivinen moduulikohtainen määritys. |
+| examples/seurantamoduulit/*.json | Sopimuksen esimerkit | Säilyvät testiesimerkkeinä; eivät ole tuotantomääritysten lähde. |
 
 ## 4. Yhteisten, moduulikohtaisten ja teknisten tietojen rajat
 
@@ -167,7 +169,7 @@ Näitä hallitaan omissa teknisissä asetuksissaan ja tulevissa yhteisen ytimen 
 1. **Lähtötilanteen inventaario:** tallenna siirron lähtöhetken Git-commit, moduulien lähdetiedostot, kaikkien RSS-syötteiden GUID-joukot, lähdekatalogin ja käyttörekisterien tunnisteet, seurantatilan tarkistuspisteet sekä näytöshistorian tapahtumien määrä ja viimeinen tunniste. Älä muuta tuotantotietoja.
 2. **Määritysten muodostus erillisessä haarassa:** luo moduulien ehdotetut JSON-määritykset #102:n skeeman mukaisesti. Käytä olemassa olevia lähde-ID:itä; älä kopioi lähteiden nimiä tai URL-osoitteita moduuleihin. Säilytä Markdown-käsikirjat selittävinä ja yksityiskohtaisina lähteinä.
 3. **Rakenne- ja semanttinen vertailu:** validoi jokainen määritys #102:n sopimuksella ja #103:n lataajalla. Tarkista tunnisteet, tyyppi, versio, lähdeviitteiden olemassaolo, kieli- ja alueprofiilit, aiheiden sisällytys-/poissulkurajaukset ja erityissäännöt alkuperäisiä käsikirjoja vasten.
-4. **Passiivinen rinnakkaisluku:** testaa moduulien lataus erillisellä testirekisterillä. Tuotannon rekisteri pysyy tyhjänä. Uusi polku ei saa kirjoittaa RSS:ää, lähdekäyttörekistereitä, tehtäväjonoa, seurantatilaa tai näytöshistoriaa.
+4. **Passiivinen rinnakkaisluku:** testaa moduulien lataus ja validointi. Tuotantorekisterissä olevat kymmenen merkintää pysyvät inactive-tilassa. Uusi polku ei saa kirjoittaa RSS:ää, lähdekäyttörekistereitä, tehtäväjonoa, seurantatilaa tai näytöshistoriaa.
 5. **Vertailu ja hyväksyntä:** dokumentoi jokaisesta moduulista erot nykyiseen käsikirjaan ja varmista, ettei aiheiden sisältö, tehtävien järjestys, lähteiden käyttö tai julkaistu historia muutu. Käyttäjän hyväksyntää vaativat sisältömuutokset nostetaan erikseen päätettäviksi.
 6. **Erillinen käyttöönottopäätös:** tuotantorekisterin aktivointi ja tuotantopolun vaihtaminen tehdään vasta erillisessä #105/#108-vaiheessa, hyväksymiskriteerien täytyttyä ja käyttäjän nimenomaisen käyttöönottohyväksynnän jälkeen. Pelkkä PR:n yhdistäminen ei aktivoi moduulia eikä muuta ChatGPT:n tehtäväasetuksia.
 
@@ -202,11 +204,12 @@ Tekniset toteutuspäätökset, jotka eivät muuta näitä sisältö- tai käytt�
 - [ ] Kaikki lähdeviitteet osoittavat olemassa oleviin yhteisen katalogin source_id-tunnisteisiin.
 - [ ] Yhteisiä sääntöjä tai lähteiden perustietoja ei kopioida moduuleihin rinnakkaisiksi totuuksiksi.
 - [ ] Intialaisen elokuvan uutis- ja näytösseurannan omistajuus sekä historiat ovat erilliset.
-- [ ] Tuotantorekisteri pysyy passiivisena, kunnes erillinen käyttöönottohyväksyntä annetaan.
+- [x] Tuotantorekisterin kymmenen merkintää pysyvät inactive-tilassa; yhtään moduulia ei aktivoida tämän migraation yhteydessä.
 - [ ] Testirekisterillä tehty lataus ja vertailu onnistuvat ilman tuotantokirjoituksia.
 - [ ] RSS-itemit, GUIDit, tehtäväjono, seurantatila ja näytöshistoria säilyvät.
 - [ ] Palautus edelliseen hyväksyttyyn määritysversioon on dokumentoitu ja testattu.
 
 ## Muutoshistoria
 
+- **1.1.0 – 2026-11-18:** päivitettiin inventaario vastaamaan #105:n toteutusta: kymmenen moduulia on rekisteröity inactive-tilassa, moduulihakemiston määritykset on lisätty ja näytösvahtimoduuli käyttää #109:n tapahtumatyyppiviitettä.
 - **1.0.0 – 2026-11-17:** ensimmäinen nykyisten aihe- ja prosessimoduulien inventaario, tiedostojen siirtokartta, omistajuusrajat, päällekkäisyysriskit, riippuvuudet sekä palautettava migraatiosuunnitelma.
