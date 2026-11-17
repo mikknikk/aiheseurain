@@ -2,7 +2,7 @@
 
 **Tila:** nykyisen Valvomon tietolähteet ja tulkintasäännöt; JSON-tiedostojen visuaalinen kokonaiskuva on dokumentissa [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md)  
 **Päivitetty:** 2026-11-17  
-**Liittyvät tehtävät:** [#29 – Pages-kartoitus ja tietomalli](https://github.com/mikknikk/aiheseurain/issues/29), [#30 – Valvomon vähimmäisversio](https://github.com/mikknikk/aiheseurain/issues/30)
+**Liittyvät tehtävät:** [#29 – Pages-kartoitus ja tietomalli](https://github.com/mikknikk/aiheseurain/issues/29), [#30 – Valvomon vähimmäisversio](https://github.com/mikknikk/aiheseurain/issues/30), [#37 – ChatGPT-ajohistoria](https://github.com/mikknikk/aiheseurain/issues/37)
 
 Tämä dokumentti määrittää Valvomon tietolähteet, julkaisutavan, tietojen tulkinnan ja julkistamisen rajat. JSON-tiedostojen keskinäiset suhteet ja lähdetietojen prosessikaaviot on kuvattu erillisessä [teknisessä tietomallioppaassa](tietomallit-ja-prosessit.md). Käyttöliittymän nykyinen toteutus ja sen tunnetut tietorajoitteet kuvataan luvussa 9.
 
@@ -112,7 +112,7 @@ Valvomon ensisijainen automaatiotila ei riipu GitHub Actions -APIsta, koska pä�
 ## 8. Toteutuksen vastuunjako
 
 - **#29:** nykytilan kartoitus, julkaisutavan ja tietomallin päätös, skeemat ja validoinnin perusta.
-- **#30:** Valvomon käyttöliittymä, tietolähteiden lukeminen, ajantasaisuuden näyttäminen, virhetilat ja testit. Jos halutaan vaihekohtainen ajoseuranta, sen tuottaminen määritellään erikseen eikä sitä päätellä nykyisistä kentistä.
+- **#30:** Valvomon ensimmäinen käyttöliittymä, koneellisten tietolähteiden lukeminen ja testit.\n- **#37:** ChatGPT-automaatioden ajohistoriahaarojen tietomalli, vaihekirjaukset, Valvomon ajohistorianäkymä ja testit.
 - **#31:** RSS-lukijan syötekatalogi ja käyttöliittymä; se ei muuta Valvomon tietomallia.
 - **#33:** lähderekisterin selaus ja kattavuuden laajennettu näkymä.
 
@@ -125,7 +125,7 @@ Valvomo julkaistaan omassa `valvomo/index.html`-sivussaan osoitteessa `/valvomo/
 Käyttöliittymä lukee seuraavat tiedot:
 
 - `data/seurantatila.json`: pääautomaation aihekohtaiset viimeisimmät onnistumiset ja seuraava vuoro, näytösvahdin tila sekä kolmen automaation ohjeversiot.
-- `run-history/{main-automation,screening-watch,quality-check}/history.json`: ChatGPT-automaatioden ajot ja vaihekohtaiset tilat.\n- `data/lahdetarkistukset.json`: viimeisimmän aiheajon lähdetarkistuksen tulos, tarkistetut lähteet ja tarkistamatta jääneiden lähteiden syyt.
+- `run-history/{main-automation,screening-watch,quality-check}/history.json`: ChatGPT-automaatioiden ajot ja vaihekohtaiset tilat.\n- `data/lahdetarkistukset.json`: viimeisimmän aiheajon lähdetarkistuksen tulos, tarkistetut lähteet ja tarkistamatta jääneiden lähteiden syyt.
 - GitHub Actionsin julkinen API: viimeisimmät RSS-/dokumentaatiotestien, viikoittaisen linkkitarkistuksen ja Pages-julkaisun ajot sekä saatavilla olevat työnvaiheet.
 
 Automaatiokorttien tuoreusrajat ovat 36 tuntia päivittäisille automaatioille ja 10 vuorokautta viikoittaiselle laatutarkistukselle. Puuttuva aikaleima näytetään tuntemattomana. Viimeisin onnistuminen ei tarkoita, että uusi ajo olisi käynnissä.
