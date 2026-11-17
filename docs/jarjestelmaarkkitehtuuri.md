@@ -311,7 +311,7 @@ Tavoitetilassa järjestelmä muodostuu kolmesta erotetusta kokonaisuudesta:
 
 Kerrokset kommunikoivat määriteltyjen tietosopimusten ja rajapintojen kautta. Aihekohtainen määritys ei sisällä palveluntarjoajan tunnuksia tai ajastimen asetuksia. Tekninen adapteri ei päätä uutisen uutisarvosta eikä muuta aiheen rajausta.
 
-### 8.2 Aihemoduulit ja niiden itsenäisyys
+### 8.1 Aihemoduulit ja niiden itsenäisyys
 
 Tavoitetilan perusyksikkö on **seurantamoduuli**. Moduuli kuvaa yhden seurattavan aiheen tai yhden erillisen seurantaprosessin. Moduulilla on pysyvä tunniste, oma määritysversio ja määritelty sopimus yhteisen järjestelmän kanssa. Moduulin nimi tai kuvaus voi muuttua ilman, että sen pysyvä tunniste tai siihen liittyvä historia vaihtuu.
 
@@ -397,7 +397,7 @@ flowchart TB
 
 Kaavio kuvaa tavoitetta, ei nykyistä toteutusta. Moduulien määrä, teknisten palvelujen valinta ja moduulikohtainen reititys ovat konfiguroitavia. Yhteinen ydin ei saa edellyttää, että kaikki moduulit käyttävät samaa tekoälypalvelua tai samaa erillisprosessin työnkulkua.
 
-### 8.3 Tavoiteltu kokonaisrakenne ja vastuut
+### 8.2 Tavoiteltu kokonaisrakenne ja vastuut
 
 ~~~mermaid
 flowchart TB
@@ -456,7 +456,7 @@ Vastuut:
 
 Näytösvahti säilyy omana tehtävätyyppinään ja omine tapahtumamalleineen. Se voi käyttää yhteisiä ajonhallinnan, lähteiden, tallennuksen ja julkaisun palveluja, mutta sen päivittäistä näytöslogiikkaa ei yhdistetä uutisaiheiden kiertoon. Laatutarkistus on edelleen auditointitehtävä, jolla on erikseen rajatut luku- ja kirjausoikeudet.
 
-### 8.2 Ajastus, tehtäväjono ja ajon elinkaari
+### 8.3 Ajastus, tehtäväjono ja ajon elinkaari
 
 Ajastin käynnistää tehtäväjonon käsittelyn tai yksittäisen erillisprosessin. Ajastin ei itse päätä, mitä aihetta seurataan. Tehtäväjono valitsee suoritettavan tehtävän tallennetun jonotilan, tehtävätyypin ja riippuvuuksien perusteella.
 
