@@ -28,7 +28,7 @@ Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa
 ## Taylor Swift
 
 - Ensisijaiset: Taylor Swiftin viralliset kanavat ja verkkosivusto (taylorswift.com), levy-yhtiöiden ja konserttijärjestäjien tiedotteet, palkintojen järjestäjät ja viralliset hyväntekeväisyysorganisaatiot.
-- Toimitukselliset: luotettavat musiikki-, viihde-, talous- ja yleisuutismediat.
+- Toimitukselliset: luotettavat musiikki-, viihde-, talous- ja yleisuutismediat. Brasilianportugaliksi seuraa myös UOL Splashia.
 - Hakusanat: “Taylor Swift” sekä albumien, kappaleiden, kiertueiden, esiintymisten, liiketoiminnan ja palkintojen nimet.
 - Vältä juorupalstoja ja yksityiselämää koskevia vahvistamattomia väitteitä.
 
@@ -113,12 +113,12 @@ Oikeudellisten ja virallisten tapahtumien rinnalla seuraa henkilön elokuva- ja 
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-`data/source-catalog.json` sisältää 122 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 131 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi ja alueet ylläpidetään kerran; käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
+`data/source-catalog.json` sisältää 123 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 132 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi ja alueet ylläpidetään kerran; käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
 | Tolkien | 28 | englanti, suomi, saksa, ranska, espanja, italia, brasilianportugali, baski; Britannia, Yhdysvallat, Saksa, Ranska, Espanja, Italia, Suomi, Brasilia, Uusi-Seelanti, globaali | Kattavuus on laajentunut Euroopan kieliin, Brasiliaan ja Uuteen-Seelantiin; Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskielinen toimituksellinen seuranta on yhä ohut. |
-| Taylor Swift | 9 | englanti; Yhdysvallat, globaali | Lähinnä englanninkielinen ja Yhdysvalta-painotteinen. |
+| Taylor Swift | 10 | englanti, brasilianportugali; Yhdysvallat, Brasilia, globaali | Yhä englanti- ja Yhdysvalta-painotteinen; yksi brasilianportugalinkielinen alueellinen toimituksellinen lähde on lisätty. |
 | Gurmeet Ram Rahim Singh | 7 | englanti, hindi, pandžabi; Haryana, Punjab, Chandigarh, Intian valtakunnallinen | Alueellisten hindin- ja pandžabinkielisten lähteiden saavutettavuus vaihtelee. |
 | Muumit | 8 | suomi, ruotsi, englanti, japani; Suomi, Ruotsi, Britannia, Japani, globaali | Pohjoismaiden ja Japanin lisäksi muita lisenssimarkkinoita voidaan lisätä. |
 | Wakaliwood | 5 | englanti; Uganda ja Itä-Afrikka | Lugandan- ja swahilinkielinen kattavuus on vielä ohut. |
