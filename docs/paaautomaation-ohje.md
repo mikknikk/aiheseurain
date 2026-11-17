@@ -1,7 +1,7 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.2.1
-Viimeksi päivitetty: 2026-11-16
+Ohjeversion tunniste: 1.2.2
+Viimeksi päivitetty: 2026-11-17
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
 
@@ -12,6 +12,10 @@ Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. Chat
 - Intialaisten elokuvien näytösseuranta on erillinen päivittäinen automaatio noin klo 05.00 Europe/Helsinki. Se ei kuulu tehtäväkiertoon.
 - Pääautomaatio ei tee näytöshakuja eikä muuta `feeds/intialaisten-elokuvien-naytokset.xml`-syötettä tai näytöshistoriaa. Älä sekoita uutis- ja näytösseurantaa.
 - Älä luo rinnakkaisia aiheautomaatioita tai muuta aikatauluja tämän käsikirjan perusteella.
+
+## 1.1. Ajastusten ja asetusten hallinnan suojaus
+
+Noudata kaikkia ajoja koskevaa [automaatioiden hallintaperiaatetta](automaation-hallintaperiaatteet.md). Pääautomaation suorittaminen ei anna lupaa muuttaa tämän tai muiden automaatioiden ajastusta, aktiivisuutta, aikataulua, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Havaitut ongelmat raportoidaan käyttäjälle; niitä ei korjata muuttamalla ajastusta tai asetuksia ilman käyttäjän nimenomaista valtuutusta. GitHubin ohje- tai seurantatilamuutokset eivät muuta ChatGPT:n tehtäväasetuksia.
 
 ## 2. Aloitus, ohjeversion tarkistus ja keskeytysehdot
 
