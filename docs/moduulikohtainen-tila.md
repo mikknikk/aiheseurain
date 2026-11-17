@@ -80,7 +80,7 @@ Yksikkötestit kattavat täydellisen migraation, tuntemattomien tietojen säilyt
 
 Tämä vaihe luo kymmenen moduulikohtaista tilatiedostoa ja turvallisen päivityssopimuksen. Se ei muuta data/seurantatila.json-tiedostoa, data/lahdetarkistukset.json-tiedostoa, RSS-syötteitä, näytöshistoriaa, automaatioita tai ajastuksia. Moduulit pysyvät inactive-tilassa.
 
-Uusi tila on migroitu rinnakkaiskuva ja päivitysrajapinnan perusta. Sen muuttaminen tuotannon ainoaksi kirjoituskohteeksi tapahtuu vasta #108:n yhteydessä, kun orkestrointi, palautuminen ja rinnakkaisten ajojen hallinta on hyväksytty.
+Uusi tila on migroitu rinnakkaiskuva ja päivitysrajapinnan perusta. Sen muuttaminen tuotannon ainoaksi kirjoituskohteeksi tapahtuu vasta #108:n yhteydessä, kun orkestrointi, palautuminen ja rinnakkaisten ajojen hallinta on hyväksytty. Palveluntarjoajien valinta on erillinen tekninen asetuskokonaisuus, jota käsitellään [palveluadapterien dokumentissa](palveluadapterit.md).
 
 ## Muutoshistoria
 
