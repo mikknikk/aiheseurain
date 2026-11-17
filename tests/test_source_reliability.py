@@ -121,13 +121,41 @@ class ReliabilityClassificationTests(unittest.TestCase):
 
     def test_schema_version_two_requires_claim_assessments(self):
         """Uusi porttiversio ei läpäise validointia ilman väitearvioita."""
+        check = {"status": "pass", "note": "Tarkistettu.", "evidence": ["https://example.org/source"]}
+        checklist = {
+            "sources_opened": check,
+            "claim_support": check,
+            "source_independence": check,
+            "uncertainty": {"status": "pass", "note": "Epävarmuudet on käsitelty."},
+            "dates": {"status": "pass", "note": "Päivämäärät on tarkistettu."},
+            "tracking_period": {"status": "pass", "note": "Seurantajakso on tarkistettu."},
+            "duplicates": {"status": "pass", "note": "Duplikaatit on tarkistettu."},
+            "guid_preservation": {"status": "pass", "note": "GUIDit säilyvät."},
+            "xml_html": {"status": "pass", "note": "XML ja HTML ovat kelvollisia."},
+            "rss_structure": {"status": "pass", "note": "RSS-rakenne on kelvollinen."},
+            "report_completeness": {"status": "pass", "note": "Raportti on täydellinen."},
+            "accessibility": {"status": "pass", "note": "Saavutettavuus on tarkistettu."},
+        }
         report = {
             "schema_version": 2, "run_id": "test-run-2026", "task_id": "tolkien",
             "feed_path": "feeds/tolkien.xml", "checked_at": "2026-11-17T12:00:00+02:00",
-            "checklist": {}, "decision": "approved", "reviewer_notes": ["testi"]
+            "checklist": checklist, "decision": "approved", "reviewer_notes": ["testi"]
         }
         with self.assertRaises(jsonschema.ValidationError):
             jsonschema.validate(report, self.gate_schema)
+        source_id, source = next(iter(self.sources_by_id.items()))
+        report["claim_assessments"] = [{
+            "claim_id": "claim-test",
+            "claim": "Testiväite.",
+            "verification_status": "ensisijaislahteella_vahvistettu",
+            "sources": [{
+                "source_id": source_id,
+                "source_class": source["reliability_class"],
+                "source_role": "ensisijainen",
+                "independence": "ei_sovellu",
+            }],
+        }]
+        jsonschema.validate(report, self.gate_schema)
 
     def test_current_port_reports_remain_schema_valid(self):
         """Historialliset porttiraportit säilyvät kelvollisina ilman uutta kenttää."""
