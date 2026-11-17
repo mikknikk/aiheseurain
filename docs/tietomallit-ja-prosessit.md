@@ -319,6 +319,12 @@ flowchart TB
 
 Näytösvahti ei kuluta aihekierroksen vuoroa. Intialaisen elokuvan uutisseuranta ja näytösseuranta käyttävät myös erillisiä lähdekäyttörekistereitä.
 
+### 7.1 Yhteinen tila ja moduulikohtaiset checkpointit
+
+`data/seurantatila.json` omistaa edelleen tehtäväkierron, tekniset automaatiotiedot ja ohjeversiot. Jokaisella moduulilla on lisäksi oma `data/module-state/{module_id}.json`-tiedosto, joka sisältää viimeisimmän varmennetun onnistumisen checkpointin, checkpoint-historian sekä viitteet vanhoihin lähdetarkistusajoihin, RSS-GUIDeihin ja tapahtumahistoriaan. Osittainen tai epäonnistunut ajo ei saa päivittää moduulin onnistumisen checkpointia.
+
+Moduulikohtaisen tilan skeema ja päivityssäännöt on kuvattu [erillisessä dokumentissa](moduulikohtainen-tila.md). Tämänhetkinen migraatio säilyttää vanhan seurantatilan yhteensopivuuslähteenä; automaatioiden kirjoituspolku vaihdetaan vasta yhteisen orkestroinnin käyttöönotossa.
+
 ## 8. Näytöshistorian JSON: nykytila ja tapahtumat
 
 Tiedosto: [`data/naytosten-muutoshistoria.json`](../data/naytosten-muutoshistoria.json`  
