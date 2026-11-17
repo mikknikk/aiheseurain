@@ -182,6 +182,7 @@ class ProviderCallRecord:
 class AIProcessor(Protocol):
     """Vaihdettavan tekoälykäsittelijän sopimus."""
     provider_id: str
+    adapter_id: str
     capabilities: frozenset[str]
 
     def estimate_cost(self, request: AIRequest) -> float: ...
@@ -191,6 +192,7 @@ class AIProcessor(Protocol):
 class ResearchProvider(Protocol):
     """Vaihdettavan tutkimus- ja lähdehaun sopimus."""
     provider_id: str
+    adapter_id: str
     capabilities: frozenset[str]
 
     def estimate_search_cost(self, query: ResearchQuery) -> float: ...
