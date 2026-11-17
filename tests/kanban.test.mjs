@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { filterIssues, normalizeIssue, normalizeIssues, STATUS_COLUMNS, fetchAllIssues } from "../assets/js/kanban.js";
+import { filterIssues, normalizeIssue, normalizeIssues, STATUS_COLUMNS, fetchAllIssues, buildDependencyGraph, fetchAllDependencies } from "../assets/js/kanban.js";
 
 const makeIssue = (overrides = {}) => ({
   number: 12,
@@ -85,8 +85,46 @@ test("Kehitysjono-sivu ja navigaatio tarjoavat saavutettavan vain luku -osion", 
   assert.match(page, /aria-labelledby="filters-title"/);
   assert.match(page, /aria-pressed="true"/);
   assert.match(page, /kanban-table/);
+  assert.match(page, /kanban-dependencies/);
+  assert.match(page, /kanban-dependency-details/);
+  assert.match(script, /dependencies\/blocked_by/);
+  assert.match(script, /data-issue-number/);
   assert.match(header, /\/kehitysjono\//);
   assert.match(header, /page\.section == "kehitysjono"/);
   assert.match(layout, /assets\/js\/kanban\.js/);
   assert.doesNotMatch(script, /Authorization\s*:|Bearer\s+[A-Za-z0-9_-]+|method\s*:\s*[\"'](?:POST|PATCH|DELETE)[\"']/i);
+});
+
+
+test("riippuvuusverkko johtaa käänteiset estävät suhteet samasta GitHub-tiedosta", () => {
+  const first = normalizeIssue(makeIssue({ number: 12, title: "Edeltävä työ" }));
+  const second = normalizeIssue(makeIssue({ number: 13, title: "Seuraava työ" }));
+  const graph = buildDependencyGraph([first, second], [
+    { issueNumber: 13, blockedBy: [{ number: 12, title: "Edeltävä työ",
+      html_url: first.url, state: "open", labels: [{ name: "tila:ready" }] }] }
+  ]);
+  assert.deepEqual(graph.byIssue[13].blockedBy.map((issue) => issue.number), [12]);
+  assert.deepEqual(graph.byIssue[12].blocking.map((issue) => issue.number), [13]);
+  assert.equal(graph.complete, true);
+});
+
+test("osittaiset riippuvuustiedot säilyvät osittaisina", () => {
+  const issue = normalizeIssue(makeIssue());
+  const graph = buildDependencyGraph([issue], [], false);
+  assert.equal(graph.complete, false);
+  assert.deepEqual(graph.byIssue[12].blockedBy, []);
+});
+
+test("riippuvuuksien API-haku käsittelee rajoituksen osittaisena tuloksena", async () => {
+  const issues = [normalizeIssue(makeIssue({ number: 12 })), normalizeIssue(makeIssue({ number: 13 }))];
+  const calls = [];
+  const result = await fetchAllDependencies(issues, async (url) => {
+    calls.push(String(url));
+    const number = Number(new URL(url).pathname.split("/").at(-2));
+    if (number === 13) return { ok: false, status: 403 };
+    return { ok: true, json: async () => [] };
+  }, 2);
+  assert.equal(calls.length, 2);
+  assert.equal(result.complete, false);
+  assert.match(result.payloads[1].error, /rajoitti/);
 });

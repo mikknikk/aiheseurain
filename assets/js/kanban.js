@@ -78,6 +78,73 @@ export function filterIssues(issues, filters = {}) {
   });
 }
 
+/** Muodostaa riippuvuusverkon GitHubin blocked_by-suhteista. */
+export function buildDependencyGraph(issues, payloads, complete = true) {
+  const directory = new Map(issues.map((issue) => [issue.number, issue]));
+  const relations = new Map();
+  for (const payload of payloads) {
+    const number = Number(payload.issueNumber);
+    const blockers = (Array.isArray(payload.blockedBy) ? payload.blockedBy : [])
+      .filter((item) => item && Number.isInteger(Number(item.number)))
+      .map(normalizeIssue);
+    relations.set(number, { blockedBy: blockers, blocking: [] });
+    for (const blocker of blockers) if (!directory.has(blocker.number)) directory.set(blocker.number, blocker);
+  }
+  for (const issue of directory.values()) {
+    if (!relations.has(issue.number)) relations.set(issue.number, { blockedBy: [], blocking: [] });
+  }
+  for (const [number, value] of relations) {
+    for (const blocker of value.blockedBy) relations.get(blocker.number).blocking.push(directory.get(number));
+  }
+  return {
+    byIssue: Object.fromEntries([...relations].map(([number, value]) => [number, {
+      blockedBy: value.blockedBy.sort((a, b) => a.number - b.number),
+      blocking: value.blocking.filter(Boolean).sort((a, b) => a.number - b.number)
+    }])),
+    issueDirectory: Object.fromEntries(directory),
+    complete
+  };
+}
+
+/** Hakee kunkin tiketin edeltävät riippuvuudet GitHubin julkisesta luku-APIsta. */
+export async function fetchAllDependencies(issues, fetchImpl = fetch, concurrency = 4) {
+  const results = new Array(issues.length);
+  let next = 0;
+  let complete = true;
+  async function fetchOne(issue) {
+    const blockers = [];
+    for (let page = 1; page <= 10; page += 1) {
+      const url = new URL(API_URL + "/" + issue.number + "/dependencies/blocked_by");
+      url.search = new URLSearchParams({ per_page: "100", page: String(page) }).toString();
+      const response = await fetchImpl(url, {
+        headers: { Accept: "application/vnd.github+json" }, cache: "no-store"
+      });
+      if (!response.ok) {
+        if (response.status === 403 || response.status === 429) throw new Error("GitHub API rajoitti riippuvuustietojen hakua.");
+        throw new Error("Tiketin #" + issue.number + " riippuvuuksien haku epäonnistui (HTTP " + response.status + ").");
+      }
+      const items = await response.json();
+      if (!Array.isArray(items)) throw new Error("GitHub palautti virheellisen riippuvuusvastauksen.");
+      blockers.push(...items);
+      if (items.length < 100) return { issueNumber: issue.number, blockedBy: blockers };
+    }
+    throw new Error("Tiketin #" + issue.number + " riippuvuuksia on odotettua enemmän.");
+  }
+  async function worker() {
+    while (next < issues.length) {
+      const index = next++;
+      try { results[index] = await fetchOne(issues[index]); }
+      catch (error) {
+        complete = false;
+        results[index] = { issueNumber: issues[index].number, blockedBy: [],
+          error: error instanceof Error ? error.message : "Riippuvuuksien haku epäonnistui." };
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.max(1, Math.min(concurrency, issues.length || 1)) }, worker));
+  return { payloads: results, complete };
+}
+
 function safeReadCache() {
   try {
     const raw = globalThis.localStorage?.getItem(CACHE_KEY);
@@ -91,9 +158,9 @@ function safeReadCache() {
   }
 }
 
-function safeWriteCache(issues, savedAt) {
+function safeWriteCache(issues, savedAt, dependencies = dependencyGraph, dependenciesSavedAt = dependencySavedAt) {
   try {
-    globalThis.localStorage?.setItem(CACHE_KEY, JSON.stringify({ issues, savedAt }));
+    globalThis.localStorage?.setItem(CACHE_KEY, JSON.stringify({ issues, savedAt, dependencies, dependenciesSavedAt }));
   } catch {
     // Välimuisti on vain käyttömukavuutta varten; API-haku toimii ilman sitä.
   }
@@ -157,6 +224,9 @@ function makeElement(tag, className, text) {
 
 let allIssues = [];
 let savedAt = null;
+let dependencyGraph = null;
+let dependencySavedAt = null;
+let selectedDependencyIssue = null;
 let activeView = "board";
 
 function currentFilters() {
@@ -213,6 +283,16 @@ function renderBoard(issues) {
       meta.appendChild(makeElement("span", "kanban-area",
         issue.areaName || "Aihealuetta ei merkitty"));
       item.append(number, title, meta);
+      if (dependencyGraph) {
+        const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
+        item.appendChild(makeElement("p", "kanban-dependency-summary",
+          "Edeltäjiä: " + relations.blockedBy.length + " · Estää: " + relations.blocking.length));
+        const detailButton = makeElement("button", "kanban-dependency-button", "Avaa riippuvuudet");
+        detailButton.type = "button";
+        detailButton.dataset.issueNumber = String(issue.number);
+        detailButton.setAttribute("aria-label", "Näytä tiketin #" + issue.number + " riippuvuudet");
+        item.appendChild(detailButton);
+      }
       cards.appendChild(item);
     }
     section.appendChild(cards);
@@ -236,15 +316,97 @@ function renderTable(issues) {
     titleLink.href = issue.url;
     titleLink.rel = "noopener noreferrer";
     titleCell.appendChild(titleLink);
+    const dependencyCell = document.createElement("td");
+    if (dependencyGraph) {
+      const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
+      dependencyCell.appendChild(makeElement("span", "",
+        "Edeltäjiä: " + relations.blockedBy.length + "; estää: " + relations.blocking.length + ". "));
+      const detailButton = makeElement("button", "kanban-dependency-button", "Avaa");
+      detailButton.type = "button";
+      detailButton.dataset.issueNumber = String(issue.number);
+      detailButton.setAttribute("aria-label", "Näytä tiketin #" + issue.number + " riippuvuudet");
+      dependencyCell.appendChild(detailButton);
+    } else dependencyCell.textContent = "Ei ladattu";
     row.append(
-      numberCell,
-      titleCell,
+      numberCell, titleCell,
       makeElement("td", "", issue.priority || "Ei määritelty"),
       makeElement("td", "", issue.areaName || "Ei merkitty"),
-      makeElement("td", "", STATUS_COLUMNS.find((column) => column.id === issue.status)?.label || "Tila puuttuu")
+      makeElement("td", "", STATUS_COLUMNS.find((column) => column.id === issue.status)?.label || "Tila puuttuu"),
+      dependencyCell
     );
     target.appendChild(row);
   }
+}
+
+
+function dependencyStatus(issue) {
+  if (issue.state === "closed") return "Valmis (suljettu)";
+  return STATUS_COLUMNS.find((column) => column.id === issue.status)?.label || "Tila puuttuu";
+}
+function renderDependencyPanel() {
+  const target = document.getElementById("kanban-dependency-details");
+  target.replaceChildren();
+  if (!dependencyGraph || !selectedDependencyIssue) { target.hidden = true; return; }
+  const issue = dependencyGraph.issueDirectory[selectedDependencyIssue];
+  if (!issue) { target.hidden = true; return; }
+  const relations = dependencyGraph.byIssue[selectedDependencyIssue] || { blockedBy: [], blocking: [] };
+  target.append(
+    makeElement("h3", "", "Tiketin #" + issue.number + " riippuvuudet"),
+    makeElement("p", "", "Edeltävä työ = tiketti, jonka valmistumista tämä työ odottaa. Estää = tiketti, jonka etenemistä tämä työ estää.")
+  );
+  if (!dependencyGraph.complete) target.appendChild(makeElement("p", "kanban-dependency-warning",
+    "Riippuvuustietojen haku jäi osittaiseksi. Alla näkyvät vain onnistuneesti haetut suhteet; lukumäärät voivat olla puutteellisia."));
+  for (const group of [
+    { title: "Edeltävä työ (tämä tiketti odottaa näitä)", items: relations.blockedBy },
+    { title: "Tämä tiketti estää seuraavia töitä", items: relations.blocking }
+  ]) {
+    const list = document.createElement("ul");
+    if (!group.items.length) list.appendChild(makeElement("li", "", "GitHubiin ei ole kirjattu tähän suuntaan riippuvuuksia."));
+    for (const related of group.items) {
+      const item = document.createElement("li");
+      const link = makeElement("a", "", "#" + related.number + " – " + related.title);
+      link.href = related.url || ("https://github.com/mikknikk/aiheseurain/issues/" + related.number);
+      link.rel = "noopener noreferrer";
+      item.append(link, document.createTextNode(" (" + dependencyStatus(related) + ")"));
+      list.appendChild(item);
+    }
+    target.append(makeElement("h4", "", group.title), list);
+  }
+  target.hidden = false;
+}
+function updateDependencyStatus(message, warning = false) {
+  const status = document.getElementById("kanban-dependency-status");
+  status.textContent = message;
+  status.className = warning ? "kanban-dependency-status kanban-dependency-warning" : "kanban-dependency-status";
+}
+async function loadDependencies() {
+  const button = document.getElementById("kanban-dependencies");
+  button.disabled = true;
+  button.textContent = "Haetaan riippuvuuksia…";
+  updateDependencyStatus("Haetaan GitHubin riippuvuustietoja. Yksi lukupyyntö tehdään kutakin tikettiä kohti.");
+  try {
+    const result = await fetchAllDependencies(allIssues);
+    dependencyGraph = buildDependencyGraph(allIssues, result.payloads, result.complete);
+    dependencySavedAt = Date.now();
+    selectedDependencyIssue = null;
+    safeWriteCache(allIssues, savedAt, dependencyGraph, dependencySavedAt);
+    render();
+    const failed = result.payloads.filter((item) => item.error).length;
+    updateDependencyStatus(result.complete
+      ? "Riippuvuustiedot päivitetty " + formatDate(dependencySavedAt) + "."
+      : "Riippuvuustiedot ovat osittaiset: " + failed + " tiketin tietoja ei saatu haettua.", !result.complete);
+  } catch (error) {
+    updateDependencyStatus(error instanceof Error ? error.message : "Riippuvuuksien haku epäonnistui.", true);
+  } finally {
+    button.disabled = false;
+    button.textContent = dependencyGraph ? "Päivitä riippuvuudet" : "Yritä riippuvuuksia uudelleen";
+  }
+}
+function showIssueDependencies(issueNumber) {
+  if (!dependencyGraph) return;
+  selectedDependencyIssue = Number(issueNumber);
+  renderDependencyPanel();
+  document.getElementById("kanban-dependency-details").scrollIntoView?.({ block: "nearest" });
 }
 
 function render() {
@@ -262,6 +424,7 @@ function render() {
     : "";
 
   document.getElementById("kanban-empty").hidden = filtered.length > 0;
+  renderDependencyPanel();
   document.getElementById("kanban-board").hidden = activeView !== "board";
   document.getElementById("kanban-list-view").hidden = activeView !== "list";
   document.getElementById("view-board").setAttribute("aria-pressed", String(activeView === "board"));
@@ -290,6 +453,10 @@ function updateFreshness(message, kind = "info") {
 function showCachedData(cache, isError = false) {
   allIssues = cache.issues;
   savedAt = cache.savedAt;
+  dependencyGraph = cache.dependencies && typeof cache.dependencies.byIssue === "object" ? cache.dependencies : null;
+  dependencySavedAt = Number.isFinite(cache.dependenciesSavedAt) ? cache.dependenciesSavedAt : null;
+  document.getElementById("kanban-dependencies").textContent = dependencyGraph ? "Päivitä riippuvuudet" : "Näytä riippuvuudet";
+  updateDependencyStatus(dependencyGraph ? "Välimuistissa olevat riippuvuustiedot: " + formatDate(dependencySavedAt || cache.savedAt) + "." : "Riippuvuuksia ei ole vielä haettu.");
   populateAreaFilter();
   render();
   const age = Date.now() - cache.savedAt;
@@ -309,7 +476,12 @@ async function refreshIssues() {
     const issues = await fetchAllIssues();
     allIssues = issues;
     savedAt = Date.now();
-    safeWriteCache(issues, savedAt);
+    dependencyGraph = null;
+    dependencySavedAt = null;
+    selectedDependencyIssue = null;
+    safeWriteCache(issues, savedAt, null, null);
+    document.getElementById("kanban-dependencies").textContent = "Näytä riippuvuudet";
+    updateDependencyStatus("Riippuvuuksia ei ole vielä haettu.");
     populateAreaFilter();
     render();
     updateFreshness("Päivitetty onnistuneesti " + formatDate(savedAt) + ".");
@@ -353,6 +525,15 @@ function initializeKanban() {
     render();
   });
   document.getElementById("kanban-refresh").addEventListener("click", refreshIssues);
+  document.getElementById("kanban-dependencies").addEventListener("click", loadDependencies);
+  document.getElementById("kanban-board").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-issue-number]");
+    if (button) showIssueDependencies(button.dataset.issueNumber);
+  });
+  document.getElementById("kanban-table-body").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-issue-number]");
+    if (button) showIssueDependencies(button.dataset.issueNumber);
+  });
   refreshIssues();
 }
 

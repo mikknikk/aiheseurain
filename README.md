@@ -2,7 +2,7 @@
 
 Aiheseurain on henkilökohtainen, moniaiheinen tiedonkeruu- ja seurantapalvelu. Tämä repositorio ylläpitää yhdeksää erillistä seurantatehtävää yhdessä kiertojonossa. Yksi automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki ja käsittelee kullakin ajolla vain yhden tehtävän. Yhdeksän tehtävän kierto tarkoittaa, että kukin aihe tarkistetaan normaalisti noin yhdeksän päivän välein. Intialaisen elokuvan uutisraportti on jonon tehtävä 9. Intialaisten elokuvien näytösseuranta on erillisen päivittäisen näytösvahdin vastuulla.
 
-GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) kokoaa kaikki kymmenen syötettä yhteen aikajärjestykseen ja mahdollistaa syötekohtaisen suodatuksen. [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/) näyttää GitHub Issues -tehtävät tilasarakkeissa sekä saavutettavassa listanäkymässä. Valvomo, RSS-lukija ja Kehitysjono ovat vain luku -näkymiä.
+GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) kokoaa kaikki kymmenen syötettä yhteen aikajärjestykseen ja mahdollistaa syötekohtaisen suodatuksen. [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/) näyttää GitHub Issues -tehtävät tilasarakkeissa, niiden GitHubiin kirjatut riippuvuudet sekä saavutettavan listanäkymän. Valvomo, RSS-lukija ja Kehitysjono ovat vain luku -näkymiä.
 
 Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation lukupolusta](docs/aloitus-ja-lukujarjestys.md). Se etenee järjestelmän yleiskuvasta käytännön toimintaan, lähteisiin, JSON-tietomalleihin, verkkosivustoon ja lopuksi ylläpitoon.
 
@@ -117,7 +117,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `index.html`: Aiheseuraimen etusivu.
 - `valvomo/index.html`: Valvomon käyttöliittymä osoitteessa `/valvomo/`.
 - `lukija/index.html` ja `assets/js/reader.js`: RSS-lukijan sivu ja selainpuolen RSS-jäsennys, syötesuodatus sekä HTML-sisällön sanitointi.
-- `kehitysjono/index.html` ja `assets/js/kanban.js`: GitHub Issues -pohjainen, vain luku -muotoinen kanban ja sitä vastaava saavutettava taulukkonäkymä; selain käyttää vain GitHubin julkista luku-APIa ja paikallista välimuistia.
+- `kehitysjono/index.html` ja `assets/js/kanban.js`: GitHub Issues -pohjainen, vain luku -muotoinen kanban ja sitä vastaava saavutettava taulukkonäkymä; tikettien riippuvuudet luetaan GitHubin omasta riippuvuusrajapinnasta, ja selain käyttää vain julkisia luku-API-rajapintoja sekä paikallista välimuistia.
 - `data/feed-catalog.json`: kaikkien kymmenen RSS-syötteen kanoninen katalogi, jota lukija ja RSS-validointi käyttävät.
 - `_layouts/site.html`, `_includes/site-header.html`, `_includes/site-footer.html` ja `assets/`: sivujen yhteinen sivustorunko, navigaatio ja selaimen esityskoodi.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
