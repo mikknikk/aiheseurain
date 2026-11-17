@@ -1,0 +1,130 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "sompote-sands",
+  "module_type": "topic",
+  "definition_version": "1.0.0",
+  "name": "Sompote Sands",
+  "description": "Thaimaalaisen elokuvaohjaajan ja tuottajan Sompote Sandsin elokuvien, tuotantojen ja kulttuuriperinnön seuranta.",
+  "capabilities": [
+    {
+      "id": "research.search",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "report.finnish",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
+  ],
+  "interfaces": {
+    "input": {
+      "id": "research.request",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "report.article",
+      "version": "1.0.0"
+    }
+  },
+  "source_refs": [
+    {
+      "source_id": "thai-film-archive",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "thai-film-archive-news",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "thai-pbs",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "nation-thailand",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "ultraman-official",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "eiga-com",
+      "role": "secondary",
+      "required": false
+    }
+  ],
+  "search_profiles": [
+    {
+      "id": "sompote-sands-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Sompote Sands",
+        "Sompote Saengduenchai",
+        "สมโพธิ แสงเดือนฉาย",
+        "Chaiyo Productions Sompote Sands",
+        "Thai Film Archive Sompote Sands restoration"
+      ],
+      "languages": [
+        "en",
+        "ja",
+        "th"
+      ],
+      "regions": [
+        "JP",
+        "TH"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "name-identity",
+      "category": "verification",
+      "instruction": "Varmista translitteroinnit ja henkilön identiteetti luotettavista lähteistä ennen yhdistämistä.",
+      "severity": "required"
+    },
+    {
+      "id": "archive-first",
+      "category": "verification",
+      "instruction": "Suosi thaimaalaisia elokuva-arkistoja, instituutteja, festivaaleja ja oikeudenhaltijoita koskevia ensisijaisia lähteitä.",
+      "severity": "required"
+    },
+    {
+      "id": "local-language",
+      "category": "inclusion",
+      "instruction": "Hae thaiksi ja englanniksi sekä tarvittaessa japaniksi.",
+      "severity": "required"
+    }
+  ],
+  "topic": {
+    "scope": "Sompote Sands (myös Sompote Saengduenchai ja thai-kieliset kirjoitusasut), hänen elokuvansa ja tuotantonsa, studiohistoria, restaurointi, arkistointi, julkaisut, esitykset, festivaalit, oikeudet, kansainvälinen levitys, retrospektiivit ja tutkimus.",
+    "include": [
+      "Sompote Sandsin elokuvat, tuotannot ja uran uusi kehitys",
+      "Krua- ja Chaiyo-studioihin liittyvä relevantti historia",
+      "Restaurointi, arkistointi, julkaisut ja kansainvälinen levitys",
+      "Festivaalit, retrospektiivit, näytökset ja elokuvahistoriallinen tutkimus",
+      "Sompote Sandsin työn uusi kulttuurinen vastaanotto"
+    ],
+    "exclude": [
+      "Yleinen thaimaalaisen elokuvan uutisointi ilman suoraa yhteyttä Sompote Sandsiin",
+      "Varmistamattomat henkilöllisyys- ja translitterointiyhdistelmät"
+    ],
+    "entities": [
+      {
+        "entity_id": "sompote-sands",
+        "entity_type": "person",
+        "label": "Sompote Sands",
+        "aliases": [
+          "Sompote Saengduenchai",
+          "สมโพธิ แสงเดือนฉาย"
+        ]
+      }
+    ]
+  }
+}
