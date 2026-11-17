@@ -34,7 +34,7 @@ Näiden havaintojen perusteella nykyinen julkaisutapa on GitHub Pagesin haarajul
 3. **Ei erillistä status-tietokantaa eikä rinnakkaisia tilannekuvakopioita.** Valvomo lukee nykyisiä koneellisia tietolähteitä suoraan Pagesin saman alkuperän JSON-tiedostoina.
 4. **Automaatiot säilyttävät kirjoitusvastuunsa.** Pääautomaatio, näytösvahti ja laatutarkistus päivittävät omia nykyisiä seurantatietojaan omien käsikirjojensa mukaisesti. Valvomon selain ei kirjoita repositorioon.
 5. **Vaihekohtainen ajohistoria tallennetaan erillisiin haaroihin.** ChatGPT-automaatiot päivittävät omia `run-history/*`-haarojaan ajon aikana. Nämä commitit eivät koske `main`-haaraa eivätkä synnytä PR:iä. Varsinaiset julkaisut ja seurantatilan onnistumispisteet pysyvät normaalissa PR- ja CI-prosessissa. Valvomon lukeminen ei kirjoita mitään.
-6. **Sama-origin JSON on ensisijainen selaimen datalähde.** Valvomo lukee julkaistut tiedostot Pages-osoitteesta. GitHubin julkista APIa käytetään vain tietoihin, joita nykyiset JSON-tiedostot eivät sisällä, kuten GitHub Actions -validointien ja Pages-julkaisujen ajoihin. API-kutsut rajataan, tulokset välimuistitetaan ja virhetilanteet näytetään.
+6. **Julkiset JSON-tiedostot ovat ensisijaisia selaimen datalähteitä.** `main`-haaran koneelliset tilatiedostot luetaan Pages-osoitteesta ja vaihekohtainen ajohistoria GitHubin raw-sisältöosoitteista automaatiokohtaisista `run-history/*`-haaroista. GitHubin julkista APIa käytetään GitHub Actions -validointien ja Pages-julkaisujen ajoihin. Tulokset välimuistitetaan ja virhetilanteet näytetään.
 7. **Ei selaimeen tunnuksia tai salaisuuksia.** Julkinen Pages-sivu käyttää vain julkista dataa ja anonyymejä lukuoikeuksia. Raakoja Actions-lokeja tai API-virheiden raakasisältöä ei julkaista.
 
 ## 3. Kanoniset tietolähteet
@@ -150,4 +150,4 @@ Jos jonon seuraavan tehtävän viimeisin tulos on `failed` tai `partial`, Valvom
 
 Näytösvahti ei kuulu yhdeksän aiheen kiertoon. Sen koneellinen tieto kertoo rytmin olevan päivittäinen, mutta julkaistussa seurantatilassa ei ole tarkkaa kellonaikaa. Valvomo näyttää siksi vain tiedon päivittäisestä rytmistä eikä keksi näytösvahdille kellonaikaa.
 
-Arvioiden laskenta on käyttöliittymän johdettua tietoa: uutta status-JSONia, erillistä ajohistoriaa tai rinnakkaista aikataulutietokantaa ei tarvita. Ominaisuus toimii ilman tiketin #37 vaihekohtaista ajohistoriaa. Se ei kuitenkaan pysty havaitsemaan reaaliaikaista käynnissä olevaa ajoa tai odottamatonta aikataulumuutosta ennen kuin muutos näkyy koneellisessa seurantatilassa tai dokumentoidussa jonossa.
+Aihekohtaisten arvioaikojen laskenta on käyttöliittymän johdettua tietoa eikä tarvitse erillistä aikataulutietokantaa. Reaaliaikainen käynnissäolo ja vaihehistoria saadaan kuitenkin vain tiketin #37 mukaisista automaatiokohtaisista ajohistoriahaaroista. Näkymä ei päättele ajon etenemistä aikataulusta tai GitHub Actions -työnkuluista.
