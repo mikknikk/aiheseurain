@@ -108,6 +108,7 @@ Lue:
 1. [Kehityssuunnitelma](kehityssuunnitelma.md) – järjestelmän tavoitearkkitehtuuri ja kehityksen toimintamalli.
 2. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
 3. [Kehityskäytännöt](kehityskaytannot.md) – dokumentoinnin, koodin, testauksen ja ylläpidon säännöt.
+4. [Julkaisulaadun portti](julkaisuportti.md) – miten yksittäinen RSS-raportti tarkistetaan ennen julkaisemista.
 4. [Saavutettavuuskatselmoinnin raportti](saavutettavuuskatselmointi-2026-11-17.md) – esimerkki siitä, miten tarkastelun havainnot ja testaamatta jääneet asiat kirjataan.
 
 Kun tunnet nämä dokumentit, pystyt seuraamaan kehitystehtäviä ja ymmärtämään, miksi muutokset tehdään versionhallinnan, katselmoinnin ja testien kautta.
@@ -153,6 +154,7 @@ Muiden kahdeksan aihekierroksen tehtävien lähdekohtaiset tiedot löytyvät [yl
 | Miten RSS-syötteet on koottu? | README:n [syöteluettelo](../README.md#syotteet) ja [syötekatalogi](../data/feed-catalog.json) |
 | Miten näytösvahti toimii? | [Näytösseurannan käsikirja](intialaisten-elokuvien-naytosseuranta.md) |
 | Miten muutoksia testataan? | [Kehityskäytännöt](kehityskaytannot.md) ja README:n laatutestien osio |
+| Miten uutisraportti hyväksytään ennen julkaisua? | [Julkaisulaadun portti](julkaisuportti.md) |
 
 ## Lukemisen jälkeen
 
