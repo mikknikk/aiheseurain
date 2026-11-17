@@ -31,6 +31,8 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Toteutetut kohteet
 
+- [x] **Yleinen tapahtumavahti (#109).** PR:t #113 ja #114 toteuttavat tapahtumatyypin ja historian skeemat, yleisen käsittelyytimen, lähdesovittimen rajapinnan, täsmällisen identiteettipohjaisen duplikaattien yhdistämisen, ristiriitojen säilyttämisen, tilasiirtymät sekä näytöshistorian lukevan ja muistissa tapahtumia käsittelevän sovittimen. Konferenssiesitys on toinen tapahtumatyyppi. Tuotannon näytösvahtia tai automaatioasetuksia ei vaihdettu.
+
 - [x] **Nykyisten moduulien inventaario ja hallitun siirtymän suunnitelma (#104).** Dokumentti `docs/moduulisiirtyman-inventaario.md` kuvaa yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijaon, lähderekisterien kieli- ja aluekattavuuden, tiedostojen siirtokartan, omistajuusrajat, päällekkäisyysriskit sekä vaiheittaisen palautusmenettelyn. PR #112 on yhdistetty.
 
 - [x] **Uutislähteiden ja uutisväitteiden luotettavuusluokitus (#27).** Yhteinen A–D-lähdeluokitus tallennetaan lähdekatalogiin ja kuusi väitekohtaista varmennustasoa kirjataan uusien julkaisulaadun porttiraporttien claim_assessments-kenttään. Ohjeet erottavat lähteen yleisen roolin väitteen näytöstä sekä kuvaavat lähderiippuvuudet, anonyymit lähteet, ristiriidat, sidonnaisuudet ja korjaukset. Skeemat ja rakennetestit tarkistavat sallitut arvot; ne eivät väitä todistavansa uutisten totuutta.
@@ -58,10 +60,6 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 ### Moduulisiirtymä (#105)
 
 Kymmenen nykyistä seurantaa on kuvattu itsenäisinä moduulimäärityksinä ja rekisteröity inactive-tilassa. Migraatiovalidointi tarkistaa lähdeviitteet, lähdekatalogin roolit, kielet, alueet, prosessilaajennuksen ja näytösvahtimoduulin tapahtumatyypin. Nykyiset automaatiot ja julkaisut jatkavat vanhoilla käsikirjoilla ja tietolähteillä; moduulien aktivointi ja suorituspolun vaihto eivät kuulu tähän muutokseen.
-
-### Yleinen tapahtumavahti (#109)
-
-Toteutuksessa on yhteinen tapahtumamalli, tyypitetyt määritykset, havaintojen yhdistäminen, lähderistiriitojen säilyttäminen, tilasiirtymät ja append-only-historia. Nykyisen näytöshistorian sovitin on vain lukeva, ja konferenssiesitys toimii toisena tapahtumatyyppinä testissä. Ulkoiset lähdeadapterit, tuotantomigraatio ja käyttöönotto eivät kuulu tähän muutokseen.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
