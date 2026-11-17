@@ -1,0 +1,421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/module-state.schema.json",
+  "title": "Seurantamoduulin jatkuvuustila ja historiaviitteet",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "module_id",
+    "module_definition_version",
+    "checkpoint",
+    "checkpoint_history",
+    "history",
+    "publication",
+    "references",
+    "migration"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "module_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "module_definition_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "checkpoint": {
+      "$ref": "#/$defs/checkpoint"
+    },
+    "checkpoint_history": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/checkpointEvent"
+      }
+    },
+    "history": {
+      "$ref": "#/$defs/history"
+    },
+    "publication": {
+      "$ref": "#/$defs/publication"
+    },
+    "references": {
+      "$ref": "#/$defs/references"
+    },
+    "migration": {
+      "$ref": "#/$defs/migration"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nullableDateTime": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "period": {
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "end": {
+          "$ref": "#/$defs/nullableDateTime"
+        }
+      },
+      "additionalProperties": false
+    },
+    "checkpoint": {
+      "type": "object",
+      "required": [
+        "last_successful_run"
+      ],
+      "properties": {
+        "last_successful_run": {
+          "type": "object",
+          "required": [
+            "run_id",
+            "run_history_ref",
+            "definition_version",
+            "checked_at",
+            "period",
+            "result",
+            "published_items",
+            "sources_checked",
+            "errors"
+          ],
+          "properties": {
+            "run_id": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "run_history_ref": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "minLength": 1
+            },
+            "definition_version": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+            },
+            "checked_at": {
+              "$ref": "#/$defs/nullableDateTime"
+            },
+            "period": {
+              "$ref": "#/$defs/period"
+            },
+            "result": {
+              "enum": [
+                "published",
+                "success",
+                "not_recorded"
+              ]
+            },
+            "published_items": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "sources_checked": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "errors": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "checkpointEvent": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "source",
+        "run_id",
+        "run_history_ref",
+        "definition_version",
+        "checked_at",
+        "period",
+        "result",
+        "published_items",
+        "sources_checked",
+        "source_check_run_refs",
+        "report_guid_refs",
+        "recorded_on",
+        "notes"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$"
+        },
+        "source": {
+          "enum": [
+            "legacy_migration",
+            "module_run"
+          ]
+        },
+        "run_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "run_history_ref": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "definition_version": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9]*)$"
+        },
+        "checked_at": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "result": {
+          "enum": [
+            "published",
+            "success"
+          ]
+        },
+        "published_items": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "sources_checked": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "source_check_run_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "report_guid_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "recorded_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "historyRef": {
+      "type": "object",
+      "required": [
+        "store_path",
+        "record_id"
+      ],
+      "properties": {
+        "store_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "documentRef": {
+      "type": "object",
+      "required": [
+        "path",
+        "heading"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "heading": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "history": {
+      "type": "object",
+      "required": [
+        "document_refs",
+        "event_refs",
+        "current_record_refs",
+        "source_check_run_refs"
+      ],
+      "properties": {
+        "document_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/documentRef"
+          }
+        },
+        "event_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/historyRef"
+          }
+        },
+        "current_record_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/historyRef"
+          }
+        },
+        "source_check_run_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "publication": {
+      "type": "object",
+      "required": [
+        "feed_path",
+        "guid_refs"
+      ],
+      "properties": {
+        "feed_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "guid_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "references": {
+      "type": "object",
+      "required": [
+        "source_registry_ref",
+        "source_catalog_ref",
+        "feed_catalog_ref",
+        "source_check_log_ref",
+        "legacy_state_pointer"
+      ],
+      "properties": {
+        "source_registry_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_catalog_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "feed_catalog_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_check_log_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "legacy_state_pointer": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "migration": {
+      "type": "object",
+      "required": [
+        "source_task_id",
+        "source_state_ref",
+        "migrated_on",
+        "notes"
+      ],
+      "properties": {
+        "source_task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_state_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "migrated_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
