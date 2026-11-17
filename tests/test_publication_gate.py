@@ -44,6 +44,15 @@ class PublicationGateTests(unittest.TestCase):
             result = gate.validate_record(path, {"tolkien": "feeds/tolkien.xml"})
         self.assertEqual(result["decision"], "approved")
 
+    def test_required_source_evidence_cannot_be_omitted(self):
+        record = approved_record()
+        del record["checklist"]["sources_opened"]["evidence"]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "test-run-001.json"
+            path.write_text(json.dumps(record), encoding="utf-8")
+            with self.assertRaises(SystemExit):
+                gate.validate_record(path, {"tolkien": "feeds/tolkien.xml"})
+
     def test_failed_editorial_check_is_rejected(self):
         record = approved_record()
         record["checklist"]["claim_support"] = {
