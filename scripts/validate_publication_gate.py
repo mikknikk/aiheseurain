@@ -57,17 +57,18 @@ def load_json(path: Path, label: str):
 
 def validate_record(path: Path, feed_map: dict[str, str]) -> dict:
     """Tarkistaa yhden raportin tarkistuslomakkeen skeeman ja hyväksynnän."""
-    record = load_json(path, str(path.relative_to(ROOT)))
+    label = str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else path.name
+    record = load_json(path, label)
     schema = load_json(SCHEMA_PATH, "julkaisuportin skeema")
     try:
         jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker()).validate(record)
     except jsonschema.ValidationError as exc:
-        fail(f"{path.relative_to(ROOT)}: skeemavirhe kohdassa {list(exc.absolute_path)}: {exc.message}")
+        fail(f"{label}: skeemavirhe kohdassa {list(exc.absolute_path)}: {exc.message}")
 
     if record["task_id"] not in feed_map:
-        fail(f"{path.relative_to(ROOT)}: tuntematon task_id {record['task_id']!r}")
+        fail(f"{label}: tuntematon task_id {record['task_id']!r}")
     if feed_map[record["task_id"]] != record["feed_path"]:
-        fail(f"{path.relative_to(ROOT)}: task_id ja feed_path eivät vastaa toisiaan")
+        fail(f"{label}: task_id ja feed_path eivät vastaa toisiaan")
 
     failed = [
         key for key, value in record["checklist"].items()
@@ -78,16 +79,16 @@ def validate_record(path: Path, feed_map: dict[str, str]) -> dict:
         if value["status"] == "not_applicable" and len(value["note"].strip()) < 5
     ]
     if failed:
-        fail(f"{path.relative_to(ROOT)}: hylätyt tarkistuskohdat: {', '.join(failed)}")
+        fail(f"{label}: hylätyt tarkistuskohdat: {', '.join(failed)}")
     if not_applicable_without_reason:
-        fail(f"{path.relative_to(ROOT)}: soveltumattomilta kohdilta puuttuu perustelu: {', '.join(not_applicable_without_reason)}")
+        fail(f"{label}: soveltumattomilta kohdilta puuttuu perustelu: {', '.join(not_applicable_without_reason)}")
     if record["decision"] != "approved":
-        fail(f"{path.relative_to(ROOT)}: päätös ei ole approved")
+        fail(f"{label}: päätös ei ole approved")
     if not record["reviewer_notes"]:
-        fail(f"{path.relative_to(ROOT)}: reviewer_notes ei saa olla tyhjä; kirjaa lyhyt yhteenveto")
+        fail(f"{label}: reviewer_notes ei saa olla tyhjä; kirjaa lyhyt yhteenveto")
     for key in AUTOMATED_CHECKS:
         if record["checklist"][key]["status"] != "pass":
-            fail(f"{path.relative_to(ROOT)}: automaattisen tarkistuksen {key} on oltava pass")
+            fail(f"{label}: automaattisen tarkistuksen {key} on oltava pass")
     return record
 
 
