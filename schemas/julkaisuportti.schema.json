@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/mikknikk/aiheseurain/main/schemas/julkaisuportti.schema.json",
   "title": "RSS-raportin julkaisua edeltävä laadunvarmistus",
-  "description": "Yhden RSS-syötteen raporttikohtainen tarkistus ennen julkaisua.",
+  "description": "Yhden RSS-syötteen raporttikohtainen tarkistus ennen julkaisua. Uusissa raporteissa claim_assessments dokumentoi olennaisten väitteiden varmennustason ja lähteet.",
   "type": "object",
   "required": [
     "schema_version",
@@ -147,6 +147,13 @@
         "type": "string"
       },
       "minItems": 1
+    },
+    "claim_assessments": {
+      "type": "array",
+      "description": "Väitekohtainen varmennusarvio. Puuttuminen sallitaan vain historiallisissa, ennen luokituksen käyttöönottoa tehdyissä raporteissa.",
+      "items": {
+        "$ref": "#/$defs/claim_assessment"
+      }
     }
   },
   "additionalProperties": false,
@@ -215,6 +222,88 @@
           }
         }
       ],
+      "additionalProperties": false
+    },
+    "claim_assessment": {
+      "type": "object",
+      "required": [
+        "claim_id",
+        "claim",
+        "verification_status",
+        "sources"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_status": {
+          "enum": [
+            "ensisijaislahteella_vahvistettu",
+            "riippumattomissa_toimituksellisissa_lahteissa_vahvistettu",
+            "yhden_toimituksellisen_lahteen_raportoima",
+            "nimettomaan_lahteeseen_perustuva",
+            "huhu",
+            "ristiriitainen_tai_selvittamaton"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "source_id",
+              "source_class",
+              "source_role",
+              "independence"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]*$"
+              },
+              "source_class": {
+                "enum": [
+                  "A",
+                  "B",
+                  "C",
+                  "D"
+                ]
+              },
+              "source_role": {
+                "enum": [
+                  "ensisijainen",
+                  "toimituksellinen",
+                  "nimetty_asiantuntija",
+                  "anonyymi_tietolahde",
+                  "some_tai_yhteiso",
+                  "muu"
+                ]
+              },
+              "independence": {
+                "enum": [
+                  "riippumaton",
+                  "sama_alkupera",
+                  "ei_sovellu",
+                  "tuntematon"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      },
       "additionalProperties": false
     }
   }
