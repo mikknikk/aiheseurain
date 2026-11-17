@@ -10,10 +10,10 @@ Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation luku
 
 - `index.html` – Aiheseuraimen etusivu; `valvomo/index.html` – Valvomon sivu osoitteessa `/valvomo/`; `lukija/index.html` – RSS-lukijan sivu osoitteessa `/lukija/`; `kehitysjono/index.html` – GitHub Issues -kanban osoitteessa `/kehitysjono/`; `_layouts/`, `_includes/` ja `assets/` – yhteinen sivustorunko ja käyttöliittymän resurssit.
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
-- `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. Ihmiselle tarkoitettu vaiheittainen lukupolku on tiedostossa [docs/aloitus-ja-lukujarjestys.md](docs/aloitus-ja-lukujarjestys.md); JSON-tiedostojen suhteet ja prosessikaaviot ovat tiedostossa `docs/tietomallit-ja-prosessit.md`.
+- `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. RSS-julkaisujen tarkistusportti on kuvattu tiedostossa [docs/julkaisuportti.md](docs/julkaisuportti.md). Ihmiselle tarkoitettu vaiheittainen lukupolku on tiedostossa [docs/aloitus-ja-lukujarjestys.md](docs/aloitus-ja-lukujarjestys.md); JSON-tiedostojen suhteet ja prosessikaaviot ovat tiedostossa `docs/tietomallit-ja-prosessit.md`.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
 - `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
-- `schemas/` – koneellisten lähdetietojen ja näytöshistorian skeemat.
+- `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin ja näytöshistorian skeemat.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
 
@@ -97,7 +97,8 @@ Ajantasainen lista toteutetuista parannuksista ja avoimista kehityskohteista on 
 Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat siihen sen sijaan, että kopioisivat saman säännön kokonaisuudessaan.
 
 - `README.md`: repositorion yleiskuva, hakemistorakenne, RSS-syötteiden luettelo, automaatioiden työnjako ja dokumentaation lukujärjestys.
-- `docs/paaautomaation-ohje.md`: pääautomaation täydellinen tehtävä- ja toimintakuvaus sekä sen versionhallinnan säännöt.
+- `docs/paaautomaation-ohje.md`: pääautomaation täydellinen tehtävä- ja toimintakuvaus, raporttikohtainen julkaisulaadun portti sekä sen versionhallinnan säännöt.
+- `docs/julkaisuportti.md`: jokaisen RSS-raportin toimituksellinen tarkistuslista, automaattisten testien rajat ja julkaisupäätöksen menettely.
 - `docs/automaation-hallintaperiaatteet.md`: kaikkia nykyisiä ja tulevia automaatioita koskeva ajastusten, asetusten ja kohdekeskustelujen käyttäjän valtuutukseen perustuva suojaus.
 - `prompts/README.md` ja `prompts/*.txt`: automaatioiden asetuksiin kopioitavat käynnistyskehotteet ja niiden ylläpitomenettely. Tekstit säilytetään sellaisinaan.
 - `docs/intialaisten-elokuvien-naytosseuranta.md`: näytösvahdin täydellinen, versioitu tehtävä- ja toimintakuvaus.
@@ -122,7 +123,8 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila sekä pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversiot ja viimeksi onnistuneesti käytetyt versiot.
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
 - `schemas/naytosten-muutoshistoria.schema.json`: näytöshistorian JSON Schema Draft 2020-12 -skeema.
-- `scripts/validate_feeds.py` ja `.github/workflows/validate-feeds.yml`: automaattiset rakennetarkistukset ja niiden suoritus.
+- `scripts/validate_feeds.py`, `scripts/validate_publication_gate.py` ja `.github/workflows/validate-feeds.yml`: RSS:n rakennetarkistukset, raporttikohtainen julkaisulaadun portti ja niiden PR-validointi.
+- `reports/julkaisuportit/{run_id}.json` ja `schemas/julkaisuportti.schema.json`: jokaisen RSS-syötemuutoksen ajokohtainen hyväksyntäraportti ja sen rakenne.
 - `scripts/check_links.py` ja `.github/workflows/check-links.yml`: erillinen viikoittainen lähde- ja RSS-linkkien verkkotarkistus; raportti tallennetaan GitHub Actions -artefaktiksi.
 - `feeds/*.xml`: julkaistut RSS-artikkelit; jokainen syöte sisältää vain sille kuuluvan aiheen.
 
@@ -151,6 +153,10 @@ Näytösajat eivät kuulu uutisraportin RSS-itemeihin. Näytösvahti julkaisee v
 ## Saavutettavuus
 
 Tämän repositorion saavutettavuuden tavoitetaso on WCAG 2.2 AAA kaikilta soveltuvilta osin, kuten aiemmassa elokuvaraportti-repositoriossa. Tavoitetason saavuttamista ei väitetä ilman asianmukaista testausta. Yksityiskohtaiset vaatimukset ovat tiedostossa [docs/saavutettavuus.md](docs/saavutettavuus.md). [17.11.2026 tehdyn saavutettavuuskatselmoinnin raportti](docs/saavutettavuuskatselmointi-2026-11-17.md) erottaa lähdekoodista tarkistetut asiat vielä tekemättömistä manuaalisista testeistä.
+
+## Raporttikohtainen julkaisulaadun portti
+
+Jokainen RSS-syötemuutos edellyttää saman PR:n mukana toimitettavaa `reports/julkaisuportit/{run_id}.json`-tarkistusraporttia. PR:n CI tarkistaa raportin rakenteen ja hyväksynnän, suorittaa RSS:n rakennetestit ja varmistaa aiempien GUIDien säilymisen. Toimitukselliset arviot tehdään lähteitä lukemalla; rakennetestit eivät todista uutisväitteiden totuutta tai lähteiden riippumattomuutta. Tarkka menettely on dokumentissa [julkaisulaadun portti](docs/julkaisuportti.md).
 
 ## RSS-itemien sisältö ja lähteet
 
