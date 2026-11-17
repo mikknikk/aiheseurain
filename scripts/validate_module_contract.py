@@ -67,7 +67,17 @@ def validate_examples() -> None:
 
     # Prosessilaajennuksen oma skeema validoidaan erikseen. Yhteinen moduulisopimus
     # ei yritä tuntea jokaisen tulevan prosessityypin kaikkia omia kenttiä.
-    extension_configuration = examples[1]["process_extension"]["configuration"]
+    process_metadata = examples[1]["process_extension"]
+    # Esimerkin laajennustunnisteen, version ja skeemaosoitteen pitää viitata
+    # täsmälleen siihen skeemaan, jota tämä tarkistin käyttää.
+    if process_metadata["extension_id"] != "event-watch.film-screenings":
+        raise AssertionError("Prosessiesimerkin laajennustunniste ei vastaa testattua laajennusta.")
+    if process_metadata["extension_version"] != "1.0.0":
+        raise AssertionError("Prosessiesimerkin laajennusversio ei vastaa testattua skeemaversiota.")
+    if process_metadata["schema_uri"] != extension_schema.get("$id"):
+        raise AssertionError("Prosessiesimerkin schema_uri ei vastaa laajennusskeeman $id-arvoa.")
+
+    extension_configuration = process_metadata["configuration"]
     extension_validator.validate(extension_configuration)
 
     topic_example, process_example = examples
