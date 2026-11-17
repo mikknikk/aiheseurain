@@ -2,8 +2,8 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.3.0  
-**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102)
+**Versio:** 1.4.0  
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -649,6 +649,12 @@ Moduulien yhteinen koneellisesti validoitava tietosopimus on määritelty dokume
 
 Tämä on tietosopimuksen ja esimerkkivalidoinnin toteutus. Se ei vielä toteuta moduulirekisteriä, laajennusten dynaamista latausta, nykyisten aiheiden migraatiota tai suoritusorkestrointia. Prosessilaajennuksen esimerkki osoittaa tyypitetyn laajennusmallin, ei vielä yleistä tapahtumavahtimoottoria.
 
+### 8.13 Toteutettu seurantamoduulirekisteri ja lataaja
+
+Moduulien tekninen rekisteri on toteutettu tiedostossa `data/module-registry.json`, ja sen rakenne validoidaan skeemalla `schemas/seurantamoduulirekisteri.schema.json`. Lataaja `scripts/module_registry.py` lukee rekisterin deterministisesti, tarkistaa moduulimääritykset #102:n sopimuksella ja prosessilaajennukset niiden paikallisilla, versioiduilla skeemoilla. Moduulikohtaiset virheet eristetään; rekisterin ylätason virhe pysäyttää latauksen turvallisesti. Passiivisia moduuleja ei tuoda aktiivisten määritysten joukkoon.
+
+Tuotantorekisteri on tarkoituksella tyhjä. Tolkien- ja näytösvahtiesimerkit ovat vain testirekisterin kautta käytettyä testiaineistoa, eivät aktiivisia tuotantomoduuleja. Tämä vaihe ei muuta nykyisiä automaatioita eikä käynnistä moduuleja. Nykyisten aiheiden inventaario, siirtosuunnitelma ja tuotantomääritysten migraatio kuuluvat tiketteihin #104 ja #105; suoritusorkestrointi kuuluu myöhempään vaiheeseen.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -675,7 +681,7 @@ Nämä ovat suunnittelupäätelmiä ja tulevan kehityksen suosituksia, eivät v�
 - ChatGPT:n kolmen ajoitetun tehtävän tallennetut tarkat aikataulut, aikavyöhykkeet, aktiivisuus ja kohdekeskustelut tulee tarkistaa ChatGPT:n tehtäväasetuksista. Niitä ei voi vahvistaa GitHubin tiedostoista.
 - GitHub-integraation käyttäjäkohtainen repositorioiden valinta ja todelliset tehokkaat käyttöoikeudet tulee tarkistaa GitHub-sovelluksen ja ChatGPT-yhteyden asetuksista.
 - Vaihtoehtoisen tekoälypalvelun tai ajastimen valintaa ei ole tehty.
-- Moduulirekisteriä, laajennusten dynaamista latausta, migraatiotyökaluja tai toista suoritusympäristöä ei ole tämän dokumentin yhteydessä toteutettu. Yhteinen moduulisopimus, sen tyypitetty prosessilaajennus sekä esimerkkien rakenteellinen validointi on toteutettu erikseen.
+- Moduulirekisteri ja paikallinen määritysten lataaja on toteutettu; tuotantorekisteri on tarkoituksella tyhjä. Laajennusten dynaamista suorituslatausta, nykyisten aiheiden migraatiota, migraatiotyökaluja tai suoritusorkestrointia ei ole vielä toteutettu.
 - Nykyisten aihekohtaisten ohjeiden täydellinen muuttaminen koneellisesti luettaviksi määrityksiksi vaatisi erillisen kartoituksen. Kaikki poikkeukset eivät välttämättä sovellu rakenteiseen yhteiseen malliin.
 
 ## 10. Automaatioiden hallinnan rajat
@@ -699,6 +705,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.4.0 – 2026-11-17:** dokumentoitiin toteutettu moduulirekisteri ja paikallinen määritysten lataaja, moduulikohtainen virheiden eristys, passiivisten moduulien käsittely sekä tuotantorekisterin tarkoituksellinen tyhjyys.
 - **1.3.0 – 2026-11-17:** lisättiin toteutettuun seurantamoduulin tietosopimukseen viittaava arkkitehtuurikuvaus; erotettiin yhteinen moduulisopimus, aihemoduulin määritys ja erikseen validoitavat prosessilaajennukset. Moduulirekisteri ja migraatio säilyvät myöhempinä vaiheina.
 - **1.2.0 – 2026-11-17:** täsmennettiin tavoitearkkitehtuurin itsenäiset aihe- ja prosessimoduulit, niiden omistamat tiedot, pysyvät tunnisteet, versiointi, yhteiset rajapinnat, moduulikohtainen suorittimien reititys ja riippumattomuuden hyväksymisperiaatteet.
 - **1.1.1 – 2026-11-17:** korjattiin luvun 9 alaotsikoiden numerointi.
