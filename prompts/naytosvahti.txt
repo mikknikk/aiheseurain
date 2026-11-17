@@ -10,7 +10,7 @@ Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa
 
 AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
 
-Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioden asetuksia.
+Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioiden asetuksia.
 
 AJON ESITARKISTUS
 Lue GitHubista main-haarasta seuraavat tiedostot tässä järjestyksessä:
