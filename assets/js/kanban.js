@@ -16,7 +16,7 @@ export const STATUS_COLUMNS = [
 
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
 const CACHE_KEY = "aiheseurain.kanban.cache.v1";
-const STALE_AFTER_MS = 60 * 60 * 1000;
+const STALE_AFTER_MS = 30 * 60 * 60 * 1000;
 
 function labelNames(issue) {
   return (Array.isArray(issue?.labels) ? issue.labels : [])
