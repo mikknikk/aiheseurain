@@ -1,0 +1,185 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "euroviisut",
+  "module_type": "topic",
+  "definition_version": "1.0.0",
+  "name": "Euroviisut ja kansalliset karsinnat",
+  "description": "Eurovision Song Contestin, kansallisten valintojen ja alueellisten Eurovision-kilpailujen maailmanlaajuinen seuranta.",
+  "capabilities": [
+    {
+      "id": "research.search",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "report.finnish",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
+  ],
+  "interfaces": {
+    "input": {
+      "id": "research.request",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "report.article",
+      "version": "1.0.0"
+    }
+  },
+  "source_refs": [
+    {
+      "source_id": "ebu",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "ebu-news",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "eurovision-asia",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "yle-euroviisut",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "svt-melodifestivalen",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "bbc-eurovision",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "escxtra",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "lippu-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "ticketmaster-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "tiketti-fi-events",
+      "role": "discovery",
+      "required": false
+    }
+  ],
+  "search_profiles": [
+    {
+      "id": "euroviisut-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Eurovision Song Contest EBU",
+        "national selection national final Eurovision",
+        "Eurovision Song Contest Asia",
+        "UMK Yle Eurovision Finland",
+        "Eurovision regional contest rules delegation results"
+      ],
+      "languages": [
+        "bn",
+        "en",
+        "fi",
+        "ko",
+        "ms",
+        "ne",
+        "sv",
+        "th",
+        "tl",
+        "vi"
+      ],
+      "regions": [
+        "ASIA",
+        "EUROPE",
+        "FI",
+        "GLOBAL"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    },
+    {
+      "id": "euroviisut-finland",
+      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
+      "query_terms": [
+        "Suomi Finland Euroviisut ja kansalliset karsinnat",
+        "Euroviisut ja kansalliset karsinnat tapahtuma Suomi Finland"
+      ],
+      "languages": [
+        "en",
+        "fi",
+        "sv"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "global-coverage",
+      "category": "inclusion",
+      "instruction": "Seuraa kaikkia osallistujamaita ja kielialueita, ei vain Eurooppaa tai suurimpia maita.",
+      "severity": "required"
+    },
+    {
+      "id": "national-selections",
+      "category": "inclusion",
+      "instruction": "Sisällytä kansalliset valinnat, esikarsinnat, artisti- ja kappalejulkistukset sekä valintaprosessit.",
+      "severity": "required"
+    },
+    {
+      "id": "official-vs-fan",
+      "category": "verification",
+      "instruction": "Erota EBU:n ja yleisradioyhtiöiden viralliset tiedot, toimitukselliset raportit ja fanihuhut.",
+      "severity": "required"
+    }
+  ],
+  "topic": {
+    "scope": "Eurovision Song Contest, kaikkien osallistujamaiden kansalliset valinnat ja karsinnat, esikarsinnat, artisti- ja kappalejulkistukset, säännöt, järjestelyt, lähetykset, tulokset, delegaatiot sekä oheis- ja aluekilpailut. Seuranta ei rajaudu Euroopan maantieteeseen.",
+    "include": [
+      "Eurovision Song Contest ja sen järjestelyt, säännöt ja tulokset",
+      "Kaikkien osallistujamaiden kansalliset valinnat ja karsinnat",
+      "Eurovision Song Contest Asia ja sen mahdolliset kansalliset valinnat",
+      "Muut Eurovision-brändiin tai yhteisöön liittyvät alueelliset kilpailut",
+      "Suomen UMK, suomalaiset artistit ja Suomessa järjestettävät tapahtumat"
+    ],
+    "exclude": [
+      "Tavalliset musiikkialan uutiset ilman Eurovision-yhteyttä",
+      "Fanihuhut esitettyinä virallisina osallistuja- tai kilpailutietoina"
+    ],
+    "entities": [
+      {
+        "entity_id": "eurovision-song-contest",
+        "entity_type": "event-series",
+        "label": "Eurovision Song Contest",
+        "aliases": [
+          "Eurovision",
+          "Euroviisut",
+          "ESC"
+        ]
+      },
+      {
+        "entity_id": "eurovision-song-contest-asia",
+        "entity_type": "event-series",
+        "label": "Eurovision Song Contest Asia",
+        "aliases": [
+          "ESC Asia"
+        ]
+      }
+    ]
+  }
+}
