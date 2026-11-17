@@ -143,7 +143,7 @@ class ReliabilityClassificationTests(unittest.TestCase):
         }
         with self.assertRaises(jsonschema.ValidationError):
             jsonschema.validate(report, self.gate_schema)
-        source_id, source = next(iter(self.sources_by_id.items()))
+        source_id, source = next((key, value) for key, value in self.sources_by_id.items() if value["reliability_class"] == "A")
         report["claim_assessments"] = [{
             "claim_id": "claim-test",
             "claim": "Testiväite.",
