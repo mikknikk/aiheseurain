@@ -12,7 +12,7 @@ Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation luku
 - `feeds/` – kaikki kymmenen RSS-syötettä (yhdeksän aihekierrossa ja yksi erilliselle näytövahdille).
 - `docs/` – suomenkieliset seuranta-, lähde-, tekniset tietomalli-, prosessi-, ohje- ja saavutettavuusdokumentit. RSS-julkaisujen tarkistusportti on kuvattu tiedostossa [docs/julkaisuportti.md](docs/julkaisuportti.md). Ihmiselle tarkoitettu vaiheittainen lukupolku on tiedostossa [docs/aloitus-ja-lukujarjestys.md](docs/aloitus-ja-lukujarjestys.md); JSON-tiedostojen suhteet ja prosessikaaviot ovat tiedostossa `docs/tietomallit-ja-prosessit.md`.
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
-- `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
+- `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot ja A–D-luokka kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki.
 - `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin ja näytöshistorian skeemat.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `README.md` – repositorion aloitussivu ja kokonaiskuva.
@@ -106,6 +106,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/tehtavajono.md`: yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja vuoron siirtämisen ehdot. Ei yleisiä raportointi- tai koodauskäytäntöjä.
 - `docs/seuranta.md`: tehtäväkohtaiset seurantajaksot, onnistuneiden tarkistusten tila, uutistapahtumien historia ja luotettavuusluokat.
 - `docs/lahteet.md`: yleiset lähdeperiaatteet ja kaikkien yhdeksän aihekierroksen lähteiden lähtöpisteet. Luettelo ei ole suljettu.
+- `docs/luotettavuusluokitus.md`: lähteiden yleiset A–D-luokat, väitekohtaiset varmennustasot ja lähderiippuvuuksien arviointi.
 - `docs/saavutettavuus.md`: kaikkien julkaisujen ja Markdown-dokumentaation saavutettavuustavoitteet ja testausperiaatteet.
 - `docs/kehityskaytannot.md`: dokumentaation luokat ja kirjoitustavat, käynnistyskehotteiden ylläpito, skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
