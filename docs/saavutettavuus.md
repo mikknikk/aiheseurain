@@ -37,6 +37,22 @@ Automaation käynnistyskehotteet tallennetaan `prompts/`-hakemistoon `.txt`-tied
 - Lisää jokaisen itemin loppuun otsikoitu lähdeluettelo ja kuvaavat lähdelinkit. Näytösrivin linkit eivät korvaa lähdeluetteloa.
 - Näytösraportissa elokuvan nimi on otsikko ja paikkakunnat sen alaotsikoita. Käytä listoja semanttisesti.
 
+## Testauksen rajat ja tikettien hyväksyntä
+
+Tikettien hyväksyntää ei saa estää yksinomaan sellainen manuaalinen saavutettavuustesti, jota toteuttaja ei käytettävissä olevilla välineillä pysty itse suorittamaan. Tällaisia testejä voivat olla esimerkiksi todellisen käyttöliittymän näppäimistötestaus, ruudunlukijatestaus ja avustavalla teknologialla tehtävä arviointi.
+
+Toimi tällöin näin:
+
+1. Tee kaikki käytettävissä olevilla välineillä tehtävät tarkistukset, kuten automaattiset testit, lähdekoodin ja semanttisen rakenteen katselmointi sekä mahdolliset selaimessa tehtävät tarkistukset.
+2. Merkitse suorittamatta jäänyt testi nimenomaisesti tilaan **ei testattu**. Älä merkitse sitä läpäistyksi tai hyväksytyksi äläkä päättele lähdekoodista, että todellinen käyttökokemus olisi varmasti kunnossa.
+3. Kirjaa testauksen rajoite, testattu ympäristö ja jäljelle jäävä epävarmuus. Luo erillinen GitHub-backlog-tiketti tai lisää asia olemassa olevaan sopivaan tikettiin. Kuvaa siinä testattava näkymä ja toiminto, tarvittava testausympäristö sekä odotettu tulos.
+4. Tiketin muu hyväksyntä ja sulkeminen voi jatkua, jos sen toteutuksen muut hyväksymiskriteerit täyttyvät, automaattiset ja toteuttajan käytettävissä olevat tarkistukset läpäisevät eikä tiedossa ole korjaamatonta vakavaa saavutettavuusongelmaa. Keskeneräinen manuaalinen testi jää erilliseksi avoimeksi työksi backlogiin.
+5. Palaa backlog-tikettiin, kun sopiva testausympäristö ja testaaja ovat käytettävissä. Kirjaa silloin todelliset tulokset ja korjaa löydetyt puutteet.
+
+Tämä poikkeus koskee vain testin suorittamisen estettä, ei saavutettavuusvaatimusta itsessään. Tunnettua virhettä, epäonnistunutta testiä tai toteuttajan käytettävissä olevaa tarkistusta ei saa siirtää backlogiin vain hyväksynnän nopeuttamiseksi. Jos toteutuksessa havaitaan vakava käyttöeste tai keskeinen toiminto ei ole saavutettavissa, asia on korjattava ennen hyväksyntää tai hyväksyntä on erikseen perusteltava ja riski tuotava selvästi esiin.
+
+Backlogiin siirrettyä testausta ei lasketa tehdyksi testaukseksi. WCAG 2.2 AAA -vaatimustenmukaisuutta ei saa väittää saavutetuksi ennen kaikkien soveltuvien kriteerien asianmukaista arviointia.
+
 ## Testaus ennen julkaisua
 - Tarkista XML:n jäsennettävyys, CDATA ja sisäinen HTML erikseen sekä linkkien toimivuus mahdollisuuksien mukaan.
 - Testaa kontrastit AAA-tavoitteilla vaaleassa ja tummassa tilassa ja pakotetuissa väreissä.
