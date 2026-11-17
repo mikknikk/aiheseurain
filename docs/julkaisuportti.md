@@ -8,7 +8,7 @@ Tallenna jokaisen raportin tarkistus JSON-tiedostona polkuun:
 
 `reports/julkaisuportit/{run_id}.json`
 
-Yksi tiedosto koskee yhtä RSS-syötettä. Jos sama PR muuttaa useita syötteitä, jokaiselle syötteelle tarvitaan oma tarkistusraportti. Käytä yksilöllistä ajotunnistetta ja kirjaa tarkistuksen aikaleima aikavyöhykkeineen.
+Yksi tiedosto koskee yhtä RSS-syötettä. Jos sama PR muuttaa useita syötteitä, jokaiselle syötteelle tarvitaan oma tarkistusraportti. Käytä yksilöllistä ajotunnistetta ja kirjaa tarkistuksen aikaleima aikavyöhykkeineen. `task_id` tarkoittaa `data/feed-catalog.json`-tiedoston syöte-ID:tä, ei lähderekisterin tehtävätunnistetta. Näytösfeedin ID on `intialaisten-elokuvien-naytokset`.
 
 ## Tarkistuskohdat
 
