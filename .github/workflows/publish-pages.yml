@@ -22,7 +22,7 @@ permissions:
 # Kaikki lähteet julkaistaan saman Pages-julkaisujonon kautta.
 # Kesken olevan vanhemman ajon annetaan valmistua ennen uusinta tilannekuvaa.
 concurrency:
-  group: github-pages
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'github-pages-production' }}
   cancel-in-progress: false
 
 jobs:
