@@ -460,7 +460,7 @@ sequenceDiagram
         P-->>R: Julkaisutunniste ja takaisinluku
         R->>S: Kirjaa onnistuminen ja tarkistuspiste
     else Hylätty tai julkaisu epäonnistuu
-        R->>S: Kirjaa virhe; säilytä vanha tarkistuspiste
+        R->>S: Kirjaa virhe, säilytä vanha tarkistuspiste
     end
     R->>O: Ajon lopputulos ja mittarit
     R->>Q: Vapauta tehtävä / määritä seuraava tila
