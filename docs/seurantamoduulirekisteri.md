@@ -91,11 +91,11 @@ Rekisterissä on #105:n migraation jälkeen kymmenen nykyistä moduulia, mutta k
 
 ## 7. Seuraavat vaiheet
 
-- #104 inventoi nykyiset aiheet ja prosessit sekä suunnittelee hallitun siirtymän.
-- #105 tuottaa nykyisistä aiheista ja näytösvahdista varsinaiset moduulimäärittelyt ja rekisterimerkinnät.
+- #104 inventoi nykyiset aiheet ja prosessit sekä suunnittelee hallitun siirtymän. Valmis.
+- #105 tuotti nykyisistä aiheista ja näytösvahdista varsinaiset moduulimäärittelyt, lähdeviitteet ja passiiviset rekisterimerkinnät. Aktiivinen käyttöönotto tehdään myöhemmin.
 - #106 eriyttää moduulikohtaisen tilan ja tapahtumahistorian.
 - #107 määrittelee tekoäly- ja tutkimuspalvelujen adapterisopimukset.
 - #108 yhdistää moduulien suorittamisen yhteiseen orkestrointiin.
-- #109 yleistää nykyisen näytösvahtikyvykkyyden uudelleenkäytettäväksi tapahtumavahdiksi; sen yhteensovitus näytösvahtimoduulin kanssa tehdään omassa toteutusvaiheessaan.
+- #109 yleisti nykyisen näytösvahtikyvykkyyden uudelleenkäytettäväksi tapahtumavahdiksi. Valmis; tuotantokäyttöönotto on erillinen päätös.
 
 Tämä rekisteri ei muuta nykyisten automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita, kohdekeskusteluja tai aktiivisuutta eikä ota uusia moduuleja tuotantokäyttöön.
