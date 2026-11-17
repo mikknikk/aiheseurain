@@ -25,6 +25,7 @@ def _source(source_id: str, title: str, url: str, language: str, region: str) ->
 class FixtureAIProcessor:
     """Ensimmäinen deterministinen tekoälyadapteri."""
     provider_id = "fixture-ai"
+    adapter_id = "fixture-ai-v1"
     capabilities = frozenset({"ai.generate", "source.traceability", "uncertainty"})
 
     def __init__(self, *, fail_first: bool = False, estimated_cost: float = 0.01):
@@ -54,6 +55,7 @@ class FixtureAIProcessor:
 class AlternateAIProcessor:
     """Toinen, eri toteutuksella toimiva tekoälyadapteri."""
     provider_id = "alternate-ai"
+    adapter_id = "alternate-ai-v1"
     capabilities = frozenset({"ai.generate", "source.traceability", "uncertainty"})
 
     def __init__(self, *, estimated_cost: float = 0.02):
@@ -77,6 +79,7 @@ class AlternateAIProcessor:
 class FixtureResearchProvider:
     """Ensimmäinen testihakupalvelu; voi simuloida yhden rate limit -virheen."""
     provider_id = "fixture-research"
+    adapter_id = "fixture-research-v1"
     capabilities = frozenset({"research.search", "research.open_source", "source.provenance"})
 
     def __init__(self, *, rate_limit_first: bool = False, estimated_cost: float = 0.01):
@@ -117,6 +120,7 @@ class FixtureResearchProvider:
 class AlternateResearchProvider:
     """Toinen testihakupalvelu, joka palauttaa eri lähdejoukon."""
     provider_id = "alternate-research"
+    adapter_id = "alternate-research-v1"
     capabilities = frozenset({"research.search", "research.open_source", "source.provenance"})
 
     def __init__(self, *, estimated_cost: float = 0.015):
