@@ -41,6 +41,7 @@ Automaation asetuksiin kopioitavat käynnistyskehotteet ovat erillisiä tekstipo
 - Kun käynnistyskehotetta muutetaan, päivitä ensin repositorion kanoninen teksti ja kopioi sama sisältö automaation asetuksiin. Tarkista lopuksi, että asetuksiin tallennettu teksti vastaa tiedostoa.
 - Jokaisella automaatiolla on yksilöllinen käynnistyskehotteen tunniste, joka vastaa `data/seurantatila.json`-tiedoston saman automaation `startup_prompt_id`-kenttää. Kun promptin sisältö muuttuu, anna uusi tunniste ja päivitä JSON samassa muutossarjassa.
 - Käynnistyskehote käynnistää tehtävän ja ohjaa ensisijaiseen käsikirjaan. Varsinaiset tehtävärajaukset ja toimintatavat kuuluvat käsikirjaan.
+- Kaikkien automaatioiden ajastusten, asetusten ja kohdekeskustelujen muuttamista koskee yhteinen [automaatioiden hallintaperiaate](automaation-hallintaperiaatteet.md). Lisää viittaus sekä nimenomainen kielto jokaiseen käynnistyskehotteeseen. Käynnistyskehotteen muuttaminen GitHubissa ei päivitä ChatGPT:n tehtäväasetuksia automaattisesti; asetusten päivitys ja tekstin täsmäytys ovat erillinen vaihe.
 
 Vanhoja dokumentteja ei muotoilla automaattisesti tämän käytäntömuutoksen yhteydessä. Niitä uudistetaan asteittain, jotta ohjeiden merkitys tai koneellisesti tulkittavat osat eivät muutu vahingossa.
 
