@@ -93,7 +93,7 @@ Rekisterissä on #105:n migraation jälkeen kymmenen nykyistä moduulia, mutta k
 
 - #104 inventoi nykyiset aiheet ja prosessit sekä suunnittelee hallitun siirtymän. Valmis.
 - #105 tuotti nykyisistä aiheista ja näytösvahdista varsinaiset moduulimäärittelyt, lähdeviitteet ja passiiviset rekisterimerkinnät. Aktiivinen käyttöönotto tehdään myöhemmin.
-- #106 eriyttää moduulikohtaisen tilan ja tapahtumahistorian.
+- #106 eriyttää moduulikohtaisen tilan ja tapahtumahistorian. Sen toteutus ja migraatiovalidointi ovat työn alla.
 - #107 määrittelee tekoäly- ja tutkimuspalvelujen adapterisopimukset.
 - #108 yhdistää moduulien suorittamisen yhteiseen orkestrointiin.
 - #109 yleisti nykyisen näytösvahtikyvykkyyden uudelleenkäytettäväksi tapahtumavahdiksi. Valmis; tuotantokäyttöönotto on erillinen päätös.
