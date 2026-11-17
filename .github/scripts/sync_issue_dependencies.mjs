@@ -98,6 +98,22 @@ export async function hasDependencyCycle(blockerNumber, targetNumber, fetchBlock
  * Tarkistaa tiketit ja toteuttaa pyydetyt lisäykset/poistot idempotentisti.
  * Riippuvuuden suunta on aina: targetIssue blocked_by blockerIssue.
  */
+export async function dispatchPublication({ owner, repo, token, fetchImpl = fetch }) {
+  const response = await fetchImpl(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/publish-pages.yml/dispatches`, {
+    method: "POST",
+    headers: {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${token}`,
+      "X-GitHub-Api-Version": API_VERSION,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ ref: "main" })
+  });
+  if (!response.ok) {
+    throw new Error(`Kehitysjonon julkaisun käynnistäminen epäonnistui (HTTP ${response.status}).`);
+  }
+}
+
 export async function applyDependencyRequest({
   targetIssue, additions, removals, fetchIssue, fetchBlockedBy,
   addDependency, removeDependency
@@ -240,6 +256,10 @@ async function main() {
       addDependency,
       removeDependency
     });
+
+    // GITHUB_TOKEN ei käynnistä tavallisia uusia workflow-ajoja; workflow_dispatch on poikkeus.
+    // Käynnistä julkaisu ennen pyyntömerkin poistamista, jotta dispatch-virheen voi yrittää uudelleen.
+    await dispatchPublication({ owner, repo, token });
 
     // Hae kuvaus uudelleen ennen markerin poistoa, jotta väliin tullut käyttäjän
     // muokkaus ei yliaja tuoreempaa sisältöä. Poista vain täsmälleen käsitelty pyyntö.
