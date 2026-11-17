@@ -1,0 +1,41 @@
+{
+  "event_type_id": "film-screening",
+  "version": "1.0.0",
+  "description": "Näytösvahdin tapahtumatyyppi; passiivinen esimerkki.",
+  "identity_fields": [
+    "title",
+    "venue",
+    "starts_at"
+  ],
+  "required_attributes": [
+    "title",
+    "venue",
+    "city",
+    "starts_at",
+    "status"
+  ],
+  "tracked_attributes": {
+    "starts_at": "time_changed",
+    "venue": "place_changed",
+    "city": "place_changed",
+    "language": "details_changed",
+    "subtitles": "details_changed",
+    "booking_url": "details_changed"
+  },
+  "status_field": "status",
+  "statuses": [
+    "scheduled",
+    "cancelled",
+    "removed",
+    "completed"
+  ],
+  "cancelled_statuses": [
+    "cancelled"
+  ],
+  "removed_statuses": [
+    "removed"
+  ],
+  "completed_statuses": [
+    "completed"
+  ]
+}
