@@ -6,6 +6,7 @@ auditointilokiin.
 """
 from __future__ import annotations
 from dataclasses import dataclass, field
+import math
 from typing import Any, Callable, Protocol
 
 
@@ -135,6 +136,8 @@ class RetryPolicy:
             raise ValueError("max_attempts pitää olla välillä 1–5.")
         if self.base_delay_seconds < 0 or self.max_delay_seconds < 0:
             raise ValueError("Uusintaviive ei voi olla negatiivinen.")
+        if self.base_delay_seconds > self.max_delay_seconds:
+            raise ValueError("Perusviive ei voi ylittää enimmäisviivettä.")
 
 
 @dataclass
@@ -143,14 +146,20 @@ class CostBudget:
     max_cost: float | None
     spent: float = 0.0
 
+    def __post_init__(self):
+        if self.max_cost is not None and (not math.isfinite(self.max_cost) or self.max_cost < 0):
+            raise ValueError("Kustannusrajan pitää olla äärellinen ja vähintään nolla.")
+        if not math.isfinite(self.spent) or self.spent < 0:
+            raise ValueError("Käytetyn kustannuksen pitää olla äärellinen ja vähintään nolla.")
+
     def ensure(self, estimate: float) -> None:
-        if estimate < 0:
+        if not math.isfinite(estimate) or estimate < 0:
             raise ProviderContractError("Kustannusarvio ei voi olla negatiivinen.")
         if self.max_cost is not None and self.spent + estimate > self.max_cost:
             raise ProviderCostLimitError("Ajon kustannusraja ylittyisi.")
 
     def charge(self, actual: float) -> None:
-        if actual < 0:
+        if not math.isfinite(actual) or actual < 0:
             raise ProviderContractError("Toteutunut kustannus ei voi olla negatiivinen.")
         if self.max_cost is not None and self.spent + actual > self.max_cost:
             raise ProviderCostLimitError("Palvelun ilmoittama kustannus ylitti ajon kustannusrajan.")
