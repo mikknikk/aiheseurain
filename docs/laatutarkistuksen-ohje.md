@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.5
+Ohjeversion tunniste: 1.0.6
 
 ## 1. Tehtävä ja rajaus
 
@@ -8,7 +8,7 @@ Tämä on automaation **Viikoittainen järjestelmän laatutarkistus** täydellin
 
 Tarkista `mikknikk/aiheseurain` kerran viikossa ajon aikana luetun main-haaran ja GitHub Actions -ajojen perusteella. Älä nojaa vanhoihin keskusteluihin tai oletuksiin.
 
-Tämä on auditointi, ei korjaava ylläpito. Älä muuta RSS-syötteitä, skriptejä, työnkulkuja, automaatioita tai asetuksia äläkä tee korjaavia issueita tai pull requesteja. Älä korjaa löydöksiä itse. Sallitut repository-kirjoitukset ovat vain (1) tämän käsikirjan version ja onnistuneen tarkistuksen aikaleiman kirjaaminen `data/seurantatila.json`-tiedoston `quality_check_instructions`-osioon kohdan 8 mukaisesti sekä (2) auditointiraportin lisääminen `reports/laatutarkistukset/`-hakemistoon kohdan 5 mukaisesti. Älä muuta saman JSONin muita kenttiä.
+Tämä on auditointi, ei korjaava ylläpito. Älä muuta RSS-syötteitä, skriptejä, työnkulkuja, automaatioita tai asetuksia äläkä tee korjaavia issueita tai pull requesteja. Älä korjaa löydöksiä itse. Sallitut main-haaran repository-kirjoitukset ovat vain (1) tämän käsikirjan version ja onnistuneen tarkistuksen aikaleiman kirjaaminen `data/seurantatila.json`-tiedoston `quality_check_instructions`-osioon kohdan 8 mukaisesti sekä (2) auditointiraportin lisääminen `reports/laatutarkistukset/`-hakemistoon kohdan 5 mukaisesti. Älä muuta saman JSONin muita kenttiä.
 
 ## 1.1. Ajastusten ja asetusten hallinnan suojaus
 
@@ -126,3 +126,13 @@ Käsikirjan muutoksen yhteydessä kasvata versionumeroa semanttisesti ja päivit
 ## 9. Ylläpidon periaate
 
 Tämä käsikirja on laatutarkistuksen ainoa ensisijainen tehtävä- ja toimintakuvaus. Automaation asetuksissa on vain lyhyt käynnistyskehote. README ja validator tarkistavat käsikirjan olemassaolon, version ja JSONin versionvastaavuuden.
+
+## 10. ChatGPT-ajon vaihekohtainen ajohistoria
+
+Noudata yhteistä [ajohistorian tietomallia](ajohistoria.md). Laatutarkistuksen historiatiedosto on haarassa `run-history/quality-check`, polussa `history.json`, ja tunniste on `quality_check`.
+
+Kirjaa ajo heti käynnistyessä tilaan `running` yksilöllisellä ajotunnisteella. Päivitä samaa ajoa vähintään vaiheissa `preflight`, `repository_audit`, `tests_workflows`, `accessibility`, `backlog_audit`, `report`, `state_update`, `pull_request`, `ci`, `merge` ja `verification`; merkitse soveltumattomat vaiheet `skipped` vain perustellusti. Kirjaa aikaleimat, tulokset, lyhyet virheet ja varoitukset.
+
+Ajohistorian kirjoitus tehdään vain omaan `run-history/quality-check`-haaraan GitHubin Contents APIlla tai vastaavalla käytettävissä olevalla GitHub-kirjoitustoiminnolla. Älä koskaan kirjoita ajohistoriaa `main`-haaraan äläkä tee siitä erillistä PR:ää. Jokaisen kirjoituksen jälkeen lue `history.json` samasta haarasta takaisin ja varmista ajotunniste sekä JSON-rakenne. Säilytä viimeiset 30 ajoa. Älä kirjaa salaisuuksia tai raakaa lokisisältöä.
+
+Tämä erillinen histori haara on ainoa lisäys laatutarkistuksen muuten vain luku -muotoiseen auditointiin. `main`-haaran sallittuja kirjoituksia koskevat rajoitukset pysyvät ennallaan: vain auditointiraportti ja onnistuneen auditoinnin kaksi sallittua metatietokenttää. Jos ajohistorian kirjoitusoikeus puuttuu tai kirjoituksen onnistumista ei voida varmistaa, raportoi rajoite äläkä väitä vaihekirjausta tallennetuksi.
