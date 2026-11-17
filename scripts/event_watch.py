@@ -150,6 +150,10 @@ def reconcile(state: dict[str, Any], observations: list[dict[str, Any]], definit
     result = deepcopy(state)
     current = {item["canonical_event_id"]: item for item in result["current_events"]}
     grouped: dict[str, list[dict[str, Any]]] = {}
+    # Täsmällinen identiteetti yhdistää eri lähteiden omat tunnisteet. Epätarkkaa
+    # vastaavuutta ei päätellä: sovitin vastaa epävarmoista osumista.
+    identity_to_id = {item["identity_key"]: item["canonical_event_id"] for item in result["current_events"]}
+    incoming_identity_to_id: dict[str, str] = {}
     for observation in observations:
         if observation.get("event_type_id") != definition["event_type_id"]:
             raise EventWatchError("Havainto kuuluu eri tapahtumatyyppiin.")
@@ -165,8 +169,14 @@ def reconcile(state: dict[str, Any], observations: list[dict[str, Any]], definit
         source_list = _sources(observation.get("sources", []))
         if not source_list:
             raise EventWatchError("Havainnolla pitää olla vähintään yksi lähde.")
-        _identity(attributes, definition)
+        identity_key = _identity(attributes, definition)
         _timestamp(observation.get("observed_at", observed_at))
+        if canonical_id not in current and identity_key in identity_to_id:
+            canonical_id = identity_to_id[identity_key]
+        elif canonical_id not in current and identity_key in incoming_identity_to_id:
+            canonical_id = incoming_identity_to_id[identity_key]
+        else:
+            incoming_identity_to_id[identity_key] = canonical_id
         grouped.setdefault(canonical_id, []).append({"attributes": deepcopy(attributes), "sources": source_list})
 
     new_events = []
