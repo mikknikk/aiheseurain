@@ -150,7 +150,7 @@ def main() -> None:
     if len(report_paths) != len(changed_feeds):
         fail(
             f"PR muuttaa {len(changed_feeds)} RSS-syötettä, mutta sisältää "
-            f"{len(report_paths)} uutta/muutettua julkaisuportritietuetta. "
+            f"{len(report_paths)} uutta/muutettua julkaisulaadun porttiraporttia. "
             "Jokaisella muuttuneella syötteellä pitää olla oma raportti."
         )
 
@@ -162,7 +162,7 @@ def main() -> None:
         if feed_path not in changed_feeds:
             fail(f"{relative}: raportin feed_path ei ole PR:ssä muuttunut syöte")
         if feed_path in covered:
-            fail(f"{relative}: samalle syötteelle on useampi julkaisuportriraportti")
+            fail(f"{relative}: samalle syötteelle on useampi julkaisulaadun porttiraportti")
         covered.add(feed_path)
         verify_guid_preservation(feed_path, base_ref)
 
