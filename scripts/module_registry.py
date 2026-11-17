@@ -109,7 +109,13 @@ def _extension_schemas(root: Path) -> tuple[dict[str, tuple[dict[str, Any], Path
             if not isinstance(schema_id, str) or not schema_id:
                 raise ValueError("Laajennusskeemalta puuttuu $id.")
             if schema_id in schemas:
-                raise ValueError(f"Laajennusskeeman $id on jo käytössä: {schema_id}")
+                # Kahdella tiedostolla ei saa olla samaa tunnistetta: poista
+                # epäselvä viite kokonaan, jotta kumpaakaan ei valita sattumalta.
+                schemas.pop(schema_id, None)
+                errors[schema_id] = f"Laajennusskeeman $id esiintyy useassa tiedostossa: {schema_id}"
+                continue
+            if schema_id in errors:
+                continue
             schemas[schema_id] = (schema, path)
         except (RegistryError, jsonschema.SchemaError, ValueError) as exc:
             errors[str(path.relative_to(root))] = str(exc)
