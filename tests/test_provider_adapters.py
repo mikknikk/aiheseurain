@@ -4,7 +4,7 @@ import json
 import unittest
 
 from scripts.provider_contracts import (
-    AIRequest, ResearchQuery, CostBudget, ProviderAuthenticationError,
+    AIRequest, ResearchQuery, CostBudget, ProviderAuthenticationError, ProviderUnavailableError,
     ProviderContractError, ProviderCostLimitError, ProviderRateLimitError,
 )
 from scripts.provider_router import ProviderRouter, load_provider_config, validate_provider_config
@@ -144,7 +144,7 @@ class ProviderRoutingTests(unittest.TestCase):
         config=test_config()
         config["routes"]={}
         service=router(config)
-        with self.assertRaises(Exception):
+        with self.assertRaises(ProviderUnavailableError):
             service.process_ai(AIRequest(module_id="unknown-topic",run_id="r",content="x"),budget=CostBudget(1))
         config=test_config()
         config["providers"][0]["capabilities"]=["ai.generate"]
