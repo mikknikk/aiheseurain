@@ -47,6 +47,6 @@ jobs:
           node --check assets/js/reader.js
           node --check assets/js/kanban.js
       - name: Testaa Valvomon, RSS-lukijan ja Kehitysjonon logiikka
-        run: node --test tests/valvomo.test.mjs tests/reader.test.mjs tests/kanban.test.mjs
+        run: node --test tests/valvomo.test.mjs tests/reader.test.mjs tests/kanban.test.mjs tests/issue-dependencies.test.mjs
       - name: Testaa linkkitarkistimen logiikka
         run: python -m unittest discover -s tests -v
