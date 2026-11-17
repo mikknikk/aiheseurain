@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.6
+Ohjeversion tunniste: 1.0.7
 
 ## 1. Tehtävä ja rajaus
 
@@ -69,6 +69,14 @@ Vertaa README:tä, tehtäväjonoa, seurantadokumentteja, aihekohtaisia ohjeita j
 
 ### 4.6 Saavutettavuus
 Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Tarkista myös manuaalisten testien kirjaukset, ympäristöt, tulokset ja avoimet löydökset. Jos kirjauksia ei ole, ilmoita manuaalinen testaus tekemättömäksi; tyhjä testipohja ei ole testitulos. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
+
+### 4.8 Nimen kirjoitusasu ja taivutus
+
+Tarkista koko repositorion käyttäjälle näkyvä suomenkielinen sisältö, mukaan lukien README, dokumentaatio, verkkosivujen tekstit, RSS-syötteet ja raportit, Aiheseurain-nimen oikean kirjoitusasun ja taivutuksen osalta.
+
+Nimen perusmuoto on **Aiheseurain** ja genetiivi **Aiheseuraimen**. Nimeä taivutetaan vartalolla *Aiheseuraime-*, esimerkiksi *Aiheseuraimen*, *Aiheseuraimessa* ja *Aiheseuraimelle*. Muotoa *Aiheseurainin* ei käytetä. Tarkista myös muut mahdolliset virheelliset taivutusmuodot asiayhteyden perusteella.
+
+Kirjaa löydetyt virheet raporttiin täsmällisine tiedostopolkuineen ja riveineen sekä ehdota oikeaa muotoa. Älä muuta tiedostoja laatutarkistuksen yhteydessä; korjaukset tehdään erillisessä hyväksytyssä muutoksessa. Älä merkitse virhettä, jos kyse on kirjaimellisesta esimerkistä, jossa väärä muoto on nimenomaan dokumentoitu vältettäväksi muodoksi.
 
 ### 4.7 Lähteet ja sisältö
 Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Tarkista viimeisin viikoittaisen linkkitarkistuksen artefakti, jos se on saatavilla. Erota 404/410-virheet uudelleenohjauksista, estetyistä pyynnöistä (401/403), nopeusrajoituksista (429), palvelinvirheistä ja verkkoyhteysongelmista. Älä tulkitse estettyä tai tilapäisesti saavuttamatonta sivua automaattisesti rikkinäiseksi. Jos tarkistus tai artefakti puuttuu, kirjaa se tarkistamatta jääneeksi. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja.
