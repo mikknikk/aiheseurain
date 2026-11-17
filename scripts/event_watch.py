@@ -10,7 +10,7 @@ from datetime import datetime
 import hashlib
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 import jsonschema
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +20,57 @@ CLAIM_LEVELS = {"official", "organizer", "third_party", "unknown"}
 
 class EventWatchError(ValueError):
     """Tapahtumatyypin tai tapahtumahistorian sopimusrikkomus."""
+
+
+class EventSourceAdapter(Protocol):
+    """Sovittimen sopimus yhdelle haettavalle lähteelle.
+
+    Toteuttaja vastaa lähteen hakutavasta, rajatuista uudelleenyrityksistä ja
+    lähdekohtaisten tietojen muuttamisesta yhteisiksi havaintotietueiksi.
+    """
+
+    source_id: str
+    event_type_id: str
+
+    def collect(self, search_context: dict[str, Any]) -> list[dict[str, Any]]:
+        """Hae yhden lähteen tiedot ja palauta normalisoidut tapahtumahavainnot."""
+        ...
+
+
+def collect_from_adapters(
+    adapters: list[EventSourceAdapter], search_context: dict[str, Any], event_type_id: str
+) -> dict[str, Any]:
+    """Kerää havainnot useista lähdesovittimista ja eristä yksittäiset virheet.
+
+    Yhteinen ydin ei tunne verkkoprotokollia tai palveluntarjoajia. Kukin sovitin
+    toteuttaa oman hakunsa ja palauttaa saman havaintomuodon. Yhden lähteen
+    epäonnistuminen ei estä muiden lähteiden käsittelyä.
+    """
+    observations: list[dict[str, Any]] = []
+    failed_sources: list[str] = []
+    for adapter in sorted(adapters, key=lambda item: item.source_id):
+        if adapter.event_type_id != event_type_id:
+            raise EventWatchError(
+                f"Lähdesovitin {adapter.source_id} kuuluu tapahtumatyyppiin "
+                f"{adapter.event_type_id}, ei tyyppiin {event_type_id}."
+            )
+        try:
+            batch = adapter.collect(search_context)
+            if not isinstance(batch, list):
+                raise EventWatchError("Lähdesovittimen collect-metodin pitää palauttaa lista.")
+            for observation in batch:
+                if observation.get("event_type_id") != event_type_id:
+                    raise EventWatchError("Lähdesovitin palautti väärän tapahtumatyypin havainnon.")
+            observations.extend(batch)
+        except Exception:
+            # Virheen yksityiskohtainen lokitus kuuluu ajon valvontakerrokseen.
+            # Tässä kirjataan vain lähteen tunniste, jotta muiden haku voi jatkua.
+            failed_sources.append(adapter.source_id)
+    return {
+        "observations": observations,
+        "complete": not failed_sources,
+        "failed_sources": failed_sources,
+    }
 
 def _read_json(path: Path) -> dict[str, Any]:
     """Lue JSON-objekti ja anna ymmärrettävä virhe virheellisestä tiedostosta."""
@@ -91,6 +142,8 @@ def _source(source: dict[str, Any]) -> dict[str, Any]:
         result["published_at"] = source["published_at"]
     if source.get("original_claim_type"):
         result["original_claim_type"] = source["original_claim_type"]
+    if source.get("notes"):
+        result["notes"] = source["notes"]
     return result
 
 def _sources(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
