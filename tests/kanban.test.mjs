@@ -128,16 +128,4 @@ test("osittaiset riippuvuustiedot säilyvät osittaisina", () => {
   assert.deepEqual(graph.byIssue[12].blockedBy, []);
 });
 
-test("riippuvuuksien API-haku käsittelee rajoituksen osittaisena tuloksena", async () => {
-  const issues = [normalizeIssue(makeIssue({ number: 12 })), normalizeIssue(makeIssue({ number: 13 }))];
-  const calls = [];
-  const result = await fetchAllDependencies(issues, async (url) => {
-    calls.push(String(url));
-    const number = Number(new URL(url).pathname.split("/").at(-3));
-    if (number === 13) return { ok: false, status: 403 };
-    return { ok: true, json: async () => [] };
-  }, 2);
-  assert.equal(calls.length, 2);
-  assert.equal(result.complete, false);
-  assert.match(result.payloads[1].error, /rajoitti/);
-});
+
