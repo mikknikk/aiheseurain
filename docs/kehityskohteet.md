@@ -21,7 +21,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#103 – Moduulirekisteri ja määritysten lataus:** valmis; PR #111 yhdistetty.
 - **#104 – Nykyisten aiheiden ja prosessien hallittu moduulisiirtymä:** valmis ja yhdistetty PR:ssä #112.
 - **#109 – Yleinen tapahtumavahti:** valmis; PR:t #113 ja #114 yhdistetty. Yhteinen käsittelyydin, lähdeadapterirajapinta, näytösvahtisovitin ja konferenssiesityksen testitapaus ovat käytettävissä.
-- **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** toteutuksessa; kymmenen moduulimääritystä ja passiiviset rekisterimerkinnät on lisätty, migraatiovalidointi ja dokumentaation viimeistely ovat työn alla.
+- **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** valmis ja yhdistetty PR:ssä #115.
+- **#106 – Moduulikohtainen tila ja historia:** toteutuksessa; kymmenen tilatiedostoa ja checkpoint-siirtymän peruslogiikka on lisätty, migraatiovalidointi ja testaus ovat työn alla.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 
@@ -31,6 +32,7 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Toteutetut kohteet
 
+- [x] **Nykyisten aiheiden ja näytösvahdin siirto itsenäisiin moduulimäärittelyihin (#105).** Yhdeksän topic-moduulia ja yksi process-moduuli on rekisteröity inactive-tilassa. Lähdeviitteet, kieli- ja alueprofiilit sekä näytösvahtimoduulin tapahtumatyyppi validoidaan CI:ssä.
 - [x] **Yleinen tapahtumavahti (#109).** PR:t #113 ja #114 toteuttavat tapahtumatyypin ja historian skeemat, yleisen käsittelyytimen, lähdesovittimen rajapinnan, täsmällisen identiteettipohjaisen duplikaattien yhdistämisen, ristiriitojen säilyttämisen, tilasiirtymät sekä näytöshistorian lukevan ja muistissa tapahtumia käsittelevän sovittimen. Konferenssiesitys on toinen tapahtumatyyppi. Tuotannon näytösvahtia tai automaatioasetuksia ei vaihdettu.
 
 - [x] **Nykyisten moduulien inventaario ja hallitun siirtymän suunnitelma (#104).** Dokumentti `docs/moduulisiirtyman-inventaario.md` kuvaa yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijaon, lähderekisterien kieli- ja aluekattavuuden, tiedostojen siirtokartan, omistajuusrajat, päällekkäisyysriskit sekä vaiheittaisen palautusmenettelyn. PR #112 on yhdistetty.
@@ -57,9 +59,9 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Avoimet kehityskohteet
 
-### Moduulisiirtymä (#105)
+### Moduulikohtainen tila (#106)
 
-Kymmenen nykyistä seurantaa on kuvattu itsenäisinä moduulimäärityksinä ja rekisteröity inactive-tilassa. Migraatiovalidointi tarkistaa lähdeviitteet, lähdekatalogin roolit, kielet, alueet, prosessilaajennuksen ja näytösvahtimoduulin tapahtumatyypin. Nykyiset automaatiot ja julkaisut jatkavat vanhoilla käsikirjoilla ja tietolähteillä; moduulien aktivointi ja suorituspolun vaihto eivät kuulu tähän muutokseen.
+Kymmenen moduulitilaa on muodostettu nykyisestä seurantatilasta, lähdetarkistuslokista, RSS-GUIDeista ja näytöshistoriasta. Tuntemattomia tarkistusaikoja ja ajotunnisteita ei ole päätelty. Yhteinen päivitysfunktio estää osittaisen ajon checkpointin siirron, tunnistaa uusinnan ja hylkää vanhentuneen rinnakkaispäivityksen. Vanha seurantatila ja nykyiset automaatiot pysyvät ennallaan.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
