@@ -190,9 +190,18 @@ def reconcile(state: dict[str, Any], observations: list[dict[str, Any]], definit
                 conflicts.append({"field": field, "values": [values[key] for key in sorted(values)], "sources": sources})
                 if old and field in old["attributes"]:
                     attributes[field] = old["attributes"][field]
+                elif field in definition["required_attributes"]:
+                    raise EventWatchError(
+                        f"Uuden tapahtuman pakollinen kenttä {field} on ristiriitainen; "
+                        "tapahtumaa ei voi luoda turvallisesti."
+                    )
         if old:
             for field, value in old["attributes"].items():
                 attributes.setdefault(field, value)
+            # Aiempi ratkaisematon ristiriita ei katoa vain siksi, ettei tämän ajon
+            # havaintoryhmä toista sitä. Korjaus vaatii uuden, yksiselitteisen päätöksen.
+            if old.get("conflicts") and not conflicts:
+                conflicts = deepcopy(old["conflicts"])
         status = attributes[definition["status_field"]]
         if old is None:
             action, categories, first_seen = "created", [], observed_at
