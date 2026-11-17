@@ -48,7 +48,8 @@ Tärkeä ero: yhdeksän uutistehtävää käsitellään vuorotellen, mutta intia
 Lue:
 
 1. [Lähteet ja hakustrategia](lahteet.md) – yleiset lähdeperiaatteet sekä aihekohtaiset hakujen lähtöpisteet.
-2. [Saavutettavuusperiaatteet](saavutettavuus.md) – millä periaatteilla raportit ja dokumentaatio kirjoitetaan.
+2. [Uutislähteiden ja uutisväitteiden luotettavuusluokitus](luotettavuusluokitus.md) – lähteen A–D-luokka ja yksittäisen väitteen varmennustaso.
+3. [Saavutettavuusperiaatteet](saavutettavuus.md) – millä periaatteilla raportit ja dokumentaatio kirjoitetaan.
 3. Halutessasi [Uutisseurannan seurantaohjeen](seuranta.md) yleiset raportointisäännöt uudelleen – erityisesti seurantajakson ja uutisen julkaisu- ja tapahtumapäivän ero.
 
 Muista, että lähdeluettelo ei ole suljettu sallittujen lähteiden luettelo. Lähteiden alkuperäinen sisältö ja uutisväitteet tarkistetaan; pelkkä hakutuloskatkelma ei riitä.
