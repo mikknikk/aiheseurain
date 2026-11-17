@@ -53,11 +53,11 @@ Tapahtumatyypin lisääminen edellyttää uuden määrityksen ja tarvittaessa uu
 
 ## 6. Ensimmäiset tapahtumatyypit ja yhteensopivuus
 
-examples/event-types/film-screening.json kuvaa nykyisen näytösvahdin ensimmäistä tapahtumatyyppiä. Se säilyttää elokuvan, teatterin, kaupungin, näytösajan, esityskielen, tekstityksen ja näytöskohtaisen tilan. scripts/event_watch_adapters.py muuntaa nykyisen näytöstietueen yleiseksi havainnoksi sekä säilyttää alkuperäisen vahvistusluokan. Sovitin pystyy lukemaan nykyiset 111 näytöstietuetta ja 47 historiatapahtumaa yleiseen tilannekuvaan sekä käsittelemään annetut näytöshavainnot yhteisellä reconcile-ytimellä vain muistissa. Testi osoittaa näytöksen muutoksen tunnistamisen muuttamatta vanhaa JSON-tiedostoa.
+modules/processes/indian-film-screening-watch/event-type.json on näytösvahtimoduulin oma tapahtumatyyppimääritys; examples/event-types/film-screening.json säilyy yleisen sopimuksen esimerkkinä. Se säilyttää elokuvan, teatterin, kaupungin, näytösajan, esityskielen, tekstityksen ja näytöskohtaisen tilan. scripts/event_watch_adapters.py muuntaa nykyisen näytöstietueen yleiseksi havainnoksi sekä säilyttää alkuperäisen vahvistusluokan. Sovitin pystyy lukemaan nykyiset 111 näytöstietuetta ja 47 historiatapahtumaa yleiseen tilannekuvaan sekä käsittelemään annetut näytöshavainnot yhteisellä reconcile-ytimellä vain muistissa. Testi osoittaa näytöksen muutoksen tunnistamisen muuttamatta vanhaa JSON-tiedostoa.
 
 examples/event-types/conference-session.json on olennaisesti erilainen testitapaus. Se kuvaa konferenssin yksittäistä esitystä, jolla on konferenssi, sessiokoodi, puhujatieto ja huone. Sama yhteinen ydin käsittelee sitä ilman konferenssi- tai elokuvakohtaista ohjelmakoodia.
 
-Nykyinen näytöshistoria data/naytosten-muutoshistoria.json, sen skeema, RSS-syöte, GUIDit, käsikirja ja automaation asetukset pysyvät ennallaan. Yleinen sovitin ja reconcile_screening_observations ovat tässä vaiheessa vain lukuun ja testaukseen. Tuotantokäyttöönotto, historian migraatio ja näytösvahdin ajon vaihtaminen vaativat erillisen hyväksynnän.
+Nykyinen näytöshistoria data/naytosten-muutoshistoria.json, sen skeema, RSS-syöte, GUIDit, käsikirja ja automaation asetukset pysyvät ennallaan. Varsinainen prosessimoduuli ja tapahtumatyyppimääritys on rekisteröity inactive-tilassa; ne eivät vielä ohjaa tuotantoajoa. Yleinen sovitin ja reconcile_screening_observations ovat tässä vaiheessa vain lukuun ja testaukseen. Tuotantokäyttöönotto, historian migraatio ja näytösvahdin ajon vaihtaminen vaativat erillisen hyväksynnän.
 
 ## 7. Validointi ja testaus
 
