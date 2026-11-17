@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import {
   parseDependencyRequest,
   hasDependencyCycle,
