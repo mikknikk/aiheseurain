@@ -6,12 +6,13 @@ Tämä opas näyttää, miten Aiheseuraimen JSON-tiedostot liittyvät toisiinsa,
 
 ## 1. Kokonaiskuva yhdellä silmäyksellä
 
-Aiheseuraimen koneelliset tiedot jakautuvat neljään ryhmään:
+Aiheseuraimen koneelliset tiedot jakautuvat viiteen ryhmään:
 
 1. **Mitä seurataan?** Lähdekatalogi, aihekohtaiset lähdekäyttörekisterit ja RSS-syötekatalogi.
 2. **Mitä yhdellä ajolla tapahtui?** Lähdetarkistusten ajoloki.
 3. **Mikä on järjestelmän viimeisin tunnettu tila?** Seurantatila.
-4. **Miten näytösvahti säilyttää muutokset?** Näytösten nykytila ja tapahtumahistoria.
+4. **Miten RSS-raportin laatu hyväksytään ennen julkaisua?** Raporttikohtainen julkaisulaadun tarkistusraportti.
+5. **Miten näytösvahti säilyttää muutokset?** Näytösten nykytila ja tapahtumahistoria.
 
 Alla oleva kaavio näyttää tiedostojen väliset suhteet. Nuoli tarkoittaa, että toinen tiedosto käyttää toisen tietoja tai viittaa niihin. Se ei tarkoita, että tiedostot olisivat kopioita toisistaan.
 
@@ -34,6 +35,13 @@ flowchart TB
       F["data/feed-catalog.json<br/>Syötteiden luettelo"]
       XML["feeds/*.xml<br/>Julkaistut RSS-artikkelit"]
       F --> XML
+    end
+
+    subgraph PORTTI["Raporttikohtainen julkaisun hyväksyntä"]
+      G["reports/julkaisuportit/{run_id}.json<br/>Toimitukselliset tarkistukset ja päätös"]
+      GS["schemas/julkaisuportti.schema.json<br/>Porttiraportin rakenne"]
+      G -->|"hyväksyntä PR:ssä"| XML
+      GS -. "validoi raportin" .-> G
     end
 
     subgraph NAYTOS["Erillinen näytösvahti"]
@@ -201,7 +209,35 @@ Tarkistamattomuuden syy on olennainen tieto. Esimerkiksi 403-esto ei tarkoita, e
 
 **Älä tulkitse lokin tilaa koko automaation julkaisutilaksi.** `complete`, `partial` ja `failed` kuvaavat lähdetarkistuksen kattavuutta. `complete` voi sisältää myös tarkistamatta jääneitä ei-kriittisiä lähteitä, kunhan kriittiset lähteet on käsitelty ja puutteet kirjattu. Tila ei yksin kerro, julkaistiinko RSS-artikkeli tai onnistuiko koko automaatio.
 
-## 6. Seurantatila: mikä on viimeisin tunnettu järjestelmätila?
+## 6. Raporttikohtainen julkaisulaadun portti
+
+Jokainen RSS-syötteen muutos saa oman ajokohtaisen JSON-tarkistusraportin. Se ei ole sama asia kuin järjestelmän viimeisin tila eikä viikoittainen laatuauditointi.
+
+- Raportit: `reports/julkaisuportit/{run_id}.json`. `task_id` on syötekatalogin `id`-arvo, ei lähderekisterin tehtävätunniste.
+- Rakenne: `schemas/julkaisuportti.schema.json`.
+- Toimituksellinen arviointi: lähteiden avaaminen, väitteiden vastaavuus, lähteiden riippumattomuus, epävarmuudet, ajankohdat, seurantajakso, duplikaatit, sisällön täydellisyys ja saavutettavuus.
+- Automaattinen arviointi: RSS/XML- ja HTML-rakenne, GUIDien yksilöllisyys ja aiempien GUIDien säilyminen.
+- PR:n CI hylkää puuttuvan tai hylätyn porttiraportin. Hylätty raportti jää PR:n muutoksiin ja CI-artefaktiin tarkasteltavaksi; se ei muuta `data/seurantatila.json`-tiedoston viimeisintä onnistunutta tarkistuspistettä.
+
+Prosessi:
+
+```mermaid
+flowchart TD
+    A["Valmis raportti ja RSS-muutos"] --> B["Täytä jokainen tarkistuskohta"]
+    B --> C{"Kaikki kohdat hyväksytty?"}
+    C -->|"Ei"| D["Hylkää portti ja korjaa raportti"]
+    D --> B
+    C -->|"Kyllä"| E["Luo PR, jossa RSS ja porttiraportti"]
+    E --> F["CI: skeema, RSS/HTML ja GUID-historia"]
+    F --> G{"Kaikki testit läpäisty?"}
+    G -->|"Ei"| D
+    G -->|"Kyllä"| H["PR voidaan yhdistää"]
+    H --> I["Takaisinluku ja onnistumisen kirjaus"]
+```
+
+Skeema tarkistaa tietueen rakenteen, ei sitä, ovatko toimitukselliset arviot tosia. CI ei avaa uutislähteitä eikä pysty päättelemään väitteiden totuutta tai lähteiden riippumattomuutta. Tarkistuslista ja rajaukset on kuvattu [julkaisulaadun portin ohjeessa](julkaisuportti.md).
+
+## 7. Seurantatila: mikä on viimeisin tunnettu järjestelmätila?
 
 Tiedosto: [`data/seurantatila.json`](../data/seurantatila.json`  
 Skeema: [`schemas/seurantatila.schema.json`](../schemas/seurantatila.schema.json`
@@ -249,7 +285,7 @@ flowchart TB
 
 Näytösvahti ei kuluta aihekierroksen vuoroa. Intialaisen elokuvan uutisseuranta ja näytösseuranta käyttävät myös erillisiä lähdekäyttörekistereitä.
 
-## 7. Näytöshistorian JSON: nykytila ja tapahtumat
+## 8. Näytöshistorian JSON: nykytila ja tapahtumat
 
 Tiedosto: [`data/naytosten-muutoshistoria.json`](../data/naytosten-muutoshistoria.json`  
 Skeema: [`schemas/naytosten-muutoshistoria.schema.json`](../schemas/naytosten-muutoshistoria.schema.json`  
@@ -274,7 +310,7 @@ flowchart LR
 
 Tapahtumaloki kertoo, mitä havaittiin ja milloin. RSS taas on lukijoille julkaistava sisältö. Ne eivät ole sama asia.
 
-## 8. JSON Schema: mitä se tarkistaa ja mitä ei?
+## 9. JSON Schema: mitä se tarkistaa ja mitä ei?
 
 Jokaisella koneellisella tietomallilla on oma skeemansa:
 
@@ -286,6 +322,7 @@ Jokaisella koneellisella tietomallilla on oma skeemansa:
 | `data/seurantatila.json` | `schemas/seurantatila.schema.json` |
 | `data/naytosten-muutoshistoria.json` | `schemas/naytosten-muutoshistoria.schema.json` |
 | `data/feed-catalog.json` | RSS-lukijan ja syötevalidoinnin katalogirakenteen tarkistukset |
+| `reports/julkaisuportit/*.json` | `schemas/julkaisuportti.schema.json` |
 
 JSON Schema voi tarkistaa esimerkiksi, että:
 - pakollinen kenttä on olemassa;
@@ -301,9 +338,9 @@ JSON Schema ei voi todistaa, että:
 - lähderekisteri kattaa kaikki maailman olennaiset lähteet;
 - automaatio on tehnyt hyvän toimituksellisen ratkaisun.
 
-Näitä asioita arvioidaan automaation työohjeiden ja myöhemmin toteutettavien raporttikohtaisten laadunvarmistusten avulla.
+Näitä asioita arvioidaan automaation työohjeiden ja raporttikohtaisen julkaisulaadun portin avulla. Portti dokumentoi toimituksellisen arvion, mutta ei todista sen oikeellisuutta automaattisesti.
 
-## 9. Tunnisteet: miksi eri tiedostoissa on hieman eri nimet?
+## 10. Tunnisteet: miksi eri tiedostoissa on hieman eri nimet?
 
 Tiedostojen tunnisteet ovat eri käyttötarkoituksiin. Älä päättele niitä pelkästään näyttönimestä:
 
@@ -314,7 +351,7 @@ Tiedostojen tunnisteet ovat eri käyttötarkoituksiin. Älä päättele niitä p
 
 Tämä erottelu pitää uutisraportin ja näytösseurannan erillään, vaikka molemmat liittyvät intialaiseen elokuvaan. Kun lisäät tai muutat tehtäviä, tarkista aina kyseisen JSON-tiedoston oma skeema.
 
-## 10. Mitä tiedostot eivät tällä hetkellä kerro?
+## 11. Mitä tiedostot eivät tällä hetkellä kerro?
 
 On tärkeää tunnistaa myös rajat, jotta käyttöliittymä tai lukija ei päättele tietoa, jota ei ole tallennettu.
 
@@ -325,7 +362,7 @@ On tärkeää tunnistaa myös rajat, jotta käyttöliittymä tai lukija ei pää
 - **Automaation kaikki työvaiheet ja niiden aikaleimat:** eivät sisälly nykyisiin JSON-tiedostoihin. Viimeisin onnistuminen ei tarkoita, että uusi ajo olisi käynnissä.
 - **Lähdekattavuuden yleinen prosenttiluku:** sitä ei pidä laskea ilman tarkasti määriteltyä nimittäjää. Tarkistettujen lähteiden määrä ei yksin kuvaa kieli-, alue- tai aihekatetta.
 
-## 11. Suositeltu lukujärjestys
+## 12. Suositeltu lukujärjestys
 
 Jos haluat ymmärtää yhden aiheen lähteiden toimintaa, avaa nämä tässä järjestyksessä:
 

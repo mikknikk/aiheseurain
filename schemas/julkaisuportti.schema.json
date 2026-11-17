@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/mikknikk/aiheseurain/main/schemas/julkaisuportti.schema.json",
+  "title": "RSS-raportin julkaisua edeltävä laadunvarmistus",
+  "description": "Yhden RSS-syötteen raporttikohtainen tarkistus ennen julkaisua.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "task_id",
+    "feed_path",
+    "checked_at",
+    "checklist",
+    "decision",
+    "reviewer_notes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,100}$"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "feed_path": {
+      "type": "string",
+      "pattern": "^feeds/[a-z0-9-]+\\.xml$"
+    },
+    "checked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checklist": {
+      "type": "object",
+      "required": [
+        "sources_opened",
+        "claim_support",
+        "source_independence",
+        "uncertainty",
+        "dates",
+        "tracking_period",
+        "duplicates",
+        "guid_preservation",
+        "xml_html",
+        "rss_structure",
+        "report_completeness",
+        "accessibility"
+      ],
+      "properties": {
+        "sources_opened": {
+          "$ref": "#/$defs/check"
+        },
+        "claim_support": {
+          "$ref": "#/$defs/check"
+        },
+        "source_independence": {
+          "$ref": "#/$defs/check"
+        },
+        "uncertainty": {
+          "$ref": "#/$defs/check"
+        },
+        "dates": {
+          "$ref": "#/$defs/check"
+        },
+        "tracking_period": {
+          "$ref": "#/$defs/check"
+        },
+        "duplicates": {
+          "$ref": "#/$defs/check"
+        },
+        "guid_preservation": {
+          "$ref": "#/$defs/check"
+        },
+        "xml_html": {
+          "$ref": "#/$defs/check"
+        },
+        "rss_structure": {
+          "$ref": "#/$defs/check"
+        },
+        "report_completeness": {
+          "$ref": "#/$defs/check"
+        },
+        "accessibility": {
+          "$ref": "#/$defs/check"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "properties": {
+            "sources_opened": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "claim_support": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_independence": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "rejected"
+      ]
+    },
+    "reviewer_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "check": {
+      "type": "object",
+      "required": [
+        "status",
+        "note"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "not_applicable"
+          ]
+        },
+        "note": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "not_applicable"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "minLength": 5
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "fail"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "minLength": 5
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

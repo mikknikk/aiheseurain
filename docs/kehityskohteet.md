@@ -36,6 +36,8 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 - [x] **Näytösseurannan muutoshistorian tietomalli ja JSON Schema -validointi.** `data/naytosten-muutoshistoria.json` erottaa näytösten nykytilan append-only-tapahtumalokista. `schemas/naytosten-muutoshistoria.schema.json` määrittelee rakenteen JSON Schema Draft 2020-12 -muodossa. `scripts/validate_feeds.py` suorittaa skeemavalidoinnin ja täydentää sitä projektikohtaisilla eheystarkistuksilla; GitHub Actions asentaa `requirements.txt`-tiedoston riippuvuudet ennen testejä.
 - [x] **Näytösvahdin virheistä palautuminen.** Käsikirjan versio 1.2.0 määrittelee enintään kolme yritystä tilapäisille luku-/kirjoitusvirheille, epäselvän GitHub-kirjoituksen takaisinluvun ennen uusintaa, atomisen PR-julkaisun sekä edellisestä onnistuneesta tarkistuspisteestä alkavan palautumisjakson. Epäonnistunut ajo ei siirrä onnistumisaikaleimaa eikä korvaa toimivaa RSS:ää.
 
+- [x] **Raporttikohtainen RSS-julkaisulaadun portti (#53).** Jokaiselle muuttuneelle syötteelle vaaditaan JSON-tarkistusraportti. CI tarkistaa raportin skeeman, hylkäykset, soveltumattomuuksien perustelut ja aiempien GUIDien säilymisen; uutisväitteiden totuutta tai lähteiden riippumattomuutta ei väitetä automaattisesti todennetuiksi. Epäonnistuneen portin raportti säilyy PR:ssä ja CI-artefaktissa, eikä viimeisintä onnistunutta tarkistuspistettä tai tehtäväkiertoa muuteta.
+
 ## Avoimet kehityskohteet
 
 ### Näytösseurannan muutoshistorian käyttöönotto

@@ -1,7 +1,7 @@
 Tehtävä: suorita repositorion mikknikk/aiheseurain pääasiallinen päivittäinen uutisseurannan aihekierros.
 
 KÄYNNISTYSKEHOTTEEN TUNNISTE
-Käynnistyskehotteen tunniste: uutispaakierto-2026-11-17-02
+Käynnistyskehotteen tunniste: uutispaakierto-2026-11-17-03
 
 ENSISIJAINEN OHJE
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin tiedostossa docs/paaautomaation-ohje.md (tiedostonimessä on kaksi a-kirjainta alussa: paaautomaation). Tämä käynnistyskehote on vain käynnistysosoite; älä kopioi tai päättele tehtävän sisältöä siitä.
@@ -15,6 +15,7 @@ Ajon alussa:
 2. Tarkista, että tämän käynnistyskehotteen tunniste vastaa täsmälleen data/seurantatila.jsonin automation_instructions.startup_prompt_id-arvoa. Tarkista lisäksi, että käsikirjan Ohjeversion tunniste vastaa JSONin automation_instructions.current_version-arvoa ja että automation_instructions.document on täsmälleen docs/paaautomaation-ohje.md. Jos kehotetunniste puuttuu tai ei täsmää, keskeytä ennen uutishakuja ja kirjoituksia.
 3. Jos jokin tiedosto puuttuu, ei ole luettavissa, GitHub ei ole käytettävissä tai polku/versio ei täsmää, keskeytä ennen uutishakuja ja kirjoituksia. Älä käytä vanhaa kehotetta tai arvaa oikeaa versiota. Älä muuta onnistumistietoja tai tehtävävuoroa.
 4. Noudata käsikirjan lukujärjestystä, tehtävävalintaa, sisältö-, lähde-, julkaisu- ja tarkistussääntöjä kokonaan. Kirjaa tämän ajon lähdetarkistukset vain valitun aihekierroksen tehtävätunnisteelle; älä tarkista tai kirjaa näytösvahtia.
+5. Jos RSS-syöte muuttuu, tee jokaiselle muuttuneelle syötteelle oma hyväksytty JSON-porttiraportti polkuun reports/julkaisuportit/{run_id}.json docs/julkaisuportti.md:n mukaisesti. Sisällytä raportti samaan PR:ään syötemuutoksen kanssa. Hylätty tai puuttuva portti estää yhdistämisen; älä muuta viimeisintä onnistunutta tarkistuspistettä tai tehtäväkierron vuoroa.
 
 RAJAUS
 Käsittele täsmälleen yksi käsikirjan ja docs/tehtavajono.md:n mukainen yhdeksän tehtävän aihekierroksen tehtävä. Älä tee näytöshakuja äläkä muuta erillisen Intialaisten elokuvien näytösvahdin tehtävää, ajastusta, ohjeita, RSS-syötettä tai näytöshistoriaa. Näytösvahti ei kuulu aihekierrokseen.
