@@ -65,6 +65,8 @@ def validate_record(path: Path, feed_map: dict[str, str]) -> dict:
     except jsonschema.ValidationError as exc:
         fail(f"{label}: skeemavirhe kohdassa {list(exc.absolute_path)}: {exc.message}")
 
+    if path.stem != record["run_id"]:
+        fail(f"{label}: run_id ei vastaa raporttitiedoston nimeä")
     if record["task_id"] not in feed_map:
         fail(f"{label}: tuntematon task_id {record['task_id']!r}")
     if feed_map[record["task_id"]] != record["feed_path"]:
@@ -156,10 +158,14 @@ def main() -> None:
         )
 
     covered = set()
+    seen_run_ids = set()
     for relative in report_paths:
         path = ROOT / relative
         record = validate_record(path, feed_map)
         feed_path = record["feed_path"]
+        if record["run_id"] in seen_run_ids:
+            fail(f"{relative}: run_id ei ole yksilöllinen")
+        seen_run_ids.add(record["run_id"])
         if feed_path not in changed_feeds:
             fail(f"{relative}: raportin feed_path ei ole PR:ssä muuttunut syöte")
         if feed_path in covered:
