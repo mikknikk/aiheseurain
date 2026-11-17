@@ -8,9 +8,10 @@ Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen pri
 
 - **#29 – Pages-kartoitus ja Valvomon tietomalli:** valmis ja yhdistetty `main`-haaraan.
 - **#30 – Valvomon vähimmäisversio:** valmis ja yhdistetty `main`-haaraan.
-- **#38 – Valvomon siirto omalle sivulleen:** toteutus tässä PR:ssä; odottaa tarkistusta ja yhdistämistä.
-- **#31 – RSS-lukijan vähimmäisversio:** backlogissa, ei vielä toteutuksessa.
-- **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** backlogissa, ei vielä toteutuksessa.
+- **#38 – Valvomon siirto omalle sivulleen:** valmis ja yhdistetty.
+- **#31 – RSS-lukijan vähimmäisversio:** valmis ja yhdistetty.
+- **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** valmis ja yhdistetty.
+- **#83 – Kehitysjonon aineiston muodostus Actionsissa ja Pages-julkaisu:** toteutuksessa.
 
 Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
@@ -127,7 +128,7 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 
 **Tavoite:** rakentaa GitHub Pagesiin yhteinen käyttöliittymä, jossa voi seurata automaatioiden etenemistä ja lukea kaikkia repositorion RSS-syötteitä. Tekninen tavoitekuvaus, turvallisuusrajaukset, hyväksymiskriteerit ja vaiheistus ovat dokumentissa [julkinen valvomo ja RSS-lukija](julkinen-valvomo-ja-rss-lukija.md).
 
-**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on tässä PR:ssä; RSS-lukijan (#31) ja kehitysjonon (#35) käyttöliittymät ovat vielä toteuttamatta.
+**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on tässä PR:ssä; RSS-lukija (#31) ja Kehitysjonon kanban (#35) on toteutettu. Kehitysjonon selainkohtaisten API-hakujen korvaaminen Actionsissa muodostetulla aineistolla on käynnissä tiketissä #83.
 
 - [x] Kirjaa tavoitearkkitehtuuri: yksi staattinen Pages-sivusto, valvomo ja RSS-lukija erillisinä osioina.
 - [x] Määrittele valvomon näyttämät automaatiot, ajovaiheet, aihekierroksen eteneminen, lähdekattavuuden käsitteet sekä virhe- ja varoitushistoria.
