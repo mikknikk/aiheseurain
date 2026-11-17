@@ -17,6 +17,12 @@ def approved_record():
         key: {"status": "pass", "note": "Tarkistettu ja hyväksytty."}
         for key in gate.CHECK_IDS
     }
+    # Lähteiden avaamisesta, väitteiden vastaavuudesta ja riippumattomuudesta
+    # vaaditaan yksilöitävä näyttöviite myös hyväksytyssä testitietueessa.
+    checks["sources_opened"]["evidence"] = ["Lähde A: avattu ja tarkistettu."]
+    checks["claim_support"]["evidence"] = ["Väitteet 1–3 verrattu lähteeseen A."]
+    checks["source_independence"]["evidence"] = ["Lähteet A ja B ovat eri toimituksia."]
+
     return {
         "schema_version": 1,
         "run_id": "test-run-001",
