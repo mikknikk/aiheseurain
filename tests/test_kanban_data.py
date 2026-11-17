@@ -53,7 +53,7 @@ class KanbanDataValidationTests(unittest.TestCase):
         dataset = make_dataset()
         dataset["issue_count"] = 2
         with self.assertRaisesRegex(ValueError, "issue_count"):
-            validate_dataset(dataset, make_schema())
+            validate_dataset(dataset, load_schema())
 
     def test_each_issue_must_have_one_dependency_record(self):
         """Riippuvuustietueiden pitää vastata kaikkia issueita."""
