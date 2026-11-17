@@ -1158,6 +1158,22 @@ def validate_startup_prompts(state):
             )
 
 
+def validate_kanban_schema():
+    """Tarkistaa Kehitysjonon julkaistun JSON-aineiston skeeman rakenteen.
+
+    Varsinainen tilannekuva muodostetaan vasta Pages-julkaisun yhteydessä,
+    joten tavallinen PR-validointi tarkistaa tässä skeeman kelvollisuuden.
+    """
+    schema_path = ROOT / "schemas/kehitysjono.schema.json"
+    if not schema_path.is_file():
+        fail("Kehitysjonon JSON Schema -määrittely puuttuu")
+    try:
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator.check_schema(schema)
+    except (json.JSONDecodeError, UnicodeDecodeError, jsonschema.SchemaError) as exc:
+        fail(f"Kehitysjonon JSON Schema on virheellinen: {exc}")
+
+
 def main():
     """Ajaa kaikki tarkistukset oikeassa järjestyksessä."""
     # Syötekatalogi ladataan ennen seurantatilan tarkistusta.
@@ -1180,6 +1196,9 @@ def main():
     # Tarkistetaan lähderekisteri ja ajokohtaisen kattavuuslokin eheys.
     validate_source_coverage()
 
+    # Kehitysjonon julkaistavan aineiston skeema tarkistetaan myös CI:ssä.
+    validate_kanban_schema()
+
     # Lopuksi käydään RSS-syötteet ja niiden julkaistut itemit läpi.
     total, unique = validate_feeds()
 
@@ -1189,7 +1208,7 @@ def main():
     print("OK: README, tehtäväjono, feed-polut, seurantatila ja käynnistyskehotteiden tunnisteet ovat yhdenmukaiset.")
     print("OK: aikaleimat, seurantajaksot, erillinen näytösvahti ja näytösten muutoshistoria.")
     print("OK: seurantatila vastaa JSON Schema Draft 2020-12 -määrittelyä.")
-    print("OK: näytöshistoria vastaa JSON Schema Draft 2020-12 -määrittelyä.")
+    print("OK: näytöshistoria ja Kehitysjonon aineiston skeema ovat kelvollisia JSON Schema Draft 2020-12 -määrittelyjä.")
     print("OK: RSS:n historialliset näytösajat vastaavat JSON-historian completed-tietueita.")
 
 
