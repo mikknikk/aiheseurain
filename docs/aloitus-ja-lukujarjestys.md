@@ -24,7 +24,7 @@ flowchart TD
 Lue tässä järjestyksessä:
 
 1. [README – Aiheseuraimen yleiskuva](../README.md). Tutustu erityisesti ensimmäisiin kappaleisiin, hakemistorakenteeseen ja RSS-syötteiden luetteloon.
-2. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md). Lue ensin järjestelmäriippumaton toimintamalli ja sen jälkeen nykyisen ChatGPT/GitHub-toteutuksen komponentit, tietovirrat ja vaihdettavuuden rajat.
+2. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md). Lue järjestelmäriippumaton toimintamalli, nykyinen toteutus ja sen jälkeen erillinen tavoitearkkitehtuuri, nykytilan ja tavoitetilan erot sekä siirtymävaiheet.
 3. [Aiheseuraimen etusivu](https://mikknikk.github.io/aiheseurain/). Näet palvelun julkisen sisääntulon.
 4. [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/), [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) ja [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/). Katso, millaisia näkymiä järjestelmä tarjoaa.
 
@@ -107,7 +107,7 @@ Automaattinen rakennetesti ei todista uutisväitteitä oikeiksi eikä saavutetta
 
 Lue:
 
-1. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md) – järjestelmän kerrokset, nykyinen toteutus, tietovirrat ja teknologioiden vaihdettavuus.
+1. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md) – järjestelmän kerrokset, nykyinen toteutus, tavoitearkkitehtuuri, siirtymävaiheet ja teknologioiden vaihdettavuus.
 2. [Kehityssuunnitelma](kehityssuunnitelma.md) – sivuston tavoitetila ja kehityksen toimintamalli.
 3. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
 4. [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md) – miten GitHub Issues ja natiivit riippuvuudet muodostetaan Pagesissa käytettäväksi JSON-aineistoksi.
