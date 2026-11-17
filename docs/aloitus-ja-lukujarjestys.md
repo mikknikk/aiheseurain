@@ -24,8 +24,9 @@ flowchart TD
 Lue tässä järjestyksessä:
 
 1. [README – Aiheseuraimen yleiskuva](../README.md). Tutustu erityisesti ensimmäisiin kappaleisiin, hakemistorakenteeseen ja RSS-syötteiden luetteloon.
-2. [Aiheseuraimen etusivu](https://mikknikk.github.io/aiheseurain/). Näet palvelun julkisen sisääntulon.
-3. [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/), [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) ja [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/). Katso, millaisia näkymiä järjestelmä tarjoaa.
+2. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md). Lue ensin järjestelmäriippumaton toimintamalli ja sen jälkeen nykyisen ChatGPT/GitHub-toteutuksen komponentit, tietovirrat ja vaihdettavuuden rajat.
+3. [Aiheseuraimen etusivu](https://mikknikk.github.io/aiheseurain/). Näet palvelun julkisen sisääntulon.
+4. [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/), [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) ja [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/). Katso, millaisia näkymiä järjestelmä tarjoaa.
 
 Kun olet valmis, osaat vastata kysymyksiin: mitä Aiheseurain seuraa, mitä se julkaisee ja mitä sen verkkosivuston eri osat tekevät?
 
@@ -106,8 +107,9 @@ Automaattinen rakennetesti ei todista uutisväitteitä oikeiksi eikä saavutetta
 
 Lue:
 
-1. [Kehityssuunnitelma](kehityssuunnitelma.md) – järjestelmän tavoitearkkitehtuuri ja kehityksen toimintamalli.
-2. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
+1. [Järjestelmäarkkitehtuuri](jarjestelmaarkkitehtuuri.md) – järjestelmän kerrokset, nykyinen toteutus, tietovirrat ja teknologioiden vaihdettavuus.
+2. [Kehityssuunnitelma](kehityssuunnitelma.md) – sivuston tavoitetila ja kehityksen toimintamalli.
+3. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
 3. [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md) – miten GitHub Issues ja natiivit riippuvuudet muodostetaan Pagesissa käytettäväksi JSON-aineistoksi.
 4. [Kehityskäytännöt](kehityskaytannot.md) – dokumentoinnin, koodin, testauksen ja ylläpidon säännöt. Kehitysjonon Kanban näyttää myös GitHubiin kirjatut tikettien riippuvuudet; suhteen tarkka suunta ja tietolähde on kuvattu [kehityssuunnitelmassa](kehityssuunnitelma.md).
 5. [GitHub-tikettien riippuvuuksien hallinta](github-riippuvuuksien-hallinta.md) – miten ChatGPT pyytää natiivien riippuvuuksien lisäämistä tai poistamista ja miten GitHub Actions välittää pyynnön turvallisesti.
