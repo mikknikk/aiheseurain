@@ -22,7 +22,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#104 – Nykyisten aiheiden ja prosessien hallittu moduulisiirtymä:** valmis ja yhdistetty PR:ssä #112.
 - **#109 – Yleinen tapahtumavahti:** valmis; PR:t #113 ja #114 yhdistetty. Yhteinen käsittelyydin, lähdeadapterirajapinta, näytösvahtisovitin ja konferenssiesityksen testitapaus ovat käytettävissä.
 - **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** valmis ja yhdistetty PR:ssä #115.
-- **#106 – Moduulikohtainen tila ja historia:** toteutuksessa; kymmenen tilatiedostoa ja checkpoint-siirtymän peruslogiikka on lisätty, migraatiovalidointi ja testaus ovat työn alla.
+- **#106 – Moduulikohtainen tila ja historia:** valmis ja yhdistetty PR:ssä #116.
+- **#107 – AI- ja tutkimuspalvelujen adapterisopimukset:** toteutuksessa; AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin ja testiadapterit on lisätty. Sopimustestit ja dokumentaation viimeistely ovat työn alla.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 
@@ -32,6 +33,7 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Toteutetut kohteet
 
+- [x] **Moduulikohtainen tila ja historia (#106).** Kymmenen tilatiedostoa, vanhojen checkpointien ja historiaviitteiden migraatio sekä idempotentti, osittaisia ajoja hylkäävä checkpoint-siirtymä.
 - [x] **Nykyisten aiheiden ja näytösvahdin siirto itsenäisiin moduulimäärittelyihin (#105).** Yhdeksän topic-moduulia ja yksi process-moduuli on rekisteröity inactive-tilassa. Lähdeviitteet, kieli- ja alueprofiilit sekä näytösvahtimoduulin tapahtumatyyppi validoidaan CI:ssä.
 - [x] **Yleinen tapahtumavahti (#109).** PR:t #113 ja #114 toteuttavat tapahtumatyypin ja historian skeemat, yleisen käsittelyytimen, lähdesovittimen rajapinnan, täsmällisen identiteettipohjaisen duplikaattien yhdistämisen, ristiriitojen säilyttämisen, tilasiirtymät sekä näytöshistorian lukevan ja muistissa tapahtumia käsittelevän sovittimen. Konferenssiesitys on toinen tapahtumatyyppi. Tuotannon näytösvahtia tai automaatioasetuksia ei vaihdettu.
 
@@ -59,9 +61,9 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Avoimet kehityskohteet
 
-### Moduulikohtainen tila (#106)
+### Palveluntarjoaja-adapterit (#107)
 
-Kymmenen moduulitilaa on muodostettu nykyisestä seurantatilasta, lähdetarkistuslokista, RSS-GUIDeista ja näytöshistoriasta. Tuntemattomia tarkistusaikoja ja ajotunnisteita ei ole päätelty. Yhteinen päivitysfunktio estää osittaisen ajon checkpointin siirron, tunnistaa uusinnan ja hylkää vanhentuneen rinnakkaispäivityksen. Vanha seurantatila ja nykyiset automaatiot pysyvät ennallaan.
+AIProcessor- ja ResearchProvider-sopimukset on erotettu moduuleista. Reititys, kustannusrajat, aikakatkaisut, uusinnat ja auditointi ovat teknisiä asetuksia. Tuotannon reititys on tyhjä; testiadapterit eivät käytä verkkoa tai tunnuksia. Todellinen palveluadapteri ja sen käyttöönotto vaativat erillisen hyväksynnän.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
