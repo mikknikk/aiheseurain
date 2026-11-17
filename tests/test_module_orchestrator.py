@@ -284,7 +284,7 @@ class ModuleIsolationTests(unittest.TestCase):
             request("taylor-swift",run_id="isolated-run-002")
         ])
         self.assertEqual([result.status for result in results],["failed","succeeded"])
-        self.assertEqual(len(executor.calls),1)
+        self.assertEqual(len(executor.calls),2)
         self.assertEqual(results[0].module_id,"tolkien")
         self.assertEqual(results[1].module_id,"taylor-swift")
 
