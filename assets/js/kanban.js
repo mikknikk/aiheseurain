@@ -52,7 +52,7 @@ export function normalizeIssue(issue) {
   };
 }
 
-/** Jättää GitHubin issues-rajapinnan palauttamat pull requestit pois. */
+/** Jättää aineistoon mahdollisesti päätyneet pull requestit pois. */
 export function normalizeIssues(payload) {
   if (!Array.isArray(payload)) throw new Error("GitHub palautti odottamattoman vastausrakenteen.");
   return payload
@@ -126,7 +126,13 @@ export async function fetchPublishedDataset(fetchImpl = fetch, url = null) {
     throw new Error("Kehitysjonon aineisto on virheellinen tai puutteellinen; sitä ei käytetä.");
   }
   const issueNumbers = new Set(dataset.issues.map((issue) => Number(issue.number)));
+  const dependencyNumbers = new Set(dataset.dependencies.map((item) => Number(item.issueNumber)));
+  const relationCount = dataset.dependencies.reduce((sum, item) =>
+    sum + (Array.isArray(item.blockedBy) ? item.blockedBy.length : 0), 0);
   if (issueNumbers.size !== dataset.issues.length
+      || dependencyNumbers.size !== dataset.dependencies.length
+      || dependencyNumbers.size !== issueNumbers.size
+      || relationCount !== dataset.dependency_relation_count
       || dataset.dependencies.some((item) => !issueNumbers.has(Number(item.issueNumber))
         || !Array.isArray(item.blockedBy))) {
     throw new Error("Kehitysjonon aineiston tiketti- tai riippuvuustiedot eivät täsmää.");
@@ -405,7 +411,7 @@ function showCachedData(cache, isError = false) {
       + (stale ? "Vanhentunut paikallinen välimuistitieto. " : "Paikallinen välimuistitieto. ")
       + "Viimeisin onnistunut aineisto muodostettiin "
       + formatDate(cache.savedAt) + " (" + formatAge(cache.savedAt) + ").",
-    stale || isError ? "warning" : "warning"
+    "warning"
   );
   updateDependencyStatus(dependencyGraph
     ? "Riippuvuudet ovat paikalliseen välimuistiin tallennetusta aineistosta ("
