@@ -1,9 +1,9 @@
 /**
  * Aiheseuraimen Kehitysjonon selainpuolen toiminta.
  *
- * Lukee tämän repositorion julkiset GitHub Issues -tiketit vain luku -tilassa.
- * Selain ei käytä tunnuksia, tokeneita eikä GitHubin kirjoitusrajapintoja.
- * GitHub Issues säilyy tehtävien ainoana ensisijaisena tietolähteenä.
+ * Lukee GitHub Actionsin muodostaman täydellisen, GitHub Pagesissa julkaistun JSON-aineiston.
+ * Selain ei kutsu GitHubin issue- tai riippuvuusrajapintoja eikä käytä tunnuksia.
+ * GitHub Issues ja natiivit riippuvuudet säilyvät kanonisina tietolähteinä.
  */
 
 export const STATUS_COLUMNS = [
@@ -15,10 +15,8 @@ export const STATUS_COLUMNS = [
 ];
 
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
-const API_URL = "https://api.github.com/repos/mikknikk/aiheseurain/issues";
 const CACHE_KEY = "aiheseurain.kanban.cache.v1";
 const STALE_AFTER_MS = 60 * 60 * 1000;
-const MAX_PAGES = 10;
 
 function labelNames(issue) {
   return (Array.isArray(issue?.labels) ? issue.labels : [])
@@ -106,43 +104,34 @@ export function buildDependencyGraph(issues, payloads, complete = true) {
   };
 }
 
-/** Hakee kunkin tiketin edeltävät riippuvuudet GitHubin julkisesta luku-APIsta. */
-export async function fetchAllDependencies(issues, fetchImpl = fetch, concurrency = 4) {
-  const results = new Array(issues.length);
-  let next = 0;
-  let complete = true;
-  async function fetchOne(issue) {
-    const blockers = [];
-    for (let page = 1; page <= 10; page += 1) {
-      const url = new URL(API_URL + "/" + issue.number + "/dependencies/blocked_by");
-      url.search = new URLSearchParams({ per_page: "100", page: String(page) }).toString();
-      const response = await fetchImpl(url, {
-        headers: { Accept: "application/vnd.github+json" }, cache: "no-store"
-      });
-      if (!response.ok) {
-        if (response.status === 403 || response.status === 429) throw new Error("GitHub API rajoitti riippuvuustietojen hakua.");
-        throw new Error("Tiketin #" + issue.number + " riippuvuuksien haku epäonnistui (HTTP " + response.status + ").");
-      }
-      const items = await response.json();
-      if (!Array.isArray(items)) throw new Error("GitHub palautti virheellisen riippuvuusvastauksen.");
-      blockers.push(...items);
-      if (items.length < 100) return { issueNumber: issue.number, blockedBy: blockers };
-    }
-    throw new Error("Tiketin #" + issue.number + " riippuvuuksia on odotettua enemmän.");
+/** Hakee vain täydellisen, Actionsissa muodostetun Pages-aineiston. */
+export async function fetchPublishedDataset(fetchImpl = fetch, url = null) {
+  const configuredUrl = url || (typeof document !== "undefined"
+    ? document.querySelector("[data-kanban-data-url]")?.dataset.kanbanDataUrl
+    : null);
+  if (!configuredUrl) throw new Error("Kehitysjonon julkaistun aineiston osoite puuttuu.");
+  const response = await fetchImpl(configuredUrl, {
+    headers: { Accept: "application/json" },
+    cache: "no-store"
+  });
+  if (!response.ok) {
+    throw new Error("Kehitysjonon julkaistun aineiston haku epäonnistui (HTTP " + response.status + ").");
   }
-  async function worker() {
-    while (next < issues.length) {
-      const index = next++;
-      try { results[index] = await fetchOne(issues[index]); }
-      catch (error) {
-        complete = false;
-        results[index] = { issueNumber: issues[index].number, blockedBy: [],
-          error: error instanceof Error ? error.message : "Riippuvuuksien haku epäonnistui." };
-      }
-    }
+  const dataset = await response.json();
+  if (!dataset || dataset.schema_version !== 1 || dataset.status !== "complete"
+      || !Array.isArray(dataset.issues) || !Array.isArray(dataset.dependencies)
+      || dataset.issue_count !== dataset.issues.length
+      || dataset.dependencies.length !== dataset.issues.length
+      || !Number.isFinite(Date.parse(dataset.generated_at))) {
+    throw new Error("Kehitysjonon aineisto on virheellinen tai puutteellinen; sitä ei käytetä.");
   }
-  await Promise.all(Array.from({ length: Math.max(1, Math.min(concurrency, issues.length || 1)) }, worker));
-  return { payloads: results, complete };
+  const issueNumbers = new Set(dataset.issues.map((issue) => Number(issue.number)));
+  if (issueNumbers.size !== dataset.issues.length
+      || dataset.dependencies.some((item) => !issueNumbers.has(Number(item.issueNumber))
+        || !Array.isArray(item.blockedBy))) {
+    throw new Error("Kehitysjonon aineiston tiketti- tai riippuvuustiedot eivät täsmää.");
+  }
+  return dataset;
 }
 
 function safeReadCache() {
@@ -182,37 +171,6 @@ function formatAge(timestamp, now = Date.now()) {
   if (hours < 24) return hours + (hours === 1 ? " tunti sitten" : " tuntia sitten");
   const days = Math.floor(hours / 24);
   return days + (days === 1 ? " päivä sitten" : " päivää sitten");
-}
-
-/** Hakee kaikki sivut, jotta myös vanhemmat ja suljetut tiketit tulevat mukaan. */
-export async function fetchAllIssues(fetchImpl = fetch) {
-  const all = [];
-  for (let page = 1; page <= MAX_PAGES; page += 1) {
-    const url = new URL(API_URL);
-    url.search = new URLSearchParams({
-      state: "all",
-      per_page: "100",
-      sort: "updated",
-      direction: "desc",
-      page: String(page)
-    }).toString();
-
-    const response = await fetchImpl(url, {
-      headers: { Accept: "application/vnd.github+json" },
-      cache: "no-store"
-    });
-    if (!response.ok) {
-      if (response.status === 403 || response.status === 429) {
-        throw new Error("GitHub API rajoitti pyyntöä. Yritä myöhemmin uudelleen.");
-      }
-      throw new Error("GitHub Issues -tietojen haku epäonnistui (HTTP " + response.status + ").");
-    }
-    const pageItems = await response.json();
-    if (!Array.isArray(pageItems)) throw new Error("GitHub palautti odottamattoman vastausrakenteen.");
-    all.push(...pageItems);
-    if (pageItems.length < 100) return normalizeIssues(all);
-  }
-  throw new Error("Tikettejä on yli 1 000. Näkymä keskeytettiin, jotta tuloksia ei esitettäisi täydellisinä.");
 }
 
 function makeElement(tag, className, text) {
@@ -383,29 +341,6 @@ function updateDependencyStatus(message, warning = false) {
   status.textContent = message;
   status.className = warning ? "kanban-dependency-status kanban-dependency-warning" : "kanban-dependency-status";
 }
-async function loadDependencies() {
-  const button = document.getElementById("kanban-dependencies");
-  button.disabled = true;
-  button.textContent = "Haetaan riippuvuuksia…";
-  updateDependencyStatus("Haetaan GitHubin riippuvuustietoja. Yksi lukupyyntö tehdään kutakin tikettiä kohti.");
-  try {
-    const result = await fetchAllDependencies(allIssues);
-    dependencyGraph = buildDependencyGraph(allIssues, result.payloads, result.complete);
-    dependencySavedAt = Date.now();
-    selectedDependencyIssue = null;
-    safeWriteCache(allIssues, savedAt, dependencyGraph, dependencySavedAt);
-    render();
-    const failed = result.payloads.filter((item) => item.error).length;
-    updateDependencyStatus(result.complete
-      ? "Riippuvuustiedot päivitetty " + formatDate(dependencySavedAt) + "."
-      : "Riippuvuustiedot ovat osittaiset: " + failed + " tiketin tietoja ei saatu haettua.", !result.complete);
-  } catch (error) {
-    updateDependencyStatus(error instanceof Error ? error.message : "Riippuvuuksien haku epäonnistui.", true);
-  } finally {
-    button.disabled = false;
-    button.textContent = dependencyGraph ? "Päivitä riippuvuudet" : "Yritä riippuvuuksia uudelleen";
-  }
-}
 function showIssueDependencies(issueNumber) {
   if (!dependencyGraph) return;
   selectedDependencyIssue = Number(issueNumber);
@@ -457,68 +392,76 @@ function updateFreshness(message, kind = "info") {
 function showCachedData(cache, isError = false) {
   allIssues = cache.issues;
   savedAt = cache.savedAt;
-  dependencyGraph = cache.dependencies && typeof cache.dependencies.byIssue === "object" ? cache.dependencies : null;
-  dependencySavedAt = Number.isFinite(cache.dependenciesSavedAt) ? cache.dependenciesSavedAt : null;
-  const dependencyButton = document.getElementById("kanban-dependencies");
-  dependencyButton.disabled = false;
-  dependencyButton.textContent = dependencyGraph ? "Päivitä riippuvuudet" : "Näytä riippuvuudet";
-  const dependencyIsStale = dependencySavedAt && Date.now() - dependencySavedAt > STALE_AFTER_MS;
-  updateDependencyStatus(dependencyGraph
-    ? (dependencyIsStale ? "Vanhentuneet välimuistissa olevat riippuvuustiedot: " : "Välimuistissa olevat riippuvuustiedot: ") + formatDate(dependencySavedAt || cache.savedAt) + "."
-    : "Riippuvuuksia ei ole vielä haettu.", Boolean(dependencyIsStale));
+  dependencyGraph = cache.dependencies && typeof cache.dependencies.byIssue === "object"
+    ? cache.dependencies : null;
+  dependencySavedAt = Number.isFinite(cache.dependenciesSavedAt)
+    ? cache.dependenciesSavedAt : null;
   populateAreaFilter();
   render();
-  const age = Date.now() - cache.savedAt;
+  const age = Number.isFinite(cache.savedAt) ? Date.now() - cache.savedAt : Infinity;
   const stale = age > STALE_AFTER_MS;
-  const prefix = stale ? "Vanhentunut välimuistitieto" : "Välimuistissa oleva tieto";
-  updateFreshness(prefix + ". Viimeisin onnistunut päivitys " +
-    formatDate(cache.savedAt) + " (" + formatAge(cache.savedAt) + ")." +
-    (isError ? " Uutta tietoa ei saatu haettua." : " Tarkistetaan GitHubista uusinta tilaa."),
-    stale || isError ? "warning" : "info");
+  updateFreshness(
+    (isError ? "Julkaistun aineiston haku epäonnistui. " : "")
+      + (stale ? "Vanhentunut paikallinen välimuistitieto. " : "Paikallinen välimuistitieto. ")
+      + "Viimeisin onnistunut aineisto muodostettiin "
+      + formatDate(cache.savedAt) + " (" + formatAge(cache.savedAt) + ").",
+    stale || isError ? "warning" : "warning"
+  );
+  updateDependencyStatus(dependencyGraph
+    ? "Riippuvuudet ovat paikalliseen välimuistiin tallennetusta aineistosta ("
+      + formatDate(dependencySavedAt || cache.savedAt) + ")."
+    : "Välimuistissa ei ole riippuvuustietoja.", true);
 }
 
 async function refreshIssues() {
   const button = document.getElementById("kanban-refresh");
   button.disabled = true;
-  document.getElementById("kanban-dependencies").disabled = true;
-  button.textContent = "Päivitetään…";
+  button.textContent = "Haetaan aineistoa…";
   try {
-    const issues = await fetchAllIssues();
+    const dataset = await fetchPublishedDataset();
+    const issues = normalizeIssues(dataset.issues);
+    if (issues.length !== dataset.issue_count) {
+      throw new Error("Julkaistun aineiston issue-määrä ei vastaa sen sisältöä.");
+    }
+    const graph = buildDependencyGraph(issues, dataset.dependencies, true);
+    const generatedAt = Date.parse(dataset.generated_at);
     allIssues = issues;
-    savedAt = Date.now();
-    dependencyGraph = null;
-    dependencySavedAt = null;
+    savedAt = generatedAt;
+    dependencyGraph = graph;
+    dependencySavedAt = generatedAt;
     selectedDependencyIssue = null;
-    safeWriteCache(issues, savedAt, null, null);
-    document.getElementById("kanban-dependencies").textContent = "Näytä riippuvuudet";
-    updateDependencyStatus("Riippuvuuksia ei ole vielä haettu.");
+    safeWriteCache(issues, generatedAt, graph, generatedAt);
     populateAreaFilter();
     render();
-    document.getElementById("kanban-dependencies").disabled = false;
-    updateFreshness("Päivitetty onnistuneesti " + formatDate(savedAt) + ".");
     document.getElementById("kanban-api-error").hidden = true;
+    updateDependencyStatus("Kaikki riippuvuudet sisältyvät samaan täydelliseen aineistoon. Muodostettu "
+      + formatDate(generatedAt) + ".");
+    const stale = Date.now() - generatedAt > STALE_AFTER_MS;
+    updateFreshness((stale ? "Julkaistu aineisto on vanhentunut. " : "Julkaistu aineisto on käytössä. ")
+      + "Aineisto muodostettiin " + formatDate(generatedAt) + " ("
+      + formatAge(generatedAt) + ").", stale ? "warning" : "info");
   } catch (error) {
     const cache = safeReadCache();
-    if (cache) {
-      showCachedData(cache, true);
-    }
-    const message = error instanceof Error ? error.message : "GitHub API -päivitys epäonnistui.";
+    if (cache) showCachedData(cache, true);
+    const message = error instanceof Error ? error.message : "Julkaistun aineiston haku epäonnistui.";
     const errorPanel = document.getElementById("kanban-api-error");
     errorPanel.hidden = false;
     errorPanel.textContent = message + (cache
-      ? " Näytämme erikseen merkittyä välimuistitietoa."
-      : " Tikettejä ei voida näyttää ilman onnistunutta hakua.");
+      ? " Näytämme erikseen merkityn paikallisen välimuistin."
+      : " Käyttökelpoista välimuistia ei ole saatavilla.");
     if (!cache) {
-      document.getElementById("kanban-dependencies").disabled = true;
       allIssues = [];
+      dependencyGraph = null;
       render();
       document.getElementById("kanban-empty").hidden = false;
-      document.getElementById("kanban-empty").textContent = "Tikettejä ei voitu ladata. Yritä päivittää näkymä uudelleen.";
-      updateFreshness("Päivitys ei ole onnistunut; tietojen ajantasaisuutta ei voida vahvistaa.", "warning");
+      document.getElementById("kanban-empty").textContent =
+        "Tikettejä ei voitu ladata. Yritä hakea julkaistu aineisto uudelleen.";
+      updateFreshness("Päivitys ei onnistunut; tietojen ajantasaisuutta ei voida vahvistaa.", "warning");
+      updateDependencyStatus("Riippuvuustietoja ei ole käytettävissä.", true);
     }
   } finally {
     button.disabled = false;
-    button.textContent = "Päivitä tiketit";
+    button.textContent = "Päivitä aineisto";
   }
 }
 
@@ -537,7 +480,6 @@ function initializeKanban() {
     render();
   });
   document.getElementById("kanban-refresh").addEventListener("click", refreshIssues);
-  document.getElementById("kanban-dependencies").addEventListener("click", loadDependencies);
   document.getElementById("kanban-board").addEventListener("click", (event) => {
     const button = event.target.closest("[data-issue-number]");
     if (button) showIssueDependencies(button.dataset.issueNumber);
