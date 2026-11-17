@@ -127,3 +127,4 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Versio 1.0.4: jaettiin lähderekisterit tehtäväkohtaisiin JSON-tiedostoihin yhteisen skeeman alle, täsmennettiin valitun tehtävän rekisterin lukemista ja päivitettiin ajokohtaisen lähdekattavuuslokin validointi.
 - Versio 1.2.0: erotettiin lähteiden yhteiset perustiedot yhteen lähdekatalogiin ja tehtäväkohtaiset käyttöasetukset kymmeneen viittausrekisteriin; päivitettiin skeemat, validointi, ajolokien tarkistus ja automaatio-ohje.
 - Versio 1.1.0: laajennettiin Tolkienin, Taylor Swiftin, Muumien ja Euroviisujen Suomen-tapahtumaseurantaa; täsmennettiin Gurmeet Ram Rahim Singhin musiikkiseurantaa sekä Shakkidraamojen todellisten kiistojen ja shakkisisällöntuottajien sosiaalisen median seurantaa.
+- Versio 1.2.2: otettiin käyttöön kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva ajastusten, asetusten ja kohdekeskustelujen suojaus; ohjeen yksityiskohdat ovat yhteisessä hallintaperiaatedokumentissa.
