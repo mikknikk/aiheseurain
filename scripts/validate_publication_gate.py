@@ -12,7 +12,6 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-import re
 import subprocess
 import sys
 
@@ -112,6 +111,18 @@ def feed_guids(xml_text: str, label: str) -> set[str]:
     return set(values)
 
 
+def verify_report_is_new(report_path: str, base_ref: str) -> None:
+    """Estää aiemmin main-haaraan tallennetun porttiraportin ylikirjoittamisen."""
+    try:
+        subprocess.run(
+            ["git", "cat-file", "-e", f"origin/{base_ref}:{report_path}"],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
+    except subprocess.CalledProcessError:
+        return
+    fail(f"{report_path}: run_id on jo käytössä main-haarassa; luo uusi ajotunniste")
+
+
 def verify_guid_preservation(feed_path: str, base_ref: str) -> None:
     """Varmistaa, ettei PR poista aiempia GUID-tunnisteita muutetusta syötteestä."""
     try:
@@ -161,6 +172,7 @@ def main() -> None:
     seen_run_ids = set()
     for relative in report_paths:
         path = ROOT / relative
+        verify_report_is_new(relative, base_ref)
         record = validate_record(path, feed_map)
         feed_path = record["feed_path"]
         if record["run_id"] in seen_run_ids:
