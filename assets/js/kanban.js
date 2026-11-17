@@ -104,6 +104,19 @@ export function buildDependencyGraph(issues, payloads, complete = true) {
   };
 }
 
+/** Muodostaa edeltäjien valmiusmäärän; osittaista aineistoa ei esitetä täydellisenä. */
+export function summarizePredecessors(blockedBy, complete = true) {
+  const predecessors = Array.isArray(blockedBy) ? blockedBy : [];
+  const completed = predecessors.filter((issue) => issue.status === "done" || issue.state === "closed").length;
+
+  if (!complete) {
+    return "Edeltäjiä vähintään: " + predecessors.length
+      + "; valmiina vähintään: " + completed;
+  }
+  if (predecessors.length === 0) return "Edeltäjiä: 0";
+  return "Edeltäjiä: " + completed + "/" + predecessors.length + " valmiina";
+}
+
 /** Hakee vain täydellisen, Actionsissa muodostetun Pages-aineiston. */
 export async function fetchPublishedDataset(fetchImpl = fetch, url = null) {
   const configuredUrl = url || (typeof document !== "undefined"
@@ -250,8 +263,8 @@ function renderBoard(issues) {
       if (dependencyGraph) {
         const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
         item.appendChild(makeElement("p", "kanban-dependency-summary",
-          (dependencyGraph.complete ? "Edeltäjiä: " : "Edeltäjiä vähintään: ") + relations.blockedBy.length +
-          (dependencyGraph.complete ? " · Estää: " : " · Estää vähintään: ") + relations.blocking.length));
+          summarizePredecessors(relations.blockedBy, dependencyGraph.complete)
+          + (dependencyGraph.complete ? " · Estää: " : " · Estää vähintään: ") + relations.blocking.length));
         const detailButton = makeElement("button", "kanban-dependency-button", "Avaa riippuvuudet");
         detailButton.type = "button";
         detailButton.dataset.issueNumber = String(issue.number);
@@ -285,8 +298,8 @@ function renderTable(issues) {
     if (dependencyGraph) {
       const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
       dependencyCell.appendChild(makeElement("span", "",
-        (dependencyGraph.complete ? "Edeltäjiä: " : "Edeltäjiä vähintään: ") + relations.blockedBy.length +
-        (dependencyGraph.complete ? "; estää: " : "; estää vähintään: ") + relations.blocking.length + ". "));
+        summarizePredecessors(relations.blockedBy, dependencyGraph.complete)
+        + (dependencyGraph.complete ? "; estää: " : "; estää vähintään: ") + relations.blocking.length + ". "));
       const detailButton = makeElement("button", "kanban-dependency-button", "Avaa");
       detailButton.type = "button";
       detailButton.dataset.issueNumber = String(issue.number);
