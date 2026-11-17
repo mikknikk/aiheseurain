@@ -1,6 +1,7 @@
+import json
 import unittest
 
-from scripts.validate_kanban_data import validate_dataset
+from scripts.validate_kanban_data import SCHEMA_PATH, validate_dataset
 
 
 def make_issue(number):
@@ -29,40 +30,23 @@ def make_dataset():
     }
 
 
-def make_schema():
-    """Määrittelee testin kannalta tarvittavan JSON Schema -sopimuksen."""
-    return {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "object",
-        "required": [
-            "schema_version", "generated_at", "status", "issue_count",
-            "dependency_relation_count", "issues", "dependencies"
-        ],
-        "properties": {
-            "schema_version": {"const": 1},
-            "generated_at": {"type": "string", "format": "date-time"},
-            "status": {"const": "complete"},
-            "issue_count": {"type": "integer", "minimum": 0},
-            "dependency_relation_count": {"type": "integer", "minimum": 0},
-            "issues": {"type": "array"},
-            "dependencies": {"type": "array"},
-        },
-    }
-
+def load_schema():
+    """Lukee repositorion varsinaisen skeeman, jotta testit tarkistavat sen."""
+    return json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
 
 class KanbanDataValidationTests(unittest.TestCase):
     """Testaa Kehitysjonon julkaistavan aineiston eheystarkistuksia."""
 
     def test_complete_dataset_is_accepted(self):
         """Täydellinen aineisto hyväksytään."""
-        validate_dataset(make_dataset(), make_schema())
+        validate_dataset(make_dataset(), load_schema())
 
     def test_partial_dataset_is_rejected(self):
         """Osittaista aineistoa ei saa julkaista."""
         dataset = make_dataset()
         dataset["status"] = "partial"
         with self.assertRaisesRegex(ValueError, "JSON Schema"):
-            validate_dataset(dataset, make_schema())
+            validate_dataset(dataset, load_schema())
 
     def test_issue_count_must_match(self):
         """Ilmoitetun issue-määrän pitää vastata sisältöä."""
