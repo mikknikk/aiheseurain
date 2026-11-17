@@ -1,6 +1,6 @@
 # Järjestelmän viikoittaisen laatutarkistuksen käsikirja
 
-Ohjeversion tunniste: 1.0.6
+Ohjeversion tunniste: 1.0.7
 
 ## 1. Tehtävä ja rajaus
 
@@ -69,6 +69,24 @@ Vertaa README:tä, tehtäväjonoa, seurantadokumentteja, aihekohtaisia ohjeita j
 
 ### 4.6 Saavutettavuus
 Tarkista `docs/saavutettavuus.md`:n huomiointi, otsikkohierarkia, linkkitekstit, alt-tekstit, kielimääritykset, kontrasti ja mobiilikäyttö siltä osin kuin aineisto mahdollistaa. Tarkista myös manuaalisten testien kirjaukset, ympäristöt, tulokset ja avoimet löydökset. Jos kirjauksia ei ole, ilmoita manuaalinen testaus tekemättömäksi; tyhjä testipohja ei ole testitulos. Älä väitä WCAG 2.2 AAA -vaatimustenmukaisuutta ilman kattavia testituloksia. Erota automaattisesti tarkistetut asiat manuaalisesti tarkistamattomista.
+
+
+### 4.8 Kehitysjonon tikettien tilalabelit
+
+Tarkista jokaisesta tarkasteluun kuuluvasta avoimesta ja hiljattain suljetusta tiketistä GitHub-tilan, toteutuneiden PR:ien ja `tila:*`-labelin vastaavuus. Kanoninen tilamalli ja käsittelysäännöt ovat [kehityssuunnitelman kohdissa 4.2 ja 4.2.1](kehityssuunnitelma.md).
+
+Tarkista erityisesti:
+- aktiivisesti toteutettava avoin tiketti on `tila:in-progress`;
+- toteutuksen aloittamista odottava, määrittelyltään valmis avoin tiketti on `tila:ready`;
+- estynyt työ on `tila:blocked` ja este on kuvattu;
+- vielä määrittelyä tai päätöstä odottava avoin työ on `tila:backlog`;
+- toteutettu ja hyväksymiskriteerien mukaisesti varmennettu sekä yhdistetty työ on suljettu ja merkitty `tila:done`;
+- tiketillä on täsmälleen yksi `tila:*`-label, eikä vanhaa tilalabelia ole jäänyt uuden rinnalle;
+- tiketin tilaa ei ole merkitty valmiiksi pelkän PR:n avaamisen tai keskeneräisen työhaaratyön perusteella.
+
+Kirjaa raporttiin ristiriidat, puuttuvat tai moninkertaiset tilalabelit sekä niiden täsmälliset issue-linkit. Erota todettu ristiriita tilanteesta, jossa tiketin aktiivista käsittelyä ei voida päätellä luotettavasti. Älä muuta tilalabeleita tämän auditointikohdan perusteella omin päin: sallitut automaattiset muutokset rajautuvat erikseen dokumentoituihin kehitysjonon auditoinnin sääntöihin ja niitä toteuttaviin hyväksyttyihin tiketteihin (esimerkiksi #62 ja #63). Muiden ristiriitojen korjaus jää toteuttajalle tai käyttäjän päätettäväksi.
+
+Kun laatutarkistus itse ottaa tiketin toteutukseen, sen on noudatettava samaa työn aloitus- ja valmistumissääntöä kuin muunkin toteutustyön yhteydessä. Pelkkä auditointi ei kuitenkaan tarkoita, että kaikki havaitut tiketit otetaan työn alle.
 
 ### 4.7 Lähteet ja sisältö
 Tarkista puuttuvat lähteet ja syötteet, lähdelinkkien ilmeiset virheet, epäselvät seurantajaksot, duplikaatit ja raporttien sisällölliset poikkeamat. Tarkista viimeisin viikoittaisen linkkitarkistuksen artefakti, jos se on saatavilla. Erota 404/410-virheet uudelleenohjauksista, estetyistä pyynnöistä (401/403), nopeusrajoituksista (429), palvelinvirheistä ja verkkoyhteysongelmista. Älä tulkitse estettyä tai tilapäisesti saavuttamatonta sivua automaattisesti rikkinäiseksi. Jos tarkistus tai artefakti puuttuu, kirjaa se tarkistamatta jääneeksi. Älä keksi testituloksia, lähteitä, linkkejä, päivämääriä tai tarkistusaikoja.
