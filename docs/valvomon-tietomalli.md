@@ -106,7 +106,7 @@ Lähdetarkistusten syyt ovat käyttäjälle tarkoitettuja selitteitä, eivät ra
 
 ## 7. GitHub API ja välimuisti
 
-Kehitysjono on poikkeus Valvomon selaimen suorista GitHub API -luvuista: se ei tee selainpyyntöjä Issues- tai riippuvuusrajapintoihin. GitHub Actions muodostaa täydellisen `data/kehitysjono.json`-aineiston, joka julkaistaan Pagesissa. Aineiston rakenne, käynnistimet, 15 minuutin varmistusajo, täydellisyysvaatimukset ja paikallinen välimuisti kuvataan ensisijaisesti [Kehitysjonon aineisto-ohjeessa](kehitysjonon-aineisto.md).
+Kehitysjono on poikkeus Valvomon selaimen suorista GitHub API -luvuista: se ei tee selainpyyntöjä Issues- tai riippuvuusrajapintoihin. GitHub Actions muodostaa täydellisen `data/kehitysjono.json`-aineiston, joka julkaistaan Pagesissa. Aineiston rakenne, käynnistimet, päivittäinen varmistusajo, täydellisyysvaatimukset ja paikallinen välimuisti kuvataan ensisijaisesti [Kehitysjonon aineisto-ohjeessa](kehitysjonon-aineisto.md).
 
 GitHub Actionsin ajoja haetaan julkisesta repositoriosta vain Valvomon tarvitsemiin workflow-tunnisteisiin rajaten. Käyttöliittymä ei hae raakaa lokisisältöä. API-vastaukset välimuistitetaan selaimessa lyhyeksi ajaksi; alustava päivitysväli on viisi minuuttia. API-rajoituksen tai verkkovirheen aikana näytetään viimeisin onnistunut hakuaika ja selkeä virheilmoitus. Vanhaa API-tulosta ei merkitä tuoreeksi.
 
