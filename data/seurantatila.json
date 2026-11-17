@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "timezone": "Europe/Helsinki",
-  "updated_at": "2026-11-17T11:03:45.411Z",
+  "updated_at": "2026-11-17T11:06:48.452Z",
   "notes": [
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
@@ -34,7 +34,7 @@
         "feed": "feeds/taylor-swift.xml",
         "last_successful_check": "2026-11-17T13:03:45+02:00",
         "last_period_start": null,
-        "last_period_end": "2026-11-17T13:03:45+02:00",
+        "last_period_end": null,
         "last_result": "published",
         "published_items": 1,
         "sources_checked": 8,
