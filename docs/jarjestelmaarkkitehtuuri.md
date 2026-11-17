@@ -197,7 +197,8 @@ GitHub Actions ei suorita varsinaisia uutis- tai näytöshakuja. Se hoitaa repos
 
 Työnkulut määrittelevät oikeutensa erikseen vähimmän tarpeen periaatteella:
 
-- Pages-julkaisu: `contents: read`, `issues: read`, `pages: write` ja `id-token: write`.- RSS-/dokumentaatiotestit ja linkkitarkistus: `contents: read`.
+- Pages-julkaisu: `contents: read`, `issues: read`, `pages: write` ja `id-token: write`.
+- RSS-/dokumentaatiotestit ja linkkitarkistus: `contents: read`.
 - Natiivien issue-riippuvuuksien synkronointi: `contents: read`, `issues: write` ja `actions: write`, koska työnkulku muuttaa riippuvuuksia ja käynnistää Pages-työnkulun.
 
 Actions käyttää työnkululle rajattua `GITHUB_TOKEN`-tunnusta. Tokenia ei kirjoiteta lähdekoodiin eikä julkaista selaimelle. GitHub Actionsin työnkulkuoikeudet eivät määrittele ChatGPT:n GitHub-integraation oikeuksia.
@@ -396,7 +397,8 @@ Tavoitetilassa jokaisella tiedolla on yksi ensisijainen omistaja ja kanoninen ta
 |---|---|---|
 | Aiheiden määritykset | Aihekonfiguraatioiden versioitu rekisteri | Aihe-ID, rajaus, hakuprofiilit, kielet, alueet, poikkeukset ja raportointiprofiili |
 | Lähteiden perustiedot | Yhteinen lähdekatalogi | Yksilöllinen lähde-ID, nimi, URL, lähdetyyppi ja yhteinen arvio |
-| Tehtäväkohtaiset lähdekäytöt | Tehtäväkohtainen lähderekisteri | Viittaukset lähdekatalogiin, kriittisyys, käyttörajoitteet ja tehtäväkohtaiset asetukset || Tehtäväjono | Tehtäväjonon kanoninen tila | Tehtävien järjestys, tyyppi, valintakelpoisuus ja seuraava vuoro |
+| Tehtäväkohtaiset lähdekäytöt | Tehtäväkohtainen lähderekisteri | Viittaukset lähdekatalogiin, kriittisyys, käyttörajoitteet ja tehtäväkohtaiset asetukset |
+| Tehtäväjono | Tehtäväjonon kanoninen tila | Tehtävien järjestys, tyyppi, valintakelpoisuus ja seuraava vuoro |
 | Ajon tila ja tarkistuspisteet | Ajonhallinnan tilarekisteri | Ajotunniste, tehtävä, vaiheet, aloitus/lopetus, tulos ja viimeisin onnistunut tarkistuspiste |
 | Lähdetarkistukset | Ajon lähdehavaintojen loki | Tarkistetut lähteet, tarkistusajankohta, tulos ja tarkistamatta jäämisen syy |
 | Raportit ja julkaisut | Julkaisuarkisto tai kanoninen jakelukanava | Raportin sisältö, yksilöllinen tunniste, seurantajakso, lähteet ja julkaisun tila |
@@ -596,6 +598,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 - [Tietomallit ja prosessikaaviot](tietomallit-ja-prosessit.md)
 - [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md)
 - [Automaatioiden hallinnan suojausperiaatteet](automaation-hallintaperiaatteet.md)
+
 ## 12. Muutoshistoria
 
 - **1.1.1 – 2026-11-17:** korjattiin luvun 9 alaotsikoiden numerointi.
