@@ -104,7 +104,10 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 - Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
 - Seuranta: musiikki ja julkaisut, kiertueet ja esiintymiset, elokuva/TV, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura. Hae erikseen Suomessa järjestettävät konsertit, fanitapahtumat, kuuntelutilaisuudet, elokuvanäytökset, näyttelyt ja muut viralliset tapahtumat.
 - Vältä vähäarvoista yksityiselämää koskevaa juoruilua ja vahvistamattomia parisuhdeväitteitä.
-- Tapahtumaloki: ei vielä merkintöjä.
+- **16.11.2026 – VIRALLISESTI VAHVISTETTU:** Recording Academy julkisti 69. Grammy-gaalan ehdokkaat. Taylor Swift sai viisi ehdokkuutta: vuoden albumi (*The Life of a Showgirl*), vuoden levytys (*The Fate of Ophelia*), vuoden laulu (*I Knew It, I Knew You*, elokuvasta *Toy Story 5*), paras audiovisuaaliselle tuotannolle kirjoitettu laulu (sama kappale) sekä paras pop-duo- tai yhtye-esitys (*The Life of a Showgirl* yhdessä Sabrina Carpenterin kanssa). Hänen albuminsa on viides peräkkäinen vuoden albumi -ehdokkuuden saanut studioalbumi; AP:n mukaan vain Kendrick Lamar on aiemmin yltänyt vastaavaan sarjaan.
+  - Lähteet: Recording Academy (ensisijainen), Associated Press ja Reuters (riippumattomat toimitukselliset vahvistukset) sekä UOL (portugalinkielinen rinnakkaisraportti).
+  - RSS GUID: `urn:aiheseurain:taylor-swift:2026-11-16:grammy-2027-nominations`; `feeds/taylor-swift.xml`.
+  - Seuraava tarkistus: 7.2.2027 järjestettävän gaalan voittajat sekä mahdolliset olennaiset uudet julkaisu-, esiintymis- ja tapahtumatiedot.
 
 ### Saint Dr. Gurmeet Ram Rahim Singh Ji Insan
 
