@@ -166,7 +166,8 @@ class ModuleRegistryTests(unittest.TestCase):
         self.write_registry(entries)
         result = load_registry(self.registry_path, self.temp_root)
         self.assertEqual(len(result.invalid_modules), 1)
-        self.assertEqual(result.modules[1].status, "invalid")
+        statuses = {item.module_id: item.status for item in result.modules}
+        self.assertEqual(statuses["indian-film-screening-watch"], "invalid")
 
 
 if __name__ == "__main__":
