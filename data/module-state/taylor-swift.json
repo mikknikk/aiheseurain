@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "module_id": "taylor-swift",
+  "module_definition_version": "1.0.0",
+  "checkpoint": {
+    "last_successful_run": {
+      "run_id": "main-automation-20261117T105033Z-r01",
+      "run_history_ref": "run-history/main-automation/history.json#main-automation-20261117T105033Z-r01",
+      "definition_version": null,
+      "checked_at": "2026-11-17T13:03:45+02:00",
+      "period": {
+        "start": null,
+        "end": null
+      },
+      "result": "published",
+      "published_items": 1,
+      "sources_checked": 8,
+      "errors": []
+    }
+  },
+  "checkpoint_history": [
+    {
+      "event_id": "legacy-checkpoint-taylor-swift-20261117130345",
+      "source": "legacy_migration",
+      "run_id": "main-automation-20261117T105033Z-r01",
+      "run_history_ref": "run-history/main-automation/history.json#main-automation-20261117T105033Z-r01",
+      "definition_version": null,
+      "checked_at": "2026-11-17T13:03:45+02:00",
+      "period": {
+        "start": null,
+        "end": null
+      },
+      "result": "published",
+      "published_items": 1,
+      "sources_checked": 8,
+      "source_check_run_refs": [
+        "taylor-swift-20261117T125703-0200"
+      ],
+      "report_guid_refs": [],
+      "recorded_on": "2026-11-18",
+      "notes": "Siirretty data/seurantatila.json-tiedostosta. Historiallisen ajon moduuliversiota tai yksittäisiä raportti-GUIDeja ei ollut kirjattu, joten niitä ei päätellä."
+    }
+  ],
+  "history": {
+    "document_refs": [
+      {
+        "path": "docs/seuranta.md",
+        "heading": "Taylor Swift"
+      }
+    ],
+    "event_refs": [],
+    "current_record_refs": [],
+    "source_check_run_refs": [
+      "taylor-swift-20261117T125703-0200"
+    ]
+  },
+  "publication": {
+    "feed_path": "feeds/taylor-swift.xml",
+    "guid_refs": [
+      "urn:aiheseurain:taylor-swift:2026-11-16:grammy-2027-nominations"
+    ]
+  },
+  "references": {
+    "source_registry_ref": "data/sources/taylor_swift.json",
+    "source_catalog_ref": "data/source-catalog.json",
+    "feed_catalog_ref": "data/feed-catalog.json",
+    "source_check_log_ref": "data/lahdetarkistukset.json",
+    "legacy_state_pointer": "data/seurantatila.json#/rotation.tasks.taylor_swift"
+  },
+  "migration": {
+    "source_task_id": "taylor_swift",
+    "source_state_ref": "data/seurantatila.json",
+    "migrated_on": "2026-11-18",
+    "notes": "Tuntemattomat tarkistusajat, seurantajaksot ja ajotunnisteet säilytetään null-arvoina. Vanha seurantatila jää yhteensopivuuslähteeksi siirtymäajaksi."
+  }
+}

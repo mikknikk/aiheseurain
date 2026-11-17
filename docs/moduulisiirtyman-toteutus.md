@@ -83,7 +83,7 @@ Tämän tiketin yhteydessä:
 - tehtäväkiertoa tai näytösvahdin päivittäistä erillisyyttä ei muuteta;
 - ChatGPT:n automaatioasetuksia, ajastuksia, aikavyöhykkeitä, ohjeita tai kohdekeskusteluja ei muuteta.
 
-Seuraavissa vaiheissa #106 erottaa moduulikohtaisen tilan ja historian, #107 määrittelee tutkimus- ja tekoälypalvelujen adapterit ja #108 toteuttaa yhteisen orkestroinnin. Tuotantomoduulien aktivointi ja nykyisten lukijoiden suoritusvastuun siirto tehdään vasta erillisessä, testatussa käyttöönotossa.
+Moduulikohtaisen tilan ja historian migraatio on kuvattu [omassa dokumentissaan](moduulikohtainen-tila.md) ja toteutetaan #106:ssa. Seuraavaksi #107 määrittelee tutkimus- ja tekoälypalvelujen adapterit ja #108 toteuttaa yhteisen orkestroinnin. Tuotantomoduulien aktivointi ja nykyisten lukijoiden suoritusvastuun siirto tehdään vasta erillisessä, testatussa käyttöönotossa.
 
 ## 8. Palautus
 

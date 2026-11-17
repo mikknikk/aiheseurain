@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "module_id": "sompote-sands",
+  "module_definition_version": "1.0.0",
+  "checkpoint": {
+    "last_successful_run": {
+      "run_id": null,
+      "run_history_ref": null,
+      "definition_version": null,
+      "checked_at": null,
+      "period": {
+        "start": null,
+        "end": null
+      },
+      "result": "not_recorded",
+      "published_items": null,
+      "sources_checked": null,
+      "errors": []
+    }
+  },
+  "checkpoint_history": [],
+  "history": {
+    "document_refs": [
+      {
+        "path": "docs/seuranta.md",
+        "heading": "Sompote Sands"
+      }
+    ],
+    "event_refs": [],
+    "current_record_refs": [],
+    "source_check_run_refs": []
+  },
+  "publication": {
+    "feed_path": "feeds/sompote-sands.xml",
+    "guid_refs": []
+  },
+  "references": {
+    "source_registry_ref": "data/sources/sompote_sands.json",
+    "source_catalog_ref": "data/source-catalog.json",
+    "feed_catalog_ref": "data/feed-catalog.json",
+    "source_check_log_ref": "data/lahdetarkistukset.json",
+    "legacy_state_pointer": "data/seurantatila.json#/rotation.tasks.sompote_sands"
+  },
+  "migration": {
+    "source_task_id": "sompote_sands",
+    "source_state_ref": "data/seurantatila.json",
+    "migrated_on": "2026-11-18",
+    "notes": "Tuntemattomat tarkistusajat, seurantajaksot ja ajotunnisteet säilytetään null-arvoina. Vanha seurantatila ja kanoninen historia jäävät yhteensopivuuslähteiksi siirtymäajaksi."
+  }
+}

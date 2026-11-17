@@ -14,8 +14,8 @@ Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation luku
 - `prompts/` – automaatioiden asetuksiin kopioitavat kanoniset käynnistyskehotteet `.txt`-tiedostoina sekä niiden ylläpito-ohje.
 - `data/feed-catalog.json` – RSS-lukijan ja validoinnin yhteinen kymmenen syötteen luettelo; `data/source-catalog.json` – kaikkien lähteiden yhteiset perustiedot ja A–D-luokka kerran; `data/sources/*.json` – kymmenen tehtäväkohtaista lähdekäyttörekisteriä; `data/lahdetarkistukset.json` – ajokohtainen lähdekattavuusloki; `data/module-registry.json` – kymmenen nykyisen aihe- ja prosessimoduulin rekisteri; kaikki merkinnät ovat toistaiseksi inactive-tilassa.
 - `modules/` – kymmenen nykyisen seurannan itsenäiset koneellisesti validoitavat moduulimääritykset; näytösvahtimoduulilla on lisäksi oma tapahtumatyypin määritystiedosto. Kaikki rekisterimerkinnät ovat inactive-tilassa.
-- `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin, näytöshistorian, Kehitysjonon, seurantamoduulien tietosopimuksen ja tapahtumavahdin skeemat.
-- `scripts/module_registry.py`, `scripts/validate_module_registry.py` ja `scripts/validate_module_migration.py` – lataavat moduulirekisterin, validoivat määritykset ja tarkistavat nykyisten lähderekisterien vastaavuuden. `scripts/event_watch.py` käsittelee yleisiä tapahtumahavaintoja ja `scripts/event_watch_adapters.py` sovittaa näytöshavainnot yleiseen malliin vain muistissa. `docs/seurantamoduulirekisteri.md`, `docs/tapahtumavahti.md` ja `docs/moduulisiirtyman-toteutus.md` kuvaavat kyvykkyydet ja migraation.
+- `schemas/` – koneellisten lähdetietojen, julkaisulaadun portin, näytöshistorian, Kehitysjonon, seurantamoduulien tietosopimuksen, tapahtumavahdin ja moduulikohtaisen tilan skeemat.
+- `scripts/module_registry.py`, `scripts/validate_module_registry.py` ja `scripts/validate_module_migration.py` – lataavat moduulirekisterin, validoivat määritykset ja tarkistavat nykyisten lähderekisterien vastaavuuden. `scripts/module_state.py` käsittelee moduulikohtaisia checkpoint-siirtymiä ja `scripts/validate_module_state.py` tarkistaa niiden historian ja viitteet. `scripts/event_watch.py` käsittelee yleisiä tapahtumahavaintoja ja `scripts/event_watch_adapters.py` sovittaa näytöshavainnot yleiseen malliin vain muistissa. `docs/seurantamoduulirekisteri.md`, `docs/tapahtumavahti.md` ja `docs/moduulisiirtyman-toteutus.md` kuvaavat kyvykkyydet ja migraation.
 - `scripts/build_kanban_data.mjs`, `scripts/validate_kanban_data.py` ja `.github/workflows/publish-pages.yml` – muodostavat ja validoivat GitHub Issues -tietojen sekä natiivien riippuvuuksien täydellisen Kehitysjono-aineiston ja julkaisevat saman Jekyll/Pages-sivuston.
 - `docs/tehtavajono.md` – yhdeksän tehtävän kiertojärjestys ja seuraava vuoro; yleiset raportointisäännöt ovat docs/seuranta.md:ssä.
 - `docs/kehitysjonon-aineisto.md` – Kehitysjonon johdetun JSON-aineiston rakenne, päivityskäynnistimet, virhetilat ja Pages-julkaisun käyttöönotto.
@@ -119,6 +119,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/jarjestelmaarkkitehtuuri.md`: järjestelmäriippumaton toimintamalli, kolmen kerroksen vastuut, nykyinen tekninen toteutus, tavoitearkkitehtuuri, tietovirrat, nykytilan ja tavoitetilan erot, siirtymävaiheet sekä teknologioiden vaihdettavuus.
 - `docs/moduulisiirtyman-inventaario.md`: nykyisten yhdeksän uutisaiheen ja erillisen näytösvahdin moduuli-inventaario, tiedostojen siirtokartta, omistajuusrajat, migraation riippuvuudet ja palautusmenettely.
 - `docs/moduulisiirtyman-toteutus.md`: kymmenen moduulimäärityksen sisältö, lähdeviitteiden vastaavuus, passiivinen rekisteröinti, validointi, yhteensopivuus ja palautus.
+- `docs/moduulikohtainen-tila.md`: moduulikohtaisen checkpointin, ajohistorian, GUID- ja tapahtumaviitteiden sekä idempotentin päivityksen säännöt.
 - `docs/seurantamoduulin-tietosopimus.md`: aihe- ja prosessimoduulien kanoninen tietosopimus, versiointi, yhteensopivuus ja elinkaari.
 - `docs/github-riippuvuuksien-hallinta.md`: GitHubin natiivien issue-riippuvuuksien automaattisen lisäämisen ja erikseen pyydetyn poistamisen toimintatapa, pyyntölohko ja oikeusrajaukset.
 - `docs/ajohistoria.md`: ChatGPT-automaatioiden erillisten ajohistoriahaarojen tietomalli ja kirjausmenettely.
@@ -132,7 +133,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `_layouts/site.html`, `_includes/site-header.html`, `_includes/site-footer.html` ja `assets/`: sivujen yhteinen sivustorunko, navigaatio ja selaimen esityskoodi.
 - `docs/intialaisen-elokuvan-*.md`: intialaisen elokuvan uutisseurannan aihekohtaiset ohjeet, lähteet ja historia.
 - `docs/intialaisten-elokuvien-naytosseuranta.md` ja `docs/naytoshistorian-rakenne.md`: erillisen näytösvahdin työohje ja sen muutoshistorian tietomalli.
-- `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila sekä pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversiot ja viimeksi onnistuneesti käytetyt versiot.
+- `data/seurantatila.json`: yhteinen tehtäväkierto, tekninen automaatiotila ja ohjeversiot. `data/module-state/*.json`: kymmenen moduulin omat onnistumisen checkpointit, historiaviitteet, lähdetarkistusajot ja RSS-GUIDit.
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
 - `schemas/naytosten-muutoshistoria.schema.json`: näytöshistorian JSON Schema Draft 2020-12 -skeema.
 - `schemas/seurantamoduuli.schema.json` ja `schemas/module-extensions/`: seurantamoduulien yhteinen sopimus ja tyypitetyt laajennusskeemat.
@@ -186,7 +187,7 @@ Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaa
 
 ChatGPT-automaatioiden vaihekohtainen ajohistoria tallennetaan erillisiin `run-history/main-automation`, `run-history/screening-watch` ja `run-history/quality-check` -haaroihin. Valvomo lukee niiden `history.json`-tiedostot julkisina tietoina; ne eivät ole GitHub Actions -ajoja eivätkä muuta `main`-haaran RSS-julkaisuja. Tietomalli ja kirjausmenettely: [docs/ajohistoria.md](docs/ajohistoria.md).
 
-`data/seurantatila.json` tallentaa yhdeksän kiertotehtävän ja erillisen näytösvahdin koneellisesti luettavan tilan. Sen tehtäväkierron on vastattava `docs/tehtavajono.md`:tä. Seurantajaksojen, aikaleimojen ja päivitysten tarkat säännöt ovat [seurantaohjeessa](docs/seuranta.md).
+`data/seurantatila.json` säilyttää yhteisen yhdeksän tehtävän kierron, teknisen automaatiotilan ja ohjeversiot. Moduulikohtaiset viimeisimmät onnistumiset ja historiaviitteet ovat `data/module-state/{module_id}.json`-tiedostoissa. Osittainen tai epäonnistunut ajo ei saa siirtää moduulin onnistumisen checkpointia. Seurantajaksojen, aikaleimojen ja päivitysten tarkat säännöt ovat [seurantaohjeessa](docs/seuranta.md) ja [moduulikohtaisen tilan ohjeessa](docs/moduulikohtainen-tila.md).
 
 ## Skriptien kehityskäytännöt
 

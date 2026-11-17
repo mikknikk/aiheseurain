@@ -76,8 +76,9 @@ Jos haluat seurata esimerkkiä tiedostoista käsin, avaa tämän jälkeen:
 1. [Yhteinen lähdekatalogi](../data/source-catalog.json) – lähteen yhteiset perustiedot.
 2. [Tolkienin lähdekäyttörekisteri](../data/sources/tolkien.json) – miten yksi aihe viittaa lähteeseen.
 3. [Ajokohtainen lähdetarkistusloki](../data/lahdetarkistukset.json) – mitä yksittäisellä ajolla tarkistettiin.
-4. [Seurantatila](../data/seurantatila.json) – järjestelmän viimeisin tunnettu tila.
-5. [Syötekatalogi](../data/feed-catalog.json) – RSS-lukijan tuntemat syötteet.
+4. [Yhteinen seurantatila](../data/seurantatila.json) – tehtäväkierto ja tekninen automaatiotila.
+5. [Moduulikohtaiset tilat](../data/module-state/) – kunkin moduulin viimeisin onnistumisen checkpoint ja historiaviitteet; tarkemmat säännöt [moduulikohtaisen tilan ohjeessa](moduulikohtainen-tila.md).
+6. [Syötekatalogi](../data/feed-catalog.json) – RSS-lukijan tuntemat syötteet.
 
 JSON-tiedostot ovat koneellista tilaa ja määrittelyjä, eivät itsenäisiä käyttöohjeita. Niitä on helpompi lukea teknisen oppaan jälkeen.
 
