@@ -101,7 +101,7 @@ Tehtävien järjestys ja seuraava vuoro eivät kuulu tähän seurantahistoriaan.
 ### Taylor Swift
 
 - RSS: `feeds/taylor-swift.xml`
-- Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
+- Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta: musiikki ja julkaisut, kiertueet ja esiintymiset, elokuva/TV, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura. Hae erikseen Suomessa järjestettävät konsertit, fanitapahtumat, kuuntelutilaisuudet, elokuvanäytökset, näyttelyt ja muut viralliset tapahtumat.
 - Vältä vähäarvoista yksityiselämää koskevaa juoruilua ja vahvistamattomia parisuhdeväitteitä.
 - **16.11.2026 – VIRALLISESTI VAHVISTETTU:** Recording Academy julkisti 69. Grammy-gaalan ehdokkaat. Taylor Swift sai viisi ehdokkuutta: vuoden albumi (*The Life of a Showgirl*), vuoden levytys (*The Fate of Ophelia*), vuoden laulu (*I Knew It, I Knew You*, elokuvasta *Toy Story 5*), paras audiovisuaaliselle tuotannolle kirjoitettu laulu (sama kappale) sekä paras pop-duo- tai yhtye-esitys (*The Life of a Showgirl* yhdessä Sabrina Carpenterin kanssa). Hänen albuminsa on viides peräkkäinen vuoden albumi -ehdokkuuden saanut studioalbumi; AP:n mukaan vain Kendrick Lamar on aiemmin yltänyt vastaavaan sarjaan.
