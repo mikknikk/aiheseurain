@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.8.0  
+**Versio:** 1.9.0  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -695,6 +695,16 @@ Migraatiossa säilytettiin kaikki nykyisten RSS-syötteiden GUIDit, lähdetarkis
 
 Tilan skeema, migraatiovalidointi ja päivityslogiikka on kuvattu [moduulikohtaisen tilan dokumentissa](moduulikohtainen-tila.md). Tämä toteutus luo tilatiedostot ja turvallisen siirtymäfunktion; se ei vielä vaihda automaatioiden kirjoituspolkua eikä aktivoi moduuleja.
 
+### 8.18 Tekoäly- ja tutkimuspalvelujen adapterit
+
+AIProcessor ja ResearchProvider ovat erilliset, versioidut rajapintasopimukset. Moduulimääritys kertoo tarvitsemansa kyvykkyydet, mutta ei palveluntarjoajaa, mallia tai tunnistautumistapaa. Tekninen valinta tehdään data/provider-routing.json-tiedostossa moduulikohtaisella tai oletusreitillä.
+
+scripts/provider_router.py tarkistaa palvelun tyypin, aktiivisuuden, adapterin tunnisteen ja kyvykkyydet. Rajapinnat säilyttävät source_id- ja URL-viitteet, luotettavuusluokat, väitteiden vahvistustasot ja epävarmuuden. Aikakatkaisut, rate limitit ja tilapäiset saatavuusvirheet käsitellään rajatulla uusintakäytännöllä; tunnistautumis- ja sopimusvirheitä ei yritetä automaattisesti uudelleen. Kustannusarvio tarkistetaan ennen kutsua ja ajon yhteinen budjetti rajaa toteutunutta kulua.
+
+Reitityskonfiguraatio sisältää vain ympäristömuuttujien nimiä, ei tunnusten arvoja. Auditointimerkinnät eivät sisällä pyyntötekstiä, lähdekatkelmia tai salaisuuksia. Kaksi testiadapteria kumpaankin sopimukseen osoittaa, että palveluntarjoaja voidaan vaihtaa teknisellä reitityksellä muuttamatta moduulimääritystä tai moduulin tilaa.
+
+Tuotannon reitityskonfiguraatio on tarkoituksella tyhjä: todellista tekoäly- tai tutkimuspalvelua ei ole aktivoitu. Testiadapterit eivät käytä verkkoa. Tämä toteutus ei liitä repositoriota automaattisesti nykyiseen ChatGPT-keskusteluun tai ajastettuihin tehtäviin; todellinen palveluadapteri ja sen tunnusten hallinta vaativat erillisen käyttöönoton.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -745,6 +755,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.9.0 – 2026-11-18:** määriteltiin AIProcessor- ja ResearchProvider-sopimukset, tekninen moduulikohtainen reititys, rajatut uusinnat, kustannusbudjetit, tietoturvallinen auditointi ja kaksi testiadapteria kummallekin sopimukselle.
 - **1.8.0 – 2026-11-18:** lisättiin kymmenen moduulikohtaista tilatiedostoa, checkpointin append-only-historia, lähde- ja RSS-GUID-viitteet, näytöshistorian tapahtumaviitteet sekä onnistuneen checkpointin idempotentti ja rinnakkaisuutta suojaava päivityssopimus.
 - **1.7.0 – 2026-11-18:** lisättiin kymmenen nykyisen seurannan itsenäiset moduulimääritykset ja inactive-rekisterimerkinnät, näytösvahtimoduulin tapahtumatyypin viite sekä lähdeviitteiden ja kieli-/aluekattavuuden migraatiovalidointi.
 - **1.6.0 – 2026-11-18:** dokumentoitiin yleinen tapahtumavahti, tapahtumatyypin laajennussopimus, yhteinen käsittelyydin, nykyisen näytöshistorian vain lukeva sovitin ja konferenssiesityksen testitapaus.
