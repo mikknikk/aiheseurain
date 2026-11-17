@@ -116,6 +116,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.
 - `docs/jarjestelmaarkkitehtuuri.md`: järjestelmäriippumaton toimintamalli, kolmen kerroksen vastuut, nykyinen tekninen toteutus, tavoitearkkitehtuuri, tietovirrat, nykytilan ja tavoitetilan erot, siirtymävaiheet sekä teknologioiden vaihdettavuus.
+- `docs/moduulisiirtyman-inventaario.md`: nykyisten yhdeksän uutisaiheen ja erillisen näytösvahdin moduuli-inventaario, tiedostojen siirtokartta, omistajuusrajat, migraation riippuvuudet ja palautusmenettely.
 - `docs/seurantamoduulin-tietosopimus.md`: aihe- ja prosessimoduulien kanoninen tietosopimus, versiointi, yhteensopivuus ja elinkaari.
 - `docs/github-riippuvuuksien-hallinta.md`: GitHubin natiivien issue-riippuvuuksien automaattisen lisäämisen ja erikseen pyydetyn poistamisen toimintatapa, pyyntölohko ja oikeusrajaukset.
 - `docs/ajohistoria.md`: ChatGPT-automaatioiden erillisten ajohistoriahaarojen tietomalli ja kirjausmenettely.
