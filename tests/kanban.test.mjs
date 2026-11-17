@@ -89,6 +89,7 @@ test("Kehitysjono-sivu ja navigaatio tarjoavat saavutettavan vain luku -osion", 
   assert.match(page, /kanban-dependency-details/);
   assert.match(script, /dependencies\/blocked_by/);
   assert.match(script, /data-issue-number/);
+  assert.match(script, /Tämän suunnan riippuvuustietoja ei saatu kokonaan haettua/);
   assert.match(header, /\/kehitysjono\//);
   assert.match(header, /page\.section == "kehitysjono"/);
   assert.match(layout, /assets\/js\/kanban\.js/);

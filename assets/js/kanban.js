@@ -363,7 +363,9 @@ function renderDependencyPanel() {
     { title: "Tämä tiketti estää seuraavia töitä", items: relations.blocking }
   ]) {
     const list = document.createElement("ul");
-    if (!group.items.length) list.appendChild(makeElement("li", "", "GitHubiin ei ole kirjattu tähän suuntaan riippuvuuksia."));
+    if (!group.items.length) list.appendChild(makeElement("li", "", dependencyGraph.complete
+      ? "GitHubiin ei ole kirjattu tähän suuntaan riippuvuuksia."
+      : "Tämän suunnan riippuvuustietoja ei saatu kokonaan haettua."));
     for (const related of group.items) {
       const item = document.createElement("li");
       const link = makeElement("a", "", "#" + related.number + " – " + related.title);
@@ -457,7 +459,9 @@ function showCachedData(cache, isError = false) {
   savedAt = cache.savedAt;
   dependencyGraph = cache.dependencies && typeof cache.dependencies.byIssue === "object" ? cache.dependencies : null;
   dependencySavedAt = Number.isFinite(cache.dependenciesSavedAt) ? cache.dependenciesSavedAt : null;
-  document.getElementById("kanban-dependencies").textContent = dependencyGraph ? "Päivitä riippuvuudet" : "Näytä riippuvuudet";
+  const dependencyButton = document.getElementById("kanban-dependencies");
+  dependencyButton.disabled = false;
+  dependencyButton.textContent = dependencyGraph ? "Päivitä riippuvuudet" : "Näytä riippuvuudet";
   const dependencyIsStale = dependencySavedAt && Date.now() - dependencySavedAt > STALE_AFTER_MS;
   updateDependencyStatus(dependencyGraph
     ? (dependencyIsStale ? "Vanhentuneet välimuistissa olevat riippuvuustiedot: " : "Välimuistissa olevat riippuvuustiedot: ") + formatDate(dependencySavedAt || cache.savedAt) + "."
@@ -476,6 +480,7 @@ function showCachedData(cache, isError = false) {
 async function refreshIssues() {
   const button = document.getElementById("kanban-refresh");
   button.disabled = true;
+  document.getElementById("kanban-dependencies").disabled = true;
   button.textContent = "Päivitetään…";
   try {
     const issues = await fetchAllIssues();
@@ -489,6 +494,7 @@ async function refreshIssues() {
     updateDependencyStatus("Riippuvuuksia ei ole vielä haettu.");
     populateAreaFilter();
     render();
+    document.getElementById("kanban-dependencies").disabled = false;
     updateFreshness("Päivitetty onnistuneesti " + formatDate(savedAt) + ".");
     document.getElementById("kanban-api-error").hidden = true;
   } catch (error) {
@@ -503,6 +509,7 @@ async function refreshIssues() {
       ? " Näytämme erikseen merkittyä välimuistitietoa."
       : " Tikettejä ei voida näyttää ilman onnistunutta hakua.");
     if (!cache) {
+      document.getElementById("kanban-dependencies").disabled = true;
       allIssues = [];
       render();
       document.getElementById("kanban-empty").hidden = false;
