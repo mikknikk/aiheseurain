@@ -120,7 +120,7 @@ test("riippuvuuksien API-haku käsittelee rajoituksen osittaisena tuloksena", as
   const calls = [];
   const result = await fetchAllDependencies(issues, async (url) => {
     calls.push(String(url));
-    const number = Number(new URL(url).pathname.split("/").at(-2));
+    const number = Number(new URL(url).pathname.split("/").at(-3));
     if (number === 13) return { ok: false, status: 403 };
     return { ok: true, json: async () => [] };
   }, 2);

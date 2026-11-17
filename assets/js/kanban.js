@@ -286,7 +286,8 @@ function renderBoard(issues) {
       if (dependencyGraph) {
         const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
         item.appendChild(makeElement("p", "kanban-dependency-summary",
-          "Edeltäjiä: " + relations.blockedBy.length + " · Estää: " + relations.blocking.length));
+          (dependencyGraph.complete ? "Edeltäjiä: " : "Edeltäjiä vähintään: ") + relations.blockedBy.length +
+          (dependencyGraph.complete ? " · Estää: " : " · Estää vähintään: ") + relations.blocking.length));
         const detailButton = makeElement("button", "kanban-dependency-button", "Avaa riippuvuudet");
         detailButton.type = "button";
         detailButton.dataset.issueNumber = String(issue.number);
@@ -320,7 +321,8 @@ function renderTable(issues) {
     if (dependencyGraph) {
       const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
       dependencyCell.appendChild(makeElement("span", "",
-        "Edeltäjiä: " + relations.blockedBy.length + "; estää: " + relations.blocking.length + ". "));
+        (dependencyGraph.complete ? "Edeltäjiä: " : "Edeltäjiä vähintään: ") + relations.blockedBy.length +
+        (dependencyGraph.complete ? "; estää: " : "; estää vähintään: ") + relations.blocking.length + ". "));
       const detailButton = makeElement("button", "kanban-dependency-button", "Avaa");
       detailButton.type = "button";
       detailButton.dataset.issueNumber = String(issue.number);
@@ -456,7 +458,10 @@ function showCachedData(cache, isError = false) {
   dependencyGraph = cache.dependencies && typeof cache.dependencies.byIssue === "object" ? cache.dependencies : null;
   dependencySavedAt = Number.isFinite(cache.dependenciesSavedAt) ? cache.dependenciesSavedAt : null;
   document.getElementById("kanban-dependencies").textContent = dependencyGraph ? "Päivitä riippuvuudet" : "Näytä riippuvuudet";
-  updateDependencyStatus(dependencyGraph ? "Välimuistissa olevat riippuvuustiedot: " + formatDate(dependencySavedAt || cache.savedAt) + "." : "Riippuvuuksia ei ole vielä haettu.");
+  const dependencyIsStale = dependencySavedAt && Date.now() - dependencySavedAt > STALE_AFTER_MS;
+  updateDependencyStatus(dependencyGraph
+    ? (dependencyIsStale ? "Vanhentuneet välimuistissa olevat riippuvuustiedot: " : "Välimuistissa olevat riippuvuustiedot: ") + formatDate(dependencySavedAt || cache.savedAt) + "."
+    : "Riippuvuuksia ei ole vielä haettu.", Boolean(dependencyIsStale));
   populateAreaFilter();
   render();
   const age = Date.now() - cache.savedAt;
