@@ -38,6 +38,9 @@ Kahdeksan muuta aihekierroksen syötettä voivat olla tyhjiä, jos uusia olennai
 
 ## Pääautomaation lukujärjestys ja tehtäväkierto
 
+Kaikkia nykyisiä ja tulevia automaatioita koskeva ajastusten, asetusten ja kohdekeskustelujen suojaus on määritelty [automaatioiden hallintaperiaatteissa](docs/automaation-hallintaperiaatteet.md). Automaation suorittaminen ei anna lupaa muuttaa ChatGPT:n ajastettua tehtävää tai sen kohdekeskustelua. GitHubin dokumentaatio ja ChatGPT:n tehtäväasetukset ovat erillisiä; GitHub-muutos ei päivitä tehtäväasetuksia automaattisesti.
+
+
 Pääautomaation varsinainen tehtävä- ja toimintakuvaus on versionhallittu tiedostossa [docs/paaautomaation-ohje.md](docs/paaautomaation-ohje.md). ChatGPT-automaation asetuksissa käytettävän lyhyen käynnistyskehotteen kanoninen teksti on `prompts/paauutisseuranta.txt`-tiedostossa. Kopioi tiedoston sisältö automaation asetuksiin; pidä tiedosto ja asetuksiin tallennettu kehote täsmälleen samoina. Ohjeversion tunniste ja viimeisimmän onnistuneen ajon käyttämä versio tallennetaan `data/seurantatila.json`-tiedoston `automation_instructions`-osioon. Käynnistyskehotteen tunniste tarkistetaan lisäksi `startup_prompt_id`-kenttää vasten; vanhentunut tai väärä kehote keskeyttää ajon. Jos käsikirjan ja JSONin nykyversiot eivät täsmää, pääautomaatio keskeyttää ajon.
 
 Myös erillisellä näytövahdilla ja viikoittaisella laatutarkistuksella on omat GitHubissa ylläpidettävät käsikirjansa:
