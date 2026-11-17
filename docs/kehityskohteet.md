@@ -20,6 +20,8 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Toteutetut kohteet
 
+- [x] **Uutislähteiden ja uutisväitteiden luotettavuusluokitus (#27).** Yhteinen A–D-lähdeluokitus tallennetaan lähdekatalogiin ja kuusi väitekohtaista varmennustasoa kirjataan uusien julkaisulaadun porttiraporttien claim_assessments-kenttään. Ohjeet erottavat lähteen yleisen roolin väitteen näytöstä sekä kuvaavat lähderiippuvuudet, anonyymit lähteet, ristiriidat, sidonnaisuudet ja korjaukset. Skeemat ja rakennetestit tarkistavat sallitut arvot; ne eivät väitä todistavansa uutisten totuutta.
+
 - [x] **Pääautomaation ohjeiden ulkoistus ja versiohistoria.** Pääautomaation koko tehtävä- ja toimintakuvaus on siirretty tiedostoon `docs/paaautomaation-ohje.md`. ChatGPT-automaation kehote on lyhyt käynnistysosoite. `data/seurantatila.json` tallentaa nykyisen ohjeversion sekä viimeisimmän onnistuneen ajon käyttämän version ja ajan; GitHub Actions tarkistaa versioiden yhdenmukaisuuden.
 
 - [x] **Näytösvahdin ohjeiden ulkoistus ja versiohistoria.** Näytösvahdin täydellinen tehtäväohje on versionhallittu tiedostossa `docs/intialaisten-elokuvien-naytosseuranta.md`. Automaation kehote on lyhyt käynnistysosoite, ja `data/seurantatila.json` tallentaa ohjeversion sekä viimeisimmän onnistuneen ajon version ja ajan.

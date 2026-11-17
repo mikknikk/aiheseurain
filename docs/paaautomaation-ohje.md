@@ -24,7 +24,7 @@ Noudata joka ajolla tätä järjestystä:
 1. Lue `README.md` ja tämä käsikirja kokonaan.
 2. Lue `data/seurantatila.json`. Tarkista, että `automation_instructions.document` osoittaa tähän tiedostoon ja että `current_version` vastaa tämän dokumentin Ohjeversion tunnistetta.
 3. Jos GitHub ei ole käytettävissä, käsikirja tai seurantatila puuttuu tai versiot eivät täsmää, keskeytä ajo. Älä käytä vanhaa promptia, arvattua versiota tai vanhentunutta ohjetta. Älä tee hakuja, julkaisuja, onnistumismerkintöjä tai vuoron siirtoa.
-4. Lue kokonaan `docs/tehtavajono.md`, `docs/seuranta.md`, `docs/lahteet.md` ja `docs/saavutettavuus.md`. Lue yhteinen lähdekatalogi `data/source-catalog.json` sekä valitun tehtävän käyttörekisteri `data/sources/{task_id}.json`. Yhdistä jokainen `source_id` katalogin vastaavaan `id`-tietueeseen. Käytä vain valitun tehtävän rekisteriin määriteltyjä lähteitä; älä tulkitse katalogia kaikkien tehtävien yhteiseksi hakulistaksi.
+4. Lue kokonaan `docs/tehtavajono.md`, `docs/seuranta.md`, `docs/lahteet.md`, `docs/luotettavuusluokitus.md` ja `docs/saavutettavuus.md`. Lue yhteinen lähdekatalogi `data/source-catalog.json` sekä valitun tehtävän käyttörekisteri `data/sources/{task_id}.json`. Yhdistä jokainen `source_id` katalogin vastaavaan `id`-tietueeseen. Käytä vain valitun tehtävän rekisteriin määriteltyjä lähteitä; älä tulkitse katalogia kaikkien tehtävien yhteiseksi hakulistaksi.
 5. Lue `docs/kehityskaytannot.md`, jos muutat skriptejä tai ylläpitokoodia.
 6. Valitse seuraava tehtävä `docs/tehtavajono.md`:stä ja varmista, että se vastaa JSONin `rotation.next_task`-arvoa. Jos arvot eroavat, keskeytä ennen hakuja; älä arvaa kumpi on oikein.
 7. Lue valitun aiheen ohjeet ja seurantaloki. Tehtävässä 9 lue kokonaan `docs/intialaisen-elokuvan-ohje.md`, `docs/intialaisen-elokuvan-uutiset.md`, `docs/intialaisen-elokuvan-lahteet.md` ja `docs/intialaisen-elokuvan-seuranta.md`. Älä lue tai muuta näytösvahdin ohjeita tai historiaa uutisautomaatiossa.
@@ -53,7 +53,7 @@ Tehtävien kiertojärjestys ja seuraava vuoro määritellään vain tiedostossa 
 - Jos sivuston sisäinen haku ei toimi, käytä hakukoneita sivustorajauksilla (esim. `site:yle.fi`, `site:hs.fi` ja paikallisten medioiden domainit). Avaa alkuperäinen juttu ja tarkista sisältö sekä päivämäärä; hakutuloskatkelma ei yksin riitä.
 - Suosi ensisijaisia lähteitä (viralliset tiedotteet, tekijät, oikeudenhaltijat, viranomaiset, tuomioistuimet, EBU/yleisradioyhtiöt, liitot, festivaalit ja järjestäjät). Pyri varmistamaan tärkeät uutiset kahdesta riippumattomasta toimituksellisesta lähteestä. Saman uutistoimiston kopiot eivät ole riippumattomia.
 - Erota julkaisupäivä ja tapahtumapäivä. Tarkista nimet, roolit, luvut ja lainaukset. Älä keksi väitteitä, lähteitä, päivämääriä tai URL-osoitteita. Jos alkuperäistä sisältöä ei voi tarkistaa, älä esitä sitä vahvistettuna.
-- Luotettavuusluokat: **VIRALLISESTI VAHVISTETTU**, **MEDIAN RAPORTOIMA**, **VAHVISTAMATON HUH​​U**. Älä julkaise huhua uutisena. Oikeus-, kurinpito- ja vilppiasioissa käytä täsmällisiä menettelytermejä.
+- Erota lähteen yleinen A–D-luokka yksittäisen uutisväitteen varmennustasosta. Noudata kokonaan `docs/luotettavuusluokitus.md`-ohjetta. Älä käytä lähteen luokkaa väitteen vahvistuksena. Merkitse jokaisen olennaisen väitteen varmennustaso ja lähdeluettelossa kunkin lähteen yleinen luokka. Älä julkaise huhua faktana. Oikeus-, kurinpito- ja vilppiasioissa käytä täsmällisiä menettelytermejä.
 
 ## 5. Uutisarvo, seurantajakso ja deduplikointi
 
@@ -68,12 +68,12 @@ Tehtävien kiertojärjestys ja seuraava vuoro määritellään vain tiedostossa 
 ## 6. RSS-julkaisu ja tarkistukset
 
 - Säilytä rakenne: dokumentit `docs/`-kansiossa, syötteet `feeds/`-kansiossa. Älä luo juureen uusia dokumentti- tai feed-tiedostoja äläkä poista tai korvaa muita tiedostoja.
-- Jokaisessa syötteessä julkaistaan vain oman aiheen uutisia. Kirjoita suomeksi. `description` sisältää koko uutisartikkelin HTML:n, ei pelkkää tiivistelmää; lisää otsikko, päivämäärät, lähteet suorine linkkeineen ja luotettavuusluokitus.
+- Jokaisessa syötteessä julkaistaan vain oman aiheen uutisia. Kirjoita suomeksi. `description` sisältää koko uutisartikkelin HTML:n, ei pelkkää tiivistelmää; lisää otsikko, päivämäärät, lähteet suorine linkkeineen, väitekohtaiset varmennustasot ja lähteiden yleiset A–D-luokat.
 - Käytä yksilöllisiä GUIDeja, oikeaa pubDatea, säilytä vanhat itemit ja päivitä lastBuildDate. Älä lisää keinotekoisia “ei uutisia” -itemeitä.
 - Päivitä vain valitun tehtävän omaa RSS-syötettä. Älä koskaan muuta näytösfeedin sisältöä.
 - Jokaisen kirjoituksen jälkeen hae muuttuneet tiedostot GitHubista takaisin ja tarkista XML:n kelvollisuus, GUIDien yksilöllisyys, vanhojen itemien säilyminen, HTML:n escaping/CDATA ja aiherajaus.
 - RSS-itemissä ei saa olla item-kohtaista `<link>`-elementtiä. Koko raportti ja otsikoitu lähdeluettelo kuuluvat `<description>`-elementtiin CDATA-alueena. Kanavatason `<link>` ja `atom:link rel="self"` ovat sallittuja.
-- Jokaisen itemin lopussa on otsikoitu lähdeluettelo, jossa ovat olennaiset lähteet yksilöivinä, kuvaavina linkkeinä.
+- Jokaisen itemin lopussa on otsikoitu lähdeluettelo, jossa ovat olennaiset lähteet yksilöivinä, kuvaavina linkkeinä ja niiden yleiset A–D-luokat. Väitekohtainen varmennustaso esitetään erillään lähteen luokasta.
 - Noudata `docs/saavutettavuus.md`:n ohjeita: selkeä suomi, semanttinen HTML, looginen otsikkohierarkia, kuvaavat linkit ja alt-tekstit. Tavoittele WCAG 2.2 AAA -tasoa soveltuvin osin, mutta älä väitä tasoa saavutetuksi ilman asianmukaista testausta.
 - Jos julkaisu epäonnistuu, toimita valmis artikkeli ja nimeä epäonnistunut tiedosto. Älä väitä julkaisua onnistuneeksi ilman GitHub-kirjoitusta ja takaisinlukutarkistusta.
 

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "sources": [
     {
       "id": "123telugu",
@@ -14,7 +14,8 @@
         "IN-AP",
         "IN-TG",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "ajit-punjabi",
@@ -26,7 +27,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-PB"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "amar-ujala",
@@ -41,7 +43,8 @@
         "IN-PB",
         "IN-CH",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "anandabazar",
@@ -53,7 +56,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-WB"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "ap-entertainment",
@@ -66,7 +70,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "asomiya-pratidin",
@@ -78,7 +83,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-AS"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "assam-tribune",
@@ -92,7 +98,8 @@
       "regions": [
         "IN-NATIONAL",
         "IN-AS"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "bbc-eurovision",
@@ -106,7 +113,8 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "billboard",
@@ -119,7 +127,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "biorex",
@@ -131,7 +140,8 @@
       "source_type": "primary",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "bollywood-hungama",
@@ -144,7 +154,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "cbi-india",
@@ -160,7 +171,8 @@
         "IN-PB",
         "IN-CH",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "chessbase",
@@ -176,7 +188,8 @@
         "FI",
         "EUROPE",
         "NORTH-AMERICA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "chesscom",
@@ -191,7 +204,8 @@
         "FI",
         "EUROPE",
         "NORTH-AMERICA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "christian-bourgois-tolkien",
@@ -203,7 +217,8 @@
       "source_type": "primary",
       "regions": [
         "FR"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "cinema-express",
@@ -218,7 +233,8 @@
         "IN-TN",
         "IN-PY",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "cinema-mondo",
@@ -230,7 +246,8 @@
       "source_type": "primary",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "cinema-orion",
@@ -242,7 +259,8 @@
       "source_type": "primary",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "cinisuddi",
@@ -254,7 +272,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-KA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "daily-monitor-uganda",
@@ -267,7 +286,8 @@
       "regions": [
         "UG",
         "EAST-AFRICA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "daily-thanthi",
@@ -280,7 +300,8 @@
       "regions": [
         "IN-TN",
         "IN-PY"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "deutsche-tolkien-gesellschaft",
@@ -294,7 +315,8 @@
       "regions": [
         "DE",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "dharitri",
@@ -306,7 +328,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-OD"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "dinamani",
@@ -319,7 +342,8 @@
       "regions": [
         "IN-TN",
         "IN-PY"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "ebu",
@@ -333,7 +357,8 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "ebu-news",
@@ -347,7 +372,8 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "eenadu-cinema",
@@ -360,7 +386,8 @@
       "regions": [
         "IN-AP",
         "IN-TG"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "ehu-tartalo-programme",
@@ -374,7 +401,8 @@
       "source_type": "primary",
       "regions": [
         "ES"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "eiga-com",
@@ -387,7 +415,8 @@
       "regions": [
         "TH",
         "JP"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "elfenomeno",
@@ -402,7 +431,8 @@
         "GLOBAL",
         "ES",
         "LATAM"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "elokuvauutiset",
@@ -414,7 +444,8 @@
       "source_type": "editorial",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "episodi",
@@ -426,7 +457,8 @@
       "source_type": "editorial",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "escxtra",
@@ -440,7 +472,8 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "european-chess-union",
@@ -455,7 +488,8 @@
         "FI",
         "EUROPE",
         "NORTH-AMERICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "eurovision-asia",
@@ -476,7 +510,8 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "fide",
@@ -491,7 +526,8 @@
         "FI",
         "EUROPE",
         "NORTH-AMERICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "file770",
@@ -504,7 +540,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "film-o-holic",
@@ -516,7 +553,8 @@
       "source_type": "editorial",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "filmikamari",
@@ -528,7 +566,8 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "finbolly",
@@ -541,7 +580,9 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "D",
+      "reliability_note": "Facebook-yhteisösivu; uutisvihje, ei itsenäinen vahvistus."
     },
     {
       "id": "finnish-chess",
@@ -556,7 +597,8 @@
         "FI",
         "EUROPE",
         "NORTH-AMERICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "finnish-film-foundation",
@@ -568,7 +610,8 @@
       "source_type": "primary",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "finnkino",
@@ -580,7 +623,8 @@
       "source_type": "primary",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "fintamil",
@@ -593,7 +637,9 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "D",
+      "reliability_note": "Facebook-yhteisösivu; uutisvihje, ei itsenäinen vahvistus."
     },
     {
       "id": "gamesradar-film",
@@ -606,7 +652,8 @@
       "regions": [
         "UK",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "gurmeet-courts",
@@ -622,7 +669,8 @@
         "IN-PB",
         "IN-CH",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "harpercollins-brasil-tolkien",
@@ -634,7 +682,8 @@
       "source_type": "primary",
       "regions": [
         "BR"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "harpercollins-tolkien",
@@ -648,7 +697,8 @@
         "UK",
         "GLOBAL",
         "US"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "hindu-tamil-thisai",
@@ -661,7 +711,8 @@
       "regions": [
         "IN-TN",
         "IN-PY"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "hindustan-times",
@@ -677,7 +728,8 @@
         "IN-PB",
         "IN-CH",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "hmh-books-tolkien",
@@ -689,7 +741,8 @@
       "source_type": "primary",
       "regions": [
         "US"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "hs",
@@ -701,7 +754,8 @@
       "source_type": "editorial",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "india-today-regional",
@@ -713,7 +767,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "indian-express-regional",
@@ -725,7 +780,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "journal-tolkien-research",
@@ -738,7 +794,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "kannada-prabha",
@@ -750,7 +807,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-KA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "kino-myyri",
@@ -762,7 +820,8 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "kino-regina",
@@ -774,7 +833,8 @@
       "source_type": "primary",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "lichess-blog",
@@ -789,7 +849,8 @@
         "FI",
         "EUROPE",
         "NORTH-AMERICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "lippu-fi-events",
@@ -801,7 +862,8 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "lokmat",
@@ -813,7 +875,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-MH"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "loksatta",
@@ -825,7 +888,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-MH"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "maalaimalar",
@@ -838,7 +902,8 @@
       "regions": [
         "IN-TN",
         "IN-PY"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "manorama-online",
@@ -852,7 +917,8 @@
       "regions": [
         "IN-KL",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "mathrubhumi",
@@ -866,7 +932,8 @@
       "regions": [
         "IN-KL",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "moomin-characters-news",
@@ -885,7 +952,8 @@
         "UK",
         "JP",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "moomin-museum",
@@ -902,7 +970,8 @@
         "UK",
         "JP",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "moomin-official",
@@ -921,7 +990,8 @@
         "UK",
         "JP",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "mythopoeic-society",
@@ -934,7 +1004,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "nation-thailand",
@@ -947,7 +1018,8 @@
       "source_type": "editorial",
       "regions": [
         "TH"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "ndtv-entertainment",
@@ -960,7 +1032,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "new-vision-uganda",
@@ -973,7 +1046,8 @@
       "regions": [
         "UG",
         "EAST-AFRICA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "new-zealand-film-map",
@@ -986,7 +1060,8 @@
       "regions": [
         "NZ",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "onmanorama",
@@ -1000,7 +1075,8 @@
       "regions": [
         "IN-KL",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "pinkvilla",
@@ -1013,7 +1089,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "planeta-minotauro-tolkien",
@@ -1025,7 +1102,8 @@
       "source_type": "primary",
       "regions": [
         "ES"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "prajavani",
@@ -1037,7 +1115,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-KA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "punjab-haryana-highcourt",
@@ -1052,7 +1131,8 @@
         "IN-PB",
         "IN-CH",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "punjabi-tribune",
@@ -1064,7 +1144,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-PB"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "rasa-entertainment",
@@ -1077,7 +1158,9 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "D",
+      "reliability_note": "Facebook-sivu; käytä ensisijaisesti vihjeenä ja tarkista väitteet muualta."
     },
     {
       "id": "republic-records",
@@ -1090,7 +1173,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "rolling-stone",
@@ -1103,7 +1187,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "sakal",
@@ -1115,7 +1200,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-MH"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "sakshi-telugu",
@@ -1128,7 +1214,8 @@
       "regions": [
         "IN-AP",
         "IN-TG"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "sambad-odia",
@@ -1140,7 +1227,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-OD"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "sangbad-pratidin",
@@ -1152,7 +1240,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-WB"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "simply-mollywood",
@@ -1166,7 +1255,8 @@
       "regions": [
         "IN-KL",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "sociedad-tolkien-espanola",
@@ -1178,7 +1268,8 @@
       "source_type": "other",
       "regions": [
         "ES"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "societa-tolkieniana-italiana",
@@ -1190,7 +1281,8 @@
       "source_type": "other",
       "regions": [
         "IT"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "suomen-tolkien-seura",
@@ -1203,7 +1295,8 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "svt-melodifestivalen",
@@ -1217,7 +1310,8 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "taylor-swift-official",
@@ -1230,7 +1324,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "telugucinema",
@@ -1245,7 +1340,8 @@
         "IN-AP",
         "IN-TG",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "thai-film-archive",
@@ -1258,7 +1354,8 @@
       "source_type": "primary",
       "regions": [
         "TH"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "thai-film-archive-news",
@@ -1271,7 +1368,8 @@
       "source_type": "primary",
       "regions": [
         "TH"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "thai-pbs",
@@ -1283,7 +1381,8 @@
       "source_type": "editorial",
       "regions": [
         "TH"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "the-hindu-cinema",
@@ -1295,7 +1394,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "the-hindu-india",
@@ -1310,7 +1410,8 @@
         "IN-PB",
         "IN-CH",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "the-one-ring",
@@ -1323,7 +1424,9 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "D",
+      "reliability_note": "Fanien ylläpitämä Tolkien-uutissivusto; käytä uutisvihjeenä, älä yksinään vahvistuksena."
     },
     {
       "id": "theguardian-books",
@@ -1337,7 +1440,8 @@
         "UK",
         "GLOBAL",
         "US"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "ticketmaster-fi-events",
@@ -1349,7 +1453,8 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "tiketti-fi-events",
@@ -1361,7 +1466,8 @@
       "source_type": "other",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "times-of-india-entertainment",
@@ -1374,7 +1480,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "tolkien-estate",
@@ -1388,7 +1495,8 @@
         "UK",
         "GLOBAL",
         "US"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "tolkien-society",
@@ -1402,7 +1510,8 @@
         "UK",
         "GLOBAL",
         "US"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "tolkiendil",
@@ -1415,7 +1524,8 @@
       "regions": [
         "FR",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "tolkiengateway",
@@ -1429,7 +1539,9 @@
         "UK",
         "GLOBAL",
         "US"
-      ]
+      ],
+      "reliability_class": "D",
+      "reliability_note": "Yhteisön ylläpitämä wiki; soveltuu taustahakuun, ei uutisväitteen itsenäiseksi vahvistukseksi."
     },
     {
       "id": "tove-jansson-society",
@@ -1447,7 +1559,8 @@
         "UK",
         "JP",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "tribune-india",
@@ -1463,7 +1576,8 @@
         "IN-PB",
         "IN-CH",
         "IN-NATIONAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "ugandan-film-festival",
@@ -1476,7 +1590,8 @@
       "regions": [
         "UG",
         "EAST-AFRICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "ultraman-official",
@@ -1490,7 +1605,8 @@
       "regions": [
         "TH",
         "JP"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "umg-news",
@@ -1503,7 +1619,8 @@
       "regions": [
         "US",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "uol-splash",
@@ -1516,7 +1633,8 @@
       "regions": [
         "BR",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "us-chess",
@@ -1531,7 +1649,8 @@
         "FI",
         "EUROPE",
         "NORTH-AMERICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "variety-film",
@@ -1545,7 +1664,8 @@
         "UK",
         "GLOBAL",
         "US"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "vijaya-karnataka",
@@ -1557,7 +1677,8 @@
       "source_type": "editorial",
       "regions": [
         "IN-KA"
-      ]
+      ],
+      "reliability_class": "C"
     },
     {
       "id": "wakaliwood-official",
@@ -1570,7 +1691,8 @@
       "regions": [
         "UG",
         "EAST-AFRICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "wakaliwood-supa-store",
@@ -1583,7 +1705,8 @@
       "regions": [
         "UG",
         "EAST-AFRICA"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "warnerbros-newsroom",
@@ -1597,7 +1720,8 @@
         "UK",
         "GLOBAL",
         "US"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "yle",
@@ -1609,7 +1733,8 @@
       "source_type": "editorial",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "yle-culture",
@@ -1626,7 +1751,8 @@
         "UK",
         "JP",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "B"
     },
     {
       "id": "yle-euroviisut",
@@ -1640,7 +1766,8 @@
         "EUROPE",
         "ASIA",
         "GLOBAL"
-      ]
+      ],
+      "reliability_class": "A"
     },
     {
       "id": "yle-tolkien",
@@ -1652,7 +1779,8 @@
       "source_type": "editorial",
       "regions": [
         "FI"
-      ]
+      ],
+      "reliability_class": "B"
     }
   ]
 }
