@@ -18,6 +18,7 @@ Jokaisella kohdalla on oltava tulos `pass`, `fail` tai `not_applicable`. Ei-sove
 |---|---|---|
 | `sources_opened` | Jokaisen olennaisen väitteen alkuperäinen lähdesivu on avattu ja tarkistettu. Hakutuloskatkelma ei riitä. Lisää näyttöön tarkistetut lähde-URL:t tai lähdetunnisteet. | Toimituksellinen |
 | `claim_support` | Raportin väitteet, nimet, luvut ja lainaukset vastaavat lähteitä. Lisää näyttöön väite- ja lähdeviittaukset. | Toimituksellinen |
+| `claim_assessments` | Uudessa porttiraportissa jokainen olennainen väite on kuvattu `claim_assessments`-kentässä, sille on valittu sallittu varmennustaso ja lähteille on merkitty katalogin mukainen A–D-luokka, rooli ja riippumattomuus. | Rakenteellinen + toimituksellinen |
 | `source_independence` | Vahvistuksiksi lasketut toimitukselliset lähteet ovat aidosti riippumattomia; saman uutistoimiston kopioita tai saman tiedotteen toisintoja ei lasketa erikseen. Lisää näyttöön vertailtujen lähteiden tunnisteet tai URL:t. | Toimituksellinen |
 | `uncertainty` | Ristiriidat, epävarmuudet, väitteet ja viralliset ratkaisut erotetaan täsmällisesti. | Toimituksellinen |
 | `dates` | Julkaisupäivä, tapahtuma-aika ja lähteen raportointiaika eivät sekoitu. | Toimituksellinen |
@@ -35,7 +36,7 @@ GitHub Actions suorittaa ennen PR:n yhdistämistä:
 - `python scripts/validate_feeds.py`: XML-, HTML-, GUID-, linkki-, lähdeluettelo-, dokumentaatio- ja tietomallien rakennetarkistukset;
 - `python scripts/validate_publication_gate.py`: porttiraportin skeema ja täydellisyys, hyväksyntäpäätös, soveltumattomuuksien perustelut sekä vanhojen GUIDien säilyminen vertaamalla PR:n syötettä kohdehaaraan.
 
-Automaattinen tarkistus ei avaa uutislähteitä eikä todista väitteiden totuutta, lähteiden riippumattomuutta, uutisen uutisarvoa tai toimituksellisen arvion oikeellisuutta. Nämä kohdat tekee automaatio lukemalla lähteet ja vertaamalla niitä raporttiin. Porttiraportti on tämän arvioinnin jäljitettävä merkintä, ei koneellinen todiste väitteiden totuudesta.
+Automaattinen tarkistus ei avaa uutislähteitä eikä todista väitteiden totuutta, lähteiden riippumattomuutta, uutisen uutisarvoa tai toimituksellisen arvion oikeellisuutta. Se tarkistaa vain luokituksen sallitut arvot ja rakenteen. Uusissa porttiraporteissa `claim_assessments` on pakollinen toimituksellinen työvaihe, vaikka skeema sallii kentän puuttumisen vanhoista historiallisista raporteista. Nämä kohdat tekee automaatio lukemalla lähteet ja vertaamalla niitä raporttiin. Porttiraportti on tämän arvioinnin jäljitettävä merkintä, ei koneellinen todiste väitteiden totuudesta.
 
 ## Julkaisupäätös ja virhetilanne
 
@@ -71,6 +72,21 @@ Alla on havainnollistava rakenne. Korvaa esimerkkitiedot todellisella ajolla ja 
     "report_completeness": {"status": "pass", "note": "Raportissa on koko sisältö ja lähdeluettelo."},
     "accessibility": {"status": "pass", "note": "Semantiikka, otsikot, linkit, kielet ja alt-tekstit tarkistettu."}
   },
+  "claim_assessments": [
+    {
+      "claim_id": "claim-1",
+      "claim": "Tapahtuman järjestäjä vahvisti päivämäärän.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "ebu",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        }
+      ]
+    }
+  ],
   "decision": "approved",
   "reviewer_notes": ["Raportti hyväksytty julkaisua varten."]
 }
