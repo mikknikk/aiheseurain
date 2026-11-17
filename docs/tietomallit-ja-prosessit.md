@@ -223,16 +223,16 @@ Prosessi:
 
 ```mermaid
 flowchart TD
-    A[\"Valmis raportti ja RSS-muutos\"] --> B[\"Täytä jokainen tarkistuskohta\"]
-    B --> C{\"Kaikki kohdat hyväksytty?\"}
-    C -->|\"Ei\"| D[\"Hylkää portti ja korjaa raportti\"]
+    A["Valmis raportti ja RSS-muutos"] --> B["Täytä jokainen tarkistuskohta"]
+    B --> C{"Kaikki kohdat hyväksytty?"}
+    C -->|"Ei"| D["Hylkää portti ja korjaa raportti"]
     D --> B
-    C -->|\"Kyllä\"| E[\"Luo PR, jossa RSS ja porttiraportti\"]
-    E --> F[\"CI: skeema, RSS/HTML ja GUID-historia\"]
-    F --> G{\"Kaikki testit läpäisty?\"}
-    G -->|\"Ei\"| D
-    G -->|\"Kyllä\"| H[\"PR voidaan yhdistää\"]
-    H --> I[\"Takaisinluku ja onnistumisen kirjaus\"]
+    C -->|"Kyllä"| E["Luo PR, jossa RSS ja porttiraportti"]
+    E --> F["CI: skeema, RSS/HTML ja GUID-historia"]
+    F --> G{"Kaikki testit läpäisty?"}
+    G -->|"Ei"| D
+    G -->|"Kyllä"| H["PR voidaan yhdistää"]
+    H --> I["Takaisinluku ja onnistumisen kirjaus"]
 ```
 
 Skeema tarkistaa tietueen rakenteen, ei sitä, ovatko toimitukselliset arviot tosia. CI ei avaa uutislähteitä eikä pysty päättelemään väitteiden totuutta tai lähteiden riippumattomuutta. Tarkistuslista ja rajaukset on kuvattu [julkaisulaadun portin ohjeessa](julkaisuportti.md).
