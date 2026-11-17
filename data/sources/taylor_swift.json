@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task_id": "taylor_swift",
-  "updated_at": "2026-11-17T13:00:26+02:00",
+  "updated_at": "2026-11-17T13:03:45+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Taylor Swift. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
@@ -17,7 +17,7 @@
     {
       "source_id": "umg-news",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-17T13:03:45+02:00",
       "access_limit": null
     },
     {
