@@ -2,8 +2,8 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.5.0  
-**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104)
+**Versio:** 1.6.0  
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -663,6 +663,16 @@ Inventaario erottaa yhdeksän topic-moduulia ja yhden process-moduulin. Näytös
 
 Tämä inventaario ei aktivoi moduuleja eikä muuta tuotantorekisteriä, automaatioiden asetuksia tai sisältörajauksia. Varsinainen määritysten muodostaminen kuuluu #105:een; moduulikohtainen tila #106:een; tapahtumavahdin yleistäminen #109:ään.
 
+### 8.15 Yleinen tapahtumavahti
+
+Yleisen tapahtumavahdin vastuunjako, yhteinen tapahtumamalli, tapahtumatyypin laajennussopimus sekä elokuvanäytösten ja konferenssiesitysten esimerkit on kuvattu erillisessä [tapahtumavahtidokumentissa](tapahtumavahti.md).
+
+Toteutettu yhteinen ydin käsittelee normalisoituja havaintoja, lähteiden jäljitettävyyttä, muutosten luokittelua, eksplisiittisiä tilasiirtymiä, ristiriitojen säilyttämistä ja append-only-historiaa. Tapahtumatyypin määritys ohjaa identiteettikenttiä, seurattavia attribuutteja ja sallittuja tiloja; yhteinen ydin ei sisällä elokuva-, teatteri- tai konferenssikohtaista logiikkaa.
+
+Nykyisen näytöshistorian sovitin on vain lukeva. Se muuntaa nykyiset näytöstietueet ja historiatapahtumat yleiseen tilannekuvaan muuttamatta kanonista näytöshistoriaa, RSS-syötettä tai automaation asetuksia. Konferenssiesityksen testitapaus osoittaa, että sama ydin käsittelee olennaisesti erilaista tapahtumatyyppiä.
+
+Toteutus ei vielä sisällä ulkoisia hakuadaptereita, ajon orkestrointia, tuotantohistorian migraatiota eikä näytösvahdin tuotantokäyttöönottoa. Ne säilyvät erillisinä päätöksinä ja kehitysvaiheina.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -713,6 +723,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.6.0 – 2026-11-18:** dokumentoitiin yleinen tapahtumavahti, tapahtumatyypin laajennussopimus, yhteinen käsittelyydin, nykyisen näytöshistorian vain lukeva sovitin ja konferenssiesityksen testitapaus.
 - **1.5.0 – 2026-11-17:** lisättiin nykyisten aihe- ja prosessimoduulien inventaarioon perustuva siirtokartta, omistajuusrajat, riippuvuudet ja palautettava migraatiomenettely.
 - **1.4.0 – 2026-11-17:** dokumentoitiin toteutettu moduulirekisteri ja paikallinen määritysten lataaja, moduulikohtainen virheiden eristys, passiivisten moduulien käsittely sekä tuotantorekisterin tarkoituksellinen tyhjyys.
 - **1.3.0 – 2026-11-17:** lisättiin toteutettuun seurantamoduulin tietosopimukseen viittaava arkkitehtuurikuvaus; erotettiin yhteinen moduulisopimus, aihemoduulin määritys ja erikseen validoitavat prosessilaajennukset. Moduulirekisteri ja migraatio säilyvät myöhempinä vaiheina.

@@ -19,8 +19,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 
 - **#102 – Seurantamoduulin tietosopimus:** valmis ja yhdistetty.
 - **#103 – Moduulirekisteri ja määritysten lataus:** valmis; PR #111 yhdistetty.
-- **#104 – Nykyisten aiheiden ja prosessien hallittu moduulisiirtymä:** inventaario ja migraatiosuunnitelma toteutettu tässä muutossarjassa; lopullinen tila vahvistetaan PR:n yhdistämisen jälkeen.
-- **#109 – Yleinen tapahtumavahti:** erillinen riippuvuus näytösprosessin yleistämiselle.
+- **#104 – Nykyisten aiheiden ja prosessien hallittu moduulisiirtymä:** valmis ja yhdistetty PR:ssä #112.
+- **#109 – Yleinen tapahtumavahti:** toteutuksessa; yhteinen käsittelyydin, tapahtumatyypit ja näytöshistorian lukevan sovittimen testit ovat työn alla.
 - **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** käyttää #104:n siirtokarttaa ja #109:n tapahtumamallin sovitusta.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
@@ -30,6 +30,8 @@ Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issue
 Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidettävä. Sen on säilytettävä eri aiheet erillään, osoitettava uutisten lähteet ja seurantajaksot sekä havaittava rakenteelliset virheet automaattisesti. Kehityksessä suositaan pieniä, testattavia muutoksia. Uudet ja muutetut skriptit kommentoidaan suomeksi vähintään `scripts/validate_feeds.py`-tiedoston tasoisesti; tarkempi sääntö on [kehityskäytännöissä](kehityskaytannot.md).
 
 ## Toteutetut kohteet
+
+- [x] **Nykyisten moduulien inventaario ja hallitun siirtymän suunnitelma (#104).** Dokumentti `docs/moduulisiirtyman-inventaario.md` kuvaa yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijaon, lähderekisterien kieli- ja aluekattavuuden, tiedostojen siirtokartan, omistajuusrajat, päällekkäisyysriskit sekä vaiheittaisen palautusmenettelyn. PR #112 on yhdistetty.
 
 - [x] **Uutislähteiden ja uutisväitteiden luotettavuusluokitus (#27).** Yhteinen A–D-lähdeluokitus tallennetaan lähdekatalogiin ja kuusi väitekohtaista varmennustasoa kirjataan uusien julkaisulaadun porttiraporttien claim_assessments-kenttään. Ohjeet erottavat lähteen yleisen roolin väitteen näytöstä sekä kuvaavat lähderiippuvuudet, anonyymit lähteet, ristiriidat, sidonnaisuudet ja korjaukset. Skeemat ja rakennetestit tarkistavat sallitut arvot; ne eivät väitä todistavansa uutisten totuutta.
 
@@ -52,6 +54,10 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 - [x] **Raporttikohtainen RSS-julkaisulaadun portti (#53).** Jokaiselle muuttuneelle syötteelle vaaditaan JSON-tarkistusraportti. CI tarkistaa raportin skeeman, hylkäykset, soveltumattomuuksien perustelut ja aiempien GUIDien säilymisen; uutisväitteiden totuutta tai lähteiden riippumattomuutta ei väitetä automaattisesti todennetuiksi. Epäonnistuneen portin raportti säilyy PR:ssä ja CI-artefaktissa, eikä viimeisintä onnistunutta tarkistuspistettä tai tehtäväkiertoa muuteta.
 
 ## Avoimet kehityskohteet
+
+### Yleinen tapahtumavahti (#109)
+
+Toteutuksessa on yhteinen tapahtumamalli, tyypitetyt määritykset, havaintojen yhdistäminen, lähderistiriitojen säilyttäminen, tilasiirtymät ja append-only-historia. Nykyisen näytöshistorian sovitin on vain lukeva, ja konferenssiesitys toimii toisena tapahtumatyyppinä testissä. Ulkoiset lähdeadapterit, tuotantomigraatio ja käyttöönotto eivät kuulu tähän muutokseen.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
