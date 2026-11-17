@@ -20,8 +20,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#102 – Seurantamoduulin tietosopimus:** valmis ja yhdistetty.
 - **#103 – Moduulirekisteri ja määritysten lataus:** valmis; PR #111 yhdistetty.
 - **#104 – Nykyisten aiheiden ja prosessien hallittu moduulisiirtymä:** valmis ja yhdistetty PR:ssä #112.
-- **#109 – Yleinen tapahtumavahti:** toteutuksessa; yhteinen käsittelyydin, tapahtumatyypit ja näytöshistorian lukevan sovittimen testit ovat työn alla.
-- **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** käyttää #104:n siirtokarttaa ja #109:n tapahtumamallin sovitusta.
+- **#109 – Yleinen tapahtumavahti:** valmis; PR:t #113 ja #114 yhdistetty. Yhteinen käsittelyydin, lähdeadapterirajapinta, näytösvahtisovitin ja konferenssiesityksen testitapaus ovat käytettävissä.
+- **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** toteutuksessa; kymmenen moduulimääritystä ja passiiviset rekisterimerkinnät on lisätty, migraatiovalidointi ja dokumentaation viimeistely ovat työn alla.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 
@@ -54,6 +54,10 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 - [x] **Raporttikohtainen RSS-julkaisulaadun portti (#53).** Jokaiselle muuttuneelle syötteelle vaaditaan JSON-tarkistusraportti. CI tarkistaa raportin skeeman, hylkäykset, soveltumattomuuksien perustelut ja aiempien GUIDien säilymisen; uutisväitteiden totuutta tai lähteiden riippumattomuutta ei väitetä automaattisesti todennetuiksi. Epäonnistuneen portin raportti säilyy PR:ssä ja CI-artefaktissa, eikä viimeisintä onnistunutta tarkistuspistettä tai tehtäväkiertoa muuteta.
 
 ## Avoimet kehityskohteet
+
+### Moduulisiirtymä (#105)
+
+Kymmenen nykyistä seurantaa on kuvattu itsenäisinä moduulimäärityksinä ja rekisteröity inactive-tilassa. Migraatiovalidointi tarkistaa lähdeviitteet, lähdekatalogin roolit, kielet, alueet, prosessilaajennuksen ja näytösvahtimoduulin tapahtumatyypin. Nykyiset automaatiot ja julkaisut jatkavat vanhoilla käsikirjoilla ja tietolähteillä; moduulien aktivointi ja suorituspolun vaihto eivät kuulu tähän muutokseen.
 
 ### Yleinen tapahtumavahti (#109)
 
