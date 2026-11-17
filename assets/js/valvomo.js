@@ -518,7 +518,7 @@ function renderRunHistory(histories) {
     if (!runs.length) return `<article class="run-history-card"><h3>${escapeHtml(source.name)}</h3><p class="status-line status-unknown">Ei vielä kirjattuja ajoja</p></article>`;
     const items = runs.map((run) => {
       const status = displayRunStatus(run, source.maxAgeHours);
-      const steps = run.steps.map((step) => `<li><span>${escapeHtml(step.name)}</span><span class="run-step-status">${escapeHtml(RUN_STATUS_LABELS[step.status] || "Tuntematon")}</span>${step.errors?.length ? `<ul>${step.errors.map((item) => `<li class="run-error">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${step.warnings?.length ? `<ul>${step.warnings.map((item) => `<li class="run-warning">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}</li>`).join("");
+      const steps = run.steps.map((step) => `<li><span>${escapeHtml(step.name)}</span><span class="run-step-status">${escapeHtml(RUN_STATUS_LABELS[step.status] || "Tuntematon")}</span><span class="run-step-meta">Alkoi: ${escapeHtml(dateText(step.started_at))} · Päättyi: ${escapeHtml(dateText(step.finished_at))}</span>${step.errors?.length ? `<ul>${step.errors.map((item) => `<li class="run-error">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${step.warnings?.length ? `<ul>${step.warnings.map((item) => `<li class="run-warning">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}</li>`).join("");
       const messages = [
         ...(run.errors || []).map((item) => `<li class="run-error">${escapeHtml(item)}</li>`),
         ...(run.warnings || []).map((item) => `<li class="run-warning">${escapeHtml(item)}</li>`)
@@ -544,7 +544,7 @@ export async function loadRunHistory() {
   const target = document.getElementById("run-history-content");
   if (!target) return;
   const results = await Promise.allSettled(RUN_HISTORY_SOURCES.map(async (source) => {
-    const history = await fetchJson(source.url);
+    const history = await cachedJson(source.url);
     if (!validateRunHistory(history, source.id)) throw new Error("Virheellinen ajohistoria");
     return [source.id, history];
   }));
