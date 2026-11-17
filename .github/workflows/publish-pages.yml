@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   build:
-    # Issue-kommentit päivittävät myös #79:n riippuvuusvälityksen jälkeen.
+    # Issue-kommentit päivittävät aineiston; PR-kommentit eivät käynnistä turhaa sivustorakennusta.
     # PR-kommentit eivät käynnistä turhaa sivustorakennusta.
     if: github.event_name != 'issue_comment' || !github.event.issue.pull_request
     runs-on: ubuntu-latest
