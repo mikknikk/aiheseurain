@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.3.0
+Ohjeversion tunniste: 1.3.1
 Viimeksi päivitetty: 2026-11-17
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -142,3 +142,13 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 - Versio 1.2.0: erotettiin lähteiden yhteiset perustiedot yhteen lähdekatalogiin ja tehtäväkohtaiset käyttöasetukset kymmeneen viittausrekisteriin; päivitettiin skeemat, validointi, ajolokien tarkistus ja automaatio-ohje.
 - Versio 1.1.0: laajennettiin Tolkienin, Taylor Swiftin, Muumien ja Euroviisujen Suomen-tapahtumaseurantaa; täsmennettiin Gurmeet Ram Rahim Singhin musiikkiseurantaa sekä Shakkidraamojen todellisten kiistojen ja shakkisisällöntuottajien sosiaalisen median seurantaa.
 - Versio 1.2.2: otettiin käyttöön kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva ajastusten, asetusten ja kohdekeskustelujen suojaus; ohjeen yksityiskohdat ovat yhteisessä hallintaperiaatedokumentissa.
+
+## 9. ChatGPT-ajon vaihekohtainen ajohistoria
+
+Noudata yhteistä [ajohistorian tietomallia](ajohistoria.md). Pääautomaation historiatiedosto on haarassa `run-history/main-automation`, polussa `history.json`, ja tunniste on `main_automation`.
+
+Kirjaa ajo heti käynnistyessä tilaan `running` yksilöllisellä ajotunnisteella. Päivitä samaa ajoa jokaisen merkittävän vaiheen alussa ja lopussa. Käytä vähintään vaiheita `preflight`, `task_selection`, `research`, `source_verification`, `report_drafting`, `publication_gate`, `rss_validation`, `pull_request`, `ci`, `merge` ja `verification`; merkitse soveltumattomat vaiheet `skipped` vain perustellusti. Kirjaa vaiheiden aikaleimat, tulokset sekä lyhyet virheet ja varoitukset.
+
+Ajohistorian kirjoitus tehdään vain omaan `run-history/main-automation`-haaraan GitHubin Contents APIlla tai vastaavalla käytettävissä olevalla GitHub-kirjoitustoiminnolla. Älä koskaan kirjoita ajohistoriaa `main`-haaraan äläkä tee siitä erillistä PR:ää. Jokaisen kirjoituksen jälkeen lue `history.json` samasta haarasta takaisin ja varmista ajotunniste sekä JSON-rakenne. Säilytä viimeiset 30 ajoa. Älä kirjaa salaisuuksia tai raakaa lokisisältöä.
+
+Päätä ajo `succeeded`, `failed` tai `partial` vasta, kun tulos on tiedossa. Jos kirjoitusoikeus puuttuu tai kirjoituksen onnistumista ei voida varmistaa, älä väitä ajohistoriaa päivitetyksi; raportoi rajoite. Ajohistorian kirjaus ei muuta RSS-julkaisun, CI:n, onnistumisen tai tehtäväkierron varsinaisia ehtoja.
