@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Taylor Swift – uutisseuranta</title>
     <link>https://mikknikk.github.io/aiheseurain/</link>
-    <description>Suomenkielinen, lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
+    <description>Suomenkielinen, maailmanlaajuinen ja lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
-    <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/aiheseurain/feeds/taylor-swift.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 16 Nov 2026 10:39:00 +0200</lastBuildDate>
-    </channel>
+    <atom:link href="https://mikknikk.github.io/aiheseurain/feeds/taylor-swift.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue 17 Nov 2026, 12:57:03 +0200</lastBuildDate>
+    <item>
+      <title>Taylor Swift sai viisi Grammy-ehdokkuutta vuodelle 2027</title>
+      <guid isPermaLink="false">urn:aiheseurain:taylor-swift:2026-11-16:grammy-2027-nominations</guid>
+      <pubDate>Tue 17 Nov 2026, 12:57:03 +0200</pubDate>
+      <description><![CDATA[
+        <article>
+          <h2>Taylor Swift sai viisi Grammy-ehdokkuutta vuodelle 2027</h2>
+          <p><strong>Julkaistu:</strong> 17.11.2026. <strong>Ehdokkaat julkistettiin:</strong> 16.11.2026. <strong>Gaalan ajankohta:</strong> 7.2.2027.</p>
+          <p>Recording Academy julkisti 16. marraskuuta 2026 69. Grammy-gaalan ehdokkaat. Taylor Swift sai viisi ehdokkuutta:</p>
+          <ul>
+            <li>Vuoden albumi (<em>Album of the Year</em>): <em>The Life of a Showgirl</em>.</li>
+            <li>Vuoden levytys (<em>Record of the Year</em>): <em>The Fate of Ophelia</em>.</li>
+            <li>Vuoden laulu (<em>Song of the Year</em>): <em>I Knew It, I Knew You</em>, elokuvasta <em>Toy Story 5</em>.</li>
+            <li>Paras audiovisuaaliselle tuotannolle kirjoitettu laulu (<em>Best Song Written for Visual Media</em>): <em>I Knew It, I Knew You</em>.</li>
+            <li>Paras pop-duo- tai yhtye-esitys (<em>Best Pop Duo/Group Performance</em>): <em>The Life of a Showgirl</em>, yhdessä Sabrina Carpenterin kanssa.</li>
+          </ul>
+          <p>Swiftin <em>The Life of a Showgirl</em> on hänen viides peräkkäinen studioalbuminsa, joka on ehdolla vuoden albumiksi. Associated Pressin mukaan vastaavaan viiden peräkkäisen albumiehdokkuuden sarjaan on yltänyt aiemmin Kendrick Lamar.</p>
+          <p>69. Grammy-gaala järjestetään 7. helmikuuta 2027 Crypto.com Arenalla Los Angelesissa. Ehdokkuudet eivät vielä kerro palkintojen voittajia.</p>
+          <p><strong>Luotettavuus:</strong> VIRALLISESTI VAHVISTETTU. Recording Academyn ehdokasluettelo vahvistaa kategoriat ja teokset. Associated Press ja Reuters raportoivat ehdokkuuksista toisistaan riippumattomissa toimituksellisissa jutuissa; myös brasilialainen UOL julkaisi portugalinkielisen yhteenvedon.</p>
+          <section aria-labelledby="lahdeluettelo">
+            <h2 id="lahdeluettelo">Lähdeluettelo</h2>
+            <ul>
+              <li><a href="https://www.grammy.com/news/grammy-award-for-record-of-the-year-meet-the-2027-nominees/">Recording Academy: vuoden levytyksen 2027 ehdokkaat</a></li>
+              <li><a href="https://www.grammy.com/news/grammy-awards-for-song-of-the-year-meet-the-2027-nominees/">Recording Academy: vuoden laulun 2027 ehdokkaat ja viiden ehdokkuuden kokonaismäärä</a></li>
+              <li><a href="https://www.grammy.com/albums/the-life-of-a-showgirl/">Recording Academy: The Life of a Showgirl – albumi- ja levytysehdokkuudet</a></li>
+              <li><a href="https://www.grammy.com/songs/the-life-of-a-showgirl/">Recording Academy: The Life of a Showgirl – pop-duo- tai yhtye-esityksen ehdokkuus</a></li>
+              <li><a href="https://apnews.com/article/grammy-nominations-2027-927a42594517e9a9bf17936f1891a96f">Associated Press: 2027 Grammy-ehdokkaat ja viides peräkkäinen albumiehdokkuus, 16.11.2026</a></li>
+              <li><a href="https://www.reuters.com/business/media-telecom/raye-and-rosalia-lead-nominations-for-musics-grammy-awards-2026-11-16/">Reuters: vuoden 2027 Grammy-ehdokkaat ja Swiftin viisi ehdokkuutta, 16.11.2026</a></li>
+              <li><a href="https://www.uol.com.br/splash/noticias/2026/11/16/taylor-swift-bate-recorde-com-5-indicacao-ao-trio-principal-do-grammy.ghtm">UOL: Taylor Swiftin viisi Grammy-ehdokkuutta, 16.11.2026 (portugali)</a></li>
+            </ul>
+          </section>
+        </article>
+      ]]></description>
+    </item>
+  </channel>
 </rss>
