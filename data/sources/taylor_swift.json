@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task_id": "taylor_swift",
-  "updated_at": null,
+  "updated_at": "2026-11-17T12:57:03+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Taylor Swift. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
@@ -11,7 +11,7 @@
     {
       "source_id": "taylor-swift-official",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-17T12:57:03+02:00",
       "access_limit": null
     },
     {
@@ -23,7 +23,7 @@
     {
       "source_id": "republic-records",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-17T12:57:03+02:00",
       "access_limit": null
     },
     {
@@ -35,7 +35,7 @@
     {
       "source_id": "ap-entertainment",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-17T12:57:03+02:00",
       "access_limit": null
     },
     {
@@ -47,19 +47,19 @@
     {
       "source_id": "lippu-fi-events",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-17T12:57:03+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
       "source_id": "ticketmaster-fi-events",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-17T12:57:03+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
       "source_id": "tiketti-fi-events",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-17T12:57:03+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     }
   ]
