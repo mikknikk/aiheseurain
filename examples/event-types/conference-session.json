@@ -1,0 +1,39 @@
+{
+  "event_type_id": "conference-session",
+  "version": "1.0.0",
+  "description": "Konferenssin yksittäinen esitys; erillinen testitapaus.",
+  "identity_fields": [
+    "conference",
+    "session_code"
+  ],
+  "required_attributes": [
+    "title",
+    "conference",
+    "session_code",
+    "starts_at",
+    "status"
+  ],
+  "tracked_attributes": {
+    "starts_at": "time_changed",
+    "room": "place_changed",
+    "title": "details_changed",
+    "speaker": "details_changed",
+    "stream_url": "details_changed"
+  },
+  "status_field": "status",
+  "statuses": [
+    "scheduled",
+    "cancelled",
+    "removed",
+    "completed"
+  ],
+  "cancelled_statuses": [
+    "cancelled"
+  ],
+  "removed_statuses": [
+    "removed"
+  ],
+  "completed_statuses": [
+    "completed"
+  ]
+}
