@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/mikknikk/aiheseurain/main/schemas/automation-run-history.schema.json",
+  "title": "ChatGPT-automaation ajohistoria",
+  "description": "Yhden automaation rajattu, koneellisesti luettava ajohistoria. Varsinaiset historiatiedostot sijaitsevat automaatiokohtaisissa run-history-haaroissa.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "automation_id",
+    "updated_at",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "automation_id": {
+      "enum": [
+        "main_automation",
+        "screening_watch",
+        "quality_check"
+      ]
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "runs": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nullableDateTime": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "message": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "step": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "status",
+        "updated_at",
+        "warnings",
+        "errors"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]{1,63}$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "running",
+            "succeeded",
+            "failed",
+            "skipped",
+            "interrupted",
+            "unknown"
+          ]
+        },
+        "started_at": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "finished_at": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          },
+          "maxItems": 30
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          },
+          "maxItems": 30
+        }
+      },
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "automation_id",
+        "status",
+        "started_at",
+        "finished_at",
+        "updated_at",
+        "source",
+        "steps",
+        "warnings",
+        "errors"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._-]{8,100}$"
+        },
+        "automation_id": {
+          "enum": [
+            "main_automation",
+            "screening_watch",
+            "quality_check"
+          ]
+        },
+        "status": {
+          "enum": [
+            "running",
+            "succeeded",
+            "failed",
+            "partial",
+            "interrupted",
+            "unknown"
+          ]
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished_at": {
+          "$ref": "#/$defs/nullableDateTime"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "const": "chatgpt_scheduled_task"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/step"
+          },
+          "maxItems": 30
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          },
+          "maxItems": 50
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/message"
+          },
+          "maxItems": 50
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
