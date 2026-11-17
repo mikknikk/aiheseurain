@@ -60,7 +60,7 @@ class KanbanDataValidationTests(unittest.TestCase):
         dataset = make_dataset()
         dataset["dependencies"] = []
         with self.assertRaisesRegex(ValueError, "täsmälleen yhtä"):
-            validate_dataset(dataset, make_schema())
+            validate_dataset(dataset, load_schema())
 
 
 if __name__ == "__main__":
