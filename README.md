@@ -98,6 +98,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 
 - `README.md`: repositorion yleiskuva, hakemistorakenne, RSS-syötteiden luettelo, automaatioiden työnjako ja dokumentaation lukujärjestys.
 - `docs/paaautomaation-ohje.md`: pääautomaation täydellinen tehtävä- ja toimintakuvaus sekä sen versionhallinnan säännöt.
+- `docs/automaation-hallintaperiaatteet.md`: kaikkia nykyisiä ja tulevia automaatioita koskeva ajastusten, asetusten ja kohdekeskustelujen käyttäjän valtuutukseen perustuva suojaus.
 - `prompts/README.md` ja `prompts/*.txt`: automaatioiden asetuksiin kopioitavat käynnistyskehotteet ja niiden ylläpitomenettely. Tekstit säilytetään sellaisinaan.
 - `docs/intialaisten-elokuvien-naytosseuranta.md`: näytösvahdin täydellinen, versioitu tehtävä- ja toimintakuvaus.
 - `docs/laatutarkistuksen-ohje.md`: viikoittaisen laatutarkistuksen täydellinen, versioitu tehtävä- ja toimintakuvaus.
