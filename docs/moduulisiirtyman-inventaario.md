@@ -207,7 +207,7 @@ Tekniset toteutuspäätökset, jotka eivät muuta näitä sisältö- tai käytt�
 - [x] Tuotantorekisterin kymmenen merkintää pysyvät inactive-tilassa; yhtään moduulia ei aktivoida tämän migraation yhteydessä.
 - [x] Migraatiovalidaattori lataa kaikki moduulit väliaikaisen aktiivisen rekisterikopion kautta ja vertaa lähdeviitteet ilman tuotantokirjoituksia.
 - [x] RSS-itemit, GUIDit, tehtäväjono, seurantatila ja näytöshistoria säilyvät muuttumattomina.
-- [x] Palautus edelliseen hyväksyttyyn määritysversioon on dokumentoitu; palautuksen käytännön harjoitus kuuluu erilliseen käyttöönottotestaukseen.
+- [x] Palautus edelliseen hyväksyttyyn määritysversioon on dokumentoitu. Koska vanhoja kanonisia tiedostoja ei muuteta, palautus tapahtuu moduulimäärittelyt ja rekisterimerkinnät sisältävän Git-commitin palautuksena.
 
 ## Muutoshistoria
 
