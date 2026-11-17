@@ -10,7 +10,7 @@ Tämä dokumentti kuvaa moduulien teknisen rekisterin ja sen lataajan. Rekisteri
 
 | Tiedosto | Vastuu |
 |---|---|
-| `data/module-registry.json` | Varsinainen rekisteri. Tuotantorekisteri on tässä vaiheessa tarkoituksella tyhjä. |
+| `data/module-registry.json` | Varsinainen rekisteri. Kymmenen nykyistä moduulia on rekisteröity, kaikki inactive-tilassa. |
 | `schemas/seurantamoduulirekisteri.schema.json` | Rekisterin Draft 2020-12 -skeema. |
 | `schemas/seurantamoduuli.schema.json` | Moduulimäärityksen yhteinen tietosopimus. |
 | `schemas/module-extensions/*.schema.json` | Paikalliset, versioidut prosessilaajennusten skeemat. |
@@ -87,7 +87,7 @@ python -m unittest tests.test_module_registry -v
 
 Koko repositorion testit ajetaan CI:ssä. Testit kattavat aihe- ja prosessimoduulin latauksen, passiivisen moduulin, virheellisen moduulin eristyksen, tuntemattoman moduulisopimusversion, rekisterin ja määrityksen ristiriidan, duplikaatit, polkurajat, ulkoisen skeemaviitteen hylkäämisen ja tulosjärjestyksen.
 
-Tuotantorekisteri on tämän toteutuksen yhteydessä tyhjä. Se on tarkoituksellinen turvaraja: #103 toteuttaa rekisterin ja lataajan, mutta #104 ja #105 kartoittavat ja siirtävät nykyiset aiheet ja prosessit hallitusti. Esimerkkien rekisteröiminen aktiivisiksi tuotantomoduuleiksi olisi ennenaikaista.
+Rekisterissä on #105:n migraation jälkeen kymmenen nykyistä moduulia, mutta kaikki ovat inactive-tilassa. Näin rekisteri kuvaa nykyisen moduulijoukon ilman, että automaatiot siirtyvät käyttämään uusia määrityksiä. Migraatiovalidaattori tarkistaa passiiviset määritykset väliaikaisen aktiivisen rekisterikopion avulla. Yhtään moduulia ei aktivoida tässä vaiheessa.
 
 ## 7. Seuraavat vaiheet
 
