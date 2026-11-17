@@ -4,11 +4,13 @@ KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: naytosvahti-2026-11-17-02
 
 ENSISIJAINEN OHJE
+Noudata myös docs/ajohistoria.md-tiedoston vaihekohtaista kirjausmallia. Kirjaa tämän ajon tila ja vaiheet vain haaraan run-history/screening-watch; älä kirjoita ajohistoriaa main-haaraan.
+
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/intialaisten-elokuvien-naytosseuranta.md. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele sen sisältöä tästä kehotteesta. Älä sido käynnistyskehotetta tiettyyn käsikirjan versionumeroon.
 
 AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
 
-Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioden asetuksia.
+Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioiden asetuksia.
 
 AJON ESITARKISTUS
 Lue GitHubista main-haarasta seuraavat tiedostot tässä järjestyksessä:

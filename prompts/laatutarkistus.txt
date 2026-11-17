@@ -4,17 +4,19 @@ KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: laatutarkistus-2026-11-17-02
 
 ENSISIJAINEN OHJE
+Noudata myös docs/ajohistoria.md-tiedoston vaihekohtaista kirjausmallia. Kirjaa tämän ajon tila ja vaiheet vain haaraan run-history/quality-check; älä kirjoita ajohistoriaa main-haaraan.
+
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin main-haaran tiedostossa docs/laatutarkistuksen-ohje.md. Tämä käynnistyskehote on vain käynnistysosoite; noudata käsikirjaa kokonaan äläkä päättele tarkastussisältöä tästä kehotteesta.
 
 AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
 
 Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioiden asetuksia.
 
-Ajon alussa lue GitHubista README.md, docs/laatutarkistuksen-ohje.md kokonaan ja data/seurantatila.json sekä noudata käsikirjan muuta esitarkistuslistaa. Tarkista, että tämän käynnistyskehotteen tunniste vastaa täsmälleen data/seurantatila.jsonin quality_check_instructions.startup_prompt_id-arvoa. Tarkista lisäksi, että käsikirjan Ohjeversion tunniste vastaa JSONin quality_check_instructions.current_version-arvoa ja että document-polku on täsmälleen docs/laatutarkistuksen-ohje.md. Jos jokin esitarkistuksen tiedosto puuttuu, ei ole luettavissa, kehotetunniste tai polku/versio ei täsmää, keskeytä auditointi ja onnistumistietojen päivitys. Älä arvaa tai käytä vanhaa ohjetta.
+Ajon alussa lue GitHubista README.md, docs/laatutarkistuksen-ohje.md kokonaan ja data/seurantatila.json, docs/ajohistoria.md sekä noudata käsikirjan muuta esitarkistuslistaa. Tarkista, että tämän käynnistyskehotteen tunniste vastaa täsmälleen data/seurantatila.jsonin quality_check_instructions.startup_prompt_id-arvoa. Tarkista lisäksi, että käsikirjan Ohjeversion tunniste vastaa JSONin quality_check_instructions.current_version-arvoa ja että document-polku on täsmälleen docs/laatutarkistuksen-ohje.md. Jos jokin esitarkistuksen tiedosto puuttuu, ei ole luettavissa, kehotetunniste tai polku/versio ei täsmää, keskeytä auditointi ja onnistumistietojen päivitys. Älä arvaa tai käytä vanhaa ohjetta.
 
 Noudata käsikirjan koko tarkastusalaa, raportointia ja onnistumisehtoja. Tämä on vain auditointi: älä korjaa havaintoja, älä muuta automaatioita tai asetuksia äläkä tee korjaavia committeja, issueita tai pull requesteja.
 
-Repositoryn ainoa sallittu kirjoitus on käsikirjan nimenomaisesti sallima quality_check_instructions.last_successful_run_version- ja last_successful_run_at-kenttien päivitys data/seurantatila.json-tiedostossa kattavan onnistuneen auditoinnin jälkeen. Säilytä kaikki muut JSON-kentät täsmälleen ennallaan, erityisesti pääautomaation automation_instructions- ja näytösvahdin separate_screening_watch-osiot. Hae JSON takaisin GitHubista ja varmista, että vain sallitut kaksi kenttää muuttuivat.
+Main-haaran ainoa sallittu kirjoitus on käsikirjan nimenomaisesti sallima quality_check_instructions.last_successful_run_version- ja last_successful_run_at-kenttien päivitys data/seurantatila.json-tiedostossa kattavan onnistuneen auditoinnin jälkeen. Säilytä kaikki muut JSON-kentät täsmälleen ennallaan, erityisesti pääautomaation automation_instructions- ja näytösvahdin separate_screening_watch-osiot. Hae JSON takaisin GitHubista ja varmista, että vain sallitut kaksi kenttää muuttuivat.
 
 Jos auditointi jää kesken tai jokin olennainen tarkastuskohde jää pääsyrajoitteen vuoksi tarkistamatta, älä päivitä onnistumistietoja. Raportoi tarkistetut kohteet, löydökset, rajoitteet ja suositellut korjaukset käsikirjan mukaisesti.
 

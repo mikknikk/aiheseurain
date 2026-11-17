@@ -110,6 +110,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/kehityskaytannot.md`: dokumentaation luokat ja kirjoitustavat, käynnistyskehotteiden ylläpito, skriptien kommentointi, koodin ylläpito ja muutosten tarkistus.
 - `docs/kehityskohteet.md`: toteutettujen parannusten tilanne ja avoin kehitystyö.
 - `docs/kehityssuunnitelma.md`: Valvomon, RSS-lukijan ja GitHub Issues -pohjaisen kehitysjono-osion tavoitearkkitehtuuri, tietomalliehdotukset, turvallisuus- ja saavutettavuusvaatimukset sekä kehityksen toimintamalli.
+- `docs/ajohistoria.md`: ChatGPT-automaatioiden erillisten ajohistoriahaarojen tietomalli ja kirjausmenettely.
 - `docs/valvomon-tietomalli.md`: nykyinen GitHub Pages -julkaisutapa, Valvomon kanoniset tietolähteet, skeemat, julkistettavat kentät, ajantasaisuuden tulkinta ja API:n käyttöperiaatteet.
 - `docs/tietomallit-ja-prosessit.md`: JSON-tiedostojen tarkoitukset ja keskinäiset viittaukset, lähdetietojen kulku, ajolokin tulkinta, näytöshistorian rakenne sekä Mermaid-prosessikaaviot.
 - `index.html`: Aiheseuraimen etusivu.
@@ -123,6 +124,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `data/seurantatila.json`: koneellisesti luettava tarkistustila, tehtäväkierron rinnakkaistila sekä pääautomaation, näytösvahdin ja laatutarkistuksen ohjeversiot ja viimeksi onnistuneesti käytetyt versiot.
 - `data/naytosten-muutoshistoria.json`: näytösten nykytila ja append-only-muutostapahtumat.
 - `schemas/naytosten-muutoshistoria.schema.json`: näytöshistorian JSON Schema Draft 2020-12 -skeema.
+- `schemas/automation-run-history.schema.json`: ChatGPT-automaatioiden yhteisen vaihekohtaisen ajohistorian skeema.
 - `scripts/validate_feeds.py`, `scripts/validate_publication_gate.py` ja `.github/workflows/validate-feeds.yml`: RSS:n rakennetarkistukset, raporttikohtainen julkaisulaadun portti ja niiden PR-validointi.
 - `reports/julkaisuportit/{run_id}.json` ja `schemas/julkaisuportti.schema.json`: jokaisen RSS-syötemuutoksen ajokohtainen hyväksyntäraportti ja sen rakenne.
 - `scripts/check_links.py` ja `.github/workflows/check-links.yml`: erillinen viikoittainen lähde- ja RSS-linkkien verkkotarkistus; raportti tallennetaan GitHub Actions -artefaktiksi.
@@ -167,6 +169,8 @@ RSS-itemissä ei käytetä item-kohtaista `<link>`-elementtiä. Jokaisen itemin 
 Näytösten viimeisin tunnettu tila ja tapahtumapohjainen muutosloki tallennetaan tiedostoon [data/naytosten-muutoshistoria.json](data/naytosten-muutoshistoria.json). Tietomalli ja käyttöönoton rajaukset on kuvattu tiedostossa [docs/naytoshistorian-rakenne.md](docs/naytoshistorian-rakenne.md), ja päivittäisen näytösvahdin on noudatettava [näytösseurannan työohjetta](docs/intialaisten-elokuvien-naytosseuranta.md). Ensimmäinen varmennettu lähtötilanne muodostettiin 16.11.2026 ja `baseline_status` on `active`; vanhoista RSS-teksteistä ei ole arvattu takautuvia tapahtumia.
 
 ## Koneellisesti luettava seurantatila
+
+ChatGPT-automaatioiden vaihekohtainen ajohistoria tallennetaan erillisiin `run-history/main-automation`, `run-history/screening-watch` ja `run-history/quality-check` -haaroihin. Valvomo lukee niiden `history.json`-tiedostot julkisina tietoina; ne eivät ole GitHub Actions -ajoja eivätkä muuta `main`-haaran RSS-julkaisuja. Tietomalli ja kirjausmenettely: [docs/ajohistoria.md](docs/ajohistoria.md).
 
 `data/seurantatila.json` tallentaa yhdeksän kiertotehtävän ja erillisen näytösvahdin koneellisesti luettavan tilan. Sen tehtäväkierron on vastattava `docs/tehtavajono.md`:tä. Seurantajaksojen, aikaleimojen ja päivitysten tarkat säännöt ovat [seurantaohjeessa](docs/seuranta.md).
 

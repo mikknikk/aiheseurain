@@ -465,6 +465,96 @@ async function renderActions() {
   }
 }
 
+
+export const RUN_HISTORY_SOURCES = [
+  { id: "main_automation", name: "Pääautomaatio", url: "https://raw.githubusercontent.com/mikknikk/aiheseurain/run-history/main-automation/history.json", maxAgeHours: 36 },
+  { id: "screening_watch", name: "Intialaisten elokuvien näytösvahti", url: "https://raw.githubusercontent.com/mikknikk/aiheseurain/run-history/screening-watch/history.json", maxAgeHours: 36 },
+  { id: "quality_check", name: "Viikoittainen laatutarkistus", url: "https://raw.githubusercontent.com/mikknikk/aiheseurain/run-history/quality-check/history.json", maxAgeHours: 240 }
+];
+
+const RUN_STATUS_LABELS = {
+  running: "Käynnissä", succeeded: "Onnistui", failed: "Epäonnistui",
+  partial: "Osittainen", interrupted: "Keskeytynyt", unknown: "Tuntematon",
+  pending: "Odottaa", skipped: "Ohitettu"
+};
+
+/** Tarkistaa ajohistorian olennaisen rakenteen ennen sen näyttämistä. */
+export function validateRunHistory(history, expectedId) {
+  if (!history || history.schema_version !== 1 || history.automation_id !== expectedId) return false;
+  if (!history.updated_at || !Number.isFinite(Date.parse(history.updated_at)) || !Array.isArray(history.runs)) return false;
+  return history.runs.every((run) =>
+    run && run.automation_id === expectedId && typeof run.run_id === "string" &&
+    ["running", "succeeded", "failed", "partial", "interrupted", "unknown"].includes(run.status) &&
+    typeof run.started_at === "string" && Number.isFinite(Date.parse(run.started_at)) &&
+    (run.finished_at === null || run.finished_at === undefined || Number.isFinite(Date.parse(run.finished_at))) &&
+    typeof run.updated_at === "string" && Number.isFinite(Date.parse(run.updated_at)) &&
+    run.source === "chatgpt_scheduled_task" && Array.isArray(run.steps) &&
+    run.steps.every((step) => step && typeof step.id === "string" &&
+      ["pending", "running", "succeeded", "failed", "skipped", "interrupted", "unknown"].includes(step.status))
+  );
+}
+
+/** Vanhentunutta running-merkintää ei esitetä aktiivisena ajoina. */
+export function displayRunStatus(run, maxAgeHours, now = Date.now()) {
+  if (!run || !RUN_STATUS_LABELS[run.status]) return { key: "unknown", label: "Tuntematon" };
+  if (run.status === "running") {
+    const freshness = classifyFreshness(run.updated_at, maxAgeHours, now);
+    return freshness.key === "good"
+      ? { key: "running", label: "Käynnissä" }
+      : { key: "warning", label: "Päivitys vanhentunut – mahdollisesti keskeytynyt" };
+  }
+  if (run.status === "succeeded") return { key: "good", label: RUN_STATUS_LABELS[run.status] };
+  if (run.status === "failed" || run.status === "interrupted") return { key: "error", label: RUN_STATUS_LABELS[run.status] };
+  if (run.status === "partial") return { key: "warning", label: RUN_STATUS_LABELS[run.status] };
+  return { key: "unknown", label: RUN_STATUS_LABELS[run.status] };
+}
+
+function renderRunHistory(histories) {
+  const target = document.getElementById("run-history-content");
+  const sections = RUN_HISTORY_SOURCES.map((source) => {
+    const history = histories[source.id];
+    if (!history) return `<article class="run-history-card"><h3>${escapeHtml(source.name)}</h3><p class="status-line status-unknown">Ajohistoriaa ei voitu lukea</p><p>Historiatiedosto puuttuu tai ei ole saatavilla. Ajon tilaa ei päätellä muista lähteistä.</p></article>`;
+    const runs = [...history.runs].sort((a,b) => Date.parse(b.started_at)-Date.parse(a.started_at));
+    if (!runs.length) return `<article class="run-history-card"><h3>${escapeHtml(source.name)}</h3><p class="status-line status-unknown">Ei vielä kirjattuja ajoja</p></article>`;
+    const items = runs.map((run) => {
+      const status = displayRunStatus(run, source.maxAgeHours);
+      const steps = run.steps.map((step) => `<li><span>${escapeHtml(step.name)}</span><span class="run-step-status">${escapeHtml(RUN_STATUS_LABELS[step.status] || "Tuntematon")}</span><span class="run-step-meta">Alkoi: ${escapeHtml(dateText(step.started_at))} · Päättyi: ${escapeHtml(dateText(step.finished_at))}</span>${step.errors?.length ? `<ul>${step.errors.map((item) => `<li class="run-error">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${step.warnings?.length ? `<ul>${step.warnings.map((item) => `<li class="run-warning">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}</li>`).join("");
+      const messages = [
+        ...(run.errors || []).map((item) => `<li class="run-error">${escapeHtml(item)}</li>`),
+        ...(run.warnings || []).map((item) => `<li class="run-warning">${escapeHtml(item)}</li>`)
+      ].join("");
+      return `<li class="run-history-item">
+        <details>
+          <summary><span class="status-line status-${status.key}">${escapeHtml(status.label)}</span>
+            <strong>${escapeHtml(dateText(run.started_at))}</strong>
+            <span class="muted">Tunniste: ${escapeHtml(run.run_id)}</span></summary>
+          <p>${escapeHtml(run.summary || "Ajolle ei ole kirjattu yhteenvetoa.")}</p>
+          <p class="muted">Päivitetty: ${escapeHtml(dateText(run.updated_at))} · Päättynyt: ${escapeHtml(dateText(run.finished_at))}</p>
+          <ol class="run-steps">${steps || "<li>Vaiheita ei ole kirjattu.</li>"}</ol>
+          ${messages ? `<ul>${messages}</ul>` : ""}
+        </details>
+      </li>`;
+    }).join("");
+    return `<article class="run-history-card"><h3>${escapeHtml(source.name)}</h3><ol class="run-history-list">${items}</ol></article>`;
+  });
+  target.innerHTML = sections.join("");
+}
+
+export async function loadRunHistory() {
+  const target = document.getElementById("run-history-content");
+  if (!target) return;
+  const results = await Promise.allSettled(RUN_HISTORY_SOURCES.map(async (source) => {
+    const history = await cachedJson(source.url);
+    if (!validateRunHistory(history, source.id)) throw new Error("Virheellinen ajohistoria");
+    return [source.id, history];
+  }));
+  const histories = {};
+  results.forEach((result) => {
+    if (result.status === "fulfilled") histories[result.value[0]] = result.value[1];
+  });
+  renderRunHistory(histories);
+}
+
 export async function loadDashboard() {
   const button = document.getElementById("refresh-button");
   button.disabled = true;
@@ -501,6 +591,7 @@ export async function loadDashboard() {
     renderScreening(state);
     renderQuality(state);
     renderAlerts(state, sourceLog);
+    await loadRunHistory();
     if (!sourceLog) {
       document.getElementById("alerts-content").insertAdjacentHTML("beforeend",
         '<p class="notice notice-warning">Lähdetarkistusten yhteenvetoa ei voitu ladata. Automaatiokorttien perustiedot ovat erillisessä seurantatiedostossa.</p>');
@@ -514,6 +605,7 @@ export async function loadDashboard() {
     document.getElementById("alerts-content").innerHTML =
       '<p class="notice notice-error">Valvomo ei saanut kelvollista seurantatiedostoa. Vanhaa tietoa ei esitetä tuoreena.</p>';
     document.getElementById("rotation-list").innerHTML = "<li>Aihekiertoa ei voitu ladata.</li>";
+    await loadRunHistory();
   } finally {
     button.disabled = false;
     button.textContent = "Päivitä näkymä";

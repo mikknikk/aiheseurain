@@ -373,3 +373,24 @@ p { max-width: 72ch; }
   text-transform: uppercase;
 }
 
+
+
+/* ChatGPT-automaatioiden erillinen ajohistoria */
+.run-history-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.run-history-card { min-width: 0; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: .65rem; }
+.run-history-card h3 { overflow-wrap: anywhere; }
+.run-history-list { display: grid; gap: .65rem; margin: 0; padding-left: 1.2rem; }
+.run-history-item { min-width: 0; }
+.run-history-item details { padding: .75rem; border: 1px solid var(--border); border-radius: .45rem; }
+.run-history-item summary { display: grid; gap: .35rem; cursor: pointer; }
+.run-history-item summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.run-steps { display: grid; gap: .5rem; padding-left: 1.3rem; }
+.run-steps li { overflow-wrap: anywhere; }
+.run-step-status { display: inline-block; margin-left: .5rem; color: var(--muted); font-weight: 700; }
+.run-step-meta { display: block; color: var(--muted); font-size: .88rem; }
+.run-error { color: var(--bad); }
+.run-warning { color: var(--warn); }
+.status-running { color: var(--link); background: var(--surface-muted); border: 1px solid var(--link); }
+@media (max-width: 900px) { .run-history-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .run-history-grid { grid-template-columns: 1fr; } }
+@media (forced-colors: active) { .run-history-card, .run-history-item details { border: 1px solid CanvasText; } }

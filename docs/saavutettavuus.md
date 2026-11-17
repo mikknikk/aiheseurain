@@ -98,3 +98,8 @@ Kopioi tämä osio uuteen testausmerkintään ja täytä vain tosiasiassa tehdyt
 
 **Yhteenveto ja avoimet löydökset:**
 
+
+
+## Valvomon ajohistorianäkymä
+
+Ajohistorianäkymän tulee säilyttää automaatiokohtaiset otsikot, luettavat tilatekstit ja vaiheiden järjestys myös ilman värejä. Aiemmat ajot avataan natiivilla `details/summary`-rakenteella, jonka on toimittava näppäimistöllä. Dynaamisesti päivittyvä tulosalue käyttää `aria-live="polite"`-ilmoitusta; se ei saa siirtää fokusta automaattisesti. Mobiilissa kortit pinoutuvat yhteen sarakkeeseen eikä vaihetekstin tarvitse mahtua vaakasuunnassa. Testit tarkistavat rakenteen ja tilojen tulkinnan, mutta eivät korvaa manuaalista näppäimistö-, ruudunlukija-, suurennus- tai kontrastitestausta.

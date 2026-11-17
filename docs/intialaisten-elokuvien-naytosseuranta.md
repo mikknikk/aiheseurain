@@ -1,4 +1,4 @@
-Ohjeversion tunniste: 1.4.2
+Ohjeversion tunniste: 1.4.3
 
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/aiheseurain näytös-RSS-syötettä https://mikknikk.github.io/aiheseurain/feeds/intialaisten-elokuvien-naytokset.xml.
 
@@ -138,3 +138,13 @@ Tämä näytösseuranta suoritetaan erillisellä päivittäisellä Intialaisten 
 
 
 Näytösseurannan oma lähderekisteri `data/sources/intialaiset_elokuvat_naytokset.json` käyttää samaa `schemas/lahderekisteri.schema.json`-skeemaa kuin uutisaiheiden rekisterit. Rekisteri on silti erillinen, eikä näytöslähteitä kirjata uutisajojen lokiin. Lähderekisterin ja ajokohtaisen tarkistuslokin rakenne validoidaan GitHub Actions -testissä. Lokimerkintä ei itsessään todista, että lähteen sisältö olisi ollut laadukasta tai että kaikkien alueiden kattavuus olisi täydellinen.
+
+## ChatGPT-ajon vaihekohtainen ajohistoria
+
+Noudata yhteistä [ajohistorian tietomallia](ajohistoria.md). Näytösvahdin historiatiedosto on haarassa `run-history/screening-watch`, polussa `history.json`, ja tunniste on `screening_watch`.
+
+Kirjaa ajo heti käynnistyessä tilaan `running` yksilöllisellä ajotunnisteella. Päivitä samaa ajoa jokaisen merkittävän vaiheen alussa ja lopussa. Käytä vähintään vaiheita `preflight`, `source_search`, `screening_validation`, `history_update`, `rss_update`, `validation`, `pull_request`, `ci`, `merge` ja `verification`; merkitse soveltumattomat vaiheet `skipped` vain perustellusti. Kirjaa vaiheiden aikaleimat, tulokset sekä lyhyet virheet ja varoitukset.
+
+Ajohistorian kirjoitus tehdään vain omaan `run-history/screening-watch`-haaraan GitHubin Contents APIlla tai vastaavalla käytettävissä olevalla GitHub-kirjoitustoiminnolla. Älä koskaan kirjoita ajohistoriaa `main`-haaraan äläkä tee siitä erillistä PR:ää. Jokaisen kirjoituksen jälkeen lue `history.json` samasta haarasta takaisin ja varmista ajotunniste sekä JSON-rakenne. Säilytä viimeiset 30 ajoa. Älä kirjaa salaisuuksia tai raakaa lokisisältöä.
+
+Päätä ajo `succeeded`, `failed` tai `partial` vasta, kun tulos on tiedossa. Jos kirjoitusoikeus puuttuu tai kirjoituksen onnistumista ei voida varmistaa, älä väitä ajohistoriaa päivitetyksi; raportoi rajoite. Ajohistorian kirjaus ei muuta näytösseurannan, RSS-julkaisun, näytöshistorian tai onnistumisen varsinaisia ehtoja.

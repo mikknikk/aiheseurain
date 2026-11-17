@@ -4,14 +4,16 @@ KÄYNNISTYSKEHOTTEEN TUNNISTE
 Käynnistyskehotteen tunniste: uutispaakierto-2026-11-17-03
 
 ENSISIJAINEN OHJE
+Noudata myös docs/ajohistoria.md-tiedoston vaihekohtaista kirjausmallia. Kirjaa tämän ajon tila ja vaiheet vain haaraan run-history/main-automation; älä kirjoita ajohistoriaa main-haaraan.
+
 Täydellinen ja ajantasainen tehtäväkuvaus on GitHubin tiedostossa docs/paaautomaation-ohje.md (tiedostonimessä on kaksi a-kirjainta alussa: paaautomaation). Tämä käynnistyskehote on vain käynnistysosoite; älä kopioi tai päättele tehtävän sisältöä siitä.
 
 AUTOMAATIOIDEN HALLINNAN SUOJAUS – PAKOLLINEN
 
-Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioden asetuksia.
+Noudata GitHubin tiedostoa docs/automaation-hallintaperiaatteet.md. Automaation suorittaminen ei anna lupaa muuttaa ajastusta, aktiivisuutta, suoritusväliä, ajankohtaa, aikavyöhykettä, käynnistysohjetta, muita asetuksia tai kohdekeskustelua. Älä poista, keskeytä tai luo ajastettuja tehtäviä äläkä vaihda kohdekeskustelua ilman käyttäjän nimenomaista pyyntöä tai lupaa. Älä tee tällaista muutosta, vaikka arvioisit sen hyödylliseksi tai tarpeelliseksi. Jos havaitset ajastukseen, asetuksiin tai kohdekeskusteluun liittyvän ongelman, raportoi se käyttäjälle äläkä yritä korjata sitä itse. Tämä sääntö koskee myös muiden Aiheseurain-automaatioiden asetuksia.
 
 Ajon alussa:
-1. Lue GitHubin main-haarasta README.md, docs/paaautomaation-ohje.md kokonaan, data/seurantatila.json, data/source-catalog.json, data/sources/{task_id}.json, schemas/lahdekatalogi.schema.json, schemas/lahderekisteri.schema.json ja data/lahdetarkistukset.json.
+1. Lue GitHubin main-haarasta README.md, docs/paaautomaation-ohje.md kokonaan, data/seurantatila.json, docs/ajohistoria.md, data/source-catalog.json, data/sources/{task_id}.json, schemas/lahdekatalogi.schema.json, schemas/lahderekisteri.schema.json ja data/lahdetarkistukset.json.
 2. Tarkista, että tämän käynnistyskehotteen tunniste vastaa täsmälleen data/seurantatila.jsonin automation_instructions.startup_prompt_id-arvoa. Tarkista lisäksi, että käsikirjan Ohjeversion tunniste vastaa JSONin automation_instructions.current_version-arvoa ja että automation_instructions.document on täsmälleen docs/paaautomaation-ohje.md. Jos kehotetunniste puuttuu tai ei täsmää, keskeytä ennen uutishakuja ja kirjoituksia.
 3. Jos jokin tiedosto puuttuu, ei ole luettavissa, GitHub ei ole käytettävissä tai polku/versio ei täsmää, keskeytä ennen uutishakuja ja kirjoituksia. Älä käytä vanhaa kehotetta tai arvaa oikeaa versiota. Älä muuta onnistumistietoja tai tehtävävuoroa.
 4. Noudata käsikirjan lukujärjestystä, tehtävävalintaa, sisältö-, lähde-, julkaisu- ja tarkistussääntöjä kokonaan. Kirjaa tämän ajon lähdetarkistukset vain valitun aihekierroksen tehtävätunnisteelle; älä tarkista tai kirjaa näytösvahtia.
