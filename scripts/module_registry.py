@@ -190,16 +190,15 @@ def load_registry(
     registry = _read_json(registry_path)
     registry_schema = _read_json(REGISTRY_SCHEMA_PATH if root == ROOT else root / "schemas/seurantamoduulirekisteri.schema.json")
     jsonschema.Draft202012Validator.check_schema(registry_schema)
-    entry_schema = registry_schema["$defs"]["registryEntry"]
-    entry_validator = jsonschema.Draft202012Validator(
-        entry_schema, format_checker=jsonschema.FormatChecker()
+    registry_validator = jsonschema.Draft202012Validator(
+        registry_schema, format_checker=jsonschema.FormatChecker()
     )
 
     # Rekisterin ylätason virhe estää merkintöjen luotettavan tulkinnan.
     top_level = dict(registry)
     top_level["modules"] = []
     top_errors = sorted(
-        jsonschema.Draft202012Validator(registry_schema).iter_errors(top_level),
+        registry_validator.iter_errors(top_level),
         key=lambda error: list(error.path),
     )
     if top_errors:
@@ -220,7 +219,18 @@ def load_registry(
     seen_paths: set[str] = set()
     for entry in entries:
         module_id = entry.get("module_id", "<tuntematon>") if isinstance(entry, dict) else "<virheellinen>"
-        entry_errors = sorted(entry_validator.iter_errors(entry), key=lambda error: list(error.path))
+        # Validoi yksittäinen merkintä koko skeemakontekstissa, jotta myös
+        # yhteisiin $defs-määritelmiin osoittavat viittaukset ratkeavat oikein.
+        single_entry_registry = dict(top_level)
+        single_entry_registry["modules"] = [entry]
+        entry_errors = sorted(
+            registry_validator.iter_errors(single_entry_registry),
+            key=lambda error: list(error.path),
+        )
+        entry_errors = [
+            error for error in entry_errors
+            if error.path and error.path[0] == "modules"
+        ]
         if entry_errors:
             results.append(ModuleResult(str(module_id), "invalid", error=entry_errors[0].message))
             continue
