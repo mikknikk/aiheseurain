@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task_id": "taylor_swift",
-  "updated_at": "2026-11-17T12:57:03+02:00",
+  "updated_at": "2026-11-17T13:00:26+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Taylor Swift. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
@@ -61,6 +61,12 @@
       "critical": false,
       "last_checked_at": "2026-11-17T12:57:03+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+    },
+    {
+      "source_id": "uol-splash",
+      "critical": false,
+      "last_checked_at": "2026-11-17T13:00:26+02:00",
+      "access_limit": null
     }
   ]
 }
