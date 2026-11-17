@@ -163,3 +163,4 @@ Muiden kahdeksan aihekierroksen tehtävien lähdekohtaiset tiedot löytyvät [yl
 Jos haluat vain ymmärtää palvelun käyttäjänä, vaiheet 1–3 ja 5 riittävät. Jos haluat ymmärtää myös teknisen toteutuksen, lue vaiheet 4, 6 ja 7. Jos haluat ylläpitää tai muuttaa tiettyä automaatiota, jatka vaiheen 8 kyseiseen käsikirjaan.
 
 Tämä opas kertoo lukujärjestyksen; yksityiskohtaiset säännöt pysyvät omissa ensisijaisissa dokumenteissaan. Jos dokumenttien sisältö muuttuu, päivitä myös tämä lukupolku ja sen linkit.
+\n## Valvomon ajohistoria\n\nKun haluat ymmärtää ChatGPT-automaation käynnissäolon ja vaiheiden tallennuksen, lue [ajohistorian tietomalli](ajohistoria.md) ja sen jälkeen [Valvomon tietomalli](valvomon-tietomalli.md).\n
