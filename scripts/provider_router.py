@@ -2,6 +2,7 @@
 from __future__ import annotations
 from datetime import datetime, timezone
 import json
+import math
 from pathlib import Path
 import time
 from typing import Any, Callable
@@ -17,6 +18,18 @@ from scripts.provider_contracts import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _validate_datetime(value: str, field: str) -> None:
+    """Varmista, että lähdeaikaleima sisältää myös aikavyöhykkeen."""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise ProviderContractError(f"Lähteen {field} ei ole kelvollinen ISO 8601 -aikaleima.") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ProviderContractError(f"Lähteen {field} puuttuu aikavyöhyke.")
+
+
 ROUTING_SCHEMA = ROOT / "schemas/provider-routing.schema.json"
 ROUTING_CONFIG = ROOT / "data/provider-routing.json"
 
@@ -94,6 +107,18 @@ class ProviderRouter:
             raise ProviderContractError(f"Palvelu {provider_id} ei täytä moduulin vaatimia kyvykkyyksiä.")
         return config, adapter
 
+    def budget_for(self, module_id: str, provider_type: str) -> CostBudget:
+        """Luo palvelun teknisen per-ajon kustannusrajan mukaisen budjetin."""
+        route = self.config["routes"].get(module_id, self.config["default_route"])
+        if route is None:
+            raise ProviderUnavailableError(f"Moduulille {module_id} ei ole määritelty palvelureittiä.")
+        field = "ai_processor" if provider_type == "ai_processor" else "research_provider"
+        provider_id = route[field]
+        if provider_id is None:
+            raise ProviderUnavailableError(f"Moduulille {module_id} ei ole määritelty palvelua {provider_type}.")
+        limit = self._provider_configs[provider_id]["cost_limit"]["per_run"]
+        return CostBudget(max_cost=limit)
+
     def _invoke(
         self, *, module_id: str, run_id: str, provider_type: str, provider_config: dict[str, Any],
         adapter: Any, operation: Callable[[], Any], estimate: float, budget: CostBudget,
@@ -132,8 +157,12 @@ class ProviderRouter:
 
     def process_ai(self, request: AIRequest, *, budget: CostBudget) -> AIResult:
         """Käsittele pyyntö valitulla AI-adapterilla ja varmista lähdeviitteiden säilyminen."""
+        if request.contract_version != "1.0.0" or not request.content.strip():
+            raise ProviderContractError("AI-pyynnön sopimusversio tai sisältö on virheellinen.")
         config, adapter = self._resolve(request.module_id, "ai_processor", request.required_capabilities)
         estimate = adapter.estimate_cost(request)
+        if not math.isfinite(estimate) or estimate < 0:
+            raise ProviderContractError("AI-adapterin kustannusarvio on virheellinen.")
 
         def validate(result):
             if not isinstance(result, AIResult) or result.contract_version != "1.0.0":
@@ -154,14 +183,23 @@ class ProviderRouter:
 
     def search(self, query: ResearchQuery, *, budget: CostBudget) -> ResearchResult:
         """Hae lähteitä ja säilytä alkuperäiset lähdetunnisteet sekä epävarmuus."""
+        if query.contract_version != "1.0.0" or not query.query_terms or query.max_results < 1:
+            raise ProviderContractError("Tutkimuspyynnön sopimusversio, hakutermit tai tulosraja on virheellinen.")
         config, adapter = self._resolve(query.module_id, "research_provider", query.required_capabilities)
         estimate = adapter.estimate_search_cost(query)
+        if not math.isfinite(estimate) or estimate < 0:
+            raise ProviderContractError("Tutkimusadapterin kustannusarvio on virheellinen.")
 
         def validate(result):
             if not isinstance(result, ResearchResult) or result.contract_version != "1.0.0":
                 raise ProviderContractError("Tutkimusadapteri palautti tuntemattoman vastaussopimuksen.")
-            if len(result.sources) > query.max_results or result.estimated_cost < 0:
+            if len(result.sources) > query.max_results or not math.isfinite(result.estimated_cost) or result.estimated_cost < 0:
                 raise ProviderContractError("Tutkimustuloksen määrä tai kustannusarvio on virheellinen.")
+            if result.complete and result.failed_source_ids:
+                raise ProviderContractError("Täydellisessä tutkimustuloksessa ei voi olla epäonnistuneita lähteitä.")
+            source_ids = [source.source_id for source in result.sources]
+            if len(source_ids) != len(set(source_ids)):
+                raise ProviderContractError("Tutkimustulos sisältää saman lähteen useammin kuin kerran.")
             allowed = set(query.allowed_source_ids)
             for source in result.sources:
                 if allowed and source.source_id not in allowed:
@@ -172,6 +210,9 @@ class ProviderRouter:
                     raise ProviderContractError("Lähteen luotettavuusluokka ei ole A–D.")
                 if source.claim_level not in {"officially_confirmed", "media_reported", "unconfirmed_rumor", "unknown"}:
                     raise ProviderContractError("Lähteen väitteen vahvistustaso on virheellinen.")
+                _validate_datetime(source.checked_at, "checked_at")
+                if source.published_at is not None:
+                    _validate_datetime(source.published_at, "published_at")
 
         return self._invoke(
             module_id=query.module_id, run_id=query.run_id, provider_type="research_provider",
@@ -183,14 +224,23 @@ class ProviderRouter:
     def open_source(self, *, module_id: str, run_id: str, source_id: str, budget: CostBudget) -> ResearchSource:
         """Avaa lähde tunnisteellä; adapteri ei saa vaihtaa pyydettyä lähdettä."""
         required = ("research.open_source", "source.provenance")
+        if not source_id:
+            raise ProviderContractError("Lähteen tunniste puuttuu.")
         config, adapter = self._resolve(module_id, "research_provider", required)
         estimate = adapter.estimate_open_cost(source_id)
+        if not math.isfinite(estimate) or estimate < 0:
+            raise ProviderContractError("Lähteen avaamisen kustannusarvio on virheellinen.")
 
         def validate(source):
             if not isinstance(source, ResearchSource) or source.source_id != source_id:
                 raise ProviderContractError("Avausadapteri palautti eri lähteen kuin pyydettiin.")
-            if urlparse(source.url).scheme not in {"http", "https"}:
+            if urlparse(source.url).scheme not in {"http", "https"} or not urlparse(source.url).netloc:
                 raise ProviderContractError("Avatun lähteen URL ei ole kelvollinen.")
+            if source.reliability_class not in {"A", "B", "C", "D"} or source.claim_level not in {"officially_confirmed", "media_reported", "unconfirmed_rumor", "unknown"}:
+                raise ProviderContractError("Avatun lähteen luotettavuus- tai vahvistusluokka on virheellinen.")
+            _validate_datetime(source.checked_at, "checked_at")
+            if source.published_at is not None:
+                _validate_datetime(source.published_at, "published_at")
 
         return self._invoke(
             module_id=module_id, run_id=run_id, provider_type="research_provider",
