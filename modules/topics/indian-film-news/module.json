@@ -1,0 +1,444 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "indian-film-news",
+  "module_type": "topic",
+  "definition_version": "1.0.0",
+  "name": "Intialaisen elokuvan uutiset",
+  "description": "Intian eri kielialueiden elokuvateollisuuksien, tekijöiden, tuotantojen ja elokuvakulttuurin kansainvälinen uutisseuranta.",
+  "capabilities": [
+    {
+      "id": "research.search",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "report.finnish",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
+  ],
+  "interfaces": {
+    "input": {
+      "id": "research.request",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "report.article",
+      "version": "1.0.0"
+    }
+  },
+  "source_refs": [
+    {
+      "source_id": "indian-express-regional",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "india-today-regional",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "telugucinema",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "cinema-express",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "daily-thanthi",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "cinisuddi",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "simply-mollywood",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "yle",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "hs",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "the-hindu-cinema",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "times-of-india-entertainment",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "ndtv-entertainment",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "bollywood-hungama",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "pinkvilla",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "eenadu-cinema",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "sakshi-telugu",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "123telugu",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "hindu-tamil-thisai",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "maalaimalar",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "dinamani",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "vijaya-karnataka",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "prajavani",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "kannada-prabha",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "onmanorama",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "mathrubhumi",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "manorama-online",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "anandabazar",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "sangbad-pratidin",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "lokmat",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "sakal",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "loksatta",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "ajit-punjabi",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "punjabi-tribune",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "assam-tribune",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "asomiya-pratidin",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "sambad-odia",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "dharitri",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "episodi",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "elokuvauutiset",
+      "role": "secondary",
+      "required": true
+    },
+    {
+      "source_id": "film-o-holic",
+      "role": "secondary",
+      "required": true
+    }
+  ],
+  "search_profiles": [
+    {
+      "id": "indian-film-news-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Indian cinema Telugu Tamil Kannada Malayalam Hindi Bengali Marathi Punjabi Assamese Odia",
+        "S. S. Rajamouli Allu Arjun Ram Charan Kajal Aggarwal Chiranjeevi Rajinikanth Upendra Kamal Haasan Prabhas Brahmanandam",
+        "Varanasi Raaka Kalki 2898 AD 2 Salaar 2 Spirit Fauzi",
+        "Demonte Colony film series Baahubali universe",
+        "Indian film box office release streaming festival award",
+        "intialainen elokuva suomalainen media suomalainen elokuvantekijä",
+        "తెలుగు సినిమా",
+        "தமிழ் சினிமா",
+        "ಕನ್ನಡ ಸಿನಿಮಾ",
+        "മലയാള സിനിമ",
+        "हिंदी सिनेमा",
+        "বাংলা সিনেমা",
+        "मराठी चित्रपट",
+        "ਪੰਜਾਬੀ ਸਿਨੇਮਾ",
+        "অসমীয়া চিনেমা",
+        "ଓଡ଼ିଆ ସିନେମା"
+      ],
+      "languages": [
+        "as",
+        "bn",
+        "en",
+        "fi",
+        "hi",
+        "kn",
+        "ml",
+        "mr",
+        "or",
+        "pa",
+        "ta",
+        "te"
+      ],
+      "regions": [
+        "FI",
+        "IN-AP",
+        "IN-AS",
+        "IN-KA",
+        "IN-KL",
+        "IN-MH",
+        "IN-NATIONAL",
+        "IN-OD",
+        "IN-PB",
+        "IN-PY",
+        "IN-TG",
+        "IN-TN",
+        "IN-WB"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    },
+    {
+      "id": "indian-film-news-finland",
+      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
+      "query_terms": [
+        "Suomi Finland Intialaisen elokuvan uutiset",
+        "Intialaisen elokuvan uutiset tapahtuma Suomi Finland"
+      ],
+      "languages": [
+        "en",
+        "fi"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "local-script-search",
+      "category": "inclusion",
+      "instruction": "Hae paikallisilla kirjoitusjärjestelmillä ja translitteroinneilla, älä vain englanninkielisillä nimillä.",
+      "severity": "required"
+    },
+    {
+      "id": "claim-levels",
+      "category": "verification",
+      "instruction": "Merkitse uutiset virallisesti vahvistetuiksi, median raportoimiksi tai vahvistamattomiksi huhuiksi; erottele arvioidut lipputulot virallisista luvuista.",
+      "severity": "required"
+    },
+    {
+      "id": "independent-confirmation",
+      "category": "verification",
+      "instruction": "Tarkista, perustuvatko eri julkaisut samaan alkuperäislähteeseen; älä laske kopioivia medioita riippumattomiksi vahvistuksiksi.",
+      "severity": "required"
+    },
+    {
+      "id": "finland-coverage",
+      "category": "inclusion",
+      "instruction": "Sisällytä suomalaisen median jutut ja suomalaiset tekijät intialaisissa elokuvissa, mutta älä lisää Suomen näytöslistoja uutisraporttiin.",
+      "severity": "required"
+    },
+    {
+      "id": "visual-material",
+      "category": "reporting",
+      "instruction": "Lisää mahdollisuuksien mukaan oikea virallinen juliste ja elokuvan virallinen YouTube-traileri; älä arvaa tai korvaa fanilatauksella.",
+      "severity": "required"
+    }
+  ],
+  "topic": {
+    "scope": "Intian elokuvateollisuudet ja niiden eri kielialueet: telugu, tamili, kannada, malajalam, hindi, bengali, marathi, pandžabi sekä assami ja odia silloin kun relevanttia. Seuranta kattaa henkilöt, tuotannot, julkaisut, lipputulot, suoratoiston, festivaalit, palkinnot, alan tapahtumat ja Suomen yhteydet.",
+    "include": [
+      "Telugu-, tamili-, kannada-, malajalam-, hindi-, bengali-, marathi- ja pandžabielokuvat sekä assamin- ja odian-kielinen elokuva relevantissa laajuudessa",
+      "Seurattavat näyttelijät, ohjaajat, tuottajat ja muut elokuvantekijät",
+      "Erityisseurattavat projektit ja elokuvasarjat",
+      "Julkaisut, lipputulot, suoratoisto, festivaalit, palkinnot ja tuotantouutiset",
+      "Suomalaisessa mediassa julkaistut intialaiselokuvia koskevat jutut ja suomalaiset tekijät intialaisissa elokuvissa"
+    ],
+    "exclude": [
+      "Suomen näytösajat ja teatteriohjelmistot, jotka kuuluvat erilliseen näytösvahtiin",
+      "Vahvistamattomat huhut esitettyinä virallisina tuotantotietoina",
+      "Saman uutisen moninkertainen kirjaaminen eri medioiden kopioidessa samaa alkuperäislähdettä"
+    ],
+    "entities": [
+      {
+        "entity_id": "s-s-rajamouli",
+        "entity_type": "person",
+        "label": "S. S. Rajamouli",
+        "aliases": [
+          "Koduri Srisaila Sri Rajamouli"
+        ]
+      },
+      {
+        "entity_id": "allu-arjun",
+        "entity_type": "person",
+        "label": "Allu Arjun"
+      },
+      {
+        "entity_id": "ram-charan",
+        "entity_type": "person",
+        "label": "Ram Charan"
+      },
+      {
+        "entity_id": "kajal-aggarwal",
+        "entity_type": "person",
+        "label": "Kajal Aggarwal"
+      },
+      {
+        "entity_id": "chiranjeevi",
+        "entity_type": "person",
+        "label": "Chiranjeevi"
+      },
+      {
+        "entity_id": "rajinikanth",
+        "entity_type": "person",
+        "label": "Rajinikanth"
+      },
+      {
+        "entity_id": "upendra",
+        "entity_type": "person",
+        "label": "Upendra"
+      },
+      {
+        "entity_id": "kamal-haasan",
+        "entity_type": "person",
+        "label": "Kamal Haasan"
+      },
+      {
+        "entity_id": "prabhas",
+        "entity_type": "person",
+        "label": "Prabhas"
+      },
+      {
+        "entity_id": "brahmanandam",
+        "entity_type": "person",
+        "label": "Brahmanandam"
+      },
+      {
+        "entity_id": "varanasi",
+        "entity_type": "film-project",
+        "label": "Varanasi"
+      },
+      {
+        "entity_id": "raaka",
+        "entity_type": "film-project",
+        "label": "Raaka"
+      },
+      {
+        "entity_id": "kalki-2898-ad-2",
+        "entity_type": "film-project",
+        "label": "Kalki 2898 AD 2"
+      },
+      {
+        "entity_id": "salaar-2",
+        "entity_type": "film-project",
+        "label": "Salaar 2"
+      },
+      {
+        "entity_id": "spirit",
+        "entity_type": "film-project",
+        "label": "Spirit"
+      },
+      {
+        "entity_id": "fauzi",
+        "entity_type": "film-project",
+        "label": "Fauzi"
+      },
+      {
+        "entity_id": "demonte-colony-series",
+        "entity_type": "film-series",
+        "label": "Demonte Colony -elokuvasarja"
+      },
+      {
+        "entity_id": "baahubali-universe",
+        "entity_type": "film-universe",
+        "label": "Baahubali-elokuvauniversumi"
+      }
+    ]
+  }
+}

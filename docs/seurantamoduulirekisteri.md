@@ -10,7 +10,7 @@ Tämä dokumentti kuvaa moduulien teknisen rekisterin ja sen lataajan. Rekisteri
 
 | Tiedosto | Vastuu |
 |---|---|
-| `data/module-registry.json` | Varsinainen rekisteri. Tuotantorekisteri on tässä vaiheessa tarkoituksella tyhjä. |
+| `data/module-registry.json` | Varsinainen rekisteri. Kymmenen nykyistä moduulia on rekisteröity, kaikki inactive-tilassa. |
 | `schemas/seurantamoduulirekisteri.schema.json` | Rekisterin Draft 2020-12 -skeema. |
 | `schemas/seurantamoduuli.schema.json` | Moduulimäärityksen yhteinen tietosopimus. |
 | `schemas/module-extensions/*.schema.json` | Paikalliset, versioidut prosessilaajennusten skeemat. |
@@ -87,15 +87,15 @@ python -m unittest tests.test_module_registry -v
 
 Koko repositorion testit ajetaan CI:ssä. Testit kattavat aihe- ja prosessimoduulin latauksen, passiivisen moduulin, virheellisen moduulin eristyksen, tuntemattoman moduulisopimusversion, rekisterin ja määrityksen ristiriidan, duplikaatit, polkurajat, ulkoisen skeemaviitteen hylkäämisen ja tulosjärjestyksen.
 
-Tuotantorekisteri on tämän toteutuksen yhteydessä tyhjä. Se on tarkoituksellinen turvaraja: #103 toteuttaa rekisterin ja lataajan, mutta #104 ja #105 kartoittavat ja siirtävät nykyiset aiheet ja prosessit hallitusti. Esimerkkien rekisteröiminen aktiivisiksi tuotantomoduuleiksi olisi ennenaikaista.
+Rekisterissä on #105:n migraation jälkeen kymmenen nykyistä moduulia, mutta kaikki ovat inactive-tilassa. Näin rekisteri kuvaa nykyisen moduulijoukon ilman, että automaatiot siirtyvät käyttämään uusia määrityksiä. Migraatiovalidaattori tarkistaa passiiviset määritykset väliaikaisen aktiivisen rekisterikopion avulla. Yhtään moduulia ei aktivoida tässä vaiheessa.
 
 ## 7. Seuraavat vaiheet
 
-- #104 inventoi nykyiset aiheet ja prosessit sekä suunnittelee hallitun siirtymän.
-- #105 tuottaa nykyisistä aiheista ja näytösvahdista varsinaiset moduulimäärittelyt ja rekisterimerkinnät.
+- #104 inventoi nykyiset aiheet ja prosessit sekä suunnittelee hallitun siirtymän. Valmis.
+- #105 tuotti nykyisistä aiheista ja näytösvahdista varsinaiset moduulimäärittelyt, lähdeviitteet ja passiiviset rekisterimerkinnät. Aktiivinen käyttöönotto tehdään myöhemmin.
 - #106 eriyttää moduulikohtaisen tilan ja tapahtumahistorian.
 - #107 määrittelee tekoäly- ja tutkimuspalvelujen adapterisopimukset.
 - #108 yhdistää moduulien suorittamisen yhteiseen orkestrointiin.
-- #109 yleistää nykyisen näytösvahtikyvykkyyden uudelleenkäytettäväksi tapahtumavahdiksi; sen yhteensovitus näytösvahtimoduulin kanssa tehdään omassa toteutusvaiheessaan.
+- #109 yleisti nykyisen näytösvahtikyvykkyyden uudelleenkäytettäväksi tapahtumavahdiksi. Valmis; tuotantokäyttöönotto on erillinen päätös.
 
 Tämä rekisteri ei muuta nykyisten automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita, kohdekeskusteluja tai aktiivisuutta eikä ota uusia moduuleja tuotantokäyttöön.

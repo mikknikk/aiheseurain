@@ -1,0 +1,129 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "wakaliwood",
+  "module_type": "topic",
+  "definition_version": "1.0.0",
+  "name": "Wakaliwood",
+  "description": "Wakaliwood-studion, Nabwana I.G.G:n ja niihin suoraan liittyvän ugandalaisen elokuvakulttuurin seuranta.",
+  "capabilities": [
+    {
+      "id": "research.search",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "report.finnish",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
+  ],
+  "interfaces": {
+    "input": {
+      "id": "research.request",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "report.article",
+      "version": "1.0.0"
+    }
+  },
+  "source_refs": [
+    {
+      "source_id": "wakaliwood-official",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "wakaliwood-supa-store",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "new-vision-uganda",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "daily-monitor-uganda",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "ugandan-film-festival",
+      "role": "primary",
+      "required": false
+    }
+  ],
+  "search_profiles": [
+    {
+      "id": "wakaliwood-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Wakaliwood",
+        "Nabwana I.G.G.",
+        "Who Killed Captain Alex",
+        "Ugandan action cinema Wakaliwood screening festival",
+        "Wakaliwood film production distribution tour"
+      ],
+      "languages": [
+        "en"
+      ],
+      "regions": [
+        "EAST-AFRICA",
+        "UG"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "production-status",
+      "category": "verification",
+      "instruction": "Erota vahvistetut tuotantotiedot, festivaaliohjelmat, huhut ja fanisisältö.",
+      "severity": "required"
+    },
+    {
+      "id": "regional-media",
+      "category": "inclusion",
+      "instruction": "Seuraa Ugandan ja Itä-Afrikan lähteitä sekä kansainvälisiä genre- ja festivaalijulkaisuja.",
+      "severity": "required"
+    },
+    {
+      "id": "direct-relevance",
+      "category": "exclusion",
+      "instruction": "Sisällytä Ugandan elokuvakulttuurin uutisia vain, kun niillä on suora yhteys Wakaliwoodiin.",
+      "severity": "required"
+    }
+  ],
+  "topic": {
+    "scope": "Wakaliwood-elokuvateollisuus ja studio, Nabwana I.G.G. ja muut keskeiset tekijät, tuotannot, festivaalit, levityssopimukset, näytökset, kansainväliset kiertueet, rahoitus, dokumentit ja suoraan liittyvä Ugandan elokuvakulttuuri.",
+    "include": [
+      "Wakaliwoodin ja Nabwana I.G.G:n uudet tuotannot ja tuotantotiedot",
+      "Festivaalit, näytökset, levitys, kiertueet ja rahoitus",
+      "Dokumentit, retrospektiivit ja studion historia",
+      "Wakaliwoodiin suoraan liittyvät Ugandan elokuvakulttuurin uutiset"
+    ],
+    "exclude": [
+      "Ugandan elokuva-alan yleisuutiset ilman Wakaliwood-yhteyttä",
+      "Fanisisältö ja vahvistamattomat tuotantohuhut"
+    ],
+    "entities": [
+      {
+        "entity_id": "wakaliwood",
+        "entity_type": "organization",
+        "label": "Wakaliwood",
+        "aliases": [
+          "Ramon Film Productions"
+        ]
+      },
+      {
+        "entity_id": "nabwana-igg",
+        "entity_type": "person",
+        "label": "Nabwana I.G.G.",
+        "aliases": [
+          "Isaac Godfrey Geoffrey Nabwana"
+        ]
+      }
+    ]
+  }
+}

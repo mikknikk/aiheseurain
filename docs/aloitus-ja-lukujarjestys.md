@@ -67,6 +67,7 @@ Lue nämä oppaat:
 - [Seurantamoduulirekisteri](seurantamoduulirekisteri.md), kun haluat ymmärtää, miten moduulimääritykset löydetään, validoidaan ja eristetään toisistaan.
 - [Yleinen tapahtumavahti](tapahtumavahti.md), kun haluat ymmärtää tapahtumien yhteisen tietomallin, tapahtumatyyppien laajennukset ja näytösseurannan lukevan sovittimen.
 - [Nykyisten moduulien inventaario ja siirtymäsuunnitelma](moduulisiirtyman-inventaario.md), kun haluat ymmärtää, mitkä nykyiset tiedostot kuuluvat mihinkin moduuliin ja miten historia säilytetään migraatiossa.
+- [Moduulisiirtymän toteutus](moduulisiirtyman-toteutus.md), kun haluat nähdä nykyisten kymmenen moduulin määritykset, lähdeviitteiden validoinnin ja sen, miksi moduulit on jätetty inactive-tilaan.
 
 Se kannattaa lukea vasta edellisten vaiheiden jälkeen, koska silloin esimerkiksi tehtävä, lähde ja ajokohtainen tarkistus ovat jo käsitteinä tuttuja.
 

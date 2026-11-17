@@ -1,0 +1,172 @@
+{
+  "contract_version": "1.0.0",
+  "module_id": "indian-film-screening-watch",
+  "module_type": "process",
+  "definition_version": "1.0.0",
+  "name": "Intialaisten elokuvien näytösvahti",
+  "description": "Suomessa järjestettävien intialaisten elokuvien näytösten, ennakko- ja erikoisnäytösten, festivaalien ja muiden yleisölle avoimien elokuvatapahtumien erillinen seuranta.",
+  "capabilities": [
+    {
+      "id": "event.discover",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "event.history",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "report.finnish",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
+  ],
+  "interfaces": {
+    "input": {
+      "id": "event.observation",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "event.change-report",
+      "version": "1.0.0"
+    }
+  },
+  "source_refs": [
+    {
+      "source_id": "finnkino",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "biorex",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "kino-regina",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "cinema-orion",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "kino-myyri",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "finbolly",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "fintamil",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "rasa-entertainment",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "finnish-film-foundation",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "cinema-mondo",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "filmikamari",
+      "role": "discovery",
+      "required": false
+    }
+  ],
+  "search_profiles": [
+    {
+      "id": "indian-film-screenings-finland",
+      "purpose": "Etsi tulevia, muuttuneita ja menneitä intialaisten elokuvien näytöksiä Suomessa.",
+      "query_terms": [
+        "Indian film screening Finland",
+        "intialainen elokuva näytös",
+        "Tamil Telugu Malayalam Hindi film Finland screening",
+        "Indian film festival Finland",
+        "Finnkino BioRex Kino Regina Cinema Orion Kino Myyri"
+      ],
+      "languages": [
+        "en",
+        "fi",
+        "ta"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Käytä teatterien ja järjestäjien omia ohjelmistoja ensisijaisina vahvistuksina; kolmannen osapuolen ilmoitukset merkitään omalla vahvistustasollaan."
+    }
+  ],
+  "editorial_rules": [
+    {
+      "id": "screening-scope",
+      "category": "inclusion",
+      "instruction": "Sisällytä Suomessa järjestettävät tavalliset, ennakko- ja erikoisnäytökset, festivaalit ja muut yleisölle avoimet intialaisen elokuvan tapahtumat.",
+      "severity": "required"
+    },
+    {
+      "id": "screening-source-level",
+      "category": "verification",
+      "instruction": "Erota teatterin vahvistama, järjestäjän ilmoittama ja kolmannen osapuolen ilmoittama tieto; älä korota vahvistustasoa.",
+      "severity": "required"
+    },
+    {
+      "id": "screening-history",
+      "category": "reporting",
+      "instruction": "Säilytä tulevat, menneet, peruutetut ja muuttuneet näytökset historiassa; siirrä menneet näytösajat raportin erilliseen historiaosioon.",
+      "severity": "required"
+    },
+    {
+      "id": "screening-identity",
+      "category": "uncertainty",
+      "instruction": "Käytä pysyvää näytöstunnistetta ja tarkkaa identiteettiä; älä yhdistä epävarmoja elokuva- tai näytöstunnistuksia automaattisesti.",
+      "severity": "required"
+    },
+    {
+      "id": "screening-partial-source",
+      "category": "uncertainty",
+      "instruction": "Lähteen saavuttamattomuus ei tarkoita ohjelmiston tyhjyyttä eikä aiemmin ilmoitetun näytöksen poistumista.",
+      "severity": "required"
+    }
+  ],
+  "process_extension": {
+    "extension_id": "event-watch.film-screenings",
+    "extension_version": "1.1.0",
+    "schema_uri": "https://mikknikk.github.io/aiheseurain/schemas/module-extensions/event-watch-film-screenings.schema.json",
+    "configuration": {
+      "event_type_ref": "modules/processes/indian-film-screening-watch/event-type.json",
+      "geography": {
+        "country": "FI",
+        "regions": [
+          "Finland"
+        ]
+      },
+      "identity": {
+        "event_key_fields": [
+          "title",
+          "venue",
+          "starts_at"
+        ],
+        "uncertain_match_policy": "do_not_merge_automatically"
+      },
+      "history": {
+        "retain_changes": true,
+        "retain_cancelled": true
+      }
+    }
+  }
+}

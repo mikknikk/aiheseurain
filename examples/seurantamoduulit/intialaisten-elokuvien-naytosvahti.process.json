@@ -7,24 +7,54 @@
   "description": "Suomessa järjestettävien intialaisten elokuvien näytösten erillinen seuranta ja muutosten historian ylläpito.",
   "replaces": [],
   "capabilities": [
-    { "id": "event.discover", "minimum_version": "1.0.0", "required": true },
-    { "id": "event.history", "minimum_version": "1.0.0", "required": true }
+    {
+      "id": "event.discover",
+      "minimum_version": "1.0.0",
+      "required": true
+    },
+    {
+      "id": "event.history",
+      "minimum_version": "1.0.0",
+      "required": true
+    }
   ],
   "interfaces": {
-    "input": { "id": "process.request", "version": "1.0.0" },
-    "output": { "id": "event.report", "version": "1.0.0" }
+    "input": {
+      "id": "process.request",
+      "version": "1.0.0"
+    },
+    "output": {
+      "id": "event.report",
+      "version": "1.0.0"
+    }
   },
   "source_refs": [
-    { "source_id": "finnkino", "role": "discovery", "required": true },
-    { "source_id": "biorex", "role": "discovery", "required": false }
+    {
+      "source_id": "finnkino",
+      "role": "discovery",
+      "required": true
+    },
+    {
+      "source_id": "biorex",
+      "role": "discovery",
+      "required": false
+    }
   ],
   "search_profiles": [
     {
       "id": "indian-film-screenings-finland",
       "purpose": "Etsi tulevia ja muuttuneita intialaisten elokuvien näytöksiä Suomessa.",
-      "query_terms": ["Indian film screening", "intialainen elokuva näytös"],
-      "languages": ["fi", "en"],
-      "regions": ["FI"]
+      "query_terms": [
+        "Indian film screening",
+        "intialainen elokuva näytös"
+      ],
+      "languages": [
+        "fi",
+        "en"
+      ],
+      "regions": [
+        "FI"
+      ]
     }
   ],
   "editorial_rules": [
@@ -43,16 +73,22 @@
   ],
   "process_extension": {
     "extension_id": "event-watch.film-screenings",
-    "extension_version": "1.0.0",
+    "extension_version": "1.1.0",
     "schema_uri": "https://mikknikk.github.io/aiheseurain/schemas/module-extensions/event-watch-film-screenings.schema.json",
     "configuration": {
-      "event_types": ["film_screening"],
+      "event_type_ref": "modules/processes/indian-film-screening-watch/event-type.json",
       "geography": {
         "country": "FI",
-        "regions": ["Finland"]
+        "regions": [
+          "Finland"
+        ]
       },
       "identity": {
-        "event_key_fields": ["film", "venue", "start_time"],
+        "event_key_fields": [
+          "title",
+          "venue",
+          "starts_at"
+        ],
         "uncertain_match_policy": "do_not_merge_automatically"
       },
       "history": {

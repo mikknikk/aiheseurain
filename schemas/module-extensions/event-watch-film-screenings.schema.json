@@ -3,46 +3,77 @@
   "$id": "https://mikknikk.github.io/aiheseurain/schemas/module-extensions/event-watch-film-screenings.schema.json",
   "title": "Elokuvanäytösten tapahtumavahtilaajennus",
   "x-extension-id": "event-watch.film-screenings",
-  "x-extension-version": "1.0.0",
-  "description": "Esimerkki prosessimoduulin omasta, erikseen validoitavasta laajennuksesta. Ei määrittele vielä yleistä tapahtumavahtimoottoria.",
+  "x-extension-version": "1.1.0",
+  "description": "Näytösvahtimoduulin elokuvanäytöskohtainen laajennus yleiseen tapahtumavahtiin. Laajennus viittaa moduulin omaan tapahtumatyyppimääritykseen ja määrittää Suomen maantieteellisen rajauksen, identiteetin ja historian säilyttämisen.",
   "type": "object",
-  "required": ["event_types", "geography", "identity", "history"],
+  "required": [
+    "event_type_ref",
+    "geography",
+    "identity",
+    "history"
+  ],
   "properties": {
-    "event_types": {
-      "type": "array",
-      "minItems": 1,
-      "uniqueItems": true,
-      "items": { "const": "film_screening" }
+    "event_type_ref": {
+      "type": "string",
+      "pattern": "^modules/processes/[a-z0-9-]+/event-type\\.json$"
     },
     "geography": {
       "type": "object",
-      "required": ["country"],
+      "required": [
+        "country"
+      ],
       "properties": {
-        "country": { "const": "FI" },
-        "regions": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        "country": {
+          "const": "FI"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
       },
       "additionalProperties": false
     },
     "identity": {
       "type": "object",
-      "required": ["event_key_fields"],
+      "required": [
+        "event_key_fields"
+      ],
       "properties": {
         "event_key_fields": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
-          "items": { "enum": ["film", "venue", "start_time", "screen"] }
+          "items": {
+            "enum": [
+              "title",
+              "venue",
+              "starts_at",
+              "screen"
+            ]
+          }
         },
-        "uncertain_match_policy": { "const": "do_not_merge_automatically" }
+        "uncertain_match_policy": {
+          "const": "do_not_merge_automatically"
+        }
       },
       "additionalProperties": false
     },
     "history": {
       "type": "object",
-      "required": ["retain_changes", "retain_cancelled"],
+      "required": [
+        "retain_changes",
+        "retain_cancelled"
+      ],
       "properties": {
-        "retain_changes": { "const": true },
-        "retain_cancelled": { "const": true }
+        "retain_changes": {
+          "const": true
+        },
+        "retain_cancelled": {
+          "const": true
+        }
       },
       "additionalProperties": false
     }

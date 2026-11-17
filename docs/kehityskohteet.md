@@ -20,8 +20,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#102 – Seurantamoduulin tietosopimus:** valmis ja yhdistetty.
 - **#103 – Moduulirekisteri ja määritysten lataus:** valmis; PR #111 yhdistetty.
 - **#104 – Nykyisten aiheiden ja prosessien hallittu moduulisiirtymä:** valmis ja yhdistetty PR:ssä #112.
-- **#109 – Yleinen tapahtumavahti:** toteutuksessa; yhteinen käsittelyydin, tapahtumatyypit ja näytöshistorian lukevan sovittimen testit ovat työn alla.
-- **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** käyttää #104:n siirtokarttaa ja #109:n tapahtumamallin sovitusta.
+- **#109 – Yleinen tapahtumavahti:** valmis; PR:t #113 ja #114 yhdistetty. Yhteinen käsittelyydin, lähdeadapterirajapinta, näytösvahtisovitin ja konferenssiesityksen testitapaus ovat käytettävissä.
+- **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** toteutuksessa; kymmenen moduulimääritystä ja passiiviset rekisterimerkinnät on lisätty, migraatiovalidointi ja dokumentaation viimeistely ovat työn alla.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 
@@ -30,6 +30,8 @@ Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issue
 Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidettävä. Sen on säilytettävä eri aiheet erillään, osoitettava uutisten lähteet ja seurantajaksot sekä havaittava rakenteelliset virheet automaattisesti. Kehityksessä suositaan pieniä, testattavia muutoksia. Uudet ja muutetut skriptit kommentoidaan suomeksi vähintään `scripts/validate_feeds.py`-tiedoston tasoisesti; tarkempi sääntö on [kehityskäytännöissä](kehityskaytannot.md).
 
 ## Toteutetut kohteet
+
+- [x] **Yleinen tapahtumavahti (#109).** PR:t #113 ja #114 toteuttavat tapahtumatyypin ja historian skeemat, yleisen käsittelyytimen, lähdesovittimen rajapinnan, täsmällisen identiteettipohjaisen duplikaattien yhdistämisen, ristiriitojen säilyttämisen, tilasiirtymät sekä näytöshistorian lukevan ja muistissa tapahtumia käsittelevän sovittimen. Konferenssiesitys on toinen tapahtumatyyppi. Tuotannon näytösvahtia tai automaatioasetuksia ei vaihdettu.
 
 - [x] **Nykyisten moduulien inventaario ja hallitun siirtymän suunnitelma (#104).** Dokumentti `docs/moduulisiirtyman-inventaario.md` kuvaa yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijaon, lähderekisterien kieli- ja aluekattavuuden, tiedostojen siirtokartan, omistajuusrajat, päällekkäisyysriskit sekä vaiheittaisen palautusmenettelyn. PR #112 on yhdistetty.
 
@@ -55,9 +57,9 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Avoimet kehityskohteet
 
-### Yleinen tapahtumavahti (#109)
+### Moduulisiirtymä (#105)
 
-Toteutuksessa on yhteinen tapahtumamalli, tyypitetyt määritykset, havaintojen yhdistäminen, lähderistiriitojen säilyttäminen, tilasiirtymät ja append-only-historia. Nykyisen näytöshistorian sovitin on vain lukeva, ja konferenssiesitys toimii toisena tapahtumatyyppinä testissä. Ulkoiset lähdeadapterit, tuotantomigraatio ja käyttöönotto eivät kuulu tähän muutokseen.
+Kymmenen nykyistä seurantaa on kuvattu itsenäisinä moduulimäärityksinä ja rekisteröity inactive-tilassa. Migraatiovalidointi tarkistaa lähdeviitteet, lähdekatalogin roolit, kielet, alueet, prosessilaajennuksen ja näytösvahtimoduulin tapahtumatyypin. Nykyiset automaatiot ja julkaisut jatkavat vanhoilla käsikirjoilla ja tietolähteillä; moduulien aktivointi ja suorituspolun vaihto eivät kuulu tähän muutokseen.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 

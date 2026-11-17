@@ -1,5 +1,76 @@
 {
   "registry_version": "1.0.0",
   "contract_version": "1.0.0",
-  "modules": []
+  "modules": [
+    {
+      "module_id": "euroviisut",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/euroviisut/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "gurmeet-ram-rahim-singh",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/gurmeet-ram-rahim-singh/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "indian-film-news",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/indian-film-news/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "indian-film-screening-watch",
+      "module_type": "process",
+      "definition_version": "1.0.0",
+      "path": "modules/processes/indian-film-screening-watch/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "muumit",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/muumit/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "shakkidraamat",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/shakkidraamat/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "sompote-sands",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/sompote-sands/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "taylor-swift",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/taylor-swift/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "tolkien",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/tolkien/module.json",
+      "status": "inactive"
+    },
+    {
+      "module_id": "wakaliwood",
+      "module_type": "topic",
+      "definition_version": "1.0.0",
+      "path": "modules/topics/wakaliwood/module.json",
+      "status": "inactive"
+    }
+  ]
 }
