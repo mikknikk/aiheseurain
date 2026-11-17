@@ -128,7 +128,7 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 
 **Tavoite:** rakentaa GitHub Pagesiin yhteinen käyttöliittymä, jossa voi seurata automaatioiden etenemistä ja lukea kaikkia repositorion RSS-syötteitä. Tekninen tavoitekuvaus, turvallisuusrajaukset, hyväksymiskriteerit ja vaiheistus ovat dokumentissa [julkinen valvomo ja RSS-lukija](julkinen-valvomo-ja-rss-lukija.md).
 
-**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on tässä PR:ssä; RSS-lukija (#31) ja Kehitysjonon kanban (#35) on toteutettu. Kehitysjonon selainkohtaisten API-hakujen korvaaminen Actionsissa muodostetulla aineistolla on käynnissä tiketissä #83.
+**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on valmis ja yhdistetty; RSS-lukija (#31) ja Kehitysjonon kanban (#35) on toteutettu. Kehitysjonon selainkohtaisten API-hakujen korvaaminen Actionsissa muodostetulla aineistolla on käynnissä tiketissä #83.
 
 - [x] Kirjaa tavoitearkkitehtuuri: yksi staattinen Pages-sivusto, valvomo ja RSS-lukija erillisinä osioina.
 - [x] Määrittele valvomon näyttämät automaatiot, ajovaiheet, aihekierroksen eteneminen, lähdekattavuuden käsitteet sekä virhe- ja varoitushistoria.
