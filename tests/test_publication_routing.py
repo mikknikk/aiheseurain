@@ -36,12 +36,6 @@ def context():
                  "status": "active", "destination": {"path": "feeds/film.xml",
                  "url": "https://example.invalid/film.xml"}},
             ),
-            "demo.all.rss": (
-                {"publication_id": "demo.all.rss", "status": "active"},
-                {"publication_id": "demo.all.rss", "name": "Kaikki",
-                 "status": "active", "destination": {"path": "feeds/all.xml",
-                 "url": "https://example.invalid/all.xml"}},
-            ),
             "demo.festival.rss": (
                 {"publication_id": "demo.festival.rss", "status": "active"},
                 {"publication_id": "demo.festival.rss", "name": "Festivaalit",
@@ -53,11 +47,8 @@ def context():
             {"route_id": "film-own", "module_ref": "demo", "target_ref": "demo.film",
              "publication_refs": ["demo.film.rss"], "observation_types": ["film-screening"],
              "status": "active"},
-            {"route_id": "film-combined", "module_ref": "demo", "target_ref": "demo.film",
-             "publication_refs": ["demo.all.rss"], "observation_types": ["film-screening"],
-             "status": "active"},
             {"route_id": "festival-own", "module_ref": "demo", "target_ref": "demo.festival",
-             "publication_refs": ["demo.festival.rss", "demo.all.rss"],
+             "publication_refs": ["demo.festival.rss"],
              "observation_types": ["film-festival"], "status": "active"},
             {"route_id": "inactive", "module_ref": "demo", "target_ref": "demo.film",
              "publication_refs": ["demo.film.rss"], "observation_types": ["film-festival"],
@@ -67,12 +58,12 @@ def context():
 
 
 class PublicationRoutingTests(unittest.TestCase):
-    def test_one_report_routes_to_own_and_combined_feed(self):
+    def test_one_report_routes_only_to_its_own_feed(self):
         plan = resolve_publication_plan(
             context(), module_id="demo", target_id="demo.film", run_id="run-1",
             observation_types=["film-screening"],
         )
-        self.assertEqual(plan.publication_ids, ("demo.all.rss", "demo.film.rss"))
+        self.assertEqual(plan.publication_ids, ("demo.film.rss",))
 
     def test_preview_does_not_write_files(self):
         plan = resolve_publication_plan(
@@ -114,7 +105,7 @@ class PublicationRoutingTests(unittest.TestCase):
             first = publisher.publish_report(plan, "<p>Raportti</p>")
             second = publisher.publish_report(plan, "<p>Raportti</p>")
             self.assertEqual(first, second)
-            for relative in ("feeds/film.xml", "feeds/all.xml"):
+            for relative in ("feeds/film.xml",):
                 root = ET.parse(Path(directory) / relative).getroot()
                 self.assertEqual(len(root.findall("./channel/item")), 1)
             with self.assertRaises(PublicationRoutingError):
@@ -143,7 +134,7 @@ class PublicationRoutingTests(unittest.TestCase):
             self.assertEqual(list(Path(directory).rglob("*.xml")), [])
 
 
-    def test_two_target_reports_publish_two_distinct_items_to_combined_feed(self):
+    def test_two_target_reports_publish_only_to_their_own_feeds(self):
         data = context()
         reports = [
             TargetReport("demo.film", "1.0.0", ("film-screening",), "2026-11-18T00:00:00+02:00",
@@ -157,8 +148,7 @@ class PublicationRoutingTests(unittest.TestCase):
             publisher = RoutedReportPublisher(Path(directory), data)
             receipt = publisher.publish_target_reports("demo", "run-two-targets", reports)
             self.assertTrue(publisher.verify(receipt))
-            combined = ET.parse(Path(directory) / "feeds/all.xml").getroot()
-            self.assertEqual(len(combined.findall("./channel/item")), 2)
+            self.assertFalse((Path(directory) / "feeds/all.xml").exists())
             own_film = ET.parse(Path(directory) / "feeds/film.xml").getroot()
             own_festival = ET.parse(Path(directory) / "feeds/festival.xml").getroot()
             self.assertEqual(len(own_film.findall("./channel/item")), 1)
@@ -175,7 +165,7 @@ class PublicationRoutingTests(unittest.TestCase):
             }])
             self.assertIsInstance(receipt, PublicationReceipt)
             self.assertTrue(publisher.verify(receipt))
-            self.assertEqual(receipt.published_items, 2)
+            self.assertEqual(receipt.published_items, 1)
     def test_orchestration_adapter_detects_tampered_feed_after_publish(self):
         data = context()
         with tempfile.TemporaryDirectory() as directory:
