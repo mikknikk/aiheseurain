@@ -112,7 +112,7 @@ class RssPublicationManifestTests(unittest.TestCase):
     def test_verify_feeds_rejects_hash_mismatch_without_long_wait(self):
         import io
         wrong = b'<rss><channel><item><guid>wrong-guid</guid></item></channel></rss>'
-        with patch.object(manifest.urllib.request, "urlopen", return_value=io.BytesIO(wrong)), patch.object(
+        with patch.object(manifest.urllib.request, "urlopen", side_effect=lambda *args, **kwargs: io.BytesIO(wrong)), patch.object(
             manifest.time, "sleep"
         ):
             with self.assertRaises(manifest.PublicationError):
