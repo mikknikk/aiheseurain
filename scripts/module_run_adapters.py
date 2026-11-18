@@ -11,6 +11,7 @@ from contextlib import contextmanager
 import fcntl
 import hashlib
 import json
+import jsonschema
 import os
 from pathlib import Path
 import re
@@ -22,6 +23,9 @@ from scripts.module_state import validate_module_state, StateConflictError
 from scripts.module_orchestrator import (
     ModuleRunResult, QualityGateResult, PublicationReceipt,
 )
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 MODULE_ID_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
@@ -378,7 +382,8 @@ class StructuralModuleQualityGate:
             errors.append("Suorittajan tila ei ole succeeded.")
         if not output.source_scan_complete:
             errors.append("Lähdehaku ei ole täydellinen.")
-        if not isinstance(output.report_content, str) or not output.report_content.strip():
+        target_reports = getattr(output, "target_reports", ()) or ()
+        if not target_reports and (not isinstance(output.report_content, str) or not output.report_content.strip()):
             errors.append("Raporttisisältö puuttuu.")
         if output.period_start != request.period_start or output.period_end != request.period_end:
             errors.append("Raportin seurantajakso poikkeaa suorituspyynnöstä.")
@@ -388,6 +393,84 @@ class StructuralModuleQualityGate:
             errors.append("Lähteiden määrä ei voi olla negatiivinen.")
         if len(output.source_check_run_refs) != len(set(output.source_check_run_refs)):
             errors.append("Lähdetarkistusajojen viitteissä on duplikaatti.")
+
+        if target_reports:
+            try:
+                schema_path = ROOT / "schemas/target-report.schema.json"
+                schema = json.loads(schema_path.read_text(encoding="utf-8"))
+                jsonschema.Draft202012Validator.check_schema(schema)
+                validator = jsonschema.Draft202012Validator(
+                    schema, format_checker=jsonschema.FormatChecker()
+                )
+                target_registry = json.loads(
+                    (ROOT / "data/target-registry.json").read_text(encoding="utf-8")
+                )
+                target_entries = {
+                    item["target_id"]: item for item in target_registry.get("targets", [])
+                }
+                allowed_target_ids = set(definition.get("target_refs", []))
+                report_ids = []
+                if not isinstance(target_reports, (list, tuple)):
+                    errors.append("Kohderaporttien pitää olla lista.")
+                    target_reports = ()
+                for report in target_reports:
+                    if not hasattr(report, "to_dict"):
+                        errors.append("Kohderaportin pitää olla TargetReport-tyyppinen arvo.")
+                        continue
+                    report_value = report.to_dict()
+                    schema_errors = sorted(
+                        validator.iter_errors(report_value), key=lambda item: list(item.path)
+                    )
+                    if schema_errors:
+                        errors.append(
+                            "Kohderaportin skeemavirhe: " + schema_errors[0].message
+                        )
+                        continue
+                    target_id = report.target_id
+                    report_ids.append(target_id)
+                    if target_id not in allowed_target_ids:
+                        errors.append(f"Kohderaportin kohde ei kuulu moduulille: {target_id}")
+                        continue
+                    entry = target_entries.get(target_id)
+                    if entry is None:
+                        errors.append(f"Kohderaportin kohdetta ei löydy rekisteristä: {target_id}")
+                        continue
+                    target_path = (ROOT / entry["path"]).resolve()
+                    if not target_path.is_relative_to(ROOT.resolve()) or not target_path.is_file():
+                        errors.append(f"Kohderaportin kohdemääritystä ei löydy: {target_id}")
+                        continue
+                    target = json.loads(target_path.read_text(encoding="utf-8"))
+                    target_module_ref = target.get("module_ref", {})
+                    if target_module_ref.get("module_id") != definition.get("module_id"):
+                        errors.append(f"Kohderaportin moduuliomistaja on väärä: {target_id}")
+                    if target_module_ref.get("definition_version") != definition.get("definition_version"):
+                        errors.append(f"Kohderaportin moduuliversio ei vastaa kohteen omistajaviitettä: {target_id}")
+                    if report.target_version != target.get("target_version"):
+                        errors.append(f"Kohderaportin kohdeversio ei vastaa rekisteriä: {target_id}")
+                    if report.period_start != request.period_start or report.period_end != request.period_end:
+                        errors.append(f"Kohderaportin seurantajakso poikkeaa pyynnöstä: {target_id}")
+                    if report.checked_at != output.checked_at:
+                        errors.append(f"Kohderaportin tarkistusajankohta poikkeaa ajosta: {target_id}")
+                    if not isinstance(report.report_content, str) or not report.report_content.strip():
+                        errors.append(f"Kohderaportin sisältö puuttuu: {target_id}")
+
+                    declared_types = definition.get("observation_types")
+                    if definition.get("module_type") == "process":
+                        event_ref = definition.get("process_extension", {}).get("configuration", {}).get("event_type_ref")
+                        if isinstance(event_ref, str):
+                            event_path = (ROOT / event_ref).resolve()
+                            if event_path.is_relative_to(ROOT.resolve()) and event_path.is_file():
+                                event_definition = json.loads(event_path.read_text(encoding="utf-8"))
+                                declared_types = [event_definition.get("event_type_id")]
+                    if not declared_types:
+                        output_type = definition.get("interfaces", {}).get("output", {}).get("id")
+                        declared_types = [output_type] if output_type else []
+                    if declared_types and not set(report.observation_types).issubset(set(declared_types)):
+                        errors.append(f"Kohderaportin havaintotyyppi ei vastaa moduulin sopimusta: {target_id}")
+                if len(report_ids) != len(set(report_ids)):
+                    errors.append("Suorituksessa on useampi raportti samalle seurantakohteelle.")
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError, KeyError, TypeError) as exc:
+                errors.append(f"Kohderaporttien rekisteritietojen lukeminen epäonnistui: {exc}")
         return QualityGateResult(passed=not errors, errors=tuple(errors))
 
 

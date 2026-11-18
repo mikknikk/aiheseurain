@@ -66,6 +66,36 @@ class ModuleRunRequest:
 
 
 @dataclass(frozen=True)
+class TargetReport:
+    """Yhden seurantakohteen raportti ennen julkaisukanavan ratkaisemista."""
+    target_id: str
+    target_version: str
+    observation_types: tuple[str, ...]
+    period_start: str
+    period_end: str
+    checked_at: str
+    report_content: str
+
+    def to_dict(self) -> dict[str, Any]:
+        """Palauta kohderaportin skeeman mukainen koneellinen esitys."""
+        return {
+            "report_schema_version": 1, "target_id": self.target_id,
+            "target_version": self.target_version,
+            "observation_types": list(self.observation_types),
+            "period": {"start": self.period_start, "end": self.period_end},
+            "checked_at": self.checked_at, "report_content": self.report_content,
+        }
+
+    def to_publication_dict(self) -> dict[str, Any]:
+        """Rajaa julkaisureitittimelle vain sen tarvitsemat tiedot."""
+        return {
+            "target_id": self.target_id,
+            "observation_types": list(self.observation_types),
+            "report_content": self.report_content,
+        }
+
+
+@dataclass(frozen=True)
 class ModuleExecutionOutput:
     """Suorittajan normalisoitu tulos ilman teknistä julkaisuvastuuta."""
     status: str
@@ -80,6 +110,7 @@ class ModuleExecutionOutput:
     report_guid_refs: tuple[str, ...] = ()
     artifacts: dict[str, Any] | None = None
     metadata: dict[str, Any] | None = None
+    target_reports: tuple[TargetReport, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -388,7 +419,10 @@ class ModuleOrchestrator:
                                     source_scan_complete=True,quality_passed=True,comparison=comparison)
 
             phase="publication"
-            target_reports = (output.metadata or {}).get("target_reports")
+            target_reports = (
+                [item.to_publication_dict() for item in output.target_reports]
+                if output.target_reports else (output.metadata or {}).get("target_reports")
+            )
             if target_reports is not None:
                 routed_publish = getattr(self.publisher, "publish_target_reports", None)
                 if not callable(routed_publish):

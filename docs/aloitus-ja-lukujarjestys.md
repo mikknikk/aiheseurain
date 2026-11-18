@@ -79,7 +79,7 @@ Jos haluat seurata esimerkkiä tiedostoista käsin, avaa tämän jälkeen:
 4. [Yhteinen seurantatila](../data/seurantatila.json) – tehtäväkierto ja tekninen automaatiotila.
 5. [Moduulikohtaiset tilat](../data/module-state/) – kunkin moduulin viimeisin onnistumisen checkpoint ja historiaviitteet; tarkemmat säännöt [moduulikohtaisen tilan ohjeessa](moduulikohtainen-tila.md).
 6. [Palveluadapterit](palveluadapterit.md) – AIProcessor- ja ResearchProvider-sopimukset sekä tekninen reititys.
-7. [Moduulien yhteinen suoritusorkestrointi](moduuliorchestrointi.md) – suorituspyyntö, ajon elinkaari, varjotila, tuotannon erillinen hyväksyntäportti ja tapahtumavahdin integraatio.
+7. [Moduulien yhteinen suoritusorkestrointi](moduuliorchestrointi.md) – suorituspyyntö, ajon elinkaari, varjotila, tuotannon erillinen hyväksyntäportti, tapahtumavahdin integraatio ja kohdekohtaisen raportin sopimus.
 8. [Elokuvahavainnot ja kriteerikohtaiset jatkotoimet](elokuvahavainnot-ja-jatkotoimet.md) – elokuvan tunnisteet, #109:n näytöstapahtumien viitteet, kriteeriosumat ja turvallinen toimintojen toimitus.
 9. [Elokuvien hakukriteeristö](elokuvahakukriteerit.md) – käyttäjän hyväksymien kriteerien rakenne, versiointi ja arviointilogiikka.
 7. [Syötekatalogi](../data/feed-catalog.json) – RSS-lukijan tuntemat syötteet.
