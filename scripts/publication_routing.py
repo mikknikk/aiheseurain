@@ -202,7 +202,7 @@ def preview_publication_plan(plan: PublicationPlan) -> dict[str, Any]:
 
 
 class LocalRoutedRssPublisher:
-    """Kirjoita kohdekohtainen raportti vain sen omaan RSS-syötteeseen testijuurella.""
+    """Kirjoita kohdekohtainen raportti vain sen omaan RSS-syötteeseen testijuurella."""
 
     def __init__(self, root: Path, context: dict[str, Any]):
         self.root = Path(root).resolve()
