@@ -62,10 +62,8 @@ def main() -> None:
         "tests/fixtures/movie-action-config.json",
         "schemas/movie-action-config.schema.json",
     )
-    validate(
-        "schemas/movie-action-event.schema.json",
-        "schemas/movie-action-event.schema.json",
-    )
+    event_schema = read_json("schemas/movie-action-event.schema.json")
+    jsonschema.Draft202012Validator.check_schema(event_schema)
 
     # Varsinaista tuotantokriteeriä tai Discord-toimintoa ei aktivoida ilman käyttäjän hyväksyntää.
     if production["actions"]:
