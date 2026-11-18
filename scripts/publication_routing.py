@@ -98,6 +98,7 @@ def load_publication_context(root: Path = ROOT) -> dict[str, Any]:
             raise PublicationRoutingError(f"Julkaisukohteen tunniste ei vastaa rekisteriä: {entry['publication_id']}")
         publications[entry["publication_id"]] = (entry, publication)
     route_ids = set()
+    target_publications: dict[str, str] = {}
     for route in routing["routes"]:
         if route["route_id"] in route_ids:
             raise PublicationRoutingError(f"Duplikaatti reittitunniste: {route['route_id']}")
@@ -109,6 +110,12 @@ def load_publication_context(root: Path = ROOT) -> dict[str, Any]:
         target_module = targets[route["target_ref"]][1]["module_ref"]["module_id"]
         if target_module != route["module_ref"]:
             raise PublicationRoutingError(f"Reitin moduuli ei omista seurantakohdetta: {route['route_id']}")
+        if len(route["publication_refs"]) != 1:
+            raise PublicationRoutingError(f"Reitillä pitää olla täsmälleen yksi julkaisukohde: {route['route_id']}")
+        publication_id = route["publication_refs"][0]
+        previous_publication = target_publications.setdefault(route["target_ref"], publication_id)
+        if previous_publication != publication_id:
+            raise PublicationRoutingError(f"Seurantakohde {route['target_ref']} viittaa useaan RSS-julkaisukohteeseen.")
         for publication_id in route["publication_refs"]:
             if publication_id not in publications:
                 raise PublicationRoutingError(f"Reitin julkaisukohdetta ei tunneta: {publication_id}")
@@ -149,6 +156,9 @@ def resolve_publication_plan(
     target_entry = context["targets"][target_id][0]
     if target_entry.get("status") != "active":
         inactive_refs.append(f"target:{target_id}")
+    route_publications = {route["publication_refs"][0] for route in routes if len(route["publication_refs"]) == 1}
+    if any(len(route["publication_refs"]) != 1 for route in routes) or len(route_publications) > 1:
+        raise PublicationRoutingError("Seurantakohteella pitää olla täsmälleen yksi oma RSS-julkaisukohde.")
     active_routes = []
     for route in routes:
         if route["status"] == "active":
@@ -192,7 +202,7 @@ def preview_publication_plan(plan: PublicationPlan) -> dict[str, Any]:
 
 
 class LocalRoutedRssPublisher:
-    """Kirjoita kohdekohtainen raportti useaan RSS-syötteeseen paikallisessa testijuurella."""
+    """Kirjoita kohdekohtainen raportti vain sen omaan RSS-syötteeseen testijuurella."""
 
     def __init__(self, root: Path, context: dict[str, Any]):
         self.root = Path(root).resolve()

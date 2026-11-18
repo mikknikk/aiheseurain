@@ -93,7 +93,7 @@ JSON-tiedostot ovat koneellista tilaa ja määrittelyjä, eivät itsenäisiä k�
 Lue:
 
 1. README:n kohdat *Syötteet*, *RSS-itemien sisältö ja lähteet* sekä *Seurantakohteiden mukainen julkaisureititys*.
-2. [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md) – miten kohdekohtainen raportti reititetään omaan ja valinnaiseen yhdistelmäsyötteeseen.
+2. [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md) – miten kukin kohdekohtainen raportti reititetään vain kohteen omaan RSS-syötteeseen.
 3. [Valvomon tietomalli](valvomon-tietomalli.md) – mistä Valvomo lukee tietonsa ja miten tilatietoja tulkitaan.
 4. Tutustu [RSS-lukijaan](https://mikknikk.github.io/aiheseurain/lukija/) ja avaa tarvittaessa repositorion `feeds/`-hakemiston RSS-tiedostoja.
 5. Jos haluat ymmärtää RSS-lukijan toteutusta, tarkastele README:n tiedostovastuita: `lukija/index.html` ja `assets/js/reader.js`.

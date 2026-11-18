@@ -72,4 +72,4 @@ Automaattinen testi osoittaa tietorakenteen ja käsittelylogiikan toiminnan test
 
 ## 8. Seurantakohteet ja julkaisureititys
 
-Tapahtumavahtimoduuli on suoritusraja, ei yksittäinen elokuva tai RSS-syöte. Se voi käsitellä useita erillisiä seurantakohteita, kuten elokuvia ja festivaaleja. Kukin kohde voi tuottaa tapahtumahavaintoja, jotka reititetään erillisiin julkaisukohteisiin. Näytösvahtiesimerkki näyttää kaksi kohdetta, kaksi omaa RSS-kanavaa ja valinnaisen yhdistelmäsyötteen. Nykyisen näytösvahtiajon ja RSS-syötteen reititystä ei ole vaihdettu.
+Tapahtumavahtimoduuli on suoritusraja, ei yksittäinen elokuva tai RSS-syöte. Se voi käsitellä useita erillisiä seurantakohteita, kuten elokuvia ja festivaaleja. Kukin kohde voi tuottaa tapahtumahavaintoja, jotka reititetään vain kyseisen kohteen omaan RSS-julkaisukohteeseen. Näytösvahtiesimerkki näyttää kaksi kohdetta ja kaksi erillistä RSS-kanavaa; yhdistelmäsyötettä ei muodosteta. Nykyisen näytösvahtiajon ja RSS-syötteen reititystä ei ole vaihdettu.

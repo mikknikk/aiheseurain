@@ -42,12 +42,19 @@ def validate(root: Path = ROOT) -> list[str]:
     routing=read(root/"data/publication-routing.json")
     errors.extend(e.message for e in jsonschema.Draft202012Validator(schemas["julkaisureititys.schema.json"]).iter_errors(routing))
     route_ids=set()
+    target_publications={}
     for route in routing.get("routes",[]):
         if route["route_id"] in route_ids: errors.append(f"Duplikaatti reititystunniste: {route['route_id']}")
         route_ids.add(route["route_id"])
         if route["module_ref"] not in module_ids: errors.append(f"Tuntematon moduuliviite reitillä {route['route_id']}")
         if route["target_ref"] not in target_by_id: errors.append(f"Tuntematon seurantakohde reitillä {route['route_id']}")
         elif target_by_id[route["target_ref"]].get("module_ref",{}).get("module_id")!=route["module_ref"]: errors.append(f"Reitin kohde kuuluu toiselle moduulille: {route['route_id']}")
+        if len(route.get("publication_refs",[])) != 1:
+            errors.append(f"Reitillä pitää olla täsmälleen yksi julkaisukohde: {route['route_id']}")
+        elif route["target_ref"] in target_publications and target_publications[route["target_ref"]] != route["publication_refs"][0]:
+            errors.append(f"Seurantakohde viittaa useaan julkaisukohteeseen: {route['target_ref']}")
+        elif route.get("target_ref"):
+            target_publications[route["target_ref"]] = route["publication_refs"][0]
         for pub_id in route["publication_refs"]:
             if pub_id not in publication_by_id: errors.append(f"Tuntematon julkaisukohde reitillä {route['route_id']}: {pub_id}")
     return errors
