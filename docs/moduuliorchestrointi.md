@@ -1,6 +1,6 @@
 # Moduulien yhteinen suoritusorkestrointi
 
-**Versio:** 1.2.0  
+**Versio:** 1.3.0  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#108 – Rakenna yhteinen moduulien suoritusorkestrointi ja vaiheittainen käyttöönotto](https://github.com/mikknikk/aiheseurain/issues/108)
 
@@ -114,7 +114,17 @@ Yksikkötestit kattavat varjotilan, tuotannon erillisen hyväksynnän, onnistune
 
 Toteutus tarjoaa yhteisen orkestrointisopimuksen ja testatut portit. Se ei vielä sisällä tuotantokäyttöön tarkoitettua RSS-kirjoittajaa, GitHubin artefaktitallennuksen toteutusta tai automaatioiden käynnistysintegraatiota. Nämä adapterit ja niiden käyttöönottopäätös tehdään erikseen.
 
-## 10. Paikalliset tallennus- ja julkaisusovittimet
+## 10. Seurantakohteiden yhteinen suorituskehys
+
+`scripts/target_execution.py` lataa moduulin `target_refs`-viitteet `data/target-registry.json`-rekisteristä ja validoi jokaisen kohdemäärityksen skeemaa, moduuliomistajaa ja versioita vasten. Tuotantotilassa myös rekisterimerkinnän on oltava active; varjotilassa passiivisia kohteita voidaan lukea ilman kirjoituksia.
+
+`TargetExecutionCoordinator` muodostaa jokaiselle kohteelle erillisen `TargetExecutionContext`-ympäristön. Se sisältää kohteen määrityksen, hakuprofiilit, ajon tunnisteen ja seurantajakson. Kohdemääritys ja hakuprofiilit annetaan runnerille rekursiivisesti vain luku -muodossa. Runner kutsutaan erikseen jokaiselle kohteelle, joten yhden kohteen muutos tai virhe ei muuta muiden kohteiden hakukontekstia.
+
+Onnistunut kohdeajo tuottaa `TargetReport`-arvon. Jos jokin kohde epäonnistuu tai sen lähdehaku jää osittaiseksi, koordinaattori palauttaa osittaisen/epäonnistuneen moduulituloksen. Orkestroinnin laadunvarmistus estää tällaisen tuloksen julkaisemisen ja checkpointin päivittämisen.
+
+Verkkohakuton esimerkki on `examples/target_reports/coordinator_demo.py`; se käyttää kahta rekisteröityä Tolkien-kohdetta ja muodostaa synteettiset testiraportit. Kehys ei itsessään tee verkkohakuja eikä aktivoi moduuleja tai kohteita.
+
+## 11. Paikalliset tallennus- ja julkaisusovittimet
 
 Tiketissä #120 lisättiin `scripts/module_run_adapters.py` ja `tests/test_module_run_adapters.py`. Sovittimet on tarkoitettu paikalliseen testaukseen ja varjotilan kehitykseen; ne eivät ole tuotantoon kytkettyjä GitHub- tai RSS-palveluja.
 
@@ -128,6 +138,7 @@ Tallennus- ja julkaisutestit käyttävät väliaikaisia hakemistoja. Ne eivät k
 
 ## Muutoshistoria
 
+- **1.3.0 – 2026-11-18:** lisättiin rekisteristä kohteet lataava ja jokaisen kohteen erikseen suorittava TargetExecutionCoordinator.
 - **1.2.0 – 2026-11-18:** lisättiin versioitu kohderaportin tulossopimus, suorittajan usean kohderaportin tulos ja laadunvarmistuksen kohde-, versio-, havaintotyyppi- ja seurantajaksojen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin paikalliset SHA-tarkistetut tallennus-, ajotulos- ja RSS-julkaisusovittimet sekä niiden testaus- ja tuotantorajaukset.
 - **1.0.0 – 2026-11-18:** määriteltiin yhteinen suorituspyyntö ja tulos, orkestroinnin elinkaari, varjotila, tuotannon hyväksyntäportti, idempotentit tallennus- ja julkaisurajapinnat sekä yleisen tapahtumavahdin moduuli-integraatio.

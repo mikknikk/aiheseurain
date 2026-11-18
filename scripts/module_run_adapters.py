@@ -7,6 +7,7 @@ anna kyseisiä polkuja. Tuotannon GitHub-sovittimet ovat erillinen toteutus.
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime
 from contextlib import contextmanager
 import fcntl
 import hashlib
@@ -449,8 +450,16 @@ class StructuralModuleQualityGate:
                         errors.append(f"Kohderaportin kohdeversio ei vastaa rekisteriä: {target_id}")
                     if report.period_start != request.period_start or report.period_end != request.period_end:
                         errors.append(f"Kohderaportin seurantajakso poikkeaa pyynnöstä: {target_id}")
-                    if report.checked_at != output.checked_at:
-                        errors.append(f"Kohderaportin tarkistusajankohta poikkeaa ajosta: {target_id}")
+                    try:
+                        report_checked = datetime.fromisoformat(report.checked_at.replace("Z", "+00:00"))
+                        output_checked = datetime.fromisoformat(output.checked_at.replace("Z", "+00:00"))
+                        requested_at = datetime.fromisoformat(request.requested_at.replace("Z", "+00:00"))
+                        if report_checked.tzinfo is None or output_checked.tzinfo is None or requested_at.tzinfo is None:
+                            raise ValueError("Aikaleimasta puuttuu aikavyöhyke.")
+                        if report_checked > output_checked or report_checked < requested_at:
+                            errors.append(f"Kohderaportin tarkistusajankohta ei ole ajon aikarajojen sisällä: {target_id}")
+                    except (AttributeError, TypeError, ValueError):
+                        errors.append(f"Kohderaportin tarkistusajankohta on virheellinen: {target_id}")
                     if not isinstance(report.report_content, str) or not report.report_content.strip():
                         errors.append(f"Kohderaportin sisältö puuttuu: {target_id}")
 

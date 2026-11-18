@@ -1,6 +1,6 @@
 # Seurantamoduulit, seurantakohteet ja julkaisukohteet
 
-**Versio:** 1.2.0  
+**Versio:** 1.3.0  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#133](https://github.com/mikknikk/aiheseurain/issues/133)
 
@@ -65,6 +65,16 @@ Orkestrointi välittää validoidut kohderaportit #136:n reititetylle julkaisuso
 
 ## Muutoshistoria
 
+- **1.3.0 – 2026-11-18:** lisättiin moduulin kohteet rekisteristä lataava ja erikseen suorittava yhteinen suorituskehys.
 - **1.2.0 – 2026-11-18:** dokumentoitiin kohdekohtaisen raportin sopimus, suorittajan tulosmalli ja laadunvarmistuksen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin julkaisureitityksen ajonaikainen sovitin ja orkestroinnin reititysintegraatio.
 - **1.0.0 – 2026-11-18:** erotettiin seurantamoduuli, seurantakohde ja julkaisukohde omiksi tietokokonaisuuksikseen.
+
+
+## Seurantakohteiden suorituskehys
+
+`scripts/target_execution.py` lataa moduulin kohteet rekisteristä ja antaa moduulin omalle runnerille yhden kohteen kerrallaan. Jokainen `TargetExecutionContext` sisältää vain kyseisen kohteen määrityksen ja hakuprofiilit, moduulin ja ajon tunnisteet sekä pyydetyn seurantajakson. Kohdemäärityksen sisäinen rakenne annetaan runnerille vain luku -muodossa.
+
+Runner palauttaa `TargetExecutionResult`-arvon, josta koordinaattori muodostaa #138:n mukaisen `TargetReport`-arvon. Kohdekohtaiset virheet eristetään: jos yksikin kohde jää keskeneräiseksi, moduulin tulos on osittainen eikä sitä julkaista. Tuotantotilassa passiiviset seurantakohteet estetään jo ennen runnerin kutsumista.
+
+Esimerkkisuorittaja `examples/target_reports/coordinator_demo.py` näyttää kahden Tolkien-kohteen erilliset hakuprofiilit ja raportit ilman verkkohakua. Testit: `python -m unittest tests.test_target_execution -v`.
