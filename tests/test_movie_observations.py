@@ -7,7 +7,8 @@ import unittest
 from scripts.movie_observations import (
     JsonFileMovieRegistryStore, MovieRegistryConflictError,
     build_movie_observation, empty_registry, merge_movie_observation,
-    normalize_title, reconcile_movie_observations,
+    build_observations_from_screening_state, normalize_title,
+    reconcile_movie_observations, screening_snapshot,
 )
 
 NOW = "2026-11-18T08:00:00+02:00"
@@ -36,6 +37,32 @@ def criterion(criterion_id="test-criterion", matched_at=NOW, reason="Testikritee
 
 
 class MovieObservationTests(unittest.TestCase):
+
+    def test_screening_state_is_the_source_and_movie_registry_only_aggregates(self):
+        """#109:n film-screening-tila on lähde; elokuvarekisteriin tallentuu vain viite."""
+        event = screening("screening-1", "Elokuva A")
+        event_state = {"event_type_id": "film-screening", "current_events": [event]}
+        observations = build_observations_from_screening_state(
+            event_state,
+            {"screening-1": {"primary_title": "Elokuva A", "release_year": 2021}},
+            {"screening-1": [criterion()]},
+            NOW,
+        )
+        self.assertEqual(len(observations), 1)
+        self.assertEqual(observations[0]["screening_refs"], ["screening-1"])
+        self.assertNotIn("venue", observations[0])
+        snapshot = screening_snapshot(event)
+        self.assertEqual(snapshot["venue"], "Testiteatteri")
+        self.assertEqual(snapshot["status"], "scheduled")
+
+    def test_other_event_types_cannot_be_used_as_screening_source(self):
+        """Elokuvahavaintoja ei saa johtaa esimerkiksi film-festival-tapahtumista."""
+        with self.assertRaises(ValueError):
+            build_observations_from_screening_state(
+                {"event_type_id": "film-festival", "current_events": []},
+                {}, {}, NOW,
+            )
+
     def test_external_identifier_is_stable_and_merges_screenings(self):
         """IMDb-tunniste yhdistää saman elokuvan eri näytöshavainnot."""
         metadata = {
