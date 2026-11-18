@@ -1,0 +1,31 @@
+name: Käyttöliittymien testit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ui-tests:
+    name: Testaa Valvomo, RSS-lukija ja Kehitysjono
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae lähdekoodi
+        uses: actions/checkout@v4
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Tarkista selaimen JavaScriptin syntaksi
+        run: |
+          node --check assets/js/valvomo.js
+          node --check assets/js/reader.js
+          node --check assets/js/kanban.js
+          node --check scripts/build_kanban_data.mjs
+      - name: Testaa Valvomon, RSS-lukijan ja Kehitysjonon logiikka
+        run: node --test tests/valvomo.test.mjs tests/reader.test.mjs tests/kanban.test.mjs tests/kanban-data.test.mjs tests/issue-dependencies.test.mjs

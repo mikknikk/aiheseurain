@@ -194,3 +194,14 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [x] Testit varmistavat, että eri kohteiden raportit jäävät eri syötteisiin.
 - [x] README ja dokumentaation lukupolku on päivitetty.
 - [x] Nykyistä tuotantosyötettä tai automaatioasetuksia ei muutettu.
+
+### Issue #144 – käyttöliittymätestien erottaminen seurantajulkaisuista
+
+- [x] Siirrettiin Valvomon, RSS-lukijan ja Kehitysjonon JavaScript-syntaksi- ja logiikkatestit itsenäiseen `.github/workflows/test-ui.yml`-työnkulkuun.
+- [x] Rajattiin `.github/workflows/validate-feeds.yml` seurantadatan, RSS-syötteiden, dokumentaation, moduulisopimusten ja Python-testien tarkistamiseen.
+- [x] Säilytettiin main-haaran rulesetin vaadittu status check seurantavalidoinnin työpaikassa; käyttöliittymätestejä ei asetettu vaadituksi PR-portiksi.
+- [x] Lisättiin `tests/test_workflow_isolation.py`, joka tarkistaa työnkulkujen erillisyyden ja vaaditun tarkistusnimen.
+- [x] Päivitettiin järjestelmäarkkitehtuurin kuvaus.
+- [x] ChatGPT-automaation asetuksiin, ajastuksiin tai ohjeisiin ei tehty muutoksia.
+
+**Tulos:** käyttöliittymätestien virhe ei estä näytösvahtiin tai uutisraportointiin liittyvän muutoksen seurantavalidointia eikä sen hyväksymistä main-haaraan. Käyttöliittymien testit suoritetaan edelleen ja niiden tulokset näkyvät erillisessä työnkulussa.

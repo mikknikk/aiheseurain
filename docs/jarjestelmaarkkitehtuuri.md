@@ -1,9 +1,9 @@
 # Aiheseuraimen järjestelmäarkkitehtuuri
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
-**Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.14.1  
-**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109), [#142 – Rajaa julkaisureititys yhteen RSS-syötteeseen seurantakohdetta kohti](https://github.com/mikknikk/aiheseurain/issues/142)
+**Nykytilan tarkistus:** 18.11.2026  
+**Versio:** 1.15.0  
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109), [#142 – Rajaa julkaisureititys yhteen RSS-syötteeseen seurantakohdetta kohti](https://github.com/mikknikk/aiheseurain/issues/142), [#144 – Erota käyttöliittymätestit seurantajulkaisujen pakollisista tarkistuksista](https://github.com/mikknikk/aiheseurain/issues/144)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -185,12 +185,18 @@ GitHub Actions ei suorita varsinaisia uutis- tai näytöshakuja. Se hoitaa repos
 
 | Työnkulku | Käynnistin | Vastuu |
 |---|---|---|
-| `RSS- ja dokumentaatiotestit` (`validate-feeds.yml`) | Push `main`-haaraan, pull request `main`-haaraan tai manuaalinen käynnistys | RSS/XML- ja HTML-rakenteet, dokumentaatio, seurantatila, JavaScript ja yksikkötestit |
+| `RSS- ja dokumentaatiotestit` (`validate-feeds.yml`) | Push `main`-haaraan, pull request `main`-haaraan tai manuaalinen käynnistys | RSS/XML- ja HTML-rakenteet, dokumentaatio, seurantatila, seurantamoduulien sopimukset ja Python-yksikkötestit; seurantajulkaisun pakollinen hyväksyntäportti |
+| `Käyttöliittymien testit` (`test-ui.yml`) | Push `main`-haaraan, pull request `main`-haaraan tai manuaalinen käynnistys | Valvomon, RSS-lukijan ja Kehitysjonon JavaScript-syntaksi ja Node.js-logiikkatestit; ei ole seurantajulkaisun pakollinen hyväksyntäportti |
 | `Kehitysjonon aineisto ja Pages-julkaisu` (`publish-pages.yml`) | Push, pull request, issue-tapahtumat, issue-kommentit, päivittäinen ajastus tai manuaalinen käynnistys | GitHub Issues -aineiston muodostus ja validointi sekä Jekyll/Pages-julkaisu |
 | `Synkronoi tikettien riippuvuudet` (`sync-issue-dependencies.yml`) | Issue muokattu | Käsittelee yksiselitteisen natiivin riippuvuuspyynnön ja käynnistää tarvittaessa Pages-aineiston päivityksen |
 | `Lähde- ja RSS-linkkien viikoittainen tarkistus` (`check-links.yml`) | Viikoittainen ajastus tai manuaalinen käynnistys | Tarkistaa lähde- ja RSS-linkkien saavutettavuuden ja tallentaa raportin artefaktiksi |
 
 `publish-pages.yml` sisältää päivittäisen varmistusajastuksen `17 3 * * *` UTC, eli Suomen talviaikana klo 05.17 ja kesäaikana klo 06.17. Tämä on GitHub Actionsin Pages-aineiston päivitys- ja julkaisuaika, ei pääautomaation uutishaku. GitHub Actionsin ajastus voi viivästyä ruuhkatilanteessa.
+
+
+Työnkulkujen vastuuraja on tarkoituksellinen. `validate-feeds.yml` sisältää vain seuranta-aineiston, RSS:n, dokumentaation, moduulien ja niiden julkaisulaadun tarkistukset. Valvomon, RSS-lukijan ja Kehitysjonon JavaScriptin syntaksi- ja logiikkatestit suoritetaan itsenäisessä `test-ui.yml`-työnkulussa. Käyttöliittymätestien epäonnistuminen näkyy omana CI-virheenään, mutta se ei muuta seurantavalidoinnin tulosta eikä estä näytösvahtiin tai uutisraportointiin liittyvän muutoksen hyväksymistä.
+
+Main-haaran aktiivisen rulesetin vaadittu status check on edelleen seurantavalidoinnin työpaikan nimi `Tarkista RSS, HTML, dokumentaatio ja seurantatila`. Käyttöliittymätyönkulun tarkistusta ei lisätä vaadittuihin hyväksyntätarkistuksiin. Näin erottelu säilyy myös PR-yhdistämisen portissa, ei vain YAML-työnkulkujen sisäisessä rakenteessa. Testi `tests/test_workflow_isolation.py` varmistaa, että käyttöliittymätestit pysyvät omassa työnkulussaan ja seurantatyönkulun vaadittu tarkistusnimi säilyy.
 
 `check-links.yml` sisältää viikoittaisen maanantain ajastuksen `17 6 * * 1` UTC. Sekään ei käynnistä uutisseurantaa. `validate-feeds.yml` käynnistyy koodimuutoksista tai manuaalisesti, eikä sillä ole omaa ajastusta.
 
@@ -805,6 +811,7 @@ Toteutuksen tietomallit ja validointiohje ovat dokumentissa [Seurantakohteet ja 
 
 ## 12. Muutoshistoria
 
+- **1.15.0 – 2026-11-18:** erotettiin Valvomon, RSS-lukijan ja Kehitysjonon JavaScript- ja logiikkatestit omaan GitHub Actions -työnkulkuunsa. Seurantavalidoinnin pakollinen status check säilytettiin ennallaan, ja riippumattomuudelle lisättiin regressiotesti (#144).
 - **1.14.1 – 2026-11-18:** määriteltiin yksi oma RSS-syöte kutakin seurantakohdetta kohti; poistettiin yhdistelmäsyöte tavoitetilasta ja näytösvahtiesimerkeistä; reitityksen validointi rajataan yhden julkaisukohteen malliin (#142).
 - **1.14.0 – 2026-11-18:** erotettiin seurantamoduuli, seurantakohde ja julkaisukohde omiksi versionoiduiksi tietomalleikseen; lisättiin kohdekohtaiset määritykset, julkaisureitityksen sopimus, näytösvahtiesimerkki ja viitteiden validointi (#133). Nykyinen näytösvahti ja RSS-syöte säilyvät ennallaan; uudet julkaisurekisterit ja reititys ovat tyhjiä ja passiivisia.
 
