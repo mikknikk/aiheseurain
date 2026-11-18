@@ -1,6 +1,7 @@
 # Seurantamoduulit, seurantakohteet ja julkaisukohteet
 
-**Versio:** 1.0.0  
+**Versio:** 1.2.0  
+**Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#133](https://github.com/mikknikk/aiheseurain/issues/133)
 
 ## Kolme itsenäistä käsitettä
@@ -11,7 +12,7 @@
 
 ## Reitityssopimus
 
-data/publication-routing.json yhdistää moduulin, seurantakohteen ja yhden tai useamman julkaisukohteen. Reitti voi lisäksi rajata havaintotyypit. Sama havainto voidaan julkaista sekä kohdekohtaisessa syötteessä että valinnaisessa yhdistelmäsyötteessä. Tuotannon julkaisurekisteri ja reititys ovat tässä vaiheessa tyhjiä: esimerkit eivät muuta nykyisiä RSS-syötteitä.
+data/publication-routing.json yhdistää moduulin, seurantakohteen ja yhden tai useamman julkaisukohteen. Reitti voi lisäksi rajata havaintotyypit. Sama kohdekohtainen raportti voidaan julkaista sekä kohteen omassa syötteessä että valinnaisessa yhdistelmäsyötteessä. Tuotannon julkaisurekisteri ja reititys ovat tässä vaiheessa tyhjiä: esimerkit eivät muuta nykyisiä RSS-syötteitä.
 
 ## Esimerkki
 
@@ -60,3 +61,10 @@ Raportti sisältää:
 `StructuralModuleQualityGate` tarkistaa skeeman, moduulin `target_refs`-viitteet, kohteen rekisteröidyn version ja moduuliomistajuuden, havaintotyyppien sopivuuden sekä ajanjakson ja tarkistusajankohdan yhdenmukaisuuden. Saman ajon kohderaporttien tunnisteet eivät saa toistua.
 
 Orkestrointi välittää validoidut kohderaportit #136:n reititetylle julkaisusovittimelle. Jos suorittaja ei vielä tuota kohderaportteja, vanha moduulikohtainen `report_content`-polku toimii siirtymävaiheen yhteensopivuustilana. Esimerkkisuorittaja kahdelle Tolkien-kohteelle: `examples/target_reports/two_target_reports.py`. Testit: `python -m unittest tests.test_target_report_contract -v`.
+
+
+## Muutoshistoria
+
+- **1.2.0 – 2026-11-18:** dokumentoitiin kohdekohtaisen raportin sopimus, suorittajan tulosmalli ja laadunvarmistuksen tarkistukset.
+- **1.1.0 – 2026-11-18:** dokumentoitiin julkaisureitityksen ajonaikainen sovitin ja orkestroinnin reititysintegraatio.
+- **1.0.0 – 2026-11-18:** erotettiin seurantamoduuli, seurantakohde ja julkaisukohde omiksi tietokokonaisuuksikseen.
