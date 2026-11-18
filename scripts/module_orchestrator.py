@@ -433,7 +433,7 @@ class ModuleOrchestrator:
             )
             # Manifesti kirjoitetaan ennen ensimmäistä ulkoista julkaisukirjoitusta.
             # Jos valmistelu ei onnistu, julkaisu ei ala lainkaan.
-            phase="publication_manifest"
+            phase="publication"
             report_payload = target_reports if target_reports is not None else output.report_content
             publication_targets = (
                 sorted(item["target_id"] for item in target_reports)
