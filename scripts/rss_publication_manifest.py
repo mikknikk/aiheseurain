@@ -51,7 +51,7 @@ def git_changed_files(base_ref: str) -> set[str]:
         raise PublicationError(f"Git-diff epäonnistui: {exc.stderr}") from exc
     return {line.strip() for line in result.stdout.splitlines() if line.strip()}
 
-def api(method: str, path: str, payload: dict | None = None) -> dict:
+def api(method: str, path: str, payload: dict | None = None) -> dict | list:
     """Käytä GitHub APIa vain rajattuun deployment-historiaan."""
     token, repo = os.getenv("GITHUB_TOKEN"), os.getenv("GITHUB_REPOSITORY")
     if not token or not repo:
@@ -178,6 +178,63 @@ def verify_rollback(args) -> None:
         output("rollback_verified", "false")
         print(f"Palautuksen takaisinluku epäonnistui: {exc}")
 
+
+def validate_snapshot_files(expected: list[dict]) -> None:
+    """Varmista, että uusinta-ajossa ladatut palautustiedostot vastaavat manifestia."""
+    folder = ROOT / "_rollback_snapshot" / "feeds"
+    for feed in expected:
+        saved = folder / Path(feed["path"]).name
+        if not saved.is_file():
+            raise PublicationError(f"Palautussnapshotista puuttuu {feed['path']}")
+        data = saved.read_bytes()
+        guids, count = rss_metadata(data, feed["path"])
+        if (digest(data) != feed["sha256"] or len(data) != feed["size_bytes"]
+                or guids != feed["guids"] or count != feed["item_count"]):
+            raise PublicationError(f"Palautussnapshot ei vastaa manifestia: {feed['path']}")
+
+
+def find_existing_deployment(source_commit: str, base_commit: str, run_id: str) -> dict | None:
+    """Etsi saman Actions-ajon aiemmin luotu manifesti epäselvän API-vastauksen tai uusinnan varalta."""
+    items = api("GET", f"deployments?environment=rss-publication-manifest&ref={source_commit}&per_page=100")
+    for item in items if isinstance(items, list) else []:
+        payload = item.get("payload", {})
+        if isinstance(payload, str):
+            try:
+                payload = json.loads(payload)
+            except json.JSONDecodeError:
+                continue
+        if (payload.get("manifest_type") == "aiheseurain-rss-publication"
+                and payload.get("workflow_run_id") == str(run_id)
+                and payload.get("source_commit") == source_commit
+                and payload.get("base_commit") == base_commit):
+            return {"id": item.get("id"), "payload": payload}
+    return None
+
+
+def alert_failure(args) -> None:
+    """Luo yksi GitHub-issue epäonnistuneesta RSS-julkaisusta ja liitä ajo siihen."""
+    did = int(args.deployment_id)
+    manifest = load_manifest(args.deployment_id)
+    run_id = os.getenv("GITHUB_RUN_ID", "")
+    title = f"RSS-julkaisun palautus vaatii huomiota - ajo {run_id}"
+    issues = api("GET", "issues?state=all&per_page=100")
+    for issue in issues if isinstance(issues, list) else []:
+        if not issue.get("pull_request") and issue.get("title") == title:
+            print(f"Virhehälytys on jo kirjattu issueen #{issue['number']}.")
+            return
+    repo = os.environ["GITHUB_REPOSITORY"]
+    run_url = os.getenv("GITHUB_SERVER_URL", "https://github.com") + f"/{repo}/actions/runs/{run_id}"
+    body = (
+        "RSS/Pages-julkaisun varmennus tai automaattinen palautus epäonnistui.\n\n"
+        f"- Deployment: {did}\n- Lähdecommit: {manifest.get('source_commit')}\n"
+        f"- Workflow-ajo: {run_url}\n\n"
+        "Tarkista Pages-julkaisun vaiheet ja julkisten RSS-URL-osoitteiden nykytila. "
+        "Älä kuittaa hälytystä ennen kuin kaikki syötteet on luettu takaisin ja täsmäytetty."
+    )
+    created = api("POST", "issues", {"title": title, "body": body})
+    print(f"Virhehälytys kirjattu issueen #{created.get('number')}.")
+
+
 def build_manifest(base_ref: str, source_commit: str,
                    workflow_run_id: str, workflow_attempt: str) -> dict | None:
     """Muodosta muuttumaton ehdokas kaikista syötteistä ennen Pages-kirjoitusta."""
@@ -237,26 +294,45 @@ def prepare(args) -> None:
         print("RSS-syötemuutoksia ei ole; manifestia ei tarvita.")
         output("deployment_id", "")
         return
-    # Varmista aiemmin julkinen tila ennen ehdokkaan julkaisemista.
-    manifest["rollback_feeds"] = snapshot_live_feeds(manifest["feeds"])
-    import jsonschema
-
-    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
-    jsonschema.Draft202012Validator(
-        schema, format_checker=jsonschema.FormatChecker()
-    ).validate(manifest)
-    created = api("POST", "deployments", {
-        "ref": manifest["source_commit"], "task": "deploy", "auto_merge": False,
-        "required_contexts": [], "environment": "rss-publication-manifest",
-        "description": "RSS-ehdokas valmis; odottaa Pages-takaisinlukua.",
-        "transient_environment": False, "production_environment": False,
-        "payload": manifest,
-    })
-    deployment_id = created.get("id")
-    if not isinstance(deployment_id, int):
-        raise PublicationError("GitHub ei palauttanut deployment-tunnistetta")
+    run_id = os.getenv("GITHUB_RUN_ID", "local")
+    existing = find_existing_deployment(manifest["source_commit"], manifest["base_commit"], run_id)
+    if existing:
+        # Uusinta käyttää alkuperäistä manifestia eikä vaihda palautuspistettä.
+        manifest = existing["payload"]
+        snapshot_folder = ROOT / "_rollback_snapshot" / "feeds"
+        if snapshot_folder.is_dir():
+            validate_snapshot_files(manifest["rollback_feeds"])
+            reused = True
+        else:
+            # Jos ajo katkesi ennen snapshot-artefaktin tallennusta, palauta se vain,
+            # jos nykyinen julkinen sisältö vastaa yhä alkuperäistä palautuspistettä.
+            rebuilt = snapshot_live_feeds(manifest["feeds"])
+            if rebuilt != manifest["rollback_feeds"]:
+                raise PublicationError("Uusinta-ajon palautussnapshot puuttuu eikä nykyinen Pages vastaa alkuperäistä palautuspistettä.")
+            reused = False
+        deployment_id = existing["id"]
+    else:
+        # Varmista aiemmin julkinen tila ennen ehdokkaan julkaisemista.
+        manifest["rollback_feeds"] = snapshot_live_feeds(manifest["feeds"])
+        import jsonschema
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator(
+            schema, format_checker=jsonschema.FormatChecker()
+        ).validate(manifest)
+        created = api("POST", "deployments", {
+            "ref": manifest["source_commit"], "task": "deploy", "auto_merge": False,
+            "required_contexts": [], "environment": "rss-publication-manifest",
+            "description": "RSS-ehdokas valmis; odottaa Pages-takaisinlukua.",
+            "transient_environment": False, "production_environment": False,
+            "payload": manifest,
+        })
+        deployment_id = created.get("id")
+        if not isinstance(deployment_id, int):
+            raise PublicationError("GitHub ei palauttanut deployment-tunnistetta")
+        reused = False
+    output("snapshot_reused", "true" if reused else "false")
     output("deployment_id", str(deployment_id))
-    print(f"RSS-manifesti {deployment_id} tallennettu ennen Pages-julkaisua.")
+    print(f"RSS-manifesti {deployment_id} valmis; palautussnapshotin uusinta={reused}.")
 
 def check_current(args) -> None:
     """Estä vanhentuneen Pages-artifactin julkaiseminen."""
@@ -266,11 +342,17 @@ def check_current(args) -> None:
     print("Build on nykyinen." if is_current else f"Vanhentunut build ohitetaan; main={current}")
 
 def status(deployment_id: int, state: str, description: str) -> None:
-    """Lisää uusi tilamerkintä; aiempaa deployment-historiaa ei muokata."""
+    """Lisää tilamerkintä vain, jos samaa lopputilaa ei ole jo kirjattu."""
     repo = os.environ["GITHUB_REPOSITORY"]
     run_url = os.getenv("GITHUB_SERVER_URL", "https://github.com") + f"/{repo}/actions/runs/" + os.getenv("GITHUB_RUN_ID", "")
+    description = description[:140]
+    previous = api("GET", f"deployments/{deployment_id}/statuses?per_page=1")
+    if isinstance(previous, list) and previous:
+        latest = previous[0]
+        if latest.get("state") == state and latest.get("description") == description:
+            return
     api("POST", f"deployments/{deployment_id}/statuses", {
-        "state": state, "description": description[:140],
+        "state": state, "description": description,
         "environment": "rss-publication-manifest", "log_url": run_url,
         "environment_url": PAGES + "/",
     })
@@ -315,11 +397,12 @@ def main():
     r = sub.add_parser("verify-rollback"); r.add_argument("--deployment-id", required=True)
     a = sub.add_parser("assemble-rollback")
     a.add_argument("--source-dir", required=True); a.add_argument("--destination-dir", required=True)
+    z = sub.add_parser("alert-failure"); z.add_argument("--deployment-id", required=True)
     args = parser.parse_args()
     try:
         {"prepare": prepare, "check-current": check_current, "finalize": finalize,
          "verify-candidate": verify_candidate, "verify-rollback": verify_rollback,
-         "assemble-rollback": assemble_rollback}[args.command](args)
+         "assemble-rollback": assemble_rollback, "alert-failure": alert_failure}[args.command](args)
     except (PublicationError, OSError, KeyError, ValueError, subprocess.CalledProcessError) as exc:
         print(f"VIRHE: {exc}", file=sys.stderr)
         raise SystemExit(1)
