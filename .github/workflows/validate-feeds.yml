@@ -43,6 +43,8 @@ jobs:
         run: python -m scripts.validate_provider_routing
       - name: Tarkista moduuliorchestratorin sopimukset ja käyttöönoton portit
         run: python -m scripts.validate_module_orchestrator
+      - name: Tarkista elokuvahavaintojen rekisteri ja jatkotoimet
+        run: python -m scripts.validate_movie_observations
       - name: Tarkista RSS-raporttien julkaisulaadun portti
         if: github.event_name == 'pull_request'
         run: python scripts/validate_publication_gate.py
