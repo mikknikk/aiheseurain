@@ -48,18 +48,6 @@
       "critical": false,
       "last_checked_at": "2026-11-18T13:13:52+02:00",
       "access_limit": null
-    },
-    {
-      "source_id": "dera-sacha-sauda-official",
-      "critical": false,
-      "last_checked_at": "2026-11-18T13:13:52+02:00",
-      "access_limit": "Käytä vain järjestön omiin ilmoituksiin, tapahtumiin ja julkaisuihin; ei riippumaton oikeudellisten väitteiden vahvistus."
-    },
-    {
-      "source_id": "saint-dr-msg-official",
-      "critical": false,
-      "last_checked_at": "2026-11-18T13:13:52+02:00",
-      "access_limit": "Käytä vain henkilön omiin artikkeleihin, ilmoituksiin ja julkaisuihin; ei riippumaton oikeudellisten väitteiden vahvistus."
     }
   ]
 }
