@@ -242,9 +242,7 @@
         "cbi-india",
         "hindustan-times",
         "tribune-india",
-        "amar-ujala",
-        "dera-sacha-sauda-official",
-        "saint-dr-msg-official"
+        "amar-ujala"
       ],
       "unchecked_sources": [
         {
@@ -259,15 +257,13 @@
         "the-hindu-india",
         "hindustan-times",
         "tribune-india",
-        "amar-ujala",
-        "dera-sacha-sauda-official",
-        "saint-dr-msg-official"
+        "amar-ujala"
       ],
       "coverage_notes": [
-        "Kielet: haku ja lähteiden tarkistus englanniksi, hindiksi ja pandžabiksi; The Hindu -englanninkielinen lähde jäi avaamatta robots.txt-eston vuoksi.",
+        "Kielet: haku ja lähteiden tarkistus englanniksi, hindiksi ja pandžabiksi; The Hindu -englanninkielinen rekisterilähde jäi avaamatta robots.txt-eston vuoksi.",
         "Maantiede: Intian kansallinen oikeusjärjestelmä sekä Haryana, Punjab ja Chandigarh; käytössä korkeimman oikeuden, CBI:n ja alueellisten toimituksellisten lähteiden sisältöä.",
         "Punjab and Haryana High Courtin verkkotunnuksen etusivu aikakatkaistiin, mutta virallinen allekirjoitettu tuomioasiakirja avattiin tuomioistuimen PDF-arkiston peilipalvelusta.",
-        "Dera Sacha Saudan ja Saint Dr. MSG Insanin viralliset sivut avattiin; näkyvät uusimmat artikkelit olivat 13.11.2026. Sivustoilta ei löytynyt 16.–18.11. uutta oikeudellista, musiikki- tai elokuvajulkaisua koskevaa ilmoitusta.",
+        "Täydentävinä, rekisteriin kuulumattomina lähteinä avattiin Dera Sacha Saudan ja Saint Dr. MSG Insanin viralliset sivut; näkyvät uusimmat artikkelit olivat 13.11.2026 eikä 16.–18.11. löytynyt uutta aiheeseen liittyvää ilmoitusta.",
         "Dera Sacha Saudan sivulta linkitetty YouTube-kanava palautti tilapäisen throttling-virheen; kanavan videoita ei laskettu tarkistetuiksi."
       ]
     }
@@ -278,5 +274,5 @@
     "taylor_swift": "2026-11-17T13:03:45+02:00",
     "gurmeet_ram_rahim_singh": "2026-11-18T13:13:52+02:00"
   },
-  "updated_at": "2026-11-18T11:13:52.839Z"
+  "updated_at": "2026-11-18T13:13:52+02:00"
 }
