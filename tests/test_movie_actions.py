@@ -1,0 +1,114 @@
+"""Testaa kriteerikohtaiset jatkotoimet, Discord-sovitin ja outbox."""
+from copy import deepcopy
+from pathlib import Path
+import json
+import tempfile
+import unittest
+
+from scripts.movie_actions import (
+    ActionOutboxConflictError, DiscordWebhookAdapter, JsonFileActionOutboxStore,
+    dispatch_pending_actions, empty_outbox, enqueue_movie_actions,
+)
+
+ROOT = Path(__file__).resolve().parents[1]
+NOW = "2026-11-18T08:00:00+02:00"
+WEBHOOK = "https://discord.com/api/webhooks/test-secret/test-token"
+
+
+def movie():
+    """Luo kahteen kriteeriin osuneen elokuvahavainnon."""
+    return {
+        "movie_id": "imdb:tt1234567", "primary_title": "Testielokuva", "release_year": 2024,
+        "first_seen_at": NOW, "screening_refs": ["screening-1"],
+        "sources": [{"publisher": "Teatteri", "url": "https://example.test/show",
+                     "checked_at": NOW, "claim_level": "official"}],
+        "criterion_matches": [
+            {"match_id": "match-a", "criterion_id": "test-criterion-a", "criterion_version": "1.0.0",
+             "first_matched_at": NOW, "last_matched_at": NOW, "reasons": ["testi"],
+             "source_urls": ["https://example.test/criterion-a"]},
+            {"match_id": "match-b", "criterion_id": "test-criterion-b", "criterion_version": "1.0.0",
+             "first_matched_at": NOW, "last_matched_at": NOW, "reasons": ["testi"],
+             "source_urls": ["https://example.test/criterion-b"]},
+        ],
+    }
+
+
+def config():
+    """Lataa fixture-konfiguraatio, jossa on vain testikriteerien toiminnot."""
+    return json.loads((ROOT / "tests/fixtures/movie-action-config.json").read_text(encoding="utf-8"))
+
+
+class MovieActionTests(unittest.TestCase):
+    def test_only_enabled_matching_criteria_enqueue_actions(self):
+        """Vain osuneelle ja käytössä olevalle kriteerille määritetty toiminto jonoutuu."""
+        settings = config()
+        settings["actions"].append({
+            "criterion_id": "not-matched", "action_id": "ignored", "version": "1.0.0",
+            "type": "discord_webhook", "enabled": True,
+        })
+        outbox = enqueue_movie_actions(movie(), settings, empty_outbox(), NOW)
+        self.assertEqual(len(outbox["actions"]), 2)
+        self.assertEqual({item["criterion_id"] for item in outbox["actions"]},
+                         {"test-criterion-a", "test-criterion-b"})
+
+    def test_duplicate_enqueue_is_idempotent_but_different_criteria_remain_distinct(self):
+        """Sama toiminto ei monistu, mutta kahden eri kriteerin toiminnot säilyvät."""
+        first = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        second = enqueue_movie_actions(movie(), config(), first, NOW)
+        self.assertEqual(len(first["actions"]), 2)
+        self.assertEqual(len(second["actions"]), 2)
+        self.assertEqual(len({item["idempotency_key"] for item in second["actions"]}), 2)
+
+    def test_discord_adapter_uses_injected_transport_and_redacts_secret(self):
+        """Testikuljetin saa webhookin, mutta adapterin debug-esitys ei paljasta salaisuutta."""
+        calls = []
+        adapter = DiscordWebhookAdapter(
+            WEBHOOK, lambda url, payload, key: calls.append((url, payload, key))
+        )
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        updated = dispatch_pending_actions(
+            outbox, {"discord_webhook": adapter}, NOW,
+        )
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(all(item["status"] == "sent" for item in updated["actions"]))
+        self.assertNotIn("test-secret", repr(adapter))
+        self.assertNotIn("test-token", json.dumps(updated))
+
+    def test_failed_delivery_is_retryable_and_does_not_store_secret(self):
+        """Verkkovirhe säilyy outboxissa uusintaa varten ilman salaisuuden kirjaamista."""
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        class FailingTransport:
+            def send(self, payload, idempotency_key):
+                raise RuntimeError("Webhook rejected")
+        first = dispatch_pending_actions(
+            outbox, {"discord_webhook": FailingTransport()}, NOW, max_attempts=2,
+        )
+        self.assertTrue(all(item["status"] == "pending" for item in first["actions"]))
+        self.assertTrue(all(item["attempts"] == 1 for item in first["actions"]))
+        self.assertTrue(all(item["last_error_code"] == "RuntimeError" for item in first["actions"]))
+        second = dispatch_pending_actions(
+            first, {"discord_webhook": FailingTransport()}, NOW, max_attempts=2,
+        )
+        self.assertTrue(all(item["status"] == "failed" for item in second["actions"]))
+        serialized = json.dumps(second)
+        self.assertNotIn("Webhook rejected", serialized)
+        self.assertNotIn("test-secret", serialized)
+
+    def test_outbox_store_rejects_stale_sha(self):
+        """Toimitusjonon vanha SHA ei saa ylikirjoittaa uudempaa jonoa."""
+        with tempfile.TemporaryDirectory() as folder:
+            store = JsonFileActionOutboxStore(Path(folder) / "outbox.json")
+            outbox, sha = store.load()
+            updated = enqueue_movie_actions(movie(), config(), outbox, NOW)
+            store.save(updated, expected_sha=sha)
+            with self.assertRaises(ActionOutboxConflictError):
+                store.save(outbox, expected_sha=sha)
+
+    def test_production_action_config_is_empty(self):
+        """Tuotantoon ei ole lisätty kriteeriä, Discord-toimintoa tai webhook-salaisuutta."""
+        production = json.loads((ROOT / "data/movie-action-config.json").read_text(encoding="utf-8"))
+        self.assertEqual(production["actions"], [])
+
+
+if __name__ == "__main__":
+    unittest.main()
