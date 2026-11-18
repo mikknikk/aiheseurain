@@ -2,8 +2,8 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 18.11.2026  
-**Versio:** 1.16.0  
-**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109), [#142 – Rajaa julkaisureititys yhteen RSS-syötteeseen seurantakohdetta kohti](https://github.com/mikknikk/aiheseurain/issues/142), [#144 – Erota käyttöliittymätestit seurantajulkaisujen pakollisista tarkistuksista](https://github.com/mikknikk/aiheseurain/issues/144)
+**Versio:** 1.17.0  
+**Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109), [#142 – Rajaa julkaisureititys yhteen RSS-syötteeseen seurantakohdetta kohti](https://github.com/mikknikk/aiheseurain/issues/142), [#144 – Erota käyttöliittymätestit seurantajulkaisujen pakollisista tarkistuksista](https://github.com/mikknikk/aiheseurain/issues/144), [#148 – Suunnittele erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri ja hallittu siirtymä](https://github.com/mikknikk/aiheseurain/issues/148)
 
 ## 1. Järjestelmän tarkoitus ja rajat
 
@@ -173,7 +173,7 @@ Repositorio `mikknikk/aiheseurain` on nykyisen toteutuksen versionhallittu tieto
 | `data/lahdetarkistukset.json` | Ajokohtaiset lähteiden tarkistustulokset ja kattavuushuomiot |
 | `data/naytosten-muutoshistoria.json` | Näytösseurannan nykytila ja tapahtumahistoria |
 | `run-history/*/history.json` | Kolmen ChatGPT-automaation erillisiin haaroihin tallentama vaihekohtainen ajohistoria |
-| `feeds/*.xml` | Aihekohtaiset uutis-RSS-syötteet ja erillinen näytös-RSS |
+| `feeds/*.xml` | Hyväksyttyjen RSS-sisältöjen lähdeversiot; nykyisen Pages-julkaisun yhteensopivuuspeili säilyy siirtymävaiheessa |
 | `schemas/` | JSON-tietomallien ja julkaisuraporttien rakennesopimukset |
 | `scripts/` ja `.github/` | Validointi, aineiston muodostus ja GitHub Actions -työnkulut |
 
@@ -215,6 +215,8 @@ Actions käyttää työnkululle rajattua `GITHUB_TOKEN`-tunnusta. Tokenia ei kir
 GitHub Pages julkaisee staattisen Jekyll-sivuston osoitteessa https://mikknikk.github.io/aiheseurain/. Sivuston osia ovat etusivu, Valvomo, RSS-lukija ja Kehitysjono. Selaimen käyttöliittymät lukevat julkisia RSS- ja JSON-tiedostoja; niillä ei ole GitHub-kirjoitusoikeuksia.
 
 Pages-julkaisu muodostaa Kehitysjonon JSON-aineiston Actions-ajossa ennen Jekyll-rakennusta. Aineisto validoidaan, ja vasta onnistunut build voidaan julkaista. Epäonnistunut build ei julkaise osittaista Kehitysjono-aineistoa.
+
+Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri on määritelty dokumentissa [rss-julkaisurepositorio.md](rss-julkaisurepositorio.md) (#148). Suunnitelmassa `aiheseurain` säilyy lähde- ja hallintarepositoriona ja erillinen julkinen repo vastaanottaa hyväksytyt RSS-tavut atomisena eränä. Tämä on tavoitetila, ei nykyinen tuotantototeutus: kaikki syötteet julkaistaan edelleen nykyisestä Pages-sivustosta, eikä ulkoista kirjoitusoikeutta, uutta Pages-kohdetta tai URL-siirtymää ole otettu käyttöön. Vanhojen RSS-osoitteiden yhteensopivuuspeili on siirtymän pakollinen ehto.
 
 ## 5. Tietovirrat nykyisessä toteutuksessa
 
@@ -268,7 +270,7 @@ Teknologian vaihtaminen on mahdollista, mutta se ei ole pelkkä palvelun nimen t
 | Suoritusympäristö | Prosessin vaiheet ja hyväksymiskriteerit | Käyttöympäristö, riippuvuudet, salaisuuksien hallinta, ajonaikainen valvonta ja virheistä palautuminen |
 | GitHub-integraatio | Tietomallit, tiedostopolut ja versionhallinnan työnkulkuperiaatteet | Uusi API-/connector-adapteri, tunnistautuminen, oikeuksien rajaus, konfliktien ja uudelleenyritysten käsittely |
 | Tallennus | JSON-skeemat, RSS-rakenne, tunnisteet ja tapahtumahistorian periaatteet | Tallennusadapteri, migraatiot, varmistukset, palautus ja tietojen eheyden tarkistus |
-| Julkaisu | Raporttisisältö, lähdeviitteet ja julkaisun hyväksymisehdot | Uusi jakelukanava tai julkaisupalvelu, URL-osoitteet, välimuisti ja lukijoiden siirtymä |
+| Julkaisu | Raporttisisältö, lähdeviitteet, hyväksymisehdot ja julkaisuadapterin sopimus | Erillinen julkaisurepo, rajattu tunnistus, atominen eräkirjoitus, Pages-takaisinluku, vanhojen URL:ien yhteensopivuuspeili ja vaiheittainen siirtymä |
 | Testaus ja valvonta | Hyväksymiskriteerit, testitapaukset ja raportointiperiaatteet | Uudet integraatio- ja päästä päähän -testit sekä hälytykset ja käyttötilan seuranta |
 
 ### 7.1 Mitä voidaan siirtää sellaisenaan?

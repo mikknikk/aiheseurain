@@ -11,7 +11,7 @@ Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen pri
 - **#38 – Valvomon siirto omalle sivulleen:** valmis ja yhdistetty.
 - **#31 – RSS-lukijan vähimmäisversio:** valmis ja yhdistetty.
 - **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** valmis ja yhdistetty.
-- **#83 – Kehitysjonon aineiston muodostus Actionsissa ja Pages-julkaisu:** toteutuksessa.
+- **#83 – Kehitysjonon aineiston muodostus Actionsissa ja Pages-julkaisu:** valmis; toteutus, automaattiset päivityskäynnistimet, validointi ja Pages-julkaisu on yhdistetty. GitHub Actionsin tuotantojulkaisu on varmennettu.
 
 Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
@@ -67,6 +67,15 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 - [x] **Raporttikohtainen RSS-julkaisulaadun portti (#53).** Jokaiselle muuttuneelle syötteelle vaaditaan JSON-tarkistusraportti. CI tarkistaa raportin skeeman, hylkäykset, soveltumattomuuksien perustelut ja aiempien GUIDien säilymisen; uutisväitteiden totuutta tai lähteiden riippumattomuutta ei väitetä automaattisesti todennetuiksi. Epäonnistuneen portin raportti säilyy PR:ssä ja CI-artefaktissa, eikä viimeisintä onnistunutta tarkistuspistettä tai tehtäväkiertoa muuteta.
 
 ## Avoimet kehityskohteet
+
+### Issue #148 – erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri
+
+**Suunnitteludokumentti:** [Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri](rss-julkaisurepositorio.md).
+
+Tavoitteena on erottaa julkinen RSS-jakelu lähde- ja hallintarepositoriosta. Suunnitelma määrittelee vastuurajat, julkaisurepositorion ehdotetun nimen ja rakenteen, GitHub App -pohjaisen vähimmän oikeuden tunnistuksen, atomisen julkaisu- ja palautusmallin, takaisinluvun, vanhojen URL-osoitteiden yhteensopivuuspeilin sekä vaiheittaisen käyttöönoton.
+
+**Tila:** suunnitteluratkaisu dokumentoitu PR:ssä; nykyinen Pages-julkaisu jatkuu ennallaan. Julkaisurepositoriota, GitHub Appia, salaisuuksia tai tuotantoreititystä ei ole luotu tai otettu käyttöön. Seuraava työ on eristetty prototyyppi omassa toteutustiketissään.
+
 
 ### Tuotantopalvelujen käyttöönotto (erillinen päätös)
 
@@ -157,7 +166,7 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 
 **Tavoite:** rakentaa GitHub Pagesiin yhteinen käyttöliittymä, jossa voi seurata automaatioiden etenemistä ja lukea kaikkia repositorion RSS-syötteitä. Tekninen tavoitekuvaus, turvallisuusrajaukset, hyväksymiskriteerit ja vaiheistus ovat dokumentissa [julkinen valvomo ja RSS-lukija](julkinen-valvomo-ja-rss-lukija.md).
 
-**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on valmis ja yhdistetty; RSS-lukija (#31) ja Kehitysjonon kanban (#35) on toteutettu. Kehitysjonon selainkohtaisten API-hakujen korvaaminen Actionsissa muodostetulla aineistolla on käynnissä tiketissä #83.
+**Tila:** tietomallin ja Pages-julkaisun kartoitus (#29) on valmis. Valvomon vähimmäisversio (#30) on yhdistetty. Valvomon erottaminen omalle sivulleen (#38) on valmis ja yhdistetty; RSS-lukija (#31) ja Kehitysjonon kanban (#35) on toteutettu. Kehitysjonon selainkohtaisten API-hakujen korvaaminen Actionsissa muodostetulla aineistolla (#83) on valmis ja tuotannossa. Erillisen RSS-julkaisurepositorion suunnittelu (#148) on dokumentoitu; nykyinen RSS-julkaisu pysyy ennallaan.
 
 - [x] Kirjaa tavoitearkkitehtuuri: yksi staattinen Pages-sivusto, valvomo ja RSS-lukija erillisinä osioina.
 - [x] Määrittele valvomon näyttämät automaatiot, ajovaiheet, aihekierroksen eteneminen, lähdekattavuuden käsitteet sekä virhe- ja varoitushistoria.
