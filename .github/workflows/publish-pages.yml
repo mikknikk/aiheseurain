@@ -34,6 +34,7 @@ jobs:
       contents: read
       deployments: write
       pages: write
+      id-token: write
     outputs:
       deployment_id: ${{ steps.prepare_manifest.outputs.deployment_id }}
     steps:
