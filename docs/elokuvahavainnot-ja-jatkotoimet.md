@@ -21,7 +21,7 @@ Kolme tietokokonaisuutta pidetään erillään:
 | Elokuvahavainnot | `data/movie-observations.json` | Elokuvan pysyvä tunniste, nimet, vuosi, ensihavainto, kriteeriosumat, lähteet ja viitteet näytös-ID:ihin |
 | Jatkotoimien toimitus | `data/movie-action-outbox.json` | Kriteerikohtainen toimintotapahtuma, idempotenssiavain, yritykset ja toimitustila |
 
-Elokuvarekisteri ei kopioi teatteria, näytösaikaa, näytöksen tilaa tai näytöshistoriaa. Se säilyttää vain viitteen `screening_id)-tunnisteeseen. Näytöksen muuttuminen tai peruuntuminen käsitellään edelleen #109:n tapahtumavahdissa.
+Elokuvarekisteri ei kopioi teatteria, näytösaikaa, näytöksen tilaa tai näytöshistoriaa. Se säilyttää vain viitteen `screening_id`-tunnisteeseen. Näytöksen muuttuminen tai peruuntuminen käsitellään edelleen #109:n tapahtumavahdissa.
 
 Elokuvatasoinen rekisteri on tarkoituksella erillinen, koska sama elokuva voi saada useita näytöksiä, lähteitä ja hakukriteeriosumia. Elokuva ja yksittäinen näytös ovat eri entiteettejä ja niillä on eri elinkaari.
 
@@ -46,11 +46,11 @@ Rekisterin skeema on `schemas/movie-observation-registry.schema.json`, ja nykyin
 
 Yksi elokuvatietue sisältää:
 
-- pysyvän `movie_id)-tunnisteen, ensisijaisen nimen ja nimivariantit;
+- pysyvän `movie_id`-tunnisteen, ensisijaisen nimen ja nimivariantit;
 - julkaisuvuoden ja saatavilla olevat IMDb-/TMDB-tunnisteet;
 - ensimmäisen ja viimeisimmän havainnon aikaleimat;
 - tunnistuksen luottamustason ja manuaalisen tarkistuksen lipun;
-- viitteet kaikkiin liittyviin `screening_id)-tunnisteisiin;
+- viitteet kaikkiin liittyviin `screening_id`-tunnisteisiin;
 - lähteet ja kaikki osuneet kriteerit versioineen.
 
 Saman kriteerin toistuvat osumat yhdistetään yhdeksi kriteeritietueeksi. Ensimmäinen ja viimeisin osuma-aika, kaikki perustelut sekä lähdeviitteet säilyvät. Rekisterin päivitys on idempotentti ja käyttää SHA-versiotarkistusta.
@@ -85,7 +85,7 @@ Tuotantokriteerin ja Discord-toiminnon käyttöönotto vaatii käyttäjän hyvä
 
 ## 8. Validointi ja testaus
 
-CI validoi rekisterin, toimintomääritykset, tapahtumapayloadin ja outboxin JSON Schema -skeemoilla. Lisäksi se varmistaa, että tuotannon toimintomääritys on tyhjä ja testifixtuurin tunnisteet alkavat `test-)-etuliitteellä.
+CI validoi rekisterin, toimintomääritykset, tapahtumapayloadin ja outboxin JSON Schema -skeemoilla. Lisäksi se varmistaa, että tuotannon toimintomääritys on tyhjä ja testifixtuurin tunnisteet alkavat `test-`-etuliitteellä.
 
 Yksikkötestit kattavat ulkoisen tunnisteen ensisijaisuuden, nimi-/vuosivarianteen, epävarmojen tunnistusten erillään pitämisen, kriteeriosumien yhdistämisen, SHA-konfliktit, usean kriteerin toimintojen reitityksen, idempotenssin, Discord-kuljettimen, epäonnistuneen lähetyksen uusinnan ja salaisuuden poissulkemisen.
 
