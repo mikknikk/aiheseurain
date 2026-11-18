@@ -1,6 +1,6 @@
 # Elokuvahavainnot ja kriteerikohtaiset jatkotoimet
 
-**Versio:** 1.0.1  
+**Versio:** 1.0.2  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#66 – Elokuvahavaintorekisteri ja kriteerikohtaiset jatkotoimet](https://github.com/mikknikk/aiheseurain/issues/66)  
 **Seuraava sisältötehtävä:** [#67 – Käyttäjän hyväksymä elokuvien hakukriteeristö](https://github.com/mikknikk/aiheseurain/issues/67)
@@ -61,7 +61,7 @@ Kriteerit ja niihin liitetyt toiminnot ovat erillinen määritys tiedostossa `da
 
 Toiminto jonoutuu vain, jos elokuvan rekisterissä on vastaava kriteeriosuma ja määrityksen toiminto on käytössä. Eri kriteerien eri toiminnot säilyvät erillisinä. Saman toiminnon idempotenssiavain muodostuu elokuvan, kriteerin, toimintotunnisteen ja toimintoversion yhdistelmästä.
 
-Toimintotapahtuman versioitu payload validoidaan skeemalla `schemas/movie-action-event.schema.json`. Se sisältää elokuvan tunnisteen ja nimen, julkaisuvuoden, ensihavainnon ajan, toimintoa käynnistäneen kriteerin, toimintoversion, näytösviitteet ja lähde-URL:t.
+Toimintotapahtuman versioitu payload validoidaan skeemalla `schemas/movie-action-event.schema.json`. Se sisältää elokuvan tunnisteen ja nimen, julkaisuvuoden, ensihavainnon ajan, toimintoa käynnistäneen kriteerin, toimintoversion sekä näytösotokset. Näytösotos sisältää näytös-ID:n, näyttönimen, teatterin, kaupungin, alkamisajan, tilan ja lähde-URL:t. Nämä tiedot ovat muuttumaton viestihetken snapshot; elokuvarekisteri säilyttää edelleen vain viitteen näytös-ID:hen.
 
 ## 6. Outbox ja Discord
 
@@ -93,5 +93,6 @@ Automaattiset testit osoittavat tietomallin ja teknisen mekanismin toiminnan. Ne
 
 ## Muutoshistoria
 
+- **1.0.2 – 2026-11-18:** lisättiin toimintotapahtuman payloadiin muuttumaton näytösotos, joka sisältää havaitut näytöstiedot ja niiden lähteet kopioimatta niitä elokuvarekisteriin.
 - **1.0.1 – 2026-11-18:** täsmennettiin webhook-toimituksen turvallinen uusinta, rate limit -viiveet ja epäselvän toimituksen manuaalinen ratkaisu kaksoisviestien estämiseksi.
 - **1.0.0 – 2026-11-18:** ensimmäinen elokuvatason havaintorekisteri, #109:n näytöstapahtumiin perustuva tietojen omistajuus, kriteerikohtainen toimintomalli, Discord-liitännän testisopimus ja tyhjän tuotantokonfiguraation rajaus.
