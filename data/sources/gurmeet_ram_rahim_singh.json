@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task_id": "gurmeet_ram_rahim_singh",
-  "updated_at": null,
+  "updated_at": "2026-11-18T13:13:52+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Gurmeet Ram Rahim Singh. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
@@ -10,44 +10,56 @@
     {
       "source_id": "gurmeet-courts",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
       "access_limit": null
     },
     {
       "source_id": "punjab-haryana-highcourt",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
       "access_limit": null
     },
     {
       "source_id": "cbi-india",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
       "access_limit": null
     },
     {
       "source_id": "the-hindu-india",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": "Robots.txt esti suoran avauksen tässä tarkistuksessa; yritä myöhemmin uudelleen, älä merkitse tarkistetuksi hakutuloskatkelman perusteella."
     },
     {
       "source_id": "hindustan-times",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
       "access_limit": null
     },
     {
       "source_id": "tribune-india",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
       "access_limit": null
     },
     {
       "source_id": "amar-ujala",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
       "access_limit": null
+    },
+    {
+      "source_id": "dera-sacha-sauda-official",
+      "critical": false,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
+      "access_limit": "Käytä vain järjestön omiin ilmoituksiin, tapahtumiin ja julkaisuihin; ei riippumaton oikeudellisten väitteiden vahvistus."
+    },
+    {
+      "source_id": "saint-dr-msg-official",
+      "critical": false,
+      "last_checked_at": "2026-11-18T13:13:52+02:00",
+      "access_limit": "Käytä vain henkilön omiin artikkeleihin, ilmoituksiin ja julkaisuihin; ei riippumaton oikeudellisten väitteiden vahvistus."
     }
   ]
 }
