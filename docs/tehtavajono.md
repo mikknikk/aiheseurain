@@ -16,7 +16,7 @@ Tämä tiedosto on tehtäväjonon ensisijainen totuuslähde: se määrittää yh
 
 ## Seuraava tehtävä
 
-**Vuorossa seuraavaksi: Saint Dr. Gurmeet Ram Rahim Singh Ji Insan.**
+**Vuorossa seuraavaksi: Muumit.**
 
 ## Kiertoperiaate
 
