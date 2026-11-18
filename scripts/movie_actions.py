@@ -39,6 +39,17 @@ def _sha(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
+def _aware_datetime(value: str) -> datetime:
+    """Lue ISO-aikaleima ja vaadi eksplisiittinen aikavyöhyke."""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise MovieActionError("Toiminnon aikaleima ei ole kelvollinen ISO 8601 -arvo.") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise MovieActionError("Toiminnon aikaleimasta puuttuu aikavyöhyke.")
+    return parsed
+
+
 def _validate(value: dict[str, Any], schema_path: Path, label: str) -> None:
     """Validoi JSON-tietue paikallista skeemaa vasten."""
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
@@ -182,10 +193,10 @@ def dispatch_pending_actions(
     for action in result["actions"]:
         if action["status"] != "pending":
             continue
-        attempted = datetime.fromisoformat(attempted_at.replace("Z", "+00:00"))
+        attempted = _aware_datetime(attempted_at)
         due_at = action.get("next_attempt_at")
         if due_at is not None:
-            due = datetime.fromisoformat(due_at.replace("Z", "+00:00"))
+            due = _aware_datetime(due_at)
             if due > attempted:
                 continue
         adapter = adapters.get(action["action_type"])
