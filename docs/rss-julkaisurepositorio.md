@@ -1,155 +1,156 @@
-# Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri
+# Aiheseuranta-julkaisualustan tavoitearkkitehtuuri
 
-**Versio:** 1.0.0  
-**Päiväys:** 2026-11-18  
+**Versio:** 2.0.0  
+**Päiväys:** 2026-11-19  
 **Tila:** suunnitteluratkaisu; ei tuotantokäyttöönottoa  
-**Liittyvä tiketti:** [#148 – Suunnittele erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri ja hallittu siirtymä](https://github.com/mikknikk/aiheseurain/issues/148)
+**Liittyvät tiketit:** [#169 – Yleinen ja versioitu julkaisupakettisopimus](https://github.com/mikknikk/aiheseurain/issues/169), [#167 – Eristetty vastaanottorajapinnan prototyyppi](https://github.com/mikknikk/aiheseurain/issues/167), [#170 – Aiheseuranta-repositorion perustaminen](https://github.com/mikknikk/aiheseurain/issues/170), [#171 – Vastaanotto- ja julkaisupalvelu](https://github.com/mikknikk/aiheseurain/issues/171), [#172 – Aiheseuraimen lähettäjä](https://github.com/mikknikk/aiheseurain/issues/172), [#173 – Varjo- ja rinnakkaisjulkaisu](https://github.com/mikknikk/aiheseurain/issues/173), [#174 – RSS-lukijan URL-siirtymä](https://github.com/mikknikk/aiheseurain/issues/174), [#175 – Tuotannon hallittu siirto](https://github.com/mikknikk/aiheseurain/issues/175)
 
 ## 1. Päätös lyhyesti
 
-Aiheseuraimelle suositellaan erillistä julkista repositoriota nimellä **`aiheseurain-julkaisut`**. Se toimii vain julkisten julkaisuartefaktien jakelukohteena. Nykyinen `mikknikk/aiheseurain` säilyy lähde- ja hallintarepositoriona.
+Erillisen julkaisualustan nimi on **Aiheseuranta** ja tavoiteltu GitHub-reponimi on `aiheseuranta`. Se toimii yleisenä, itsenäisenä vastaanottajana, pysyvänä julkaisuartefaktien varastona ja julkisena RSS-jakelualustana. Se ei ole vain Aiheseuraimen alipalvelu: myös muut toisistaan riippumattomat sisällöntuottajat voivat lähettää sille sopimuksen mukaisia julkaisuja.
 
-Uutta repositoriota ei luoda tämän suunnitelman perusteella. Myöskään GitHub Pages -asetuksia, nykyisiä RSS-URL-osoitteita, automaatioiden ajastuksia, ohjeita tai kohdekeskusteluja ei muuteta. Nykyinen Pages-julkaisu pysyy ainoana tuotantojulkaisuna, kunnes erillinen käyttöönotto hyväksytään ja sen edellytykset on testattu.
+Aiheseurain säilyy ensimmäisenä sisällöntuottajana ja vastaa omasta sisällöntuotannostaan, lähteistään, semanttisesta validoinnistaan sekä täydellisen julkaisupaketin muodostamisesta. Aiheseuranta vastaanottaa paketin; se ei hae tiedostoja lähettäjän repositoriosta eikä tarvitse lähettäjän saatavuutta onnistuneen vastaanoton jälkeen.
 
-Suositeltu tavoiteosoite uusille julkaisuille on:
+Aiheseuranta-repositorio pidetään mahdollisimman minimaalisena. Siihen tulee vain vastaanoton, valtuutuksen, yleisen eheyden tarkistamisen, säilyttämisen, julkaisemisen, takaisinluvun ja palautuksen kannalta välttämätön sisältö ja toiminnallisuus. Minimaalisuus ei saa heikentää turvallisuutta, atomisuutta, palautettavuutta tai auditointia.
 
-`https://mikknikk.github.io/aiheseurain-julkaisut/feeds/{syötetiedosto}.xml`
+Tämä on tavoitetila, ei nykyinen tuotantototeutus. Nykyinen Pages-julkaisu ja RSS-osoitteet säilyvät ennallaan, kunnes rinnakkaisjulkaisu on varmennettu ja erillinen tuotantosiirto hyväksytty.
 
-Nykyiset osoitteet säilytetään yhteensopivuuspeilinä:
+## 2. Vastuurajat ja riippumattomuus
 
-`https://mikknikk.github.io/aiheseurain/feeds/{syötetiedosto}.xml`
-
-GitHub Pages ei tarjoa tässä mallissa automaattista pysyvää URL-uudelleenohjausta vanhan projektipolun ja uuden projektipolun välillä. Siksi vanhoja osoitteita ei saa katkaista eikä jättää vanhentumaan: lähderepositorion nykyinen Pages-sivusto jatkaa samojen RSS-tiedostojen julkaisemista peilinä myös siirtymän jälkeen, ellei myöhemmin hyväksytä ja toteuteta erillistä, todennettua URL-jatkuvuusratkaisua.
-
-## 2. Repositorioiden vastuurajat
-
-| Vastuu | `aiheseurain` (lähderepo) | `aiheseurain-julkaisut` (tavoite) |
+| Vastuu | Aiheseurain ja muut lähettäjät | Aiheseuranta |
 |---|---|---|
-| Aihe- ja seurantamääritykset | Omistaa | Ei sisällä |
-| Lähderekisterit, seurantatila ja ajohistoria | Omistaa | Ei sisällä |
-| Raporttien hyväksyntä ja julkaisulaadun portti | Omistaa | Ei tee toimituksellisia päätöksiä |
-| RSS-sisältöjen hyväksytty lähdeversio | Omistaa `feeds/*.xml`-tiedostoina | Vastaanottaa täsmälleen hyväksytyt tavut |
-| Sisäiset skeemat, testit ja työnkulut | Omistaa | Sisältää vain julkisen jakelun itsenäiseen tarkistukseen tarvittavan vähimmäistoteutuksen |
-| Julkiset RSS-syötteet | Nykyiset URL:t yhteensopivuuspeilinä | Uusien URL:ien ensisijainen jakelukohde |
-| Julkinen julkaisu- ja takaisinlukutulos | Tallentaa lähdeajon manifestin ja päätöksen | Todentaa oman Pages-julkaisunsa |
+| Aihekohtainen tutkimus, lähteet ja raporttien kirjoittaminen | Omistaa | Ei sisällä |
+| Sisällön ja lähteiden toimituksellinen/semanttinen validointi | Omistaa | Ei tee |
+| RSS:n aihekohtaiset säännöt ja lähettäjäkohtaiset tarkistukset | Omistaa | Ei kopioi |
+| Julkaisupaketin muodostaminen ja lähettäminen | Omistaa | Vastaanottaa |
+| Lähettäjän tunnistus ja kohdekohtainen valtuutus | Käyttää myönnettyä oikeutta | Valvoo |
+| Sopimusversion, manifestin, polkujen, kokojen ja tiivisteiden tarkistus | Muodostaa sopimuksen mukaisen paketin | Tarkistaa yleisen eheyden |
+| Julkaisuerän atominen tallennus ja järjestyksen valvonta | Ei hallitse vastaanottajan tilaa | Omistaa |
+| Julkinen Pages-julkaisu, takaisinluku ja viimeisen hyvän version palautus | Varmistaa vastaanottokuittauksen | Omistaa |
+| Julkaisu- ja vastaanottoloki | Säilyttää oman lähetysajon viitteen | Säilyttää vastaanoton ja kohdejulkaisun välttämättömät auditointitiedot |
 
-GitHub Issues pysyy kehitystehtävien kanonisena lähteenä. Julkaisurepositorio ei sisällä kopioita kehitystiketeistä, lähderekistereistä, sisäisistä raporteista tai automaatioiden tilasta.
+Lähettäjän, julkaisukohteen ja julkaisuerän tunnisteet ovat eri asioita. Yksi lähettäjä voi omistaa useita syötteitä. Jokaisella julkaisukohteella on yksiselitteinen omistaja, eikä lähettäjä voi kirjoittaa toisen lähettäjän kohteisiin. Aiheseurannan ei tarvitse tietää, miten lähettäjä keräsi tai tuotti sisältönsä.
 
-## 3. Julkaisurepositorion sisältö ja Pages
+## 3. Minimaalisuusperiaate ja repositorion sisältö
 
-### 3.1 Suositeltu rakenne
+Aiheseurannan jokaisella tiedostolla ja komponentilla pitää olla nimettävissä oleva, välttämätön tehtävä tässä ketjussa: vastaanotto → valtuutus ja eheystarkistus → atominen säilytys → julkaisu → takaisinluku → palautus.
 
-Julkaisurepositorion tulee olla mahdollisimman pieni ja staattinen:
+Repositorioon ei lisätä:
+- uutis- tai lähdehakua, raporttien kirjoittamista tai sisällöntuotantoa;
+- lähettäjäkohtaisia aiheohjeita, lähderekistereitä tai semanttisia validaattoreita;
+- automaatioiden ajastusta tai seurantatilaa;
+- RSS-lukijan käyttöliittymää, Valvomoa tai Kehitysjonoa;
+- monimutkaisia palvelukerroksia, tarpeettomia riippuvuuksia tai saman tiedon rinnakkaisia tilakopioita;
+- dokumentaatiota, joka vain toistaa lähettäjien omia ohjeita.
+
+Välttämättömiä vastaanottosopimuksen, käyttöoikeuksien, julkaisumanifestin, viimeisen hyvän version ja palautuksen tietoja ei kuitenkaan saa poistaa vain tiedostomäärän pienentämiseksi.
+
+Tavoiteltu sisältö pidetään pienenä. Tarkka tiedostorakenne ja se, mitkä tarkistukset voidaan toteuttaa työnkulussa ilman erillistä palvelukoodia, ratkaistaan tiketeissä #169 ja #171. Rakenteen tulee sisältää vain:
+- vastaanottotyönkulku ja sen mahdollisesti tarvitsema pieni toteutus;
+- yleisen julkaisupakettisopimuksen koneellisesti tarkistettava määrittely;
+- vastaanotetut julkiset julkaisuartefaktit;
+- suppea manifesti-/tilatieto, jota tarvitaan järjestyksen, eheyden, takaisinluvun ja palautuksen varmistamiseen.
+
+## 4. Julkaisupakettisopimus ja monen lähettäjän malli
+
+Jokainen lähettäjä toimittaa itsenäisen, täydellisen ja muuttumattoman paketin. Paketti sisältää kaikki erään kuuluvat julkaisutiedostot sekä manifestin. Vähintään seuraavat tiedot määritellään sopimuksessa:
+- sopimusversion tunniste;
+- pysyvä lähettäjätunniste;
+- julkaisukohteiden pysyvät tunnisteet ja sallitut polut;
+- julkaisuerän yksilöllinen tunniste ja idempotenssiavain;
+- lähettäjäkohtainen monotoninen järjestysnumero tai muu yksiselitteinen versio;
+- lähderepon nimi ja lähdecommit vain jäljitettävyysmetatietona, ei vastaanoton riippuvuutena;
+- kunkin tiedoston polku, tavumäärä ja SHA-256-tiiviste;
+- tarvittavat RSS-kohtaiset yleiset tarkistusmetatiedot, kuten item-määrä ja GUID-lista.
+
+Aiheseuranta tarkistaa sopimusversion, lähettäjän oikeuden, kohteiden omistajuuden, paketin täydellisyyden, sallittujen polkujen ja kokorajojen noudattamisen, tiivisteet sekä järjestyksen. Vastaanottaja ei yritä todistaa raporttien uutisarvoa, lähteiden luotettavuutta tai muita lähettäjän sisältökohtaisia asioita.
+
+Sopimus suunnitellaan usealle lähettäjälle alusta alkaen. Testeissä on vähintään kaksi toisistaan riippumatonta synteettistä lähettäjää, joilla on erilliset kohdealueet. Yhden lähettäjän virhe, väärä polku tai luvaton kirjoitus ei saa vaikuttaa toisen lähettäjän julkaisuihin.
+
+## 5. RSS GUID -käytäntö
+
+Uusien RSS-itemien GUID muodostetaan seuraavassa muodossa:
 
 ```text
-aiheseurain-julkaisut/
-├── .nojekyll
-├── README.md
-├── publication-manifest.json
-└── feeds/
-    ├── tolkien.xml
-    ├── taylor-swift.xml
-    ├── gurmeet-ram-rahim-singh.xml
-    ├── muumit.xml
-    ├── wakaliwood.xml
-    ├── euroviisut.xml
-    ├── sompote-sands.xml
-    ├── shakkidraamat.xml
-    ├── intialaiset-elokuvat.xml
-    └── intialaisten-elokuvien-naytokset.xml
+urn:aiheseurain:<aihe>:<alkuperäinen-päivämäärä>:<uuid>
 ```
 
-Tiedostoluettelo johdetaan lähderepositorion `data/feed-catalog.json`-katalogista; sitä ei ylläpidetä kahtena toisistaan riippumattomana totuutena. Luettelo yllä näyttää nykyisen kymmenen syötteen tavoiterakenteen.
+Esimerkki:
 
-Julkaisurepoon ei kopioida Jekyll-sivustoa, käyttöliittymiä, lähde- tai kohde-rekistereitä, hyväksyntäraportteja, seurantatiloja, ajohistoriaa, salaisuuksia eikä tarpeettomia raakadata-aineistoja. `publication-manifest.json` sisältää vain julkisen julkaisun todentamiseen tarvittavan metatiedon: skeemaversion, lähdecommitin, julkaisuaikaleiman ja syötekohtaiset polut, SHA-256-tiivisteet, tavumäärät, item-määrät ja GUID-tunnisteet. Se ei sisällä raporttitekstejä toiseen kertaan eikä tunnuksia.
+```text
+urn:aiheseurain:tolkien:2026-11-19:8f14e45f-ea12-4d2a-9c31-6e8b7f123456
+```
 
-GitHub Pagesin lähteeksi valitaan julkaisurepositorion oma GitHub Actions -julkaisutyönkulku. Staattinen sisältö julkaistaan suoraan `feeds/`-polusta; `.nojekyll` estää tarpeettoman Jekyll-käsittelyn. Julkaisun tarkka konfiguraatio varmennetaan prototyypissä ennen uuden repositorion käyttöönottoa.
+Osien merkitys:
+- `urn:aiheseurain` on pysyvä tunnisteavaruuden nimi. Se kertoo tunnisteiden alkuperäisestä tunnisteavaruudesta, ei nykyisen GitHub-repositorion tai julkaisupalvelun nimestä.
+- `<aihe>` on vakaa, koneellinen aihe-/syötetunniste, esimerkiksi `tolkien`. Se ei ole vapaasti muuttuva näyttönimi.
+- `<alkuperäinen-päivämäärä>` on artikkelin alkuperäinen raportointipäivä ISO-muodossa `YYYY-MM-DD`. Se ei muutu uudelleenjulkaisun, korjauksen tai päivityksen yhteydessä.
+- `<uuid>` on kerran luotu yksilöllinen UUID; suositeltu versio on UUID v4.
 
-## 4. Julkaisun tietovirta ja atomisuus
+GUID luodaan kerran ja tallennetaan artikkelin pysyvien tietojen yhteyteen. Sitä ei muodosteta uudelleen otsikosta, URL-osoitteesta, sisällöstä, julkaisuajasta, päivitysajasta, lähettäjän repositorion nimestä eikä Aiheseurannan nimestä. Artikkelin päivitys, uudelleenjulkaisu, repositorion uudelleennimeäminen tai siirto toiselle julkaisualustalle ei muuta GUIDia.
+
+RSS:ssä käytetään muotoa `<guid isPermaLink="false">…</guid>`, koska GUID ei ole avattava URL-osoite.
+
+**Yhteensopivuus:** käytäntö koskee uusia itemeitä. Kaikki jo julkaistut GUIDit säilytetään täsmälleen ennallaan; niitä ei muuteta eikä generoida uudelleen uuden käytännön käyttöönotossa. Aiheseuranta vastaanottaa ja julkaisee lähettäjän toimittamat GUIDit muuttamatta niitä.
+
+## 6. Atominen vastaanotto, julkaisu ja takaisinluku
 
 Julkaisun tulee olla eräkohtainen, idempotentti ja takaisinluettava.
 
-1. **Lähderepon hyväksyntä:** RSS:n sisältö, XML, GUIDit, aiherajaus, raporttikohtainen hyväksyntäraportti ja dokumentaatioviitteet tarkistetaan nykyisillä pakollisilla CI-porteilla.
-2. **Muuttumattoman erän valmistelu:** lähdetyönkulku lukee kaikki kymmenen syötettä ja muodostaa niiden tavut sekä julkaisumanifestin. Syötteiden on vastattava hyväksyttyä lähdecommittia.
-3. **Eheyden tarkistus:** kaikki syötteet validoidaan ennen yhtäkään kohderepositorion kirjoitusta. Puuttuva, virheellinen tai osittainen syöte keskeyttää koko erän.
-4. **Yksi atominen Git-kirjoitus:** kaikki muuttuneet syötteet ja manifesti kirjoitetaan julkaisurepositorioon yhtenä Git-puuna ja yhtenä commitina. Git Data API:n blob/tree/commit/ref-mallia käytetään; yksittäisiä Contents API -kirjoituksia ei tehdä tiedosto kerrallaan.
-5. **Kilpailutilanteen esto:** julkaisurepon nykyinen ref-SHA luetaan ennen commitin muodostamista, ja uusi commit rakennetaan tämän SHA:n päälle. Ref päivitetään ilman force-kirjoitusta. Jos toinen ajo tai ylläpitotoimi on ehtinyt siirtää refiä, vanhaan kärkeen perustuva commit ei ole enää fast-forward ja GitHub hylkää päivityksen. Erä ei saa ylikirjoittaa uutta kärkeä; lähdetyönkulku lukee tilanteen uudelleen ja joko muodostaa uuden erän uusimmasta hyväksytystä lähteestä tai pysähtyy. Kaikki julkaisukirjoitukset serialisoidaan lisäksi yhteisellä concurrency-ryhmällä.
-6. **Kohderepon itsenäinen tarkistus:** julkaisurepon oma push-työnkulku tarkistaa tiedostojen sallitut polut, manifestin, kaikkien kymmenen XML:n rakenteen, GUIDien yksilöllisyyden ja syötekohtaisen erillisyyden. Vain onnistunut tarkistus voi jatkaa Pages-julkaisuun.
-7. **Pages-julkaisu ja takaisinluku:** kohderepo julkaisee Pagesin ja lukee kaikki kymmenen julkista URL-osoitetta takaisin. Se vertaa tavujen SHA-256-tiivisteitä, XML-rakennetta, GUID-listoja ja item-määriä manifestiin.
-8. **Lähdeajon lopputila:** lähderepo merkitsee julkaisun onnistuneeksi vasta, kun kohderepon CI, Pages-deployment ja julkinen takaisinluku on varmennettu. Pelkkä kohderepoon syntynyt commit ei ole julkaisuonnistuminen.
+1. **Lähettäjän hyväksyntä:** lähettäjä validoi oman sisältönsä, RSS-rakenteensa, GUIDit, aihe-erottelun ja kaikki omat semanttiset sääntönsä ennen lähettämistä.
+2. **Pakettierän muodostus:** lähettäjä kokoaa kaikki erään kuuluvat tiedostot, manifestin ja SHA-256-tiivisteet yhdeksi muuttumattomaksi paketiksi.
+3. **Tunnistus ja valtuutus:** Aiheseuranta tunnistaa lähettäjän ja tarkistaa, että tällä on kirjoitusoikeus jokaiseen paketin kohteeseen.
+4. **Eheyden tarkistus:** vastaanottaja tarkistaa sopimusversion, manifestin, tiedostojen täydellisyyden, sallitut polut ja koot sekä tiivisteet ennen kirjoitusta. Yhdenkin tiedoston virhe hylkää koko erän.
+5. **Atominen tallennus:** koko erä tallennetaan yhtenä Git-puuna ja yhtenä commitina. Osittainen erä ei saa tulla julkiseksi.
+6. **Järjestys ja rinnakkaisuus:** vastaanottaja estää vanhentunutta tai rinnakkaista erää ylikirjoittamasta uudempaa. Uusinta on idempotentti; sama erä ei tuota merkityksetöntä uutta julkaisua.
+7. **Pages-julkaisu:** vasta vastaanoton ja yleisten tarkistusten onnistuttua julkaistaan uusi staattinen sisältö.
+8. **Takaisinluku:** julkiset URL-osoitteet luetaan takaisin ja niiden tavut sekä SHA-256-tiivisteet verrataan hyväksyttyyn manifestiin. RSS-rakenne, GUIDit ja item-määrät tarkistetaan yleisellä tasolla.
+9. **Kuittaus:** lähettäjä saa yksiselitteisen tuloksen, jossa erotetaan vastaanotettu, tallennettu, Pagesiin julkaistu ja takaisinluvulla varmennettu tila.
 
-Sama sisältö ja sama julkaisuerän tunniste eivät saa tuottaa uusia merkityksettömiä committeja. Uusintayrityksen on ensin selvitettävä, syntyikö edellisellä yrityksellä jo kohdecommit tai Pages-deployment. Epäselvää kirjoitustulosta ei saa ratkaista sokkona toistamalla kirjoitusta.
+Jos kirjoituksen tulos jää epäselväksi, vastaanottaja lukee refit, commit-historian ja julkaisutilan ennen uusintaa. Sokkona toistuva kirjoitus ei ole sallittu.
 
-## 5. Tunnistus ja käyttöoikeudet
+## 7. Viimeinen hyvä julkaisu ja palautuminen
 
-Ensisijainen ratkaisu on erillinen GitHub App, joka asennetaan vain julkaisurepositorioon.
+Aiheseuranta säilyttää viimeisen onnistuneen ja takaisinluvulla varmennetun julkaisun. Jos uusi julkaisu epäonnistuu tai julkinen takaisinluku ei vastaa manifestia:
+- viimeisin hyvä julkaisu säilyy lukijoille saatavilla;
+- epäonnistunutta ehdokasta ei merkitä onnistuneeksi;
+- palautus tehdään viimeiseen varmennettuun kohdejulkaisuun ilman yhteyttä lähettäjään;
+- palautuskin julkaistaan ja luetaan takaisin ennen kuin se merkitään onnistuneeksi;
+- vastaanotto-, commit-, Actions- ja Pages-viitteet säilytetään virheen selvittämistä varten.
 
-- Appin asennusoikeudet rajataan kohderepoon.
-- Lähdetyönkulku luo lyhytikäisen installation access tokenin vasta luotetussa `main`-haaran julkaisu-jobissa.
-- App tarvitsee vain metatietojen lukuoikeuden ja kohderepositorion sisältöjen kirjoitusoikeuden. Se ei tarvitse lähderepon hallinta-, issue-, Actions-, Pages- tai ympäristöasetusten kirjoitusoikeutta.
-- Appin yksityinen avain säilytetään lähderepositorion Actions-salaisuutena. Sitä tai luotua asennustunnusta ei anneta PR-haaroille, selaimelle, RSS-sisällölle tai automaatioiden käyttöön.
-- Kohderepon Pages-työnkulku käyttää omaa `GITHUB_TOKEN`-tunnustaan vähimmillä oikeuksilla: sisällön luku sekä Pages-julkaisun ja OIDC:n vaatimat oikeudet.
-- Tunnuksen luonti ja käyttö rajataan `main`-haaran hyväksyttyyn julkaisuun; pull request -ajot saavat validoida ja rakentaa testituloksen, mutta eivät julkaista ulkoiseen repositorioon.
+Palautus ei saa riippua Aiheseuraimen tai muun lähettäjän repositorion saatavuudesta. Aiheseurannan on pystyttävä tarjoamaan viimeisin hyvä RSS-julkaisu itsenäisesti.
 
-Rajattu fine-grained personal access token on vain varavaihtoehto, jos GitHub Appin käyttöönotto osoittautuu prototyypissä mahdottomaksi. Silloin token rajataan täsmälleen yhteen julkaisurepositorioon ja vain Contents-oikeuteen, sille määritellään omistaja, uusimis- ja peruutusmenettely sekä käyttöauditointi. Laajaa klassista PAT-tokenia ei käytetä.
+## 8. Tunnistus ja oikeuksien rajaus
 
-## 6. Virhetilanteet, viimeisin hyvä julkaisu ja palautus
+Lähettäjä tunnistetaan erikseen myönnetyllä, rajatulla tunnisteella. Tuotantoratkaisun ensisijainen vaihtoehto on GitHub App, joka asennetaan vain Aiheseuranta-repositorioon. Appin oikeudet rajataan välttämättömään kirjoitukseen ja metatietojen lukuun. Lähettäjäkohtaiset kohdealueet valtuutetaan erikseen.
 
-| Virhe | Vaadittu toiminta |
-|---|---|
-| Lähde-erä ei läpäise validointia | Älä kirjoita julkaisurepoon mitään. Nykyinen tuotanto ja viimeisin hyvä julkaisu säilyvät. |
-| App-tokenin luonti tai käyttö epäonnistuu | Keskeytä ennen kohdekirjoitusta; kirjaa virhe lähdeajoon. |
-| Kohderepon ref on muuttunut | Hylkää vanhentunut ref-päivitys; älä ylikirjoita toisen ajon commitia. |
-| Git-kirjoituksen vastaus jää epäselväksi | Lue kohderepon ref ja commit-historia ennen mitään uusintaa. |
-| Kohderepon validointi epäonnistuu | Pages-julkaisua ei käynnistetä; edellinen Pages-versio säilyy. |
-| Pages-deployment epäonnistuu | Edellinen Pages-versio säilyy; julkaisu merkitään epäonnistuneeksi. |
-| Julkinen takaisinluku ei vastaa manifestia | Kohderepo palauttaa viimeisimmän hyväksytyn julkaisucommitin tai muodostaa siitä uuden palautuscommitin, julkaisee palautuksen ja todentaa sen takaisinluvulla. |
-| Palautuskaan ei ole varmennettavissa | Älä ilmoita onnistumista; nosta näkyvä hälytys ja säilytä kaikki ajo-/deployment-viitteet tutkintaa varten. |
+Aiheseuranta ei saa kirjoitusoikeutta takaisin lähettäjän repositorioon. Lähettäjän salaisuuksia ei koskaan sisällytetä julkiseen pakettiin tai manifestiin. Prototyypin tunnisteet ja testirepositorio pidetään erillään tuotannosta. Tuotantorepositorion, näkyvyyden, Appin, salaisuuksien ja Pages-asetusten perustaminen vaatii erillisen hyväksynnän tiketin #170 mukaisesti.
 
-Koska kaikki kymmenen syötettä kirjoitetaan yhteen Git-commitiin, lukija ei näe tarkoituksellisesti tiedosto kerrallaan päivittyvää osajoukkoa. Pagesin julkaisutila on silti erillinen Gitin commit-tilasta: julkaisu merkitään onnistuneeksi vasta julkisen takaisinluvun perusteella. Palautuksen pitää perustua viimeisimpään hyväksyttyyn kohdecommitiin, ei pelkästään lähderepon edelliseen commitiin, koska nämä voivat erota.
+## 9. URL-osoitteet ja siirtymä
 
-Kaikki julkaisu- ja palautusyritykset ovat jäljitettävissä lähdeajon manifestin, kohdecommitin, Actions-ajon ja Pages-deploymentin tunnisteilla. Virheilmoitukseen ei kopioida salaisuuksia tai tarpeetonta raakaa API-vastausta.
+Aiheseurannan Pages-osoitteen tavoitemuoto on:
 
-## 7. URL-osoitteet, RSS-lukija ja yhteensopivuus
+`https://mikknikk.github.io/aiheseuranta/feeds/{lahettaja}/{syote}.xml`
 
-GitHub Pagesin projektisivustojen URL-polku sisältää repositorion nimen. Uuden repositorion feed-osoitteet ovat siksi eri polussa, vaikka host on sama `mikknikk.github.io`. Saman hostin vuoksi nykyisen RSS-lukijan selainpyynnöt ovat lähtökohtaisesti saman originin pyyntöjä; tämä on silti varmistettava todellisessa Pages-prototyypissä eikä pääteltävä pelkästä lähdekoodista.
+Aiheseurainin syötteet ovat ensimmäinen julkaistava aineisto. Nykyiset Aiheseuraimen Pages-osoitteet säilyvät yhteensopivuuspeilinä myös siirtymän jälkeen. Vanhoja URL-osoitteita ei poisteta tai katkaista osana rinnakkaisjulkaisua.
 
-Siirtymän URL-strategia:
+RSS-lukijan URL-osoitteet vaihdetaan vasta, kun kaikki syötteet on julkaistu rinnakkain, niiden sisällöt ja GUIDit täsmäävät, takaisinluku toimii ja lukijan toiminta on testattu. Tuotannon ensisijaisen julkaisukohteen vaihtaminen vaatii erillisen hyväksynnän. Siirtymä ei muuta automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita, aktiivisuutta tai kohdekeskusteluja.
 
-1. Nykyiset kymmenen RSS-URL-osoitetta pysyvät toiminnassa lähderepositorion Pages-sivuston yhteensopivuuspeilinä.
-2. Uudet julkaisu-URL:t testataan ja niitä luetaan rinnakkain nykyisten URL:ien kanssa.
-3. RSS-lukija siirtyy käyttämään uusia osoitteita vasta, kun kaikki kymmenen syötettä, CORS-/fetch-käyttäytyminen, välimuisti, virhetilat ja lukijan toiminta on testattu.
-4. Nykyisten osoitteiden poistaminen ei kuulu tähän suunnitteluun eikä rinnakkaisjulkaisun hyväksymiseen. Vanhojen osoitteiden jatkuvuudelle tarvitaan erillinen, todennettu päätös ja hyväksyntä.
-5. RSS:n kanavakohtaiset linkit, syötekatalogi, README ja automaatioiden julkaisemien linkkien muodostus tarkistetaan yhtenä kokonaisuutena vasta käyttöönoton omassa tikettikokonaisuudessa.
+## 10. Vaiheistus ja päätösportit
 
-Uuden URL:n lisääminen ei saa aiheuttaa tilaajille tyhjää syötettä, GUIDien vaihtumista, vanhojen itemien katoamista tai aiheiden yhdistymistä. Julkaisurepo säilyttää syötteiden alkuperäiset tavut; mahdolliset URL:iin liittyvät metatietomuutokset tehdään erillisinä, hyväksyttyinä muutoksina.
-
-## 8. Vaiheistus ja päätösportit
-
-| Vaihe | Sisältö | Siirtymisehto |
+| Vaihe | Sisältö | Ehto |
 |---|---|---|
-| 0. Määrittely | Tämä dokumentti: vastuurajat, sisältö, App-oikeudet, atomisuus, virheet, URL:t ja palautus | Suunnittelutiketti hyväksytty |
-| 1. Eristetty prototyyppi | Testirepo, GitHub App, yhden testisyötteen ja kymmenen syötteen atominen kirjoitus, kohde-CI ja Pages-takaisinluku | Testit osoittavat idempotenssin, kilpailutilanteiden eston ja palautuksen ilman tuotantosyötteitä |
-| 2. Varjojulkaisu | Sama hyväksytty syöte-erä julkaistaan nykyiseen tuotantoon ja eristettyyn kohteeseen; tuloksia verrataan | Kaikki syötteet vastaavat tavutasolla; nykyinen julkaisu pysyy ensisijaisena |
-| 3. Rinnakkaisjulkaisu | Julkaisurepo saa kaikki kymmenen hyväksyttyä syötettä ja todentaa oman Pages-julkaisunsa | Toistuvat ajot ja virhetilanteet on varmennettu; vanhat URL:t toimivat edelleen |
-| 4. Hallittu lukijasiirtymä | RSS-lukijan ja dokumentaation uudet URL:t otetaan käyttöön erillisellä hyväksytyllä muutoksella | Lukijan toiminta ja kaikkien feedien takaisinluku hyväksytty |
-| 5. Tuotannon vastuun siirto | Julkaisurepo nimetään uusien julkaisujen ensisijaiseksi kohteeksi; vanha polku jää yhteensopivuuspeiliksi | Erillinen käyttöönottohyväksyntä ja palautussuunnitelma |
-| 6. Mahdollinen vanhan julkaisun alasajo | Arvioidaan vasta myöhemmin, onko vanhan peilin poistamiseen turvallista tapaa | Kaikki nykyiset tilaajat, URL:t ja lukijan riippuvuudet on turvattu erillisellä päätöksellä |
+| 1. Sopimus | Yleinen, versioitu pakettisopimus, minimaalisuusperiaate ja GUID-käytäntö (#169) | Sopimus dokumentoitu ja testattavissa |
+| 2. Eristetty prototyyppi | Yleinen vastaanottaja vähintään kahdelle synteettiselle lähettäjälle (#167) | Atomisuus, eristys, idempotenssi, virhetilat ja palautus testattu |
+| 3. Tuotantorepo | Aiheseuranta-repo ja rajatut oikeudet (#170) | Käyttäjän erillinen hyväksyntä |
+| 4. Vastaanotto ja julkaisu | Minimaalinen vastaanotto-, eheys-, Pages- ja palautustoteutus (#171) | Kaikki vastaanottajan hyväksymistestit läpäisty |
+| 5. Lähettäjä | Aiheseuraimen validoidun paketin muodostus ja lähetys (#172) | Lähettäjän CI-portit ja vastaanottokuittaus toimivat |
+| 6. Varjo- ja rinnakkaisjulkaisu | Kaikki kymmenen syötettä rinnakkain (#173) | Tavutasoinen vertailu, GUIDien säilyminen ja palautusharjoitus onnistuvat |
+| 7. Lukijan siirtymä | RSS-lukijan uudet URL-osoitteet (#174) | Kaikki syötteet ja lukija varmennettu |
+| 8. Tuotannon siirto | Aiheseuranta ensisijaiseksi julkaisukohteeksi (#175) | Erillinen nimenomainen hyväksyntä; vanha URL-peili säilyy |
 
-Jokaisessa vaiheessa nykyinen tuotantojulkaisu jatkuu muuttumattomana, kunnes kyseisen vaiheen hyväksymisehdot täyttyvät. Suunnittelun, prototyypin tai varjojulkaisun perusteella ei saa muuttaa live-automaatioita tai niiden asetuksia.
+Nykyinen Pages-julkaisu pysyy ennallaan vaiheiden 1–6 aikana ja kunnes hallittu siirtymä on erikseen hyväksytty. Suunnittelu, prototyyppi tai rinnakkaistesti ei itsessään anna lupaa muuttaa live-automaatioita tai niiden asetuksia.
 
-## 9. Toteutuksen hyväksymiskriteerit seuraaville tiketeille
+## 11. Rajaukset
 
-Tämä dokumentti määrittelee tavoiteratkaisun. Varsinainen toteutus jaetaan vähintään seuraaviin erillisiin tehtäviin:
-
-1. **Julkaisurepositorion ja GitHub Appin perustaminen:** repositorion omistajuus, näkyvyys, Pages-asetus, Appin rajatut oikeudet ja turvallinen tunnuksen luonti. Ei tuotantoreititystä.
-2. **Atomisen julkaisusovittimen prototyyppi:** muuttumattoman syöte-erän valmistelu, manifesti, Git Data API:n atominen commit, compare-and-swap, idempotenssi ja kilpailutilanteiden testit.
-3. **Kohderepon validointi ja Pages-julkaisu:** itsenäiset RSS-tarkistukset, Pages-build, takaisinluku, viimeisin hyvä commit ja palautus.
-4. **Varjo- ja rinnakkaisjulkaisun varmennus:** kaikki kymmenen syötettä, virhe-injektio, toistuvat ajot, julkisten URL:ien vertailu ja hälytykset.
-5. **Lukijan URL-siirtymä:** RSS-lukijan ja dokumentaation uudet URL:t, vanhojen URL:ien yhteensopivuuspeili ja käyttöönoton hyväksyntä.
-
-Kunkin toteutustiketin on säilytettävä lähderepon nykyinen Pages-julkaisu, RSS-historia ja vanhat URL:t. Tuotannon siirto, vanhojen URL:ien poistaminen ja automaatioasetusten muuttaminen eivät sisälly näihin toteutustiketteihin ilman erillistä nimenomaista hyväksyntää.
-
-## 10. Rajaukset
-
-Tämä dokumentti on tavoitearkkitehtuurin suunnitelma. Se ei luo julkaisurepositoriota tai GitHub Appia, lisää salaisuuksia, muuta Pages-asetuksia, kirjoita kohderepoon, muuta nykyisiä RSS-URL-osoitteita tai RSS-sisältöjä eikä kytke uutta julkaisukohdetta tuotantoon. Se ei muuta ChatGPT-automaatiotehtävien ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita, aktiivisuutta tai kohdekeskusteluja eikä luo korvaavia automaatioita.
+Tämä dokumentti määrittelee tavoitetilan. Se ei luo Aiheseuranta-repositoriota, GitHub Appia, salaisuuksia tai käyttöoikeuksia, eikä muuta Pages-asetuksia, nykyisiä RSS-URL-osoitteita, RSS-sisältöjä tai RSS-lukijaa. Se ei muuta automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita, aktiivisuutta tai kohdekeskusteluja eikä luo korvaavia automaatioita.
