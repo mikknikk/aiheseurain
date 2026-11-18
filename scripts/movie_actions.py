@@ -107,7 +107,7 @@ def _idempotency_key(movie_id: str, criterion_id: str, action_id: str, version: 
 
 def enqueue_movie_actions(
     movie: dict[str, Any], config: dict[str, Any], outbox: dict[str, Any],
-    created_at: str,
+    created_at: str, *, screening_observations: list[dict[str, Any]],
 ) -> dict[str, Any]:
     """Lisää jokaiselle uudelle kriteeriosumalle sille määritellyt toiminnot kerran."""
     validate_action_config(config)
@@ -115,6 +115,16 @@ def enqueue_movie_actions(
     result = deepcopy(outbox)
     existing = {item["idempotency_key"] for item in result["actions"]}
     criterion_ids = {item["criterion_id"] for item in movie["criterion_matches"]}
+    if not screening_observations:
+        raise MovieActionError("Toimintotapahtuma vaatii vähintään yhden näytöshavainnon.")
+    snapshot_ids = [item.get("screening_id") for item in screening_observations]
+    if len(snapshot_ids) != len(set(snapshot_ids)):
+        raise MovieActionError("Toimintotapahtumassa on sama screening_id kahdesti.")
+    if not set(snapshot_ids).issubset(set(movie["screening_refs"])):
+        raise MovieActionError("Toimintotapahtuman näytösviite ei kuulu elokuvarekisterin havaintoihin.")
+    for snapshot in screening_observations:
+        if not snapshot.get("source_urls"):
+            raise MovieActionError("Näytösotoksesta puuttuu lähdeviite.")
     for action in sorted(config["actions"], key=lambda item: (
         item["criterion_id"], item["action_id"], item["version"]
     )):
@@ -145,7 +155,8 @@ def enqueue_movie_actions(
             "criterion_id": action["criterion_id"],
             "action_id": action["action_id"],
             "action_version": action["version"],
-            "screening_refs": sorted(movie["screening_refs"]),
+            "screening_refs": sorted(snapshot_ids),
+            "screening_observations": sorted(deepcopy(screening_observations), key=lambda item: item["screening_id"]),
             "source_urls": criterion_source_urls,
         }
         _validate(payload, EVENT_SCHEMA, "Toimintotapahtuman")
