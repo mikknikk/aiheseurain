@@ -6,6 +6,35 @@
     <description>Suomenkielinen, lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
     <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://mikknikk.github.io/aiheseurain/feeds/gurmeet-ram-rahim-singh.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 16 Nov 2026 10:39:00 +0200</lastBuildDate>
-    </channel>
+    <lastBuildDate>Wed, 18 Nov 2026 14:00:19 +0200</lastBuildDate>
+    <item>
+      <title>Intian korkein oikeus listasi Aridamanin valituksen Ram Rahimin vapautuksesta 18. marraskuulle</title>
+      <guid isPermaLink="false">urn:aiheseurain:gurmeet-ram-rahim-singh:2026-11-18:aridaman-appeal-cause-list</guid>
+      <pubDate>Wed, 18 Nov 2026 14:00:19 +0200</pubDate>
+      <description><![CDATA[
+        <article>
+          <h2>Intian korkein oikeus listasi Aridamanin valituksen Ram Rahimin vapautuksesta 18. marraskuulle</h2>
+          <p><strong>Julkaistu:</strong> 18.11.2026. <strong>Istuntolistan päivä:</strong> 18.11.2026. <strong>Asiakirjan lopussa näkyvä päiväys:</strong> 17.11.2026 klo 19.49.57 (New Delhi).</p>
+          <p><strong>Seurantajakso:</strong> 16.11.2026 (ensimmäinen tarkistus; aloituskellonaika tuntematon) – 18.11.2026 klo 14.00 (Europe/Helsinki).</p>
+          <p>Intian korkeimman oikeuden 18. marraskuuta päivätty päivittäinen istuntolista sisältää Chief Justice’s Courtin kohdassa 120 rikosasian valituksen Crl.A. No. 3785/2026. Valittajaksi on merkitty Aridaman. Vastaajiksi on merkitty Baba Gurmeet Singh @ Maharaj Gurmeet Singh @ Gurmeet Ram Rahim Singh sekä toinen vastaaja.</p>
+          <p>Samassa kohdassa mainitaan IA No. 225562/2026, jossa pyydetään lupaa toimittaa lisäasiakirjoja, lisätietoja tai liitteitä. Asia on sijoitettu listan otsikon <em>For Admission and I.R.</em> alle. Tämä on asiakirjassa käytetty listausluokitus; se ei yksin kerro, mitä istunnossa tapahtui.</p>
+          <p>Valitus koskee Gurmeet Ram Rahim Singhin vapauttavaa ratkaisua toimittaja Ram Chander Chhatrapatin vuoden 2002 murhajutussa. Hindustan Timesin ja Amar Ujalan elokuussa julkaistujen raporttien mukaan Punjab and Haryana High Court vapautti Ram Rahimin tässä jutussa 7. maaliskuuta 2026 ja piti kolmen muun tuomitun tuomiot voimassa. High Courtin alkuperäistä tuomioasiakirjaa ei saatu avattua tässä tarkistuksessa, joten tämä taustatieto on toimituksellisten lähteiden raportoima.</p>
+          <h3>Menettelyn tila ja avoin ristiriita</h3>
+          <p>Hindustan Times (11.8.2026) ja The Tribune / PTI (10.8.2026) kuvasivat korkeimman oikeuden 10. elokuuta käsittelemää asiaa lopulliseen käsittelyyn 16. marraskuuta alkavalla viikolla määrätyksi. Amar Ujala (12.8.2026, hindi) ilmoitti lopullisen käsittelyn päiväksi 16. marraskuuta. Virallinen 18. marraskuuta päivätty istuntolista käyttää kuitenkin luokitusta <em>For Admission and I.R.</em>. Avatut asiakirjat eivät selitä näiden kuvausten eroa, eikä niiden perusteella voi päätellä, että asia ehdittiin käsitellä tai että ratkaisu annettiin.</p>
+          <p>Korkeimman oikeuden uusimpien määräysten sivun näkyvästä sisällöstä ei tarkistushetkellä löytynyt asianumerolla Crl.A. No. 3785/2026 annettua määräystä. Tapaustilan hakulomake vaatii JavaScriptin ja CAPTCHA-vastauksen, joten asian tosiasiallista käsittelyä ja mahdollista myöhempää määräystä ei voitu varmistaa.</p>
+          <p><strong>Väitteen varmennustaso:</strong> istuntolistan päivä, asianumero, osapuolet, listakohta ja IA-hakemus on <strong>ENSISIJAISELLÄ LÄHTEELLÄ VAHVISTETTU</strong> korkeimman oikeuden alkuperäisestä PDF-asiakirjasta. Valituksen tausta ja High Courtin 7.3.2026 ratkaisu on <strong>RIIPPUMATTOMISSA TOIMITUKSELLISISSA LÄHTEISSÄ VAHVISTETTU</strong>; alkuperäistä High Courtin asiakirjaa ei tässä ajossa tarkistettu.</p>
+          <p><strong>Lähdekattavuus:</strong> tarkistus jäi osittaiseksi. Punjab and Haryana High Courtin ja CBI:n viralliset sivut aikakatkaistiin, ja The Hindu esti suoran avauksen robots.txt-säännöllä. Tämä uutinen rajautuu korkeimman oikeuden alkuperäisen istuntolistan vahvistamaan tietoon ja selvästi merkittyyn toimitukselliseen taustaan.</p>
+          <h3>Lähteet</h3>
+          <ul>
+            <li><a href="https://api.sci.gov.in/jonew/cl/2026-11-18/F_J_2.pdf">Intian korkein oikeus: päivittäinen istuntolista 18.11.2026, Chief Justice’s Court, kohta 120</a> – ensisijainen lähde (A).</li>
+            <li><a href="https://www.sci.gov.in/latest-orders/">Intian korkein oikeus: uusimmat määräykset</a> – tarkistettu 18.11.2026; asianumerolla ei näkynyt määräystä.</li>
+            <li><a href="https://www.sci.gov.in/case-status-case-no/">Intian korkein oikeus: tapaustilan hakulomake</a> – tarkistettu 18.11.2026; haku estyi CAPTCHA-vaiheeseen.</li>
+            <li><a href="https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html">Hindustan Times: Supreme Court agrees to hear plea against Dera Sacha Sauda chief’s acquittal</a> – 11.8.2026, toimituksellinen taustalähde (B).</li>
+            <li><a href="https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12">Amar Ujala: Ramchandra Chhatrapati murder case – Anshul moves Supreme Court against High Court verdict</a> – 12.8.2026, hindinkielinen toimituksellinen taustalähde (C).</li>
+            <li><a href="https://www.tribuneindia.com/news/haryana/supreme-court-agrees-to-hear-plea-against-dera-sacha-sauda-chiefs-acquittal-in-2002-murder-case/">The Tribune / PTI: Supreme Court agrees to hear plea against Dera chief’s acquittal</a> – 10.8.2026; PTI-syndikoitu raportti, ei erillinen riippumaton vahvistus.</li>
+          </ul>
+        </article>
+      ]]></description>
+    </item>
+  </channel>
 </rss>
