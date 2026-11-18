@@ -141,6 +141,19 @@ class PublicationRoutingTests(unittest.TestCase):
             self.assertIsInstance(receipt, PublicationReceipt)
             self.assertTrue(publisher.verify(receipt))
             self.assertEqual(receipt.published_items, 2)
+    def test_orchestration_adapter_detects_tampered_feed_after_publish(self):
+        data = context()
+        with tempfile.TemporaryDirectory() as directory:
+            publisher = RoutedReportPublisher(Path(directory), data)
+            receipt = publisher.publish_target_reports("demo", "run-4", [{
+                "target_id": "demo.film", "observation_types": ["film-screening"],
+                "report_content": "<p>Alkuperäinen</p>",
+            }])
+            path = Path(directory) / "feeds/film.xml"
+            root = ET.parse(path).getroot()
+            root.find("./channel/item/description").text = "<p>Muutettu</p>"
+            path.write_bytes(ET.tostring(root, encoding="utf-8", xml_declaration=True))
+            self.assertFalse(publisher.verify(receipt))
 
     def test_orchestration_adapter_rejects_unknown_target_before_writing(self):
         data = context()
