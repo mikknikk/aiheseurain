@@ -80,8 +80,8 @@ class RssPublicationManifestTests(unittest.TestCase):
                 saved = manifest.snapshot_live_feeds(feeds)
             self.assertEqual([item["sha256"] for item in saved],
                              [manifest.digest(alpha), manifest.digest(beta)])
-            self.assertEqual((root / "rollback_snapshot/feeds/a.xml").read_bytes(), alpha)
-            self.assertEqual((root / "rollback_snapshot/feeds/b.xml").read_bytes(), beta)
+            self.assertEqual((root / "_rollback_snapshot/feeds/a.xml").read_bytes(), alpha)
+            self.assertEqual((root / "_rollback_snapshot/feeds/b.xml").read_bytes(), beta)
 
     def test_rollback_source_overlays_live_snapshot_without_changing_other_files(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -90,7 +90,7 @@ class RssPublicationManifestTests(unittest.TestCase):
             (source / "feeds").mkdir(parents=True)
             (source / "index.html").write_text("old site", encoding="utf-8")
             (source / "feeds/a.xml").write_text("stale committed feed", encoding="utf-8")
-            snapshot = root / "rollback_snapshot/feeds"
+            snapshot = root / "_rollback_snapshot/feeds"
             snapshot.mkdir(parents=True)
             live = b'<rss><channel><item><guid>last-live-guid</guid></item></channel></rss>'
             (snapshot / "a.xml").write_bytes(live)
