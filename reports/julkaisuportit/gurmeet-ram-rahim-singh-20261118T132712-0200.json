@@ -28,7 +28,7 @@
     },
     "source_independence": {
       "status": "pass",
-      "note": "Pääväitettä ei esitetä usean median vahvistamana vaan suoraan virallisen tuomioistuimen asiakirjalla vahvistettuna. Taustaa raportoivat eri toimitukset Hindustan Times ja Amar Ujala. The Tribune -juttu on PTI-syndikoitu eikä sitä lasketa itsenäiseksi vahvistukseksi.",
+      "note": "Pääväitettä ei esitetä usean median vahvistamana vaan suoraan virallisen tuomioistuimen asiakirjalla vahvistettuna. Taustatiedon osalta Hindustan Timesin artikkeli tarkistettiin; Amar Ujalan ja The Tribunen rinnakkaiset jutut eivät osoita riippumatonta alkuperäisraportointia, ja The Tribune on PTI-syndikoitu.",
       "evidence": [
         "https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html",
         "https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12",
@@ -121,7 +121,7 @@
   "decision": "approved",
   "reviewer_notes": [
     "Julkaisu hyväksytään rajattuna oikeuslistauksen päivityksenä: pääväite on vahvistettu suoraan korkeimman oikeuden alkuperäisestä istuntolistasta.",
-    "Aiemmat uutisraportit kuvasivat 10.8. käsittelyä lopullisen käsittelyn aikatauluna, mutta virallinen 18.11. lista käyttää luokitusta For Admission and I.R. Eroa ei selitetä eikä istunnon toteutumista tai ratkaisua päätellä.",
+    "Elokuun uutisraportit kuvaavat 10.8. käsittelyä lopullisen käsittelyn aikatauluna, mutta alkuperäistä elokuun oikeusmääräystä ei saatu avattua. Virallinen 18.11. lista käyttää luokitusta For Admission and I.R.; eroa ei selitetä eikä istunnon toteutumista tai ratkaisua päätellä.",
     "Lähdekattavuus on partial, koska kaksi kriittistä rekisterilähdettä (Punjab and Haryana High Court ja CBI) eivät avautuneet. The Hindu jäi robots.txt-eston vuoksi tarkistamatta. Tämä rajoite on kirjattu lähdekattavuuslokiin.",
     "Osittainen ajo ei päivitä viimeisimmän onnistuneen ajon metatietoja, tehtävän checkpointia eikä aihekierroksen vuoroa."
   ],
@@ -144,31 +144,31 @@
     {
       "claim_id": "appeal-background",
       "claim": "Valitus koskee Gurmeet Ram Rahim Singhin vapauttavaa High Court -ratkaisua Ram Chander Chhatrapatin vuoden 2002 murhajutussa; High Courtin ratkaisu annettiin 7.3.2026.",
-      "verification_status": "riippumattomissa_toimituksellisissa_lahteissa_vahvistettu",
+      "verification_status": "yhden_toimituksellisen_lahteen_raportoima",
       "sources": [
         {
           "source_id": "hindustan-times",
           "source_class": "B",
           "source_role": "toimituksellinen",
-          "independence": "riippumaton",
-          "note": "Hindustan Timesin oma artikkeli 11.8.2026."
+          "independence": "tuntematon",
+          "note": "Hindustan Timesin oma artikkeli 11.8.2026; alkuperäisen elokuun oikeusmääräyksen tekstiä ei tarkistettu."
         },
         {
           "source_id": "amar-ujala",
           "source_class": "C",
           "source_role": "toimituksellinen",
-          "independence": "riippumaton",
-          "note": "Amar Ujalan hindinkielinen alkuperäisartikkeli 12.8.2026."
+          "independence": "tuntematon",
+          "note": "Amar Ujalan hindinkielinen alkuperäisartikkeli 12.8.2026; riippumatonta raportointiketjua ei voitu osoittaa."
         },
         {
           "source_id": "tribune-india",
           "source_class": "B",
           "source_role": "toimituksellinen",
           "independence": "sama_alkupera",
-          "note": "The Tribunen artikkeli on PTI-syndikoitu eikä sitä lasketa erilliseksi riippumattomaksi vahvistukseksi."
+          "note": "The Tribunen artikkeli on PTI-syndikoitu eikä sitä lasketa itsenäiseksi vahvistukseksi."
         }
       ],
-      "note": "Punjab and Haryana High Courtin alkuperäistä tuomioasiakirjaa ei saatu avattua tässä ajossa."
+      "note": "High Courtin alkuperäistä tuomioasiakirjaa ei saatu avattua tässä ajossa. Rinnakkaiset media-artikkelit eivät yksin osoita riippumatonta alkuperäisraportointia."
     }
   ]
 }
