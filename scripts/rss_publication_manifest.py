@@ -41,6 +41,17 @@ def rss_metadata(data: bytes, label: str) -> tuple[list[str], int]:
         raise PublicationError(f"{label}: GUID ei ole yksilöllinen")
     return guids, len(guids)
 
+def git_changed_files(base_ref: str) -> set[str]:
+    """Selvitä lähdecommitin muuttamat tiedostot vertailucommitista."""
+    try:
+        result = subprocess.run(
+            ["git", "diff", "--name-only", f"{base_ref}...HEAD"],
+            cwd=ROOT, check=True, capture_output=True, text=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise PublicationError(f"Git-diff epäonnistui: {exc.stderr}") from exc
+    return {line.strip() for line in result.stdout.splitlines() if line.strip()}
+
 def api(method: str, path: str, payload: dict | None = None) -> dict:
     """Käytä GitHub APIa vain rajattuun deployment-historiaan."""
     token, repo = os.getenv("GITHUB_TOKEN"), os.getenv("GITHUB_REPOSITORY")
@@ -74,9 +85,7 @@ def output(name: str, value: str) -> None:
 
 def prepare(args) -> None:
     """Valmistele kaikki kymmenen syötettä ennen Pages-julkaisua."""
-    changed = subprocess.run(
-        ["git", "diff", "--name-only", f"{args.base_ref}...HEAD"],
-        cwd=ROOT, check=True, capture_output=True, text=True).stdout.splitlines()
+    changed = git_changed_files(args.base_ref)
     changed_feeds = {p for p in changed if p.startswith("feeds/") and p.endswith(".xml")}
     if not changed_feeds:
         print("RSS-syötemuutoksia ei ole; manifestia ei tarvita.")
