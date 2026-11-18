@@ -94,7 +94,7 @@ Lue:
 
 1. README:n kohdat *Syötteet*, *RSS-itemien sisältö ja lähteet* sekä *Seurantakohteiden mukainen julkaisureititys*.
 2. [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md) – miten kukin kohdekohtainen raportti reititetään vain kohteen omaan RSS-syötteeseen.
-3. [Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri](rss-julkaisurepositorio.md) – miten julkinen jakelu erotetaan lähderepositorion vastuista nykyistä julkaisua katkaisematta.
+3. [Aiheseuranta-julkaisualustan tavoitearkkitehtuuri](rss-julkaisurepositorio.md) – yleinen monen lähettäjän vastaanottomalli, minimaalinen julkaisurepo, atominen julkaisu, palautus ja GUID-käytäntö.
 4. [Valvomon tietomalli](valvomon-tietomalli.md) – mistä Valvomo lukee tietonsa ja miten tilatietoja tulkitaan.
 5. Tutustu [RSS-lukijaan](https://mikknikk.github.io/aiheseurain/lukija/) ja avaa tarvittaessa repositorion `feeds/`-hakemiston RSS-tiedostoja.
 6. Jos haluat ymmärtää RSS-lukijan toteutusta, tarkastele README:n tiedostovastuita: `lukija/index.html` ja `assets/js/reader.js`.
@@ -124,7 +124,7 @@ Lue:
 2. [Kehityssuunnitelma](kehityssuunnitelma.md) – sivuston tavoitetila ja kehityksen toimintamalli.
 3. [Kehityskohteet](kehityskohteet.md) – toteutetut parannukset ja avoin kehitystyö.
 4. [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md) – miten GitHub Issues ja natiivit riippuvuudet muodostetaan Pagesissa käytettäväksi JSON-aineistoksi.
-5. [Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri](rss-julkaisurepositorio.md) – erillisen julkisen jakelukohteen suunnitelma ja turvallisen siirtymän päätösportit.
+5. [Aiheseuranta-julkaisualustan tavoitearkkitehtuuri](rss-julkaisurepositorio.md) – julkaisualustan vastuurajat, vastaanottosopimus, minimaalisuus ja hallitun siirtymän päätösportit.
 6. [Kehityskäytännöt](kehityskaytannot.md) – dokumentoinnin, koodin, testauksen ja ylläpidon säännöt. Kehitysjonon Kanban näyttää myös GitHubiin kirjatut tikettien riippuvuudet; suhteen tarkka suunta ja tietolähde on kuvattu [kehityssuunnitelmassa](kehityssuunnitelma.md).
 7. [GitHub-tikettien riippuvuuksien hallinta](github-riippuvuuksien-hallinta.md) – miten ChatGPT pyytää natiivien riippuvuuksien lisäämistä tai poistamista ja miten GitHub Actions välittää pyynnön turvallisesti.
 8. [Automaatioiden hallintaperiaatteet](automaation-hallintaperiaatteet.md) – kuka saa muuttaa ajastuksia, asetuksia ja kohdekeskusteluja.
