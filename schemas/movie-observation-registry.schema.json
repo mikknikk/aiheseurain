@@ -139,7 +139,8 @@
         "needs_review",
         "screening_refs",
         "sources",
-        "criterion_matches"
+        "criterion_matches",
+        "discovery_channels"
       ],
       "properties": {
         "movie_id": {
@@ -208,6 +209,16 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/criterionMatch"
+          }
+        },
+        "discovery_channels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "indian-film-screening-baseline",
+              "user-criteria"
+            ]
           }
         }
       },
