@@ -99,3 +99,8 @@ Rekisterissä on #105:n migraation jälkeen kymmenen nykyistä moduulia, mutta k
 - #109 yleisti nykyisen näytösvahtikyvykkyyden uudelleenkäytettäväksi tapahtumavahdiksi. Valmis; tuotantokäyttöönotto on erillinen päätös.
 
 Tämä rekisteri ei muuta nykyisten automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita, kohdekeskusteluja tai aktiivisuutta eikä ota uusia moduuleja tuotantokäyttöön.
+
+
+## 8. Seurantakohdeviitteet
+
+Moduulimäärittelyn `target_refs` sisältää moduulin omistamien seurantakohteiden pysyvät tunnisteet. Varsinaiset hakuprofiilit ja kohdekohtaiset rajaukset sijaitsevat `data/targets/`-hakemistossa ja niiden rekisteri on `data/target-registry.json`. Moduuli ei sisällä julkaisukanavan polkua tai teknisiä asetuksia. Kohteen omistavan moduulin tunniste tarkistetaan eheysvalidoinnissa. Julkaisureitityksen omistaa erillinen `data/publication-routing.json`.

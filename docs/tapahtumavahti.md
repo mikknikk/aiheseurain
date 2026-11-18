@@ -68,3 +68,8 @@ Automaattinen testi osoittaa tietorakenteen ja käsittelylogiikan toiminnan test
 ## Muutoshistoria
 
 - 1.0.0 – 2026-11-18: ensimmäinen yleinen tapahtumamalli, tyypitetyt laajennusmääritykset, yhteinen muutosten ja historian käsittely, näytöshistorian lukevan sovittimen rajaus sekä konferenssiesityksen erillinen testitapaus.
+
+
+## 8. Seurantakohteet ja julkaisureititys
+
+Tapahtumavahtimoduuli on suoritusraja, ei yksittäinen elokuva tai RSS-syöte. Se voi käsitellä useita erillisiä seurantakohteita, kuten elokuvia ja festivaaleja. Kukin kohde voi tuottaa tapahtumahavaintoja, jotka reititetään erillisiin julkaisukohteisiin. Näytösvahtiesimerkki näyttää kaksi kohdetta, kaksi omaa RSS-kanavaa ja valinnaisen yhdistelmäsyötteen. Nykyisen näytösvahtiajon ja RSS-syötteen reititystä ei ole vaihdettu.

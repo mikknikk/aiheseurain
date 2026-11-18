@@ -128,3 +128,8 @@ Testit todistavat skeeman ja esimerkkien rakenteellisen yhteensopivuuden. Moduul
 - #108 toteuttaa yhteisen suoritusorkestroinnin vaiheittaisen käyttöönoton.
 
 Tämä tietosopimus ei muuta nykyisten automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita, kohdekeskusteluja tai aktiivisuutta. Se ei ota uusia moduuleja tuotantokäyttöön.
+
+
+## 10. Seurantakohteiden erillinen omistajuus
+
+Uudistetussa sopimuksessa seurantamoduuli sisältää `target_refs`-viitteet, ei hakuprofiileja eikä kohteiden sisältörajauksia. Moduulin pysyvä tunniste ja määritysversio kuvaavat suoritusrajaa. Kohteen oma tunniste ja versio kuvaavat seurannan sisältöä. Kohteiden koneellinen rakenne on skeemassa `schemas/seurantakohde.schema.json`; kohteiden rekisteri on `data/target-registry.json`. Julkaisukohteet ja niiden tekniset asetukset on erotettu kokonaan moduulisopimuksesta. Katso [kolmen käsitteen erottelu](seurantakohteet-ja-julkaisukohteet.md).

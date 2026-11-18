@@ -184,3 +184,8 @@ Tämä opas kertoo lukujärjestyksen; yksityiskohtaiset säännöt pysyvät omis
 ## Valvomon ajohistoria
 
 Kun haluat ymmärtää ChatGPT-automaation käynnissäolon ja vaiheiden tallennuksen, lue [ajohistorian tietomalli](ajohistoria.md) ja sen jälkeen [Valvomon tietomalli](valvomon-tietomalli.md).
+
+
+## Seurantamoduulien ja julkaisun käsitteet
+
+Kun haluat ymmärtää, miten seurannan prosessi, seurannan kohde ja jakelukanava eroavat toisistaan, lue [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md). Sen jälkeen voit tarkastella `data/module-registry.json`- ja `data/target-registry.json`-rekistereitä sekä esimerkin `examples/julkaisureititys/naytosvahti.json`-reititystä.

@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.13.1  
+**Versio:** 1.14.0  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -795,6 +795,8 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.14.0 – 2026-11-18:** erotettiin seurantamoduuli, seurantakohde ja julkaisukohde omiksi versionoiduiksi tietomalleikseen; lisättiin kohdekohtaiset määritykset, julkaisureitityksen sopimus, näytösvahtiesimerkki ja viitteiden validointi (#133). Nykyinen näytösvahti ja RSS-syöte säilyvät ennallaan; uudet julkaisurekisterit ja reititys ovat tyhjiä ja passiivisia.
+
 - **1.13.1 – 2026-11-18:** erotettiin elokuvahavaintorekisterissä nykyisen intialaisen peruspolun ja käyttäjän kriteerien löydöskanavat raportointia varten.
 - **1.13.0 – 2026-11-18:** lisättiin versioitu elokuvahakukriteeristö, all/any- ja poissulkuehdot, voimassaoloajat, #66:n toimintoviitteiden validointi ja käyttäjän hyväksyntää odottava tyhjä tuotantokriteeritiedosto.
 - **1.12.0 – 2026-11-18:** lisättiin elokuvatasoinen havaintorekisteri, IMDb-/TMDB- ja nimi/vuosi-tunnisteet, kriteerikohtainen toimintotapahtuma ja outbox sekä testattu Discord-webhook-liitäntä. Tuotantokriteerit ja webhook-konfiguraatio pysyvät tyhjinä.
@@ -811,3 +813,14 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 - **1.1.1 – 2026-11-17:** korjattiin luvun 9 alaotsikoiden numerointi.
 - **1.1.0 – 2026-11-17:** lisättiin tavoitearkkitehtuuri, komponenttien vastuut ja rajapinnat, tietovirrat, kanonisen tiedon omistajuus, virheistä palautuminen, hyväksymisehdot, nykytila–tavoitetila-vertailu, siirtymävaiheet ja avoimet päätökset.
 - **1.0.0 – 2026-11-17:** kuvattiin järjestelmäriippumaton toimintamalli, kolmen arkkitehtuurikerroksen vastuut, nykyinen ChatGPT/GitHub-toteutus, tietovirrat sekä teknologioiden vaihdettavuuden edellytykset. Erotettiin repositoriosta varmennetut tosiasiat, päätelmät ja erikseen tarkistettavat asetukset.
+
+
+## 13. Seurantamoduulin, seurantakohteen ja julkaisukohteen erottelu
+
+Tiketissä #133 tietomalli erotettiin kolmeen itsenäiseen elinkaareen. Seurantamoduuli omistaa suoritettavan prosessin, kyvykkyydet, lähdeviitteet ja toimitukselliset säännöt. Seurantakohde omistaa yksittäisen henkilön, teoksen, elokuvan tai muun kohteen hakuprofiilit ja sisältörajaukset. Julkaisukohde omistaa jakelukanavan teknisen määrityksen. Reitityssopimus liittää moduulin ja kohteen havaintotyypin yhteen tai useampaan julkaisukohteeseen.
+
+Nykyisten kymmenen moduulin hakuprofiilit ja topic-rajaukset siirrettiin erillisiin seurantakohteisiin. Moduulimääritykset viittaavat kohteisiin pysyvillä tunnisteilla. Uudet skeemat ovat schemas/seurantakohde.schema.json, schemas/julkaisukohde.schema.json ja schemas/julkaisureititys.schema.json. Rekisterit sijaitsevat tiedostoissa data/target-registry.json ja data/publication-registry.json; reititys on data/publication-routing.json.
+
+Näytösvahtiesimerkissä yksi prosessimoduuli käsittelee erillisiä elokuvanäytös- ja festivaalikohteita. Niiden havainnot voidaan reitittää omiin RSS-julkaisukohteisiinsa ja lisäksi yhdistelmäsyötteeseen. Esimerkkien osoitteet ovat ei-tuotannollisia. Tuotannon julkaisurekisteri ja reititys ovat tyhjiä. Nykyinen intialaisten elokuvien näytösvahti, sen RSS-historia ja automaation asetukset säilyvät ennallaan.
+
+Toteutuksen tietomallit ja validointiohje ovat dokumentissa [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md).
