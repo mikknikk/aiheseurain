@@ -78,7 +78,7 @@ Elokuvarekisterin `discovery_channels` erottaa löydöksen nykyisestä intialais
 
 Arviointimoottori palauttaa kriteeriosumasta:
 
-- `criterion_id) ja `criterion_version);
+- `criterion_id` ja `criterion_version`;
 - osuma-ajan;
 - selkokielisen perustelun täsmänneistä sisällytysehdoista;
 - vähintään yhden lähde-URL:n.
