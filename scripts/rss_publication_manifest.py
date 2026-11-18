@@ -85,7 +85,7 @@ def output(name: str, value: str) -> None:
 
 def snapshot_live_feeds(feeds: list[dict]) -> list[dict]:
     """Tallenna nykyisten julkisten RSS-syötteiden täsmälliset tavut palautusta varten."""
-    folder = ROOT / "rollback_snapshot" / "feeds"
+    folder = ROOT / "_rollback_snapshot" / "feeds"
     folder.mkdir(parents=True, exist_ok=True)
     saved = []
     for feed in feeds:
@@ -110,7 +110,7 @@ def snapshot_live_feeds(feeds: list[dict]) -> list[dict]:
 def assemble_rollback(args) -> None:
     """Kokoa vanhan sivuston lähde ja korvaa RSS-tiedostot ennen julkaisua talteen otetuilla."""
     source, destination = Path(args.source_dir), Path(args.destination_dir)
-    folder = ROOT / "rollback_snapshot" / "feeds"
+    folder = ROOT / "_rollback_snapshot" / "feeds"
     if not source.is_dir() or not folder.is_dir():
         raise PublicationError("Palautussivuston lähde tai RSS-varmistus puuttuu")
     shutil.copytree(source, destination, dirs_exist_ok=True,
