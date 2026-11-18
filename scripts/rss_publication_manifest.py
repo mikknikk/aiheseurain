@@ -300,7 +300,7 @@ def prepare(args) -> None:
         # Uusinta käyttää alkuperäistä manifestia eikä vaihda palautuspistettä.
         manifest = existing["payload"]
         snapshot_folder = ROOT / "_rollback_snapshot" / "feeds"
-        if snapshot_folder.is_dir():
+        if snapshot_folder.is_dir() and any(snapshot_folder.iterdir()):
             validate_snapshot_files(manifest["rollback_feeds"])
             reused = True
         else:
