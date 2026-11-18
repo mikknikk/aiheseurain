@@ -1,6 +1,6 @@
 # Moduulien yhteinen suoritusorkestrointi
 
-**Versio:** 1.1.0  
+**Versio:** 1.2.0  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#108 – Rakenna yhteinen moduulien suoritusorkestrointi ja vaiheittainen käyttöönotto](https://github.com/mikknikk/aiheseurain/issues/108)
 
@@ -31,6 +31,10 @@ schemas/module-run-request.schema.json määrittelee yhteisen suorituspyynnön:
 - pyynnön aikaleima.
 
 schemas/module-run-result.schema.json määrittelee tuloksen. Se sisältää moduulin ja versioiden tunnisteet, run_id:n, seurantajakson, suoritustilan, elinkaaren vaiheen, alku- ja loppuajat, lähdehaun täydellisyyden, laadunvarmistuksen tuloksen, julkaisun ja checkpointin tilan sekä virhekoodin. Tulokseen ei kopioida pyyntötekstiä, lähdekatkelmia tai tunnuksia.
+
+Suorittajan sisäinen `ModuleExecutionOutput` voi sisältää vanhan moduulikohtaisen `report_content`-kentän tai useita `TargetReport`-arvoja. Kohderaportin versioitu tietosopimus on `schemas/target-report.schema.json`. Jokainen kohderaportti sisältää seurantakohteen tunnisteen ja version, havaintotyypit, aikavyöhykkeellisen seurantajakson, tarkistusajankohdan ja raporttisisällön. Yhden ajon kohde-ID:t ovat yksilöllisiä. Laadunvarmistus tarkistaa kohteen moduuliomistajuuden, rekisteröidyn version, havaintotyyppien sopivuuden ja raportointijakson ennen kuin orkestrointi luovuttaa raportit #136:n julkaisusovittimelle.
+
+Kahden erillisen Tolkien-kohderaportin testiesimerkki on `examples/target_reports/two_target_reports.py`. Se on vain esimerkki- ja testiaineistoa eikä hae tai julkaise tuotantosisältöä.
 
 ## 3. Ajon elinkaari
 
@@ -124,5 +128,6 @@ Tallennus- ja julkaisutestit käyttävät väliaikaisia hakemistoja. Ne eivät k
 
 ## Muutoshistoria
 
+- **1.2.0 – 2026-11-18:** lisättiin versioitu kohderaportin tulossopimus, suorittajan usean kohderaportin tulos ja laadunvarmistuksen kohde-, versio-, havaintotyyppi- ja seurantajaksojen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin paikalliset SHA-tarkistetut tallennus-, ajotulos- ja RSS-julkaisusovittimet sekä niiden testaus- ja tuotantorajaukset.
 - **1.0.0 – 2026-11-18:** määriteltiin yhteinen suorituspyyntö ja tulos, orkestroinnin elinkaari, varjotila, tuotannon hyväksyntäportti, idempotentit tallennus- ja julkaisurajapinnat sekä yleisen tapahtumavahdin moduuli-integraatio.
