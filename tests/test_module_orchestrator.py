@@ -109,6 +109,36 @@ class FakeArtifactStore:
         return self.version
 
 
+class FakePublicationJournal:
+    """Muistipohjainen manifestiorkestroinnin yksikkötesteihin."""
+    def __init__(self):
+        self.records = {}
+
+    def prepare(self, record):
+        key = (record["module_id"], record["run_id"])
+        if key in self.records:
+            existing = self.records[key]
+            stable = {k: v for k, v in existing.items() if k not in {"phase", "updated_at", "receipt"}}
+            if stable != record:
+                raise RuntimeError("manifestin sisältökonflikti")
+            return existing
+        self.records[key] = {**deepcopy(record), "phase": "prepared",
+                             "updated_at": record["prepared_at"], "receipt": None}
+        return self.records[key]
+
+    def advance(self, module_id, run_id, phase, *, updated_at, receipt=None):
+        record = self.records[(module_id, run_id)]
+        order = ["prepared", "published", "artifacts_persisted", "checkpoint_updated"]
+        if order.index(phase) > order.index(record["phase"]):
+            if order.index(phase) != order.index(record["phase"]) + 1:
+                raise RuntimeError("manifestivaiheen ohitus")
+            record["phase"] = phase
+            record["updated_at"] = updated_at
+        if receipt is not None:
+            record["receipt"] = deepcopy(receipt)
+        return record
+
+
 class FakePublisher:
     def __init__(self,verified=True):
         self.verified=verified
@@ -205,12 +235,13 @@ class ProductionLifecycleTests(unittest.TestCase):
         self.state_store=FakeStateStore(self.state)
         self.artifacts=FakeArtifactStore()
         self.publisher=FakePublisher()
+        self.journal=FakePublicationJournal()
         self.executor=FakeExecutor()
         self.gate=PassGate()
         self.orchestrator=ModuleOrchestrator(
             executor=self.executor,quality_gate=self.gate,state_store=self.state_store,
             artifact_store=self.artifacts,publisher=self.publisher,
-            registry_loader=active_registry_loader
+            publication_journal=self.journal,registry_loader=active_registry_loader
         )
 
     def test_successful_production_run_publishes_persists_and_advances_checkpoint(self):
@@ -222,6 +253,7 @@ class ProductionLifecycleTests(unittest.TestCase):
         self.assertEqual(self.state_store.state["checkpoint"]["last_successful_run"]["run_id"],"production-run-001")
         self.assertEqual(len(self.artifacts.commits),1)
         self.assertEqual(self.publisher.keys,["tolkien:production-run-001"])
+        self.assertEqual(self.journal.records[("tolkien", "production-run-001")]["phase"], "checkpoint_updated")
 
     def test_same_run_id_is_idempotent(self):
         """Saman run_id:n uusinta ei lisää checkpoint-historiaa tai toista julkaisuavainta."""
