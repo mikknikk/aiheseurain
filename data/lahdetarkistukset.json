@@ -231,6 +231,43 @@
       ]
     },
     {
+      "run_id": "gurmeet-ram-rahim-singh-20261118T125802-0200",
+      "task_id": "gurmeet_ram_rahim_singh",
+      "started_at": "2026-11-18T12:58:02+02:00",
+      "ended_at": "2026-11-18T13:13:52+02:00",
+      "status": "complete",
+      "checked_source_ids": [
+        "gurmeet-courts",
+        "punjab-haryana-highcourt",
+        "cbi-india",
+        "hindustan-times",
+        "tribune-india",
+        "amar-ujala"
+      ],
+      "unchecked_sources": [
+        {
+          "source_id": "the-hindu-india",
+          "reason": "The Hindu -sivuston suora avaus estyi robots.txt-säännöllä (OAI-SearchBot); alkuperäistä sisältöä ei voitu avata, joten hakutuloskatkelmia ei merkitty tarkistetuiksi."
+        }
+      ],
+      "registry_source_ids": [
+        "gurmeet-courts",
+        "punjab-haryana-highcourt",
+        "cbi-india",
+        "the-hindu-india",
+        "hindustan-times",
+        "tribune-india",
+        "amar-ujala"
+      ],
+      "coverage_notes": [
+        "Kielet: haku ja lähteiden tarkistus englanniksi, hindiksi ja pandžabiksi; The Hindu -englanninkielinen rekisterilähde jäi avaamatta robots.txt-eston vuoksi.",
+        "Maantiede: Intian kansallinen oikeusjärjestelmä sekä Haryana, Punjab ja Chandigarh; käytössä korkeimman oikeuden, CBI:n ja alueellisten toimituksellisten lähteiden sisältöä.",
+        "Punjab and Haryana High Courtin verkkotunnuksen etusivu aikakatkaistiin, mutta virallinen allekirjoitettu tuomioasiakirja avattiin tuomioistuimen PDF-arkiston peilipalvelusta.",
+        "Täydentävinä, rekisteriin kuulumattomina lähteinä avattiin Dera Sacha Saudan ja Saint Dr. MSG Insanin viralliset sivut; näkyvät uusimmat artikkelit olivat 13.11.2026 eikä 16.–18.11. löytynyt uutta aiheeseen liittyvää ilmoitusta.",
+        "Dera Sacha Saudan sivulta linkitetty YouTube-kanava palautti tilapäisen throttling-virheen; kanavan videoita ei laskettu tarkistetuiksi."
+      ]
+    },
+    {
       "run_id": "gurmeet-ram-rahim-singh-20261118T132712-0200",
       "task_id": "gurmeet_ram_rahim_singh",
       "started_at": "2026-11-18T13:27:12+02:00",

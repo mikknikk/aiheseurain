@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "timezone": "Europe/Helsinki",
-  "updated_at": "2026-11-17T11:06:48.452Z",
+  "updated_at": "2026-11-18T11:13:52.839Z",
   "notes": [
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
@@ -16,7 +16,7 @@
     "Jokaiselle RSS-syötteen muutokselle vaaditaan reports/julkaisuportit/{run_id}.json -tarkistusraportti; hylätty portti ei muuta viimeisintä onnistunutta tarkistuspistettä eikä tehtäväkierron vuoroa."
   ],
   "rotation": {
-    "next_task": "gurmeet_ram_rahim_singh",
+    "next_task": "muumit",
     "tasks": {
       "tolkien": {
         "name": "J. R. R. Tolkien",
@@ -43,12 +43,12 @@
       "gurmeet_ram_rahim_singh": {
         "name": "Saint Dr. Gurmeet Ram Rahim Singh Ji Insan",
         "feed": "feeds/gurmeet-ram-rahim-singh.xml",
-        "last_successful_check": null,
+        "last_successful_check": "2026-11-18T13:13:52+02:00",
         "last_period_start": null,
         "last_period_end": null,
-        "last_result": "not_recorded",
-        "published_items": null,
-        "sources_checked": null,
+        "last_result": "published",
+        "published_items": 1,
+        "sources_checked": 6,
         "errors": []
       },
       "muumit": {
@@ -144,7 +144,7 @@
     "document": "docs/paaautomaation-ohje.md",
     "current_version": "1.3.1",
     "last_successful_run_version": "1.3.1",
-    "last_successful_run_at": "2026-11-17T13:03:45+02:00",
+    "last_successful_run_at": "2026-11-18T13:13:52+02:00",
     "startup_prompt_id": "uutispaakierto-2026-11-17-03"
   },
   "quality_check_instructions": {

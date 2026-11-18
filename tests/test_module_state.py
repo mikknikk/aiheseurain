@@ -1,11 +1,15 @@
 """Testaa moduulikohtaisen tilan eheys ja onnistuneen checkpointin siirtymäsäännöt."""
 from copy import deepcopy
+import json
+from pathlib import Path
+import shutil
+import tempfile
 import unittest
+from unittest.mock import patch
 
+from scripts import validate_module_state as migration_validator
 from scripts.module_state import ModuleStateError, StateConflictError, commit_successful_checkpoint, validate_module_state
 from scripts.validate_module_state import validate_state_migration
-from pathlib import Path
-import json
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -22,9 +26,47 @@ class ModuleStateMigrationTests(unittest.TestCase):
         registry = json.loads((ROOT / "data/module-registry.json").read_text(encoding="utf-8"))
         for entry in registry["modules"]:
             state = json.loads((ROOT / f"data/module-state/{entry['module_id']}.json").read_text(encoding="utf-8"))
-            if entry["module_id"] not in {"tolkien", "taylor-swift", "indian-film-screening-watch"}:
+            if entry["module_id"] not in {"tolkien", "taylor-swift", "gurmeet-ram-rahim-singh", "indian-film-screening-watch"}:
                 self.assertIsNone(state["checkpoint"]["last_successful_run"]["checked_at"])
                 self.assertIsNone(state["checkpoint"]["last_successful_run"]["run_id"])
+
+    def test_gurmeet_migration_rejects_each_legacy_and_reference_mismatch(self):
+        """Kaikki kuusi PR:ssä havaittua ristiriitatyyppiä pysäyttävät migraation."""
+        # Kopioi validaattorin tarvitsemat tiedostot väliaikaiseen juureen, jotta
+        # testit voivat rikkoa yhden kentän kerrallaan koskematta oikeaan dataan.
+        with tempfile.TemporaryDirectory() as temporary:
+            test_root = Path(temporary)
+            for folder in ("data", "modules", "feeds", "docs"):
+                shutil.copytree(ROOT / folder, test_root / folder)
+            with patch.object(migration_validator, "ROOT", test_root), patch.object(
+                migration_validator, "REGISTRY_PATH", test_root / "data/module-registry.json"
+            ):
+                state_path = test_root / "data/module-state/gurmeet-ram-rahim-singh.json"
+                original = json.loads(state_path.read_text(encoding="utf-8"))
+                cases = (
+                    (("checkpoint", "last_successful_run", "checked_at"), None, "viimeisin tarkistusaika"),
+                    (("checkpoint", "last_successful_run", "result"), "success", "viimeisin tulos"),
+                    (("checkpoint", "last_successful_run", "published_items"), 0, "julkaistujen itemien määrä"),
+                    (("checkpoint", "last_successful_run", "sources_checked"), 0, "tarkistettujen lähteiden määrä"),
+                    (("history", "source_check_run_refs"), [], "lähdetarkistusajojen viitteet"),
+                    (("publication", "guid_refs"), [], "RSS-GUID-viitteet"),
+                )
+                for path, bad_value, expected_error in cases:
+                    with self.subTest(expected_error=expected_error):
+                        candidate = deepcopy(original)
+                        target = candidate
+                        for key in path[:-1]:
+                            target = target[key]
+                        target[path[-1]] = bad_value
+                        # Pidä checkpoint ja sen historiatapahtuma keskenään yhtäpitävinä,
+                        # jotta testi kohdistuu vanhan seurantatilan migraatiotarkistukseen.
+                        if path[0] == "checkpoint":
+                            candidate["checkpoint_history"][0][path[-1]] = bad_value
+                        state_path.write_text(json.dumps(candidate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                        errors = migration_validator.validate_state_migration()
+                        self.assertTrue(any(expected_error in error for error in errors), errors)
+                state_path.write_text(json.dumps(original, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                self.assertEqual(migration_validator.validate_state_migration(), [])
 
 
 class CheckpointTransitionTests(unittest.TestCase):

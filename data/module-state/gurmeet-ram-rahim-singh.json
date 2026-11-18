@@ -7,18 +7,41 @@
       "run_id": null,
       "run_history_ref": null,
       "definition_version": null,
-      "checked_at": null,
+      "checked_at": "2026-11-18T13:13:52+02:00",
       "period": {
         "start": null,
         "end": null
       },
-      "result": "not_recorded",
-      "published_items": null,
-      "sources_checked": null,
+      "result": "published",
+      "published_items": 1,
+      "sources_checked": 6,
       "errors": []
     }
   },
-  "checkpoint_history": [],
+  "checkpoint_history": [
+    {
+      "event_id": "legacy-checkpoint-gurmeet-ram-rahim-singh-20261118131352",
+      "source": "legacy_migration",
+      "run_id": null,
+      "run_history_ref": null,
+      "definition_version": null,
+      "checked_at": "2026-11-18T13:13:52+02:00",
+      "period": {
+        "start": null,
+        "end": null
+      },
+      "result": "published",
+      "published_items": 1,
+      "sources_checked": 6,
+      "source_check_run_refs": [
+        "gurmeet-ram-rahim-singh-20261118T125802-0200",
+        "gurmeet-ram-rahim-singh-20261118T132712-0200"
+      ],
+      "report_guid_refs": [],
+      "recorded_on": "2026-11-18",
+      "notes": "Siirretty data/seurantatila.json-tiedostosta. Automaation ajotunnistetta ei ollut kirjattu vanhaan seurantatilaan tai erilliseen ajohistoriaan, joten sitä ei päätellä lähdetarkistuksen run_id-tunnisteesta."
+    }
+  ],
   "history": {
     "document_refs": [
       {
@@ -29,6 +52,7 @@
     "event_refs": [],
     "current_record_refs": [],
     "source_check_run_refs": [
+      "gurmeet-ram-rahim-singh-20261118T125802-0200",
       "gurmeet-ram-rahim-singh-20261118T132712-0200"
     ]
   },
