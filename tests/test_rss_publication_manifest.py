@@ -261,16 +261,13 @@ class RssPublicationFaultInjectionTests(unittest.TestCase):
 
     def test_candidate_verification_failure_is_reported_as_false_without_masking_workflow(self):
         from types import SimpleNamespace
-        with patch.object(manifest, "load_manifest", side_effect=manifest.PublicationError("simulated API outage")), \\
-             patch.object(manifest, "output") as output:
+        with patch.object(manifest, "load_manifest", side_effect=manifest.PublicationError("simulated API outage")) as loader:\n            with patch.object(manifest, "output") as output:
             manifest.verify_candidate(SimpleNamespace(deployment_id="123"))
         output.assert_called_once_with("candidate_verified", "false")
 
     def test_rollback_verification_failure_is_reported_as_false(self):
         from types import SimpleNamespace
-        with patch.object(manifest, "load_manifest", return_value={"rollback_feeds": []}), \\
-             patch.object(manifest, "verify_feeds", side_effect=manifest.PublicationError("simulated CDN mismatch")), \\
-             patch.object(manifest, "output") as output:
+        with patch.object(manifest, "load_manifest", return_value={"rollback_feeds": []}):\n            with patch.object(manifest, "verify_feeds", side_effect=manifest.PublicationError("simulated CDN mismatch")):\n                with patch.object(manifest, "output") as output:
             manifest.verify_rollback(SimpleNamespace(deployment_id="123"))
         output.assert_called_once_with("rollback_verified", "false")
 
@@ -329,8 +326,7 @@ class RssPublicationFaultInjectionTests(unittest.TestCase):
 
     def test_main_head_advance_prevents_stale_publication(self):
         from types import SimpleNamespace
-        with patch.object(manifest, "api", return_value={"object": {"sha": "new-head"}}), \\
-             patch.object(manifest, "output") as output:
+        with patch.object(manifest, "api", return_value={"object": {"sha": "new-head"}}):\n            with patch.object(manifest, "output") as output:
             manifest.check_current(SimpleNamespace(source_commit="old-head"))
         output.assert_called_once_with("is_current", "false")
 
