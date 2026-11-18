@@ -62,6 +62,65 @@ class RssPublicationManifestTests(unittest.TestCase):
             self.assertEqual(changed["sha256"], manifest.digest(alpha))
             self.assertEqual(changed["guids"], ["alpha-guid"])
 
+
+    def test_snapshot_records_exact_public_feed_bytes(self):
+        import io
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            alpha = b'<rss><channel><item><guid>live-a</guid></item></channel></rss>'
+            beta = b'<rss><channel><item><guid>live-b</guid></item></channel></rss>'
+            responses = [io.BytesIO(alpha), io.BytesIO(beta)]
+            feeds = [
+                {"feed_id": "a", "path": "feeds/a.xml", "public_url": "https://example.test/a.xml"},
+                {"feed_id": "b", "path": "feeds/b.xml", "public_url": "https://example.test/b.xml"},
+            ]
+            with patch.object(manifest, "ROOT", root), patch.object(
+                manifest.urllib.request, "urlopen", side_effect=responses
+            ):
+                saved = manifest.snapshot_live_feeds(feeds)
+            self.assertEqual([item["sha256"] for item in saved],
+                             [manifest.digest(alpha), manifest.digest(beta)])
+            self.assertEqual((root / "rollback_snapshot/feeds/a.xml").read_bytes(), alpha)
+            self.assertEqual((root / "rollback_snapshot/feeds/b.xml").read_bytes(), beta)
+
+    def test_rollback_source_overlays_live_snapshot_without_changing_other_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "old-source"
+            (source / "feeds").mkdir(parents=True)
+            (source / "index.html").write_text("old site", encoding="utf-8")
+            (source / "feeds/a.xml").write_text("stale committed feed", encoding="utf-8")
+            snapshot = root / "rollback_snapshot/feeds"
+            snapshot.mkdir(parents=True)
+            live = b'<rss><channel><item><guid>last-live-guid</guid></item></channel></rss>'
+            (snapshot / "a.xml").write_bytes(live)
+            catalog = root / "data"
+            catalog.mkdir()
+            (catalog / "feed-catalog.json").write_text(json.dumps({
+                "feeds": [{"id": "a", "path": "feeds/a.xml"}]
+            }), encoding="utf-8")
+            class Args:
+                source_dir = str(source)
+                destination_dir = str(root / "rollback-source")
+            with patch.object(manifest, "ROOT", root), patch.object(
+                manifest, "CATALOG", catalog / "feed-catalog.json"
+            ):
+                manifest.assemble_rollback(Args())
+            self.assertEqual((root / "rollback-source/index.html").read_text(encoding="utf-8"), "old site")
+            self.assertEqual((root / "rollback-source/feeds/a.xml").read_bytes(), live)
+
+    def test_verify_feeds_rejects_hash_mismatch_without_long_wait(self):
+        import io
+        wrong = b'<rss><channel><item><guid>wrong-guid</guid></item></channel></rss>'
+        with patch.object(manifest.urllib.request, "urlopen", return_value=io.BytesIO(wrong)), patch.object(
+            manifest.time, "sleep"
+        ):
+            with self.assertRaises(manifest.PublicationError):
+                manifest.verify_feeds([{
+                    "public_url": "https://example.test/a.xml", "path": "feeds/a.xml",
+                    "sha256": "0" * 64, "guids": ["expected-guid"], "item_count": 1
+                }])
+
     def test_build_manifest_refuses_missing_or_rejected_report(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
