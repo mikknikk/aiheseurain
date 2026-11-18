@@ -201,7 +201,9 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [x] Rajattiin `.github/workflows/validate-feeds.yml` seurantadatan, RSS-syötteiden, dokumentaation, moduulisopimusten ja Python-testien tarkistamiseen.
 - [x] Säilytettiin main-haaran rulesetin vaadittu status check seurantavalidoinnin työpaikassa; käyttöliittymätestejä ei asetettu vaadituksi PR-portiksi.
 - [x] Lisättiin `tests/test_workflow_isolation.py`, joka tarkistaa työnkulkujen erillisyyden ja vaaditun tarkistusnimen.
+- [x] Laajennettiin regressiotesti tarkistamaan suoraan, ettei seurantavalidoinnin jobilla ole UI-ajoon liittyvää ehtoa tai riippuvuutta eikä UI-työnkulku käytä `workflow_run`-ketjutusta.
+- [x] Dokumentoitiin testin raja: repositorion testi tarkistaa versionhallittujen työnkulkujen riippumattomuuden, mutta GitHubin palvelussa ylläpidettävän branch ruleset -asetuksen vaaditut status checkit on tarkistettava erikseen.
 - [x] Päivitettiin järjestelmäarkkitehtuurin kuvaus.
 - [x] ChatGPT-automaation asetuksiin, ajastuksiin tai ohjeisiin ei tehty muutoksia.
 
-**Tulos:** käyttöliittymätestien virhe ei estä näytösvahtiin tai uutisraportointiin liittyvän muutoksen seurantavalidointia eikä sen hyväksymistä main-haaraan. Käyttöliittymien testit suoritetaan edelleen ja niiden tulokset näkyvät erillisessä työnkulussa.
+**Tulos:** käyttöliittymätestien virhe ei ole seurantavalidoinnin tekninen riippuvuus. Regressiotesti havaitsee, jos työnkulkujen väliin lisätään myöhemmin riippuvuus tai ehtoketju. GitHubin branch ruleset on kuitenkin palveluasetus, jota tämä repositorion testi ei lue; sen tulee edelleen vaatia vain seurantavalidoinnin status check. Käyttöliittymien testit suoritetaan edelleen ja niiden tulokset näkyvät erillisessä työnkulussa.
