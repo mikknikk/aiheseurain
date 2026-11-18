@@ -1,0 +1,185 @@
+{
+  "registry_version": "1.0.0",
+  "targets": [
+    {
+      "target_id": "euroviisut.eurovision-song-contest-asia",
+      "path": "data/targets/euroviisut.eurovision-song-contest-asia.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "euroviisut.eurovision-song-contest",
+      "path": "data/targets/euroviisut.eurovision-song-contest.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "gurmeet-ram-rahim-singh.gurmeet-ram-rahim-singh",
+      "path": "data/targets/gurmeet-ram-rahim-singh.gurmeet-ram-rahim-singh.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.allu-arjun",
+      "path": "data/targets/indian-film-news.allu-arjun.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.baahubali-universe",
+      "path": "data/targets/indian-film-news.baahubali-universe.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.brahmanandam",
+      "path": "data/targets/indian-film-news.brahmanandam.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.chiranjeevi",
+      "path": "data/targets/indian-film-news.chiranjeevi.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.demonte-colony-series",
+      "path": "data/targets/indian-film-news.demonte-colony-series.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.fauzi",
+      "path": "data/targets/indian-film-news.fauzi.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.kajal-aggarwal",
+      "path": "data/targets/indian-film-news.kajal-aggarwal.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.kalki-2898-ad-2",
+      "path": "data/targets/indian-film-news.kalki-2898-ad-2.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.kamal-haasan",
+      "path": "data/targets/indian-film-news.kamal-haasan.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.prabhas",
+      "path": "data/targets/indian-film-news.prabhas.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.raaka",
+      "path": "data/targets/indian-film-news.raaka.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.rajinikanth",
+      "path": "data/targets/indian-film-news.rajinikanth.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.ram-charan",
+      "path": "data/targets/indian-film-news.ram-charan.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.s-s-rajamouli",
+      "path": "data/targets/indian-film-news.s-s-rajamouli.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.salaar-2",
+      "path": "data/targets/indian-film-news.salaar-2.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.spirit",
+      "path": "data/targets/indian-film-news.spirit.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.upendra",
+      "path": "data/targets/indian-film-news.upendra.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-news.varanasi",
+      "path": "data/targets/indian-film-news.varanasi.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-screening-watch.all-indian-film-screenings-finland",
+      "path": "data/targets/indian-film-screening-watch.all-indian-film-screenings-finland.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "indian-film-screening-watch.indian-film-festivals-finland",
+      "path": "data/targets/indian-film-screening-watch.indian-film-festivals-finland.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "muumit.moomin-characters",
+      "path": "data/targets/muumit.moomin-characters.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "muumit.tove-jansson",
+      "path": "data/targets/muumit.tove-jansson.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "shakkidraamat.daniel-naroditsky",
+      "path": "data/targets/shakkidraamat.daniel-naroditsky.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "shakkidraamat.fide",
+      "path": "data/targets/shakkidraamat.fide.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "shakkidraamat.hans-niemann",
+      "path": "data/targets/shakkidraamat.hans-niemann.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "shakkidraamat.magnus-carlsen",
+      "path": "data/targets/shakkidraamat.magnus-carlsen.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "shakkidraamat.vladimir-kramnik",
+      "path": "data/targets/shakkidraamat.vladimir-kramnik.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "sompote-sands.sompote-sands",
+      "path": "data/targets/sompote-sands.sompote-sands.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "taylor-swift.taylor-swift",
+      "path": "data/targets/taylor-swift.taylor-swift.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "tolkien.j-r-r-tolkien",
+      "path": "data/targets/tolkien.j-r-r-tolkien.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "tolkien.tolkien-estate",
+      "path": "data/targets/tolkien.tolkien-estate.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "wakaliwood.nabwana-igg",
+      "path": "data/targets/wakaliwood.nabwana-igg.json",
+      "status": "inactive"
+    },
+    {
+      "target_id": "wakaliwood.wakaliwood",
+      "path": "data/targets/wakaliwood.wakaliwood.json",
+      "status": "inactive"
+    }
+  ]
+}
