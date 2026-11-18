@@ -105,6 +105,24 @@ class MovieActionTests(unittest.TestCase):
         self.assertNotIn("Webhook rejected", serialized)
         self.assertNotIn("test-secret", serialized)
 
+
+    def test_rate_limit_retry_after_is_respected(self):
+        """Rate limit -kuljettimen ilmoittamaa retry-after-viivettä noudatetaan."""
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        class RateLimited:
+            retry_after_seconds = 120
+            def send(self, payload, idempotency_key):
+                raise RuntimeError("rate limited")
+        delayed = dispatch_pending_actions(
+            outbox, {"discord_webhook": RateLimited()}, NOW, max_attempts=3,
+        )
+        self.assertTrue(all(item["next_attempt_at"] == "2026-11-18T08:02:00+02:00"
+                            for item in delayed["actions"]))
+        too_early = dispatch_pending_actions(
+            delayed, {"discord_webhook": RateLimited()}, RETRY, max_attempts=3,
+        )
+        self.assertEqual(too_early, delayed)
+
     def test_outbox_store_rejects_stale_sha(self):
         """Toimitusjonon vanha SHA ei saa ylikirjoittaa uudempaa jonoa."""
         with tempfile.TemporaryDirectory() as folder:
