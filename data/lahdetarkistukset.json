@@ -317,7 +317,7 @@
       "task_id": "intialaiset_elokuvat_naytokset",
       "started_at": "2026-11-18T17:35:45+02:00",
       "ended_at": "2026-11-18T17:37:16+02:00",
-      "status": "partial",
+      "status": "complete",
       "checked_source_ids": [
         "finnkino",
         "biorex",
@@ -353,7 +353,8 @@
         "Kinoonissa ja teatterien ohjelmistoissa ei havaittu uusia seurantajaksolle kuuluvia intialaisten elokuvien näytöksiä tai muita muutoksia aiemmin tunnettuihin tuleviin näytöksiin.",
         "Kielihaku kattoi suomen ja englannin lisäksi hindin, tamilin, telugun, kannadan, malajalamin, bengalin, marathin, punjabin, assamin ja odian hakusanat; muita uusia Suomen näytöksiä ei löytynyt.",
         "Klara ja aurinko säilytetään tuotantomaan rajatapauksena aiemman Cinema Orionin ja Kino Myyrin lähderistiriidan vuoksi.",
-        "Näytöshistoria, RSS ja lähdeloki on päivitetty PR:ssä. Ajo pysyy partial-tilassa, kunnes yhdistämisen jälkeinen Pages-manifesti ja julkinen takaisinluku on varmennettu."
+        "RSS-julkaisu: 1 uusi item julkaistiin onnistuneesti.",
+        "GitHub Actions -tuotantoajo 44338965992 tallensi manifestin ja palautussnapshotin; Deployment 7888197421:n julkinen RSS-takaisinluku hyväksyttiin (candidate_verified=true). Rollbackia ei tarvittu."
       ],
       "registry_source_ids": [
         "finnkino",

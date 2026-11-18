@@ -5,6 +5,7 @@ tunnisteita, RSS-GUIDeja ja näytöshistorian tunnisteita ei ole muutettu tai ke
 """
 from __future__ import annotations
 from pathlib import Path
+from datetime import datetime
 import json
 import xml.etree.ElementTree as ET
 
@@ -47,6 +48,11 @@ def _feed_guids(path: Path) -> list[str]:
     if len(values) != len(set(values)):
         raise ValueError(f"RSS-syötteessä {path} on duplikaatti-GUID.")
     return values
+
+
+def _parse_datetime(value: str) -> datetime:
+    """Jäsennä aikavyöhykkeellinen ISO-aikaleima vertailua varten."""
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
 def validate_state_migration() -> list[str]:
@@ -108,18 +114,69 @@ def validate_state_migration() -> list[str]:
             old_task = legacy["rotation"]["tasks"][metadata["task"]]
         checkpoint = state["checkpoint"]["last_successful_run"]
         old_period = {"start": old_task.get("last_period_start"), "end": old_task.get("last_period_end")}
-        if checkpoint["checked_at"] != old_task.get("last_successful_check"):
-            errors.append(f"{module_id}: viimeisin tarkistusaika ei vastaa vanhaa seurantatilaa.")
-        if checkpoint["period"] != old_period:
-            errors.append(f"{module_id}: seurantajakso ei vastaa vanhaa seurantatilaa.")
-        if checkpoint["result"] != (old_task.get("last_result") or "not_recorded"):
-            errors.append(f"{module_id}: viimeisin tulos ei vastaa vanhaa seurantatilaa.")
-        if checkpoint["published_items"] != old_task.get("published_items"):
-            errors.append(f"{module_id}: julkaistujen itemien määrä ei vastaa vanhaa seurantatilaa.")
-        if checkpoint["sources_checked"] != old_task.get("sources_checked"):
-            errors.append(f"{module_id}: tarkistettujen lähteiden määrä ei vastaa vanhaa seurantatilaa.")
-        if checkpoint["errors"] != old_task.get("errors", []):
-            errors.append(f"{module_id}: virhelista ei vastaa vanhaa seurantatilaa.")
+        legacy_checked_at = old_task.get("last_successful_check")
+        checkpoint_checked_at = checkpoint["checked_at"]
+
+        # Näytösvahti käyttää edelleen vanhaa automaatiotilaa, vaikka sen
+        # moduulikohtainen tila on vasta migraation rinnakkaiskuva. Siksi vanha
+        # automaatio saa edetä checkpointin ohi vain täydellisen, lähdelokiin ja
+        # hyväksyttyyn julkaisuraporttiin sidotun onnistuneen ajon perusteella.
+        legacy_advanced = False
+        if metadata.get("screening") and legacy_checked_at != checkpoint_checked_at:
+            try:
+                legacy_advanced = (
+                    legacy_checked_at is not None
+                    and checkpoint_checked_at is not None
+                    and _parse_datetime(legacy_checked_at) > _parse_datetime(checkpoint_checked_at)
+                )
+            except (TypeError, ValueError):
+                legacy_advanced = False
+
+            latest_run = next(
+                (item for item in reversed(source_log["runs"]) if item["task_id"] == task_id),
+                None,
+            )
+            report = None
+            if latest_run is not None:
+                report_path = ROOT / "reports/julkaisuportit" / f"{latest_run['run_id']}.json"
+                if report_path.is_file():
+                    report = _read(report_path)
+            expected_period_note = (
+                f"Seurantajakso Suomen ajassa: {old_period['start']}–{old_period['end']}."
+            )
+            valid_legacy_advance = (
+                legacy_advanced
+                and latest_run is not None
+                and latest_run["status"] == "complete"
+                and latest_run["ended_at"] == legacy_checked_at
+                and source_log["latest_by_task"].get(task_id) == legacy_checked_at
+                and len(latest_run["checked_source_ids"]) == old_task.get("sources_checked")
+                and expected_period_note in latest_run["coverage_notes"]
+                and old_task.get("last_result") == "success"
+                and old_task.get("errors", []) == []
+                and report is not None
+                and report.get("decision") == "approved"
+                and report.get("feed_path") == metadata["feed"]
+                and report.get("checked_at") == legacy_checked_at
+            )
+            if not valid_legacy_advance:
+                errors.append(
+                    f"{module_id}: uudempi vanhan automaation seurantatila ei vastaa "
+                    "täydellistä lähdetarkistusajoa ja hyväksyttyä julkaisuraporttia."
+                )
+        else:
+            if checkpoint_checked_at != legacy_checked_at:
+                errors.append(f"{module_id}: viimeisin tarkistusaika ei vastaa vanhaa seurantatilaa.")
+            if checkpoint["period"] != old_period:
+                errors.append(f"{module_id}: seurantajakso ei vastaa vanhaa seurantatilaa.")
+            if checkpoint["result"] != (old_task.get("last_result") or "not_recorded"):
+                errors.append(f"{module_id}: viimeisin tulos ei vastaa vanhaa seurantatilaa.")
+            if checkpoint["published_items"] != old_task.get("published_items"):
+                errors.append(f"{module_id}: julkaistujen itemien määrä ei vastaa vanhaa seurantatilaa.")
+            if checkpoint["sources_checked"] != old_task.get("sources_checked"):
+                errors.append(f"{module_id}: tarkistettujen lähteiden määrä ei vastaa vanhaa seurantatilaa.")
+            if checkpoint["errors"] != old_task.get("errors", []):
+                errors.append(f"{module_id}: virhelista ei vastaa vanhaa seurantatilaa.")
 
         expected_run = RUN_HISTORY.get(module_id, {})
         if checkpoint["run_id"] != expected_run.get("run_id"):
@@ -138,8 +195,20 @@ def validate_state_migration() -> list[str]:
             migrated = state["checkpoint_history"][0]
             if migrated["source"] != "legacy_migration" or migrated["definition_version"] is not None:
                 errors.append(f"{module_id}: vanha checkpoint on luokiteltu virheellisesti.")
-            if migrated["source_check_run_refs"] != expected_source_runs:
-                errors.append(f"{module_id}: checkpointin lähdetarkistusviitteet eivät täsmää.")
+            # Migraatiotapahtuma säilyttää vain lähdeajot, jotka olivat olemassa
+            # checkpointin syntyhetkellä. Nykyinen history.source_check_run_refs
+            # sisältää edelleen kaikki myöhemmätkin lähdetarkistusajot.
+            if metadata.get("screening") and migrated["checked_at"] is not None:
+                cutoff = _parse_datetime(migrated["checked_at"])
+                migration_source_runs = [
+                    item["run_id"] for item in source_log["runs"]
+                    if item["task_id"] == task_id
+                    and _parse_datetime(item["ended_at"]) <= cutoff
+                ]
+            else:
+                migration_source_runs = expected_source_runs
+            if migrated["source_check_run_refs"] != migration_source_runs:
+                errors.append(f"{module_id}: checkpointin migraatiohetken lähdetarkistusviitteet eivät täsmää.")
 
         expected_guids = _feed_guids(ROOT / metadata["feed"])
         if state["publication"]["guid_refs"] != expected_guids:
