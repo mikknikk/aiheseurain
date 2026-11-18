@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "criteria": [
+    {
+      "criterion_id": "test-actor-and-year",
+      "version": "1.0.0",
+      "name": "Testinäyttelijä ja vuosiväli",
+      "description": "Vain automaattisten testien käyttämä esimerkkikriteeri.",
+      "category": "person",
+      "status": "active",
+      "valid_from": "2026-01-01T00:00:00+02:00",
+      "valid_until": null,
+      "match_policy": "all",
+      "include_conditions": [
+        {
+          "field": "cast_ids",
+          "operator": "contains_normalized",
+          "value": "person:test-actor",
+          "reason": "Näyttelijän tunniste täsmää."
+        },
+        {
+          "field": "release_year",
+          "operator": "in_range",
+          "value": {
+            "min": 2020,
+            "max": 2030
+          },
+          "reason": "Julkaisuvuosi osuu testiväliin."
+        }
+      ],
+      "exclude_conditions": [
+        {
+          "field": "release_type",
+          "operator": "equals",
+          "value": "short",
+          "reason": "Lyhytelokuvat suljetaan pois."
+        }
+      ],
+      "action_ids": [
+        "test-discord-notification-a"
+      ],
+      "created_at": "2026-01-01T00:00:00+02:00",
+      "updated_at": "2026-01-01T00:00:00+02:00"
+    },
+    {
+      "criterion_id": "test-language-match",
+      "version": "1.0.0",
+      "name": "Testikieliosuma",
+      "description": "Toinen testikriteeri usean osuman reitityksen testaamiseen.",
+      "category": "language",
+      "status": "active",
+      "valid_from": "2026-01-01T00:00:00+02:00",
+      "valid_until": null,
+      "match_policy": "any",
+      "include_conditions": [
+        {
+          "field": "languages",
+          "operator": "contains_any_normalized",
+          "value": [
+            "te",
+            "ta"
+          ],
+          "reason": "Alkuperäinen kieli vastaa testikieltä."
+        }
+      ],
+      "exclude_conditions": [],
+      "action_ids": [
+        "test-discord-notification-b"
+      ],
+      "created_at": "2026-01-01T00:00:00+02:00",
+      "updated_at": "2026-01-01T00:00:00+02:00"
+    },
+    {
+      "criterion_id": "test-paused-criterion",
+      "version": "1.0.0",
+      "name": "Keskeytetty testikriteeri",
+      "description": "Varmistaa, ettei keskeytetty kriteeri osu.",
+      "category": "other",
+      "status": "paused",
+      "valid_from": "2026-01-01T00:00:00+02:00",
+      "valid_until": null,
+      "match_policy": "all",
+      "include_conditions": [
+        {
+          "field": "genres",
+          "operator": "contains_normalized",
+          "value": "drama",
+          "reason": "Testigenre täsmää."
+        }
+      ],
+      "exclude_conditions": [],
+      "action_ids": [],
+      "created_at": "2026-01-01T00:00:00+02:00",
+      "updated_at": "2026-01-01T00:00:00+02:00"
+    }
+  ]
+}
