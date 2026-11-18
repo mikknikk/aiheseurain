@@ -436,8 +436,11 @@ class StructuralModuleQualityGate:
                         errors.append(f"Kohderaportin kohdemääritystä ei löydy: {target_id}")
                         continue
                     target = json.loads(target_path.read_text(encoding="utf-8"))
-                    if target.get("module_ref", {}).get("module_id") != definition.get("module_id"):
+                    target_module_ref = target.get("module_ref", {})
+                    if target_module_ref.get("module_id") != definition.get("module_id"):
                         errors.append(f"Kohderaportin moduuliomistaja on väärä: {target_id}")
+                    if target_module_ref.get("definition_version") != definition.get("definition_version"):
+                        errors.append(f"Kohderaportin moduuliversio ei vastaa kohteen omistajaviitettä: {target_id}")
                     if report.target_version != target.get("target_version"):
                         errors.append(f"Kohderaportin kohdeversio ei vastaa rekisteriä: {target_id}")
                     if report.period_start != request.period_start or report.period_end != request.period_end:
