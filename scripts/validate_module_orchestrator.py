@@ -1,5 +1,10 @@
+import json
+from pathlib import Path
+import jsonschema
 """Validoi yhteisen moduuliorchestratorin sopimukset ja käyttöönoton turvarajat."""
 from scripts.module_registry import load_registry
+
+ROOT = Path(__file__).resolve().parents[1]
 from scripts.module_orchestrator import (
     ModuleRunRequest, ModuleRunResult, validate_run_request, validate_run_result
 )
@@ -22,6 +27,8 @@ def main() -> None:
         requested_at="2026-11-18T00:00:00+02:00"
     )
     validate_run_request(request)
+    target_report_schema = json.loads((ROOT / "schemas/target-report.schema.json").read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator.check_schema(target_report_schema)
     result = ModuleRunResult(
         module_id="tolkien", module_type="topic", module_definition_version="1.0.0",
         contract_version="1.0.0", run_id="schema-validation-run",
@@ -30,7 +37,7 @@ def main() -> None:
         started_at="2026-11-18T00:00:00+00:00", finished_at="2026-11-18T00:00:01+00:00"
     )
     validate_run_result(result)
-    print("OK: suorituspyyntö- ja tulossopimukset validoituvat.")
+    print("OK: suorituspyyntö-, tulos- ja kohderaporttisopimukset validoituvat.")
     print("OK: kaikki kymmenen moduulia voidaan lukea varjotilaan, mutta yksikään ei ole aktiivinen.")
     print("OK: tuotantokäyttöönotto vaatii erillisen hyväksynnän eikä CI muuta automaatioasetuksia.")
 
