@@ -44,7 +44,7 @@ Kriteeritiedoston skeema on `schemas/movie-search-criteria.schema.json`. Yksi kr
 - nimen, kuvauksen ja kriteeriluokan;
 - tilan: `draft`, `active`, `paused` tai `retired`;
 - voimaantulo- ja mahdollisen päättymisajan;
-- sisällyttävät ehdot ja niiden `all`-/`any)-yhdistämispolitiikan;
+- sisällyttävät ehdot ja niiden `all`-/`any`-yhdistämispolitiikan;
 - poissulkevat ehdot, joista yksikin estää osuman;
 - #66:n toimintomäärityksiin viittaavat `action_ids`-tunnisteet;
 - luonti- ja päivitysajat.
@@ -70,7 +70,7 @@ Operaattorit:
 
 Normalisointi käyttää Unicode NFKC -muotoa, kirjainkoon yhtenäistämistä ja välimerkkien poistamista vertailusta. Kirjoitusjärjestelmiä ei translitteroida pois. Ulkoisia henkilö-, elokuva- tai yritystunnisteita suositaan vapaamuotoisten nimien sijaan.
 
-Sisällyttävien ehtojen `all)-politiikka vaatii kaikkien ehtojen täyttymisen; `any)-politiikka vaatii vähintään yhden. Poissulkevat ehdot arvioidaan aina sisällyttämisen jälkeen, ja mikä tahansa poissulkeva osuma estää kriteeriosuman.
+Sisällyttävien ehtojen `all`-politiikka vaatii kaikkien ehtojen täyttymisen; `any`-politiikka vaatii vähintään yhden. Poissulkevat ehdot arvioidaan aina sisällyttämisen jälkeen, ja mikä tahansa poissulkeva osuma estää kriteeriosuman.
 
 ## 6. Kriteeriosuman välitys
 
@@ -81,13 +81,13 @@ Arviointimoottori palauttaa kriteeriosumasta:
 - selkokielisen perustelun täsmänneistä sisällytysehdoista;
 - vähintään yhden lähde-URL:n.
 
-Tulos siirtyy #66:n `criterion_matches)-tietueeksi. #66 säilyttää kriteeriosuman elokuvan historiassa ja reitittää siihen liittyvät toimintotunnisteet. Kriteerimoottori ei lähetä ilmoituksia eikä käsittele webhook-salaisuuksia.
+Tulos siirtyy #66:n `criterion_matches`-tietueeksi. #66 säilyttää kriteeriosuman elokuvan historiassa ja reitittää siihen liittyvät toimintotunnisteet. Kriteerimoottori ei lähetä ilmoituksia eikä käsittele webhook-salaisuuksia.
 
 Kriteerin `action_ids`-viitteet tarkistetaan #66:n toimintomäärityksiä vasten. Puuttuva tai ylimääräinen viite estää validoinnin, jotta kriteeri ja toiminto eivät ajaudu eri suuntiin.
 
 ## 7. Tuotannon tila ja käyttäjän hyväksyntä
 
-Tuotannon kriteeritiedosto on tyhjä. Testikriteerit ovat vain `tests/fixtures/movie-search-criteria.json)-tiedostossa, ja niiden tunnisteet alkavat `test-)-etuliitteellä.
+Tuotannon kriteeritiedosto on tyhjä. Testikriteerit ovat vain `tests/fixtures/movie-search-criteria.json`-tiedostossa, ja niiden tunnisteet alkavat `test-`-etuliitteellä.
 
 Ennen tuotantokriteerien lisäämistä käyttäjän on hyväksyttävä ainakin:
 
@@ -101,7 +101,7 @@ Mitään näistä arvoista ei päätellä tämän teknisen rungon perusteella. K
 
 ## 8. Validointi ja testaus
 
-CI validoi tuotannon tyhjän kriteerirekisterin, testifixtuurin, ehdot, versiot ja #66:n toimintoviitteet. Yksikkötestit kattavat `all)-/`any)-logiikan, poissulut, voimassaoloajat, keskeytetyt kriteerit, lähdevaatimukset, virheelliset kenttä-/operaattoriyhdistelmät ja toimintoviitteiden ristiriidat.
+CI validoi tuotannon tyhjän kriteerirekisterin, testifixtuurin, ehdot, versiot ja #66:n toimintoviitteet. Yksikkötestit kattavat `all`-/`any`-logiikan, poissulut, voimassaoloajat, keskeytetyt kriteerit, lähdevaatimukset, virheelliset kenttä-/operaattoriyhdistelmät ja toimintoviitteiden ristiriidat.
 
 Testit osoittavat kriteerimoottorin rakenteellisen toiminnan. Ne eivät vahvista minkään todellisen henkilön, elokuvan tai muun aiheen olevan käyttäjän hyväksymä kiinnostuksen kohde.
 
