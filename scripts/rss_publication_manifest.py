@@ -83,26 +83,32 @@ def output(name: str, value: str) -> None:
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as stream:
             stream.write(f"{name}={value}\n")
 
-def prepare(args) -> None:
-    """Valmistele kaikki kymmenen syötettä ennen Pages-julkaisua."""
-    changed = git_changed_files(args.base_ref)
-    changed_feeds = {p for p in changed if p.startswith("feeds/") and p.endswith(".xml")}
+def build_manifest(base_ref: str, source_commit: str,
+                   workflow_run_id: str, workflow_attempt: str) -> dict | None:
+    """Muodosta muuttumaton ehdokas kaikista syötteistä ennen Pages-kirjoitusta."""
+    changed = git_changed_files(base_ref)
+    changed_feeds = {path for path in changed if path.startswith("feeds/") and path.endswith(".xml")}
     if not changed_feeds:
-        print("RSS-syötemuutoksia ei ole; manifestia ei tarvita.")
-        output("deployment_id", "")
-        return
+        return None
+
+    # Jokaiselle muuttuneelle RSS-syötteelle on löydyttävä saman muutoksen hyväksytty porttiraportti.
     reports = {}
     for path in changed:
         if path.startswith("reports/julkaisuportit/") and path.endswith(".json"):
             report_path = ROOT / path
-            report = json.loads(report_path.read_text(encoding="utf-8"))
+            try:
+                report = json.loads(report_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                raise PublicationError(f"{path}: porttiraporttia ei voi lukea: {exc}") from exc
             feed = report.get("feed_path")
             if report.get("decision") != "approved" or feed in reports:
                 raise PublicationError(f"{path}: hyväksyttyä yksilöllistä porttiraporttia ei ole")
             reports[feed] = {"run_id": report.get("run_id"), "path": path,
                              "sha256": digest(report_path.read_bytes())}
-    if changed_feeds - reports.keys():
-        raise PublicationError("Porttiraportti puuttuu: " + ", ".join(sorted(changed_feeds - reports.keys())))
+    missing = changed_feeds - reports.keys()
+    if missing:
+        raise PublicationError("Porttiraportti puuttuu: " + ", ".join(sorted(missing)))
+
     catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
     feeds = []
     for entry in catalog["feeds"]:
@@ -117,13 +123,24 @@ def prepare(args) -> None:
             "report_run_id": report.get("run_id"), "report_path": report.get("path"),
             "report_sha256": report.get("sha256"),
         })
-    manifest = {
+    return {
         "schema_version": 1, "manifest_type": "aiheseurain-rss-publication",
-        "phase": "prepared", "workflow_run_id": os.getenv("GITHUB_RUN_ID", "local"),
-        "workflow_attempt": os.getenv("GITHUB_RUN_ATTEMPT", "1"),
-        "source_commit": os.environ["GITHUB_SHA"], "base_commit": args.base_ref,
-        "prepared_at": now(), "pages_base_url": PAGES, "feeds": feeds,
+        "phase": "prepared", "workflow_run_id": str(workflow_run_id),
+        "workflow_attempt": str(workflow_attempt), "source_commit": source_commit,
+        "base_commit": base_ref, "prepared_at": now(), "pages_base_url": PAGES,
+        "feeds": feeds,
     }
+
+
+def prepare(args) -> None:
+    """Validoi ja tallenna ehdokasmanifesti ennen Pages-julkaisua."""
+    manifest = build_manifest(
+        args.base_ref, os.environ["GITHUB_SHA"],
+        os.getenv("GITHUB_RUN_ID", "local"), os.getenv("GITHUB_RUN_ATTEMPT", "1"))
+    if manifest is None:
+        print("RSS-syötemuutoksia ei ole; manifestia ei tarvita.")
+        output("deployment_id", "")
+        return
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     jsonschema.Draft202012Validator(
         schema, format_checker=jsonschema.FormatChecker()
