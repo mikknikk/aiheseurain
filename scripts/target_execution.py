@@ -100,7 +100,7 @@ def _validate(value: dict[str, Any], schema_path: Path, label: str) -> None:
 
 
 def load_module_targets(
-    definition: dict[str, Any], *, root: Path = ROOT
+    definition: dict[str, Any], *, root: Path = ROOT, require_active: bool = False
 ) -> tuple[dict[str, Any], ...]:
     """Ratkaise moduulin target_refs-viitteet rekisterin kautta ja tarkista omistajuus."""
     root = Path(root).resolve()
