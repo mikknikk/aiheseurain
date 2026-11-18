@@ -6,8 +6,7 @@
       "module_ref": "indian-film-screening-watch",
       "target_ref": "indian-film-screening-watch.feature-film",
       "publication_refs": [
-        "indian-film-screening-watch.feature-film.rss",
-        "indian-film-screening-watch.all.rss"
+        "indian-film-screening-watch.feature-film.rss"
       ],
       "observation_types": [
         "film-screening"
@@ -19,8 +18,7 @@
       "module_ref": "indian-film-screening-watch",
       "target_ref": "indian-film-screening-watch.film-festivals",
       "publication_refs": [
-        "indian-film-screening-watch.festivals.rss",
-        "indian-film-screening-watch.all.rss"
+        "indian-film-screening-watch.festivals.rss"
       ],
       "observation_types": [
         "film-festival"
