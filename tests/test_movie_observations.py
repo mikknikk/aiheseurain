@@ -88,6 +88,35 @@ class MovieObservationTests(unittest.TestCase):
             ["indian-film-screening-baseline"],
         )
 
+
+    def test_merging_baseline_and_criteria_paths_keeps_both_channels(self):
+        """Sama elokuva säilyy yhtenä tietueena, vaikka se löytyy kahta polkua pitkin."""
+        metadata = {
+            "primary_title": "Yhteinen elokuva", "release_year": 2024,
+            "external_ids": [{"provider": "imdb", "value": "tt1111111"}],
+        }
+        baseline = build_movie_observation(
+            screening("screening-baseline", "Yhteinen elokuva"),
+            metadata, [], NOW,
+        )
+        criteria = build_movie_observation(
+            screening("screening-criteria", "Yhteinen elokuva"),
+            metadata, [criterion()], LATER,
+            discovery_channels=["user-criteria"],
+        )
+        merged = merge_movie_observation(
+            merge_movie_observation(empty_registry(), baseline), criteria
+        )
+        self.assertEqual(len(merged["films"]), 1)
+        self.assertEqual(
+            set(merged["films"][0]["discovery_channels"]),
+            {"indian-film-screening-baseline", "user-criteria"},
+        )
+        self.assertEqual(
+            set(merged["films"][0]["screening_refs"]),
+            {"screening-baseline", "screening-criteria"},
+        )
+
     def test_external_identifier_is_stable_and_merges_screenings(self):
         """IMDb-tunniste yhdistää saman elokuvan eri näytöshavainnot."""
         metadata = {
