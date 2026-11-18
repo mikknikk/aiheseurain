@@ -121,6 +121,47 @@ class RssPublicationManifestTests(unittest.TestCase):
                     "sha256": "0" * 64, "guids": ["expected-guid"], "item_count": 1
                 }])
 
+
+    def test_finalize_marks_candidate_success_only_after_verification(self):
+        from types import SimpleNamespace
+        manifest_payload = {"manifest_type": "aiheseurain-rss-publication", "feeds": [{}]}
+        with patch.dict("os.environ", {"GITHUB_SHA": "head"}), patch.object(
+            manifest, "api", side_effect=[
+                {"object": {"sha": "head"}}, {"payload": manifest_payload}
+            ]
+        ), patch.object(manifest, "status") as status:
+            manifest.finalize(SimpleNamespace(
+                deployment_id="123", is_current="true", deploy_outcome="success",
+                candidate_verified="true", rollback_outcome="skipped",
+                rollback_verified="false"
+            ))
+        status.assert_called_once_with(123, "success", "Kaikki 1 syötettä täsmäävät SHA/GUID/item-tasolla.")
+
+    def test_finalize_keeps_workflow_failed_after_successful_rollback(self):
+        from types import SimpleNamespace
+        manifest_payload = {"manifest_type": "aiheseurain-rss-publication", "feeds": [{}]}
+        with patch.dict("os.environ", {"GITHUB_SHA": "head"}), patch.object(
+            manifest, "api", side_effect=[
+                {"object": {"sha": "head"}}, {"payload": manifest_payload}
+            ]
+        ), patch.object(manifest, "status") as status:
+            with self.assertRaises(manifest.PublicationError):
+                manifest.finalize(SimpleNamespace(
+                    deployment_id="123", is_current="true", deploy_outcome="success",
+                    candidate_verified="false", rollback_outcome="success",
+                    rollback_verified="true"
+                ))
+        status.assert_called_once_with(
+            123, "failure", "Ehdokas hylättiin; aiempi varmennettu RSS-versio palautettiin."
+        )
+
+    def test_pages_workflow_contains_separate_verified_rollback_artifact(self):
+        workflow = (manifest.ROOT / ".github/workflows/publish-pages.yml").read_text(encoding="utf-8")
+        self.assertIn("name: github-pages-rollback", workflow)
+        self.assertIn("artifact_name: github-pages-rollback", workflow)
+        self.assertIn("steps.candidate_check.outputs.candidate_verified == 'false'", workflow)
+        self.assertIn("verify-rollback", workflow)
+
     def test_build_manifest_refuses_missing_or_rejected_report(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
