@@ -1,0 +1,174 @@
+{
+  "schema_version": 2,
+  "run_id": "gurmeet-ram-rahim-singh-20261118T132712-0200",
+  "task_id": "gurmeet-ram-rahim-singh",
+  "feed_path": "feeds/gurmeet-ram-rahim-singh.xml",
+  "checked_at": "2026-11-18T14:00:19+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Uuden oikeuslistauksen alkuperäinen PDF sekä korkeimman oikeuden uusimpien määräysten ja tapaustilan sivut avattiin. Taustaa varten avattiin Hindustan Timesin, Amar Ujalan ja The Tribunen alkuperäiset artikkelit. Kaksi muuta kriittistä rekisterilähdettä ja The Hindu jäivät tavoittamatta; ne on merkitty osittaisen lähdekattavuuden lokiin.",
+      "evidence": [
+        "https://api.sci.gov.in/jonew/cl/2026-11-18/F_J_2.pdf",
+        "https://www.sci.gov.in/latest-orders/",
+        "https://www.sci.gov.in/case-status-case-no/",
+        "https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html",
+        "https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12",
+        "https://www.tribuneindia.com/news/haryana/supreme-court-agrees-to-hear-plea-against-dera-sacha-sauda-chiefs-acquittal-in-2002-murder-case/"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Asianumero, osapuolet, listakohta 120, listausluokitus ja IA 225562/2026 käyvät suoraan ilmi korkeimman oikeuden PDF:stä. High Courtin ratkaisua koskeva tausta on merkitty toimitukselliseksi tiedoksi.",
+      "evidence": [
+        "https://api.sci.gov.in/jonew/cl/2026-11-18/F_J_2.pdf",
+        "https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html",
+        "https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Pääväitettä ei esitetä usean median vahvistamana vaan suoraan virallisen tuomioistuimen asiakirjalla vahvistettuna. Taustatiedon osalta Hindustan Timesin artikkeli tarkistettiin; Amar Ujalan ja The Tribunen rinnakkaiset jutut eivät osoita riippumatonta alkuperäisraportointia, ja The Tribune on PTI-syndikoitu.",
+      "evidence": [
+        "https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html",
+        "https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12",
+        "https://www.tribuneindia.com/news/haryana/supreme-court-agrees-to-hear-plea-against-dera-sacha-sauda-chiefs-acquittal-in-2002-murder-case/"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Raportti erottaa istuntolistauksen toteutuneesta käsittelystä ja ratkaisusta. Elokuun media-aikataulun ja 18.11. listausluokituksen välinen ero jätetään avoimeksi; tapaustilan CAPTCHA ja uusimpien määräysten sivun tarkistus kuvataan.",
+      "evidence": [
+        "https://api.sci.gov.in/jonew/cl/2026-11-18/F_J_2.pdf",
+        "https://www.sci.gov.in/latest-orders/",
+        "https://www.sci.gov.in/case-status-case-no/",
+        "https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12"
+      ]
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Istuntolistan päivä on 18.11.2026; PDF:n lopussa on New Delhi 17.11.2026 klo 19.49.57. Tausta-artikkelien julkaisupäivät ovat 10.–12.8.2026, ja raportin tarkistushetki on 18.11.2026.",
+      "evidence": [
+        "https://api.sci.gov.in/jonew/cl/2026-11-18/F_J_2.pdf",
+        "https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html",
+        "https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12",
+        "https://www.tribuneindia.com/news/haryana/supreme-court-agrees-to-hear-plea-against-dera-sacha-sauda-chiefs-acquittal-in-2002-murder-case/"
+      ]
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Ensimmäinen tarkistus: seuranta alkoi 16.11.2026, mutta tarkkaa aloituskellonaikaa ei ole dokumentoitu. Jakso päättyy 18.11.2026 klo 14.00.19 Europe/Helsinki.",
+      "evidence": [
+        "docs/seuranta.md: Gurmeet Ram Rahim Singh -osion lähtötilanne 16.11.2026"
+      ]
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Uusi GUID on yksilöllinen. Ennen muutosta kymmenessä syötteessä oli 28 yksilöllistä GUID-tunnistetta; päällekkäisyyksiä ei löytynyt.",
+      "evidence": [
+        "feeds/tolkien.xml",
+        "feeds/taylor-swift.xml",
+        "feeds/gurmeet-ram-rahim-singh.xml",
+        "feeds/muumit.xml",
+        "feeds/wakaliwood.xml",
+        "feeds/euroviisut.xml",
+        "feeds/sompote-sands.xml",
+        "feeds/shakkidraamat.xml",
+        "feeds/intialaiset-elokuvat.xml",
+        "feeds/intialaisten-elokuvien-naytokset.xml"
+      ]
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Gurmeet-syöte oli ennen muutosta tyhjä; muissa syötteissä olleet 28 GUID-tunnistetta säilyvät muuttumattomina.",
+      "evidence": [
+        "feeds/gurmeet-ram-rahim-singh.xml"
+      ]
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "RSS/XML ja CDATA-alueen semanttinen HTML tarkistettiin; raportissa ei ole item-kohtaista link-elementtiä.",
+      "evidence": [
+        "feeds/gurmeet-ram-rahim-singh.xml"
+      ]
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Kanavametatiedot säilyvät, uusi item sisältää otsikon, yksilöllisen GUIDin, pubDate-arvon ja koko raportin description-CDATA:ssa.",
+      "evidence": [
+        "feeds/gurmeet-ram-rahim-singh.xml"
+      ]
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Raportti sisältää seuranta-ajan, tapahtuma- ja asiakirjapäivät, asianumeron, osapuolet, listausluokituksen, hakemuksen, taustan, epävarmuudet ja lähdeluettelon.",
+      "evidence": [
+        "https://api.sci.gov.in/jonew/cl/2026-11-18/F_J_2.pdf",
+        "https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html",
+        "https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12",
+        "https://www.tribuneindia.com/news/haryana/supreme-court-agrees-to-hear-plea-against-dera-sacha-sauda-chiefs-acquittal-in-2002-murder-case/"
+      ]
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "Raportissa on yksi pääotsikko, hierarkkiset alaotsikot, kuvaavat linkkitekstit ja selkeä suomenkielinen sisältö. Kuvia ei käytetä.",
+      "evidence": [
+        "docs/saavutettavuus.md",
+        "feeds/gurmeet-ram-rahim-singh.xml"
+      ]
+    }
+  },
+  "decision": "approved",
+  "reviewer_notes": [
+    "Julkaisu hyväksytään rajattuna oikeuslistauksen päivityksenä: pääväite on vahvistettu suoraan korkeimman oikeuden alkuperäisestä istuntolistasta.",
+    "Elokuun uutisraportit kuvaavat 10.8. käsittelyä lopullisen käsittelyn aikatauluna, mutta alkuperäistä elokuun oikeusmääräystä ei saatu avattua. Virallinen 18.11. lista käyttää luokitusta For Admission and I.R.; eroa ei selitetä eikä istunnon toteutumista tai ratkaisua päätellä.",
+    "Lähdekattavuus on partial, koska kaksi kriittistä rekisterilähdettä (Punjab and Haryana High Court ja CBI) eivät avautuneet. The Hindu jäi robots.txt-eston vuoksi tarkistamatta. Tämä rajoite on kirjattu lähdekattavuuslokiin.",
+    "Osittainen ajo ei päivitä viimeisimmän onnistuneen ajon metatietoja, tehtävän checkpointia eikä aihekierroksen vuoroa."
+  ],
+  "claim_assessments": [
+    {
+      "claim_id": "official-cause-listing",
+      "claim": "Intian korkeimman oikeuden 18.11.2026 päivittäisen istuntolistan Chief Justice’s Courtin kohta 120 sisältää Crl.A. No. 3785/2026 -valituksen, jossa valittaja on Aridaman ja vastaajina Gurmeet Ram Rahim Singh sekä toinen vastaaja; samaan kohtaan liittyy IA No. 225562/2026.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "gurmeet-courts",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Alkuperäinen Supreme Courtin päivittäinen istuntolista, PDF:n sivun tekstikohta 120."
+        }
+      ],
+      "note": "Varmennus koskee vain listauksen sisältöä; ei istunnon toteutumista eikä ratkaisua."
+    },
+    {
+      "claim_id": "appeal-background",
+      "claim": "Valitus koskee Gurmeet Ram Rahim Singhin vapauttavaa High Court -ratkaisua Ram Chander Chhatrapatin vuoden 2002 murhajutussa; High Courtin ratkaisu annettiin 7.3.2026.",
+      "verification_status": "yhden_toimituksellisen_lahteen_raportoima",
+      "sources": [
+        {
+          "source_id": "hindustan-times",
+          "source_class": "B",
+          "source_role": "toimituksellinen",
+          "independence": "tuntematon",
+          "note": "Hindustan Timesin oma artikkeli 11.8.2026; alkuperäisen elokuun oikeusmääräyksen tekstiä ei tarkistettu."
+        },
+        {
+          "source_id": "amar-ujala",
+          "source_class": "C",
+          "source_role": "toimituksellinen",
+          "independence": "tuntematon",
+          "note": "Amar Ujalan hindinkielinen alkuperäisartikkeli 12.8.2026; riippumatonta raportointiketjua ei voitu osoittaa."
+        },
+        {
+          "source_id": "tribune-india",
+          "source_class": "B",
+          "source_role": "toimituksellinen",
+          "independence": "sama_alkupera",
+          "note": "The Tribunen artikkeli on PTI-syndikoitu eikä sitä lasketa itsenäiseksi vahvistukseksi."
+        }
+      ],
+      "note": "High Courtin alkuperäistä tuomioasiakirjaa ei saatu avattua tässä ajossa. Rinnakkaiset media-artikkelit eivät yksin osoita riippumatonta alkuperäisraportointia."
+    }
+  ]
+}
