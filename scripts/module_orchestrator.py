@@ -388,10 +388,20 @@ class ModuleOrchestrator:
                                     source_scan_complete=True,quality_passed=True,comparison=comparison)
 
             phase="publication"
-            receipt=self.publisher.publish(
-                request.module_id,request.run_id,output.report_content,
-                idempotency_key=f"{request.module_id}:{request.run_id}"
-            )
+            target_reports = (output.metadata or {}).get("target_reports")
+            if target_reports is not None:
+                routed_publish = getattr(self.publisher, "publish_target_reports", None)
+                if not callable(routed_publish):
+                    raise OrchestrationError(
+                        "Kohdekohtaiset raportit vaativat reititetyn julkaisusovittimen."
+                    )
+                receipt = routed_publish(request.module_id, request.run_id, target_reports)
+            else:
+                # Vanha moduulikohtainen julkaisupolku säilyy yhteensopivana.
+                receipt=self.publisher.publish(
+                    request.module_id,request.run_id,output.report_content,
+                    idempotency_key=f"{request.module_id}:{request.run_id}"
+                )
             if not self.publisher.verify(receipt) or not receipt.verified:
                 return self._result(request,module_type,started,status="failed",phase=phase,
                                     source_scan_complete=True,quality_passed=True,error_code="publication_unverified")

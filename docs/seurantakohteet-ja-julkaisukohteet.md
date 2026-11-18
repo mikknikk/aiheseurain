@@ -30,3 +30,17 @@ Aja python scripts/validate_target_publication.py. Tarkistus validoi kuusi JSON 
 Nykyiset kymmenen moduulimääritystä viittaavat nyt erillisiin seurantakohteisiin. Kohteet on rekisteröity inactive-tilaan. Nykyisen intialaisten elokuvien näytösvahdin käsikirja, sen historiallinen RSS-syöte, näytöshistoria ja automaatio pysyvät nykyisessä tuotantopolussa. Uudet julkaisukohteet ja reitit otetaan käyttöön vasta erillisessä hyväksytyssä migraatiossa.
 
 Tämä rakenne ei muuta ChatGPT-automaatiota, ajastuksia, aikavyöhykkeitä, ohjeita tai kohdekeskusteluja.
+
+
+## Julkaisureitityksen ajonaikainen sovitin
+
+Toteutuksen ensimmäinen tekninen osa on `scripts/publication_routing.py`. Se lukee tuotannon moduuli-, seurantakohde-, julkaisukohde- ja reititysrekisterit erillisinä sekä tarkistaa viittausten eheyden ennen reitin käyttöä.
+
+- `load_publication_context()` lataa ja validoi rekisterit.
+- `resolve_publication_plan()` ratkaisee yhden kohdekohtaisen raportin kanavat moduulin, seurantakohteen ja raportin havaintotyyppien perusteella.
+- `preview_publication_plan()` palauttaa kuivaharjoittelun tuloksen eikä kirjoita tiedostoja.
+- `LocalRoutedRssPublisher` on paikallinen RSS-sovitin, joka julkaisee saman kohderaportin sen omiin ja yhdistelmäsyötteisiin. Sovittimelle annetaan kirjoitusjuuri erikseen; se ei aktivoi tai kirjoita tuotantokohteisiin itsestään.
+
+Saman moduulin, seurantakohteen, ajon ja julkaisukohteen yhdistelmä tuottaa vakaan GUIDin. Uusinta-ajo ei lisää samaa raporttia uudelleen, ja saman GUIDin eri sisältö hylätään ristiriitana. Julkaisusovitin ja reitityksen ratkaisu ovat erillisiä luokkia ja vaiheita.
+
+Orkestrointi tunnistaa nyt suorittajan metadataan sisältyvän `target_reports`-listan ja välittää sen reititetylle julkaisusovittimelle. Jokaisessa listan alkiossa on täsmälleen `target_id`, `observation_types` ja `report_content`. Jos listaa ei anneta, aiempi moduulikohtainen julkaisupolku jatkaa ennallaan. Tuotannon rekisterit ovat yhä tyhjiä eikä mikään uusi reitti tai kohde ole aktivoitu. Testit: `python -m unittest tests.test_publication_routing -v`.
