@@ -11,6 +11,7 @@ from contextlib import contextmanager
 import fcntl
 import hashlib
 import json
+import jsonschema
 import os
 from pathlib import Path
 import re
