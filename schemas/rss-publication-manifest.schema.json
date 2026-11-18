@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/mikknikk/aiheseurain/main/schemas/rss-publication-manifest.schema.json",
+  "title": "Aiheseuraimen RSS-julkaisumanifesti",
+  "type": "object",
+  "required": ["schema_version", "manifest_type", "phase", "workflow_run_id", "workflow_attempt", "source_commit", "base_commit", "prepared_at", "pages_base_url", "feeds"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "manifest_type": {"const": "aiheseurain-rss-publication"},
+    "phase": {"const": "prepared"},
+    "workflow_run_id": {"type": "string", "minLength": 1},
+    "workflow_attempt": {"type": "string", "minLength": 1},
+    "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "base_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "prepared_at": {"type": "string", "format": "date-time"},
+    "pages_base_url": {"const": "https://mikknikk.github.io/aiheseurain"},
+    "feeds": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": ["feed_id", "path", "public_url", "sha256", "size_bytes", "item_count", "guids", "changed_in_commit", "report_run_id", "report_path", "report_sha256"],
+        "properties": {
+          "feed_id": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "pattern": "^feeds/[a-z0-9-]+\\.xml$"},
+          "public_url": {"type": "string", "format": "uri"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "size_bytes": {"type": "integer", "minimum": 1},
+          "item_count": {"type": "integer", "minimum": 0},
+          "guids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+          "changed_in_commit": {"type": "boolean"},
+          "report_run_id": {"type": ["string", "null"]},
+          "report_path": {"type": ["string", "null"]},
+          "report_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
