@@ -146,12 +146,12 @@ def status(deployment_id: int, state: str, description: str) -> None:
 def finalize(args) -> None:
     """Lue syötteet Pagesista takaisin ja kirjaa success vasta täsmäyksen jälkeen."""
     did = int(args.deployment_id)
-    if args.deploy_outcome != "success":
-        status(did, "failure", "Pages-julkaisu epäonnistui; aiempi julkaisu säilyy.")
-        raise PublicationError("Pages-julkaisu epäonnistui")
     if args.is_current != "true":
         status(did, "inactive", "Build vanheni; uudempi main-commit ohitti julkaisun.")
         return
+    if args.deploy_outcome != "success":
+        status(did, "failure", "Pages-julkaisu epäonnistui; aiempi julkaisu säilyy.")
+        raise PublicationError("Pages-julkaisu epäonnistui")
     manifest = api("GET", f"deployments/{did}").get("payload", {})
     if manifest.get("manifest_type") != "aiheseurain-rss-publication":
         raise PublicationError("Deploymentilta puuttuu RSS-manifesti")
