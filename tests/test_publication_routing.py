@@ -90,8 +90,8 @@ class PublicationRoutingTests(unittest.TestCase):
 
     def test_inactive_publication_is_not_publishable(self):
         data = context()
-        data["publications"]["demo.all.rss"][0]["status"] = "inactive"
-        data["publications"]["demo.all.rss"][1]["status"] = "inactive"
+        data["publications"]["demo.film.rss"][0]["status"] = "inactive"
+        data["publications"]["demo.film.rss"][1]["status"] = "inactive"
         with self.assertRaises(PublicationRoutingError):
             resolve_publication_plan(data, module_id="demo", target_id="demo.film",
                                      run_id="run-1", observation_types=["film-screening"])
