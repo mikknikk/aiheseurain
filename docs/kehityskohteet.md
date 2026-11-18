@@ -172,3 +172,15 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [ ] Vaihe 4: arvioi raporttiarkiston ja historiatrendien tarve.
 
 **Valmistumiskriteeri:** valvomo näyttää todennettua ajotilaa sekoittamatta eri automaatioiden vastuita; RSS-lukija näyttää kaikki nykyiset syötteet oikein ja käsittelee ulkoisen HTML:n turvallisesti; tietomallit, viittaukset, saavutettavuus ja julkaisu on testattu. WCAG 2.2 AAA -tasoa ei väitetä ilman dokumentoitua testausta.
+
+
+### Issue #133 – seurantamoduulin, seurantakohteen ja julkaisukohteen erottelu
+
+**Toteutuksen tila:** toteutettu ehdotettuun PR:ään, odottaa CI:tä ja yhdistämistä.
+
+- [x] Seurantamoduulin määrityksestä poistettiin hakuprofiilit ja aihekohtaiset sisältörajaukset; tilalle lisättiin pysyvät seurantakohdeviitteet.
+- [x] Kaikkien kymmenen nykyisen moduulin seurantakohteet erotettiin omiin määrityksiinsä ja rekisteröitiin passiivisiksi.
+- [x] Julkaisukohteen ja julkaisureitityksen skeemat sekä erilliset rekisterit lisättiin.
+- [x] Näytösvahtiesimerkki näyttää kaksi kohdetta, kaksi erillistä RSS-kanavaa ja yhdistelmäsyötteen.
+- [x] Viitteiden eheyden validointi ja yksikkötestit lisättiin.
+- [x] Nykyisen näytösvahtifeedin ja automaatioasetusten tuotantopolku jätettiin ennalleen.

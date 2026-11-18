@@ -40,23 +40,6 @@
       "required": false
     }
   ],
-  "search_profiles": [
-    {
-      "id": "indian-film-screenings-finland",
-      "purpose": "Etsi tulevia ja muuttuneita intialaisten elokuvien näytöksiä Suomessa.",
-      "query_terms": [
-        "Indian film screening",
-        "intialainen elokuva näytös"
-      ],
-      "languages": [
-        "fi",
-        "en"
-      ],
-      "regions": [
-        "FI"
-      ]
-    }
-  ],
   "editorial_rules": [
     {
       "id": "keep-expired-screenings",
@@ -96,5 +79,9 @@
         "retain_cancelled": true
       }
     }
-  }
+  },
+  "target_refs": [
+    "indian-film-screening-watch.feature-film",
+    "indian-film-screening-watch.film-festivals"
+  ]
 }

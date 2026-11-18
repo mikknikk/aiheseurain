@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/julkaisukohderekisteri.schema.json",
+  "title": "Julkaisukohderekisteri",
+  "type": "object",
+  "required": [
+    "registry_version",
+    "publications"
+  ],
+  "properties": {
+    "registry_version": {
+      "const": "1.0.0"
+    },
+    "publications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "publication_id",
+          "path",
+          "status"
+        ],
+        "properties": {
+          "publication_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9.-]+$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^data/publications/[a-z0-9.-]+\\.json$"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "inactive"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

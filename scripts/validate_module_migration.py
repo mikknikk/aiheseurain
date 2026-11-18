@@ -70,6 +70,8 @@ def validate_migration() -> list[str]:
 
     catalog = _read_json(ROOT / "data/source-catalog.json")
     catalog_sources = {source["id"]: source for source in catalog["sources"]}
+    target_registry = _read_json(ROOT / "data/target-registry.json")
+    target_entries = {item["target_id"]: item for item in target_registry["targets"]}
 
     for module_id, task_id in MODULE_TASKS.items():
         entry = entry_by_id.get(module_id)
@@ -107,9 +109,23 @@ def validate_migration() -> list[str]:
             if reference.get("required", False) != bool(expected.get(source_id, {}).get("critical")):
                 errors.append(f"{module_id}: lähteen {source_id} required-arvo ei vastaa critical-arvoa.")
 
-        profiles = definition.get("search_profiles", [])
+        # Hakuprofiilit omistaa nyt seurantakohde, ei suoritusmoduuli.
+        profiles = []
+        for target_id in definition.get("target_refs", []):
+            target_entry = target_entries.get(target_id)
+            if target_entry is None:
+                errors.append(f"{module_id}: seurantakohde {target_id} puuttuu rekisteristä.")
+                continue
+            target_path = (ROOT / target_entry["path"]).resolve()
+            if not target_path.is_relative_to(ROOT.resolve()) or not target_path.is_file():
+                errors.append(f"{module_id}: seurantakohteen {target_id} polku ei ole kelvollinen.")
+                continue
+            target_definition = _read_json(target_path)
+            if target_definition.get("module_ref", {}).get("module_id") != module_id:
+                errors.append(f"{module_id}: seurantakohde {target_id} kuuluu toiselle moduulille.")
+            profiles.extend(target_definition.get("search_profiles", []))
         if not profiles:
-            errors.append(f"{module_id}: hakuprofiili puuttuu.")
+            errors.append(f"{module_id}: seurantakohteiden hakuprofiilit puuttuvat.")
         else:
             languages = sorted({
                 language for source_id in expected

@@ -79,48 +79,6 @@
       "required": false
     }
   ],
-  "search_profiles": [
-    {
-      "id": "taylor-swift-global",
-      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
-      "query_terms": [
-        "Taylor Swift",
-        "Taylor Swift new album song release",
-        "Taylor Swift tour concert announcement",
-        "Taylor Swift film television business rights",
-        "Taylor Swift Grammy awards philanthropy",
-        "Taylor Swift Finland concert event"
-      ],
-      "languages": [
-        "en",
-        "fi",
-        "pt-BR"
-      ],
-      "regions": [
-        "BR",
-        "FI",
-        "GLOBAL",
-        "US"
-      ],
-      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
-    },
-    {
-      "id": "taylor-swift-finland",
-      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
-      "query_terms": [
-        "Suomi Finland Taylor Swift",
-        "Taylor Swift tapahtuma Suomi Finland"
-      ],
-      "languages": [
-        "en",
-        "fi"
-      ],
-      "regions": [
-        "FI"
-      ],
-      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
-    }
-  ],
   "editorial_rules": [
     {
       "id": "avoid-private-rumours",
@@ -141,28 +99,7 @@
       "severity": "required"
     }
   ],
-  "topic": {
-    "scope": "Musiikki ja julkaisut, kiertueet ja esiintymiset, elokuva- ja televisiotuotannot, liiketoiminta, palkinnot, hyväntekeväisyys ja julkinen ura. Huomioi Suomessa järjestettävät tapahtumat.",
-    "include": [
-      "Uudet albumit, kappaleet, musiikkivideot ja viralliset julkaisut",
-      "Konsertit, kiertueet, esiintymiset ja viralliset fanitapahtumat",
-      "Elokuva-, televisio- ja muut audiovisuaaliset tuotannot",
-      "Liiketoiminta, oikeudet, palkinnot ja hyväntekeväisyys",
-      "Suomen konsertit, näytökset, näyttelyt ja yleisötapahtumat"
-    ],
-    "exclude": [
-      "Vähäarvoinen yksityiselämää koskeva juoruilu",
-      "Vahvistamattomat parisuhde- ja yksityiselämää koskevat väitteet"
-    ],
-    "entities": [
-      {
-        "entity_id": "taylor-swift",
-        "entity_type": "person",
-        "label": "Taylor Swift",
-        "aliases": [
-          "Taylor Alison Swift"
-        ]
-      }
-    ]
-  }
+  "target_refs": [
+    "taylor-swift.taylor-swift"
+  ]
 }

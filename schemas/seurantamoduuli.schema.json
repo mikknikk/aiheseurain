@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://mikknikk.github.io/aiheseurain/schemas/seurantamoduuli.schema.json",
   "title": "Aiheseuraimen seurantamoduulin tietosopimus",
-  "description": "Yhteiset perustiedot ja tyypitetyt sisältölaajennukset aihe- ja prosessimoduuleille. Palveluntarjoaja- ja suoritusympäristöasetukset eivät kuulu tähän sopimukseen.",
+  "description": "Seurantamoduulin suoritus-, kyvykkyys-, lähde- ja toimituksellinen sopimus. Seurantakohteiden hakuehdot ja julkaisukohteiden tekniset asetukset määritellään erillisissä sopimuksissa.",
   "type": "object",
   "required": [
     "contract_version",
@@ -14,8 +14,8 @@
     "capabilities",
     "interfaces",
     "source_refs",
-    "search_profiles",
-    "editorial_rules"
+    "editorial_rules",
+    "target_refs"
   ],
   "properties": {
     "contract_version": {
@@ -29,7 +29,10 @@
       "description": "Pysyvä tekninen tunniste. Nimeä tai kuvausta ei käytetä viittausavaimena."
     },
     "module_type": {
-      "enum": ["topic", "process"]
+      "enum": [
+        "topic",
+        "process"
+      ]
     },
     "definition_version": {
       "$ref": "#/$defs/semanticVersion",
@@ -56,49 +59,87 @@
     },
     "capabilities": {
       "type": "array",
-      "items": { "$ref": "#/$defs/capabilityRequirement" },
+      "items": {
+        "$ref": "#/$defs/capabilityRequirement"
+      },
       "uniqueItems": true
     },
     "interfaces": {
       "type": "object",
-      "required": ["input", "output"],
+      "required": [
+        "input",
+        "output"
+      ],
       "properties": {
-        "input": { "$ref": "#/$defs/interfaceContract" },
-        "output": { "$ref": "#/$defs/interfaceContract" }
+        "input": {
+          "$ref": "#/$defs/interfaceContract"
+        },
+        "output": {
+          "$ref": "#/$defs/interfaceContract"
+        }
       },
       "additionalProperties": false
     },
     "source_refs": {
       "type": "array",
       "description": "Viittaukset yhteiseen lähdekatalogiin; lähteen perustietoja ei kopioida moduuliin.",
-      "items": { "$ref": "#/$defs/sourceReference" },
+      "items": {
+        "$ref": "#/$defs/sourceReference"
+      },
       "uniqueItems": true
-    },
-    "search_profiles": {
-      "type": "array",
-      "items": { "$ref": "#/$defs/searchProfile" }
     },
     "editorial_rules": {
       "type": "array",
-      "items": { "$ref": "#/$defs/editorialRule" }
-    },
-    "topic": {
-      "$ref": "#/$defs/topicConfiguration"
+      "items": {
+        "$ref": "#/$defs/editorialRule"
+      }
     },
     "process_extension": {
       "$ref": "#/$defs/processExtension"
+    },
+    "target_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+      },
+      "description": "Viitteet erillisiin seurantakohteisiin. Hakuehdot eivät kuulu moduulimäärittelyyn."
     }
   },
   "allOf": [
     {
-      "if": { "properties": { "module_type": { "const": "topic" } }, "required": ["module_type"] },
+      "if": {
+        "properties": {
+          "module_type": {
+            "const": "topic"
+          }
+        },
+        "required": [
+          "module_type"
+        ]
+      },
       "then": {
-        "required": ["topic"],
-        "not": { "required": ["process_extension"] }
+        "required": [
+          "target_refs"
+        ],
+        "not": {
+          "required": [
+            "process_extension"
+          ]
+        }
       },
       "else": {
-        "required": ["process_extension"],
-        "not": { "required": ["topic"] }
+        "required": [
+          "target_refs",
+          "process_extension"
+        ],
+        "not": {
+          "required": [
+            "topic"
+          ]
+        }
       }
     }
   ],
@@ -110,100 +151,126 @@
     },
     "capabilityRequirement": {
       "type": "object",
-      "required": ["id", "minimum_version"],
+      "required": [
+        "id",
+        "minimum_version"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$" },
-        "minimum_version": { "$ref": "#/$defs/semanticVersion" },
-        "required": { "type": "boolean", "default": true }
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "minimum_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "required": {
+          "type": "boolean",
+          "default": true
+        }
       },
       "additionalProperties": false
     },
     "interfaceContract": {
       "type": "object",
-      "required": ["id", "version"],
+      "required": [
+        "id",
+        "version"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$" },
-        "version": { "$ref": "#/$defs/semanticVersion" }
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "version": {
+          "$ref": "#/$defs/semanticVersion"
+        }
       },
       "additionalProperties": false
     },
     "sourceReference": {
       "type": "object",
-      "required": ["source_id", "role"],
+      "required": [
+        "source_id",
+        "role"
+      ],
       "properties": {
-        "source_id": { "type": "string", "minLength": 1, "maxLength": 160 },
-        "role": { "enum": ["primary", "secondary", "discovery", "verification"] },
-        "required": { "type": "boolean", "default": false }
-      },
-      "additionalProperties": false
-    },
-    "searchProfile": {
-      "type": "object",
-      "required": ["id", "purpose", "query_terms", "languages", "regions"],
-      "properties": {
-        "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$" },
-        "purpose": { "type": "string", "minLength": 1, "maxLength": 500 },
-        "query_terms": {
-          "type": "array",
-          "minItems": 1,
-          "items": { "type": "string", "minLength": 1, "maxLength": 300 }
+        "source_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
         },
-        "languages": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": { "type": "string", "pattern": "^[a-zA-Z]{2,3}(?:-[a-zA-Z0-9]{2,8})*$" }
+        "role": {
+          "enum": [
+            "primary",
+            "secondary",
+            "discovery",
+            "verification"
+          ]
         },
-        "regions": {
-          "type": "array",
-          "uniqueItems": true,
-          "items": { "type": "string", "pattern": "^[A-Z0-9][A-Z0-9_-]{1,15}$" }
-        },
-        "notes": { "type": "string", "maxLength": 1000 }
+        "required": {
+          "type": "boolean",
+          "default": false
+        }
       },
       "additionalProperties": false
     },
     "editorialRule": {
       "type": "object",
-      "required": ["id", "category", "instruction"],
+      "required": [
+        "id",
+        "category",
+        "instruction"
+      ],
       "properties": {
-        "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$" },
-        "category": { "enum": ["inclusion", "exclusion", "verification", "reporting", "uncertainty"] },
-        "instruction": { "type": "string", "minLength": 1, "maxLength": 2000 },
-        "severity": { "enum": ["required", "recommended", "informational"], "default": "required" }
-      },
-      "additionalProperties": false
-    },
-    "topicConfiguration": {
-      "type": "object",
-      "required": ["scope", "include", "exclude"],
-      "properties": {
-        "scope": { "type": "string", "minLength": 1, "maxLength": 2000 },
-        "include": { "type": "array", "items": { "type": "string", "minLength": 1 } },
-        "exclude": { "type": "array", "items": { "type": "string", "minLength": 1 } },
-        "entities": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["entity_id", "entity_type", "label"],
-            "properties": {
-              "entity_id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$" },
-              "entity_type": { "type": "string", "minLength": 1, "maxLength": 80 },
-              "label": { "type": "string", "minLength": 1, "maxLength": 200 },
-              "aliases": { "type": "array", "items": { "type": "string", "minLength": 1 } }
-            },
-            "additionalProperties": false
-          }
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "category": {
+          "enum": [
+            "inclusion",
+            "exclusion",
+            "verification",
+            "reporting",
+            "uncertainty"
+          ]
+        },
+        "instruction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "severity": {
+          "enum": [
+            "required",
+            "recommended",
+            "informational"
+          ],
+          "default": "required"
         }
       },
       "additionalProperties": false
     },
     "processExtension": {
       "type": "object",
-      "required": ["extension_id", "extension_version", "schema_uri", "configuration"],
+      "required": [
+        "extension_id",
+        "extension_version",
+        "schema_uri",
+        "configuration"
+      ],
       "properties": {
-        "extension_id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$" },
-        "extension_version": { "$ref": "#/$defs/semanticVersion" },
-        "schema_uri": { "type": "string", "format": "uri" },
+        "extension_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"
+        },
+        "extension_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "schema_uri": {
+          "type": "string",
+          "format": "uri"
+        },
         "configuration": {
           "type": "object",
           "description": "Laajennuksen oma sisältö validoidaan schema_uri-kentän osoittamaa, versionoitua skeemaa vasten."
