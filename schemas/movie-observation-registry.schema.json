@@ -119,7 +119,8 @@
           "items": {
             "type": "string",
             "format": "uri"
-          }
+          },
+          "minItems": 1
         }
       },
       "additionalProperties": false
