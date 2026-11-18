@@ -1,0 +1,139 @@
+{
+  "schema_version": 2,
+  "run_id": "intialaiset_elokuvat_naytokset-20261118T173716-0200",
+  "task_id": "intialaisten-elokuvien-naytokset",
+  "feed_path": "feeds/intialaisten-elokuvien-naytokset.xml",
+  "checked_at": "2026-11-18T17:37:16+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Kriittiset teatterilähteet Finnkino, BioRex, Kino Regina ja Cinema Orion tarkistettiin. Lisäksi avattiin Kino Myyrin ohjelmisto, Suomen elokuvasäätiö ja Filmikamari. Cinema Mondo ja kolme Facebook-lähdettä jäivät teknisten käyttörajoitusten vuoksi tarkistamatta.",
+      "evidence": [
+        "https://www.finnkino.fi/elokuvat/klara-ja-aurinko/HO00000510/",
+        "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/",
+        "https://biorex.fi/?cinema_id=13",
+        "https://biorex.fi/elokuvat/ramayana-rise-of-a-legend/?cinema_id=13",
+        "https://kinoregina.fi/in-english/programme-in-english/",
+        "https://cinemaorion.fi/elokuvat/klara-ja-aurinko/",
+        "https://kinomyyri.fi/ohjelmisto/",
+        "https://kinomyyri.fi/film/operation-mole/",
+        "https://www.ses.fi/",
+        "https://www.filmikamari.fi/"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Uudet sisällölliset väitteet rajoittuvat aiemmin julkaistujen 19 Klara-näytöksen siirtymiseen completed-tilaan niiden alkamisaikojen ohituttua. Näytösaikoja tai peruutuksia ei päätelty uudelleen.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "https://www.finnkino.fi/elokuvat/klara-ja-aurinko/HO00000510/",
+        "https://biorex.fi/?cinema_id=13"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Kinoonin kolmannen osapuolen ilmoituksia ei korotettu teatterin vahvistamiksi. Aiemmat teatterikohtaiset vahvistustasot säilytettiin; tällä jaksolla ei lisätty uusia näytöksiä.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "https://kinomyyri.fi/film/klara-ja-aurinko/"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Klara ja aurinko säilyy tuotantomaan rajatapauksena. Menneiksi siirtyneet näytökset merkitään completed-tilaan, ei perutuiksi tai ohjelmistosta poistuneiksi."
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Seurantajakso on edellisestä onnistuneesta tarkistuksesta 18.11.2026 klo 05.51.32 nykyiseen tarkistushetkeen 17.37.16. 19 näytöksen alkamisajat olivat ohittuneet.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011"
+      ]
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Seurantajakso 18.11.2026 klo 05.51.32–17.37.16 Suomen aikaa."
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Muutoshistoriasta tarkistettiin aiemmat tunnisteet. Lisättiin 19 yksilöllistä details_changed-tapahtumaa; samaa näytöstä ei kahdennettu."
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Uusi Klara-päivitys saa oman GUIDin. Kaikki aiemmat RSS-itemit ja GUIDit säilytetään; CI tarkistaa GUIDien yksilöllisyyden ja vanhojen tunnisteiden säilymisen."
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "Uusi description käyttää lang=fi-määritystä, semanttisia otsikoita ja listoja. XML- ja HTML-rakenne validoidaan PR:n CI:ssä."
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Item sisältää koko raportin description-CDATAssa eikä lisää item-tason link-elementtiä. Kanavan lastBuildDate päivitetään."
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Klara-päivityksessä esitetään 45 tulevaa ja 65 historiallista näytöstä sekä kaikki 19 muutosta edelliseen julkaisuun."
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "HTML käyttää suomen kielen lang-määritystä, yhtä h1-otsikkoa, loogisia h2/h3-otsikoita, listoja ja näytöskohtaisia kuvaavia linkkitekstejä. Kuvia ei lisätty."
+    }
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "klara-19-completed-2026-11-18",
+      "claim": "19 aiemmin ilmoitettua Klara ja aurinko -näytöstä siirtyi 18.11.2026 klo 17.37 completed-tilaan, koska niiden ilmoitetut alkamisajat olivat ohittuneet.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kino-myyri",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Kinoonin koontitietoja käytetään niiden näytösten osalta, joille ei ole erillistä teatterin omaa vahvistusta."
+        },
+        {
+          "source_id": "finnkino",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Finnkinon omia ohjelmistosivuja tarkistettiin."
+        },
+        {
+          "source_id": "biorex",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "BioRexin omia ohjelmisto- ja elokuvasivuja tarkistettiin."
+        }
+      ],
+      "note": "Muutos koskee tilaa, ei näytöksen peruutusta eikä uuden ajan ilmoittamista."
+    },
+    {
+      "claim_id": "klara-production-country-uncertainty",
+      "claim": "Klara ja aurinko on mukana intialaisen elokuvan seurannassa tuotantomaarajatapauksena: Cinema Orion ilmoittaa Intian, mutta Kino Myyrin tuotantomaaluettelo poikkeaa.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "cinema-orion",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        },
+        {
+          "source_id": "kino-myyri",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon"
+        }
+      ],
+      "note": "Aiempi ristiriita säilytetään ratkaisemattomana."
+    }
+  ],
+  "decision": "approved",
+  "reviewer_notes": [
+    "Tämä ajo tuotti luonnollisen sisältömuutoksen: 19 Klara ja aurinko -näytöstä siirtyi tulevista historiallisiin näytösaikoihin.",
+    "Muita uusia tai muuttuneita intialaisia elokuvanäytöksiä ei löytynyt tarkistetuilta lähteiltä.",
+    "Cinema Mondo sekä FinBolly-, FinTamil- ja Rasa Entertainment -Facebook-sivut jäivät tarkistamatta teknisten käyttörajoitusten vuoksi; niitä ei tulkittu tyhjäksi ohjelmistoksi.",
+    "Tuotannon manifesti-, snapshot-, Pages-julkaisu- ja takaisinlukuketjun onnistuminen varmennetaan yhdistämisen jälkeisestä Actions-ajosta ennen näytösvahdin onnistumisaikaleiman päivittämistä."
+  ]
+}
