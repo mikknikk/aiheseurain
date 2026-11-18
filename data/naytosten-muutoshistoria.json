@@ -1198,7 +1198,7 @@
       "venue": "BioRex Seinäjoki",
       "city": "Seinäjoki",
       "starts_at": "2026-11-18T14:15:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1219,7 +1219,7 @@
       "venue": "Kino Marilyn",
       "city": "Loviisa",
       "starts_at": "2026-11-18T14:20:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "TEATTERIN VAHVISTAMA",
       "sources": [
         {
@@ -1241,7 +1241,7 @@
       "venue": "BioRex Redi",
       "city": "Helsinki",
       "starts_at": "2026-11-18T14:45:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1262,7 +1262,7 @@
       "venue": "Elokuvateatteri Star",
       "city": "Oulu",
       "starts_at": "2026-11-18T15:00:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1282,7 +1282,7 @@
       "venue": "Finnkino Kinopalatsi",
       "city": "Helsinki",
       "starts_at": "2026-11-18T15:30:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1302,7 +1302,7 @@
       "venue": "Kino Iiris",
       "city": "Lahti",
       "starts_at": "2026-11-18T15:30:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "TEATTERIN VAHVISTAMA",
       "sources": [
         {
@@ -1324,7 +1324,7 @@
       "venue": "Kinopirtti",
       "city": "Kemi",
       "starts_at": "2026-11-18T15:40:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "TEATTERIN VAHVISTAMA",
       "sources": [
         {
@@ -1344,7 +1344,7 @@
       "venue": "BioRex Tripla",
       "city": "Helsinki",
       "starts_at": "2026-11-18T15:45:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1365,7 +1365,7 @@
       "venue": "Finnkino Plaza",
       "city": "Oulu",
       "starts_at": "2026-11-18T16:00:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1385,7 +1385,7 @@
       "venue": "Strand",
       "city": "Lappeenranta",
       "starts_at": "2026-11-18T16:20:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1405,7 +1405,7 @@
       "venue": "BioRex Tornio",
       "city": "Tornio",
       "starts_at": "2026-11-18T16:30:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1426,7 +1426,7 @@
       "venue": "BioRex Kajaani",
       "city": "Kajaani",
       "starts_at": "2026-11-18T16:45:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1447,7 +1447,7 @@
       "venue": "Kinolinna",
       "city": "Mikkeli",
       "starts_at": "2026-11-18T16:45:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "TEATTERIN VAHVISTAMA",
       "sources": [
         {
@@ -1467,7 +1467,7 @@
       "venue": "Trio 123",
       "city": "Kotka",
       "starts_at": "2026-11-18T16:45:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "TEATTERIN VAHVISTAMA",
       "sources": [
         {
@@ -1487,7 +1487,7 @@
       "venue": "Finnkino Kinopalatsi",
       "city": "Turku",
       "starts_at": "2026-11-18T16:50:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1507,7 +1507,7 @@
       "venue": "BioRex Pietarsaari",
       "city": "Pietarsaari",
       "starts_at": "2026-11-18T17:00:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1528,7 +1528,7 @@
       "venue": "BioRex Porvoo",
       "city": "Porvoo",
       "starts_at": "2026-11-18T17:15:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -1549,7 +1549,7 @@
       "venue": "Kino 123 Veturi – Kuusankoski",
       "city": "Kouvola",
       "starts_at": "2026-11-18T17:15:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "TEATTERIN VAHVISTAMA",
       "sources": [
         {
@@ -1569,7 +1569,7 @@
       "venue": "BioRex Rovaniemi",
       "city": "Rovaniemi",
       "starts_at": "2026-11-18T17:30:00+02:00",
-      "status": "scheduled",
+      "status": "completed",
       "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
       "sources": [
         {
@@ -7605,6 +7605,1094 @@
         }
       ],
       "note": "Jämsän Kinotarin oma näytöslista vahvisti 18.11. klo 19.00 näytöksen; lähteen vahvistustaso päivitettiin teatterin vahvistamaksi."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-seinajoki-20261118-1415-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-seinajoki-20261118-1415",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-seinajoki-20261118-1415",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Seinäjoki",
+        "city": "Seinäjoki",
+        "starts_at": "2026-11-18T14:15:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-seinajoki-20261118-1415",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Seinäjoki",
+        "city": "Seinäjoki",
+        "starts_at": "2026-11-18T14:15:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-kino-marilyn-20261118-1420-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-kino-marilyn-20261118-1420",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-kino-marilyn-20261118-1420",
+        "film": "Klara ja aurinko",
+        "venue": "Kino Marilyn",
+        "city": "Loviisa",
+        "starts_at": "2026-11-18T14:20:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kino Marilyn",
+            "url": "https://www.kinomarilyn.fi/elokuvat/44/klara-ja-aurinko",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.kinomarilyn.fi/elokuvat/44/klara-ja-aurinko",
+        "language": "englanti",
+        "subtitles": "suomeksi ja ruotsiksi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-kino-marilyn-20261118-1420",
+        "film": "Klara ja aurinko",
+        "venue": "Kino Marilyn",
+        "city": "Loviisa",
+        "starts_at": "2026-11-18T14:20:00+02:00",
+        "status": "completed",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kino Marilyn",
+            "url": "https://www.kinomarilyn.fi/elokuvat/44/klara-ja-aurinko",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.kinomarilyn.fi/elokuvat/44/klara-ja-aurinko",
+        "language": "englanti",
+        "subtitles": "suomeksi ja ruotsiksi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kino Marilyn",
+          "url": "https://www.kinomarilyn.fi/elokuvat/44/klara-ja-aurinko",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-redi-20261118-1445-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-redi-20261118-1445",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-redi-20261118-1445",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Redi",
+        "city": "Helsinki",
+        "starts_at": "2026-11-18T14:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-redi-20261118-1445",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Redi",
+        "city": "Helsinki",
+        "starts_at": "2026-11-18T14:45:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-elokuvateatteri-star-20261118-1500-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-elokuvateatteri-star-20261118-1500",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-elokuvateatteri-star-20261118-1500",
+        "film": "Klara ja aurinko",
+        "venue": "Elokuvateatteri Star",
+        "city": "Oulu",
+        "starts_at": "2026-11-18T15:00:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-elokuvateatteri-star-20261118-1500",
+        "film": "Klara ja aurinko",
+        "venue": "Elokuvateatteri Star",
+        "city": "Oulu",
+        "starts_at": "2026-11-18T15:00:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261118-1530-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1530",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1530",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Kinopalatsi",
+        "city": "Helsinki",
+        "starts_at": "2026-11-18T15:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1530",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Kinopalatsi",
+        "city": "Helsinki",
+        "starts_at": "2026-11-18T15:30:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-kino-iiris-20261118-1530-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-kino-iiris-20261118-1530",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-kino-iiris-20261118-1530",
+        "film": "Klara ja aurinko",
+        "venue": "Kino Iiris",
+        "city": "Lahti",
+        "starts_at": "2026-11-18T15:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kino Iiris",
+            "url": "https://kinoiiris.com/elokuvat/3268/klara-ja-aurinko",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://kinoiiris.com/elokuvat/3268/klara-ja-aurinko",
+        "language": "englanti",
+        "subtitles": "suomeksi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-kino-iiris-20261118-1530",
+        "film": "Klara ja aurinko",
+        "venue": "Kino Iiris",
+        "city": "Lahti",
+        "starts_at": "2026-11-18T15:30:00+02:00",
+        "status": "completed",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kino Iiris",
+            "url": "https://kinoiiris.com/elokuvat/3268/klara-ja-aurinko",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://kinoiiris.com/elokuvat/3268/klara-ja-aurinko",
+        "language": "englanti",
+        "subtitles": "suomeksi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kino Iiris",
+          "url": "https://kinoiiris.com/elokuvat/3268/klara-ja-aurinko",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-kinopirtti-20261118-1540-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-kinopirtti-20261118-1540",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-kinopirtti-20261118-1540",
+        "film": "Klara ja aurinko",
+        "venue": "Kinopirtti",
+        "city": "Kemi",
+        "starts_at": "2026-11-18T15:40:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinopirtti",
+            "url": "https://kinopirtti.fi/elokuvat/naytosajat?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://kinopirtti.fi/elokuvat/naytosajat?lang=fi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-kinopirtti-20261118-1540",
+        "film": "Klara ja aurinko",
+        "venue": "Kinopirtti",
+        "city": "Kemi",
+        "starts_at": "2026-11-18T15:40:00+02:00",
+        "status": "completed",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinopirtti",
+            "url": "https://kinopirtti.fi/elokuvat/naytosajat?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://kinopirtti.fi/elokuvat/naytosajat?lang=fi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinopirtti",
+          "url": "https://kinopirtti.fi/elokuvat/naytosajat?lang=fi",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-tripla-20261118-1545-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-tripla-20261118-1545",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-tripla-20261118-1545",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Tripla",
+        "city": "Helsinki",
+        "starts_at": "2026-11-18T15:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-tripla-20261118-1545",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Tripla",
+        "city": "Helsinki",
+        "starts_at": "2026-11-18T15:45:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-finnkino-plaza-20261118-1600-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-finnkino-plaza-20261118-1600",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-finnkino-plaza-20261118-1600",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Plaza",
+        "city": "Oulu",
+        "starts_at": "2026-11-18T16:00:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-finnkino-plaza-20261118-1600",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Plaza",
+        "city": "Oulu",
+        "starts_at": "2026-11-18T16:00:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-strand-20261118-1620-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-strand-20261118-1620",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-strand-20261118-1620",
+        "film": "Klara ja aurinko",
+        "venue": "Strand",
+        "city": "Lappeenranta",
+        "starts_at": "2026-11-18T16:20:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-strand-20261118-1620",
+        "film": "Klara ja aurinko",
+        "venue": "Strand",
+        "city": "Lappeenranta",
+        "starts_at": "2026-11-18T16:20:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-tornio-20261118-1630-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-tornio-20261118-1630",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-tornio-20261118-1630",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Tornio",
+        "city": "Tornio",
+        "starts_at": "2026-11-18T16:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-tornio-20261118-1630",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Tornio",
+        "city": "Tornio",
+        "starts_at": "2026-11-18T16:30:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-kajaani-20261118-1645-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-kajaani-20261118-1645",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-kajaani-20261118-1645",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Kajaani",
+        "city": "Kajaani",
+        "starts_at": "2026-11-18T16:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-kajaani-20261118-1645",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Kajaani",
+        "city": "Kajaani",
+        "starts_at": "2026-11-18T16:45:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-kinolinna-20261118-1645-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-kinolinna-20261118-1645",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-kinolinna-20261118-1645",
+        "film": "Klara ja aurinko",
+        "venue": "Kinolinna",
+        "city": "Mikkeli",
+        "starts_at": "2026-11-18T16:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Leffabuumi",
+            "url": "https://www.leffabuumi.fi/elokuvat/naytosajat?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.leffabuumi.fi/elokuvat/naytosajat?lang=fi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-kinolinna-20261118-1645",
+        "film": "Klara ja aurinko",
+        "venue": "Kinolinna",
+        "city": "Mikkeli",
+        "starts_at": "2026-11-18T16:45:00+02:00",
+        "status": "completed",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Leffabuumi",
+            "url": "https://www.leffabuumi.fi/elokuvat/naytosajat?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.leffabuumi.fi/elokuvat/naytosajat?lang=fi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Leffabuumi",
+          "url": "https://www.leffabuumi.fi/elokuvat/naytosajat?lang=fi",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-trio-123-20261118-1645-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-trio-123-20261118-1645",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-trio-123-20261118-1645",
+        "film": "Klara ja aurinko",
+        "venue": "Trio 123",
+        "city": "Kotka",
+        "starts_at": "2026-11-18T16:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kotkan Leffat",
+            "url": "https://www.kotkanleffat.fi/elokuvat/naytosajat?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.kotkanleffat.fi/elokuvat/naytosajat?lang=fi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-trio-123-20261118-1645",
+        "film": "Klara ja aurinko",
+        "venue": "Trio 123",
+        "city": "Kotka",
+        "starts_at": "2026-11-18T16:45:00+02:00",
+        "status": "completed",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kotkan Leffat",
+            "url": "https://www.kotkanleffat.fi/elokuvat/naytosajat?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.kotkanleffat.fi/elokuvat/naytosajat?lang=fi",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kotkan Leffat",
+          "url": "https://www.kotkanleffat.fi/elokuvat/naytosajat?lang=fi",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261118-1650-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1650",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1650",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Kinopalatsi",
+        "city": "Turku",
+        "starts_at": "2026-11-18T16:50:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261118-1650",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Kinopalatsi",
+        "city": "Turku",
+        "starts_at": "2026-11-18T16:50:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-pietarsaari-20261118-1700-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-pietarsaari-20261118-1700",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-pietarsaari-20261118-1700",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Pietarsaari",
+        "city": "Pietarsaari",
+        "starts_at": "2026-11-18T17:00:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-pietarsaari-20261118-1700",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Pietarsaari",
+        "city": "Pietarsaari",
+        "starts_at": "2026-11-18T17:00:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-porvoo-20261118-1715-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-porvoo-20261118-1715",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-porvoo-20261118-1715",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Porvoo",
+        "city": "Porvoo",
+        "starts_at": "2026-11-18T17:15:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-porvoo-20261118-1715",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Porvoo",
+        "city": "Porvoo",
+        "starts_at": "2026-11-18T17:15:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-kino-123-veturi-kuusankoski-20261118-1715-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-kino-123-veturi-kuusankoski-20261118-1715",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-kino-123-veturi-kuusankoski-20261118-1715",
+        "film": "Klara ja aurinko",
+        "venue": "Kino 123 Veturi – Kuusankoski",
+        "city": "Kouvola",
+        "starts_at": "2026-11-18T17:15:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kino 123",
+            "url": "https://www.kino123.fi/elokuvat/naytosajat",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.kino123.fi/elokuvat/naytosajat",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi. Nimen lähdemuoto on “Kino 123 Veturi (Kuusankoski)”; näytösseurannassa Kuusankoski erotetaan väliviivalla kaupungista Kouvola."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-kino-123-veturi-kuusankoski-20261118-1715",
+        "film": "Klara ja aurinko",
+        "venue": "Kino 123 Veturi – Kuusankoski",
+        "city": "Kouvola",
+        "starts_at": "2026-11-18T17:15:00+02:00",
+        "status": "completed",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kino 123",
+            "url": "https://www.kino123.fi/elokuvat/naytosajat",
+            "published_at": null,
+            "checked_at": "2026-11-16T15:24:00+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://www.kino123.fi/elokuvat/naytosajat",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi. Nimen lähdemuoto on “Kino 123 Veturi (Kuusankoski)”; näytösseurannassa Kuusankoski erotetaan väliviivalla kaupungista Kouvola."
+      },
+      "sources": [
+        {
+          "publisher": "Kino 123",
+          "url": "https://www.kino123.fi/elokuvat/naytosajat",
+          "published_at": null,
+          "checked_at": "2026-11-16T15:24:00+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
+    },
+    {
+      "event_id": "details_changed-klara-ja-aurinko-biorex-rovaniemi-20261118-1730-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed",
+      "observed_at": "2026-11-18T17:37:16+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-biorex-rovaniemi-20261118-1730",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-biorex-rovaniemi-20261118-1730",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Rovaniemi",
+        "city": "Rovaniemi",
+        "starts_at": "2026-11-18T17:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-biorex-rovaniemi-20261118-1730",
+        "film": "Klara ja aurinko",
+        "venue": "BioRex Rovaniemi",
+        "city": "Rovaniemi",
+        "starts_at": "2026-11-18T17:30:00+02:00",
+        "status": "completed",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+            "published_at": null,
+            "checked_at": "2026-11-18T05:51:32+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "language": "englanti",
+        "notes": "Tuotantomaan rajatapaus: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa; luokittelu jää avoimeksi."
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+          "published_at": null,
+          "checked_at": "2026-11-18T05:51:32+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Näytöksen alkamisaika oli ohitettu tarkistushetkellä; tila siirrettiin automaattisesti completed-tilaan."
     }
   ]
 }
