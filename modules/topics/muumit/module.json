@@ -69,50 +69,6 @@
       "required": false
     }
   ],
-  "search_profiles": [
-    {
-      "id": "muumit-global",
-      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
-      "query_terms": [
-        "Muumit Moomin Moomins",
-        "ムーミン Moomin Characters",
-        "Tove Jansson Moomin new book exhibition",
-        "Moomin film animation theatre game licensing",
-        "Moomin Finland event museum exhibition"
-      ],
-      "languages": [
-        "en",
-        "fi",
-        "ja",
-        "sv"
-      ],
-      "regions": [
-        "FI",
-        "GLOBAL",
-        "JP",
-        "SE",
-        "UK"
-      ],
-      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
-    },
-    {
-      "id": "muumit-finland",
-      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
-      "query_terms": [
-        "Suomi Finland Muumit",
-        "Muumit tapahtuma Suomi Finland"
-      ],
-      "languages": [
-        "en",
-        "fi",
-        "sv"
-      ],
-      "regions": [
-        "FI"
-      ],
-      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
-    }
-  ],
   "editorial_rules": [
     {
       "id": "licensed-content",
@@ -133,36 +89,8 @@
       "severity": "required"
     }
   ],
-  "topic": {
-    "scope": "Tove Janssonin teokset ja perintö, oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja kulttuurihankkeet.",
-    "include": [
-      "Tove Janssonin teokset ja kulttuuriperintö",
-      "Moomin Characters ja viralliset lisensoidut hankkeet",
-      "Kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri ja pelit",
-      "Museot, näyttelyt, teemapuistot, festivaalit ja yleisötapahtumat",
-      "Suomessa järjestettävät Muumi-tapahtumat"
-    ],
-    "exclude": [
-      "Epäviralliset fanituotteet esitettyinä virallisina hankkeina",
-      "Yleinen lastenkulttuurin uutisointi ilman Muumi-yhteyttä"
-    ],
-    "entities": [
-      {
-        "entity_id": "tove-jansson",
-        "entity_type": "person",
-        "label": "Tove Jansson",
-        "aliases": [
-          "Tove Marika Jansson"
-        ]
-      },
-      {
-        "entity_id": "moomin-characters",
-        "entity_type": "organization",
-        "label": "Moomin Characters",
-        "aliases": [
-          "Moomin Characters Oy"
-        ]
-      }
-    ]
-  }
+  "target_refs": [
+    "muumit.tove-jansson",
+    "muumit.moomin-characters"
+  ]
 }

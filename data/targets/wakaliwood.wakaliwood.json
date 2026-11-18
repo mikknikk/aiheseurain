@@ -1,0 +1,50 @@
+{
+  "target_id": "wakaliwood.wakaliwood",
+  "target_version": "1.0.0",
+  "module_ref": {
+    "module_id": "wakaliwood",
+    "definition_version": "1.0.0"
+  },
+  "name": "Wakaliwood",
+  "description": "organization: Wakaliwood",
+  "entity": {
+    "entity_id": "wakaliwood",
+    "entity_type": "organization",
+    "label": "Wakaliwood",
+    "aliases": [
+      "Ramon Film Productions"
+    ]
+  },
+  "scope": "Wakaliwood-elokuvateollisuus ja studio, Nabwana I.G.G. ja muut keskeiset tekijät, tuotannot, festivaalit, levityssopimukset, näytökset, kansainväliset kiertueet, rahoitus, dokumentit ja suoraan liittyvä Ugandan elokuvakulttuuri.",
+  "include": [
+    "Wakaliwoodin ja Nabwana I.G.G:n uudet tuotannot ja tuotantotiedot",
+    "Festivaalit, näytökset, levitys, kiertueet ja rahoitus",
+    "Dokumentit, retrospektiivit ja studion historia",
+    "Wakaliwoodiin suoraan liittyvät Ugandan elokuvakulttuurin uutiset"
+  ],
+  "exclude": [
+    "Ugandan elokuva-alan yleisuutiset ilman Wakaliwood-yhteyttä",
+    "Fanisisältö ja vahvistamattomat tuotantohuhut"
+  ],
+  "search_profiles": [
+    {
+      "id": "wakaliwood-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Wakaliwood",
+        "Nabwana I.G.G.",
+        "Who Killed Captain Alex",
+        "Ugandan action cinema Wakaliwood screening festival",
+        "Wakaliwood film production distribution tour"
+      ],
+      "languages": [
+        "en"
+      ],
+      "regions": [
+        "EAST-AFRICA",
+        "UG"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    }
+  ]
+}

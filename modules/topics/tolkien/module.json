@@ -169,60 +169,6 @@
       "required": false
     }
   ],
-  "search_profiles": [
-    {
-      "id": "tolkien-global",
-      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
-      "query_terms": [
-        "J. R. R. Tolkien",
-        "Tolkien Estate Middle-earth",
-        "Tolkien books publication research",
-        "Tolkien film television game adaptation",
-        "Tolkien exhibition conference event",
-        "Tolkien tapahtuma näyttely luento Suomi"
-      ],
-      "languages": [
-        "de",
-        "en",
-        "es",
-        "eu",
-        "fi",
-        "fr",
-        "it",
-        "pt-BR"
-      ],
-      "regions": [
-        "BR",
-        "DE",
-        "ES",
-        "FI",
-        "FR",
-        "GLOBAL",
-        "IT",
-        "LATAM",
-        "NZ",
-        "UK",
-        "US"
-      ],
-      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
-    },
-    {
-      "id": "tolkien-finland",
-      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
-      "query_terms": [
-        "Suomi Finland J. R. R. Tolkien",
-        "J. R. R. Tolkien tapahtuma Suomi Finland"
-      ],
-      "languages": [
-        "en",
-        "fi"
-      ],
-      "regions": [
-        "FI"
-      ],
-      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
-    }
-  ],
   "editorial_rules": [
     {
       "id": "separate-work-types",
@@ -243,36 +189,8 @@
       "severity": "required"
     }
   ],
-  "topic": {
-    "scope": "Tolkienin elämäntyö ja perintö, uudet julkaisut ja tutkimus, oikeudenhaltijat, viralliset adaptaatiot (elokuva, televisio ja pelit), näyttelyt sekä tapahtumat. Erota Tolkienin itse kirjoittamat teokset myöhemmästä toimituksellisesta aineistosta ja adaptaatioista.",
-    "include": [
-      "Tolkienin teokset, postuumit julkaisut ja tutkimus",
-      "Oikeudenhaltijoiden, kustantajien ja adaptaatioiden viralliset ilmoitukset",
-      "Elokuva-, televisio- ja pelisovitukset sekä niiden tuotantovaiheet",
-      "Näyttelyt, konferenssit, luennot, conit ja muut Tolkien-aiheiset tapahtumat",
-      "Suomessa järjestettävät Tolkien-aiheiset tapahtumat"
-    ],
-    "exclude": [
-      "Perusteeton fanispekulaatio ja huhut ilman uutisarvoa",
-      "Tavallinen fantasia- ja pelialan uutisointi ilman Tolkien-yhteyttä"
-    ],
-    "entities": [
-      {
-        "entity_id": "j-r-r-tolkien",
-        "entity_type": "person",
-        "label": "J. R. R. Tolkien",
-        "aliases": [
-          "John Ronald Reuel Tolkien"
-        ]
-      },
-      {
-        "entity_id": "tolkien-estate",
-        "entity_type": "organization",
-        "label": "Tolkien Estate",
-        "aliases": [
-          "The Tolkien Estate"
-        ]
-      }
-    ]
-  }
+  "target_refs": [
+    "tolkien.j-r-r-tolkien",
+    "tolkien.tolkien-estate"
+  ]
 }
