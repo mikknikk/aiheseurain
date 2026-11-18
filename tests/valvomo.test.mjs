@@ -138,7 +138,7 @@ function sampleState() {
   };
   return {
     schema_version: 1,
-    updated_at: "2026-11-16T18:00:00+02:00",
+    updated_at: new Date().toISOString(),
     rotation: { next_task: "taylor_swift", tasks },
     automation_instructions: { current_version: "1.2.1", last_successful_run_version: "1.0.4" },
     separate_screening_watch: {
