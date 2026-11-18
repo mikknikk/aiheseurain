@@ -12,6 +12,8 @@ Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen pri
 - **#31 – RSS-lukijan vähimmäisversio:** valmis ja yhdistetty.
 - **#35 – GitHub Issues -pohjainen Kehitysjonon kanban:** valmis ja yhdistetty.
 - **#83 – Kehitysjonon aineiston muodostus Actionsissa ja Pages-julkaisu:** valmis; toteutus, automaattiset päivityskäynnistimet, validointi ja Pages-julkaisu on yhdistetty. GitHub Actionsin tuotantojulkaisu on varmennettu.
+- **#148 – Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri:** valmis; suunnitelma PR:ssä #166 yhdistetty, tiketti suljettu.
+- **#167 – Erillisen RSS-julkaisurepositorion prototyyppi:** estynyt käyttäjän erillistä hyväksyntää odotettaessa. Testirepositorion ja GitHub Appin luontia tai salaisuuksien lisäämistä ei ole aloitettu.
 
 Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
@@ -74,7 +76,7 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 Tavoitteena on erottaa julkinen RSS-jakelu lähde- ja hallintarepositoriosta. Suunnitelma määrittelee vastuurajat, julkaisurepositorion ehdotetun nimen ja rakenteen, GitHub App -pohjaisen vähimmän oikeuden tunnistuksen, atomisen julkaisu- ja palautusmallin, takaisinluvun, vanhojen URL-osoitteiden yhteensopivuuspeilin sekä vaiheittaisen käyttöönoton.
 
-**Tila:** suunnitteluratkaisu dokumentoitu PR:ssä; nykyinen Pages-julkaisu jatkuu ennallaan. Julkaisurepositoriota, GitHub Appia, salaisuuksia tai tuotantoreititystä ei ole luotu tai otettu käyttöön. Seuraava työ on eristetty prototyyppi omassa toteutustiketissään.
+**Tila:** valmis; PR #166 yhdistetty ja tiketti #148 suljettu. Nykyinen Pages-julkaisu jatkuu ennallaan. Julkaisurepositoriota, GitHub Appia, salaisuuksia tai tuotantoreititystä ei ole luotu tai otettu käyttöön. Seuraava työ on tiketti [#167 – eristetty prototyyppi](https://github.com/mikknikk/aiheseurain/issues/167), joka on estetty, kunnes käyttäjä hyväksyy erikseen testirepositorion ja GitHub Appin luonnin sekä yksityisen avaimen tallennuksen.
 
 
 ### Tuotantopalvelujen käyttöönotto (erillinen päätös)
