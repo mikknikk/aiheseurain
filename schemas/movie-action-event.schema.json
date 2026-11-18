@@ -14,7 +14,8 @@
     "action_id",
     "action_version",
     "screening_refs",
-    "source_urls"
+    "source_urls",
+    "screening_observations"
   ],
   "properties": {
     "schema_version": {
@@ -71,6 +72,65 @@
         "format": "uri"
       },
       "minItems": 1
+    },
+    "screening_observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "screening_id",
+          "title",
+          "venue",
+          "city",
+          "starts_at",
+          "status",
+          "source_urls"
+        ],
+        "properties": {
+          "screening_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "venue": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "city": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "starts_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_urls": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false
