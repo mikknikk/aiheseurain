@@ -131,7 +131,7 @@ class RssPublicationManifestTests(unittest.TestCase):
             ]
         ), patch.object(manifest, "status") as status:
             manifest.finalize(SimpleNamespace(
-                deployment_id="123", is_current="true", deploy_outcome="success",
+                deployment_id="123", is_current="true", deploy_outcome="failure",
                 candidate_verified="true", rollback_outcome="skipped",
                 rollback_verified="false"
             ))
