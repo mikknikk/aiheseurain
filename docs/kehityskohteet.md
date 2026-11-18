@@ -229,8 +229,8 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [x] Julkiset RSS-URL-osoitteet luetaan takaisin ja niiden SHA-256, GUID-lista sekä item-määrä verrataan manifestiin.
 - [x] Julkaisun success/failure/inactive kirjataan append-only GitHub Deployment -statuksina.
 - [x] Lisättiin offline-yksikkötestit manifestin sisällölle, XML:lle, GUIDeille ja porttiraportin sidonnalle.
-- [x] Toteuta palautusartefakti edellisen sivustolähteen ja ennen deployta talteen otettujen julkisten RSS-tavujen pohjalta.
-- [x] Varmenna palautuksen jälkeen julkisten syötteiden SHA-256, GUID-lista ja item-määrä; epäonnistunut ehdokas jää workflow-virheeksi myös onnistuneen palautuksen jälkeen.
+- [x] Toteutettiin palautusartefakti edellisen sivustolähteen ja ennen deployta talteen otettujen julkisten RSS-tavujen pohjalta.
+- [x] Varmennetaan palautuksen jälkeen julkisten syötteiden SHA-256, GUID-lista ja item-määrä; epäonnistunut ehdokas jää workflow-virheeksi myös onnistuneen palautuksen jälkeen.
 - [ ] Lisää katkaisu- ja uusintatestit oikeassa GitHub Actions -ympäristössä sekä operatiivinen hälytys epäonnistuneesta julkaisusta.
 
 **Rajaus:** nykyiset RSS-URL-osoitteet, Pages-asetukset ja automaatioiden ajastukset, ohjeet sekä kohdekeskustelut säilyivät. Toteutus ei luo erillistä julkaisurepositoriota eikä muuta tuotannon julkaisukohdetta. Keskeytyneen ajon idempotentti jatkaminen, GitHub API:n epäselvien vastausten käsittely ja operatiivinen hälytys ovat edelleen avoinna; tätä ei pidä tulkita täysin toimintavarmaksi palautusratkaisuksi.
