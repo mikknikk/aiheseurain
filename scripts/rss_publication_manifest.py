@@ -161,6 +161,11 @@ def finalize(args) -> None:
     if args.deploy_outcome != "success":
         status(did, "failure", "Pages-julkaisu epäonnistui; aiempi julkaisu säilyy.")
         raise PublicationError("Pages-julkaisu epäonnistui")
+    latest_main = api("GET", "git/ref/heads/main").get("object", {}).get("sha")
+    if latest_main != os.getenv("GITHUB_SHA"):
+        status(did, "inactive", "Main-haara eteni deployn aikana; uudempi julkaisu korvaa tämän.")
+        print("Main eteni deployn aikana; vanhan julkaisun onnistumista ei kirjata.")
+        return
     manifest = api("GET", f"deployments/{did}").get("payload", {})
     if manifest.get("manifest_type") != "aiheseurain-rss-publication":
         raise PublicationError("Deploymentilta puuttuu RSS-manifesti")
