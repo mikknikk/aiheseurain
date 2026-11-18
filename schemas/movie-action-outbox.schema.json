@@ -140,7 +140,8 @@
             "enum": [
               "pending",
               "sent",
-              "failed"
+              "failed",
+              "uncertain"
             ]
           },
           "attempts": {
