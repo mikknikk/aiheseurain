@@ -156,11 +156,11 @@ class JsonFilePublicationJournal:
                 raise PublicationJournalError("Manifestia ei voi lukea tilasiirtymää varten.") from exc
             current_index = PHASES.index(current.get("phase"))
             target_index = PHASES.index(phase)
-            if target_index < current_index:
-                raise PublicationJournalConflict("Manifestin tilaa ei voi palauttaa aiempaan vaiheeseen.")
-            if target_index == current_index:
+            if target_index <= current_index:
                 if receipt is not None and current.get("receipt") not in (None, receipt):
                     raise PublicationJournalConflict("Julkaisukuittaus poikkeaa manifestiin tallennetusta.")
+                # Uusinta voi aloittaa koko orkestrointipolun alusta. Jo saavutettua
+                # vaihetta ei kirjoiteta taaksepäin, vaan se hyväksytään idempotentisti.
                 return current
             if target_index > current_index + 1:
                 raise PublicationJournalConflict("Manifestivaihetta ei voi ohittaa.")
