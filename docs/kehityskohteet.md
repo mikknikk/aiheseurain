@@ -231,6 +231,9 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [x] Lisättiin offline-yksikkötestit manifestin sisällölle, XML:lle, GUIDeille ja porttiraportin sidonnalle.
 - [x] Toteutettiin palautusartefakti edellisen sivustolähteen ja ennen deployta talteen otettujen julkisten RSS-tavujen pohjalta.
 - [x] Varmennetaan palautuksen jälkeen julkisten syötteiden SHA-256, GUID-lista ja item-määrä; epäonnistunut ehdokas jää workflow-virheeksi myös onnistuneen palautuksen jälkeen.
-- [ ] Lisää katkaisu- ja uusintatestit oikeassa GitHub Actions -ympäristössä sekä operatiivinen hälytys epäonnistuneesta julkaisusta.
+- [x] Lisää saman Actions-ajon uusinnassa alkuperäisen manifestin ja palautussnapshotin uudelleenkäyttö; älä luo uutta palautuspistettä jo mahdollisesti julkaistun ehdokkaan päälle.
+- [x] Tee GitHub Deployment- ja statuskirjauksista uusittavia etsimällä jo luodut tietueet ennen uutta kirjoitusta.
+- [x] Luo epäonnistuneesta RSS-julkaisusta idempotentti GitHub-issue, jossa on linkki ajoon.
+- [ ] Tee laaja fault-injection-testaus oikeassa GitHub Actions- ja Pages-ympäristössä, mukaan lukien katkaisu jokaisen vaiheen jälkeen.
 
 **Rajaus:** nykyiset RSS-URL-osoitteet, Pages-asetukset ja automaatioiden ajastukset, ohjeet sekä kohdekeskustelut säilyivät. Toteutus ei luo erillistä julkaisurepositoriota eikä muuta tuotannon julkaisukohdetta. Keskeytyneen ajon idempotentti jatkaminen, GitHub API:n epäselvien vastausten käsittely ja operatiivinen hälytys ovat edelleen avoinna; tätä ei pidä tulkita täysin toimintavarmaksi palautusratkaisuksi.
