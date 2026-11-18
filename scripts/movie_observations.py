@@ -179,6 +179,7 @@ def _criterion_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
 def build_movie_observation(
     screening_event: dict[str, Any], film_metadata: dict[str, Any] | None,
     criterion_matches: list[dict[str, Any]], observed_at: str,
+    *, discovery_channels: list[str] | None = None,
 ) -> dict[str, Any]:
     """Muodosta elokuvatason tietue yleisen tapahtumavahdin näytöshavainnosta."""
     _timestamp(observed_at)
@@ -198,6 +199,11 @@ def build_movie_observation(
     movie_id, confidence, needs_review = identify_movie(title, release_year, external_ids, screening_id)
     sources = _normalize_sources(screening_event.get("sources", []))
     matches = _criterion_matches(criterion_matches)
+    channels = set(discovery_channels or ["indian-film-screening-baseline"])
+    if matches:
+        channels.add("user-criteria")
+    if not channels.issubset({"indian-film-screening-baseline", "user-criteria"}):
+        raise MovieObservationError("Tuntematon elokuvahavainnon discovery_channel.")
     return {
         "movie_id": movie_id,
         "primary_title": title,
@@ -208,6 +214,7 @@ def build_movie_observation(
         "last_seen_at": observed_at,
         "identity_confidence": confidence,
         "needs_review": needs_review,
+        "discovery_channels": sorted(channels),
         "screening_refs": [screening_id],
         "sources": sources,
         "criterion_matches": matches,
@@ -282,6 +289,9 @@ def merge_movie_observation(
             key=lambda value: {"low": 0, "medium": 1, "high": 2}[value],
         )
         existing["needs_review"] = existing["needs_review"] or observation["needs_review"]
+        existing["discovery_channels"] = sorted(
+            set(existing["discovery_channels"]) | set(observation["discovery_channels"])
+        )
         existing["screening_refs"] = sorted(set(existing["screening_refs"]) | set(observation["screening_refs"]))
         existing["sources"] = _normalize_sources(existing["sources"] + observation["sources"])
         matches = {item["match_id"]: deepcopy(item) for item in existing["criterion_matches"]}
@@ -337,6 +347,7 @@ def build_observations_from_screening_state(
     film_metadata_by_screening: dict[str, dict[str, Any]] | None,
     criterion_matches_by_screening: dict[str, list[dict[str, Any]]] | None,
     observed_at: str,
+    *, discovery_channel: str = "indian-film-screening-baseline",
 ) -> list[dict[str, Any]]:
     """Lue #109:n film-screening-tila ja muodosta elokuvakoosteet ilman näytöshistorian kopiointia."""
     if event_state.get("event_type_id") != "film-screening":
@@ -354,6 +365,7 @@ def build_observations_from_screening_state(
             metadata.get(screening_id),
             matches.get(screening_id, []),
             observed_at,
+            discovery_channels=[discovery_channel],
         ))
     return observations
 
