@@ -90,7 +90,6 @@ def enqueue_movie_actions(
     validate_outbox(outbox)
     result = deepcopy(outbox)
     existing = {item["idempotency_key"] for item in result["actions"]}
-    source_urls = sorted({item["url"] for item in movie["sources"]})
     criterion_ids = {item["criterion_id"] for item in movie["criterion_matches"]}
     for action in sorted(config["actions"], key=lambda item: (
         item["criterion_id"], item["action_id"], item["version"]
@@ -102,6 +101,16 @@ def enqueue_movie_actions(
         )
         if key in existing:
             continue
+        criterion_source_urls = sorted({
+            url
+            for match in movie["criterion_matches"]
+            if match["criterion_id"] == action["criterion_id"]
+            for url in match["source_urls"]
+        })
+        if not criterion_source_urls:
+            raise MovieActionError(
+                f"Kriteerillä {action['criterion_id']} ei ole lähdeviitteitä; toimintoa ei jonoteta."
+            )
         payload = {
             "schema_version": 1,
             "event_type": "movie_first_observed",
@@ -113,7 +122,7 @@ def enqueue_movie_actions(
             "action_id": action["action_id"],
             "action_version": action["version"],
             "screening_refs": sorted(movie["screening_refs"]),
-            "source_urls": source_urls,
+            "source_urls": criterion_source_urls,
         }
         _validate(payload, EVENT_SCHEMA, "Toimintotapahtuman")
         event_id = "action-" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:24]
