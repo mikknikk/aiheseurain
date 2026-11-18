@@ -213,3 +213,26 @@ def evaluate_movie_criteria(
             "source_urls": sources,
         })
     return sorted(matches, key=lambda item: (item["criterion_id"], item["criterion_version"]))
+
+
+def evaluate_and_build_movie_observation(
+    screening_event: dict[str, Any],
+    film_metadata: dict[str, Any],
+    criteria_registry: dict[str, Any],
+    observed_at: str,
+    source_urls: list[str],
+    *,
+    discovery_channel: str = "indian-film-screening-baseline",
+) -> dict[str, Any]:
+    """Arvioi kriteerit ja siirrä kaikki osumat #66:n kanoniseen havaintorekisteriin."""
+    matches = evaluate_movie_criteria(
+        film_metadata, criteria_registry, observed_at, source_urls
+    )
+    from scripts.movie_observations import build_movie_observation
+    return build_movie_observation(
+        screening_event,
+        film_metadata,
+        matches,
+        observed_at,
+        discovery_channels=[discovery_channel],
+    )
