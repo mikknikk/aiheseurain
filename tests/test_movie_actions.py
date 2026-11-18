@@ -5,6 +5,7 @@ import json
 import tempfile
 import unittest
 
+from scripts.movie_observations import JsonFileMovieRegistryStore
 from scripts.movie_actions import (
     ActionOutboxConflictError, DiscordWebhookAdapter, JsonFileActionOutboxStore,
     RetryableDeliveryError, dispatch_pending_actions, empty_outbox,
@@ -26,7 +27,9 @@ def movie():
     """Luo kahteen kriteeriin osuneen elokuvahavainnon."""
     return {
         "movie_id": "imdb:tt1234567", "primary_title": "Testielokuva", "release_year": 2024,
-        "first_seen_at": NOW, "screening_refs": ["screening-1"],
+        "first_seen_at": NOW, "last_seen_at": NOW, "screening_refs": ["screening-1"],
+        "aliases": [], "external_ids": [{"provider": "imdb", "value": "tt1234567"}],
+        "identity_confidence": "high", "needs_review": False,
         "sources": [{"publisher": "Teatteri", "url": "https://example.test/show",
                      "checked_at": NOW, "claim_level": "official"}],
         "criterion_matches": [
@@ -150,6 +153,38 @@ class MovieActionTests(unittest.TestCase):
         )
         self.assertEqual(resolved["actions"][0]["status"], "pending")
         self.assertEqual(resolved["actions"][0]["next_attempt_at"], RETRY)
+
+
+    def test_partial_registry_commit_can_recreate_outbox_without_losing_action(self):
+        """Jos rekisteri tallentuu mutta outbox ei, seuraava ajo voi jonottaa toiminnon uudelleen."""
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            registry_store = JsonFileMovieRegistryStore(root / "movie-registry.json")
+            registry, registry_sha = registry_store.load()
+            registry["films"].append(movie())
+            registry_store.save(registry, expected_sha=registry_sha)
+
+            # Simuloi katkoa rekisterin ja outboxin tallennuksen välissä.
+            outbox_store = JsonFileActionOutboxStore(root / "movie-outbox.json")
+            empty, outbox_sha = outbox_store.load()
+            self.assertEqual(empty["actions"], [])
+
+            recovered_registry, _ = registry_store.load()
+            recovered_movie = recovered_registry["films"][0]
+            queued = enqueue_movie_actions(
+                recovered_movie, config(), empty, NOW,
+                screening_observations=[SCREENING],
+            )
+            outbox_store.save(queued, expected_sha=outbox_sha)
+
+            # Uusinta lukee saman elokuvan ja outboxin; idempotenssi estää kaksoisjonotuksen.
+            persisted, persisted_sha = outbox_store.load()
+            retried = enqueue_movie_actions(
+                recovered_movie, config(), persisted, RETRY,
+                screening_observations=[SCREENING],
+            )
+            self.assertEqual(len(retried["actions"]), 2)
+            self.assertEqual(len({item["idempotency_key"] for item in retried["actions"]}), 2)
 
     def test_outbox_store_rejects_stale_sha(self):
         """Toimitusjonon vanha SHA ei saa ylikirjoittaa uudempaa jonoa."""

@@ -5,10 +5,10 @@ import tempfile
 import unittest
 
 from scripts.movie_observations import (
-    JsonFileMovieRegistryStore, MovieRegistryConflictError,
+    JsonFileMovieRegistryStore, MovieObservationError, MovieRegistryConflictError,
     build_movie_observation, empty_registry, merge_movie_observation,
     build_observations_from_screening_state, normalize_title,
-    reconcile_movie_observations, screening_snapshot,
+    reconcile_movie_observations, screening_snapshot, validate_registry,
 )
 
 NOW = "2026-11-18T08:00:00+02:00"
@@ -62,6 +62,13 @@ class MovieObservationTests(unittest.TestCase):
                 {"event_type_id": "film-festival", "current_events": []},
                 {}, {}, NOW,
             )
+
+
+    def test_invalid_registry_is_rejected_by_schema(self):
+        """Puutteellinen rekisteritietue ei pääse yhdistämis- tai tallennusvaiheeseen."""
+        invalid = {"schema_version": 1, "films": [{"movie_id": "imdb:tt123"}]}
+        with self.assertRaises(MovieObservationError):
+            validate_registry(invalid)
 
     def test_external_identifier_is_stable_and_merges_screenings(self):
         """IMDb-tunniste yhdistää saman elokuvan eri näytöshavainnot."""
