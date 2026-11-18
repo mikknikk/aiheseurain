@@ -44,3 +44,12 @@ GitHub Pagesin deployment vaihtaa staattisen sivuston julkaisuversiona; RSS-tied
 ## Testaus
 
 Yksikkötestit tarkistavat RSS/XML:n GUID-eheyden, virheellisen XML:n hylkäämisen, kaikkien katalogin syötteiden sisällyttämisen, muuttuneen syötteen hyväksytyn porttiraportin sidonnan sekä puuttuvan porttiraportin eston. GitHub Actions testaa todellisen Deployment API -kirjauksen ja julkisten Pages-URL-osoitteiden takaisinluvun vain RSS-syötteen sisältävän main-commitin yhteydessä.
+
+
+## Automaattinen Pages-palautus
+
+RSS-muutoksen yhteydessä työnkulku tallentaa ennen ehdokasjulkaisua kaikkien nykyisten julkisten syötteiden täsmälliset tavut. Snapshot validoidaan XML:n ja GUIDien osalta ja sidotaan muuttumattomaan GitHub Deployment -manifestiin SHA-256-, GUID- ja item-määrätietoineen. Jos ehdokasjulkaisun julkinen takaisinluku ei täsmää, työnkulku rakentaa palautusartefaktin edellisen lähdecommitin sivustosta ja korvaa sen RSS-tiedostot juuri ennen julkaisua talteen otetuilla julkisilla syötteillä. Näin palautus ei nojaa pelkästään Gitin edelliseen commit-tilaan, joka ei välttämättä ole sama kuin tilaajien viimeksi näkemä versio.
+
+Palautuksen jälkeen kaikki syötteet luetaan uudelleen julkisista URL-osoitteista ja verrataan snapshot-manifestiin. Ehdokasjulkaisu kirjataan epäonnistuneeksi myös silloin, kun palautus onnistuu; workflow pysyy siis epäonnistuneena ja ilmoittaa virheestä, vaikka aiempi sisältö olisi palautettu. Jos Pages-deploy itsessään epäonnistuu, aiempi Pages-versio säilyy eikä rollbackia tarvita.
+
+Palautusartefakti rakennetaan vain RSS-syötemuutoksissa. Muut sivustojulkaisut säilyttävät aiemman toimintatapansa. Palautus ei muuta RSS-URL-osoitteita, Pages-kohdetta tai automaatioiden asetuksia. Keskeytyneen ajon idempotentti jatkaminen, GitHub API:n epäselvien vastausten käsittely ja operatiivinen hälytys ovat edelleen avoimia; tätä ei pidä tulkita täysin toimintavarmaksi palautusratkaisuksi.
