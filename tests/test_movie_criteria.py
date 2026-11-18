@@ -5,7 +5,8 @@ import json
 import unittest
 
 from scripts.movie_criteria import (
-    MovieCriteriaError, evaluate_movie_criteria, normalize_value,
+    MovieCriteriaError, evaluate_and_build_movie_observation,
+    evaluate_movie_criteria, normalize_value,
     validate_action_references, validate_criteria_registry,
 )
 
@@ -43,6 +44,35 @@ def matching_movie():
 
 
 class MovieCriteriaTests(unittest.TestCase):
+
+    def test_criteria_matches_are_written_to_movie_observation_registry(self):
+        """Kaikki osuneet kriteerit ja niiden syyt siirtyvät #66:n havaintorekisteriin."""
+        metadata = matching_movie()
+        metadata.update({
+            "primary_title": "Testielokuva",
+            "external_ids": [{"provider": "imdb", "value": "tt7654321"}],
+        })
+        screening_event = {
+            "canonical_event_id": "screening-criteria-1",
+            "attributes": {
+                "title": "Testielokuva", "venue": "Testiteatteri",
+                "city": "Helsinki", "starts_at": OBSERVED, "status": "scheduled",
+            },
+            "sources": [{
+                "publisher": "Testiteatteri", "url": SOURCES[0],
+                "checked_at": OBSERVED, "claim_level": "official",
+            }],
+        }
+        observation = evaluate_and_build_movie_observation(
+            screening_event, metadata, fixture(), OBSERVED, SOURCES,
+        )
+        self.assertEqual(
+            {item["criterion_id"] for item in observation["criterion_matches"]},
+            {"test-criterion-a", "test-criterion-b"},
+        )
+        self.assertIn("user-criteria", observation["discovery_channels"])
+        self.assertIn("indian-film-screening-baseline", observation["discovery_channels"])
+
     def test_multiple_active_criteria_return_all_stable_matches(self):
         """Kaikki osuneet aktiiviset kriteerit palautuvat omilla tunnisteillaan ja versioillaan."""
         matches = evaluate_movie_criteria(
