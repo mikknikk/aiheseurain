@@ -32,6 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      actions: read
       deployments: write
       pages: write
       id-token: write
@@ -63,6 +64,14 @@ jobs:
         run: python scripts/validate_feeds.py
       - name: Aseta GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Palauta saman ajon RSS-snapshot mahdollisessa uusinnassa
+        id: download_rollback_snapshot
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: rss-rollback-snapshot
+          path: _rollback_snapshot
       - name: Tallenna aiemmin julkaistut RSS-tavut ja ehdokasmanifesti
         id: prepare_manifest
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -73,6 +82,14 @@ jobs:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: python scripts/rss_publication_manifest.py prepare --base-ref "${{ github.event.before }}"
+      - name: Tallenna palautussnapshot uusinta-ajoa varten
+        if: steps.prepare_manifest.outputs.deployment_id != '' && steps.prepare_manifest.outputs.snapshot_reused != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rss-rollback-snapshot
+          path: _rollback_snapshot
+          retention-days: 30
+          if-no-files-found: error
       - name: Rakenna Jekyll-sivusto
         uses: actions/jekyll-build-pages@v1
         with:
@@ -114,6 +131,7 @@ jobs:
     permissions:
       contents: read
       deployments: write
+      issues: write
       pages: write
       id-token: write
     environment:
@@ -177,3 +195,9 @@ jobs:
           ROLLBACK_OUTCOME: ${{ steps.rollback_deployment.outcome }}
           ROLLBACK_VERIFIED: ${{ steps.rollback_check.outputs.rollback_verified }}
         run: python scripts/rss_publication_manifest.py finalize --deployment-id "$DEPLOYMENT_ID" --deploy-outcome "$DEPLOY_OUTCOME" --is-current "$IS_CURRENT" --candidate-verified "$CANDIDATE_VERIFIED" --rollback-outcome "$ROLLBACK_OUTCOME" --rollback-verified "$ROLLBACK_VERIFIED"
+      - name: Luo idempotentti GitHub-hälytys epäonnistuneesta julkaisusta
+        if: failure() && needs.build.outputs.deployment_id != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/rss_publication_manifest.py alert-failure --deployment-id "${{ needs.build.outputs.deployment_id }}"
