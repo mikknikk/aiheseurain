@@ -24,6 +24,9 @@ from scripts.module_orchestrator import (
 )
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 MODULE_ID_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
 SENSITIVE_KEYS = {
     "api_key", "access_token", "authorization", "credential", "credentials",
