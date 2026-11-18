@@ -223,11 +223,13 @@ def evaluate_and_build_movie_observation(
     source_urls: list[str],
     *,
     discovery_channel: str = "indian-film-screening-baseline",
-) -> dict[str, Any]:
+) -> dict[str, Any] | None:
     """Arvioi kriteerit ja siirrä kaikki osumat #66:n kanoniseen havaintorekisteriin."""
     matches = evaluate_movie_criteria(
         film_metadata, criteria_registry, observed_at, source_urls
     )
+    if discovery_channel == "user-criteria" and not matches:
+        return None
     from scripts.movie_observations import build_movie_observation
     return build_movie_observation(
         screening_event,
