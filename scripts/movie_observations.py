@@ -12,6 +12,7 @@ from datetime import datetime
 import fcntl
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import tempfile
@@ -138,7 +139,7 @@ def _normalize_sources(sources: list[dict[str, Any]]) -> list[dict[str, str]]:
 
 
 def _criterion_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Validoi kriteeriosumat ja anna niille deterministiset tunnisteet."""
+    """Yhdistä saman kriteerin toistuvat osumat yhdeksi jäljitettäväksi tietueeksi."""
     found = {}
     for match in matches or []:
         criterion_id = match.get("criterion_id")
@@ -156,12 +157,24 @@ def _criterion_matches(matches: list[dict[str, Any]]) -> list[dict[str, Any]]:
         for url in urls:
             if not isinstance(url, str) or not url.startswith(("https://", "http://")):
                 raise MovieObservationError("Kriteeriosuman lähdeviitteen pitää olla HTTP(S)-osoite.")
-        payload = {"criterion_id": criterion_id, "criterion_version": version,
-                   "matched_at": matched_at, "reason": reason, "source_urls": urls}
-        match_id = _stable_id("match", payload)
-        found[match_id] = {"match_id": match_id, **payload}
+        match_id = _stable_id("match", {"criterion_id": criterion_id, "criterion_version": version})
+        if match_id not in found:
+            found[match_id] = {
+                "match_id": match_id,
+                "criterion_id": criterion_id,
+                "criterion_version": version,
+                "first_matched_at": matched_at,
+                "last_matched_at": matched_at,
+                "reasons": [reason],
+                "source_urls": urls,
+            }
+        else:
+            item = found[match_id]
+            item["first_matched_at"] = min(item["first_matched_at"], matched_at)
+            item["last_matched_at"] = max(item["last_matched_at"], matched_at)
+            item["reasons"] = sorted(set(item["reasons"]) | {reason})
+            item["source_urls"] = sorted(set(item["source_urls"]) | set(urls))
     return [found[key] for key in sorted(found)]
-
 
 def build_movie_observation(
     screening_event: dict[str, Any], film_metadata: dict[str, Any] | None,
@@ -176,11 +189,13 @@ def build_movie_observation(
     metadata = film_metadata or {}
     title = metadata.get("primary_title") or attributes.get("title")
     aliases = sorted({item.strip() for item in metadata.get("aliases", []) if isinstance(item, str) and item.strip()})
+    screening_title = attributes.get("title")
+    if isinstance(screening_title, str) and normalize_title(screening_title) != normalize_title(title):
+        aliases.append(screening_title.strip())
+    aliases = sorted(set(aliases))
     release_year = metadata.get("release_year")
     external_ids = _external_ids(metadata.get("external_ids"))
     movie_id, confidence, needs_review = identify_movie(title, release_year, external_ids, screening_id)
-    if normalize_title(title) != normalize_title(metadata.get("primary_title") or title):
-        aliases.append(title)
     sources = _normalize_sources(screening_event.get("sources", []))
     matches = _criterion_matches(criterion_matches)
     return {
@@ -323,9 +338,7 @@ class JsonFileMovieRegistryStore:
                         temporary = Path(stream.name)
                         stream.write(content)
                         stream.flush()
-                        import os
                         os.fsync(stream.fileno())
-                    import os
                     os.replace(temporary, self.path)
                 finally:
                     if temporary is not None and temporary.exists():
