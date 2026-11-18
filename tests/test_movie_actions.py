@@ -156,7 +156,7 @@ class MovieActionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             store = JsonFileActionOutboxStore(Path(folder) / "outbox.json")
             outbox, sha = store.load()
-            updated = enqueue_movie_actions(movie(), config(), outbox, NOW)
+            updated = enqueue_movie_actions(movie(), config(), outbox, NOW, screening_observations=[SCREENING])
             store.save(updated, expected_sha=sha)
             with self.assertRaises(ActionOutboxConflictError):
                 store.save(outbox, expected_sha=sha)
