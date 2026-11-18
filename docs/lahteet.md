@@ -42,6 +42,8 @@ Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa
 - Toimitukselliset: vakiintuneet intialaiset uutismediat, jotka raportoivat oikeudellisista ja julkisista tapahtumista lähteistetysti.
 - Hae englanniksi, hindiksi ja pandžabiksi; käytä nimen muotoja “Gurmeet Ram Rahim Singh”, “Saint Dr. Gurmeet Ram Rahim Singh Ji Insan”, “Gurmeet Ram Rahim” ja paikallisia translitterointeja.
 - Oikeudellisissa uutisissa tarkista tuomioistuimen/viranomaisen ensisijainen asiakirja aina kun mahdollista. Erota syyte, tuomio, valitus, vapautus ja muu menettelyvaihe.
+- Viralliset omat kanavat: [Dera Sacha Sauda](https://derasachasauda.org/) ja [Saint Dr. MSG Insan](https://www.saintdrmsginsan.me/). Käytä niiden omia ilmoituksia, artikkeleita, tapahtumia ja julkaisuja koskevien väitteiden tarkistamiseen; älä käsittele niitä riippumattomina oikeudellisten väitteiden vahvistajina.
+- Dera Sacha Saudan sivusto linkittää myös viralliseen DeraVideos-YouTube-kanavaan. Kanavan sisältöä ei saatu avattua 18.11.2026 tilapäisen rajoituksen vuoksi; lisää kanava lähderekisteriin vasta, kun sisältö ja kielikattavuus voidaan tarkistaa.
 
 ## Muumit
 
