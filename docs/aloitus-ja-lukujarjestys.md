@@ -79,6 +79,7 @@ Jos haluat seurata esimerkkiä tiedostoista käsin, avaa tämän jälkeen:
 4. [Yhteinen seurantatila](../data/seurantatila.json) – tehtäväkierto ja tekninen automaatiotila.
 5. [Moduulikohtaiset tilat](../data/module-state/) – kunkin moduulin viimeisin onnistumisen checkpoint ja historiaviitteet; tarkemmat säännöt [moduulikohtaisen tilan ohjeessa](moduulikohtainen-tila.md).
 6. [Palveluadapterit](palveluadapterit.md) – AIProcessor- ja ResearchProvider-sopimukset sekä tekninen reititys.
+7. [Moduulien yhteinen suoritusorkestrointi](moduuliorchestrointi.md) – suorituspyyntö, ajon elinkaari, varjotila, tuotannon erillinen hyväksyntäportti ja tapahtumavahdin integraatio.
 7. [Syötekatalogi](../data/feed-catalog.json) – RSS-lukijan tuntemat syötteet.
 
 JSON-tiedostot ovat koneellista tilaa ja määrittelyjä, eivät itsenäisiä käyttöohjeita. Niitä on helpompi lukea teknisen oppaan jälkeen.
