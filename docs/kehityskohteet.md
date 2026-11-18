@@ -70,14 +70,15 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Avoimet kehityskohteet
 
-### Issue #148 – erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri
+### Aiheseuranta-julkaisualustan tavoitearkkitehtuuri ja sopimus
 
-**Suunnitteludokumentti:** [Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri](rss-julkaisurepositorio.md).
+**Suunnitteludokumentti:** [Aiheseuranta-julkaisualustan tavoitearkkitehtuuri](rss-julkaisurepositorio.md).
 
-Tavoitteena on erottaa julkinen RSS-jakelu lähde- ja hallintarepositoriosta. Suunnitelma määrittelee vastuurajat, julkaisurepositorion ehdotetun nimen ja rakenteen, GitHub App -pohjaisen vähimmän oikeuden tunnistuksen, atomisen julkaisu- ja palautusmallin, takaisinluvun, vanhojen URL-osoitteiden yhteensopivuuspeilin sekä vaiheittaisen käyttöönoton.
+Aiempi #148 kuvasi yhden lähettäjän erillisen RSS-julkaisurepositorion. Tavoitetta on laajennettu: Aiheseuranta on itsenäinen, useita lähettäjiä palveleva vastaanottaja ja pysyvä julkinen jakelualusta. Aiheseurain on ensimmäinen mahdollinen lähettäjä. Aiheseuranta ei hae sisältöä lähettäjien repositorioista, vaan vastaanottaa täydelliset paketit. Repositorion sisältö pidetään minimaalisena; vastaanottaja tarkistaa vain yleisen eheyden ja valtuutuksen eikä kopioi lähettäjien sisältökohtaisia validaattoreita.
 
-**Tila:** valmis; PR #166 yhdistetty ja tiketti #148 suljettu. Nykyinen Pages-julkaisu jatkuu ennallaan. Julkaisurepositoriota, GitHub Appia, salaisuuksia tai tuotantoreititystä ei ole luotu tai otettu käyttöön. Seuraava työ on tiketti [#167 – eristetty prototyyppi](https://github.com/mikknikk/aiheseurain/issues/167), joka on estetty, kunnes käyttäjä hyväksyy erikseen testirepositorion ja GitHub Appin luonnin sekä yksityisen avaimen tallennuksen.
+Uusien RSS-itemien GUID-muoto on `urn:aiheseurain:<aihe>:<alkuperäinen-päivämäärä>:<uuid>`. GUID luodaan kerran, säilytetään julkaisualustan vaihtuessa ja vanhat julkaistut GUIDit jätetään ennalleen.
 
+**Tila:** sopimus ja minimaalisuusperiaate on kirjattu tikettiin [#169](https://github.com/mikknikk/aiheseurain/issues/169). Eristetty monen lähettäjän prototyyppi (#167) odottaa käyttäjän erillistä hyväksyntää. Tuotantorepo (#170), vastaanottopalvelu (#171), lähettäjä (#172), rinnakkaisjulkaisu (#173), lukijasiirtymä (#174) ja tuotantosiirto (#175) ovat erillisiä jatkovaiheita. Nykyinen Pages-julkaisu ja automaatioasetukset pysyvät ennallaan.
 
 ### Tuotantopalvelujen käyttöönotto (erillinen päätös)
 
