@@ -7,6 +7,8 @@ import tempfile
 import unittest
 import xml.etree.ElementTree as ET
 
+from scripts.module_run_adapters import AdapterError, RoutedReportPublisher
+from scripts.module_orchestrator import PublicationReceipt
 from scripts.publication_routing import (
     LocalRoutedRssPublisher, PublicationPlan, PublicationRoutingError,
     preview_publication_plan, resolve_publication_plan,
@@ -109,6 +111,30 @@ class PublicationRoutingTests(unittest.TestCase):
         plan = resolve_publication_plan(context(), module_id="demo", target_id="demo.film",
                                         run_id="run-1", observation_types=["film-screening"])
         self.assertNotIn("inactive", plan.publication_ids)
+
+    def test_orchestration_adapter_accepts_target_reports_and_verifies_receipt(self):
+        data = context()
+        with tempfile.TemporaryDirectory() as directory:
+            publisher = RoutedReportPublisher(Path(directory), data)
+            receipt = publisher.publish_target_reports("demo", "run-2", [{
+                "target_id": "demo.film",
+                "observation_types": ["film-screening"],
+                "report_content": "<p>Kohderaportti</p>",
+            }])
+            self.assertIsInstance(receipt, PublicationReceipt)
+            self.assertTrue(publisher.verify(receipt))
+            self.assertEqual(receipt.published_items, 2)
+
+    def test_orchestration_adapter_rejects_unknown_target_before_writing(self):
+        data = context()
+        with tempfile.TemporaryDirectory() as directory:
+            publisher = RoutedReportPublisher(Path(directory), data)
+            with self.assertRaises(AdapterError):
+                publisher.publish_target_reports("demo", "run-2", [{
+                    "target_id": "missing", "observation_types": ["film-screening"],
+                    "report_content": "<p>Ei saa julkaista</p>",
+                }])
+            self.assertEqual(list(Path(directory).rglob("*.xml")), [])
 
 
 if __name__ == "__main__":
