@@ -206,7 +206,7 @@ Automaattiset testit eivät todista uutisväitteiden paikkansapitävyyttä, läh
 
 ## Seurantakohteiden mukainen julkaisureititys
 
-Aiheseurain erottaa seurantamoduulin, seurantakohteen ja julkaisukohteen. Yhden seuranta-ajon tuloksena voidaan muodostaa yksi raportti kutakin seurantakohdetta kohti; sama raportti voidaan reitittää kohteen omaan RSS-syötteeseen ja valinnaiseen yhdistelmäsyötteeseen. Reitityksen tekninen toteutus ja rajat kuvataan [seurantakohteiden ja julkaisukohteiden oppaassa](docs/seurantakohteet-ja-julkaisukohteet.md). Tuotannon julkaisukohderekisteri ja reititys pysyvät tyhjinä, kunnes ne otetaan erikseen käyttöön.
+Aiheseurain erottaa seurantamoduulin, seurantakohteen ja julkaisukohteen. Yhden seuranta-ajon tuloksena voidaan muodostaa yksi raportti kutakin seurantakohdetta kohti; raportti julkaistaan vain kyseisen kohteen omassa RSS-syötteessä. Yhdistelmäsyötteitä ei muodosteta. RSS-lukijan käyttöliittymä voi silti näyttää erillisten syötteiden artikkelit yhteisessä aikajärjestyksessä; tämä ei ole uusi RSS-syöte. Reitityksen tekninen toteutus ja rajat kuvataan [seurantakohteiden ja julkaisukohteiden oppaassa](docs/seurantakohteet-ja-julkaisukohteet.md). Tuotannon julkaisukohderekisteri ja reititys pysyvät tyhjinä, kunnes ne otetaan erikseen käyttöön.
 
 
 ## Kohdekohtaiset raportit
