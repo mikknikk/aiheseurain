@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 import urllib.error, urllib.request
 import xml.etree.ElementTree as ET
-import jsonschema
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = "https://mikknikk.github.io/aiheseurain"
@@ -141,6 +140,8 @@ def prepare(args) -> None:
         print("RSS-syötemuutoksia ei ole; manifestia ei tarvita.")
         output("deployment_id", "")
         return
+    import jsonschema
+
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     jsonschema.Draft202012Validator(
         schema, format_checker=jsonschema.FormatChecker()

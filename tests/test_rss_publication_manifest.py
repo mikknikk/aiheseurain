@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import jsonschema
 from unittest.mock import patch
 
 from scripts import rss_publication_manifest as manifest
@@ -11,7 +12,7 @@ from scripts import rss_publication_manifest as manifest
 class RssPublicationManifestTests(unittest.TestCase):
     def test_manifest_schema_is_valid_json_schema(self):
         schema = json.loads(manifest.SCHEMA.read_text(encoding="utf-8"))
-        manifest.jsonschema.Draft202012Validator.check_schema(schema)
+        jsonschema.Draft202012Validator.check_schema(schema)
 
     def test_rss_metadata_requires_unique_guid_values(self):
         xml = b'<rss><channel><item><guid>a</guid></item><item><guid>b</guid></item></channel></rss>'
