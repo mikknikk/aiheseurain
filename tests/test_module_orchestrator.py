@@ -119,7 +119,7 @@ class FakePublicationJournal:
         if key in self.records:
             existing = self.records[key]
             stable = {k: v for k, v in existing.items() if k not in {"phase", "updated_at", "receipt", "state_sha256", "artifact_version"}}
-            if stable != record:
+            if stable != {key: value for key, value in record.items() if key not in {"state_sha256", "artifact_version"}}:
                 raise RuntimeError("manifestin sisältökonflikti")
             return existing
         self.records[key] = {**deepcopy(record), "phase": "prepared",
