@@ -42,7 +42,7 @@ GitHub Pagesin deployment vaihtaa staattisen sivuston julkaisuversiona; RSS-tied
 - Nykyiset kymmenen RSS-URL-osoitetta ja Pages-asetukset säilyvät.
 - Aiheiden automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita tai kohdekeskusteluja ei muuteta.
 - Julkaisurepositoriota ei luoda eikä nykyistä julkaisukohdetta vaihdeta. #148:n adapterisopimuksen tulee käyttää samaa manifesti- ja takaisinlukuperiaatetta.
-- GitHub Deployment -manifesti on pysyvä auditointitietue ja sisältää myös palautusversion tiivisteet sekä GUIDit. Varsinainen palautusartefakti rakennetaan saman Actions-ajon aikana. Keskeytyneen ajon idempotentti jatkaminen ja GitHub API:n epäselvien vastausten käsittely ovat edelleen erillisen jatkotyön hyväksymiskriteerejä.
+- GitHub Deployment -manifesti on pysyvä auditointitietue ja sisältää myös palautusversion tiivisteet sekä GUIDit. Varsinainen palautusartefakti rakennetaan saman Actions-ajon aikana. Saman Actions-ajon uusinta käyttää alkuperäistä manifestia ja ennen deployta tallennettua snapshot-artefaktia; jos artefakti puuttuu, snapshot rakennetaan uudelleen vain, jos julkinen sisältö vastaa alkuperäistä palautuspistettä. Deploymentin ja statuskirjausten epäselvät vastaukset käsitellään etsimällä jo luotu tietue ennen uusintaa. Julkaisun virheestä luodaan idempotentti GitHub-issue, jossa on suora linkki epäonnistuneeseen ajoon. Laajempi fault-injection todellisessa Pages-ympäristössä jää vielä testattavaksi.
 
 ## Testaus
 
@@ -55,4 +55,4 @@ RSS-muutoksen yhteydessä työnkulku tallentaa ennen ehdokasjulkaisua kaikkien n
 
 Palautuksen jälkeen kaikki syötteet luetaan uudelleen julkisista URL-osoitteista ja verrataan snapshot-manifestiin. Ehdokasjulkaisu kirjataan epäonnistuneeksi myös silloin, kun palautus onnistuu; workflow pysyy siis epäonnistuneena ja ilmoittaa virheestä, vaikka aiempi sisältö olisi palautettu. Jos Pages-deploy itsessään epäonnistuu, aiempi Pages-versio säilyy eikä rollbackia tarvita.
 
-Palautusartefakti rakennetaan vain RSS-syötemuutoksissa. Muut sivustojulkaisut säilyttävät aiemman toimintatapansa. Palautus ei muuta RSS-URL-osoitteita, Pages-kohdetta tai automaatioiden asetuksia. Keskeytyneen ajon idempotentti jatkaminen, GitHub API:n epäselvien vastausten käsittely ja operatiivinen hälytys ovat edelleen avoimia; tätä ei pidä tulkita täysin toimintavarmaksi palautusratkaisuksi.
+Palautusartefakti rakennetaan vain RSS-syötemuutoksissa. Muut sivustojulkaisut säilyttävät aiemman toimintatapansa. Palautus ei muuta RSS-URL-osoitteita, Pages-kohdetta tai automaatioiden asetuksia. Laaja fault-injection todellisessa Pages-ympäristössä ja palautuksen käytännön toiminnan todentaminen ensimmäisessä RSS-muutoksen tuotantoajossa ovat edelleen avoimia; tätä ei pidä tulkita täysin toimintavarmaksi palautusratkaisuksi.
