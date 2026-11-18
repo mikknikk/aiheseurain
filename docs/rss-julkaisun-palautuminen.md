@@ -1,0 +1,46 @@
+# RSS-julkaisun manifesti ja takaisinluku
+
+**Versio:** 1.0.0  
+**Päiväys:** 2026-11-18  
+**Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148)
+
+## Omistajuus ja tallennus
+
+RSS-syötteiden sisältö ja hyväksytyt porttiraportit pysyvät lähderepositorion omistuksessa. GitHub Pages on edelleen nykyinen julkinen jakelukanava. Julkaisun ajokohtainen manifesti tallennetaan GitHub Deployments -historiaan erilliseen `rss-publication-manifest`-ympäristöön. Se ei kirjoita suojattuun `main`-haaraan eikä ohita PR-suojausta.
+
+Manifestin skeema on `schemas/rss-publication-manifest.schema.json`; muodostus ja takaisinluku toteutetaan `scripts/rss_publication_manifest.py`-skriptillä. Manifesti sisältää:
+- GitHub Actions -ajon tunnisteen ja yrityksen sekä lähdecommitin ja vertailucommitin;
+- kaikki kymmenen syötettä, ei vain muutettua syötettä;
+- kunkin syötteen kanonisen Pages-URL:n, SHA-256-tiivisteen, tavumäärän, item-määrän ja GUID-listan;
+- muutetun syötteen hyväksytyn porttiraportin ajotunnisteen ja tiivisteen.
+
+Varsinaisia raporttitekstejä tai lähdeaineistoa ei kopioida manifestiin. GitHub Deploymentin payload säilyttää valmistellun ehdokkaan; deployment-statushistoriaan lisätään julkaisun lopputulos muuttamatta aiempia merkintöjä.
+
+## Julkaisun vaiheet
+
+1. **PR-portti:** RSS/XML, HTML, GUIDit, dokumentaatio ja raporttikohtaiset hyväksynnät tarkistetaan ennen yhdistämistä.
+2. **Rakennusportti:** Pages-työnkulku validoi kaikki RSS-syötteet uudelleen ja rakentaa staattisen sivuston.
+3. **Valmistelu:** jos main-haaraan tullut commit muuttaa RSS-syötettä, työnkulku muodostaa kaikkien syötteiden muuttumattoman ehdokasmanifestin ja tallentaa sen GitHub Deployments -historiaan ennen Pages-julkaisua. Jos manifestin tallennus tai skeemavalidointi epäonnistuu, Pages-julkaisua ei aloiteta.
+4. **Vanhentuneen ajon esto:** ennen deployta työnkulku vertaa buildin commitia GitHubin nykyiseen main-haaran kärkeen. Jos main on edennyt, vanha build ohitetaan ja manifesti merkitään `inactive`-tilaan. Käynnissä olevaa ajoa ei peruta; se ei kuitenkaan saa julkaista vanhentunutta sisältöä.
+5. **Pages-julkaisu:** GitHub Pages julkaisee rakennetun sivuston omalla deployment-mekanismillaan.
+6. **Takaisinluku:** julkisen Pages-URL:n jokainen kymmenestä RSS-syötteestä luetaan takaisin. Sisällön SHA-256, XML-rakenne, GUID-lista ja item-määrä verrataan manifestiin. Verkkovirheitä ja välimuistin viivettä yritetään rajatusti uudelleen.
+7. **Lopputila:** vain kaikkien kymmenen syötteen täsmätessä deployment saa `success`-tilan. Pages-julkaisun tai takaisinluvun virhe kirjataan `failure`-tilaan. Valmisteltu manifesti säilyy myös epäonnistuneessa ajossa tutkintaa ja uusintaa varten.
+
+Jos commit ei muuta RSS-syötteitä, Pages-sivusto voidaan julkaista normaalisti ilman RSS-manifestia. Ajastettu Pages-rakennus ei itsessään muodosta uutta RSS-julkaisumanifestia.
+
+## Rinnakkaisuus ja viimeisin hyvä julkaisu
+
+Kaikki tuotannon Pages-ajot ovat saman GitHub Actions -concurrency-ryhmän takana. Lisäksi juuri ennen deployta tarkistetaan main-haaran kärki. Tämä estää jonossa vanhentuneen buildin julkaisemisen uudemman commitin päälle. Manifesti kirjataan ennen ulkoista Pages-kirjoitusta, joten myös epäonnistunut julkaisu jää jäljitettäväksi.
+
+GitHub Pagesin deployment vaihtaa staattisen sivuston julkaisuversiona; RSS-tiedostoja ei kirjoiteta yksitellen. Jos Pages-deployment ei käynnisty tai epäonnistuu, aiempi onnistunut Pages-versio jää palvelun nykyiseksi versioksi. Julkisen takaisinluvun epäonnistuminen merkitään kuitenkin virheeksi vasta deployn jälkeen. Tässä versiossa ei vielä tehdä automaattista aiemman Pages-version palautusdeployta, jos deploy onnistui mutta julkinen sisältö ei täsmää. Tällainen palautus vaatii oman testatun menettelynsä; sitä ei saa kutsua valmiiksi.
+
+## Käyttöönoton rajat
+
+- Nykyiset kymmenen RSS-URL-osoitetta ja Pages-asetukset säilyvät.
+- Aiheiden automaatioiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, ohjeita tai kohdekeskusteluja ei muuteta.
+- Julkaisurepositoriota ei luoda eikä nykyistä julkaisukohdetta vaihdeta. #148:n adapterisopimuksen tulee käyttää samaa manifesti- ja takaisinlukuperiaatetta.
+- GitHub Deployment -manifesti on pysyvä auditointitietue, mutta ei itsessään palautusartefakti. Julkaisun automaattinen rollback ja keskeytyksen jälkeinen jatkaminen ovat erillisen jatkotyön hyväksymiskriteerejä.
+
+## Testaus
+
+Yksikkötestit tarkistavat RSS/XML:n GUID-eheyden, virheellisen XML:n hylkäämisen, kaikkien katalogin syötteiden sisällyttämisen, muuttuneen syötteen hyväksytyn porttiraportin sidonnan sekä puuttuvan porttiraportin eston. GitHub Actions testaa todellisen Deployment API -kirjauksen ja julkisten Pages-URL-osoitteiden takaisinluvun vain RSS-syötteen sisältävän main-commitin yhteydessä.
