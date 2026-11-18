@@ -45,7 +45,7 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 original = json.loads(state_path.read_text(encoding="utf-8"))
                 cases = (
                     (("checkpoint", "last_successful_run", "checked_at"), None, "viimeisin tarkistusaika"),
-                    (("checkpoint", "last_successful_run", "result"), "not_recorded", "viimeisin tulos"),
+                    (("checkpoint", "last_successful_run", "result"), "success", "viimeisin tulos"),
                     (("checkpoint", "last_successful_run", "published_items"), 0, "julkaistujen itemien määrä"),
                     (("checkpoint", "last_successful_run", "sources_checked"), 0, "tarkistettujen lähteiden määrä"),
                     (("history", "source_check_run_refs"), [], "lähdetarkistusajojen viitteet"),
