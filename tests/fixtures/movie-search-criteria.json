@@ -2,7 +2,7 @@
   "schema_version": 1,
   "criteria": [
     {
-      "criterion_id": "test-actor-and-year",
+      "criterion_id": "test-criterion-a",
       "version": "1.0.0",
       "name": "Testinäyttelijä ja vuosiväli",
       "description": "Vain automaattisten testien käyttämä esimerkkikriteeri.",
@@ -43,7 +43,7 @@
       "updated_at": "2026-01-01T00:00:00+02:00"
     },
     {
-      "criterion_id": "test-language-match",
+      "criterion_id": "test-criterion-b",
       "version": "1.0.0",
       "name": "Testikieliosuma",
       "description": "Toinen testikriteeri usean osuman reitityksen testaamiseen.",
