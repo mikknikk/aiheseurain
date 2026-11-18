@@ -389,3 +389,65 @@ class StructuralModuleQualityGate:
         if len(output.source_check_run_refs) != len(set(output.source_check_run_refs)):
             errors.append("Lähdetarkistusajojen viitteissä on duplikaatti.")
         return QualityGateResult(passed=not errors, errors=tuple(errors))
+
+
+class RoutedReportPublisher:
+    """Julkaise suoritusorkestroinnin kohdekohtaiset raportit ratkaistuihin RSS-kanaviin.
+
+    Sovitin on opt-in: orkestrointi kutsuu sitä vain, jos suorittajan metadata
+    sisältää target_reports-listan. Ilman sitä vanha moduulikohtainen julkaisija
+    jatkaa ennallaan. Julkaisukonteksti ja kirjoitusjuuri annetaan eksplisiittisesti.
+    """
+
+    def __init__(self, root: Path, context: dict[str, Any]):
+        from scripts.publication_routing import LocalRoutedRssPublisher
+        self.context = context
+        self.publisher = LocalRoutedRssPublisher(root, context)
+        self._last_receipt: PublicationReceipt | None = None
+
+    def publish_target_reports(self, module_id: str, run_id: str,
+                               target_reports: list[dict[str, Any]]) -> PublicationReceipt:
+        """Reititä ja julkaise yksi raportti kutakin seurantakohdetta kohti."""
+        from scripts.publication_routing import (
+            PublicationRoutingError, resolve_publication_plan,
+        )
+        if not isinstance(target_reports, list) or not target_reports:
+            raise AdapterError("Kohdekohtaisten raporttien lista puuttuu tai on tyhjä.")
+        target_ids = [item.get("target_id") for item in target_reports if isinstance(item, dict)]
+        if len(target_ids) != len(target_reports) or len(target_ids) != len(set(target_ids)):
+            raise AdapterError("Kohderaporteissa on virheellinen tai toistuva seurantakohde.")
+        plans = []
+        for item in target_reports:
+            if set(item) != {"target_id", "observation_types", "report_content"}:
+                raise AdapterError("Kohderaportin kentät eivät vastaa julkaisusopimusta.")
+            try:
+                plan = resolve_publication_plan(
+                    self.context, module_id=module_id, target_id=item["target_id"],
+                    run_id=run_id, observation_types=item["observation_types"],
+                )
+            except PublicationRoutingError as exc:
+                raise AdapterError(str(exc)) from exc
+            if not isinstance(item["report_content"], str) or not item["report_content"].strip():
+                raise AdapterError("Kohdekohtainen raporttisisältö puuttuu.")
+            plans.append((plan, item["report_content"]))
+        # Reitit ja raporttien sisältö tarkistetaan ennen ensimmäistä kirjoitusta.
+        receipts = []
+        try:
+            for plan, report_content in plans:
+                receipts.append(self.publisher.publish_report(plan, report_content))
+        except PublicationRoutingError as exc:
+            raise AdapterError(str(exc)) from exc
+        refs = tuple(
+            receipt["guid"] for result in receipts for receipt in result["receipts"]
+        )
+        combined = PublicationReceipt(
+            verified=all(result["verified"] for result in receipts),
+            report_guid_refs=refs,
+            published_items=sum(result["published_items"] for result in receipts),
+        )
+        self._last_receipt = combined
+        return combined
+
+    def verify(self, receipt: PublicationReceipt) -> bool:
+        """Varmista, että viimeisin sovittimen kuittaus vastaa tarkistettavaa kuittausta."""
+        return self._last_receipt == receipt and receipt.verified
