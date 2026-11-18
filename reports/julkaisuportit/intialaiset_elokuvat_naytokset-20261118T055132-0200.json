@@ -52,7 +52,7 @@
     },
     "duplicates": {
       "status": "pass",
-      "note": "Aiempi näytöshistoria ja RSS-julkaisut vertailtiin. Uudet näytökset lisättiin pysyvillä screening_id-tunnisteilla; 25 aiempaa näytöstä siirrettiin completed-tilaan eikä poistettu."
+      "note": "Aiempi näytöshistoria ja RSS-julkaisut vertailtiin. Uudet näytökset lisättiin pysyvillä screening_id-tunnisteilla; 24 aiempaa näytöstä siirrettiin completed-tilaan eikä poistettu."
     },
     "guid_preservation": {
       "status": "pass",
@@ -129,7 +129,7 @@
   ],
   "decision": "approved",
   "reviewer_notes": [
-    "Sisällöllinen tarkistus hyväksyy päivityksen: 22 uutta näytöstä lisättiin, 25 aiempaa näytöstä siirrettiin menneisiin ja aiempi historia säilytettiin.",
+    "Sisällöllinen tarkistus hyväksyy päivityksen: 22 uutta näytöstä lisättiin, 24 aiempaa näytöstä siirrettiin menneisiin ja yksi Jämsän Kinotar -näytös sai ensisijaislähteen vahvistuksen. Aiempi historia säilytettiin.",
     "FinBolly-, FinTamil- ja Rasa Entertainment -Facebook-sivut jäivät käyttörajoituksen vuoksi tarkistamatta; niitä ei tulkittu tyhjäksi ohjelmistoksi.",
     "Ensimmäinen PR:n CI-ajo pysähtyi vain puuttuvan porttiraportin vuoksi. Automaattiset tarkistukset suoritetaan uudelleen raportin sisältävälle commitille, eikä PR:ää yhdistetä ennen nimenomaista success-tulosta."
   ]
