@@ -1,6 +1,6 @@
 # Seurantamoduulit, seurantakohteet ja julkaisukohteet
 
-**Versio:** 1.3.0  
+**Versio:** 1.4.0  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#133](https://github.com/mikknikk/aiheseurain/issues/133)
 
@@ -12,11 +12,11 @@
 
 ## Reitityssopimus
 
-data/publication-routing.json yhdistää moduulin, seurantakohteen ja yhden tai useamman julkaisukohteen. Reitti voi lisäksi rajata havaintotyypit. Sama kohdekohtainen raportti voidaan julkaista sekä kohteen omassa syötteessä että valinnaisessa yhdistelmäsyötteessä. Tuotannon julkaisurekisteri ja reititys ovat tässä vaiheessa tyhjiä: esimerkit eivät muuta nykyisiä RSS-syötteitä.
+data/publication-routing.json yhdistää moduulin, seurantakohteen ja täsmälleen yhden julkaisukohteen. Reitti voi lisäksi rajata havaintotyypit. Jokaisella seurantakohteella on yksi oma RSS-syöte, johon kaikki kyseisen kohteen raportit julkaistaan. Eri seurantakohteiden raportteja ei kopioida yhteiseen yhdistelmäsyötteeseen. Tuotannon julkaisurekisteri ja reititys ovat tässä vaiheessa tyhjiä: esimerkit eivät muuta nykyisiä RSS-syötteitä.
 
 ## Esimerkki
 
-examples/seurantakohteet/naytosvahti.json näyttää yhden näytösvahtimoduulin kaksi erillistä kohdetta: yksittäisten elokuvien näytökset ja festivaalit. examples/julkaisukohteet/ sisältää niille omat RSS-kanavat sekä yhdistelmäsyötteen. examples/julkaisureititys/naytosvahti.json reitittää kummankin kohteen omaan syötteeseensä ja lisäksi yhteiseen syötteeseen. Esimerkkien example.invalid-osoitteet ovat tarkoituksella ei-tuotannollisia.
+examples/seurantakohteet/naytosvahti.json näyttää yhden näytösvahtimoduulin kaksi erillistä kohdetta: yksittäisten elokuvien näytökset ja festivaalit. examples/julkaisukohteet/ sisältää kummallekin oman RSS-kanavan. examples/julkaisureititys/naytosvahti.json reitittää kummankin kohteen vain omaan syötteeseensä. Esimerkkien example.invalid-osoitteet ovat tarkoituksella ei-tuotannollisia.
 
 ## Tunnisteet, versiot ja omistajuus
 
@@ -40,9 +40,9 @@ Toteutuksen ensimmäinen tekninen osa on `scripts/publication_routing.py`. Se lu
 - `load_publication_context()` lataa ja validoi rekisterit.
 - `resolve_publication_plan()` ratkaisee yhden kohdekohtaisen raportin kanavat moduulin, seurantakohteen ja raportin havaintotyyppien perusteella.
 - `preview_publication_plan()` palauttaa kuivaharjoittelun tuloksen eikä kirjoita tiedostoja.
-- `LocalRoutedRssPublisher` on paikallinen RSS-sovitin, joka julkaisee saman kohderaportin sen omiin ja yhdistelmäsyötteisiin. Sovittimelle annetaan kirjoitusjuuri erikseen; se ei aktivoi tai kirjoita tuotantokohteisiin itsestään.
+- `LocalRoutedRssPublisher` on paikallinen RSS-sovitin, joka julkaisee kohderaportin vain kohteelle määriteltyyn omaan syötteeseen. Sovittimelle annetaan kirjoitusjuuri erikseen; se ei aktivoi tai kirjoita tuotantokohteisiin itsestään.
 
-Saman moduulin, seurantakohteen, ajon ja julkaisukohteen yhdistelmä tuottaa vakaan GUIDin. Uusinta-ajo ei lisää samaa raporttia uudelleen, ja saman GUIDin eri sisältö hylätään ristiriitana. Julkaisusovitin ja reitityksen ratkaisu ovat erillisiä luokkia ja vaiheita.
+Saman moduulin, seurantakohteen, ajon ja sen ainoan julkaisukohteen yhdistelmä tuottaa vakaan GUIDin. Reititys hylkää useita julkaisukohteita sisältävän reitin sekä saman seurantakohteen eri julkaisukanaviin jakavan määrityksen. Uusinta-ajo ei lisää samaa raporttia uudelleen, ja saman GUIDin eri sisältö hylätään ristiriitana. Julkaisusovitin ja reitityksen ratkaisu ovat erillisiä luokkia ja vaiheita.
 
 Orkestrointi välittää tulossopimuksen `target_reports`-kentän validoidut raportit reititetylle julkaisusovittimelle. Siirtymävaiheessa se tunnistaa myös vanhan metadataan sijoitetun listan. Julkaisusovittimelle välitetään kustakin raportista `target_id`, `observation_types` ja `report_content`. Jos kohderaportteja ei anneta, aiempi moduulikohtainen julkaisupolku jatkaa ennallaan. Tuotannon rekisterit ovat yhä tyhjiä eikä mikään uusi reitti tai kohde ole aktivoitu. Testit: `python -m unittest tests.test_publication_routing -v`.
 
@@ -65,6 +65,7 @@ Orkestrointi välittää validoidut kohderaportit #136:n reititetylle julkaisuso
 
 ## Muutoshistoria
 
+- **1.4.0 – 2026-11-18:** rajattiin jokainen seurantakohde yhteen omaan RSS-julkaisukohteeseen; yhdistelmäsyötteet poistettiin esimerkeistä ja reitityksen sopimuksesta (#142).
 - **1.3.0 – 2026-11-18:** lisättiin moduulin kohteet rekisteristä lataava ja erikseen suorittava yhteinen suorituskehys.
 - **1.2.0 – 2026-11-18:** dokumentoitiin kohdekohtaisen raportin sopimus, suorittajan tulosmalli ja laadunvarmistuksen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin julkaisureitityksen ajonaikainen sovitin ja orkestroinnin reititysintegraatio.
