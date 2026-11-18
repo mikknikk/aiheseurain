@@ -9,6 +9,7 @@ from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+from scripts.publication_journal import content_digest
 import re
 from typing import Any, Protocol, Callable
 import jsonschema
@@ -188,6 +189,12 @@ class ArtifactStore(Protocol):
     def commit(self, module_id: str, run_id: str, artifacts: dict[str, Any], *, expected_version: str) -> str: ...
 
 
+class PublicationJournal(Protocol):
+    """Pysyvä loki, joka tekee julkaisun osittaisista onnistumisista palautettavia."""
+    def prepare(self, record: dict[str, Any]) -> dict[str, Any]: ...
+    def advance(self, module_id: str, run_id: str, phase: str, *, updated_at: str, receipt: dict[str, Any] | None = None) -> dict[str, Any]: ...
+
+
 class Publisher(Protocol):
     def publish(self, module_id: str, run_id: str, report_content: str, *, idempotency_key: str) -> PublicationReceipt: ...
     def verify(self, receipt: PublicationReceipt) -> bool: ...
@@ -292,6 +299,7 @@ class ModuleOrchestrator:
     def __init__(self, *, executor: ModuleExecutor, quality_gate: QualityGate,
                  provider_router: Any = None, state_store: ModuleStateStore | None = None,
                  artifact_store: ArtifactStore | None = None, publisher: Publisher | None = None,
+                 publication_journal: PublicationJournal | None = None,
                  comparator: ShadowComparator | None = None, recorder: RunRecorder | None = None,
                  registry_loader: Callable[..., RegistryResult] = load_registry):
         self.executor=executor
@@ -300,6 +308,7 @@ class ModuleOrchestrator:
         self.state_store=state_store
         self.artifact_store=artifact_store
         self.publisher=publisher
+        self.publication_journal=publication_journal
         self.comparator=comparator
         self.recorder=recorder
         self.registry_loader=registry_loader
@@ -377,8 +386,8 @@ class ModuleOrchestrator:
                     raise ProductionActivationRequired("Tuotantokäyttö vaatii erillisen hyväksynnän.")
                 if module.status!="active":
                     raise ModuleInactiveError("Passiivista moduulia ei voi suorittaa tuotantotilassa.")
-                if any(item is None for item in (self.state_store,self.artifact_store,self.publisher)):
-                    raise OrchestrationError("Tuotantoajon tallennus- ja julkaisupalvelut puuttuvat.")
+                if any(item is None for item in (self.state_store,self.artifact_store,self.publisher,self.publication_journal)):
+                    raise OrchestrationError("Tuotantoajon tallennus-, manifesti- ja julkaisupalvelut puuttuvat.")
                 state,state_sha=self.state_store.load(request.module_id)
                 validate_module_state(state,definition)
                 artifact_version=self.artifact_store.load_version(request.module_id)
@@ -418,11 +427,30 @@ class ModuleOrchestrator:
                 return self._result(request,module_type,started,status="succeeded",phase=phase,
                                     source_scan_complete=True,quality_passed=True,comparison=comparison)
 
-            phase="publication"
             target_reports = (
                 [item.to_publication_dict() for item in output.target_reports]
                 if output.target_reports else (output.metadata or {}).get("target_reports")
             )
+            # Manifesti kirjoitetaan ennen ensimmäistä ulkoista julkaisukirjoitusta.
+            # Jos valmistelu ei onnistu, julkaisu ei ala lainkaan.
+            phase="publication"
+            report_payload = target_reports if target_reports is not None else output.report_content
+            publication_targets = (
+                sorted(item["target_id"] for item in target_reports)
+                if target_reports is not None else [request.module_id]
+            )
+            self.publication_journal.prepare({
+                "module_id": request.module_id,
+                "run_id": request.run_id,
+                "idempotency_key": f"{request.module_id}:{request.run_id}",
+                "report_sha256": content_digest(report_payload),
+                "artifacts_sha256": content_digest(output.artifacts or {}),
+                "state_sha256": state_sha,
+                "artifact_version": artifact_version,
+                "publication_targets": publication_targets,
+                "prepared_at": output.checked_at,
+            })
+            phase="publication"
             if target_reports is not None:
                 routed_publish = getattr(self.publisher, "publish_target_reports", None)
                 if not callable(routed_publish):
@@ -439,11 +467,22 @@ class ModuleOrchestrator:
             if not self.publisher.verify(receipt) or not receipt.verified:
                 return self._result(request,module_type,started,status="failed",phase=phase,
                                     source_scan_complete=True,quality_passed=True,error_code="publication_unverified")
+            self.publication_journal.advance(
+                request.module_id, request.run_id, "published",
+                updated_at=output.checked_at,
+                receipt={"verified": receipt.verified,
+                         "report_guid_refs": list(receipt.report_guid_refs),
+                         "published_items": receipt.published_items},
+            )
 
             phase="artifact_persistence"
             self.artifact_store.commit(
                 request.module_id,request.run_id,output.artifacts or {},
                 expected_version=artifact_version
+            )
+            self.publication_journal.advance(
+                request.module_id, request.run_id, "artifacts_persisted",
+                updated_at=output.checked_at,
             )
 
             phase="checkpoint"
@@ -459,6 +498,10 @@ class ModuleOrchestrator:
                 recorded_on=output.checked_at[:10]
             )
             self.state_store.save(request.module_id,updated,expected_sha=state_sha)
+            self.publication_journal.advance(
+                request.module_id, request.run_id, "checkpoint_updated",
+                updated_at=output.checked_at,
+            )
             return self._result(request,module_type,started,status="succeeded",phase="complete",
                                 source_scan_complete=True,quality_passed=True,published=True,
                                 checkpoint_updated=True)

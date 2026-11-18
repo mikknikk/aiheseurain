@@ -8,6 +8,7 @@ import unittest
 
 from scripts.module_registry import load_registry
 from scripts.module_state import StateConflictError
+from scripts.publication_journal import JsonFilePublicationJournal, PublicationJournalConflict
 from dataclasses import replace
 from scripts.module_orchestrator import (
     ModuleExecutionOutput, ModuleOrchestrator, ModuleRunRequest,
@@ -90,6 +91,7 @@ class LocalAdapterTests(unittest.TestCase):
             self.root, {"tolkien": "feeds/tolkien.xml"}
         )
         self.recorder = JsonlRunRecorder(self.root / "run-history" / "runs.jsonl")
+        self.journal = JsonFilePublicationJournal(self.root / "publication-manifests")
 
     def tearDown(self):
         self.temp.cleanup()
@@ -107,6 +109,7 @@ class LocalAdapterTests(unittest.TestCase):
             state_store=self.state_store,
             artifact_store=self.artifact_store,
             publisher=self.publisher,
+            publication_journal=self.journal,
             recorder=self.recorder,
             registry_loader=lambda include_inactive=True: registry,
         )
@@ -163,6 +166,32 @@ class LocalAdapterTests(unittest.TestCase):
         )
         self.assertEqual(list(artifacts["runs"]), [req.run_id])
 
+
+    def test_manifest_records_every_successful_publication_phase(self):
+        """Manifesti todentaa julkaisun, artefaktit ja checkpointin valmistumisen."""
+        req = request("manifest-run-001")
+        result = self.orchestrator(req, successful_output(req)).run(req, production_authorized=True)
+        manifest = self.journal.load("tolkien", req.run_id)
+        self.assertEqual(result.status, "succeeded")
+        self.assertEqual(manifest["phase"], "checkpoint_updated")
+        self.assertEqual(manifest["publication_targets"], ["tolkien"])
+        self.assertEqual(manifest["receipt"]["published_items"], 1)
+
+    def test_manifest_rejects_same_run_with_different_report(self):
+        """Saman moduuli-/ajotunnisteen eri raporttisisältö ei voi korvata manifestia."""
+        req = request("manifest-conflict-001")
+        self.orchestrator(req, successful_output(req)).run(req, production_authorized=True)
+        changed = successful_output(req)
+        changed = replace(changed, report_content="<article>eri sisältö</article>")
+        with self.assertRaises(PublicationJournalConflict):
+            self.journal.prepare({
+                "module_id": "tolkien", "run_id": req.run_id,
+                "idempotency_key": f"tolkien:{req.run_id}",
+                "report_sha256": __import__("scripts.publication_journal", fromlist=["content_digest"]).content_digest(changed.report_content),
+                "artifacts_sha256": __import__("scripts.publication_journal", fromlist=["content_digest"]).content_digest(changed.artifacts),
+                "state_sha256": "state-sha", "artifact_version": "artifact-v",
+                "publication_targets": ["tolkien"], "prepared_at": req.requested_at,
+            })
 
     def test_state_store_rejects_stale_sha(self):
         """Vanha SHA ei saa ylikirjoittaa toisen ajon päivittämää tilaa."""

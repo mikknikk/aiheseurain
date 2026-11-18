@@ -142,3 +142,22 @@ Tallennus- ja julkaisutestit käyttävät väliaikaisia hakemistoja. Ne eivät k
 - **1.2.0 – 2026-11-18:** lisättiin versioitu kohderaportin tulossopimus, suorittajan usean kohderaportin tulos ja laadunvarmistuksen kohde-, versio-, havaintotyyppi- ja seurantajaksojen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin paikalliset SHA-tarkistetut tallennus-, ajotulos- ja RSS-julkaisusovittimet sekä niiden testaus- ja tuotantorajaukset.
 - **1.0.0 – 2026-11-18:** määriteltiin yhteinen suorituspyyntö ja tulos, orkestroinnin elinkaari, varjotila, tuotannon hyväksyntäportti, idempotentit tallennus- ja julkaisurajapinnat sekä yleisen tapahtumavahdin moduuli-integraatio.
+
+## Julkaisumanifesti ja palautuminen (versio 1.2.0)
+
+Tuotantotilan orkestrointi vaatii pysyvän `PublicationJournal`-sovittimen. Se luo manifestin ennen ensimmäistä julkaisukirjoitusta. Jos manifestin valmistelu ei onnistu, julkaisua ei aloiteta. Manifestiin ei tallenneta raporttien tai lähteiden varsinaista sisältöä, vaan niiden SHA-256-tiivisteet, moduuli- ja ajotunnisteet, julkaisukohteet, lähtötilan SHA, artefaktiversio ja idempotenssiavain.
+
+Manifestin vaiheet ovat yksisuuntaiset:
+
+1. `prepared` – hyväksytyn raportin ja lähtöversioiden tiedot on kirjattu pysyvästi.
+2. `published` – julkaisusovitin on palauttanut kuitin ja julkaisu on luettu takaisin sekä varmennettu.
+3. `artifacts_persisted` – moduulin prosessi-artefaktit on tallennettu.
+4. `checkpoint_updated` – viimeisin onnistunut checkpoint on tallennettu.
+
+Saman moduuli-/ajotunnisteen ja saman raporttisisällön uusinta käyttää samaa idempotenssiavainta. Jo saavutettua manifestivaihetta ei kirjoiteta taaksepäin. Jos ajo katkeaa julkaisun jälkeen, uusinta voi toistaa julkaisupyynnön samalla avaimella; julkaisusovittimen on tunnistettava jo julkaistu sisältö. Artefakti- ja checkpoint-tallennuksen on vastaavasti oltava idempotentteja. Sama ajotunniste eri raporttisisällöllä hylätään ristiriitana. Lähtötilan SHA ja artefaktiversio säilytetään alkuperäisinä auditointitietoina.
+
+`JsonFilePublicationJournal` on paikallinen atominen tiedostosovitin ja testiväline. Se käyttää lukitusta, väliaikaistiedostoa, `fsync`-varmistusta ja atomista tiedostonvaihtoa. Se ei ole GitHubin tuotantosovitin. Tuotantokäyttö vaatii vastaavan pysyvän ja atomisen adapterin; nykyinen RSS/Pages-julkaisu ei vielä käytä tätä uutta manifestia. Manifesti parantaa palautumisen sopimusta ja testattavuutta, mutta ei yksin takaa ulkoisen Pages-julkaisun atomisuutta tai takaisinlukua julkisesta URL-osoitteesta.
+
+### Versiohistoria
+
+- **1.2.0 – 2026-11-18:** lisättiin pysyvä julkaisumanifesti, neljän vaiheen yksisuuntaiset tilasiirtymät ja saman ajon ristiriita-/uusintatestit. Tuotantosovitin ja nykyisen Pages-julkaisun kytkentä rajattiin erilliseksi vaiheeksi.
