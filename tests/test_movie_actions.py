@@ -30,6 +30,7 @@ def movie():
         "first_seen_at": NOW, "last_seen_at": NOW, "screening_refs": ["screening-1"],
         "aliases": [], "external_ids": [{"provider": "imdb", "value": "tt1234567"}],
         "identity_confidence": "high", "needs_review": False,
+        "discovery_channels": ["user-criteria"],
         "sources": [{"publisher": "Teatteri", "url": "https://example.test/show",
                      "checked_at": NOW, "claim_level": "official"}],
         "criterion_matches": [
