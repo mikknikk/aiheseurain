@@ -15,6 +15,11 @@ ROOT = Path(__file__).resolve().parents[1]
 NOW = "2026-11-18T08:00:00+02:00"
 RETRY = "2026-11-18T08:01:00+02:00"
 WEBHOOK = "https://discord.com/api/webhooks/test-secret/test-token"
+SCREENING = {
+    "screening_id": "screening-1", "title": "Testielokuva", "venue": "Testiteatteri",
+    "city": "Helsinki", "starts_at": NOW, "status": "scheduled",
+    "source_urls": ["https://example.test/show"],
+}
 
 
 def movie():
@@ -48,7 +53,7 @@ class MovieActionTests(unittest.TestCase):
             "criterion_id": "not-matched", "action_id": "ignored", "version": "1.0.0",
             "type": "discord_webhook", "enabled": True,
         })
-        outbox = enqueue_movie_actions(movie(), settings, empty_outbox(), NOW)
+        outbox = enqueue_movie_actions(movie(), settings, empty_outbox(), NOW, screening_observations=[SCREENING])
         self.assertEqual(len(outbox["actions"]), 2)
         self.assertEqual({item["criterion_id"] for item in outbox["actions"]},
                          {"test-criterion-a", "test-criterion-b"})
@@ -60,8 +65,8 @@ class MovieActionTests(unittest.TestCase):
 
     def test_duplicate_enqueue_is_idempotent_but_different_criteria_remain_distinct(self):
         """Sama toiminto ei monistu, mutta kahden eri kriteerin toiminnot säilyvät."""
-        first = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
-        second = enqueue_movie_actions(movie(), config(), first, NOW)
+        first = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW, screening_observations=[SCREENING])
+        second = enqueue_movie_actions(movie(), config(), first, NOW, screening_observations=[SCREENING])
         self.assertEqual(len(first["actions"]), 2)
         self.assertEqual(len(second["actions"]), 2)
         self.assertEqual(len({item["idempotency_key"] for item in second["actions"]}), 2)
@@ -72,18 +77,19 @@ class MovieActionTests(unittest.TestCase):
         adapter = DiscordWebhookAdapter(
             WEBHOOK, lambda url, payload, key: calls.append((url, payload, key))
         )
-        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW, screening_observations=[SCREENING])
         updated = dispatch_pending_actions(
             outbox, {"discord_webhook": adapter}, NOW,
         )
         self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0][1]["screening_observations"][0]["venue"], "Testiteatteri")
         self.assertTrue(all(item["status"] == "sent" for item in updated["actions"]))
         self.assertNotIn("test-secret", repr(adapter))
         self.assertNotIn("test-token", json.dumps(updated))
 
     def test_failed_delivery_is_retryable_and_does_not_store_secret(self):
         """Verkkovirhe säilyy outboxissa uusintaa varten ilman salaisuuden kirjaamista."""
-        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW, screening_observations=[SCREENING])
         class FailingTransport:
             def send(self, payload, idempotency_key):
                 raise RetryableDeliveryError("Webhook rejected")
@@ -109,7 +115,7 @@ class MovieActionTests(unittest.TestCase):
 
     def test_rate_limit_retry_after_is_respected(self):
         """Rate limit -kuljettimen ilmoittamaa retry-after-viivettä noudatetaan."""
-        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW, screening_observations=[SCREENING])
         class RateLimited:
             def send(self, payload, idempotency_key):
                 raise RetryableDeliveryError("rate limited", retry_after_seconds=120)
@@ -126,7 +132,7 @@ class MovieActionTests(unittest.TestCase):
 
     def test_ambiguous_delivery_requires_manual_resolution(self):
         """Epäselvää aikakatkaisua ei uusita automaattisesti kaksoisviestin riskin vuoksi."""
-        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW, screening_observations=[SCREENING])
         class TimedOut:
             def send(self, payload, idempotency_key):
                 raise TimeoutError("response lost")
