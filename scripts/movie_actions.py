@@ -6,6 +6,7 @@ injektoitua kuljetinta; webhook-salaisuutta ei tallenneta rekisteriin tai lokiin
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import datetime, timedelta
 import fcntl
 import hashlib
 import json
@@ -139,6 +140,7 @@ def enqueue_movie_actions(
             "attempts": 0,
             "created_at": created_at,
             "updated_at": created_at,
+            "next_attempt_at": created_at,
             "sent_at": None,
             "last_error_code": None,
         })
@@ -180,6 +182,12 @@ def dispatch_pending_actions(
     for action in result["actions"]:
         if action["status"] != "pending":
             continue
+        attempted = datetime.fromisoformat(attempted_at.replace("Z", "+00:00"))
+        due_at = action.get("next_attempt_at")
+        if due_at is not None:
+            due = datetime.fromisoformat(due_at.replace("Z", "+00:00"))
+            if due > attempted:
+                continue
         adapter = adapters.get(action["action_type"])
         try:
             if adapter is None:
@@ -191,10 +199,19 @@ def dispatch_pending_actions(
             action["last_error_code"] = type(exc).__name__
             if action["attempts"] >= max_attempts:
                 action["status"] = "failed"
+                action["next_attempt_at"] = None
+            else:
+                retry_after = getattr(exc, "retry_after_seconds", None)
+                if not isinstance(retry_after, (int, float)) or retry_after <= 0:
+                    retry_after = min(60 * (2 ** (action["attempts"] - 1)), 21600)
+                action["next_attempt_at"] = (
+                    attempted + timedelta(seconds=retry_after)
+                ).isoformat()
         else:
             action["attempts"] += 1
             action["updated_at"] = attempted_at
             action["sent_at"] = attempted_at
+            action["next_attempt_at"] = None
             action["status"] = "sent"
             action["last_error_code"] = None
     validate_outbox(result)
