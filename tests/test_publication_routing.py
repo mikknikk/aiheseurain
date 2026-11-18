@@ -111,6 +111,23 @@ class PublicationRoutingTests(unittest.TestCase):
         plan = resolve_publication_plan(context(), module_id="demo", target_id="demo.film",
                                         run_id="run-1", observation_types=["film-screening"])
         self.assertNotIn("inactive", plan.publication_ids)
+    def test_inactive_module_and_target_can_only_be_previewed(self):
+        data = context()
+        data["modules"]["demo"]["status"] = "inactive"
+        data["targets"]["demo.film"][0]["status"] = "inactive"
+        plan = resolve_publication_plan(
+            data, module_id="demo", target_id="demo.film", run_id="run-3",
+            observation_types=["film-screening"], include_inactive=True,
+        )
+        preview = preview_publication_plan(plan)
+        self.assertFalse(preview["would_publish"])
+        self.assertIn("module:demo", preview["inactive_refs"])
+        self.assertIn("target:demo.film", preview["inactive_refs"])
+        with tempfile.TemporaryDirectory() as directory:
+            publisher = LocalRoutedRssPublisher(Path(directory), data)
+            with self.assertRaises(PublicationRoutingError):
+                publisher.publish_report(plan, "<p>Ei julkaista</p>")
+            self.assertEqual(list(Path(directory).rglob("*.xml")), [])
 
     def test_orchestration_adapter_accepts_target_reports_and_verifies_receipt(self):
         data = context()
