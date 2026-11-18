@@ -36,6 +36,7 @@ class PublicationPlan:
     run_id: str
     publication_ids: tuple[str, ...]
     inactive_publication_ids: tuple[str, ...]
+    inactive_refs: tuple[str, ...]
     observation_types: tuple[str, ...]
 
 
@@ -127,33 +128,54 @@ def resolve_publication_plan(
         raise PublicationRoutingError(f"Moduuli {module_id} ei omista kohdetta {target_id}.")
     if not isinstance(run_id, str) or not run_id.strip():
         raise PublicationRoutingError("Ajon tunniste puuttuu.")
-    types = tuple(sorted(set(observation_types)))
-    if not types or any(not isinstance(item, str) or not item.strip() for item in types):
+    if not isinstance(observation_types, (list, tuple)) or not observation_types:
         raise PublicationRoutingError("Raportilla pitää olla vähintään yksi havaintotyyppi.")
+    if any(not isinstance(item, str) or not item.strip() for item in observation_types):
+        raise PublicationRoutingError("Havaintotyyppien pitää olla ei-tyhjiä merkkijonoja.")
+    types = tuple(sorted(set(observation_types)))
     routes = [
         route for route in context["routing"]["routes"]
         if route["module_ref"] == module_id and route["target_ref"] == target_id
-        and route["status"] == "active" and set(route["observation_types"]).intersection(types)
+        and set(route["observation_types"]).intersection(types)
     ]
-    publication_ids = sorted({pid for route in routes for pid in route["publication_refs"]})
-    if not publication_ids:
+    if not routes:
         raise PublicationRoutingError(
-            f"Aktiivista julkaisureittiä ei löydy moduulille {module_id}, kohteelle {target_id} "
+            f"Julkaisureittiä ei löydy moduulille {module_id}, kohteelle {target_id} "
             f"ja havaintotyypeille {', '.join(types)}."
         )
-    inactive = []
+    inactive_refs = []
+    if context["modules"][module_id].get("status") != "active":
+        inactive_refs.append(f"module:{module_id}")
+    target_entry = context["targets"][target_id][0]
+    if target_entry.get("status") != "active":
+        inactive_refs.append(f"target:{target_id}")
+    active_routes = []
+    for route in routes:
+        if route["status"] == "active":
+            active_routes.append(route)
+        else:
+            inactive_refs.append(f"route:{route['route_id']}")
+    publication_ids = sorted({pid for route in active_routes for pid in route["publication_refs"]})
+    if not publication_ids and include_inactive:
+        publication_ids = sorted({pid for route in routes for pid in route["publication_refs"]})
+    if not publication_ids:
+        raise PublicationRoutingError("Sopivaa aktiivista julkaisureittiä ei löytynyt.")
+    inactive_publications = []
     for publication_id in publication_ids:
         entry, publication = context["publications"][publication_id]
         if entry["status"] != "active" or publication["status"] != "active":
-            inactive.append(publication_id)
-    if inactive and not include_inactive:
+            inactive_publications.append(publication_id)
+            inactive_refs.append(f"publication:{publication_id}")
+    if inactive_refs and not include_inactive:
         raise PublicationRoutingError(
-            "Reitti viittaa passiivisiin julkaisukohteisiin: " + ", ".join(inactive)
+            "Reititys sisältää passiivisia osia: " + ", ".join(sorted(set(inactive_refs)))
         )
     return PublicationPlan(
         module_id=module_id, target_id=target_id, run_id=run_id,
         publication_ids=tuple(publication_ids),
-        inactive_publication_ids=tuple(inactive), observation_types=types,
+        inactive_publication_ids=tuple(sorted(set(inactive_publications))),
+        inactive_refs=tuple(sorted(set(inactive_refs))),
+        observation_types=types,
     )
 
 
@@ -164,7 +186,8 @@ def preview_publication_plan(plan: PublicationPlan) -> dict[str, Any]:
         "observation_types": list(plan.observation_types),
         "publication_ids": list(plan.publication_ids),
         "inactive_publication_ids": list(plan.inactive_publication_ids),
-        "would_publish": not bool(plan.inactive_publication_ids),
+        "would_publish": not bool(plan.inactive_refs),
+        "inactive_refs": list(plan.inactive_refs),
     }
 
 
@@ -192,8 +215,8 @@ class LocalRoutedRssPublisher:
 
     def publish_report(self, plan: PublicationPlan, report_content: str) -> dict[str, Any]:
         """Julkaise yksi kohderaportti suunnitelman kanaviin idempotentisti."""
-        if plan.inactive_publication_ids:
-            raise PublicationRoutingError("Passiiviseen julkaisukohteeseen ei saa kirjoittaa.")
+        if plan.inactive_refs:
+            raise PublicationRoutingError("Passiiviseen moduuliin, kohteeseen tai julkaisureittiin ei saa kirjoittaa.")
         if not isinstance(report_content, str) or not report_content.strip():
             raise PublicationRoutingError("Julkaistava kohderaportti on tyhjä.")
         report_hash = hashlib.sha256(report_content.encode("utf-8")).hexdigest()
