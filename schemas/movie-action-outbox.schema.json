@@ -29,7 +29,8 @@
           "created_at",
           "updated_at",
           "sent_at",
-          "last_error_code"
+          "last_error_code",
+          "next_attempt_at"
         ],
         "properties": {
           "event_id": {
@@ -166,6 +167,13 @@
               "string",
               "null"
             ]
+          },
+          "next_attempt_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
           }
         },
         "additionalProperties": false
