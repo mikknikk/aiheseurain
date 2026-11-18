@@ -43,4 +43,4 @@ Toteutuksen ensimmäinen tekninen osa on `scripts/publication_routing.py`. Se lu
 
 Saman moduulin, seurantakohteen, ajon ja julkaisukohteen yhdistelmä tuottaa vakaan GUIDin. Uusinta-ajo ei lisää samaa raporttia uudelleen, ja saman GUIDin eri sisältö hylätään ristiriitana. Julkaisusovitin ja reitityksen ratkaisu ovat erillisiä luokkia ja vaiheita.
 
-Tämä sovitin on vielä erillinen moduuliajon julkaisurajapinnasta: tuotantoorkestroinnin automaattinen reititetty julkaisu edellyttää seuraavaa integraatiovaihetta, jossa kohdekohtaiset raportit annetaan tälle sovittimelle. Nykyistä tuotannon julkaisupolkua ei ole vaihdettu eikä rekistereitä aktivoitu. Testit: `python -m unittest tests.test_publication_routing -v`.
+Orkestrointi tunnistaa nyt suorittajan metadataan sisältyvän `target_reports`-listan ja välittää sen reititetylle julkaisusovittimelle. Jokaisessa listan alkiossa on täsmälleen `target_id`, `observation_types` ja `report_content`. Jos listaa ei anneta, aiempi moduulikohtainen julkaisupolku jatkaa ennallaan. Tuotannon rekisterit ovat yhä tyhjiä eikä mikään uusi reitti tai kohde ole aktivoitu. Testit: `python -m unittest tests.test_publication_routing -v`.
