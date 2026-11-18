@@ -115,7 +115,12 @@ Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään k
 - Seuranta: julkinen toiminta, oikeudelliset ja viralliset tapahtumat, lausunnot, tuotannot/elokuvahankkeet ja julkaisut sekä musiikki, kappaleet, musiikkivideot ja soundtrackit. Kirjaa myös merkittävät musiikin julkaisu-, levitys- ja vastaanottouutiset.
 - Käytä nimen variantteja ja translitterointeja. Varmista, ettei uutinen koske samannimistä henkilöä.
 - Oikeusasioissa erottele täsmällisesti syytteet, tuomiot, valitukset, viranomaistoimet ja tuomioistuinratkaisut. Älä esitä syytettä tuomiona.
-- Tapahtumaloki: ei vielä merkintöjä.
+- **18.11.2026 – VIRALLISESTI VAHVISTETTU (istuntolistauksen sisältö):** Intian korkein oikeus listasi asian Crl.A. No. 3785/2026 päivittäisen istuntolistan kohtaan 120 Chief Justice’s Courtissa. Valittaja on Aridaman ja vastaaja Gurmeet Ram Rahim Singh sekä toinen vastaaja. Listassa asia on otsikon *For Admission and I.R.* alla; siihen liittyy hakemus IA No. 225562/2026 lisäasiakirjojen toimittamiseen.
+- **Menettelyn tila:** istuntolista ei todista, että asia ehdittiin käsitellä. Uusimpien määräysten sivulla ei näkynyt asianumerolla annettua määräystä tarkistushetkellä, ja tapaustilan hakulomake vaati CAPTCHA-vahvistuksen. Käsittelyn toteutuminen ja mahdollinen ratkaisu jäivät avoimiksi.
+- **Tausta:** valitus koskee Punjabin ja Haryanan korkeimman oikeuden 7.3.2026 tekemää vapauttavaa ratkaisua toimittaja Ram Chander Chhatrapatin vuoden 2002 murhajutussa.
+- RSS GUID: `urn:aiheseurain:gurmeet-ram-rahim-singh:2026-11-18:aridaman-appeal-cause-list`.
+- Seurantajakso: 16.11.2026 (aloituskellonaika tuntematon) – 2026-11-18T13:13:52+02:00.
+- Musiikki- ja elokuvajulkaisuista tai uudesta väliaikaisesta vapautuksesta ei löytynyt ajanjaksolle osuvaa vahvistettua ilmoitusta tarkistetuista lähteistä. Virallisen Dera YouTube -kanavan sisältö jäi teknisen rajoituksen vuoksi tarkistamatta.
 
 ### Muumit
 
