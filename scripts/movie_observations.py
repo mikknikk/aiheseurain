@@ -314,6 +314,50 @@ def reconcile_movie_observations(
     return result
 
 
+def screening_snapshot(screening_event: dict[str, Any]) -> dict[str, Any]:
+    """Muodosta toimintotapahtuman muuttumaton näytösotos #109:n nykyisestä tapahtumasta."""
+    screening_id = screening_event.get("canonical_event_id")
+    attributes = screening_event.get("attributes")
+    if not isinstance(screening_id, str) or not isinstance(attributes, dict):
+        raise MovieObservationError("Näytöstapahtumasta puuttuu tunniste tai ominaisuudet.")
+    sources = _normalize_sources(screening_event.get("sources", []))
+    return {
+        "screening_id": screening_id,
+        "title": attributes.get("title") or "Nimetön näytös",
+        "venue": attributes.get("venue"),
+        "city": attributes.get("city"),
+        "starts_at": attributes.get("starts_at"),
+        "status": attributes.get("status") or "unknown",
+        "source_urls": sorted({item["url"] for item in sources}),
+    }
+
+
+def build_observations_from_screening_state(
+    event_state: dict[str, Any],
+    film_metadata_by_screening: dict[str, dict[str, Any]] | None,
+    criterion_matches_by_screening: dict[str, list[dict[str, Any]]] | None,
+    observed_at: str,
+) -> list[dict[str, Any]]:
+    """Lue #109:n film-screening-tila ja muodosta elokuvakoosteet ilman näytöshistorian kopiointia."""
+    if event_state.get("event_type_id") != "film-screening":
+        raise MovieObservationError("Elokuvahavaintoja voi muodostaa vain film-screening-tapahtumatilasta.")
+    current_events = event_state.get("current_events")
+    if not isinstance(current_events, list):
+        raise MovieObservationError("film-screening-tilan current_events puuttuu.")
+    metadata = film_metadata_by_screening or {}
+    matches = criterion_matches_by_screening or {}
+    observations = []
+    for event in current_events:
+        screening_id = event.get("canonical_event_id")
+        observations.append(build_movie_observation(
+            event,
+            metadata.get(screening_id),
+            matches.get(screening_id, []),
+            observed_at,
+        ))
+    return observations
+
+
 class JsonFileMovieRegistryStore:
     """Paikallinen SHA-tarkistettu rekisteritallennus; testit käyttävät väliaikaistiedostoja."""
 
