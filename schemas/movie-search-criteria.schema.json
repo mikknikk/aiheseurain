@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/movie-search-criteria.schema.json",
+  "title": "Elokuvien käyttäjän hyväksymä hakukriteeristö",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "criteria"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "criteria": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/criterion"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "condition": {
+      "type": "object",
+      "required": [
+        "field",
+        "operator",
+        "value",
+        "reason"
+      ],
+      "properties": {
+        "field": {
+          "enum": [
+            "title",
+            "aliases",
+            "director_ids",
+            "cast_ids",
+            "production_company_ids",
+            "franchise_ids",
+            "countries",
+            "languages",
+            "genres",
+            "keywords",
+            "release_year",
+            "release_type"
+          ]
+        },
+        "operator": {
+          "enum": [
+            "equals",
+            "contains_normalized",
+            "contains_any_normalized",
+            "in_range"
+          ]
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "min",
+                "max"
+              ],
+              "properties": {
+                "min": {
+                  "type": "integer"
+                },
+                "max": {
+                  "type": "integer"
+                }
+              },
+              "additionalProperties": false
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "criterion": {
+      "type": "object",
+      "required": [
+        "criterion_id",
+        "version",
+        "name",
+        "description",
+        "category",
+        "status",
+        "valid_from",
+        "valid_until",
+        "match_policy",
+        "include_conditions",
+        "exclude_conditions",
+        "action_ids",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "criterion_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "enum": [
+            "person",
+            "filmography",
+            "production_company",
+            "franchise",
+            "country",
+            "language",
+            "genre",
+            "topic",
+            "festival",
+            "award",
+            "other"
+          ]
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "active",
+            "paused",
+            "retired"
+          ]
+        },
+        "valid_from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "valid_until": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "match_policy": {
+          "enum": [
+            "all",
+            "any"
+          ]
+        },
+        "include_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "exclude_conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/condition"
+          }
+        },
+        "action_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
