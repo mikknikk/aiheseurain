@@ -24,8 +24,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** valmis ja yhdistetty PR:ssä #115.
 - **#106 – Moduulikohtainen tila ja historia:** valmis ja yhdistetty PR:ssä #116.
 - **#107 – AI- ja tutkimuspalvelujen adapterisopimukset:** valmis ja yhdistetty PR:ssä #117. AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, rajatut uusinnat, kustannusrajat ja deterministiset testiadapterit ovat käytettävissä.
-- **#108 – Yhteinen moduulien suoritusorkestrointi:** toteutuksen runko yhdistetty PR:ssä #118. Varjotila, tuotannon erillinen hyväksyntäportti, elinkaaren koordinointi ja tapahtumavahtisuorittaja ovat käytettävissä. Konkreettiset pysyvät tallennus- ja RSS-julkaisusovittimet puuttuvat vielä.
-- **#120 – Orkestroinnin pysyvät tallennus-, julkaisu- ja ajotulosadapterit:** toteutuksessa. Paikalliset SHA-tarkistetut moduulitila- ja artefaktisovittimet, tietosuojattu ajotulosloki, idempotentti RSS-julkaisusovitin sekä rakenteellinen laadunvarmistusportti on lisätty; yksikkötestit ja CI-varmennus ovat työn alla. Ei tuotantokäyttöönottoa.
+- **#108 – Yhteinen moduulien suoritusorkestrointi:** valmis; PR:t #118 ja #124 yhdistetty. Suorituspyynnön ja tuloksen sopimukset, varjotila, tuotannon erillinen hyväksyntäportti, elinkaaren koordinointi, tapahtumavahtisuorittaja sekä paikalliset tallennus- ja julkaisusovittimet ovat käytettävissä. Tuotantokäyttöönotto on erillinen hyväksyttävä päätös.
+- **#120 – Orkestroinnin pysyvät tallennus-, julkaisu- ja ajotulosadapterit:** valmis; PR #124 yhdistetty. Paikalliset SHA-tarkistetut moduulitila- ja artefaktisovittimet, tietosuojattu ajotulosloki, idempotentti RSS-julkaisusovitin sekä rakenteellinen laadunvarmistusportti on testattu eristetyissä väliaikaishakemistoissa.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 
@@ -37,6 +37,9 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 - [x] **Moduulikohtainen tila ja historia (#106).** Kymmenen tilatiedostoa, vanhojen checkpointien ja historiaviitteiden migraatio sekä idempotentti, osittaisia ajoja hylkäävä checkpoint-siirtymä.
 - [x] **Nykyisten aiheiden ja näytösvahdin siirto itsenäisiin moduulimäärittelyihin (#105).** Yhdeksän topic-moduulia ja yksi process-moduuli on rekisteröity inactive-tilassa. Lähdeviitteet, kieli- ja alueprofiilit sekä näytösvahtimoduulin tapahtumatyyppi validoidaan CI:ssä.
+- [x] **Yhteinen moduulien suoritusorkestrointi (#108).** PR #118 toteuttaa suorituspyynnön ja tuloksen, moduulin ratkaisun rekisteristä, suorittajan ja laadunvarmistusportin koordinoinnin, varjotilan, tuotannon erillisen hyväksyntäportin, tapahtumavahtisuorittimen ja moduulikohtaisen virheiden eristyksen. PR #124 täydentää elinkaaren paikallisilla SHA-tarkistetuilla tallennus- ja julkaisusovittimilla. Tuotantokäyttöönottoa tai automaatioasetusten muutoksia ei tehty.
+- [x] **Orkestroinnin paikalliset tallennus- ja julkaisusovittimet (#120).** Moduulitilan ja artefaktien tallennus käyttää SHA-vertailua, prosessilukkoa ja atomista kirjoitusta. Ajotulosloki jättää raporttisisällön ja salaisuudet pois. Eristetty RSS-julkaisija säilyttää aiemmat GUIDit, torjuu ristiriitaiset uusinnat ja lukee XML:n takaisin. Rakenteellinen laadunvarmistussovitin estää puutteellisen suorittajatuloksen julkaisun. Testit käyttävät väliaikaishakemistoja.
+
 - [x] **Yleinen tapahtumavahti (#109).** PR:t #113 ja #114 toteuttavat tapahtumatyypin ja historian skeemat, yleisen käsittelyytimen, lähdesovittimen rajapinnan, täsmällisen identiteettipohjaisen duplikaattien yhdistämisen, ristiriitojen säilyttämisen, tilasiirtymät sekä näytöshistorian lukevan ja muistissa tapahtumia käsittelevän sovittimen. Konferenssiesitys on toinen tapahtumatyyppi. Tuotannon näytösvahtia tai automaatioasetuksia ei vaihdettu.
 
 - [x] **Nykyisten moduulien inventaario ja hallitun siirtymän suunnitelma (#104).** Dokumentti `docs/moduulisiirtyman-inventaario.md` kuvaa yhdeksän uutisaiheen ja erillisen näytösvahdin moduulijaon, lähderekisterien kieli- ja aluekattavuuden, tiedostojen siirtokartan, omistajuusrajat, päällekkäisyysriskit sekä vaiheittaisen palautusmenettelyn. PR #112 on yhdistetty.
@@ -63,9 +66,9 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Avoimet kehityskohteet
 
-### Palveluntarjoaja-adapterit (#107)
+### Tuotantopalvelujen käyttöönotto (erillinen päätös)
 
-AIProcessor- ja ResearchProvider-sopimukset on erotettu moduuleista. Reititys, kustannusrajat, aikakatkaisut, uusinnat ja auditointi ovat teknisiä asetuksia. Tuotannon reititys on tyhjä; testiadapterit eivät käytä verkkoa tai tunnuksia. Todellinen palveluadapteri ja sen käyttöönotto vaativat erillisen hyväksynnän.
+Tiketin #107 AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, kustannusrajat, aikakatkaisut, uusinnat ja auditointi ovat valmiit. Tuotannon reitityskonfiguraatio on edelleen tyhjä eikä testiadaptereissa käytetä verkkoa tai tunnuksia. Todellisen palveluntarjoajan, GitHub-pohjaisen tallennuksen, tuotantojulkaisun ja automaatiokytkennän käyttöönotto vaatii erillisen teknisen suunnitelman ja käyttäjän hyväksynnän.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
