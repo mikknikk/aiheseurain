@@ -21,6 +21,53 @@ class ModuleStateMigrationTests(unittest.TestCase):
         """Kymmenen moduulitilaa vastaa vanhaa seurantatilaa, lähdelokia ja syötteitä."""
         self.assertEqual(validate_state_migration(), [])
 
+    def test_screening_legacy_state_can_advance_after_verified_publication(self):
+        """Vanha automaatiotila saa edetä, kun täydellinen ajo ja julkaisu on todennettu."""
+        with tempfile.TemporaryDirectory() as temporary:
+            test_root = Path(temporary)
+            for folder in ("data", "modules", "feeds", "docs", "reports"):
+                shutil.copytree(ROOT / folder, test_root / folder)
+            with patch.object(migration_validator, "ROOT", test_root), patch.object(
+                migration_validator, "REGISTRY_PATH", test_root / "data/module-registry.json"
+            ):
+                state_path = test_root / "data/seurantatila.json"
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+                task = state["separate_screening_watch"]
+                task.update({
+                    "last_successful_check": "2026-11-18T17:37:16+02:00",
+                    "last_period_start": "2026-11-18T05:51:32+02:00",
+                    "last_period_end": "2026-11-18T17:37:16+02:00",
+                    "last_result": "success",
+                    "published_items": 1,
+                    "sources_checked": 7,
+                    "errors": [],
+                })
+                task["automation_instructions"]["last_successful_run_at"] = task["last_successful_check"]
+                task["last_successful_run_at"] = task["last_successful_check"]
+                state["separate_screening_watch"] = task
+                state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+                log_path = test_root / "data/lahdetarkistukset.json"
+                log = json.loads(log_path.read_text(encoding="utf-8"))
+                latest = log["runs"][-1]
+                latest["status"] = "complete"
+                log["latest_by_task"]["intialaiset_elokuvat_naytokset"] = task["last_successful_check"]
+                log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+                module_path = test_root / "data/module-state/indian-film-screening-watch.json"
+                module_state = json.loads(module_path.read_text(encoding="utf-8"))
+                self.assertEqual(
+                    module_state["checkpoint"]["last_successful_run"]["checked_at"],
+                    "2026-11-18T05:51:32+02:00",
+                )
+                self.assertEqual(validate_state_migration(), [])
+
+                # Osittainen ajo ei oikeuta legacy-checkpointin etenemistä.
+                latest["status"] = "partial"
+                log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                errors = validate_state_migration()
+                self.assertTrue(any("uudempi vanhan automaation seurantatila" in error for error in errors), errors)
+
     def test_unknown_historical_checkpoints_remain_unknown(self):
         """Puuttuvia tarkistusaikoja tai ajotunnisteita ei ole päätelty."""
         registry = json.loads((ROOT / "data/module-registry.json").read_text(encoding="utf-8"))
@@ -36,7 +83,7 @@ class ModuleStateMigrationTests(unittest.TestCase):
         # testit voivat rikkoa yhden kentän kerrallaan koskematta oikeaan dataan.
         with tempfile.TemporaryDirectory() as temporary:
             test_root = Path(temporary)
-            for folder in ("data", "modules", "feeds", "docs"):
+            for folder in ("data", "modules", "feeds", "docs", "reports"):
                 shutil.copytree(ROOT / folder, test_root / folder)
             with patch.object(migration_validator, "ROOT", test_root), patch.object(
                 migration_validator, "REGISTRY_PATH", test_root / "data/module-registry.json"
