@@ -111,7 +111,7 @@ Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään k
 ### Saint Dr. Gurmeet Ram Rahim Singh Ji Insan
 
 - RSS: `feeds/gurmeet-ram-rahim-singh.xml`
-- Lähtötilanne 2026-11-16: seurantahistoria alustettu; julkaistuja RSS-artikkeleita ei vielä ole.
+- Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta: julkinen toiminta, oikeudelliset ja viralliset tapahtumat, lausunnot, tuotannot/elokuvahankkeet ja julkaisut sekä musiikki, kappaleet, musiikkivideot ja soundtrackit. Kirjaa myös merkittävät musiikin julkaisu-, levitys- ja vastaanottouutiset.
 - Käytä nimen variantteja ja translitterointeja. Varmista, ettei uutinen koske samannimistä henkilöä.
 - Oikeusasioissa erottele täsmällisesti syytteet, tuomiot, valitukset, viranomaistoimet ja tuomioistuinratkaisut. Älä esitä syytettä tuomiona.
