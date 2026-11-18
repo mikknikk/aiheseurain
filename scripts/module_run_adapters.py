@@ -404,6 +404,7 @@ class RoutedReportPublisher:
         self.context = context
         self.publisher = LocalRoutedRssPublisher(root, context)
         self._last_receipt: PublicationReceipt | None = None
+        self._last_receipt_details: list[dict[str, Any]] = []
 
     def publish_target_reports(self, module_id: str, run_id: str,
                                target_reports: list[dict[str, Any]]) -> PublicationReceipt:
@@ -446,8 +447,28 @@ class RoutedReportPublisher:
             published_items=sum(result["published_items"] for result in receipts),
         )
         self._last_receipt = combined
+        self._last_receipt_details = [item for result in receipts for item in result["receipts"]]
         return combined
 
     def verify(self, receipt: PublicationReceipt) -> bool:
-        """Varmista, että viimeisin sovittimen kuittaus vastaa tarkistettavaa kuittausta."""
-        return self._last_receipt == receipt and receipt.verified
+        """Lue jokainen julkaistu RSS-item takaisin ja tarkista GUID sekä sisältötiiviste."""
+        if self._last_receipt != receipt or not receipt.verified:
+            return False
+        if len(self._last_receipt_details) != receipt.published_items:
+            return False
+        for expected in self._last_receipt_details:
+            try:
+                path = self.publisher._path(expected["publication_id"])
+                root = ET.fromstring(path.read_bytes())
+            except (OSError, ET.ParseError, AdapterError):
+                return False
+            matches = [
+                item for item in root.findall("./channel/item")
+                if (item.findtext("guid") or "").strip() == expected["guid"]
+            ]
+            if len(matches) != 1:
+                return False
+            content = matches[0].findtext("description") or ""
+            if hashlib.sha256(content.encode("utf-8")).hexdigest() != expected["content_sha256"]:
+                return False
+        return True
