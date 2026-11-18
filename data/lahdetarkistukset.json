@@ -229,12 +229,58 @@
         "kino-regina",
         "rasa-entertainment"
       ]
+    },
+    {
+      "run_id": "gurmeet-ram-rahim-singh-20261118T132712-0200",
+      "task_id": "gurmeet_ram_rahim_singh",
+      "started_at": "2026-11-18T13:27:12+02:00",
+      "ended_at": "2026-11-18T14:00:19+02:00",
+      "status": "partial",
+      "checked_source_ids": [
+        "gurmeet-courts",
+        "hindustan-times",
+        "tribune-india",
+        "amar-ujala"
+      ],
+      "unchecked_sources": [
+        {
+          "source_id": "punjab-haryana-highcourt",
+          "reason": "https://highcourtchd.gov.in/ -sivun suora avaus aikakatkaistiin. Sivuston alkuperäistä tuomioasiakirjaa ei saatu avattua; uutismedian referaatteja ei merkitty tuomioistuimen lähteen tarkistukseksi."
+        },
+        {
+          "source_id": "cbi-india",
+          "reason": "https://cbi.gov.in/ -sivun suora avaus aikakatkaistiin. CBI:n alkuperäistä sisältöä ei saatu avattua; hakutuloskatkelmia ei merkitty tarkistetuiksi."
+        },
+        {
+          "source_id": "the-hindu-india",
+          "reason": "The Hindu -sivuston suora avaus estyi robots.txt-säännöllä (OAI-SearchBot); alkuperäistä sisältöä ei voitu tarkistaa, joten hakutuloskatkelmia ei merkitty tarkistetuiksi."
+        }
+      ],
+      "registry_source_ids": [
+        "gurmeet-courts",
+        "punjab-haryana-highcourt",
+        "cbi-india",
+        "the-hindu-india",
+        "hindustan-times",
+        "tribune-india",
+        "amar-ujala"
+      ],
+      "coverage_notes": [
+        "Kielet: englanti (Intian korkein oikeus, Hindustan Times ja The Tribune/PTI), hindi (Amar Ujala); pandžabiksi tehtiin erilliset haut, mutta rekisterin pandžabinkielistä alkuperäissisältöä ei saatu tarkistettua.",
+        "Maantiede: Intian valtakunnallinen oikeusjärjestelmä sekä Haryana, Punjab ja Chandigarh. Korkeimman oikeuden alkuperäinen päivittäinen lista tarkistettiin; High Courtin ja CBI:n viralliset sivut jäivät aikakatkaisun vuoksi avaamatta.",
+        "Kriittisistä rekisterilähteistä gurmeet-courts tarkistettiin. Punjab and Haryana High Court ja CBI jäivät tavoittamatta; siksi ajon lähdekattavuuden tila on partial.",
+        "Hindustan Timesin ja Amar Ujalan alkuperäiset artikkelit avattiin. The Tribune -juttu on PTI-syndikoitu eikä sitä laskettu riippumattomaksi lisävahvistukseksi.",
+        "Korkeimman oikeuden uusimpien määräysten sivulla ei näkynyt asianumerolla Crl.A. No. 3785/2026 annettua määräystä. Tapaustilan lomake vaati JavaScriptin ja CAPTCHA-vastauksen.",
+        "Dera Sacha Saudan ja Saint Dr. MSG Insanin viralliset sivut avattiin täydentävinä rekisterin ulkopuolisina lähteinä; näkyvissä ei ollut 16.–18.11. uutta aiheeseen liittyvää ilmoitusta. Näitä sivuja ei lisätty tehtävän rekisterilähteiksi.",
+        "Englannin-, hindin- ja pandžabinkielisissä hauissa ei löytynyt jaksolle osuvaa vahvistettua uutta vapautus-, elokuva- tai musiikkiuutista."
+      ]
     }
   ],
   "latest_by_task": {
     "tolkien": "2026-11-16T18:00:19+02:00",
     "intialaiset_elokuvat_naytokset": "2026-11-18T05:51:32+02:00",
-    "taylor_swift": "2026-11-17T13:03:45+02:00"
+    "taylor_swift": "2026-11-17T13:03:45+02:00",
+    "gurmeet_ram_rahim_singh": "2026-11-18T14:00:19+02:00"
   },
-  "updated_at": "2026-11-18T05:51:32+02:00"
+  "updated_at": "2026-11-18T14:00:19+02:00"
 }
