@@ -832,7 +832,7 @@ Toteutuksen tietomallit ja validointiohje ovat dokumentissa [Seurantakohteet ja 
 - **1.1.0 – 2026-11-17:** lisättiin tavoitearkkitehtuuri, komponenttien vastuut ja rajapinnat, tietovirrat, kanonisen tiedon omistajuus, virheistä palautuminen, hyväksymisehdot, nykytila–tavoitetila-vertailu, siirtymävaiheet ja avoimet päätökset.
 - **1.0.0 – 2026-11-17:** kuvattiin järjestelmäriippumaton toimintamalli, kolmen arkkitehtuurikerroksen vastuut, nykyinen ChatGPT/GitHub-toteutus, tietovirrat sekä teknologioiden vaihdettavuuden edellytykset. Erotettiin repositoriosta varmennetut tosiasiat, päätelmät ja erikseen tarkistettavat asetukset.
 
-##  X. Seurantavalidoinnin ja käyttöliittymätestien CI-eristys
+## Seurantavalidoinnin ja käyttöliittymätestien CI-eristys
 
 Seurantajulkaisun pakollinen status check on työpaikka **Tarkista RSS, HTML, dokumentaatio ja seurantatila** tiedostossa `.github/workflows/validate-feeds.yml`. Käyttöliittymätestit ovat erillisessä `.github/workflows/test-ui.yml`-työnkulussa. Kumpikin käynnistyy suoraan pull requestista; työnkulkujen välillä ei ole `workflow_run`-ketjutusta eikä jobien `needs`-riippuvuutta.
 
