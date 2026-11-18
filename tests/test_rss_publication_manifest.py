@@ -122,7 +122,7 @@ class RssPublicationManifestTests(unittest.TestCase):
                 }])
 
 
-    def test_finalize_marks_candidate_success_only_after_verification(self):
+    def test_finalize_accepts_ambiguous_deploy_result_only_after_content_verification(self):
         from types import SimpleNamespace
         manifest_payload = {"manifest_type": "aiheseurain-rss-publication", "feeds": [{}]}
         with patch.dict("os.environ", {"GITHUB_SHA": "head"}), patch.object(
