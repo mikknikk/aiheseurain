@@ -1,6 +1,6 @@
 # Elokuvahavainnot ja kriteerikohtaiset jatkotoimet
 
-**Versio:** 1.0.2  
+**Versio:** 1.0.3  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#66 – Elokuvahavaintorekisteri ja kriteerikohtaiset jatkotoimet](https://github.com/mikknikk/aiheseurain/issues/66)  
 **Seuraava sisältötehtävä:** [#67 – Käyttäjän hyväksymä elokuvien hakukriteeristö](https://github.com/mikknikk/aiheseurain/issues/67)
@@ -47,6 +47,7 @@ Rekisterin skeema on `schemas/movie-observation-registry.schema.json`, ja nykyin
 Yksi elokuvatietue sisältää:
 
 - pysyvän `movie_id`-tunnisteen, ensisijaisen nimen ja nimivariantit;
+- löydöskanavat, jotka erottavat nykyisen intialaisen peruspolun uusista käyttäjäkriteereistä;
 - julkaisuvuoden ja saatavilla olevat IMDb-/TMDB-tunnisteet;
 - ensimmäisen ja viimeisimmän havainnon aikaleimat;
 - tunnistuksen luottamustason ja manuaalisen tarkistuksen lipun;
@@ -93,6 +94,7 @@ Automaattiset testit osoittavat tietomallin ja teknisen mekanismin toiminnan. Ne
 
 ## Muutoshistoria
 
+- **1.0.3 – 2026-11-18:** lisättiin elokuvatietueeseen löydöskanavat, jotta nykyinen intialainen peruspolku ja uudet kriteeriosumat voidaan raportoida erikseen.
 - **1.0.2 – 2026-11-18:** lisättiin toimintotapahtuman payloadiin muuttumaton näytösotos, joka sisältää havaitut näytöstiedot ja niiden lähteet kopioimatta niitä elokuvarekisteriin.
 - **1.0.1 – 2026-11-18:** täsmennettiin webhook-toimituksen turvallinen uusinta, rate limit -viiveet ja epäselvän toimituksen manuaalinen ratkaisu kaksoisviestien estämiseksi.
 - **1.0.0 – 2026-11-18:** ensimmäinen elokuvatason havaintorekisteri, #109:n näytöstapahtumiin perustuva tietojen omistajuus, kriteerikohtainen toimintomalli, Discord-liitännän testisopimus ja tyhjän tuotantokonfiguraation rajaus.
