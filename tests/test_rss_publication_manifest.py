@@ -162,6 +162,66 @@ class RssPublicationManifestTests(unittest.TestCase):
         self.assertIn("steps.candidate_check.outputs.candidate_verified == 'false'", workflow)
         self.assertIn("verify-rollback", workflow)
 
+
+    def test_existing_deployment_is_reused_for_same_workflow_run(self):
+        payload = {
+            "manifest_type": "aiheseurain-rss-publication",
+            "workflow_run_id": "777", "source_commit": "a" * 40,
+            "base_commit": "b" * 40
+        }
+        with patch.object(manifest, "api", return_value=[{"id": 456, "payload": payload}]) as api:
+            found = manifest.find_existing_deployment("a" * 40, "b" * 40, "777")
+        self.assertEqual(found, {"id": 456, "payload": payload})
+        api.assert_called_once()
+
+    def test_snapshot_validation_rejects_changed_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            folder = root / "_rollback_snapshot/feeds"
+            folder.mkdir(parents=True)
+            data = b'<rss><channel><item><guid>saved</guid></item></channel></rss>'
+            (folder / "a.xml").write_bytes(data)
+            expected = [{
+                "path": "feeds/a.xml", "sha256": "0" * 64,
+                "size_bytes": len(data), "guids": ["saved"], "item_count": 1
+            }]
+            with patch.object(manifest, "ROOT", root):
+                with self.assertRaises(manifest.PublicationError):
+                    manifest.validate_snapshot_files(expected)
+
+    def test_deployment_status_write_is_idempotent(self):
+        with patch.dict("os.environ", {
+            "GITHUB_REPOSITORY": "mikknikk/aiheseurain",
+            "GITHUB_RUN_ID": "777"
+        }), patch.object(manifest, "api", return_value=[{
+            "state": "failure",
+            "description": "Ehdokas hylättiin; aiempi varmennettu RSS-versio palautettiin."
+        }]) as api:
+            manifest.status(123, "failure", "Ehdokas hylättiin; aiempi varmennettu RSS-versio palautettiin.")
+        api.assert_called_once_with("GET", "deployments/123/statuses?per_page=1")
+
+    def test_failure_alert_does_not_create_duplicate_issue(self):
+        from types import SimpleNamespace
+        with patch.dict("os.environ", {
+            "GITHUB_REPOSITORY": "mikknikk/aiheseurain",
+            "GITHUB_RUN_ID": "777"
+        }), patch.object(manifest, "load_manifest", return_value={"source_commit": "a" * 40}), patch.object(
+            manifest, "api", return_value=[{
+                "number": 42,
+                "title": "RSS-julkaisun palautus vaatii huomiota - ajo 777"
+            }]
+        ) as api:
+            manifest.alert_failure(SimpleNamespace(deployment_id="123"))
+        api.assert_called_once_with("GET", "issues?state=all&per_page=100")
+
+    def test_production_pages_workflow_serializes_runs_and_keeps_snapshot_for_retries(self):
+        workflow = (manifest.ROOT / ".github/workflows/publish-pages.yml").read_text(encoding="utf-8")
+        self.assertIn("group: ${{ github.event_name", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+        self.assertIn("name: rss-rollback-snapshot", workflow)
+        self.assertIn("actions/download-artifact@v4", workflow)
+        self.assertIn("alert-failure", workflow)
+
     def test_build_manifest_refuses_missing_or_rejected_report(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
