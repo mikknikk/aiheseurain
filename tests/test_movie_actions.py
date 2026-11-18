@@ -92,7 +92,7 @@ class MovieActionTests(unittest.TestCase):
         )
         self.assertTrue(all(item["status"] == "pending" for item in first["actions"]))
         self.assertTrue(all(item["attempts"] == 1 for item in first["actions"]))
-        self.assertTrue(all(item["last_error_code"] == "RuntimeError" for item in first["actions"]))
+        self.assertTrue(all(item["last_error_code"] == "RetryableDeliveryError" for item in first["actions"]))
         self.assertTrue(all(item["next_attempt_at"] is not None for item in first["actions"]))
         too_early = dispatch_pending_actions(
             first, {"discord_webhook": FailingTransport()}, NOW, max_attempts=2,
