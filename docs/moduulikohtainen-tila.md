@@ -40,7 +40,7 @@ Näytösvahtimoduulin checkpoint on migraatiohetken rinnakkaiskuva, ei vanhan au
 
 - Jokaisen moduulin tilatiedosto sisältää kaikki sen RSS-syötteen GUIDit migraatiohetkellä. GUIDit pysyvät alkuperäisessä muodossaan; niitä ei generoida uudelleen.
 - Topic-moduulien aiempi toimituksellinen uutishistoria on edelleen Markdown-dokumenteissa. Tilatiedosto viittaa näiden dokumenttien aihekohtaisiin otsikoihin, mutta ei muunna vapaamuotoista historiaa tekaistuiksi rakenteisiksi tapahtumiksi.
-- Näytösvahtimoduuli viittaa kaikkiin 47 nykyiseen historiatapahtumaan ja 111 nykyiseen näytöstietueeseen tiedostossa data/naytosten-muutoshistoria.json. Tiedostoa ei kopioida eikä muokata.
+- Näytösvahtimoduuli viittaa kaikkiin 113 nykyiseen historiatapahtumaan ja 133 nykyiseen näytöstietueeseen tiedostossa data/naytosten-muutoshistoria.json. Tiedostoa ei kopioida eikä muokata.
 - Kaikki moduulit säilyttävät viitteet omiin lähdetarkistusajoihinsa data/lahdetarkistukset.json-tiedostossa.
 - Näytösvahtimoduulin history.source_check_run_refs sisältää kaikki lähdetarkistusajot. Migraation checkpoint_history-tapahtuma säilyttää vain ne lähdeajot, jotka olivat olemassa checkpointin syntyhetkellä.
 - Vanha data/seurantatila.json säilyy näytösvahdin ajonaikaisena yhteensopivuuslähteenä, kunnes myöhempi orkestrointivaihe siirtää kirjoitusvastuun erikseen.
