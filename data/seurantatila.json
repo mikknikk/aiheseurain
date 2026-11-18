@@ -45,7 +45,7 @@
         "feed": "feeds/gurmeet-ram-rahim-singh.xml",
         "last_successful_check": "2026-11-18T13:13:52+02:00",
         "last_period_start": null,
-        "last_period_end": "2026-11-18T13:13:52+02:00",
+        "last_period_end": null,
         "last_result": "published",
         "published_items": 1,
         "sources_checked": 8,
