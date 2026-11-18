@@ -1,0 +1,12 @@
+{
+  "publication_id": "indian-film-screening-watch.festivals.rss",
+  "publication_version": "1.0.0",
+  "publication_type": "rss",
+  "name": "Intialaisen elokuvan festivaalit",
+  "status": "inactive",
+  "destination": {
+    "format": "rss-2.0",
+    "path": "feeds/esimerkki-festivaalit.xml",
+    "url": "https://example.invalid/feeds/esimerkki-festivaalit.xml"
+  }
+}

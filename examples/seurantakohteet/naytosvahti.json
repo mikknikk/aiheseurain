@@ -1,0 +1,83 @@
+{
+  "target_registry_version": "1.0.0",
+  "targets": [
+    {
+      "target_id": "indian-film-screening-watch.feature-film",
+      "target_version": "1.0.0",
+      "module_ref": {
+        "module_id": "indian-film-screening-watch",
+        "definition_version": "1.0.0"
+      },
+      "name": "Intialaiset elokuvat",
+      "description": "Yksittäiset intialaiset elokuvat Suomessa järjestettävissä näytöksissä",
+      "entity": {
+        "entity_id": "feature-film",
+        "entity_type": "film",
+        "label": "Intialaiset elokuvat"
+      },
+      "scope": "Tunnista intialaiset elokuvat ja niiden Suomessa järjestettävät julkiset näytökset.",
+      "include": [
+        "Tavalliset ja erikoisnäytökset"
+      ],
+      "exclude": [
+        "Muut kuin Suomessa järjestettävät näytökset"
+      ],
+      "search_profiles": [
+        {
+          "id": "feature-film-screenings",
+          "purpose": "Näytösten löytäminen",
+          "query_terms": [
+            "Indian film screening Finland",
+            "intialainen elokuva näytös"
+          ],
+          "languages": [
+            "fi",
+            "en"
+          ],
+          "regions": [
+            "FI"
+          ]
+        }
+      ]
+    },
+    {
+      "target_id": "indian-film-screening-watch.film-festivals",
+      "target_version": "1.0.0",
+      "module_ref": {
+        "module_id": "indian-film-screening-watch",
+        "definition_version": "1.0.0"
+      },
+      "name": "Intialaisen elokuvan festivaalit",
+      "description": "Festivaalit ja niiden ohjelmistot Suomessa",
+      "entity": {
+        "entity_id": "film-festivals",
+        "entity_type": "event-series",
+        "label": "Intialaisen elokuvan festivaalit"
+      },
+      "scope": "Tunnista Suomessa järjestettävät intialaisen elokuvan festivaalit ja niiden ohjelmistot.",
+      "include": [
+        "Festivaalit ja erikoisohjelmistot"
+      ],
+      "exclude": [
+        "Tavalliset yksittäiset näytökset ilman festivaaliyhteyttä"
+      ],
+      "search_profiles": [
+        {
+          "id": "film-festival-search",
+          "purpose": "Festivaalien löytäminen",
+          "query_terms": [
+            "Indian film festival Finland",
+            "intialaisen elokuvan festivaali Suomessa"
+          ],
+          "languages": [
+            "fi",
+            "en"
+          ],
+          "regions": [
+            "FI"
+          ]
+        }
+      ]
+    }
+  ]
+}

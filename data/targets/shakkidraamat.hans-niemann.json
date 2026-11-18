@@ -1,0 +1,71 @@
+{
+  "target_id": "shakkidraamat.hans-niemann",
+  "target_version": "1.0.0",
+  "module_ref": {
+    "module_id": "shakkidraamat",
+    "definition_version": "1.0.0"
+  },
+  "name": "Hans Niemann",
+  "description": "person: Hans Niemann",
+  "entity": {
+    "entity_id": "hans-niemann",
+    "entity_type": "person",
+    "label": "Hans Niemann",
+    "aliases": []
+  },
+  "scope": "Shakkimaailman todelliset ajankohtaiset kiistat, draamat, konfliktit ja kohut. Mukaan kuuluvat vilppisyytökset ja vastineet, pelaajien ja FIDEn/liittojen jännitteet, kurinpitomenettelyt, oikeusjutut, järjestö- ja hallintokiistat, turnaus- ja sääntökiistat sekä merkittävät shakkisisällöntuottajien julkiset lausunnot.",
+  "include": [
+    "Vilppi- ja huijaussyytökset, näyttö, vastineet ja ratkaisut",
+    "Pelaajien, FIDEn, kansallisten liittojen ja turnausjärjestäjien konfliktit",
+    "Kurinpitomenettelyt, oikeusjutut ja hallintokiistat",
+    "Sääntö- ja turnauskiistat sekä merkittävät julkiset kannanotot",
+    "Tunnettujen shakkisisällöntuottajien uutisarvoiset julkiset lausunnot ja konfliktit"
+  ],
+  "exclude": [
+    "Fiktiiviset shakkiaiheiset elokuvat ja kirjat",
+    "Tavalliset turnaustulokset ilman kiistaa tai muuta uutisarvoista kehitystä",
+    "Rutiininomaiset somejulkaisut ja vahvistamattomat huhut"
+  ],
+  "search_profiles": [
+    {
+      "id": "shakkidraamat-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Carlsen FIDE dispute jeans gate",
+        "Kramnik cheating allegations response investigation",
+        "Hans Niemann chess lawsuit allegations",
+        "Danya Daniel Naroditsky death investigation public statements",
+        "FIDE disciplinary decision chess controversy",
+        "chess drama controversy chess creator public statement"
+      ],
+      "languages": [
+        "de",
+        "en",
+        "fi"
+      ],
+      "regions": [
+        "EUROPE",
+        "FI",
+        "GLOBAL",
+        "NORTH-AMERICA"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    },
+    {
+      "id": "shakkidraamat-finland",
+      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
+      "query_terms": [
+        "Suomi Finland Shakkidraamat",
+        "Shakkidraamat tapahtuma Suomi Finland"
+      ],
+      "languages": [
+        "en",
+        "fi"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
+    }
+  ]
+}

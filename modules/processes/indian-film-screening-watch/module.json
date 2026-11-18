@@ -89,28 +89,6 @@
       "required": false
     }
   ],
-  "search_profiles": [
-    {
-      "id": "indian-film-screenings-finland",
-      "purpose": "Etsi tulevia, muuttuneita ja menneitä intialaisten elokuvien näytöksiä Suomessa.",
-      "query_terms": [
-        "Indian film screening Finland",
-        "intialainen elokuva näytös",
-        "Tamil Telugu Malayalam Hindi film Finland screening",
-        "Indian film festival Finland",
-        "Finnkino BioRex Kino Regina Cinema Orion Kino Myyri"
-      ],
-      "languages": [
-        "en",
-        "fi",
-        "ta"
-      ],
-      "regions": [
-        "FI"
-      ],
-      "notes": "Käytä teatterien ja järjestäjien omia ohjelmistoja ensisijaisina vahvistuksina; kolmannen osapuolen ilmoitukset merkitään omalla vahvistustasollaan."
-    }
-  ],
   "editorial_rules": [
     {
       "id": "screening-scope",
@@ -168,5 +146,9 @@
         "retain_cancelled": true
       }
     }
-  }
+  },
+  "target_refs": [
+    "indian-film-screening-watch.all-indian-film-screenings-finland",
+    "indian-film-screening-watch.indian-film-festivals-finland"
+  ]
 }

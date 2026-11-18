@@ -1,0 +1,31 @@
+{
+  "routing_version": "1.0.0",
+  "routes": [
+    {
+      "route_id": "screenings-to-film-feed",
+      "module_ref": "indian-film-screening-watch",
+      "target_ref": "indian-film-screening-watch.feature-film",
+      "publication_refs": [
+        "indian-film-screening-watch.feature-film.rss",
+        "indian-film-screening-watch.all.rss"
+      ],
+      "observation_types": [
+        "film-screening"
+      ],
+      "status": "inactive"
+    },
+    {
+      "route_id": "festivals-to-festival-feed",
+      "module_ref": "indian-film-screening-watch",
+      "target_ref": "indian-film-screening-watch.film-festivals",
+      "publication_refs": [
+        "indian-film-screening-watch.festivals.rss",
+        "indian-film-screening-watch.all.rss"
+      ],
+      "observation_types": [
+        "film-festival"
+      ],
+      "status": "inactive"
+    }
+  ]
+}

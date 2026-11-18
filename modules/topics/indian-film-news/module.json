@@ -229,76 +229,6 @@
       "required": true
     }
   ],
-  "search_profiles": [
-    {
-      "id": "indian-film-news-global",
-      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
-      "query_terms": [
-        "Indian cinema Telugu Tamil Kannada Malayalam Hindi Bengali Marathi Punjabi Assamese Odia",
-        "S. S. Rajamouli Allu Arjun Ram Charan Kajal Aggarwal Chiranjeevi Rajinikanth Upendra Kamal Haasan Prabhas Brahmanandam",
-        "Varanasi Raaka Kalki 2898 AD 2 Salaar 2 Spirit Fauzi",
-        "Demonte Colony film series Baahubali universe",
-        "Indian film box office release streaming festival award",
-        "intialainen elokuva suomalainen media suomalainen elokuvantekijä",
-        "తెలుగు సినిమా",
-        "தமிழ் சினிமா",
-        "ಕನ್ನಡ ಸಿನಿಮಾ",
-        "മലയാള സിനിമ",
-        "हिंदी सिनेमा",
-        "বাংলা সিনেমা",
-        "मराठी चित्रपट",
-        "ਪੰਜਾਬੀ ਸਿਨੇਮਾ",
-        "অসমীয়া চিনেমা",
-        "ଓଡ଼ିଆ ସିନେମା"
-      ],
-      "languages": [
-        "as",
-        "bn",
-        "en",
-        "fi",
-        "hi",
-        "kn",
-        "ml",
-        "mr",
-        "or",
-        "pa",
-        "ta",
-        "te"
-      ],
-      "regions": [
-        "FI",
-        "IN-AP",
-        "IN-AS",
-        "IN-KA",
-        "IN-KL",
-        "IN-MH",
-        "IN-NATIONAL",
-        "IN-OD",
-        "IN-PB",
-        "IN-PY",
-        "IN-TG",
-        "IN-TN",
-        "IN-WB"
-      ],
-      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
-    },
-    {
-      "id": "indian-film-news-finland",
-      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
-      "query_terms": [
-        "Suomi Finland Intialaisen elokuvan uutiset",
-        "Intialaisen elokuvan uutiset tapahtuma Suomi Finland"
-      ],
-      "languages": [
-        "en",
-        "fi"
-      ],
-      "regions": [
-        "FI"
-      ],
-      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
-    }
-  ],
   "editorial_rules": [
     {
       "id": "local-script-search",
@@ -331,114 +261,24 @@
       "severity": "required"
     }
   ],
-  "topic": {
-    "scope": "Intian elokuvateollisuudet ja niiden eri kielialueet: telugu, tamili, kannada, malajalam, hindi, bengali, marathi, pandžabi sekä assami ja odia silloin kun relevanttia. Seuranta kattaa henkilöt, tuotannot, julkaisut, lipputulot, suoratoiston, festivaalit, palkinnot, alan tapahtumat ja Suomen yhteydet.",
-    "include": [
-      "Telugu-, tamili-, kannada-, malajalam-, hindi-, bengali-, marathi- ja pandžabielokuvat sekä assamin- ja odian-kielinen elokuva relevantissa laajuudessa",
-      "Seurattavat näyttelijät, ohjaajat, tuottajat ja muut elokuvantekijät",
-      "Erityisseurattavat projektit ja elokuvasarjat",
-      "Julkaisut, lipputulot, suoratoisto, festivaalit, palkinnot ja tuotantouutiset",
-      "Suomalaisessa mediassa julkaistut intialaiselokuvia koskevat jutut ja suomalaiset tekijät intialaisissa elokuvissa"
-    ],
-    "exclude": [
-      "Suomen näytösajat ja teatteriohjelmistot, jotka kuuluvat erilliseen näytösvahtiin",
-      "Vahvistamattomat huhut esitettyinä virallisina tuotantotietoina",
-      "Saman uutisen moninkertainen kirjaaminen eri medioiden kopioidessa samaa alkuperäislähdettä"
-    ],
-    "entities": [
-      {
-        "entity_id": "s-s-rajamouli",
-        "entity_type": "person",
-        "label": "S. S. Rajamouli",
-        "aliases": [
-          "Koduri Srisaila Sri Rajamouli"
-        ]
-      },
-      {
-        "entity_id": "allu-arjun",
-        "entity_type": "person",
-        "label": "Allu Arjun"
-      },
-      {
-        "entity_id": "ram-charan",
-        "entity_type": "person",
-        "label": "Ram Charan"
-      },
-      {
-        "entity_id": "kajal-aggarwal",
-        "entity_type": "person",
-        "label": "Kajal Aggarwal"
-      },
-      {
-        "entity_id": "chiranjeevi",
-        "entity_type": "person",
-        "label": "Chiranjeevi"
-      },
-      {
-        "entity_id": "rajinikanth",
-        "entity_type": "person",
-        "label": "Rajinikanth"
-      },
-      {
-        "entity_id": "upendra",
-        "entity_type": "person",
-        "label": "Upendra"
-      },
-      {
-        "entity_id": "kamal-haasan",
-        "entity_type": "person",
-        "label": "Kamal Haasan"
-      },
-      {
-        "entity_id": "prabhas",
-        "entity_type": "person",
-        "label": "Prabhas"
-      },
-      {
-        "entity_id": "brahmanandam",
-        "entity_type": "person",
-        "label": "Brahmanandam"
-      },
-      {
-        "entity_id": "varanasi",
-        "entity_type": "film-project",
-        "label": "Varanasi"
-      },
-      {
-        "entity_id": "raaka",
-        "entity_type": "film-project",
-        "label": "Raaka"
-      },
-      {
-        "entity_id": "kalki-2898-ad-2",
-        "entity_type": "film-project",
-        "label": "Kalki 2898 AD 2"
-      },
-      {
-        "entity_id": "salaar-2",
-        "entity_type": "film-project",
-        "label": "Salaar 2"
-      },
-      {
-        "entity_id": "spirit",
-        "entity_type": "film-project",
-        "label": "Spirit"
-      },
-      {
-        "entity_id": "fauzi",
-        "entity_type": "film-project",
-        "label": "Fauzi"
-      },
-      {
-        "entity_id": "demonte-colony-series",
-        "entity_type": "film-series",
-        "label": "Demonte Colony -elokuvasarja"
-      },
-      {
-        "entity_id": "baahubali-universe",
-        "entity_type": "film-universe",
-        "label": "Baahubali-elokuvauniversumi"
-      }
-    ]
-  }
+  "target_refs": [
+    "indian-film-news.s-s-rajamouli",
+    "indian-film-news.allu-arjun",
+    "indian-film-news.ram-charan",
+    "indian-film-news.kajal-aggarwal",
+    "indian-film-news.chiranjeevi",
+    "indian-film-news.rajinikanth",
+    "indian-film-news.upendra",
+    "indian-film-news.kamal-haasan",
+    "indian-film-news.prabhas",
+    "indian-film-news.brahmanandam",
+    "indian-film-news.varanasi",
+    "indian-film-news.raaka",
+    "indian-film-news.kalki-2898-ad-2",
+    "indian-film-news.salaar-2",
+    "indian-film-news.spirit",
+    "indian-film-news.fauzi",
+    "indian-film-news.demonte-colony-series",
+    "indian-film-news.baahubali-universe"
+  ]
 }

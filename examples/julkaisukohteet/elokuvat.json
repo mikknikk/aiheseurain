@@ -1,0 +1,12 @@
+{
+  "publication_id": "indian-film-screening-watch.feature-film.rss",
+  "publication_version": "1.0.0",
+  "publication_type": "rss",
+  "name": "Intialaisten elokuvien näytökset – elokuvakohtainen",
+  "status": "inactive",
+  "destination": {
+    "format": "rss-2.0",
+    "path": "feeds/esimerkki-elokuvat.xml",
+    "url": "https://example.invalid/feeds/esimerkki-elokuvat.xml"
+  }
+}

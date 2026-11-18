@@ -1,0 +1,54 @@
+{
+  "target_id": "sompote-sands.sompote-sands",
+  "target_version": "1.0.0",
+  "module_ref": {
+    "module_id": "sompote-sands",
+    "definition_version": "1.0.0"
+  },
+  "name": "Sompote Sands",
+  "description": "person: Sompote Sands",
+  "entity": {
+    "entity_id": "sompote-sands",
+    "entity_type": "person",
+    "label": "Sompote Sands",
+    "aliases": [
+      "Sompote Saengduenchai",
+      "สมโพธิ แสงเดือนฉาย"
+    ]
+  },
+  "scope": "Sompote Sands (myös Sompote Saengduenchai ja thai-kieliset kirjoitusasut), hänen elokuvansa ja tuotantonsa, studiohistoria, restaurointi, arkistointi, julkaisut, esitykset, festivaalit, oikeudet, kansainvälinen levitys, retrospektiivit ja tutkimus.",
+  "include": [
+    "Sompote Sandsin elokuvat, tuotannot ja uran uusi kehitys",
+    "Krua- ja Chaiyo-studioihin liittyvä relevantti historia",
+    "Restaurointi, arkistointi, julkaisut ja kansainvälinen levitys",
+    "Festivaalit, retrospektiivit, näytökset ja elokuvahistoriallinen tutkimus",
+    "Sompote Sandsin työn uusi kulttuurinen vastaanotto"
+  ],
+  "exclude": [
+    "Yleinen thaimaalaisen elokuvan uutisointi ilman suoraa yhteyttä Sompote Sandsiin",
+    "Varmistamattomat henkilöllisyys- ja translitterointiyhdistelmät"
+  ],
+  "search_profiles": [
+    {
+      "id": "sompote-sands-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Sompote Sands",
+        "Sompote Saengduenchai",
+        "สมโพธิ แสงเดือนฉาย",
+        "Chaiyo Productions Sompote Sands",
+        "Thai Film Archive Sompote Sands restoration"
+      ],
+      "languages": [
+        "en",
+        "ja",
+        "th"
+      ],
+      "regions": [
+        "JP",
+        "TH"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    }
+  ]
+}

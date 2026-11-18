@@ -1,0 +1,43 @@
+{
+  "target_id": "indian-film-screening-watch.all-indian-film-screenings-finland",
+  "target_version": "1.0.0",
+  "module_ref": {
+    "module_id": "indian-film-screening-watch",
+    "definition_version": "1.0.0"
+  },
+  "name": "Intialaisten elokuvien näytökset Suomessa",
+  "description": "event-collection: Intialaisten elokuvien näytökset Suomessa",
+  "entity": {
+    "entity_id": "all-indian-film-screenings-finland",
+    "entity_type": "event-collection",
+    "label": "Intialaisten elokuvien näytökset Suomessa",
+    "aliases": []
+  },
+  "scope": "Suomessa järjestettävien intialaisten elokuvien näytösten, ennakko- ja erikoisnäytösten, festivaalien ja muiden yleisölle avoimien elokuvatapahtumien erillinen seuranta.",
+  "include": [
+    "Sisällytä Suomessa järjestettävät tavalliset, ennakko- ja erikoisnäytökset, festivaalit ja muut yleisölle avoimet intialaisen elokuvan tapahtumat."
+  ],
+  "exclude": [],
+  "search_profiles": [
+    {
+      "id": "indian-film-screenings-finland",
+      "purpose": "Etsi tulevia, muuttuneita ja menneitä intialaisten elokuvien näytöksiä Suomessa.",
+      "query_terms": [
+        "Indian film screening Finland",
+        "intialainen elokuva näytös",
+        "Tamil Telugu Malayalam Hindi film Finland screening",
+        "Indian film festival Finland",
+        "Finnkino BioRex Kino Regina Cinema Orion Kino Myyri"
+      ],
+      "languages": [
+        "en",
+        "fi",
+        "ta"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Käytä teatterien ja järjestäjien omia ohjelmistoja ensisijaisina vahvistuksina; kolmannen osapuolen ilmoitukset merkitään omalla vahvistustasollaan."
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "target_id": "indian-film-news.rajinikanth",
+  "target_version": "1.0.0",
+  "module_ref": {
+    "module_id": "indian-film-news",
+    "definition_version": "1.0.0"
+  },
+  "name": "Rajinikanth",
+  "description": "person: Rajinikanth",
+  "entity": {
+    "entity_id": "rajinikanth",
+    "entity_type": "person",
+    "label": "Rajinikanth",
+    "aliases": []
+  },
+  "scope": "Intian elokuvateollisuudet ja niiden eri kielialueet: telugu, tamili, kannada, malajalam, hindi, bengali, marathi, pandžabi sekä assami ja odia silloin kun relevanttia. Seuranta kattaa henkilöt, tuotannot, julkaisut, lipputulot, suoratoiston, festivaalit, palkinnot, alan tapahtumat ja Suomen yhteydet.",
+  "include": [
+    "Telugu-, tamili-, kannada-, malajalam-, hindi-, bengali-, marathi- ja pandžabielokuvat sekä assamin- ja odian-kielinen elokuva relevantissa laajuudessa",
+    "Seurattavat näyttelijät, ohjaajat, tuottajat ja muut elokuvantekijät",
+    "Erityisseurattavat projektit ja elokuvasarjat",
+    "Julkaisut, lipputulot, suoratoisto, festivaalit, palkinnot ja tuotantouutiset",
+    "Suomalaisessa mediassa julkaistut intialaiselokuvia koskevat jutut ja suomalaiset tekijät intialaisissa elokuvissa"
+  ],
+  "exclude": [
+    "Suomen näytösajat ja teatteriohjelmistot, jotka kuuluvat erilliseen näytösvahtiin",
+    "Vahvistamattomat huhut esitettyinä virallisina tuotantotietoina",
+    "Saman uutisen moninkertainen kirjaaminen eri medioiden kopioidessa samaa alkuperäislähdettä"
+  ],
+  "search_profiles": [
+    {
+      "id": "indian-film-news-global",
+      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
+      "query_terms": [
+        "Indian cinema Telugu Tamil Kannada Malayalam Hindi Bengali Marathi Punjabi Assamese Odia",
+        "S. S. Rajamouli Allu Arjun Ram Charan Kajal Aggarwal Chiranjeevi Rajinikanth Upendra Kamal Haasan Prabhas Brahmanandam",
+        "Varanasi Raaka Kalki 2898 AD 2 Salaar 2 Spirit Fauzi",
+        "Demonte Colony film series Baahubali universe",
+        "Indian film box office release streaming festival award",
+        "intialainen elokuva suomalainen media suomalainen elokuvantekijä",
+        "తెలుగు సినిమా",
+        "தமிழ் சினிமா",
+        "ಕನ್ನಡ ಸಿನಿಮಾ",
+        "മലയാള സിനിമ",
+        "हिंदी सिनेमा",
+        "বাংলা সিনেমা",
+        "मराठी चित्रपट",
+        "ਪੰਜਾਬੀ ਸਿਨੇਮਾ",
+        "অসমীয়া চিনেমা",
+        "ଓଡ଼ିଆ ସିନେମା"
+      ],
+      "languages": [
+        "as",
+        "bn",
+        "en",
+        "fi",
+        "hi",
+        "kn",
+        "ml",
+        "mr",
+        "or",
+        "pa",
+        "ta",
+        "te"
+      ],
+      "regions": [
+        "FI",
+        "IN-AP",
+        "IN-AS",
+        "IN-KA",
+        "IN-KL",
+        "IN-MH",
+        "IN-NATIONAL",
+        "IN-OD",
+        "IN-PB",
+        "IN-PY",
+        "IN-TG",
+        "IN-TN",
+        "IN-WB"
+      ],
+      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
+    },
+    {
+      "id": "indian-film-news-finland",
+      "purpose": "Tarkista aiheen Suomen-yhteydet, tapahtumat ja suomalaiset uutislähteet.",
+      "query_terms": [
+        "Suomi Finland Intialaisen elokuvan uutiset",
+        "Intialaisen elokuvan uutiset tapahtuma Suomi Finland"
+      ],
+      "languages": [
+        "en",
+        "fi"
+      ],
+      "regions": [
+        "FI"
+      ],
+      "notes": "Suomen osuma sisällytetään vain, jos se täyttää aiheen toimitukselliset rajaukset."
+    }
+  ]
+}

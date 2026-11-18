@@ -64,32 +64,6 @@
       "required": false
     }
   ],
-  "search_profiles": [
-    {
-      "id": "gurmeet-ram-rahim-singh-global",
-      "purpose": "Seuraa aiheen olennaisia uusia tapahtumia rekisteröityjen lähteiden kieli- ja aluekattavuuden mukaisesti.",
-      "query_terms": [
-        "Gurmeet Ram Rahim Singh",
-        "Saint Dr Gurmeet Ram Rahim Singh Ji Insan",
-        "Gurmeet Ram Rahim court case judgment parole release",
-        "Gurmeet Ram Rahim film music song release",
-        "गुरमीत राम रहीम सिंह",
-        "ਗੁਰਮੀਤ ਰਾਮ ਰਹੀਮ ਸਿੰਘ"
-      ],
-      "languages": [
-        "en",
-        "hi",
-        "pa"
-      ],
-      "regions": [
-        "IN-CH",
-        "IN-HR",
-        "IN-NATIONAL",
-        "IN-PB"
-      ],
-      "notes": "Lähtökohtana tehtäväkohtainen lähderekisteri; lähteiden perustiedot ja luotettavuusluokat omistaa yhteinen lähdekatalogi."
-    }
-  ],
   "editorial_rules": [
     {
       "id": "legal-precision",
@@ -110,31 +84,7 @@
       "severity": "required"
     }
   ],
-  "topic": {
-    "scope": "Julkinen toiminta, oikeudelliset ja viralliset tapahtumat, lausunnot, elokuvatuotannot ja julkaisut sekä musiikki, kappaleet, musiikkivideot ja soundtrackit. Käytä nimen variantteja ja translitterointeja.",
-    "include": [
-      "Tuomioistuimien, viranomaisten ja asianosaisten viralliset ratkaisut ja tiedotteet",
-      "Syytteet, tuomiot, valitukset, vapautukset ja muut menettelyvaiheet täsmällisesti eroteltuina",
-      "Julkiset lausunnot ja merkittävät tapahtumat",
-      "Elokuvatuotannot, julkaisut ja musiikki",
-      "Musiikin julkaisu-, levitys- ja vastaanottouutiset"
-    ],
-    "exclude": [
-      "Samannimisiä muita henkilöitä koskevat uutiset",
-      "Vahvistamattomat väitteet esitettyinä tosiasioina"
-    ],
-    "entities": [
-      {
-        "entity_id": "gurmeet-ram-rahim-singh",
-        "entity_type": "person",
-        "label": "Saint Dr. Gurmeet Ram Rahim Singh Ji Insan",
-        "aliases": [
-          "Gurmeet Ram Rahim Singh",
-          "Gurmeet Ram Rahim",
-          "गुरमीत राम रहीम सिंह",
-          "ਗੁਰਮੀਤ ਰਾਮ ਰਹੀਮ ਸਿੰਘ"
-        ]
-      }
-    ]
-  }
+  "target_refs": [
+    "gurmeet-ram-rahim-singh.gurmeet-ram-rahim-singh"
+  ]
 }
