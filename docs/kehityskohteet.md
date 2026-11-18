@@ -207,3 +207,15 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [x] ChatGPT-automaation asetuksiin, ajastuksiin tai ohjeisiin ei tehty muutoksia.
 
 **Tulos:** käyttöliittymätestien virhe ei ole seurantavalidoinnin tekninen riippuvuus. Regressiotesti havaitsee, jos työnkulkujen väliin lisätään myöhemmin riippuvuus tai ehtoketju. GitHubin branch ruleset on kuitenkin palveluasetus, jota tämä repositorion testi ei lue; sen tulee edelleen vaatia vain seurantavalidoinnin status check. Käyttöliittymien testit suoritetaan edelleen ja niiden tulokset näkyvät erillisessä työnkulussa.
+
+### Issue #156 – RSS-julkaisun palautuva tapahtumaketju ja kestävä manifesti
+
+- [x] Lisättiin ajokohtainen manifesti, joka kirjataan ennen julkaisun aloittamista.
+- [x] Manifesti erottaa valmistelun, varmennetun julkaisun, artefaktien tallennuksen ja checkpointin päivityksen.
+- [x] Lisättiin idempotentit eteenpäin siirtyvät vaiheet ja saman ajotunnisteen sisältökonfliktin esto.
+- [x] Orkestroinnin tuotantotila edellyttää manifestisovitinta; puuttuva tai epäonnistuva manifesti estää julkaisun.
+- [x] Lisättiin paikallisen atomisen manifestisovittimen testit.
+- [ ] Toteuta tuotantokäyttöön pysyvä GitHub-/julkaisupalvelun manifestisovitin ja julkisen Pages-URL:n takaisinluku.
+- [ ] Lisää katkaisu-/palautumistestit todelliselle julkaisupalvelulle ja rinnakkaisten julkaisujen lukitus.
+
+**Rajaus:** nykyistä RSS-julkaisua, Pages-asetuksia, URL-osoitteita eikä automaatioiden ajastuksia tai ohjeita muutettu. Tämä muutos tekee moduuliorkestroinnin sopimuksesta palautumiskykyisemmän, mutta ei vielä kytke nykyistä tuotantojulkaisua manifestiin.
