@@ -6,10 +6,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 import urllib.error, urllib.request
 import xml.etree.ElementTree as ET
+import jsonschema
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = "https://mikknikk.github.io/aiheseurain"
 CATALOG = ROOT / "data/feed-catalog.json"
+SCHEMA = ROOT / "schemas/rss-publication-manifest.schema.json"
 
 class PublicationError(RuntimeError):
     """Julkaisumanifestin tai takaisinluvun virhe."""
@@ -113,6 +115,10 @@ def prepare(args) -> None:
         "source_commit": os.environ["GITHUB_SHA"], "base_commit": args.base_ref,
         "prepared_at": now(), "pages_base_url": PAGES, "feeds": feeds,
     }
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator(
+        schema, format_checker=jsonschema.FormatChecker()
+    ).validate(manifest)
     created = api("POST", "deployments", {
         "ref": manifest["source_commit"], "task": "deploy", "auto_merge": False,
         "required_contexts": [], "environment": "rss-publication-manifest",
@@ -146,9 +152,12 @@ def status(deployment_id: int, state: str, description: str) -> None:
 def finalize(args) -> None:
     """Lue syötteet Pagesista takaisin ja kirjaa success vasta täsmäyksen jälkeen."""
     did = int(args.deployment_id)
-    if args.is_current != "true":
+    if args.is_current == "false":
         status(did, "inactive", "Build vanheni; uudempi main-commit ohitti julkaisun.")
         return
+    if args.is_current != "true":
+        status(did, "failure", "Main-haaran nykytilaa ei voitu varmistaa; julkaisu estettiin.")
+        raise PublicationError("Main-haaran nykytilan tarkistus epäonnistui")
     if args.deploy_outcome != "success":
         status(did, "failure", "Pages-julkaisu epäonnistui; aiempi julkaisu säilyy.")
         raise PublicationError("Pages-julkaisu epäonnistui")
