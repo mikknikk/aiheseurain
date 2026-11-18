@@ -241,6 +241,9 @@ def validate_registry(registry: dict[str, Any]) -> None:
         providers = [item["provider"] for item in film["external_ids"]]
         if len(providers) != len(set(providers)):
             raise MovieObservationError("Elokuvalla on saman palvelun ulkoinen tunniste kahdesti.")
+        match_ids = [item["match_id"] for item in film["criterion_matches"]]
+        if len(match_ids) != len(set(match_ids)):
+            raise MovieObservationError("Elokuvalla on sama kriteeriosuma kahdesti.")
 
 
 def merge_movie_observation(
@@ -268,8 +271,12 @@ def merge_movie_observation(
             existing["release_year"] = observation["release_year"]
         elif observation["release_year"] is not None and existing["release_year"] != observation["release_year"]:
             existing["needs_review"] = True
-        existing["first_seen_at"] = min(existing["first_seen_at"], observation["first_seen_at"])
-        existing["last_seen_at"] = max(existing["last_seen_at"], observation["last_seen_at"])
+        existing["first_seen_at"] = min(
+            (existing["first_seen_at"], observation["first_seen_at"]), key=_timestamp
+        )
+        existing["last_seen_at"] = max(
+            (existing["last_seen_at"], observation["last_seen_at"]), key=_timestamp
+        )
         existing["identity_confidence"] = max(
             (existing["identity_confidence"], observation["identity_confidence"]),
             key=lambda value: {"low": 0, "medium": 1, "high": 2}[value],
@@ -277,8 +284,20 @@ def merge_movie_observation(
         existing["needs_review"] = existing["needs_review"] or observation["needs_review"]
         existing["screening_refs"] = sorted(set(existing["screening_refs"]) | set(observation["screening_refs"]))
         existing["sources"] = _normalize_sources(existing["sources"] + observation["sources"])
-        matches = {item["match_id"]: item for item in existing["criterion_matches"]}
-        matches.update({item["match_id"]: item for item in observation["criterion_matches"]})
+        matches = {item["match_id"]: deepcopy(item) for item in existing["criterion_matches"]}
+        for incoming in observation["criterion_matches"]:
+            if incoming["match_id"] not in matches:
+                matches[incoming["match_id"]] = deepcopy(incoming)
+                continue
+            current = matches[incoming["match_id"]]
+            current["first_matched_at"] = min(
+                (current["first_matched_at"], incoming["first_matched_at"]), key=_timestamp
+            )
+            current["last_matched_at"] = max(
+                (current["last_matched_at"], incoming["last_matched_at"]), key=_timestamp
+            )
+            current["reasons"] = sorted(set(current["reasons"]) | set(incoming["reasons"]))
+            current["source_urls"] = sorted(set(current["source_urls"]) | set(incoming["source_urls"]))
         existing["criterion_matches"] = [matches[key] for key in sorted(matches)]
     result["films"].sort(key=lambda item: item["movie_id"])
     validate_registry(result)
