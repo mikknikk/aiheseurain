@@ -45,7 +45,8 @@ Automaattinen tarkistus ei avaa uutislähteitä eikä todista väitteiden totuut
 3. Korjaa raportti tai sisältö ja suorita tarkistukset uudelleen. Älä muuta aiempaa onnistunutta tarkistuspistettä epäonnistumisen vuoksi.
 4. Kun kaikki kohdat hyväksytään, merkitse päätös `approved` ja sisällytä JSON-porttiraportti samaan PR:ään RSS-muutoksen kanssa.
 5. PR:n pakollisen CI-tarkistuksen on onnistuttava. PR:ää ei saa yhdistää, jos portti tai muu validointi epäonnistuu.
-6. Main-haaran Pages-työnkulku tallentaa RSS-ehdokasmanifestin GitHub Deployments -historiaan ennen julkaisua. Se validoi kaikki syötteet, estää vanhentuneen commitin deployn ja lukee kaikki kymmenen julkista syötettä takaisin. Vasta täsmäävä SHA/GUID/item-tulos merkitään deployment-historiassa onnistuneeksi.\n7. Julkaisumanifestin vaiheet, virhetilat ja palautuksen nykyiset rajat kuvataan [RSS-julkaisun palautumisoppaassa](rss-julkaisun-palautuminen.md).
+6. Main-haaran Pages-työnkulku tallentaa RSS-ehdokasmanifestin GitHub Deployments -historiaan ennen julkaisua. Se validoi kaikki syötteet, estää vanhentuneen commitin deployn ja lukee kaikki kymmenen julkista syötettä takaisin. Vasta täsmäävä SHA/GUID/item-tulos merkitään deployment-historiassa onnistuneeksi.
+7. Julkaisumanifestin vaiheet, virhetilat ja palautuksen nykyiset rajat kuvataan [RSS-julkaisun palautumisoppaassa](rss-julkaisun-palautuminen.md).
 
 ## JSON-esimerkki
 
