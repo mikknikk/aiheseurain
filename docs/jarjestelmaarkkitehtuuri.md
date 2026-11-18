@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.9.0  
+**Versio:** 1.10.0  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -705,6 +705,16 @@ Reitityskonfiguraatio sisältää vain ympäristömuuttujien nimiä, ei tunnuste
 
 Tuotannon reitityskonfiguraatio on tarkoituksella tyhjä: todellista tekoäly- tai tutkimuspalvelua ei ole aktivoitu. Testiadapterit eivät käytä verkkoa. Tämä toteutus ei liitä repositoriota automaattisesti nykyiseen ChatGPT-keskusteluun tai ajastettuihin tehtäviin; todellinen palveluadapteri ja sen tunnusten hallinta vaativat erillisen käyttöönoton.
 
+### 8.19 Moduulien yhteinen suoritusorkestrointi
+
+PR #118 toi yhteisen suorituspyyntö- ja tulossopimuksen sekä `scripts/module_orchestrator.py`-orkestrointirungon. Se ratkaisee moduulin rekisteristä, tarkistaa määritys- ja sopimusversiot, käynnistää injektoidun suorittajan, käyttää laadunvarmistusporttia ja palauttaa moduuli- ja ajotunnistekohtaisen tuloksen. Yhden moduulin virhe eristetään muista `run_many`-rajapinnassa.
+
+Varjotila voi lukea myös passiivisia moduuleja, mutta se ei julkaise eikä kirjoita artefakteja tai moduulitilaa. Tuotantoajo edellyttää sekä rekisterimerkinnän `active`-tilaa että erillistä `production_authorized`-hyväksyntää ja kaikkia tallennus- ja julkaisupalveluja. Nykyiset kymmenen moduulia pysyvät `inactive`-tilassa; mitään automaatiota ei ole kytketty uuteen orkestrointiin.
+
+Orkestroinnin elinkaari ja rajapinnat on kuvattu [moduuliorkestroinnin dokumentissa](moduuliorchestrointi.md). Tässä vaiheessa Publisher-, ArtifactStore-, ModuleStateStore- ja RunRecorder-rajapinnat ovat injektoitavia sopimuksia, eivät vielä tuotantoon kytkettyjä GitHub- tai RSS-sovittimia. Niiden konkreettiset, eristetysti testattavat toteutukset ovat jatkotyö tiketissä [#120](https://github.com/mikknikk/aiheseurain/issues/120). Tämä ero on olennainen: orkestroinnin runko on yhdistetty, mutta koko tuotantokäyttöön soveltuvaa elinkaarta ei väitetä valmiiksi.
+
+Toteutus ei muuta ajastuksia, aikavyöhykkeitä, automaatioiden ohjeita, aktiivisuutta, kohdekeskusteluja, RSS-syötteitä tai näytöshistoriaa.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -731,7 +741,7 @@ Nämä ovat suunnittelupäätelmiä ja tulevan kehityksen suosituksia, eivät v�
 - ChatGPT:n kolmen ajoitetun tehtävän tallennetut tarkat aikataulut, aikavyöhykkeet, aktiivisuus ja kohdekeskustelut tulee tarkistaa ChatGPT:n tehtäväasetuksista. Niitä ei voi vahvistaa GitHubin tiedostoista.
 - GitHub-integraation käyttäjäkohtainen repositorioiden valinta ja todelliset tehokkaat käyttöoikeudet tulee tarkistaa GitHub-sovelluksen ja ChatGPT-yhteyden asetuksista.
 - Vaihtoehtoisen tekoälypalvelun tai ajastimen valintaa ei ole tehty.
-- Moduulirekisteri ja paikallinen määritysten lataaja on toteutettu. Kymmenen nykyistä moduulimääritystä on rekisteröity inactive-tilassa ja migraation eheys validoidaan erillisellä skriptillä. Moduulikohtaiset checkpointit ja historiaviitteet on siirretty uusiin tilatiedostoihin; automaatioiden kirjoituspolkua tai yhteistä suoritusorkestrointia ei ole vielä vaihdettu.
+- Moduulirekisteri, kymmenen inactive-moduulimääritystä, moduulikohtaiset checkpointit sekä AI- ja tutkimuspalvelujen adapterisopimukset ja tekninen reititin on toteutettu. Yhteinen suoritusorkestroinnin runko on yhdistetty PR:ssä #118; konkreettiset pysyvät tallennus- ja RSS-julkaisusovittimet ovat vielä työn alla tiketissä #120. Tuotantoajopolkuun tai automaatioihin ei ole kytketty uutta orkestrointia.
 - Nykyisten aihekohtaisten ohjeiden täydellinen muuttaminen koneellisesti luettaviksi määrityksiksi vaatisi erillisen kartoituksen. Kaikki poikkeukset eivät välttämättä sovellu rakenteiseen yhteiseen malliin.
 
 ## 10. Automaatioiden hallinnan rajat
@@ -755,6 +765,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.10.0 – 2026-11-18:** lisättiin yhteinen moduulisuorituksen orkestrointirunko, varjotilan ja tuotannon erilliset portit, tapahtumavahdin moduulisuorittaja sekä ajokohtainen tulossopimus. Konkreettiset pysyvät tallennus- ja julkaisusovittimet jätettiin jatkotikettiin #120.
 - **1.9.0 – 2026-11-18:** määriteltiin AIProcessor- ja ResearchProvider-sopimukset, tekninen moduulikohtainen reititys, rajatut uusinnat, kustannusbudjetit, tietoturvallinen auditointi ja kaksi testiadapteria kummallekin sopimukselle.
 - **1.8.0 – 2026-11-18:** lisättiin kymmenen moduulikohtaista tilatiedostoa, checkpointin append-only-historia, lähde- ja RSS-GUID-viitteet, näytöshistorian tapahtumaviitteet sekä onnistuneen checkpointin idempotentti ja rinnakkaisuutta suojaava päivityssopimus.
 - **1.7.0 – 2026-11-18:** lisättiin kymmenen nykyisen seurannan itsenäiset moduulimääritykset ja inactive-rekisterimerkinnät, näytösvahtimoduulin tapahtumatyypin viite sekä lähdeviitteiden ja kieli-/aluekattavuuden migraatiovalidointi.

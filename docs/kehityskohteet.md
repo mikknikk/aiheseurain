@@ -23,7 +23,9 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#109 – Yleinen tapahtumavahti:** valmis; PR:t #113 ja #114 yhdistetty. Yhteinen käsittelyydin, lähdeadapterirajapinta, näytösvahtisovitin ja konferenssiesityksen testitapaus ovat käytettävissä.
 - **#105 – Nykyisten aiheiden ja näytösvahdin siirto moduuleiksi:** valmis ja yhdistetty PR:ssä #115.
 - **#106 – Moduulikohtainen tila ja historia:** valmis ja yhdistetty PR:ssä #116.
-- **#107 – AI- ja tutkimuspalvelujen adapterisopimukset:** toteutuksessa; AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin ja testiadapterit on lisätty. Sopimustestit ja dokumentaation viimeistely ovat työn alla.
+- **#107 – AI- ja tutkimuspalvelujen adapterisopimukset:** valmis ja yhdistetty PR:ssä #117. AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, rajatut uusinnat, kustannusrajat ja deterministiset testiadapterit ovat käytettävissä.
+- **#108 – Yhteinen moduulien suoritusorkestrointi:** toteutuksen runko yhdistetty PR:ssä #118. Varjotila, tuotannon erillinen hyväksyntäportti, elinkaaren koordinointi ja tapahtumavahtisuorittaja ovat käytettävissä. Konkreettiset pysyvät tallennus- ja RSS-julkaisusovittimet puuttuvat vielä.
+- **#120 – Orkestroinnin pysyvät tallennus-, julkaisu- ja ajotulosadapterit:** uusi P1-jatkotiketti, joka täydentää #108:n elinkaaren paikallisesti ja eristetysti testattavilla sovittimilla. Ei tuotantokäyttöönottoa.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 
