@@ -181,6 +181,16 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [x] Seurantamoduulin määrityksestä poistettiin hakuprofiilit ja aihekohtaiset sisältörajaukset; tilalle lisättiin pysyvät seurantakohdeviitteet.
 - [x] Kaikkien kymmenen nykyisen moduulin seurantakohteet erotettiin omiin määrityksiinsä ja rekisteröitiin passiivisiksi.
 - [x] Julkaisukohteen ja julkaisureitityksen skeemat sekä erilliset rekisterit lisättiin.
-- [x] Näytösvahtiesimerkki näyttää kaksi kohdetta, kaksi erillistä RSS-kanavaa ja yhdistelmäsyötteen.
+- [x] Näytösvahtiesimerkki näyttää kaksi kohdetta ja kaksi erillistä RSS-kanavaa; myöhempi päätös #142 poisti yhdistelmäsyötteen tavoitetilasta.
 - [x] Viitteiden eheyden validointi ja yksikkötestit lisättiin.
 - [x] Nykyisen näytösvahtifeedin ja automaatioasetusten tuotantopolku jätettiin ennalleen.
+
+
+### Issue #142 – yksi RSS-syöte kutakin seurantakohdetta kohti
+
+- [x] Tavoitetila ja järjestelmäarkkitehtuuri määrittelevät kohdekohtaisen yhden syötteen mallin.
+- [x] Näytösvahtiesimerkistä poistettiin yhdistelmäjulkaisukohde ja siihen osoittavat reitit.
+- [x] Reitityksen skeema, validaattori ja suoritusadapteri estävät useaan syötteeseen julkaisemisen.
+- [x] Testit varmistavat, että eri kohteiden raportit jäävät eri syötteisiin.
+- [x] README ja dokumentaation lukupolku on päivitetty.
+- [x] Nykyistä tuotantosyötettä tai automaatioasetuksia ei muutettu.
