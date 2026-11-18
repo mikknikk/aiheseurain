@@ -122,7 +122,7 @@
       },
       "then": {
         "required": [
-          "topic"
+          "target_refs"
         ],
         "not": {
           "required": [
@@ -132,6 +132,7 @@
       },
       "else": {
         "required": [
+          "target_refs",
           "process_extension"
         ],
         "not": {
