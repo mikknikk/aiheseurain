@@ -49,7 +49,7 @@ class ModuleStateMigrationTests(unittest.TestCase):
 
                 log_path = test_root / "data/lahdetarkistukset.json"
                 log = json.loads(log_path.read_text(encoding="utf-8"))
-                latest = log["runs"][-1]
+                latest = next(item for item in log["runs"] if item["run_id"] == "intialaiset_elokuvat_naytokset-20261118T173716-0200")
                 latest["status"] = "complete"
                 log["latest_by_task"]["intialaiset_elokuvat_naytokset"] = task["last_successful_check"]
                 log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
