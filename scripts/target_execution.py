@@ -126,6 +126,8 @@ def load_module_targets(
     targets = []
     for target_id in refs:
         entry = entries[target_id]
+        if require_active and entry.get("status") != "active":
+            raise TargetExecutionError(f"Tuotantoajo ei voi käyttää passiivista seurantakohdetta: {target_id}")
         target_path = (root / entry["path"]).resolve()
         if not target_path.is_relative_to(root) or not target_path.is_file():
             raise TargetExecutionError(f"Seurantakohteen tiedostoviite on virheellinen: {target_id}")
@@ -164,7 +166,7 @@ class TargetExecutionCoordinator:
         provider_router: Any, runner: TargetRunner,
     ) -> ModuleExecutionOutput:
         """Suorita runner kerran kutakin seurantakohdetta kohti eristetyssä kontekstissa."""
-        targets = self.target_loader(definition)
+        targets = self.target_loader(definition, require_active=request.mode == "production")
         reports: list[TargetReport] = []
         failures: dict[str, str] = {}
         source_counts: list[int] = []
