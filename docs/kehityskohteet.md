@@ -219,3 +219,17 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [ ] Lisää katkaisu-/palautumistestit todelliselle julkaisupalvelulle ja rinnakkaisten julkaisujen lukitus.
 
 **Rajaus:** nykyistä RSS-julkaisua, Pages-asetuksia, URL-osoitteita eikä automaatioiden ajastuksia tai ohjeita muutettu. Tämä muutos tekee moduuliorkestroinnin sopimuksesta palautumiskykyisemmän, mutta ei vielä kytke nykyistä tuotantojulkaisua manifestiin.
+
+### Issue #158 – Nykyisen RSS/Pages-julkaisun manifesti ja takaisinluku
+
+- [x] Lisättiin skeemavalidoitu, kaikkien kymmenen syötteen ehdokasmanifesti.
+- [x] Manifesti tallennetaan GitHub Deployments -historiaan ennen ulkoista Pages-julkaisua; suojattuun main-haaraan ei kirjoiteta suoraan.
+- [x] Pages-työnkulku validoi kaikki RSS-syötteet ennen rakennusta ja julkaisua.
+- [x] Tuotannon Pages-ajot pysyvät samassa concurrency-ryhmässä; vanhentunut build ohitetaan tarkistamalla main-haaran kärki juuri ennen deployta.
+- [x] Julkiset RSS-URL-osoitteet luetaan takaisin ja niiden SHA-256, GUID-lista sekä item-määrä verrataan manifestiin.
+- [x] Julkaisun success/failure/inactive kirjataan append-only GitHub Deployment -statuksina.
+- [x] Lisättiin offline-yksikkötestit manifestin sisällölle, XML:lle, GUIDeille ja porttiraportin sidonnalle.
+- [ ] Toteuta ja testaa automaattinen palautus aiempaan Pages-versioon, jos deploy onnistuu mutta julkinen takaisinluku ei täsmää.
+- [ ] Lisää katkaisu- ja uusintatestit oikeassa GitHub Actions -ympäristössä sekä operatiivinen hälytys epäonnistuneesta julkaisusta.
+
+**Rajaus:** nykyiset RSS-URL-osoitteet, Pages-asetukset ja automaatioiden ajastukset, ohjeet sekä kohdekeskustelut säilyivät. Toteutus ei luo erillistä julkaisurepositoriota eikä muuta tuotannon julkaisukohdetta. Julkisen takaisinluvun virhe kirjataan, mutta tässä vaiheessa ei vielä tehdä automaattista rollbackia; tätä ei pidä tulkita täysin pomminvarmaksi palautusratkaisuksi.
