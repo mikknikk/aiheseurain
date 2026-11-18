@@ -118,7 +118,7 @@ class FakePublicationJournal:
         key = (record["module_id"], record["run_id"])
         if key in self.records:
             existing = self.records[key]
-            stable = {k: v for k, v in existing.items() if k not in {"phase", "updated_at", "receipt"}}
+            stable = {k: v for k, v in existing.items() if k not in {"phase", "updated_at", "receipt", "state_sha256", "artifact_version"}}
             if stable != record:
                 raise RuntimeError("manifestin sisältökonflikti")
             return existing
