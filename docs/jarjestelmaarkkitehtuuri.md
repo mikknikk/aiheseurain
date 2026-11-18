@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.12.0  
+**Versio:** 1.13.1  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -737,6 +737,14 @@ Elokuvan `movie_id` muodostetaan ensisijaisesti IMDb-/TMDB-tunnisteesta, toissij
 
 Kriteerikohtainen toimintomääritys ja toimitusoutbox ovat erillisiä elokuvarekisteristä. Toiminnon idempotenssiavain sisältää elokuvan, kriteerin, toimintotunnisteen ja version. Discord-sovitin käyttää ajonaikaisesti injektoitua webhook-salaisuutta ja kuljetinta; testit eivät tee verkkokutsuja. Tuotannon toimintomääritys on tyhjä, eikä tuotantokriteeriä tai webhookia ole aktivoitu. #67 määrittelee varsinaiset käyttäjän hyväksymät hakukriteerit.
 
+### 8.22 Käyttäjän hyväksymä elokuvien hakukriteeristö
+
+Tiketissä #67 lisättiin versioitu kriteerirekisteri ja arviointimoottori. Kriteerit sisältävät pysyvän tunnisteen, semanttisen version, tilan, voimassaoloajat, sisällytys- ja poissulkemisehdot, all/any-yhdistämispolitiikan sekä viitteet #66:n toimintomäärityksiin. Arviointitulos välittää #66:lle kriteeritunnisteen ja version, osuma-ajan, perustelun sekä lähdeviitteet.
+
+Nykyinen intialaisten elokuvien näytösseuranta säilyy erillisenä, ennallaan toimivana peruspolkuna. Uusi kriteerimoottori ei korvaa sen hakurajauksia eikä muuta sen automaatiota.
+
+Tuotannon `data/movie-search-criteria.json` on tarkoituksella tyhjä. Testikriteerit ovat vain testifixtuurissa. Varsinaiset kiinnostuksen kohteet, kriteerien aktiivisuus ja niiden toimintoviitteet lisätään vasta käyttäjän hyväksynnän jälkeen.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -787,6 +795,8 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.13.1 – 2026-11-18:** erotettiin elokuvahavaintorekisterissä nykyisen intialaisen peruspolun ja käyttäjän kriteerien löydöskanavat raportointia varten.
+- **1.13.0 – 2026-11-18:** lisättiin versioitu elokuvahakukriteeristö, all/any- ja poissulkuehdot, voimassaoloajat, #66:n toimintoviitteiden validointi ja käyttäjän hyväksyntää odottava tyhjä tuotantokriteeritiedosto.
 - **1.12.0 – 2026-11-18:** lisättiin elokuvatasoinen havaintorekisteri, IMDb-/TMDB- ja nimi/vuosi-tunnisteet, kriteerikohtainen toimintotapahtuma ja outbox sekä testattu Discord-webhook-liitäntä. Tuotantokriteerit ja webhook-konfiguraatio pysyvät tyhjinä.
 - **1.11.0 – 2026-11-18:** lisättiin paikalliset SHA-tarkistetut moduulitila- ja artefaktitallennukset, tietosuojattu ajotulosloki, idempotentti eristetty RSS-julkaisusovitin ja rakenteellinen laadunvarmistussovitin; testit käyttävät väliaikaisia hakemistoja.
 - **1.10.0 – 2026-11-18:** lisättiin yhteinen moduulisuorituksen orkestrointirunko, varjotilan ja tuotannon erilliset portit, tapahtumavahdin moduulisuorittaja sekä ajokohtainen tulossopimus. Konkreettiset pysyvät tallennus- ja julkaisusovittimet jätettiin jatkotikettiin #120.

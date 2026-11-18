@@ -27,7 +27,7 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#108 – Yhteinen moduulien suoritusorkestrointi:** valmis; PR:t #118 ja #124 yhdistetty. Suorituspyynnön ja tuloksen sopimukset, varjotila, tuotannon erillinen hyväksyntäportti, elinkaaren koordinointi, tapahtumavahtisuorittaja sekä paikalliset tallennus- ja julkaisusovittimet ovat käytettävissä. Tuotantokäyttöönotto on erillinen hyväksyttävä päätös.
 - **#120 – Orkestroinnin pysyvät tallennus-, julkaisu- ja ajotulosadapterit:** valmis; PR #124 yhdistetty. Paikalliset SHA-tarkistetut moduulitila- ja artefaktisovittimet, tietosuojattu ajotulosloki, idempotentti RSS-julkaisusovitin sekä rakenteellinen laadunvarmistusportti on testattu eristetyissä väliaikaishakemistoissa.
 - **#66 – Elokuvahavaintorekisteri ja kriteerikohtaiset jatkotoimet:** pääosa yhdistetty PR:ssä #127; täydentävät palautumis- ja virheellisen rekisterin hyväksymistestit ovat PR:ssä #128. Elokuvatason rekisteri viittaa #109:n kanonisiin näytöstapahtumiin, säilyttää kriteeriosumat ja reitittää testitoiminnot outboxiin. Tuotannon kriteerit ja Discord-konfiguraatio ovat tyhjiä.
-- **#67 – Käyttäjän hyväksymä elokuvien hakukriteeristö:** odottaa #66:n rajapintojen valmistumista.
+- **#67 – Käyttäjän hyväksymä elokuvien hakukriteeristö:** toteutuksessa PR:ssä #131. Kriteeriskeema, versioitu arviointimoottori, include/exclude-logiikka ja #66:n toimintoviitteiden validointi on lisätty. Tuotannon kriteeritiedosto on tyhjä, kunnes käyttäjä hyväksyy seurattavat kohteet ja rajaukset.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 

@@ -50,6 +50,10 @@ class MovieObservationTests(unittest.TestCase):
         )
         self.assertEqual(len(observations), 1)
         self.assertEqual(observations[0]["screening_refs"], ["screening-1"])
+        self.assertEqual(
+            set(observations[0]["discovery_channels"]),
+            {"indian-film-screening-baseline", "user-criteria"},
+        )
         self.assertNotIn("venue", observations[0])
         snapshot = screening_snapshot(event)
         self.assertEqual(snapshot["venue"], "Testiteatteri")
@@ -69,6 +73,49 @@ class MovieObservationTests(unittest.TestCase):
         invalid = {"schema_version": 1, "films": [{"movie_id": "imdb:tt123"}]}
         with self.assertRaises(MovieObservationError):
             validate_registry(invalid)
+
+
+    def test_baseline_only_movie_is_marked_separately_from_criteria_results(self):
+        """Nykyisen intialaisen peruspolun löydös erottuu ilman uusia kriteeriosumia."""
+        observation = build_movie_observation(
+            screening("screening-baseline"),
+            {"primary_title": "Intialainen elokuva", "release_year": 2025},
+            [],
+            NOW,
+        )
+        self.assertEqual(
+            observation["discovery_channels"],
+            ["indian-film-screening-baseline"],
+        )
+
+
+    def test_merging_baseline_and_criteria_paths_keeps_both_channels(self):
+        """Sama elokuva säilyy yhtenä tietueena, vaikka se löytyy kahta polkua pitkin."""
+        metadata = {
+            "primary_title": "Yhteinen elokuva", "release_year": 2024,
+            "external_ids": [{"provider": "imdb", "value": "tt1111111"}],
+        }
+        baseline = build_movie_observation(
+            screening("screening-baseline", "Yhteinen elokuva"),
+            metadata, [], NOW,
+        )
+        criteria = build_movie_observation(
+            screening("screening-criteria", "Yhteinen elokuva"),
+            metadata, [criterion()], LATER,
+            discovery_channels=["user-criteria"],
+        )
+        merged = merge_movie_observation(
+            merge_movie_observation(empty_registry(), baseline), criteria
+        )
+        self.assertEqual(len(merged["films"]), 1)
+        self.assertEqual(
+            set(merged["films"][0]["discovery_channels"]),
+            {"indian-film-screening-baseline", "user-criteria"},
+        )
+        self.assertEqual(
+            set(merged["films"][0]["screening_refs"]),
+            {"screening-baseline", "screening-criteria"},
+        )
 
     def test_external_identifier_is_stable_and_merges_screenings(self):
         """IMDb-tunniste yhdistää saman elokuvan eri näytöshavainnot."""
@@ -134,6 +181,7 @@ class MovieObservationTests(unittest.TestCase):
             [criterion()], NOW,
         )
         self.assertEqual(observation["screening_refs"], ["screening-1"])
+        self.assertIn("user-criteria", observation["discovery_channels"])
         self.assertNotIn("venue", observation)
         self.assertNotIn("starts_at", observation)
         self.assertNotIn("status", observation)
