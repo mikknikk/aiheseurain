@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.10.0  
+**Versio:** 1.11.0  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -711,9 +711,23 @@ PR #118 toi yhteisen suorituspyyntö- ja tulossopimuksen sekä `scripts/module_o
 
 Varjotila voi lukea myös passiivisia moduuleja, mutta se ei julkaise eikä kirjoita artefakteja tai moduulitilaa. Tuotantoajo edellyttää sekä rekisterimerkinnän `active`-tilaa että erillistä `production_authorized`-hyväksyntää ja kaikkia tallennus- ja julkaisupalveluja. Nykyiset kymmenen moduulia pysyvät `inactive`-tilassa; mitään automaatiota ei ole kytketty uuteen orkestrointiin.
 
-Orkestroinnin elinkaari ja rajapinnat on kuvattu [moduuliorkestroinnin dokumentissa](moduuliorchestrointi.md). Tässä vaiheessa Publisher-, ArtifactStore-, ModuleStateStore- ja RunRecorder-rajapinnat ovat injektoitavia sopimuksia, eivät vielä tuotantoon kytkettyjä GitHub- tai RSS-sovittimia. Niiden konkreettiset, eristetysti testattavat toteutukset ovat jatkotyö tiketissä [#120](https://github.com/mikknikk/aiheseurain/issues/120). Tämä ero on olennainen: orkestroinnin runko on yhdistetty, mutta koko tuotantokäyttöön soveltuvaa elinkaarta ei väitetä valmiiksi.
+Orkestroinnin elinkaari ja rajapinnat on kuvattu [moduuliorkestroinnin dokumentissa](moduuliorchestrointi.md). Tässä vaiheessa Publisher-, ArtifactStore-, ModuleStateStore- ja RunRecorder-rajapintoihin on lisätty paikalliset, eristetyt testisovittimet tiketissä #120. Ne käyttävät SHA-tarkistusta, atomisia ja prosessilukittuja kirjoituksia, idempotenttia RSS-GUIDia sekä sisältöä pois jättävää ajotuloslokia. Sovittimet eivät ole GitHubiin kytkettyjä tuotantopalveluja, eivätkä ne kirjoita repositorion tuotantosyötteisiin tai tilatiedostoihin. Tuotantokäyttöön soveltuva GitHub-tallennus, julkaisu ja automaatiokytkentä vaativat erillisen toteutuksen ja hyväksynnän.
 
 Toteutus ei muuta ajastuksia, aikavyöhykkeitä, automaatioiden ohjeita, aktiivisuutta, kohdekeskusteluja, RSS-syötteitä tai näytöshistoriaa.
+
+### 8.20 Orkestroinnin paikalliset tallennus- ja julkaisusovittimet
+
+Tiketissä #120 lisättiin `scripts/module_run_adapters.py`, joka toteuttaa orkestroinnin rajapintoihin paikalliset testisovittimet:
+
+- `JsonFileModuleStateStore` validoi moduulitilan ja käyttää SHA-vertailua sekä prosessilukkoa ennen atomista kirjoitusta.
+- `JsonFileArtifactStore` säilyttää prosessin artefaktit moduulikohtaisesti erillään checkpointista ja hylkää vanhentuneen version tai ristiriitaisen run_id:n.
+- `JsonlRunRecorder` tallentaa ajon tunnisteet ja tilan ilman raporttitekstiä, lähdekatkelmia tai tunnuksia. Saman ajon aikaleimoiltaan muuttunut uusintakirjaus on idempotentti.
+- `LocalFileRssPublisher` kirjoittaa vain kutsujan antamaan eristettyyn hakemistoon, muodostaa moduuli-/run_id-pohjaisen GUIDin, säilyttää aiemmat GUIDit ja lukee XML:n takaisin.
+- `StructuralModuleQualityGate` tarkistaa suorittajan tuloksen rakenteelliset ehdot ennen julkaisusovitinta.
+
+Sovittimien testit ajetaan tavallisessa Pythonin yksikkötestien löydössä. Ne käyttävät väliaikaisia hakemistoja, eivät repositorion tuotannon RSS-syötteitä tai moduulitiloja. Rakenteellinen portti ei korvaa toimituksellista julkaisulaadun arviointia eikä väitä tarkistavansa uutisväitteiden totuutta.
+
+Tämä toteuttaa paikallisen, testattavan elinkaaren mutta ei vielä GitHub Contents/Artifacts -palveluja, todellista RSS-tuotantojulkaisua tai ChatGPT-ajastettujen tehtävien integraatiota. Tuotannon aktivointi ja automaatioasetusten muutokset pysyvät erillisen hyväksynnän takana.
 
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
@@ -765,6 +779,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.11.0 – 2026-11-18:** lisättiin paikalliset SHA-tarkistetut moduulitila- ja artefaktitallennukset, tietosuojattu ajotulosloki, idempotentti eristetty RSS-julkaisusovitin ja rakenteellinen laadunvarmistussovitin; testit käyttävät väliaikaisia hakemistoja.
 - **1.10.0 – 2026-11-18:** lisättiin yhteinen moduulisuorituksen orkestrointirunko, varjotilan ja tuotannon erilliset portit, tapahtumavahdin moduulisuorittaja sekä ajokohtainen tulossopimus. Konkreettiset pysyvät tallennus- ja julkaisusovittimet jätettiin jatkotikettiin #120.
 - **1.9.0 – 2026-11-18:** määriteltiin AIProcessor- ja ResearchProvider-sopimukset, tekninen moduulikohtainen reititys, rajatut uusinnat, kustannusbudjetit, tietoturvallinen auditointi ja kaksi testiadapteria kummallekin sopimukselle.
 - **1.8.0 – 2026-11-18:** lisättiin kymmenen moduulikohtaista tilatiedostoa, checkpointin append-only-historia, lähde- ja RSS-GUID-viitteet, näytöshistorian tapahtumaviitteet sekä onnistuneen checkpointin idempotentti ja rinnakkaisuutta suojaava päivityssopimus.

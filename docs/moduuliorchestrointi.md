@@ -1,6 +1,6 @@
 # Moduulien yhteinen suoritusorkestrointi
 
-**Versio:** 1.0.0  
+**Versio:** 1.1.0  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#108 – Rakenna yhteinen moduulien suoritusorkestrointi ja vaiheittainen käyttöönotto](https://github.com/mikknikk/aiheseurain/issues/108)
 
@@ -110,6 +110,19 @@ Yksikkötestit kattavat varjotilan, tuotannon erillisen hyväksynnän, onnistune
 
 Toteutus tarjoaa yhteisen orkestrointisopimuksen ja testatut portit. Se ei vielä sisällä tuotantokäyttöön tarkoitettua RSS-kirjoittajaa, GitHubin artefaktitallennuksen toteutusta tai automaatioiden käynnistysintegraatiota. Nämä adapterit ja niiden käyttöönottopäätös tehdään erikseen.
 
+## 10. Paikalliset tallennus- ja julkaisusovittimet
+
+Tiketissä #120 lisättiin `scripts/module_run_adapters.py` ja `tests/test_module_run_adapters.py`. Sovittimet on tarkoitettu paikalliseen testaukseen ja varjotilan kehitykseen; ne eivät ole tuotantoon kytkettyjä GitHub- tai RSS-palveluja.
+
+- `JsonFileModuleStateStore` lukee ja validoi moduulitilan, tarkistaa odotetun SHA-version ja käyttää prosessilukkoa sekä atomista tiedostonvaihtoa.
+- `JsonFileArtifactStore` tallentaa moduulin prosessi-artefaktit erilliseen JSON-tiedostoon, suojaa versionvaihdon ja käsittelee saman run_id:n uusinnan idempotentisti.
+- `JsonlRunRecorder` säilyttää ajon tekniset tunnisteet ja vaiheet. Se jättää pois raporttisisällön, lähdekatkelmat ja salaisuudet.
+- `LocalFileRssPublisher` kirjoittaa vain annettuun testihakemistoon, muodostaa GUIDin moduuli- ja run_id-tunnisteista, säilyttää aiemmat itemit ja tarkistaa XML:n takaisinluvulla.
+- `StructuralModuleQualityGate` tarkistaa suorittajan tuloksen rakenteelliset ehdot. Se ei korvaa toimituksellista julkaisulaadun arviointia.
+
+Tallennus- ja julkaisutestit käyttävät väliaikaisia hakemistoja. Ne eivät kirjoita repositorion tuotannon moduulitiloihin, RSS-syötteisiin tai näytöshistoriaan. GitHub-pohjaiset tuotantosovittimet, ajastettujen tehtävien integraatio ja tuotantokäyttöönotto jäävät erillisiksi hyväksyttäviksi vaiheiksi.
+
 ## Muutoshistoria
 
+- **1.1.0 – 2026-11-18:** dokumentoitiin paikalliset SHA-tarkistetut tallennus-, ajotulos- ja RSS-julkaisusovittimet sekä niiden testaus- ja tuotantorajaukset.
 - **1.0.0 – 2026-11-18:** määriteltiin yhteinen suorituspyyntö ja tulos, orkestroinnin elinkaari, varjotila, tuotannon hyväksyntäportti, idempotentit tallennus- ja julkaisurajapinnat sekä yleisen tapahtumavahdin moduuli-integraatio.
