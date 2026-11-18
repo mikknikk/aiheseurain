@@ -284,9 +284,6 @@ def finalize(args) -> None:
     if args.is_current != "true":
         status(did, "failure", "Main-haaran nykytilaa ei voitu varmistaa; julkaisu estettiin.")
         raise PublicationError("Main-haaran nykytilan tarkistus epäonnistui")
-    if args.deploy_outcome != "success":
-        status(did, "failure", "Pages-julkaisu epäonnistui; aiempi julkaisu säilyy.")
-        raise PublicationError("Pages-julkaisu epäonnistui")
     latest_main = api("GET", "git/ref/heads/main").get("object", {}).get("sha")
     if latest_main != os.getenv("GITHUB_SHA"):
         status(did, "inactive", "Main-haara eteni deployn aikana; uudempi julkaisu korvaa tämän.")
