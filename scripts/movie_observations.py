@@ -202,6 +202,8 @@ def build_movie_observation(
     channels = set(discovery_channels or ["indian-film-screening-baseline"])
     if matches:
         channels.add("user-criteria")
+    if "user-criteria" in channels and not matches:
+        raise MovieObservationError("user-criteria-kanava vaatii vähintään yhden kriteeriosuman.")
     if not channels.issubset({"indian-film-screening-baseline", "user-criteria"}):
         raise MovieObservationError("Tuntematon elokuvahavainnon discovery_channel.")
     return {
