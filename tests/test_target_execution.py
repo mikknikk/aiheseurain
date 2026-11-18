@@ -92,8 +92,12 @@ class TargetExecutionFrameworkTests(unittest.TestCase):
     def test_target_context_is_immutable(self):
         class MutatingRunner(FakeRunner):
             def execute(self, context, provider_router):
-                with self.assertRaises(TypeError):
+                try:
                     context.target_definition["name"] = "Muutettu"
+                except TypeError:
+                    pass
+                else:
+                    raise AssertionError("Kohdemäärityksen olisi pitänyt olla vain luku -muodossa.")
                 return super().execute(context, provider_router)
 
         runner = MutatingRunner()
