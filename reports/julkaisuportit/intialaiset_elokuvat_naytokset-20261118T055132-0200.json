@@ -1,0 +1,136 @@
+{
+  "schema_version": 2,
+  "run_id": "intialaiset_elokuvat_naytokset-20261118T055132-0200",
+  "task_id": "intialaisten-elokuvien-naytokset",
+  "feed_path": "feeds/intialaisten-elokuvien-naytokset.xml",
+  "checked_at": "2026-11-18T05:51:32+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Näytöslistaukset avattiin alkuperäisiltä Kinoon-, Jämsän Kinotar-, Finnkino-, BioRex-, Kino Regina-, Cinema Orion- ja Kino Myyri -sivuilta. Lisäksi tarkistettiin Suomen elokuvasäätiön ja Filmikamarin ajankohtaissivut.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "https://kinoon.fi/en/showtimes/ramayana?scope=turku",
+        "https://jamsankinotar.fi/elokuvat/naytosajat",
+        "https://www.finnkino.fi/",
+        "https://biorex.fi/",
+        "https://kinoregina.fi/",
+        "https://cinemaorion.fi/",
+        "https://kinomyyri.fi/ohjelmisto/",
+        "https://www.ses.fi/",
+        "https://www.filmikamari.fi/"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Kinoonin sivut yksilöivät elokuvan, teatterin, päivän ja kellonajan. Jämsän Kinotarin oma listaus vahvistaa kolme Kinotar 123 -näytöstä; muut Kinoonista löydetyt uudet ajat säilytetään kolmannen osapuolen ilmoituksina.",
+      "evidence": [
+        "Klara ja aurinko, uudet 20.–24.11. ajat: https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "Ramayana: Rise of a Legend, uudet 21.–24.11. ajat: https://kinoon.fi/en/showtimes/ramayana?scope=turku",
+        "Kinotar 123 vahvistaa Klara ja aurinko -näytökset 18.11. klo 19.00, 21.11. klo 16.30 ja 24.11. klo 19.00: https://jamsankinotar.fi/elokuvat/naytosajat"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Kinoon on yksi kolmannen osapuolen koontilähde, eikä sen listauksia lasketa riippumattomiksi teatterivahvistuksiksi. Kolme Jämsän aikaa tarkistettiin erikseen Kinotarin omasta ohjelmistosta; vain nämä on merkitty teatterin vahvistamiksi.",
+      "evidence": [
+        "Kinoon-koonti: https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=BIO:1011",
+        "Kinotarin oma ohjelmisto: https://jamsankinotar.fi/elokuvat/naytosajat"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Kinoonin 20 uutta näytösaikaa pysyvät kolmannen osapuolen ilmoituksina, lukuun ottamatta Kinotarin vahvistamia kahta uutta Jämsän aikaa. Klara ja aurinko säilyy tuotantomaan rajatapauksena aiemman lähderistiriidan vuoksi; ristiriitaa ei esitetä ratkaistuna."
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Seurantajakson alku, tarkistushetki ja yksittäisten näytösten päivämäärät on erotettu. Menneiksi muuttuneet näytökset siirrettiin completed-tilaan tarkistushetken perusteella, eikä niitä poistettu historiasta."
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Seurantajakso on 17.11.2026 klo 06.23.29–18.11.2026 klo 05.51.32 Suomen aikaa, alkaen edellisestä onnistuneesta tarkistuspisteestä."
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Aiempi näytöshistoria ja RSS-julkaisut vertailtiin. Uudet näytökset lisättiin pysyvillä screening_id-tunnisteilla; 24 aiempaa näytöstä siirrettiin completed-tilaan eikä poistettu."
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Saman PR:n pakollinen CI tarkistaa, että kaikki main-haaran aiemmat GUID-tunnisteet säilyvät ja että uudet GUIDit ovat yksilöllisiä."
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "Saman PR:n validate_feeds.py-tarkistus läpäisi RSS/XML- ja description-HTML-rakennetarkistukset; ne suoritetaan uudelleen raportin sisältävälle commitille."
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Syötteessä ei ole item-tason link-elementtejä, GUIDit ovat yksilöllisiä ja koko näytösraportti sekä lähdeluettelo ovat itemin description-elementissä; saman PR:n CI tarkistaa rakenteen uudelleen."
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Klara ja aurinko- ja Ramayana-päivitykset sisältävät tulevat näytökset, erilliset historialliset näytökset, muutokset sekä otsikoidut lähdeluettelot."
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "Päivitysten HTML alkaa suomen kielen määrittävällä lang-attribuutilla, käyttää h1–h3-otsikkohierarkiaa ja luettavia listoja sekä näytöskohtaisia kuvaavia linkkitekstejä. Raporteissa ei ole kuvia, joten alt-tekstejä ei tarvita."
+    }
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "klara-20-24-11-2026",
+      "claim": "Kinoon listaa 14 uutta Klara ja aurinko -näytöstä 20.–24.11.2026; kaksi Jämsän Kinotar 123 -näytöstä näistä vahvistettiin teatterin omasta ohjelmistosta ja muut 12 jäävät kolmannen osapuolen ilmoituksiksi.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kino-myyri",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Kinoon on kolmannen osapuolen näytöskooste; lähdettä ei käsitellä teatterin vahvistuksena."
+        },
+        {
+          "source_id": "jamsan-kinotar",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Kinotar 123:n oma ohjelmisto vahvistaa 21.11. ja 24.11. näytökset."
+        }
+      ],
+      "note": "Varmennustaso koskee kokonaisuutta: vain Jämsän kaksi uutta aikaa ovat ensisijaislähteellä vahvistettuja."
+    },
+    {
+      "claim_id": "ramayana-21-24-11-2026",
+      "claim": "Kinoon listaa kahdeksan uutta Ramayana: Rise of a Legend -näytöstä 21.–24.11.2026 Helsingissä, Espoossa, Tampereella ja Turussa.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kino-myyri",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Kinoon-koonti yksilöi esitysajat, mutta vastaavia teatterin omia vahvistuksia ei saatu."
+        }
+      ],
+      "note": "Kaikki kahdeksan uutta aikaa on merkitty RSS:ssä kolmannen osapuolen ilmoittamiksi."
+    },
+    {
+      "claim_id": "kinotar-klara-18-21-24-11-2026",
+      "claim": "Jämsän Kinotar 123:n oma ohjelmisto vahvistaa Klara ja aurinko -näytökset 18.11. klo 19.00, 21.11. klo 16.30 ja 24.11. klo 19.00.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "jamsan-kinotar",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        }
+      ]
+    }
+  ],
+  "decision": "approved",
+  "reviewer_notes": [
+    "Sisällöllinen tarkistus hyväksyy päivityksen: 22 uutta näytöstä lisättiin, 24 aiempaa näytöstä siirrettiin menneisiin ja yksi Jämsän Kinotar -näytös sai ensisijaislähteen vahvistuksen. Aiempi historia säilytettiin.",
+    "FinBolly-, FinTamil- ja Rasa Entertainment -Facebook-sivut jäivät käyttörajoituksen vuoksi tarkistamatta; niitä ei tulkittu tyhjäksi ohjelmistoksi.",
+    "Ensimmäinen PR:n CI-ajo pysähtyi vain puuttuvan porttiraportin vuoksi. Automaattiset tarkistukset suoritetaan uudelleen raportin sisältävälle commitille, eikä PR:ää yhdistetä ennen nimenomaista success-tulosta."
+  ]
+}

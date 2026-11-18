@@ -7,10 +7,10 @@
       "run_id": null,
       "run_history_ref": null,
       "definition_version": null,
-      "checked_at": "2026-11-17T06:23:29+02:00",
+      "checked_at": "2026-11-18T05:51:32+02:00",
       "period": {
-        "start": "2026-11-16T15:24:00+02:00",
-        "end": "2026-11-17T06:23:29+02:00"
+        "start": "2026-11-17T06:23:29+02:00",
+        "end": "2026-11-18T05:51:32+02:00"
       },
       "result": "success",
       "published_items": 4,
@@ -25,20 +25,38 @@
       "run_id": null,
       "run_history_ref": null,
       "definition_version": null,
-      "checked_at": "2026-11-17T06:23:29+02:00",
+      "checked_at": "2026-11-18T05:51:32+02:00",
       "period": {
-        "start": "2026-11-16T15:24:00+02:00",
-        "end": "2026-11-17T06:23:29+02:00"
+        "start": "2026-11-17T06:23:29+02:00",
+        "end": "2026-11-18T05:51:32+02:00"
       },
       "result": "success",
       "published_items": 4,
       "sources_checked": 8,
       "source_check_run_refs": [
-        "intialaiset_elokuvat_naytokset-20261117T062329-0200"
+        "intialaiset_elokuvat_naytokset-20261117T062329-0200",
+        "intialaiset_elokuvat_naytokset-20261118T055132-0200"
       ],
-      "report_guid_refs": [],
+      "report_guid_refs": [
+        "klara-ja-aurinko-update-screening-watch-20261118T032342Z-a1-19-completed-14-added",
+        "ramayana-update-screening-watch-20261118T032342Z-a1-5-completed-8-added",
+        "klara-ja-aurinko-update-20261117T062329-17-completed-4-added",
+        "ramayana-update-20261117T062329-5-completed-3-confirmed",
+        "saapasrasvaa-update-20261117T062329-first-publication",
+        "om-operation-mole-update-20261117T062329-first-publication",
+        "klara-ja-aurinko-update-20261116T162700-completed-shows-v1",
+        "klara-ja-aurinko-update-20261116T152400-removed-expired-1515",
+        "ramayana-update-20261116T152400-plaza-oulu-1800-scala-official",
+        "ramayana-screenings-20261116T101600-0200-finnkino-itis-2015-biorex-tripla-source-refinement",
+        "klara-ja-aurinko-update-20261116T075534-48cd13f3",
+        "ramayana-update-20261116T075534-326014be",
+        "klara-ja-aurinko-update-20261116T074158-afe86bc3",
+        "ramayana-update-20261116T074158-a7b14971",
+        "ramayana-screenings-2026-11-12",
+        "klara-ja-aurinko-screenings-2026"
+      ],
       "recorded_on": "2026-11-18",
-      "notes": "Siirretty data/seurantatila.json-tiedostosta. Ajon tunnistetta tai historiallista moduuliversiota ei ollut kirjattu, joten niitä ei päätellä."
+      "notes": "Siirretty ja synkronoitu data/seurantatila.json-tiedoston nykyisen erillisen näytösvahdin checkpointin kanssa. Moduuli pysyy passiivisena; historiallista ajotunnistetta tai moduuliversiota ei päätellä."
     }
   ],
   "history": {
@@ -240,6 +258,194 @@
       {
         "store_path": "data/naytosten-muutoshistoria.json",
         "record_id": "details_changed-ramayana-rise-of-a-legend-biorex-tripla-20261118-1945-20261117T062329-official-confirmation"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kino-piispanristi-20261117-1345-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-scala-20261117-1430-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-verkatehdas-20261117-1445-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-redi-20261117-1500-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-tripla-20261117-1515-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261117-1530-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-plaza-20261117-1600-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-seinajoki-20261117-1630-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kino-123-veturi-kuusankoski-20261117-1715-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-rovaniemi-20261117-1730-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-vaasa-20261117-1730-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261117-1750-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-ihme-kompleksi-20261117-1800-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-trio-123-20261117-1815-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261117-1825-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-ramayana-rise-of-a-legend-finnkino-plaza-20261117-1850-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261117-1910-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kinolinna-20261117-1915-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-fantasia-20261117-1925-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-ramayana-rise-of-a-legend-finnkino-plevna-20261117-1930-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261117-1945-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-ramayana-rise-of-a-legend-finnkino-itis-20261117-2000-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-plevna-20261117-2015-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261117-2030-screening-watch-20261118T032342Z-a1-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-scala-20261120-1430-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-kinopalatsi-20261120-1450-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-kinopalatsi-20261120-2130-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-biorex-redi-20261121-1230-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-biorex-sveitsi-20261121-1500-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-kinotar-123-20261121-1630-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-kinopalatsi-20261121-1640-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-kinopalatsi-20261122-1245-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-kinopalatsi-20261122-1715-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-biorex-redi-20261123-1445-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-kinopalatsi-20261123-2115-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-biorex-redi-20261124-1500-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-kinotar-123-20261124-1900-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-klara-ja-aurinko-finnkino-kinopalatsi-20261124-2100-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261121-1330-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261122-1400-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-plevna-20261122-1930-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261122-1945-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-itis-20261122-2000-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-omena-20261122-2015-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261123-1845-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "added-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261124-1845-screening-watch-20261118T032342Z-a1-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kinotar-123-20261118-1900-screening-watch-20261118T032342Z-a1-official"
       }
     ],
     "current_record_refs": [
@@ -342,6 +548,10 @@
       {
         "store_path": "data/naytosten-muutoshistoria.json",
         "record_id": "klara-ja-aurinko-kuvapalatsi-20261116-1930"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "saapasrasvaa-kino-kilta-20261116-1930"
       },
       {
         "store_path": "data/naytosten-muutoshistoria.json",
@@ -665,7 +875,71 @@
       },
       {
         "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-finnkino-scala-20261120-1430"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261120-1450"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261120-2130"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-biorex-redi-20261121-1230"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261121-1330"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
         "record_id": "klara-ja-aurinko-bio-dux-20261121-1430"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-biorex-sveitsi-20261121-1500"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-kinotar-123-20261121-1630"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261121-1640"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "om-operation-mole-kino-myyri-20261121-2030"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261122-1245"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261122-1400"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261122-1715"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-plevna-20261122-1930"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261122-1945"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-itis-20261122-2000"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-omena-20261122-2015"
       },
       {
         "store_path": "data/naytosten-muutoshistoria.json",
@@ -673,7 +947,15 @@
       },
       {
         "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-biorex-redi-20261123-1445"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
         "record_id": "klara-ja-aurinko-kinopirtti-20261123-1530"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261123-1845"
       },
       {
         "store_path": "data/naytosten-muutoshistoria.json",
@@ -681,20 +963,35 @@
       },
       {
         "store_path": "data/naytosten-muutoshistoria.json",
-        "record_id": "saapasrasvaa-kino-kilta-20261116-1930"
+        "record_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261123-2115"
       },
       {
         "store_path": "data/naytosten-muutoshistoria.json",
-        "record_id": "om-operation-mole-kino-myyri-20261121-2030"
+        "record_id": "klara-ja-aurinko-biorex-redi-20261124-1500"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261124-1845"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-kinotar-123-20261124-1900"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261124-2100"
       }
     ],
     "source_check_run_refs": [
-      "intialaiset_elokuvat_naytokset-20261117T062329-0200"
+      "intialaiset_elokuvat_naytokset-20261117T062329-0200",
+      "intialaiset_elokuvat_naytokset-20261118T055132-0200"
     ]
   },
   "publication": {
     "feed_path": "feeds/intialaisten-elokuvien-naytokset.xml",
     "guid_refs": [
+      "klara-ja-aurinko-update-screening-watch-20261118T032342Z-a1-19-completed-14-added",
+      "ramayana-update-screening-watch-20261118T032342Z-a1-5-completed-8-added",
       "klara-ja-aurinko-update-20261117T062329-17-completed-4-added",
       "ramayana-update-20261117T062329-5-completed-3-confirmed",
       "saapasrasvaa-update-20261117T062329-first-publication",

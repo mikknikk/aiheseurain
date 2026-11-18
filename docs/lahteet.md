@@ -117,7 +117,7 @@ Oikeudellisten ja virallisten tapahtumien rinnalla seuraa henkilön elokuva- ja 
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-`data/source-catalog.json` sisältää 123 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 132 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi, alueet ja A–D-luokka ylläpidetään kerran; tarvittaessa mukana on `reliability_note`. Käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
+`data/source-catalog.json` sisältää 124 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 132 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi, alueet ja A–D-luokka ylläpidetään kerran; tarvittaessa mukana on `reliability_note`. Käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
