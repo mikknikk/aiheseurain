@@ -1,6 +1,6 @@
 # Elokuvien hakukriteeristö
 
-**Versio:** 1.0.0  
+**Versio:** 1.0.1  
 **Päiväys:** 2026-11-18  
 **Liittyvä tiketti:** [#67 – Käyttäjän hyväksymä elokuvien hakukriteeristö](https://github.com/mikknikk/aiheseurain/issues/67)  
 **Jatkotoimet:** [#66 – Elokuvahavaintorekisteri ja kriteerikohtaiset jatkotoimet](elokuvahavainnot-ja-jatkotoimet.md)
@@ -74,6 +74,8 @@ Sisällyttävien ehtojen `all`-politiikka vaatii kaikkien ehtojen täyttymisen; 
 
 ## 6. Kriteeriosuman välitys
 
+Elokuvarekisterin `discovery_channels` erottaa löydöksen nykyisestä intialaisen elokuvan peruspolusta (`indian-film-screening-baseline`) ja käyttäjän hyväksymiin uusiin kriteereihin perustuvasta löydöksestä (`user-criteria`). Kun sama elokuva löytyy molempia polkuja pitkin, kanavat yhdistyvät samaan elokuvatietueeseen ilman näytösmerkintöjen monistamista. Raportti voi näyttää kunkin kriteeriosuman perustelun erikseen.
+
 Arviointimoottori palauttaa kriteeriosumasta:
 
 - `criterion_id) ja `criterion_version);
@@ -107,4 +109,5 @@ Testit osoittavat kriteerimoottorin rakenteellisen toiminnan. Ne eivät vahvista
 
 ## Muutoshistoria
 
+- **1.0.1 – 2026-11-18:** lisättiin löydöskanavien erottelu nykyisen intialaisen peruspolun ja käyttäjän hyväksymien uusien kriteerien välillä sekä niiden yhdistäminen samaan elokuvarekisteriin.
 - **1.0.0 – 2026-11-18:** määriteltiin versioitu kriteerirakenne, ehdotetut kriteeriluokat, include/exclude-arviointi, #66-toimintoviitteet ja tyhjän tuotantokriteeristön hyväksyntäraja.
