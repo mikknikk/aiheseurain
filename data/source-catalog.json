@@ -304,24 +304,6 @@
       "reliability_class": "C"
     },
     {
-      "id": "dera-sacha-sauda-official",
-      "name": "Dera Sacha Sauda",
-      "url": "https://derasachasauda.org/",
-      "language_regions": [
-        "en",
-        "hi"
-      ],
-      "source_type": "primary",
-      "regions": [
-        "IN-HR",
-        "IN-PB",
-        "IN-CH",
-        "IN-NATIONAL"
-      ],
-      "reliability_class": "A",
-      "reliability_note": "Dera Sacha Saudan virallinen organisaatiosivusto; soveltuu järjestön omien ilmoitusten, tapahtumien ja julkaisujen tarkistamiseen, ei riippumattomaksi vahvistukseksi oikeudellisille väitteille."
-    },
-    {
       "id": "deutsche-tolkien-gesellschaft",
       "name": "Deutsche Tolkien Gesellschaft",
       "url": "https://www.tolkiengesellschaft.de/news/",
@@ -1222,23 +1204,6 @@
         "GLOBAL"
       ],
       "reliability_class": "B"
-    },
-    {
-      "id": "saint-dr-msg-official",
-      "name": "Saint Dr. MSG Insan – official website",
-      "url": "https://www.saintdrmsginsan.me/",
-      "language_regions": [
-        "en"
-      ],
-      "source_type": "primary",
-      "regions": [
-        "IN-HR",
-        "IN-PB",
-        "IN-CH",
-        "IN-NATIONAL"
-      ],
-      "reliability_class": "A",
-      "reliability_note": "Henkilön virallinen verkkosivusto, johon Dera Sacha Saudan virallinen sivusto linkittää; soveltuu henkilön omien artikkeleiden, ilmoitusten ja julkaisujen tarkistamiseen, ei riippumattomaksi vahvistukseksi oikeudellisille väitteille."
     },
     {
       "id": "sakal",
