@@ -80,7 +80,7 @@ class MovieCriteriaTests(unittest.TestCase):
         )
         self.assertEqual(
             {item["criterion_id"] for item in matches},
-            {"test-actor-and-year", "test-language-match"},
+            {"test-criterion-a", "test-criterion-b"},
         )
         self.assertTrue(all(item["criterion_version"] == "1.0.0" for item in matches))
         self.assertTrue(all(item["source_urls"] == SOURCES for item in matches))
@@ -92,7 +92,7 @@ class MovieCriteriaTests(unittest.TestCase):
         matches = evaluate_movie_criteria(movie, fixture(), OBSERVED, SOURCES)
         self.assertEqual(
             {item["criterion_id"] for item in matches},
-            {"test-language-match"},
+            {"test-criterion-b"},
         )
 
     def test_any_match_policy_accepts_one_of_several_values(self):
@@ -100,7 +100,7 @@ class MovieCriteriaTests(unittest.TestCase):
         movie = matching_movie()
         movie["languages"] = ["ta"]
         matches = evaluate_movie_criteria(movie, fixture(), OBSERVED, SOURCES)
-        self.assertIn("test-language-match", {item["criterion_id"] for item in matches})
+        self.assertIn("test-criterion-b", {item["criterion_id"] for item in matches})
 
     def test_paused_and_future_criteria_are_not_evaluated(self):
         """Keskeytetty tai vasta myöhemmin voimaan tuleva kriteeri ei tuota osumaa."""
