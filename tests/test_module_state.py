@@ -1,4 +1,4 @@
-""""Testaa moduulikohtaisen tilan eheys ja onnistuneen checkpointin siirtymäsäännöt."""
+"""Testaa moduulikohtaisen tilan eheys ja onnistuneen checkpointin siirtymäsäännöt."""
 from copy import deepcopy
 import json
 from pathlib import Path
@@ -58,10 +58,10 @@ class ModuleStateMigrationTests(unittest.TestCase):
                         for key in path[:-1]:
                             target = target[key]
                         target[path[-1]] = bad_value
-                        state_path.write_text(json.dumps(candidate, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+                        state_path.write_text(json.dumps(candidate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                         errors = migration_validator.validate_state_migration()
                         self.assertTrue(any(expected_error in error for error in errors), errors)
-                state_path.write_text(json.dumps(original, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+                state_path.write_text(json.dumps(original, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                 self.assertEqual(migration_validator.validate_state_migration(), [])
 
 
