@@ -62,6 +62,166 @@ class RssPublicationManifestTests(unittest.TestCase):
             self.assertEqual(changed["sha256"], manifest.digest(alpha))
             self.assertEqual(changed["guids"], ["alpha-guid"])
 
+
+    def test_snapshot_records_exact_public_feed_bytes(self):
+        import io
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            alpha = b'<rss><channel><item><guid>live-a</guid></item></channel></rss>'
+            beta = b'<rss><channel><item><guid>live-b</guid></item></channel></rss>'
+            responses = [io.BytesIO(alpha), io.BytesIO(beta)]
+            feeds = [
+                {"feed_id": "a", "path": "feeds/a.xml", "public_url": "https://example.test/a.xml"},
+                {"feed_id": "b", "path": "feeds/b.xml", "public_url": "https://example.test/b.xml"},
+            ]
+            with patch.object(manifest, "ROOT", root), patch.object(
+                manifest.urllib.request, "urlopen", side_effect=responses
+            ):
+                saved = manifest.snapshot_live_feeds(feeds)
+            self.assertEqual([item["sha256"] for item in saved],
+                             [manifest.digest(alpha), manifest.digest(beta)])
+            self.assertEqual((root / "_rollback_snapshot/feeds/a.xml").read_bytes(), alpha)
+            self.assertEqual((root / "_rollback_snapshot/feeds/b.xml").read_bytes(), beta)
+
+    def test_rollback_source_overlays_live_snapshot_without_changing_other_files(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "old-source"
+            (source / "feeds").mkdir(parents=True)
+            (source / "index.html").write_text("old site", encoding="utf-8")
+            (source / "feeds/a.xml").write_text("stale committed feed", encoding="utf-8")
+            snapshot = root / "_rollback_snapshot/feeds"
+            snapshot.mkdir(parents=True)
+            live = b'<rss><channel><item><guid>last-live-guid</guid></item></channel></rss>'
+            (snapshot / "a.xml").write_bytes(live)
+            catalog = root / "data"
+            catalog.mkdir()
+            (catalog / "feed-catalog.json").write_text(json.dumps({
+                "feeds": [{"id": "a", "path": "feeds/a.xml"}]
+            }), encoding="utf-8")
+            class Args:
+                source_dir = str(source)
+                destination_dir = str(root / "rollback-source")
+            with patch.object(manifest, "ROOT", root), patch.object(
+                manifest, "CATALOG", catalog / "feed-catalog.json"
+            ):
+                manifest.assemble_rollback(Args())
+            self.assertEqual((root / "rollback-source/index.html").read_text(encoding="utf-8"), "old site")
+            self.assertEqual((root / "rollback-source/feeds/a.xml").read_bytes(), live)
+
+    def test_verify_feeds_rejects_hash_mismatch_without_long_wait(self):
+        import io
+        wrong = b'<rss><channel><item><guid>wrong-guid</guid></item></channel></rss>'
+        with patch.object(manifest.urllib.request, "urlopen", side_effect=lambda *args, **kwargs: io.BytesIO(wrong)), patch.object(
+            manifest.time, "sleep"
+        ):
+            with self.assertRaises(manifest.PublicationError):
+                manifest.verify_feeds([{
+                    "public_url": "https://example.test/a.xml", "path": "feeds/a.xml",
+                    "sha256": "0" * 64, "guids": ["expected-guid"], "item_count": 1
+                }])
+
+
+    def test_finalize_accepts_ambiguous_deploy_result_only_after_content_verification(self):
+        from types import SimpleNamespace
+        manifest_payload = {"manifest_type": "aiheseurain-rss-publication", "feeds": [{}]}
+        with patch.dict("os.environ", {"GITHUB_SHA": "head"}), patch.object(
+            manifest, "api", side_effect=[
+                {"object": {"sha": "head"}}, {"payload": manifest_payload}
+            ]
+        ), patch.object(manifest, "status") as status:
+            manifest.finalize(SimpleNamespace(
+                deployment_id="123", is_current="true", deploy_outcome="failure",
+                candidate_verified="true", rollback_outcome="skipped",
+                rollback_verified="false"
+            ))
+        status.assert_called_once_with(123, "success", "Kaikki 1 syötettä täsmäävät SHA/GUID/item-tasolla.")
+
+    def test_finalize_keeps_workflow_failed_after_successful_rollback(self):
+        from types import SimpleNamespace
+        manifest_payload = {"manifest_type": "aiheseurain-rss-publication", "feeds": [{}]}
+        with patch.dict("os.environ", {"GITHUB_SHA": "head"}), patch.object(
+            manifest, "api", side_effect=[
+                {"object": {"sha": "head"}}, {"payload": manifest_payload}
+            ]
+        ), patch.object(manifest, "status") as status:
+            with self.assertRaises(manifest.PublicationError):
+                manifest.finalize(SimpleNamespace(
+                    deployment_id="123", is_current="true", deploy_outcome="success",
+                    candidate_verified="false", rollback_outcome="success",
+                    rollback_verified="true"
+                ))
+        status.assert_called_once_with(
+            123, "failure", "Ehdokas hylättiin; aiempi varmennettu RSS-versio palautettiin."
+        )
+
+    def test_pages_workflow_contains_separate_verified_rollback_artifact(self):
+        workflow = (manifest.ROOT / ".github/workflows/publish-pages.yml").read_text(encoding="utf-8")
+        self.assertIn("name: github-pages-rollback", workflow)
+        self.assertIn("artifact_name: github-pages-rollback", workflow)
+        self.assertIn("steps.candidate_check.outputs.candidate_verified == 'false'", workflow)
+        self.assertIn("verify-rollback", workflow)
+
+
+    def test_existing_deployment_is_reused_for_same_workflow_run(self):
+        payload = {
+            "manifest_type": "aiheseurain-rss-publication",
+            "workflow_run_id": "777", "source_commit": "a" * 40,
+            "base_commit": "b" * 40
+        }
+        with patch.object(manifest, "api", return_value=[{"id": 456, "payload": payload}]) as api:
+            found = manifest.find_existing_deployment("a" * 40, "b" * 40, "777")
+        self.assertEqual(found, {"id": 456, "payload": payload})
+        api.assert_called_once()
+
+    def test_snapshot_validation_rejects_changed_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            folder = root / "_rollback_snapshot/feeds"
+            folder.mkdir(parents=True)
+            data = b'<rss><channel><item><guid>saved</guid></item></channel></rss>'
+            (folder / "a.xml").write_bytes(data)
+            expected = [{
+                "path": "feeds/a.xml", "sha256": "0" * 64,
+                "size_bytes": len(data), "guids": ["saved"], "item_count": 1
+            }]
+            with patch.object(manifest, "ROOT", root):
+                with self.assertRaises(manifest.PublicationError):
+                    manifest.validate_snapshot_files(expected)
+
+    def test_deployment_status_write_is_idempotent(self):
+        with patch.dict("os.environ", {
+            "GITHUB_REPOSITORY": "mikknikk/aiheseurain",
+            "GITHUB_RUN_ID": "777"
+        }), patch.object(manifest, "api", return_value=[{
+            "state": "failure",
+            "description": "Ehdokas hylättiin; aiempi varmennettu RSS-versio palautettiin."
+        }]) as api:
+            manifest.status(123, "failure", "Ehdokas hylättiin; aiempi varmennettu RSS-versio palautettiin.")
+        api.assert_called_once_with("GET", "deployments/123/statuses?per_page=1")
+
+    def test_failure_alert_does_not_create_duplicate_issue(self):
+        from types import SimpleNamespace
+        with patch.dict("os.environ", {
+            "GITHUB_REPOSITORY": "mikknikk/aiheseurain",
+            "GITHUB_RUN_ID": "777"
+        }), patch.object(manifest, "load_manifest", return_value={"source_commit": "a" * 40}), patch.object(
+            manifest, "api", return_value=[{
+                "number": 42,
+                "title": "RSS-julkaisun palautus vaatii huomiota - ajo 777"
+            }]
+        ) as api:
+            manifest.alert_failure(SimpleNamespace(deployment_id="123"))
+        api.assert_called_once_with("GET", "issues?state=all&per_page=100")
+
+    def test_production_pages_workflow_serializes_runs_and_keeps_snapshot_for_retries(self):
+        workflow = (manifest.ROOT / ".github/workflows/publish-pages.yml").read_text(encoding="utf-8")
+        self.assertIn("group: ${{ github.event_name", workflow)
+        self.assertIn("cancel-in-progress: false", workflow)
+        self.assertIn("name: rss-rollback-snapshot", workflow)
+        self.assertIn("actions/download-artifact@v4", workflow)
+        self.assertIn("alert-failure", workflow)
+
     def test_build_manifest_refuses_missing_or_rejected_report(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

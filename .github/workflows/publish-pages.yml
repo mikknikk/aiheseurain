@@ -32,6 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      actions: read
       deployments: write
       pages: write
       id-token: write
@@ -63,6 +64,32 @@ jobs:
         run: python scripts/validate_feeds.py
       - name: Aseta GitHub Pages
         uses: actions/configure-pages@v5
+      - name: Palauta saman ajon RSS-snapshot mahdollisessa uusinnassa
+        id: download_rollback_snapshot
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: rss-rollback-snapshot
+          path: _rollback_snapshot
+      - name: Tallenna aiemmin julkaistut RSS-tavut ja ehdokasmanifesti
+        id: prepare_manifest
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: python scripts/rss_publication_manifest.py prepare --base-ref "${{ github.event.before }}"
+      - name: Tallenna palautussnapshot uusinta-ajoa varten
+        if: steps.prepare_manifest.outputs.deployment_id != '' && steps.prepare_manifest.outputs.snapshot_reused != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rss-rollback-snapshot
+          path: _rollback_snapshot
+          retention-days: 30
+          if-no-files-found: error
       - name: Rakenna Jekyll-sivusto
         uses: actions/jekyll-build-pages@v1
         with:
@@ -74,16 +101,28 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./_site
-      - name: Tallenna RSS-julkaisun ehdokasmanifesti ennen ulkoista julkaisua
-        id: prepare_manifest
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
-          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
-        run: python scripts/rss_publication_manifest.py prepare --base-ref "${{ github.event.before }}"
+      - name: Hae aiempi sivustoversio palautusartefaktia varten
+        if: steps.prepare_manifest.outputs.deployment_id != ''
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.before }}
+          path: _rollback_source
+          fetch-depth: 1
+      - name: Kokoa palautussivuston lähde
+        if: steps.prepare_manifest.outputs.deployment_id != ''
+        run: python scripts/rss_publication_manifest.py assemble-rollback --source-dir _rollback_source --destination-dir _rollback_site_source
+      - name: Rakenna aiempi sivusto palautusartefaktiksi
+        if: steps.prepare_manifest.outputs.deployment_id != ''
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./_rollback_site_source
+          destination: ./_rollback_site
+      - name: Lataa erillinen palautusartefakti
+        if: steps.prepare_manifest.outputs.deployment_id != ''
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages-rollback
+          path: ./_rollback_site
 
   deploy:
     needs: build
@@ -92,6 +131,7 @@ jobs:
     permissions:
       contents: read
       deployments: write
+      issues: write
       pages: write
       id-token: write
     environment:
@@ -114,7 +154,34 @@ jobs:
         id: deployment
         if: steps.current.outputs.is_current == 'true'
         uses: actions/deploy-pages@v4
-      - name: Varmenna julkiset RSS-syötteet ja kirjaa manifestin lopputila
+      - name: Tarkista uuden julkaisun julkinen RSS-sisältö
+        id: candidate_check
+        if: always() && needs.build.outputs.deployment_id != '' && steps.current.outputs.is_current == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/rss_publication_manifest.py verify-candidate --deployment-id "${{ needs.build.outputs.deployment_id }}"
+      - name: Tarkista lähdehaaran tila ennen mahdollista palautusta
+        id: rollback_current
+        if: steps.candidate_check.outputs.candidate_verified == 'false'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/rss_publication_manifest.py check-current --source-commit "${{ github.sha }}"
+      - name: Palauta aiempi Pages-versio
+        id: rollback_deployment
+        if: steps.candidate_check.outputs.candidate_verified == 'false' && steps.rollback_current.outputs.is_current == 'true'
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages-rollback
+      - name: Varmenna palautetut julkiset RSS-syötteet
+        id: rollback_check
+        if: steps.rollback_deployment.outcome == 'success'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/rss_publication_manifest.py verify-rollback --deployment-id "${{ needs.build.outputs.deployment_id }}"
+      - name: Kirjaa julkaisun lopputila
         if: always() && needs.build.outputs.deployment_id != ''
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -124,4 +191,13 @@ jobs:
           DEPLOY_OUTCOME: ${{ steps.deployment.outcome }}
           IS_CURRENT: ${{ steps.current.outputs.is_current }}
           DEPLOYMENT_ID: ${{ needs.build.outputs.deployment_id }}
-        run: python scripts/rss_publication_manifest.py finalize --deployment-id "$DEPLOYMENT_ID" --deploy-outcome "$DEPLOY_OUTCOME" --is-current "$IS_CURRENT"
+          CANDIDATE_VERIFIED: ${{ steps.candidate_check.outputs.candidate_verified }}
+          ROLLBACK_OUTCOME: ${{ steps.rollback_deployment.outcome }}
+          ROLLBACK_VERIFIED: ${{ steps.rollback_check.outputs.rollback_verified }}
+        run: python scripts/rss_publication_manifest.py finalize --deployment-id "$DEPLOYMENT_ID" --deploy-outcome "$DEPLOY_OUTCOME" --is-current "$IS_CURRENT" --candidate-verified "$CANDIDATE_VERIFIED" --rollback-outcome "$ROLLBACK_OUTCOME" --rollback-verified "$ROLLBACK_VERIFIED"
+      - name: Luo idempotentti GitHub-hälytys epäonnistuneesta julkaisusta
+        if: failure() && needs.build.outputs.deployment_id != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/rss_publication_manifest.py alert-failure --deployment-id "${{ needs.build.outputs.deployment_id }}"

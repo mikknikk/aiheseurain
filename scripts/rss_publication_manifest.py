@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Tallenna RSS-julkaisun ehdokas GitHub Deployment -historiaan ja varmista Pages-takaisinluku."""
 from __future__ import annotations
-import argparse, hashlib, json, os, subprocess, sys, time
+import argparse, hashlib, json, os, shutil, subprocess, sys, time
 from datetime import datetime, timezone
 from pathlib import Path
 import urllib.error, urllib.request
@@ -51,7 +51,7 @@ def git_changed_files(base_ref: str) -> set[str]:
         raise PublicationError(f"Git-diff epäonnistui: {exc.stderr}") from exc
     return {line.strip() for line in result.stdout.splitlines() if line.strip()}
 
-def api(method: str, path: str, payload: dict | None = None) -> dict:
+def api(method: str, path: str, payload: dict | None = None) -> dict | list:
     """Käytä GitHub APIa vain rajattuun deployment-historiaan."""
     token, repo = os.getenv("GITHUB_TOKEN"), os.getenv("GITHUB_REPOSITORY")
     if not token or not repo:
@@ -81,6 +81,159 @@ def output(name: str, value: str) -> None:
     if os.getenv("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as stream:
             stream.write(f"{name}={value}\n")
+
+
+def snapshot_live_feeds(feeds: list[dict]) -> list[dict]:
+    """Tallenna nykyisten julkisten RSS-syötteiden täsmälliset tavut palautusta varten."""
+    folder = ROOT / "_rollback_snapshot" / "feeds"
+    folder.mkdir(parents=True, exist_ok=True)
+    saved = []
+    for feed in feeds:
+        request = urllib.request.Request(feed["public_url"], headers={
+            "Cache-Control": "no-cache", "Pragma": "no-cache",
+            "User-Agent": "aiheseurain-rss-rollback-snapshot"})
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                data = response.read()
+        except (urllib.error.URLError, TimeoutError) as exc:
+            raise PublicationError(f"{feed['path']}: aiemman syötteen varmistus epäonnistui: {exc}") from exc
+        guids, count = rss_metadata(data, feed["path"])
+        (folder / Path(feed["path"]).name).write_bytes(data)
+        saved.append({"feed_id": feed["feed_id"], "path": feed["path"],
+                      "public_url": feed["public_url"], "sha256": digest(data),
+                      "size_bytes": len(data), "item_count": count, "guids": guids})
+    if len(saved) != len(feeds):
+        raise PublicationError("Kaikkia syötteitä ei saatu palautusvarmistukseen")
+    return saved
+
+
+def assemble_rollback(args) -> None:
+    """Kokoa vanhan sivuston lähde ja korvaa RSS-tiedostot ennen julkaisua talteen otetuilla."""
+    source, destination = Path(args.source_dir), Path(args.destination_dir)
+    folder = ROOT / "_rollback_snapshot" / "feeds"
+    if not source.is_dir() or not folder.is_dir():
+        raise PublicationError("Palautussivuston lähde tai RSS-varmistus puuttuu")
+    shutil.copytree(source, destination, dirs_exist_ok=True,
+                    ignore=shutil.ignore_patterns(".git", "_site", ".jekyll-cache"))
+    catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
+    for feed in catalog["feeds"]:
+        saved = folder / Path(feed["path"]).name
+        if not saved.is_file():
+            raise PublicationError(f"Palautusvarmistus puuttuu: {feed['path']}")
+        data = saved.read_bytes()
+        rss_metadata(data, feed["path"])
+        target = destination / feed["path"]
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+
+
+def verify_feeds(feeds: list[dict]) -> None:
+    """Vertaa julkisia syötteitä odotettuun versioon ja sietää CDN:n päivitysviiveen."""
+    for feed in feeds:
+        last_error = None
+        for attempt in range(8):
+            try:
+                request = urllib.request.Request(feed["public_url"], headers={
+                    "Cache-Control": "no-cache", "Pragma": "no-cache",
+                    "User-Agent": "aiheseurain-rss-publication-verifier"})
+                with urllib.request.urlopen(request, timeout=20) as response:
+                    actual = response.read()
+                guids, count = rss_metadata(actual, feed["path"])
+                if digest(actual) != feed["sha256"] or guids != feed["guids"] or count != feed["item_count"]:
+                    raise PublicationError(f"{feed['path']}: julkinen sisältö ei vastaa odotettua versiota")
+                last_error = None
+                break
+            except (urllib.error.URLError, TimeoutError, PublicationError) as exc:
+                last_error = exc
+                if attempt < 7:
+                    time.sleep(min(5 * (attempt + 1), 20))
+        if last_error:
+            raise PublicationError(f"{feed['path']}: takaisinluku epäonnistui: {last_error}")
+
+
+def load_manifest(deployment_id: str) -> dict:
+    """Lue muuttumaton GitHub Deployment -manifesti."""
+    value = api("GET", f"deployments/{int(deployment_id)}").get("payload", {})
+    if value.get("manifest_type") != "aiheseurain-rss-publication":
+        raise PublicationError("Deploymentilta puuttuu RSS-manifesti")
+    return value
+
+
+def verify_candidate(args) -> None:
+    """Tarkista ehdokasjulkaisu; virhe käynnistää työnkulussa palautusvaiheen."""
+    try:
+        verify_feeds(load_manifest(args.deployment_id)["feeds"])
+        output("candidate_verified", "true")
+    except Exception as exc:
+        output("candidate_verified", "false")
+        print(f"Uuden julkaisun takaisinluku epäonnistui: {exc}")
+
+
+def verify_rollback(args) -> None:
+    """Varmista palautetut syötteet ennen kuin palautus merkitään onnistuneeksi."""
+    try:
+        verify_feeds(load_manifest(args.deployment_id)["rollback_feeds"])
+        output("rollback_verified", "true")
+    except Exception as exc:
+        output("rollback_verified", "false")
+        print(f"Palautuksen takaisinluku epäonnistui: {exc}")
+
+
+def validate_snapshot_files(expected: list[dict]) -> None:
+    """Varmista, että uusinta-ajossa ladatut palautustiedostot vastaavat manifestia."""
+    folder = ROOT / "_rollback_snapshot" / "feeds"
+    for feed in expected:
+        saved = folder / Path(feed["path"]).name
+        if not saved.is_file():
+            raise PublicationError(f"Palautussnapshotista puuttuu {feed['path']}")
+        data = saved.read_bytes()
+        guids, count = rss_metadata(data, feed["path"])
+        if (digest(data) != feed["sha256"] or len(data) != feed["size_bytes"]
+                or guids != feed["guids"] or count != feed["item_count"]):
+            raise PublicationError(f"Palautussnapshot ei vastaa manifestia: {feed['path']}")
+
+
+def find_existing_deployment(source_commit: str, base_commit: str, run_id: str) -> dict | None:
+    """Etsi saman Actions-ajon aiemmin luotu manifesti epäselvän API-vastauksen tai uusinnan varalta."""
+    items = api("GET", f"deployments?environment=rss-publication-manifest&ref={source_commit}&per_page=100")
+    for item in items if isinstance(items, list) else []:
+        payload = item.get("payload", {})
+        if isinstance(payload, str):
+            try:
+                payload = json.loads(payload)
+            except json.JSONDecodeError:
+                continue
+        if (payload.get("manifest_type") == "aiheseurain-rss-publication"
+                and payload.get("workflow_run_id") == str(run_id)
+                and payload.get("source_commit") == source_commit
+                and payload.get("base_commit") == base_commit):
+            return {"id": item.get("id"), "payload": payload}
+    return None
+
+
+def alert_failure(args) -> None:
+    """Luo yksi GitHub-issue epäonnistuneesta RSS-julkaisusta ja liitä ajo siihen."""
+    did = int(args.deployment_id)
+    manifest = load_manifest(args.deployment_id)
+    run_id = os.getenv("GITHUB_RUN_ID", "")
+    title = f"RSS-julkaisun palautus vaatii huomiota - ajo {run_id}"
+    issues = api("GET", "issues?state=all&per_page=100")
+    for issue in issues if isinstance(issues, list) else []:
+        if not issue.get("pull_request") and issue.get("title") == title:
+            print(f"Virhehälytys on jo kirjattu issueen #{issue['number']}.")
+            return
+    repo = os.environ["GITHUB_REPOSITORY"]
+    run_url = os.getenv("GITHUB_SERVER_URL", "https://github.com") + f"/{repo}/actions/runs/{run_id}"
+    body = (
+        "RSS/Pages-julkaisun varmennus tai automaattinen palautus epäonnistui.\n\n"
+        f"- Deployment: {did}\n- Lähdecommit: {manifest.get('source_commit')}\n"
+        f"- Workflow-ajo: {run_url}\n\n"
+        "Tarkista Pages-julkaisun vaiheet ja julkisten RSS-URL-osoitteiden nykytila. "
+        "Älä kuittaa hälytystä ennen kuin kaikki syötteet on luettu takaisin ja täsmäytetty."
+    )
+    created = api("POST", "issues", {"title": title, "body": body})
+    print(f"Virhehälytys kirjattu issueen #{created.get('number')}.")
+
 
 def build_manifest(base_ref: str, source_commit: str,
                    workflow_run_id: str, workflow_attempt: str) -> dict | None:
@@ -128,6 +281,7 @@ def build_manifest(base_ref: str, source_commit: str,
         "workflow_attempt": str(workflow_attempt), "source_commit": source_commit,
         "base_commit": base_ref, "prepared_at": now(), "pages_base_url": PAGES,
         "feeds": feeds,
+        "rollback_feeds": [],
     }
 
 
@@ -140,24 +294,45 @@ def prepare(args) -> None:
         print("RSS-syötemuutoksia ei ole; manifestia ei tarvita.")
         output("deployment_id", "")
         return
-    import jsonschema
-
-    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
-    jsonschema.Draft202012Validator(
-        schema, format_checker=jsonschema.FormatChecker()
-    ).validate(manifest)
-    created = api("POST", "deployments", {
-        "ref": manifest["source_commit"], "task": "deploy", "auto_merge": False,
-        "required_contexts": [], "environment": "rss-publication-manifest",
-        "description": "RSS-ehdokas valmis; odottaa Pages-takaisinlukua.",
-        "transient_environment": False, "production_environment": False,
-        "payload": manifest,
-    })
-    deployment_id = created.get("id")
-    if not isinstance(deployment_id, int):
-        raise PublicationError("GitHub ei palauttanut deployment-tunnistetta")
+    run_id = os.getenv("GITHUB_RUN_ID", "local")
+    existing = find_existing_deployment(manifest["source_commit"], manifest["base_commit"], run_id)
+    if existing:
+        # Uusinta käyttää alkuperäistä manifestia eikä vaihda palautuspistettä.
+        manifest = existing["payload"]
+        snapshot_folder = ROOT / "_rollback_snapshot" / "feeds"
+        if snapshot_folder.is_dir() and any(snapshot_folder.iterdir()):
+            validate_snapshot_files(manifest["rollback_feeds"])
+            reused = True
+        else:
+            # Jos ajo katkesi ennen snapshot-artefaktin tallennusta, palauta se vain,
+            # jos nykyinen julkinen sisältö vastaa yhä alkuperäistä palautuspistettä.
+            rebuilt = snapshot_live_feeds(manifest["feeds"])
+            if rebuilt != manifest["rollback_feeds"]:
+                raise PublicationError("Uusinta-ajon palautussnapshot puuttuu eikä nykyinen Pages vastaa alkuperäistä palautuspistettä.")
+            reused = False
+        deployment_id = existing["id"]
+    else:
+        # Varmista aiemmin julkinen tila ennen ehdokkaan julkaisemista.
+        manifest["rollback_feeds"] = snapshot_live_feeds(manifest["feeds"])
+        import jsonschema
+        schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator(
+            schema, format_checker=jsonschema.FormatChecker()
+        ).validate(manifest)
+        created = api("POST", "deployments", {
+            "ref": manifest["source_commit"], "task": "deploy", "auto_merge": False,
+            "required_contexts": [], "environment": "rss-publication-manifest",
+            "description": "RSS-ehdokas valmis; odottaa Pages-takaisinlukua.",
+            "transient_environment": False, "production_environment": False,
+            "payload": manifest,
+        })
+        deployment_id = created.get("id")
+        if not isinstance(deployment_id, int):
+            raise PublicationError("GitHub ei palauttanut deployment-tunnistetta")
+        reused = False
+    output("snapshot_reused", "true" if reused else "false")
     output("deployment_id", str(deployment_id))
-    print(f"RSS-manifesti {deployment_id} tallennettu ennen Pages-julkaisua.")
+    print(f"RSS-manifesti {deployment_id} valmis; palautussnapshotin uusinta={reused}.")
 
 def check_current(args) -> None:
     """Estä vanhentuneen Pages-artifactin julkaiseminen."""
@@ -167,17 +342,23 @@ def check_current(args) -> None:
     print("Build on nykyinen." if is_current else f"Vanhentunut build ohitetaan; main={current}")
 
 def status(deployment_id: int, state: str, description: str) -> None:
-    """Lisää uusi tilamerkintä; aiempaa deployment-historiaa ei muokata."""
+    """Lisää tilamerkintä vain, jos samaa lopputilaa ei ole jo kirjattu."""
     repo = os.environ["GITHUB_REPOSITORY"]
     run_url = os.getenv("GITHUB_SERVER_URL", "https://github.com") + f"/{repo}/actions/runs/" + os.getenv("GITHUB_RUN_ID", "")
+    description = description[:140]
+    previous = api("GET", f"deployments/{deployment_id}/statuses?per_page=1")
+    if isinstance(previous, list) and previous:
+        latest = previous[0]
+        if latest.get("state") == state and latest.get("description") == description:
+            return
     api("POST", f"deployments/{deployment_id}/statuses", {
-        "state": state, "description": description[:140],
+        "state": state, "description": description,
         "environment": "rss-publication-manifest", "log_url": run_url,
         "environment_url": PAGES + "/",
     })
 
 def finalize(args) -> None:
-    """Lue syötteet Pagesista takaisin ja kirjaa success vasta täsmäyksen jälkeen."""
+    """Kirjaa success vasta varmennetun ehdokkaan jälkeen; muuten varmista palautus."""
     did = int(args.deployment_id)
     if args.is_current == "false":
         status(did, "inactive", "Build vanheni; uudempi main-commit ohitti julkaisun.")
@@ -185,43 +366,20 @@ def finalize(args) -> None:
     if args.is_current != "true":
         status(did, "failure", "Main-haaran nykytilaa ei voitu varmistaa; julkaisu estettiin.")
         raise PublicationError("Main-haaran nykytilan tarkistus epäonnistui")
-    if args.deploy_outcome != "success":
-        status(did, "failure", "Pages-julkaisu epäonnistui; aiempi julkaisu säilyy.")
-        raise PublicationError("Pages-julkaisu epäonnistui")
     latest_main = api("GET", "git/ref/heads/main").get("object", {}).get("sha")
     if latest_main != os.getenv("GITHUB_SHA"):
         status(did, "inactive", "Main-haara eteni deployn aikana; uudempi julkaisu korvaa tämän.")
-        print("Main eteni deployn aikana; vanhan julkaisun onnistumista ei kirjata.")
         return
-    manifest = api("GET", f"deployments/{did}").get("payload", {})
-    if manifest.get("manifest_type") != "aiheseurain-rss-publication":
-        raise PublicationError("Deploymentilta puuttuu RSS-manifesti")
-    try:
-        for feed in manifest["feeds"]:
-            last_error = None
-            for attempt in range(8):
-                try:
-                    request = urllib.request.Request(feed["public_url"], headers={
-                        "Cache-Control": "no-cache", "Pragma": "no-cache",
-                        "User-Agent": "aiheseurain-rss-publication-verifier"})
-                    with urllib.request.urlopen(request, timeout=20) as response:
-                        actual = response.read()
-                    guids, count = rss_metadata(actual, feed["path"])
-                    if digest(actual) != feed["sha256"] or guids != feed["guids"] or count != feed["item_count"]:
-                        raise PublicationError(f"{feed['path']}: julkinen sisältö ei vastaa ehdokasta")
-                    last_error = None
-                    break
-                except (urllib.error.URLError, TimeoutError, PublicationError) as exc:
-                    last_error = exc
-                    if attempt < 7:
-                        time.sleep(min(5 * (attempt + 1), 20))
-            if last_error:
-                raise PublicationError(f"{feed['path']}: takaisinluku epäonnistui: {last_error}")
-    except Exception as exc:
-        status(did, "failure", f"Pages-takaisinluku epäonnistui: {exc}")
-        raise
-    status(did, "success", f"Kaikki {len(manifest['feeds'])} syötettä täsmäävät SHA/GUID/item-tasolla.")
-    print(f"OK: kaikki {len(manifest['feeds'])} RSS-syötettä varmennettiin julkisista URL-osoitteista.")
+    manifest = load_manifest(args.deployment_id)
+    if args.candidate_verified == "true":
+        status(did, "success", f"Kaikki {len(manifest['feeds'])} syötettä täsmäävät SHA/GUID/item-tasolla.")
+        return
+    if args.rollback_outcome == "success" and args.rollback_verified == "true":
+        status(did, "failure", "Ehdokas hylättiin; aiempi varmennettu RSS-versio palautettiin.")
+        raise PublicationError("Ehdokas hylättiin; aiempi RSS-versio palautettiin.")
+    status(did, "failure", "Takaisinluku epäonnistui eikä aiemman RSS-version palautusta voitu varmentaa.")
+    raise PublicationError("Julkaisun takaisinluku ja/tai automaattinen palautus epäonnistui.")
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -232,9 +390,19 @@ def main():
     f.add_argument("--deployment-id", required=True)
     f.add_argument("--deploy-outcome", required=True)
     f.add_argument("--is-current", required=True)
+    f.add_argument("--candidate-verified", default="false")
+    f.add_argument("--rollback-outcome", default="skipped")
+    f.add_argument("--rollback-verified", default="false")
+    v = sub.add_parser("verify-candidate"); v.add_argument("--deployment-id", required=True)
+    r = sub.add_parser("verify-rollback"); r.add_argument("--deployment-id", required=True)
+    a = sub.add_parser("assemble-rollback")
+    a.add_argument("--source-dir", required=True); a.add_argument("--destination-dir", required=True)
+    z = sub.add_parser("alert-failure"); z.add_argument("--deployment-id", required=True)
     args = parser.parse_args()
     try:
-        {"prepare": prepare, "check-current": check_current, "finalize": finalize}[args.command](args)
+        {"prepare": prepare, "check-current": check_current, "finalize": finalize,
+         "verify-candidate": verify_candidate, "verify-rollback": verify_rollback,
+         "assemble-rollback": assemble_rollback, "alert-failure": alert_failure}[args.command](args)
     except (PublicationError, OSError, KeyError, ValueError, subprocess.CalledProcessError) as exc:
         print(f"VIRHE: {exc}", file=sys.stderr)
         raise SystemExit(1)
