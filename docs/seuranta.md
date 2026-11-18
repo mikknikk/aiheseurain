@@ -119,8 +119,9 @@ Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään k
 - **Menettelyn tila:** istuntolista ei todista, että asia ehdittiin käsitellä. Uusimpien määräysten sivulla ei näkynyt asianumerolla annettua määräystä tarkistushetkellä, ja tapaustilan hakulomake vaati CAPTCHA-vahvistuksen. Käsittelyn toteutuminen ja mahdollinen ratkaisu jäivät avoimiksi.
 - **Tausta:** valitus koskee Punjabin ja Haryanan korkeimman oikeuden 7.3.2026 tekemää vapauttavaa ratkaisua toimittaja Ram Chander Chhatrapatin vuoden 2002 murhajutussa.
 - RSS GUID: `urn:aiheseurain:gurmeet-ram-rahim-singh:2026-11-18:aridaman-appeal-cause-list`.
-- Seurantajakso: 16.11.2026 (aloituskellonaika tuntematon) – 2026-11-18T13:13:52+02:00.
+- Seurantajakso: 16.11.2026 (aloituskellonaika tuntematon) – 18.11.2026 klo 13:13:52 (Europe/Helsinki).
 - Musiikki- ja elokuvajulkaisuista tai uudesta väliaikaisesta vapautuksesta ei löytynyt ajanjaksolle osuvaa vahvistettua ilmoitusta tarkistetuista lähteistä. Virallisen Dera YouTube -kanavan sisältö jäi teknisen rajoituksen vuoksi tarkistamatta.
+- Lähteet: [Intian korkeimman oikeuden istuntolista](https://api.sci.gov.in/jonew/cl/2026-11-18/F_J_2.pdf), [uusimmat määräykset](https://www.sci.gov.in/latest-orders/), [Hindustan Times](https://www.hindustantimes.com/cities/chandigarh-news/2002-journalist-murder-case-sc-agrees-to-hear-plea-against-dera-sacha-sauda-chief-s-acquittal-101786387552625.html) ja [Amar Ujala](https://www.amarujala.com/amp/haryana/sirsa/ramchandra-chhatrapati-murder-case-anshul-moves-supreme-court-against-high-court-verdict-2026-08-12).
 
 ### Muumit
 
