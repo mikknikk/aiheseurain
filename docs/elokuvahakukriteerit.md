@@ -40,13 +40,13 @@ Kriteeriluokka auttaa kuvaamaan kriteerin tarkoitusta. Varsinainen osuma perustu
 
 Kriteeritiedoston skeema on `schemas/movie-search-criteria.schema.json`. Yksi kriteeri sisältää:
 
-- pysyvän `criterion_id)-tunnisteen ja semanttisen version;
+- pysyvän `criterion_id`-tunnisteen ja semanttisen version;
 - nimen, kuvauksen ja kriteeriluokan;
 - tilan: `draft`, `active`, `paused` tai `retired`;
 - voimaantulo- ja mahdollisen päättymisajan;
 - sisällyttävät ehdot ja niiden `all`-/`any)-yhdistämispolitiikan;
 - poissulkevat ehdot, joista yksikin estää osuman;
-- #66:n toimintomäärityksiin viittaavat `action_ids)-tunnisteet;
+- #66:n toimintomäärityksiin viittaavat `action_ids`-tunnisteet;
 - luonti- ja päivitysajat.
 
 Kriteerin sisältömuutos kasvattaa versiota, mutta ei muuta pysyvää tunnistetta. Samasta kriteeritunnisteesta voi säilyttää vanhoja versioita; vain yksi versio voi olla aktiivinen kerrallaan. Historialliset kriteeriosumat säilyttävät käytetyn version.
@@ -83,7 +83,7 @@ Arviointimoottori palauttaa kriteeriosumasta:
 
 Tulos siirtyy #66:n `criterion_matches)-tietueeksi. #66 säilyttää kriteeriosuman elokuvan historiassa ja reitittää siihen liittyvät toimintotunnisteet. Kriteerimoottori ei lähetä ilmoituksia eikä käsittele webhook-salaisuuksia.
 
-Kriteerin `action_ids)-viitteet tarkistetaan #66:n toimintomäärityksiä vasten. Puuttuva tai ylimääräinen viite estää validoinnin, jotta kriteeri ja toiminto eivät ajaudu eri suuntiin.
+Kriteerin `action_ids`-viitteet tarkistetaan #66:n toimintomäärityksiä vasten. Puuttuva tai ylimääräinen viite estää validoinnin, jotta kriteeri ja toiminto eivät ajaudu eri suuntiin.
 
 ## 7. Tuotannon tila ja käyttäjän hyväksyntä
 
