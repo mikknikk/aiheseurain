@@ -119,7 +119,7 @@ class JsonFilePublicationJournal:
             if path.exists():
                 existing = json.loads(path.read_text(encoding="utf-8"))
                 stable = {key: value for key, value in existing.items()
-                          if key not in {"phase", "updated_at", "receipt"}}
+                          if key not in {"phase", "updated_at", "receipt", "state_sha256", "artifact_version"}}
                 if stable != record:
                     raise PublicationJournalConflict("Sama moduuli/run_id on varattu eri julkaisusisällölle.")
                 return existing
