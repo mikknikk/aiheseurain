@@ -11,7 +11,8 @@ RSS-syötteiden sisältö ja hyväksytyt porttiraportit pysyvät lähderepositor
 Manifestin skeema on `schemas/rss-publication-manifest.schema.json`; muodostus ja takaisinluku toteutetaan `scripts/rss_publication_manifest.py`-skriptillä. Manifesti sisältää:
 - GitHub Actions -ajon tunnisteen ja yrityksen sekä lähdecommitin ja vertailucommitin;
 - kaikki kymmenen syötettä, ei vain muutettua syötettä;
-- kunkin syötteen kanonisen Pages-URL:n, SHA-256-tiivisteen, tavumäärän, item-määrän ja GUID-listan;\n- ennen julkaisua julkisista URL-osoitteista talteen otetun palautusversion vastaavat tiedot;
+- kunkin syötteen kanonisen Pages-URL:n, SHA-256-tiivisteen, tavumäärän, item-määrän ja GUID-listan;
+- ennen julkaisua julkisista URL-osoitteista talteen otetun palautusversion vastaavat tiedot;
 - muutetun syötteen hyväksytyn porttiraportin ajotunnisteen ja tiivisteen.
 
 Varsinaisia raporttitekstejä tai lähdeaineistoa ei kopioida manifestiin. GitHub Deploymentin payload säilyttää valmistellun ehdokkaan; deployment-statushistoriaan lisätään julkaisun lopputulos muuttamatta aiempia merkintöjä.
@@ -24,7 +25,9 @@ Varsinaisia raporttitekstejä tai lähdeaineistoa ei kopioida manifestiin. GitHu
 4. **Vanhentuneen ajon esto:** ennen deployta työnkulku vertaa buildin commitia GitHubin nykyiseen main-haaran kärkeen. Jos main on edennyt, vanha build ohitetaan ja manifesti merkitään `inactive`-tilaan. Käynnissä olevaa ajoa ei peruta; se ei kuitenkaan saa julkaista vanhentunutta sisältöä.
 5. **Pages-julkaisu:** GitHub Pages julkaisee rakennetun sivuston omalla deployment-mekanismillaan.
 6. **Takaisinluku:** julkisen Pages-URL:n jokainen kymmenestä RSS-syötteestä luetaan takaisin. Sisällön SHA-256, XML-rakenne, GUID-lista ja item-määrä verrataan manifestiin. Verkkovirheitä ja välimuistin viivettä yritetään rajatusti uudelleen.
-7. **Ehdokkaan tarkistus:** jos uuden Pages-julkaisun kaikki kymmenen syötettä täsmäävät manifestiin, julkaisu voidaan hyväksyä.\n8. **Automaattinen palautus:** jos ehdokasjulkaisu onnistui mutta takaisinluku ei täsmää, työnkulku julkaisee erillisen palautusartefaktin. Se rakennetaan edellisestä lähdecommitista, mutta RSS-tiedostot korvataan juuri ennen ehdokasjulkaisua julkisista URL-osoitteista talteen otetuilla täsmällisillä tavuilla.\n9. **Palautuksen tarkistus ja lopputila:** palautuksen jälkeen kaikki kymmenen RSS-syötettä luetaan uudelleen ja verrataan snapshot-manifestiin. Jos palautus täsmää, aiempi sisältö on palautettu, mutta ehdokasjulkaisu kirjataan silti `failure`-tilaan ja workflow jää epäonnistuneeksi. Jos palautusta ei voida varmentaa, myös tämä kirjataan virheeksi.
+7. **Ehdokkaan tarkistus:** jos uuden Pages-julkaisun kaikki kymmenen syötettä täsmäävät manifestiin, julkaisu voidaan hyväksyä.
+8. **Automaattinen palautus:** jos ehdokasjulkaisu onnistui mutta takaisinluku ei täsmää, työnkulku julkaisee erillisen palautusartefaktin. Se rakennetaan edellisestä lähdecommitista, mutta RSS-tiedostot korvataan juuri ennen ehdokasjulkaisua julkisista URL-osoitteista talteen otetuilla täsmällisillä tavuilla.
+9. **Palautuksen tarkistus ja lopputila:** palautuksen jälkeen kaikki kymmenen RSS-syötettä luetaan uudelleen ja verrataan snapshot-manifestiin. Jos palautus täsmää, aiempi sisältö on palautettu, mutta ehdokasjulkaisu kirjataan silti `failure`-tilaan ja workflow jää epäonnistuneeksi. Jos palautusta ei voida varmentaa, myös tämä kirjataan virheeksi.
 
 Jos commit ei muuta RSS-syötteitä, Pages-sivusto voidaan julkaista normaalisti ilman RSS-manifestia. Ajastettu Pages-rakennus ei itsessään muodosta uutta RSS-julkaisumanifestia.
 
