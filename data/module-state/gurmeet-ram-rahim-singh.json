@@ -28,11 +28,15 @@
     ],
     "event_refs": [],
     "current_record_refs": [],
-    "source_check_run_refs": []
+    "source_check_run_refs": [
+      "gurmeet-ram-rahim-singh-20261118T132712-0200"
+    ]
   },
   "publication": {
     "feed_path": "feeds/gurmeet-ram-rahim-singh.xml",
-    "guid_refs": []
+    "guid_refs": [
+      "urn:aiheseurain:gurmeet-ram-rahim-singh:2026-11-18:aridaman-appeal-cause-list"
+    ]
   },
   "references": {
     "source_registry_ref": "data/sources/gurmeet_ram_rahim_singh.json",
