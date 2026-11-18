@@ -784,6 +784,21 @@
       "reliability_class": "B"
     },
     {
+      "id": "jamsan-kinotar",
+      "name": "Jämsän Kinotar",
+      "url": "https://jamsankinotar.fi/elokuvat/naytosajat",
+      "language_regions": [
+        "en",
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "A",
+      "reliability_note": "Elokuvateatterin oma ohjelmisto ja lipunmyynti; ensisijainen näytösaikojen vahvistus."
+    },
+    {
       "id": "journal-tolkien-research",
       "name": "Journal of Tolkien Research",
       "url": "https://scholar.valpo.edu/journaloftolkienresearch/",
