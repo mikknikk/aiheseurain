@@ -8,7 +8,7 @@ import unittest
 import xml.etree.ElementTree as ET
 
 from scripts.module_run_adapters import AdapterError, RoutedReportPublisher
-from scripts.module_orchestrator import PublicationReceipt
+from scripts.module_orchestrator import PublicationReceipt, TargetReport
 from scripts.publication_routing import (
     LocalRoutedRssPublisher, PublicationPlan, PublicationRoutingError,
     preview_publication_plan, resolve_publication_plan,
@@ -23,7 +23,11 @@ def context():
             "demo.film": (
                 {"target_id": "demo.film", "status": "active"},
                 {"target_id": "demo.film", "module_ref": {"module_id": "demo"}},
-            )
+            ),
+            "demo.festival": (
+                {"target_id": "demo.festival", "status": "active"},
+                {"target_id": "demo.festival", "module_ref": {"module_id": "demo"}},
+            ),
         },
         "publications": {
             "demo.film.rss": (
@@ -38,6 +42,12 @@ def context():
                  "status": "active", "destination": {"path": "feeds/all.xml",
                  "url": "https://example.invalid/all.xml"}},
             ),
+            "demo.festival.rss": (
+                {"publication_id": "demo.festival.rss", "status": "active"},
+                {"publication_id": "demo.festival.rss", "name": "Festivaalit",
+                 "status": "active", "destination": {"path": "feeds/festival.xml",
+                 "url": "https://example.invalid/festival.xml"}},
+            ),
         },
         "routing": {"routes": [
             {"route_id": "film-own", "module_ref": "demo", "target_ref": "demo.film",
@@ -46,6 +56,9 @@ def context():
             {"route_id": "film-combined", "module_ref": "demo", "target_ref": "demo.film",
              "publication_refs": ["demo.all.rss"], "observation_types": ["film-screening"],
              "status": "active"},
+            {"route_id": "festival-own", "module_ref": "demo", "target_ref": "demo.festival",
+             "publication_refs": ["demo.festival.rss", "demo.all.rss"],
+             "observation_types": ["film-festival"], "status": "active"},
             {"route_id": "inactive", "module_ref": "demo", "target_ref": "demo.film",
              "publication_refs": ["demo.film.rss"], "observation_types": ["film-festival"],
              "status": "inactive"},
@@ -128,6 +141,28 @@ class PublicationRoutingTests(unittest.TestCase):
             with self.assertRaises(PublicationRoutingError):
                 publisher.publish_report(plan, "<p>Ei julkaista</p>")
             self.assertEqual(list(Path(directory).rglob("*.xml")), [])
+
+
+    def test_two_target_reports_publish_two_distinct_items_to_combined_feed(self):
+        data = context()
+        reports = [
+            TargetReport("demo.film", "1.0.0", ("film-screening",), "2026-11-18T00:00:00+02:00",
+                         "2026-11-18T22:00:00+02:00", "2026-11-18T22:00:00+02:00",
+                         "<p>Elokuvanäytökset</p>").to_publication_dict(),
+            TargetReport("demo.festival", "1.0.0", ("film-festival",), "2026-11-18T00:00:00+02:00",
+                         "2026-11-18T22:00:00+02:00", "2026-11-18T22:00:00+02:00",
+                         "<p>Festivaalit</p>").to_publication_dict(),
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            publisher = RoutedReportPublisher(Path(directory), data)
+            receipt = publisher.publish_target_reports("demo", "run-two-targets", reports)
+            self.assertTrue(publisher.verify(receipt))
+            combined = ET.parse(Path(directory) / "feeds/all.xml").getroot()
+            self.assertEqual(len(combined.findall("./channel/item")), 2)
+            own_film = ET.parse(Path(directory) / "feeds/film.xml").getroot()
+            own_festival = ET.parse(Path(directory) / "feeds/festival.xml").getroot()
+            self.assertEqual(len(own_film.findall("./channel/item")), 1)
+            self.assertEqual(len(own_festival.findall("./channel/item")), 1)
 
     def test_orchestration_adapter_accepts_target_reports_and_verifies_receipt(self):
         data = context()
