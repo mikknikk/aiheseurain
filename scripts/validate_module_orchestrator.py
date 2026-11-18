@@ -1,7 +1,7 @@
+"""Validoi yhteisen moduuliorchestratorin sopimukset ja käyttöönoton turvarajat."""
 import json
 from pathlib import Path
 import jsonschema
-"""Validoi yhteisen moduuliorchestratorin sopimukset ja käyttöönoton turvarajat."""
 from scripts.module_registry import load_registry
 
 ROOT = Path(__file__).resolve().parents[1]
