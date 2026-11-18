@@ -29,6 +29,18 @@ class ActionOutboxConflictError(MovieActionError):
     """Outboxin SHA-versio muuttui ennen tallennusta."""
 
 
+class RetryableDeliveryError(MovieActionError):
+    """Kuljetin vahvisti, ettei viestiä toimitettu ja yritys voidaan uusia turvallisesti."""
+
+    def __init__(self, message: str, retry_after_seconds: int | float | None = None):
+        super().__init__(message)
+        self.retry_after_seconds = retry_after_seconds
+
+
+class DeliveryUncertainError(MovieActionError):
+    """Lähetyksen lopputulos on epäselvä; automaattinen uusinta voisi monistaa viestin."""
+
+
 def _canonical(value: Any) -> bytes:
     """Muunna JSON-tietue vakaaksi tavujonoksi."""
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -185,7 +197,12 @@ def dispatch_pending_actions(
     outbox: dict[str, Any], adapters: dict[str, Any], attempted_at: str,
     *, max_attempts: int = 3,
 ) -> dict[str, Any]:
-    """Yritä lähettää pending-toiminnot; säilytä virheelliset uusintaa varten."""
+    """Yritä pending-toiminnot ja erota turvallinen uusinta epäselvästä toimituksesta.
+
+    Vain RetryableDeliveryError tarkoittaa, että kuljetin tietää viestin jääneen
+    toimittamatta (esimerkiksi HTTP 429). Muu virhe merkitään uncertain-tilaan,
+    koska aikakatkaisun jälkeen viesti on voinut jo saapua vastaanottajalle.
+    """
     validate_outbox(outbox)
     if max_attempts < 1:
         raise MovieActionError("max_attempts-arvon pitää olla vähintään yksi.")
@@ -195,16 +212,14 @@ def dispatch_pending_actions(
             continue
         attempted = _aware_datetime(attempted_at)
         due_at = action.get("next_attempt_at")
-        if due_at is not None:
-            due = _aware_datetime(due_at)
-            if due > attempted:
-                continue
+        if due_at is not None and _aware_datetime(due_at) > attempted:
+            continue
         adapter = adapters.get(action["action_type"])
         try:
             if adapter is None:
-                raise MovieActionError("Toiminnolle ei ole rekisteröity sovitinta.")
+                raise RetryableDeliveryError("Toiminnolle ei ole rekisteröity sovitinta.")
             adapter.send(action["payload"], action["idempotency_key"])
-        except Exception as exc:
+        except RetryableDeliveryError as exc:
             action["attempts"] += 1
             action["updated_at"] = attempted_at
             action["last_error_code"] = type(exc).__name__
@@ -212,12 +227,20 @@ def dispatch_pending_actions(
                 action["status"] = "failed"
                 action["next_attempt_at"] = None
             else:
-                retry_after = getattr(exc, "retry_after_seconds", None)
+                retry_after = exc.retry_after_seconds
                 if not isinstance(retry_after, (int, float)) or retry_after <= 0:
                     retry_after = min(60 * (2 ** (action["attempts"] - 1)), 21600)
                 action["next_attempt_at"] = (
                     attempted + timedelta(seconds=retry_after)
                 ).isoformat()
+        except Exception as exc:
+            # Tuntematon tai aikakatkaisun kaltainen virhe voi seurata onnistunutta
+            # etätoimitusta. Säilytä tapahtuma manuaalista tarkistusta varten.
+            action["attempts"] += 1
+            action["updated_at"] = attempted_at
+            action["last_error_code"] = type(exc).__name__
+            action["status"] = "uncertain"
+            action["next_attempt_at"] = None
         else:
             action["attempts"] += 1
             action["updated_at"] = attempted_at
@@ -228,6 +251,31 @@ def dispatch_pending_actions(
     validate_outbox(result)
     return result
 
+
+def resolve_uncertain_delivery(
+    outbox: dict[str, Any], event_id: str, *, delivered: bool, resolved_at: str
+) -> dict[str, Any]:
+    """Ratkaise epäselvä toimitus manuaalisen tarkistuksen jälkeen."""
+    validate_outbox(outbox)
+    _aware_datetime(resolved_at)
+    result = deepcopy(outbox)
+    action = next((item for item in result["actions"] if item["event_id"] == event_id), None)
+    if action is None:
+        raise MovieActionError("Toimitusjonosta ei löydy pyydettyä event_id-tunnistetta.")
+    if action["status"] != "uncertain":
+        raise MovieActionError("Vain uncertain-tilassa oleva toimitus voidaan ratkaista tällä toiminnolla.")
+    action["updated_at"] = resolved_at
+    action["last_error_code"] = None
+    if delivered:
+        action["status"] = "sent"
+        action["sent_at"] = resolved_at
+        action["next_attempt_at"] = None
+    else:
+        action["status"] = "pending"
+        action["sent_at"] = None
+        action["next_attempt_at"] = resolved_at
+    validate_outbox(result)
+    return result
 
 class JsonFileActionOutboxStore:
     """Paikallinen SHA-tarkistettu toimitusjono testaukseen ja palautuvaan käsittelyyn."""
