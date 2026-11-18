@@ -35,7 +35,8 @@
       "sources_checked": 8,
       "source_check_run_refs": [
         "intialaiset_elokuvat_naytokset-20261117T062329-0200",
-        "intialaiset_elokuvat_naytokset-20261118T055132-0200"
+        "intialaiset_elokuvat_naytokset-20261118T055132-0200",
+        "intialaiset_elokuvat_naytokset-20261118T173716-0200"
       ],
       "report_guid_refs": [
         "klara-ja-aurinko-update-screening-watch-20261118T032342Z-a1-19-completed-14-added",
@@ -446,6 +447,82 @@
       {
         "store_path": "data/naytosten-muutoshistoria.json",
         "record_id": "details_changed-klara-ja-aurinko-kinotar-123-20261118-1900-screening-watch-20261118T032342Z-a1-official"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-seinajoki-20261118-1415-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kino-marilyn-20261118-1420-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-redi-20261118-1445-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-elokuvateatteri-star-20261118-1500-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261118-1530-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kino-iiris-20261118-1530-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kinopirtti-20261118-1540-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-tripla-20261118-1545-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-plaza-20261118-1600-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-strand-20261118-1620-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-tornio-20261118-1630-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-kajaani-20261118-1645-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kinolinna-20261118-1645-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-trio-123-20261118-1645-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-finnkino-kinopalatsi-20261118-1650-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-pietarsaari-20261118-1700-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-porvoo-20261118-1715-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-kino-123-veturi-kuusankoski-20261118-1715-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details_changed-klara-ja-aurinko-biorex-rovaniemi-20261118-1730-intialaiset_elokuvat_naytokset-20261118T173716-0200-completed"
       }
     ],
     "current_record_refs": [
@@ -984,12 +1061,14 @@
     ],
     "source_check_run_refs": [
       "intialaiset_elokuvat_naytokset-20261117T062329-0200",
-      "intialaiset_elokuvat_naytokset-20261118T055132-0200"
+      "intialaiset_elokuvat_naytokset-20261118T055132-0200",
+      "intialaiset_elokuvat_naytokset-20261118T173716-0200"
     ]
   },
   "publication": {
     "feed_path": "feeds/intialaisten-elokuvien-naytokset.xml",
     "guid_refs": [
+      "klara-ja-aurinko-update-screening-watch-20261118T153716Z-a1-19-completed-45-future-65-historical",
       "klara-ja-aurinko-update-screening-watch-20261118T032342Z-a1-19-completed-14-added",
       "ramayana-update-screening-watch-20261118T032342Z-a1-5-completed-8-added",
       "klara-ja-aurinko-update-20261117T062329-17-completed-4-added",
