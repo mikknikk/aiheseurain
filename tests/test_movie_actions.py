@@ -12,6 +12,7 @@ from scripts.movie_actions import (
 
 ROOT = Path(__file__).resolve().parents[1]
 NOW = "2026-11-18T08:00:00+02:00"
+RETRY = "2026-11-18T08:01:00+02:00"
 WEBHOOK = "https://discord.com/api/webhooks/test-secret/test-token"
 
 
@@ -91,8 +92,13 @@ class MovieActionTests(unittest.TestCase):
         self.assertTrue(all(item["status"] == "pending" for item in first["actions"]))
         self.assertTrue(all(item["attempts"] == 1 for item in first["actions"]))
         self.assertTrue(all(item["last_error_code"] == "RuntimeError" for item in first["actions"]))
-        second = dispatch_pending_actions(
+        self.assertTrue(all(item["next_attempt_at"] is not None for item in first["actions"]))
+        too_early = dispatch_pending_actions(
             first, {"discord_webhook": FailingTransport()}, NOW, max_attempts=2,
+        )
+        self.assertEqual(too_early, first)
+        second = dispatch_pending_actions(
+            first, {"discord_webhook": FailingTransport()}, RETRY, max_attempts=2,
         )
         self.assertTrue(all(item["status"] == "failed" for item in second["actions"]))
         serialized = json.dumps(second)
