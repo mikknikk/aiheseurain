@@ -186,8 +186,16 @@ def _validate_definition(
 def load_registry(
     registry_path: Path = REGISTRY_PATH,
     root: Path = ROOT,
+    *,
+    include_inactive: bool = False,
 ) -> RegistryResult:
-    """Lataa rekisterin moduulit ja eristää yksittäisten merkintöjen virheet."""
+    """Lataa rekisterin moduulit ja eristää yksittäisten merkintöjen virheet.
+
+    Oletuksena passiivisten moduulien määritystiedostoja ei ladata. Varjotila voi
+    pyytää include_inactive=True, jolloin passiivisetkin määritykset validoidaan
+    ja palautetaan definition-kentässä, mutta niiden status säilyy inactive.
+    """
+
     root = root.resolve()
     registry_path = registry_path.resolve()
     if not registry_path.is_relative_to(root):
@@ -250,7 +258,7 @@ def load_registry(
             continue
         seen_paths.add(entry["path"])
 
-        if entry["status"] == "inactive":
+        if entry["status"] == "inactive" and not include_inactive:
             results.append(ModuleResult(module_id, "inactive", entry["path"]))
             continue
 
@@ -264,7 +272,7 @@ def load_registry(
             _validate_definition(
                 definition, entry, module_validator, extension_schemas, extension_errors
             )
-            results.append(ModuleResult(module_id, "active", entry["path"], definition))
+            results.append(ModuleResult(module_id, entry["status"], entry["path"], definition))
         except (RegistryError, ValueError, KeyError, jsonschema.SchemaError) as exc:
             results.append(ModuleResult(module_id, "invalid", entry["path"], error=str(exc)))
 
