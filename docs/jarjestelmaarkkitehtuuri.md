@@ -793,6 +793,16 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 - [Kehitysjonon julkaistu aineisto](kehitysjonon-aineisto.md)
 - [Automaatioiden hallinnan suojausperiaatteet](automaation-hallintaperiaatteet.md)
 
+## 13. Seurantamoduulin, seurantakohteen ja julkaisukohteen erottelu
+
+Tiketissä #133 tietomalli erotettiin kolmeen itsenäiseen elinkaareen. Seurantamoduuli omistaa suoritettavan prosessin, kyvykkyydet, lähdeviitteet ja toimitukselliset säännöt. Seurantakohde omistaa yksittäisen henkilön, teoksen, elokuvan tai muun kohteen hakuprofiilit ja sisältörajaukset. Julkaisukohde omistaa jakelukanavan teknisen määrityksen. Reitityssopimus liittää moduulin ja kohteen havaintotyypin yhteen tai useampaan julkaisukohteeseen.
+
+Nykyisten kymmenen moduulin hakuprofiilit ja topic-rajaukset siirrettiin erillisiin seurantakohteisiin. Moduulimääritykset viittaavat kohteisiin pysyvillä tunnisteilla. Uudet skeemat ovat schemas/seurantakohde.schema.json, schemas/julkaisukohde.schema.json ja schemas/julkaisureititys.schema.json. Rekisterit sijaitsevat tiedostoissa data/target-registry.json ja data/publication-registry.json; reititys on data/publication-routing.json.
+
+Näytösvahtiesimerkissä yksi prosessimoduuli käsittelee erillisiä elokuvanäytös- ja festivaalikohteita. Niiden havainnot voidaan reitittää omiin RSS-julkaisukohteisiinsa ja lisäksi yhdistelmäsyötteeseen. Esimerkkien osoitteet ovat ei-tuotannollisia. Tuotannon julkaisurekisteri ja reititys ovat tyhjiä. Nykyinen intialaisten elokuvien näytösvahti, sen RSS-historia ja automaation asetukset säilyvät ennallaan.
+
+Toteutuksen tietomallit ja validointiohje ovat dokumentissa [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md).
+
 ## 12. Muutoshistoria
 
 - **1.14.0 – 2026-11-18:** erotettiin seurantamoduuli, seurantakohde ja julkaisukohde omiksi versionoiduiksi tietomalleikseen; lisättiin kohdekohtaiset määritykset, julkaisureitityksen sopimus, näytösvahtiesimerkki ja viitteiden validointi (#133). Nykyinen näytösvahti ja RSS-syöte säilyvät ennallaan; uudet julkaisurekisterit ja reititys ovat tyhjiä ja passiivisia.
@@ -813,14 +823,3 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 - **1.1.1 – 2026-11-17:** korjattiin luvun 9 alaotsikoiden numerointi.
 - **1.1.0 – 2026-11-17:** lisättiin tavoitearkkitehtuuri, komponenttien vastuut ja rajapinnat, tietovirrat, kanonisen tiedon omistajuus, virheistä palautuminen, hyväksymisehdot, nykytila–tavoitetila-vertailu, siirtymävaiheet ja avoimet päätökset.
 - **1.0.0 – 2026-11-17:** kuvattiin järjestelmäriippumaton toimintamalli, kolmen arkkitehtuurikerroksen vastuut, nykyinen ChatGPT/GitHub-toteutus, tietovirrat sekä teknologioiden vaihdettavuuden edellytykset. Erotettiin repositoriosta varmennetut tosiasiat, päätelmät ja erikseen tarkistettavat asetukset.
-
-
-## 13. Seurantamoduulin, seurantakohteen ja julkaisukohteen erottelu
-
-Tiketissä #133 tietomalli erotettiin kolmeen itsenäiseen elinkaareen. Seurantamoduuli omistaa suoritettavan prosessin, kyvykkyydet, lähdeviitteet ja toimitukselliset säännöt. Seurantakohde omistaa yksittäisen henkilön, teoksen, elokuvan tai muun kohteen hakuprofiilit ja sisältörajaukset. Julkaisukohde omistaa jakelukanavan teknisen määrityksen. Reitityssopimus liittää moduulin ja kohteen havaintotyypin yhteen tai useampaan julkaisukohteeseen.
-
-Nykyisten kymmenen moduulin hakuprofiilit ja topic-rajaukset siirrettiin erillisiin seurantakohteisiin. Moduulimääritykset viittaavat kohteisiin pysyvillä tunnisteilla. Uudet skeemat ovat schemas/seurantakohde.schema.json, schemas/julkaisukohde.schema.json ja schemas/julkaisureititys.schema.json. Rekisterit sijaitsevat tiedostoissa data/target-registry.json ja data/publication-registry.json; reititys on data/publication-routing.json.
-
-Näytösvahtiesimerkissä yksi prosessimoduuli käsittelee erillisiä elokuvanäytös- ja festivaalikohteita. Niiden havainnot voidaan reitittää omiin RSS-julkaisukohteisiinsa ja lisäksi yhdistelmäsyötteeseen. Esimerkkien osoitteet ovat ei-tuotannollisia. Tuotannon julkaisurekisteri ja reititys ovat tyhjiä. Nykyinen intialaisten elokuvien näytösvahti, sen RSS-historia ja automaation asetukset säilyvät ennallaan.
-
-Toteutuksen tietomallit ja validointiohje ovat dokumentissa [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md).

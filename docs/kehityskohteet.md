@@ -176,7 +176,7 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 
 ### Issue #133 – seurantamoduulin, seurantakohteen ja julkaisukohteen erottelu
 
-**Toteutuksen tila:** toteutettu ehdotettuun PR:ään, odottaa CI:tä ja yhdistämistä.
+**Toteutuksen tila:** valmis; PR #134 yhdistetty 18.11.2026.
 
 - [x] Seurantamoduulin määrityksestä poistettiin hakuprofiilit ja aihekohtaiset sisältörajaukset; tilalle lisättiin pysyvät seurantakohdeviitteet.
 - [x] Kaikkien kymmenen nykyisen moduulin seurantakohteet erotettiin omiin määrityksiinsä ja rekisteröitiin passiivisiksi.
