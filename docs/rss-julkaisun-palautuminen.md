@@ -46,6 +46,28 @@ GitHub Pagesin deployment vaihtaa staattisen sivuston julkaisuversiona; RSS-tied
 
 ## Testaus
 
+### Fault-injection-matriisi
+
+Offline-testit simuloivat julkaisuketjun rajapintavirheitä ilman Pages-tuotantoon tehtäviä kirjoituksia. Jokaisen vaiheen odotettu turvallinen lopputulos on:
+
+| Vaihe | Simuloitu vika | Odotettu toiminta |
+|---|---|---|
+| Syötteiden valmistelu | Julkinen RSS-URL ei vastaa tai palauttaa virheellistä XML:ää | Valmistelu keskeytyy; manifestia tai Pages-julkaisua ei aloiteta |
+| Palautussnapshot | Yhdenkin syötteen lataus epäonnistuu | Täydellistä palautusmanifestia ei palauteta eikä ehdokasta julkaista |
+| GitHub Deployment | API-kutsu epäonnistuu tai aikakatkaistaan | Virhe välitetään; julkaisuportti pysäyttää etenemisen |
+| Snapshot-artifact | Artifact puuttuu tai sen sisältö ei vastaa manifestia | Uusinta hyväksytään vain alkuperäisen palautustilan täsmätessä |
+| Pages-rakennus / deploy | Rakennus tai julkaisu epäonnistuu | Julkaisua ei hyväksytä; aiempi Pages-versio jää voimaan, jos deploy ei vaihtanut sitä |
+| Ehdokkaan takaisinluku | Julkinen sisältö poikkeaa manifestista tai API ei vastaa | Ehdokas hylätään ja palautus käynnistetään |
+| Palautusartefakti | Yksikin snapshot-tiedosto puuttuu | Palautusta ei julkaista virheellisenä |
+| Palautuksen takaisinluku | Julkinen sisältö ei vastaa palautusmanifestia | Palautusta ei merkitä onnistuneeksi; ajo jää virheeksi |
+| Statuskirjaus | GitHub API epäonnistuu | Virhe ei peity onnistuneeksi julkaisuksi |
+| Hälytys | GitHub API epäonnistuu tai issue on jo olemassa | Hälytyksen luontivirhe näkyy ajon epäonnistumisena; samaa ajoa ei tarkoituksella monisteta |
+| Vanhentunut ajo | main-haara etenee rakennuksen aikana | Vanha build ei saa julkaista |
+
+Testit löytyvät tiedostosta `tests/test_rss_publication_manifest.py`. Ne käyttävät mockattuja HTTP-/GitHub-vastauksia ja väliaikaisia tiedostoja; ne eivät tee tuotannon Pages-julkaisuja. Workflow-rakenteen testit varmistavat lisäksi, että kriittiset vaiheet ovat mukana oikeassa järjestyksessä.
+
+**Raja:** offline fault-injection ei todista GitHub Actionsin, Pages-palvelun, CDN-välimuistin tai GitHubin todellisten API-vastausten toimintaa. Nämä varmennetaan erikseen ensimmäisessä aidossa RSS-muutoksen tuotantoajossa ja mahdollisessa erillisessä hallitussa palautusharjoituksessa. Tuotantoon ei tarkoituksella julkaista virheellistä syötettä vain rollbackin laukaisemiseksi.
+
 Yksikkötestit tarkistavat RSS/XML:n GUID-eheyden, virheellisen XML:n hylkäämisen, kaikkien katalogin syötteiden sisällyttämisen, muuttuneen syötteen hyväksytyn porttiraportin sidonnan, puuttuvan porttiraportin eston, palautussnapshotin tavujen säilymisen, palautussivuston RSS-tiedostojen korvaamisen sekä väärän julkisen sisällön hylkäämisen. GitHub Actions testaa todellisen Deployment API -kirjauksen ja julkisten Pages-URL-osoitteiden takaisinluvun vain RSS-syötteen sisältävän main-commitin yhteydessä.
 
 
