@@ -7,7 +7,8 @@ import unittest
 
 from scripts.movie_actions import (
     ActionOutboxConflictError, DiscordWebhookAdapter, JsonFileActionOutboxStore,
-    dispatch_pending_actions, empty_outbox, enqueue_movie_actions,
+    RetryableDeliveryError, dispatch_pending_actions, empty_outbox,
+    enqueue_movie_actions, resolve_uncertain_delivery,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -85,7 +86,7 @@ class MovieActionTests(unittest.TestCase):
         outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
         class FailingTransport:
             def send(self, payload, idempotency_key):
-                raise RuntimeError("Webhook rejected")
+                raise RetryableDeliveryError("Webhook rejected")
         first = dispatch_pending_actions(
             outbox, {"discord_webhook": FailingTransport()}, NOW, max_attempts=2,
         )
@@ -110,9 +111,8 @@ class MovieActionTests(unittest.TestCase):
         """Rate limit -kuljettimen ilmoittamaa retry-after-viivettä noudatetaan."""
         outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
         class RateLimited:
-            retry_after_seconds = 120
             def send(self, payload, idempotency_key):
-                raise RuntimeError("rate limited")
+                raise RetryableDeliveryError("rate limited", retry_after_seconds=120)
         delayed = dispatch_pending_actions(
             outbox, {"discord_webhook": RateLimited()}, NOW, max_attempts=3,
         )
@@ -122,6 +122,28 @@ class MovieActionTests(unittest.TestCase):
             delayed, {"discord_webhook": RateLimited()}, RETRY, max_attempts=3,
         )
         self.assertEqual(too_early, delayed)
+
+
+    def test_ambiguous_delivery_requires_manual_resolution(self):
+        """Epäselvää aikakatkaisua ei uusita automaattisesti kaksoisviestin riskin vuoksi."""
+        outbox = enqueue_movie_actions(movie(), config(), empty_outbox(), NOW)
+        class TimedOut:
+            def send(self, payload, idempotency_key):
+                raise TimeoutError("response lost")
+        uncertain = dispatch_pending_actions(
+            outbox, {"discord_webhook": TimedOut()}, NOW,
+        )
+        self.assertTrue(all(item["status"] == "uncertain" for item in uncertain["actions"]))
+        retried = dispatch_pending_actions(
+            uncertain, {"discord_webhook": TimedOut()}, RETRY,
+        )
+        self.assertEqual(retried, uncertain)
+        resolved = resolve_uncertain_delivery(
+            uncertain, uncertain["actions"][0]["event_id"],
+            delivered=False, resolved_at=RETRY,
+        )
+        self.assertEqual(resolved["actions"][0]["status"], "pending")
+        self.assertEqual(resolved["actions"][0]["next_attempt_at"], RETRY)
 
     def test_outbox_store_rejects_stale_sha(self):
         """Toimitusjonon vanha SHA ei saa ylikirjoittaa uudempaa jonoa."""
