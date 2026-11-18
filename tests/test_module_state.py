@@ -58,6 +58,10 @@ class ModuleStateMigrationTests(unittest.TestCase):
                         for key in path[:-1]:
                             target = target[key]
                         target[path[-1]] = bad_value
+                        # Pidä checkpoint ja sen historiatapahtuma keskenään yhtäpitävinä,
+                        # jotta testi kohdistuu vanhan seurantatilan migraatiotarkistukseen.
+                        if path[0] == "checkpoint":
+                            candidate["checkpoint_history"][0][path[-1]] = bad_value
                         state_path.write_text(json.dumps(candidate, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                         errors = migration_validator.validate_state_migration()
                         self.assertTrue(any(expected_error in error for error in errors), errors)
