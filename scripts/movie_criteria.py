@@ -78,6 +78,8 @@ def validate_criteria_registry(registry: dict[str, Any]) -> None:
         end = criterion["valid_until"]
         if end is not None and _aware_datetime(end) <= start:
             raise MovieCriteriaError("Kriteerin valid_until pitää olla valid_from-arvoa myöhempi.")
+        if _aware_datetime(criterion["updated_at"]) < _aware_datetime(criterion["created_at"]):
+            raise MovieCriteriaError("Kriteerin updated_at ei voi olla created_at-arvoa aiempi.")
         if criterion["status"] == "active":
             active_by_id[criterion["criterion_id"]] = active_by_id.get(criterion["criterion_id"], 0) + 1
         for condition in criterion["include_conditions"] + criterion["exclude_conditions"]:
@@ -99,11 +101,14 @@ def validate_condition(condition: dict[str, Any]) -> None:
         if value["min"] > value["max"]:
             raise MovieCriteriaError("Vuosihaarukan min-arvo ylittää max-arvon.")
     elif operator == "contains_any_normalized":
-        if not isinstance(value, list):
-            raise MovieCriteriaError("contains_any_normalized vaatii merkkijonolistauksen.")
-    elif operator in {"equals", "contains_normalized"}:
-        if not isinstance(value, str):
-            raise MovieCriteriaError(f"{operator} vaatii merkkijonoarvon.")
+        if field not in ARRAY_FIELDS or not isinstance(value, list):
+            raise MovieCriteriaError("contains_any_normalized vaatii listakentän ja merkkijonolistauksen.")
+    elif operator == "equals":
+        if field not in {"title", "release_type"} or not isinstance(value, str):
+            raise MovieCriteriaError("equals on sallittu vain tekstimuotoisille scalar-kentille.")
+    elif operator == "contains_normalized":
+        if field == "release_year" or not isinstance(value, str):
+            raise MovieCriteriaError("contains_normalized vaatii tekstikentän ja merkkijonoarvon.")
     else:
         raise MovieCriteriaError(f"Tuntematon vertailuoperaattori: {operator}")
 
@@ -145,6 +150,8 @@ def _matches_condition(movie: dict[str, Any], condition: dict[str, Any]) -> bool
         return False
     if operator == "in_range":
         return isinstance(actual, int) and expected["min"] <= actual <= expected["max"]
+    if operator == "equals":
+        return isinstance(actual, str) and normalize_value(actual) == normalize_value(expected)
     if operator == "contains_any_normalized":
         actual_values = actual if isinstance(actual, list) else [actual]
         expected_values = {normalize_value(item) for item in expected}
@@ -169,8 +176,12 @@ def evaluate_movie_criteria(
     """Palauta kaikki aktiiviset kriteeriosumat #66:n havaintorekisterille."""
     validate_criteria_registry(registry)
     observed = _aware_datetime(observed_at)
+    if not isinstance(source_urls, list):
+        raise MovieCriteriaError("Kriteeriarvioinnin lähteiden pitää olla lista.")
+    if any(not isinstance(url, str) for url in source_urls):
+        raise MovieCriteriaError("Kriteeriarvioinnin lähdeviitteiden pitää olla merkkijonoja.")
     sources = sorted(set(source_urls))
-    if any(not isinstance(url, str) or not url.startswith(("https://", "http://")) for url in sources):
+    if any(not url.startswith(("https://", "http://")) for url in sources):
         raise MovieCriteriaError("Kriteeriosuman lähteiden pitää olla HTTP(S)-osoitteita.")
     matches = []
     for criterion in registry["criteria"]:
