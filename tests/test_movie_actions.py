@@ -50,6 +50,11 @@ class MovieActionTests(unittest.TestCase):
         self.assertEqual(len(outbox["actions"]), 2)
         self.assertEqual({item["criterion_id"] for item in outbox["actions"]},
                          {"test-criterion-a", "test-criterion-b"})
+        for action in outbox["actions"]:
+            self.assertEqual(
+                action["payload"]["source_urls"],
+                [f"https://example.test/criterion-{action['criterion_id'][-1]}"],
+            )
 
     def test_duplicate_enqueue_is_idempotent_but_different_criteria_remain_distinct(self):
         """Sama toiminto ei monistu, mutta kahden eri kriteerin toiminnot säilyvät."""
