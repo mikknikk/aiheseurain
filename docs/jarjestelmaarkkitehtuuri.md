@@ -2,7 +2,7 @@
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
 **Nykytilan tarkistus:** 17.11.2026  
-**Versio:** 1.11.0  
+**Versio:** 1.12.0  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -729,6 +729,14 @@ Sovittimien testit ajetaan tavallisessa Pythonin yksikkötestien löydössä. Ne
 
 Tämä toteuttaa paikallisen, testattavan elinkaaren mutta ei vielä GitHub Contents/Artifacts -palveluja, todellista RSS-tuotantojulkaisua tai ChatGPT-ajastettujen tehtävien integraatiota. Tuotannon aktivointi ja automaatioasetusten muutokset pysyvät erillisen hyväksynnän takana.
 
+### 8.21 Elokuvatasoinen havaintorekisteri ja kriteerikohtaiset jatkotoimet
+
+Tiketissä #66 lisättiin elokuvatasoinen havaintorekisteri ja kriteerikohtainen toimintojen outbox. Se käyttää #109:n `film-screening`-tapahtumatilaa yksittäisten näytösten kanonisena tietona ja tallentaa elokuvarekisteriin vain viitteet liittyviin `screening_id`-tunnisteisiin. Näin elokuvan identiteetti ja kriteeriosumat eivät kopioi teatteria, näytösaikaa, näytöksen tilaa tai näytöshistoriaa.
+
+Elokuvan `movie_id` muodostetaan ensisijaisesti IMDb-/TMDB-tunnisteesta, toissijaisesti normalisoidusta nimestä ja julkaisuvuodesta. Jos kumpaakaan luotettavaa tunnistetta ei ole, havainto säilytetään näytöskohtaisena epävarmana ehdokkaana eikä sitä yhdistetä automaattisesti.
+
+Kriteerikohtainen toimintomääritys ja toimitusoutbox ovat erillisiä elokuvarekisteristä. Toiminnon idempotenssiavain sisältää elokuvan, kriteerin, toimintotunnisteen ja version. Discord-sovitin käyttää ajonaikaisesti injektoitua webhook-salaisuutta ja kuljetinta; testit eivät tee verkkokutsuja. Tuotannon toimintomääritys on tyhjä, eikä tuotantokriteeriä tai webhookia ole aktivoitu. #67 määrittelee varsinaiset käyttäjän hyväksymät hakukriteerit.
+
 ## 9. Tosiasiat, päätelmät ja avoimet asiat
 
 ### 9.1 Repositoriosta ja työnkuluista varmennetut tosiasiat
@@ -779,6 +787,7 @@ Kaikkia automaatioita koskeva käyttäjän valtuutukseen perustuva sääntö on 
 
 ## 12. Muutoshistoria
 
+- **1.12.0 – 2026-11-18:** lisättiin elokuvatasoinen havaintorekisteri, IMDb-/TMDB- ja nimi/vuosi-tunnisteet, kriteerikohtainen toimintotapahtuma ja outbox sekä testattu Discord-webhook-liitäntä. Tuotantokriteerit ja webhook-konfiguraatio pysyvät tyhjinä.
 - **1.11.0 – 2026-11-18:** lisättiin paikalliset SHA-tarkistetut moduulitila- ja artefaktitallennukset, tietosuojattu ajotulosloki, idempotentti eristetty RSS-julkaisusovitin ja rakenteellinen laadunvarmistussovitin; testit käyttävät väliaikaisia hakemistoja.
 - **1.10.0 – 2026-11-18:** lisättiin yhteinen moduulisuorituksen orkestrointirunko, varjotilan ja tuotannon erilliset portit, tapahtumavahdin moduulisuorittaja sekä ajokohtainen tulossopimus. Konkreettiset pysyvät tallennus- ja julkaisusovittimet jätettiin jatkotikettiin #120.
 - **1.9.0 – 2026-11-18:** määriteltiin AIProcessor- ja ResearchProvider-sopimukset, tekninen moduulikohtainen reititys, rajatut uusinnat, kustannusbudjetit, tietoturvallinen auditointi ja kaksi testiadapteria kummallekin sopimukselle.

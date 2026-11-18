@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "actions": [
+    {
+      "criterion_id": "test-criterion-a",
+      "action_id": "test-discord-notification-a",
+      "version": "1.0.0",
+      "type": "discord_webhook",
+      "enabled": true
+    },
+    {
+      "criterion_id": "test-criterion-b",
+      "action_id": "test-discord-notification-b",
+      "version": "1.0.0",
+      "type": "discord_webhook",
+      "enabled": true
+    }
+  ]
+}

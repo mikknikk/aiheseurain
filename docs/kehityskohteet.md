@@ -26,6 +26,8 @@ Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei t�
 - **#107 – AI- ja tutkimuspalvelujen adapterisopimukset:** valmis ja yhdistetty PR:ssä #117. AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, rajatut uusinnat, kustannusrajat ja deterministiset testiadapterit ovat käytettävissä.
 - **#108 – Yhteinen moduulien suoritusorkestrointi:** valmis; PR:t #118 ja #124 yhdistetty. Suorituspyynnön ja tuloksen sopimukset, varjotila, tuotannon erillinen hyväksyntäportti, elinkaaren koordinointi, tapahtumavahtisuorittaja sekä paikalliset tallennus- ja julkaisusovittimet ovat käytettävissä. Tuotantokäyttöönotto on erillinen hyväksyttävä päätös.
 - **#120 – Orkestroinnin pysyvät tallennus-, julkaisu- ja ajotulosadapterit:** valmis; PR #124 yhdistetty. Paikalliset SHA-tarkistetut moduulitila- ja artefaktisovittimet, tietosuojattu ajotulosloki, idempotentti RSS-julkaisusovitin sekä rakenteellinen laadunvarmistusportti on testattu eristetyissä väliaikaishakemistoissa.
+- **#66 – Elokuvahavaintorekisteri ja kriteerikohtaiset jatkotoimet:** toteutuksessa PR:ssä #126. Elokuvatason rekisteri viittaa #109:n kanonisiin näytöstapahtumiin, säilyttää kriteeriosumat ja reitittää testitoiminnot outboxiin. Tuotannon kriteerit ja Discord-konfiguraatio ovat tyhjiä.
+- **#67 – Käyttäjän hyväksymä elokuvien hakukriteeristö:** odottaa #66:n rajapintojen valmistumista.
 
 Yksittäisten tikettien kanoninen tila ja riippuvuudet tarkistetaan GitHub Issues -tiketeistä.
 

@@ -1,0 +1,343 @@
+"""Elokuvahavaintojen kriteerikohtainen jatkotoimien outbox ja Discord-liitäntä.
+
+Tuotannon toimintomääritys on tyhjä. Testit käyttävät vain testikriteeriä ja
+injektoitua kuljetinta; webhook-salaisuutta ei tallenneta rekisteriin tai lokiin.
+"""
+from __future__ import annotations
+
+from copy import deepcopy
+from datetime import datetime, timedelta
+import fcntl
+import hashlib
+import json
+from pathlib import Path
+import tempfile
+from typing import Any, Callable
+import jsonschema
+
+ROOT = Path(__file__).resolve().parents[1]
+CONFIG_SCHEMA = ROOT / "schemas/movie-action-config.schema.json"
+OUTBOX_SCHEMA = ROOT / "schemas/movie-action-outbox.schema.json"
+EVENT_SCHEMA = ROOT / "schemas/movie-action-event.schema.json"
+
+
+class MovieActionError(ValueError):
+    """Jatkotoimen määrityksen, payloadin tai toimituksen virhe."""
+
+
+class ActionOutboxConflictError(MovieActionError):
+    """Outboxin SHA-versio muuttui ennen tallennusta."""
+
+
+class RetryableDeliveryError(MovieActionError):
+    """Kuljetin vahvisti, ettei viestiä toimitettu ja yritys voidaan uusia turvallisesti."""
+
+    def __init__(self, message: str, retry_after_seconds: int | float | None = None):
+        super().__init__(message)
+        self.retry_after_seconds = retry_after_seconds
+
+
+class DeliveryUncertainError(MovieActionError):
+    """Lähetyksen lopputulos on epäselvä; automaattinen uusinta voisi monistaa viestin."""
+
+
+def _canonical(value: Any) -> bytes:
+    """Muunna JSON-tietue vakaaksi tavujonoksi."""
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+def _sha(content: bytes) -> str:
+    """Laske tiedoston SHA-256-versio."""
+    return hashlib.sha256(content).hexdigest()
+
+
+def _aware_datetime(value: str) -> datetime:
+    """Lue ISO-aikaleima ja vaadi eksplisiittinen aikavyöhyke."""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise MovieActionError("Toiminnon aikaleima ei ole kelvollinen ISO 8601 -arvo.") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise MovieActionError("Toiminnon aikaleimasta puuttuu aikavyöhyke.")
+    return parsed
+
+
+def _validate(value: dict[str, Any], schema_path: Path, label: str) -> None:
+    """Validoi JSON-tietue paikallista skeemaa vasten."""
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator.check_schema(schema)
+    errors = sorted(
+        jsonschema.Draft202012Validator(
+            schema, format_checker=jsonschema.FormatChecker()
+        ).iter_errors(value),
+        key=lambda error: list(error.absolute_path),
+    )
+    if errors:
+        first = errors[0]
+        raise MovieActionError(f"{label} virhe kohdassa {list(first.absolute_path)}: {first.message}")
+
+
+def validate_action_config(config: dict[str, Any]) -> None:
+    """Tarkista kriteeriin sidotut toiminnot ja niiden versiot."""
+    _validate(config, CONFIG_SCHEMA, "Toimintomäärityksen")
+    keys = [(item["criterion_id"], item["action_id"], item["version"]) for item in config["actions"]]
+    if len(keys) != len(set(keys)):
+        raise MovieActionError("Toimintomäärityksessä on sama kriteeri/toiminto/versio useammin kuin kerran.")
+
+
+def empty_outbox() -> dict[str, Any]:
+    """Luo tyhjän toimitusjonon."""
+    return {"schema_version": 1, "actions": []}
+
+
+def validate_outbox(outbox: dict[str, Any]) -> None:
+    """Tarkista toimitusjonon rakenne ja idempotenssiavainten yksilöllisyys."""
+    _validate(outbox, OUTBOX_SCHEMA, "Toimitusjonon")
+    keys = [item["idempotency_key"] for item in outbox["actions"]]
+    event_ids = [item["event_id"] for item in outbox["actions"]]
+    if len(keys) != len(set(keys)) or len(event_ids) != len(set(event_ids)):
+        raise MovieActionError("Toimitusjonossa on duplikaatti-idempotenssiavain tai tapahtumatunniste.")
+
+
+def _idempotency_key(movie_id: str, criterion_id: str, action_id: str, version: str) -> str:
+    """Yksilöi toiminnon elokuvan, osumakriteerin ja toimintoversion mukaan."""
+    raw = "|".join((movie_id, criterion_id, action_id, version))
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def enqueue_movie_actions(
+    movie: dict[str, Any], config: dict[str, Any], outbox: dict[str, Any],
+    created_at: str, *, screening_observations: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Lisää jokaiselle uudelle kriteeriosumalle sille määritellyt toiminnot kerran."""
+    validate_action_config(config)
+    validate_outbox(outbox)
+    result = deepcopy(outbox)
+    existing = {item["idempotency_key"] for item in result["actions"]}
+    criterion_ids = {item["criterion_id"] for item in movie["criterion_matches"]}
+    if not screening_observations:
+        raise MovieActionError("Toimintotapahtuma vaatii vähintään yhden näytöshavainnon.")
+    snapshot_ids = [item.get("screening_id") for item in screening_observations]
+    if len(snapshot_ids) != len(set(snapshot_ids)):
+        raise MovieActionError("Toimintotapahtumassa on sama screening_id kahdesti.")
+    if not set(snapshot_ids).issubset(set(movie["screening_refs"])):
+        raise MovieActionError("Toimintotapahtuman näytösviite ei kuulu elokuvarekisterin havaintoihin.")
+    for snapshot in screening_observations:
+        if not snapshot.get("source_urls"):
+            raise MovieActionError("Näytösotoksesta puuttuu lähdeviite.")
+    for action in sorted(config["actions"], key=lambda item: (
+        item["criterion_id"], item["action_id"], item["version"]
+    )):
+        if not action["enabled"] or action["criterion_id"] not in criterion_ids:
+            continue
+        key = _idempotency_key(
+            movie["movie_id"], action["criterion_id"], action["action_id"], action["version"]
+        )
+        if key in existing:
+            continue
+        criterion_source_urls = sorted({
+            url
+            for match in movie["criterion_matches"]
+            if match["criterion_id"] == action["criterion_id"]
+            for url in match["source_urls"]
+        })
+        if not criterion_source_urls:
+            raise MovieActionError(
+                f"Kriteerillä {action['criterion_id']} ei ole lähdeviitteitä; toimintoa ei jonoteta."
+            )
+        payload = {
+            "schema_version": 1,
+            "event_type": "movie_first_observed",
+            "movie_id": movie["movie_id"],
+            "title": movie["primary_title"],
+            "release_year": movie["release_year"],
+            "first_seen_at": movie["first_seen_at"],
+            "criterion_id": action["criterion_id"],
+            "action_id": action["action_id"],
+            "action_version": action["version"],
+            "screening_refs": sorted(snapshot_ids),
+            "screening_observations": sorted(deepcopy(screening_observations), key=lambda item: item["screening_id"]),
+            "source_urls": criterion_source_urls,
+        }
+        _validate(payload, EVENT_SCHEMA, "Toimintotapahtuman")
+        event_id = "action-" + hashlib.sha256(key.encode("utf-8")).hexdigest()[:24]
+        result["actions"].append({
+            "event_id": event_id,
+            "idempotency_key": key,
+            "criterion_id": action["criterion_id"],
+            "action_id": action["action_id"],
+            "action_version": action["version"],
+            "action_type": action["type"],
+            "movie_id": movie["movie_id"],
+            "payload": payload,
+            "status": "pending",
+            "attempts": 0,
+            "created_at": created_at,
+            "updated_at": created_at,
+            "next_attempt_at": created_at,
+            "sent_at": None,
+            "last_error_code": None,
+        })
+        existing.add(key)
+    result["actions"].sort(key=lambda item: item["idempotency_key"])
+    validate_outbox(result)
+    return result
+
+
+class DiscordWebhookAdapter:
+    """Discord-webhookin liitäntä, jonka kuljetin ja salaisuus annetaan ajonaikaisesti."""
+
+    def __init__(self, webhook_url: str, transport: Callable[[str, dict[str, Any], str], Any]):
+        if not isinstance(webhook_url, str) or not webhook_url.startswith("https://discord.com/api/webhooks/"):
+            raise MovieActionError("Discord-webhookin osoite puuttuu tai ei ole sallittu HTTPS-osoite.")
+        if not callable(transport):
+            raise MovieActionError("Discord-webhookin kuljetin puuttuu.")
+        self.__webhook_url = webhook_url
+        self.__transport = transport
+
+    def __repr__(self) -> str:
+        """Älä paljasta webhook-osoitetta debug-tulosteessa."""
+        return "DiscordWebhookAdapter(webhook_url=<redacted>)"
+
+    def send(self, payload: dict[str, Any], idempotency_key: str) -> None:
+        """Lähetä payload injektoidun kuljettimen kautta ilman salaisuuden lokitusta."""
+        self.__transport(self.__webhook_url, payload, idempotency_key)
+
+
+def dispatch_pending_actions(
+    outbox: dict[str, Any], adapters: dict[str, Any], attempted_at: str,
+    *, max_attempts: int = 3,
+) -> dict[str, Any]:
+    """Yritä pending-toiminnot ja erota turvallinen uusinta epäselvästä toimituksesta.
+
+    Vain RetryableDeliveryError tarkoittaa, että kuljetin tietää viestin jääneen
+    toimittamatta (esimerkiksi HTTP 429). Muu virhe merkitään uncertain-tilaan,
+    koska aikakatkaisun jälkeen viesti on voinut jo saapua vastaanottajalle.
+    """
+    validate_outbox(outbox)
+    if max_attempts < 1:
+        raise MovieActionError("max_attempts-arvon pitää olla vähintään yksi.")
+    result = deepcopy(outbox)
+    for action in result["actions"]:
+        if action["status"] != "pending":
+            continue
+        attempted = _aware_datetime(attempted_at)
+        due_at = action.get("next_attempt_at")
+        if due_at is not None and _aware_datetime(due_at) > attempted:
+            continue
+        adapter = adapters.get(action["action_type"])
+        try:
+            if adapter is None:
+                raise RetryableDeliveryError("Toiminnolle ei ole rekisteröity sovitinta.")
+            adapter.send(action["payload"], action["idempotency_key"])
+        except RetryableDeliveryError as exc:
+            action["attempts"] += 1
+            action["updated_at"] = attempted_at
+            action["last_error_code"] = type(exc).__name__
+            if action["attempts"] >= max_attempts:
+                action["status"] = "failed"
+                action["next_attempt_at"] = None
+            else:
+                retry_after = exc.retry_after_seconds
+                if not isinstance(retry_after, (int, float)) or retry_after <= 0:
+                    retry_after = min(60 * (2 ** (action["attempts"] - 1)), 21600)
+                action["next_attempt_at"] = (
+                    attempted + timedelta(seconds=retry_after)
+                ).isoformat()
+        except Exception as exc:
+            # Tuntematon tai aikakatkaisun kaltainen virhe voi seurata onnistunutta
+            # etätoimitusta. Säilytä tapahtuma manuaalista tarkistusta varten.
+            action["attempts"] += 1
+            action["updated_at"] = attempted_at
+            action["last_error_code"] = type(exc).__name__
+            action["status"] = "uncertain"
+            action["next_attempt_at"] = None
+        else:
+            action["attempts"] += 1
+            action["updated_at"] = attempted_at
+            action["sent_at"] = attempted_at
+            action["next_attempt_at"] = None
+            action["status"] = "sent"
+            action["last_error_code"] = None
+    validate_outbox(result)
+    return result
+
+
+def resolve_uncertain_delivery(
+    outbox: dict[str, Any], event_id: str, *, delivered: bool, resolved_at: str
+) -> dict[str, Any]:
+    """Ratkaise epäselvä toimitus manuaalisen tarkistuksen jälkeen."""
+    validate_outbox(outbox)
+    _aware_datetime(resolved_at)
+    result = deepcopy(outbox)
+    action = next((item for item in result["actions"] if item["event_id"] == event_id), None)
+    if action is None:
+        raise MovieActionError("Toimitusjonosta ei löydy pyydettyä event_id-tunnistetta.")
+    if action["status"] != "uncertain":
+        raise MovieActionError("Vain uncertain-tilassa oleva toimitus voidaan ratkaista tällä toiminnolla.")
+    action["updated_at"] = resolved_at
+    action["last_error_code"] = None
+    if delivered:
+        action["status"] = "sent"
+        action["sent_at"] = resolved_at
+        action["next_attempt_at"] = None
+    else:
+        action["status"] = "pending"
+        action["sent_at"] = None
+        action["next_attempt_at"] = resolved_at
+    validate_outbox(result)
+    return result
+
+class JsonFileActionOutboxStore:
+    """Paikallinen SHA-tarkistettu toimitusjono testaukseen ja palautuvaan käsittelyyn."""
+
+    def __init__(self, path: Path):
+        self.path = Path(path).resolve()
+
+    def load(self) -> tuple[dict[str, Any], str]:
+        """Lue toimitusjono tai palauta tyhjä jono."""
+        try:
+            content = self.path.read_bytes()
+        except FileNotFoundError:
+            return empty_outbox(), "missing"
+        try:
+            value = json.loads(content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise MovieActionError("Toimitusjonon JSON on virheellinen.") from exc
+        validate_outbox(value)
+        return value, _sha(content)
+
+    def save(self, outbox: dict[str, Any], *, expected_sha: str) -> str:
+        """Tallenna jono vain, jos odotettu SHA-versio on edelleen voimassa."""
+        validate_outbox(outbox)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        lock_path = self.path.with_name(self.path.name + ".lock")
+        with lock_path.open("a+b") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            try:
+                try:
+                    current = _sha(self.path.read_bytes())
+                except FileNotFoundError:
+                    current = "missing"
+                if current != expected_sha:
+                    raise ActionOutboxConflictError("Toimitusjono muuttui ennen tallennusta.")
+                content = _canonical(outbox) + b"\n"
+                temporary = None
+                try:
+                    with tempfile.NamedTemporaryFile(
+                        mode="wb", dir=self.path.parent, prefix=f".{self.path.name}.",
+                        suffix=".tmp", delete=False
+                    ) as stream:
+                        temporary = Path(stream.name)
+                        stream.write(content)
+                        stream.flush()
+                        import os
+                        os.fsync(stream.fileno())
+                    import os
+                    os.replace(temporary, self.path)
+                finally:
+                    if temporary is not None and temporary.exists():
+                        temporary.unlink()
+                return _sha(content)
+            finally:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
