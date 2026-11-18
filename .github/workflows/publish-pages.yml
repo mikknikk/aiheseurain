@@ -138,7 +138,7 @@ jobs:
         uses: actions/deploy-pages@v4
       - name: Tarkista uuden julkaisun julkinen RSS-sisältö
         id: candidate_check
-        if: needs.build.outputs.deployment_id != '' && steps.current.outputs.is_current == 'true'
+        if: always() && needs.build.outputs.deployment_id != '' && steps.current.outputs.is_current == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
