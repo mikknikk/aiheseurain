@@ -333,7 +333,7 @@ Suositeltu toteutusjärjestys:
 - [x] Varmistetaan, että avoin RSS-PR ei päivitä artefakteja tai checkpointia. Saman ajon uusinta jatkaa vasta yhdistetyn PR:n ja Pages-syötteen tarkan takaisinluvun jälkeen.
 - [x] Lisätään päähaaran vastaanottotuloksen shadow-työnkulku. Se käsittelee vain yhden uuden JSON-tiedoston, tallentaa teknisen ajohistorian eikä julkaise RSS:ää tai siirrä tehtäväkiertoa.
 - [x] Lisätään regressiotestit handoffin idempotenssille, väärälle moduulille, puuttuvalle tai virheelliselle julkaisuarviolle, arkaluonteisille metatiedoille, epäonnistuneelle/puutteelliselle tulokselle ja shadow-työnkulun rajoille.
-- [ ] Aja PR-CI ja korjaa mahdolliset regressiot ennen yhdistämistä.
+- [x] PR-CI läpäisi: 335 Python-yksikkötestiä sekä RSS-/dokumentaatio-/seurantatilan tarkistus, käyttöliittymätestit ja Pages-build onnistuivat.
 - [ ] Varjotilan rinnakkaisvertailu ja tuotantosiirtymän hyväksyntä kuuluvat tiketteihin #214 ja #215.
 
 **Rajaus:** päähaaran automaatio käyttää vain shadow-tilaa. Tuotantotilan koodi on erikseen portitettu ja edellyttää eksplisiittistä kutsulippua, aktiivista moduulia sekä GitHub-julkaisuoikeuksia; sitä ei käynnistetä tässä PR:ssä. Tallennettuja ChatGPT-tehtäviä, käynnistyskehotteita, ajastuksia, aikavyöhykkeitä tai kohdekeskusteluja ei muuteta.
