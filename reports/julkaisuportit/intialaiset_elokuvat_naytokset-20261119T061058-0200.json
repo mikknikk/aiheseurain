@@ -12,8 +12,8 @@
         "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
         "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
         "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
-        "https://cinemaniagara.fi/salikartta?id=54469",
-        "https://kinopirtti.fi/salikartta?id=54450",
+        "https://cinemaniagara.fi/?lang=fi",
+        "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
         "https://biorex.fi/elokuvat/klara-and-the-sun/",
         "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/",
         "https://kinoregina.fi/",
@@ -25,12 +25,12 @@
     },
     "claim_support": {
       "status": "pass",
-      "note": "Kinoonin ajantasaiset listaukset näyttävät seitsemän Klara ja aurinko -näytöstä ja kaksi Ramayana-näytöstä 25.11.2026. Cinema Niagara ja Kinopirtti vahvistavat kaksi Klara-näytöstä omilla lipunmyyntisivuillaan. Kahdentoista aiemman näytöksen tilamuutos perustuu tallennettuihin alkuaikoihin ja tarkistushetkeen.",
+      "note": "Kinoonin ajantasaiset listaukset näyttävät seitsemän Klara ja aurinko -näytöstä ja kaksi Ramayana-näytöstä 25.11.2026. Cinema Niagara ja Kinopirtti vahvistavat kaksi Klara-näytöstä omilla sivuillaan; Kinopirtti ilmoittaa lisäksi englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset. Kahdentoista aiemman näytöksen tilamuutos perustuu tallennettuihin alkuaikoihin ja tarkistushetkeen.",
       "evidence": [
         "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
         "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
-        "https://cinemaniagara.fi/salikartta?id=54469",
-        "https://kinopirtti.fi/salikartta?id=54450"
+        "https://cinemaniagara.fi/?lang=fi",
+        "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko"
       ]
     },
     "source_independence": {
@@ -39,8 +39,8 @@
       "evidence": [
         "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
         "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
-        "https://cinemaniagara.fi/salikartta?id=54469",
-        "https://kinopirtti.fi/salikartta?id=54450"
+        "https://cinemaniagara.fi/?lang=fi",
+        "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko"
       ]
     },
     "uncertainty": {
@@ -57,7 +57,7 @@
     },
     "duplicates": {
       "status": "pass",
-      "note": "Pysyvät screening_id-tunnisteet ja kaikki 113 aiempaa tapahtumaa säilytettiin. Lisättiin yhdeksän uutta näytöstä ja 12 tilamuutosta; tunnisteissa ei ole duplikaatteja."
+      "note": "Pysyvät screening_id-tunnisteet ja kaikki aiemmat 113 tapahtumaa säilytettiin. Lisättiin yhdeksän uutta näytöstä, 12 tilamuutosta ja kaksi lähde-/esitystietojen korjaustapahtumaa; tunnisteissa ei ole duplikaatteja."
     },
     "guid_preservation": {
       "status": "pass",
@@ -73,7 +73,7 @@
     },
     "report_completeness": {
       "status": "pass",
-      "note": "Klara- ja Ramayana-itemit sisältävät koko ajantasaisen tulevien näytösten listan, historiallisen listan, muutokset edelliseen julkaisuun ja suorat lähdelinkit."
+      "note": "Klara- ja Ramayana-itemit sisältävät koko ajantasaisen tulevien näytösten listan, historiallisen listan, muutokset edelliseen julkaisuun ja suorat lähdelinkit. Kinopirtin 25.11. näytöksen esityskieli ja tekstitykset on täydennetty teatterin omasta elokuvasivusta."
     },
     "accessibility": {
       "status": "pass",
@@ -105,17 +105,17 @@
           "source_class": "A",
           "source_role": "ensisijainen",
           "independence": "ei_sovellu",
-          "note": "Teatterin oma lipunmyyntisivu vahvistaa Tampereen klo 12.30 näytöksen."
+          "note": "Teatterin oma ohjelmisto vahvistaa Tampereen klo 12.30 näytöksen."
         },
         {
           "source_id": "kinopirtti",
           "source_class": "A",
           "source_role": "ensisijainen",
           "independence": "ei_sovellu",
-          "note": "Teatterin oma lipunmyyntisivu vahvistaa Kemin klo 15.40 näytöksen."
+          "note": "Teatterin oma elokuvasivu vahvistaa Kemin klo 15.40 näytöksen."
         }
       ],
-      "note": "Vain kaksi seitsemästä näytöksestä vahvistettiin teatterien omilta sivuilta; viisi muuta säilyvät kolmannen osapuolen ilmoituksina."
+      "note": "Kaksi seitsemästä näytöksestä vahvistettiin teatterien omilta sivuilta; viisi muuta säilyvät kolmannen osapuolen ilmoituksina."
     },
     {
       "claim_id": "ramayana-2026-11-25-two-showings",
@@ -177,6 +177,21 @@
         }
       ],
       "note": "Aiempi lähderistiriita säilytetään ratkaisemattomana."
+    },
+    {
+      "claim_id": "kinopirtti-2026-11-25-language-subtitles",
+      "claim": "Kinopirtin 25.11.2026 klo 15.40 Klara ja aurinko -näytös esitetään englanniksi, ja tekstitykset ovat suomeksi ja ruotsiksi.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "kinopirtti",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Teatterin oma elokuvasivu ilmoittaa esityskielen ja molemmat tekstityskielet."
+        }
+      ],
+      "note": "Tiedot koskevat nimenomaan Kinopirtin elokuvakohtaista näytöslistaa."
     }
   ],
   "decision": "approved",
@@ -185,6 +200,7 @@
     "Kaksi Klara-näytöstä vahvistettiin teatterien omilta sivuilta. Viisi Klara- ja kaksi Ramayana-näytöstä jäävät kolmannen osapuolen ilmoituksiksi.",
     "Kaksitoista aiemmin julkaistua näytöstä siirtyi historiallisiin näytösaikoihin; aiempia tietueita tai RSS-versioita ei poistettu.",
     "Kolme Facebook-lähdettä jäi teknisten käyttörajoitusten vuoksi tarkistamatta. Kaikki neljä kriittistä teatterilähdettä tarkistettiin.",
-    "Päähaaran onnistumisen tarkistuspistettä ei siirretä tässä PR:ssä. Se päivitetään vasta yhdistämisen, Pages-julkaisun ja julkisen RSS-takaisinluvun onnistuttua."
+    "Päähaaran onnistumisen tarkistuspistettä ei siirretä tässä PR:ssä. Se päivitetään vasta yhdistämisen, Pages-julkaisun ja julkisen RSS-takaisinluvun onnistuttua.",
+    "Kinopirtin oma elokuvasivu vahvisti englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset; tiedot lisättiin näytöshistoriaan ja RSS-riville."
   ]
 }
