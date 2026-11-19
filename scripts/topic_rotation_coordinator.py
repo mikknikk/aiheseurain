@@ -123,10 +123,14 @@ def _validate_task_map(task_map: dict[str, Any], schema_path: Path) -> dict[str,
     return mapping
 
 
-def validate_topic_rotation_configuration(root: Path = ROOT) -> TopicSelection:
+def validate_topic_rotation_configuration(
+    root: Path = ROOT, *, state_override: dict[str, Any] | None = None
+) -> TopicSelection:
     """Tarkista jonon, koneellisen tilan, kartan ja moduulirekisterin yhteensopivuus."""
     root = Path(root).resolve()
-    state = _read_json(root / "data/seurantatila.json")
+    state = state_override if state_override is not None else _read_json(root / "data/seurantatila.json")
+    if not isinstance(state, dict):
+        raise TopicCoordinatorError("Kiertotilan pitää olla JSON-olio.")
     rotation = state.get("rotation")
     if not isinstance(rotation, dict) or not isinstance(rotation.get("tasks"), dict):
         raise TopicCoordinatorError("Seurantatilan rotation.tasks-rakenne puuttuu.")
@@ -146,13 +150,14 @@ def validate_topic_rotation_configuration(root: Path = ROOT) -> TopicSelection:
         raise TopicCoordinatorError("Dokumentoitu kiertojärjestys ja koneellisen seurantatilan järjestys eroavat.")
     if feed_path not in queue_feeds:
         raise TopicCoordinatorError("Seurantatilan seuraava tehtävä ei vastaa dokumentoitua kiertojonoa.")
-    try:
-        next_section = queue_text.split("## Seuraava tehtävä", 1)[1].split("## Kiertoperiaate", 1)[0]
-    except IndexError as exc:
-        raise TopicCoordinatorError("Tehtäväjonon seuraavan vuoron otsikko puuttuu.") from exc
-    next_match = re.search(r"\*\*Vuorossa seuraavaksi:\s*(.+?)\*\*", next_section)
-    if not next_match or next_match.group(1).strip().rstrip(".") != task_name:
-        raise TopicCoordinatorError("Tehtäväjonon näkyvä seuraava vuoro ja JSON-seurantatila eroavat.")
+    if state_override is None:
+        try:
+            next_section = queue_text.split("## Seuraava tehtävä", 1)[1].split("## Kiertoperiaate", 1)[0]
+        except IndexError as exc:
+            raise TopicCoordinatorError("Tehtäväjonon seuraavan vuoron otsikko puuttuu.") from exc
+        next_match = re.search(r"\*\*Vuorossa seuraavaksi:\s*(.+?)\*\*", next_section)
+        if not next_match or next_match.group(1).strip().rstrip(".") != task_name:
+            raise TopicCoordinatorError("Tehtäväjonon näkyvä seuraava vuoro ja JSON-seurantatila eroavat.")
 
     task_map = _read_json(root / "data/topic-task-map.json")
     mapping = _validate_task_map(task_map, root / "schemas/topic-task-map.schema.json")
@@ -196,6 +201,8 @@ def dispatch_next_topic(
     root: Path = ROOT,
     runner: Callable[..., dict[str, Any]] = run_isolated_module,
     timeout_seconds: int = 300,
+    rotation_state: dict[str, Any] | None = None,
+    module_state_override: dict[str, Any] | None = None,
 ) -> TopicDispatch:
     """Valmistele ja käynnistä täsmälleen yksi seuraava topic-moduuli varjotilassa.
 
@@ -210,7 +217,7 @@ def dispatch_next_topic(
         raise TopicCoordinatorError("Seurantajakson loppu on ennen alkua.")
 
     root = Path(root).resolve()
-    selection = validate_topic_rotation_configuration(root)
+    selection = validate_topic_rotation_configuration(root, state_override=rotation_state)
     requested_at = datetime.now(ZoneInfo(TIMEZONE)).isoformat()
     request = {
         "schema_version": 1,
@@ -238,6 +245,7 @@ def dispatch_next_topic(
         run_id=run_id,
         period_start=period_start,
         period_end=period_end,
+        module_state_override=module_state_override,
         root=root,
     )
     runner_source = (root / "scripts/topic_dispatch_runner.py").read_text(encoding="utf-8")
