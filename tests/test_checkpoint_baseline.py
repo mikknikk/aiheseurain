@@ -2,14 +2,11 @@
 import hashlib
 import json
 import unittest
-from pathlib import Path
 
-from scripts.github_module_adapters import GitHubFile
+from scripts.github_module_adapters import GitHubAdapterError, GitHubFile
 from scripts.checkpoint_baseline import (
     CheckpointBaselineError, read_checkpoint_baseline,
 )
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def git_blob_sha(content: bytes) -> str:
@@ -63,9 +60,9 @@ class CheckpointBaselineTests(unittest.TestCase):
         self.assertEqual(result["blob_sha"], git_blob_sha(
             json.dumps(valid_state()).encode("utf-8")
         ))
-        self.assertEqual(client.reads, [(
-            "data/module-state/taylor-swift.json", "module-runtime-state"
-        )])
+        self.assertEqual(client.reads, [
+            ("data/module-state/taylor-swift.json", "module-runtime-state")
+        ])
         self.assertEqual(client.writes, 0)
 
     def test_first_run_without_checkpoint_is_explicitly_null(self):
@@ -95,7 +92,7 @@ class CheckpointBaselineTests(unittest.TestCase):
     def test_rejects_invalid_checkpoint_timestamp_and_blob_sha(self):
         state = valid_state()
         state["checkpoint"]["last_successful_run"]["checked_at"] = "not-a-date"
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GitHubAdapterError):
             read_checkpoint_baseline(
                 ReadOnlyCheckpointClient(state), "taylor-swift", observed_at=self.now,
             )
