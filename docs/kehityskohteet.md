@@ -288,7 +288,7 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #211 – ChatGPT-tuloksen turvallinen palautuskanava
 
-**Tila:** toteutus PR:ssä; live-automaation asetuksia ei muutettu.
+**Tila:** valmis; PR #217 yhdistetty main-haaraan commitilla f9f05560ed6da7b80d198cf4dd66bcdca514110d. Live-automaation asetuksia ei muutettu.
 
 - [x] Valittiin auditoitava GitHub-pull request -palautuskanava ilman ulkoista AI-palvelua tai uutta pysyvää automaatiota.
 - [x] Lisättiin yhden moduulin tulokselle handoff-tunnisteet ja tiivistekenttä tulossopimukseen.
@@ -296,7 +296,27 @@ Suositeltu toteutusjärjestys:
 - [x] Lisättiin `pull_request_target`-työnkulku, joka käyttää vain kohdehaaran luotettua validointikoodia, lukee PR:stä yhden uuden JSON-tiedoston eikä suorita PR:n koodia.
 - [x] Lisättiin päähaaran vastaanottotulosten uudelleenvalidointi ja regressiotestit.
 - [x] Lisättiin palautuskehotteen luonnos muuttamatta aktiivista käynnistyskehotetta.
-- [ ] Varmista GitHub Actions -CI:n läpäisy PR:ssä ja tee tarvittavat korjaukset.
-- [ ] Varmista erikseen, onko GitHub-yhteys ja kirjoitusoikeus käytettävissä nykyisessä ajastetussa ChatGPT-tehtävässä ennen live-käyttöä.
+- [x] GitHub Actions -CI läpäisi PR:n; vastaanottotulokset validoidaan lisäksi päähaaran CI:ssä.
+- [ ] Varmista erikseen, onko GitHub-yhteys ja kirjoitusoikeus käytettävissä nykyisessä ajastetussa ChatGPT-tehtävässä ennen live-käyttöä; tämä kuuluu tuotantosiirtymän hyväksyntään.
 
-**Rajoite:** `input_sha256` tarkistetaan tässä vaiheessa muodoltaan ja handoff-metatietojen sisäisenä viitteenä. Sitä ei vielä verrata riippumattomasti pysyvästi tallennettuun alkuperäiseen handoffiin. Tämä tehdään osana tikettejä #212–#213. Vastaanotto-PR ei julkaise RSS:ää eikä päivitä checkpointia.
+**Rajoite:** `input_sha256` tarkistetaan tässä vaiheessa muodoltaan ja handoff-metatietojen sisäisenä viitteenä. Sitä ei vielä verrata riippumattomasti pysyvästi tallennettuun alkuperäiseen handoffiin. Tämä kuuluu tikettiin #213. Vastaanotto-PR ei julkaise RSS:ää eikä päivitä checkpointia.
+
+
+### Issue #212 – moduuliorkestroinnin pysyvät GitHub-tallennus- ja julkaisusovittimet
+
+**Tila:** toteutus PR:ssä; live-moduuleja ei aktivoitu.
+
+- [x] GitHub-pohjainen moduulitilan tallennus käyttää blob-SHA-CAS-vertailua, moduulikohtaista tiedostopolkua ja ristiriitojen hylkäystä.
+- [x] Artefaktit tallennetaan muuttumattomina moduuli-/ajokohtaisina tiedostoina; moduuli-indeksi päivitetään SHA-tarkistetusti ja idempotentisti.
+- [x] Julkaisumanifesti säilyttää ajokohtaisen neljän vaiheen historian ja estää vaiheiden ohittamisen tai saman run_id:n ristiriitaisen sisällön.
+- [x] Ajotulosten pysyvä auditointiloki tallentaa vain tekniset metatiedot eikä raporttisisältöä tai salaisuuskenttiä.
+- [x] RSS-julkaisusovitin käyttää nykyistä RSS/Pages-putkea PR:n kautta. Se ei yhdistä PR:ää eikä ohita RSS- ja julkaisulaadun portteja; se vaatii yhdistetyn PR:n ja julkisen syötteen takaisinluvun ennen varmennettua kuittia.
+- [x] Kohderaportin julkaisureitti ratkaistaan nykyisistä rekistereistä; vain aktiivinen topic-reitti hyväksytään. Näytösvahti/prosessimoduuli on rajattu ulos.
+- [x] Lisättiin runtime-tietueiden JSON Schema -sopimukset ja offline-testit: SHA-konfliktit, idempotenssi, epäselvä API-vastaus, rinnakkaisen haarakirjoituksen uusinta, vaihekatkot ja Pages-takaisinluku.
+- [ ] Varmista PR-CI ja korjaa mahdolliset virheet.
+- [ ] Kytke sovittimet orkestroinnin asynkroniseen elinkaareen tiketissä #213. Avoin RSS-PR ei ole julkaisu eikä saa päivittää artefakteja tai checkpointia.
+- [ ] Varmista ennen live-käyttöä tarvittavat GitHub Actions -oikeudet erikseen; tämän tiketin toteutus ei muuta nykyisiä työnkulkujen käyttöoikeuksia.
+
+**Tallennusmalli:** runtime-tietueet tallentuvat ensimmäisen kirjoituksen yhteydessä luotavalle module-runtime-state-haaralle. Luenta ei luo haaraa. Tiedostopolut ovat data/module-state/{module_id}.json, data/module-artifacts/{module_id}/, data/module-publication-journal/{module_id}/ ja data/module-run-history/{module_id}/. Runtime-haaraa ei vielä luotu tässä PR:ssä eikä sinne kirjoitettu tuotantotietoja.
+
+**Asynkroninen julkaisuraja:** publisher avaa ehdokas-PR:n, mutta nykyinen ModuleOrchestrator.run on synkroninen. Jos PR on avoin, ajo pysähtyy ennen artefaktien ja checkpointin päivitystä. Tiketti #213 lisää turvallisen jatkamisen PR:n yhdistämisen ja Pages-varmennuksen jälkeen. Kohderaporttien monikohdejulkaisua ei vielä toteuteta tässä sovittimessa.
