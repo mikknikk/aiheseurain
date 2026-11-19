@@ -126,10 +126,15 @@
     "last_successful_check": "2026-11-19T06:10:58+02:00",
     "last_period_start": "2026-11-18T17:37:16+02:00",
     "last_period_end": "2026-11-19T06:10:58+02:00",
-    "last_result": "success",
-    "published_items": 2,
-    "sources_checked": 8,
-    "errors": [],
+    "last_result": "partial",
+    "published_items": 0,
+    "sources_checked": 7,
+    "errors": [
+      "kino-regina: Kino Reginan virallinen ohjelmistosivu ei palauttanut luettavaa ajantasaista ohjelmaa (sivu jäi lataus-/virhetilaan). Kolmannen osapuolen teatterisivun ohjelmatieto oli vanhentunut (päivitetty 11.10.2026), joten sitä ei käytetty korvaavana lähdetarkistuksena.",
+      "finbolly: FinBolly Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena.",
+      "fintamil: FinTamil Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena.",
+      "rasa-entertainment: Rasa Entertainment -Facebook-sivulta ei saatu luettavaa julkista sisältöä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena."
+    ],
     "automation_instructions": {
       "document": "docs/intialaisten-elokuvien-naytosseuranta.md",
       "current_version": "1.4.6",
