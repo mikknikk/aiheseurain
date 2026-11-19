@@ -45,7 +45,7 @@ Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa
 
 ## Muumit
 
-- Ensisijaiset: Moomin Characters (moomin.com), Tove Janssonin oikeudenhaltijoiden ja virallisten museoiden, kustantajien, tuotantoyhtiöiden ja tapahtumajärjestäjien tiedotteet.
+- Ensisijaiset: Moomin Characters (moomin.com), Tove Janssonin oikeudenhaltijoiden ja virallisten museoiden, kustantajien, tuotantoyhtiöiden ja tapahtumajärjestäjien tiedotteet. Sony Music Finland Live (live.sonymusic.fi) on ensisijainen lähde omien Muumi-musiikkiteatterituotantojensa kiertue- ja esitystiedoille.
 - Toimitukselliset: suomalaiset ja kansainväliset kulttuuri-, kirjallisuus-, animaatio-, viihde- ja talousmediat.
 - Hae suomeksi, ruotsiksi, englanniksi ja tarvittaessa japaniksi. Käytä muotoja “Muumit”, “Moomin”, “Moomins” ja “ムーミン”.
 - Seuraa Suomen lisäksi erityisesti Ruotsia, Britanniaa, Japania ja kansainvälisiä markkinoita.
@@ -117,14 +117,14 @@ Oikeudellisten ja virallisten tapahtumien rinnalla seuraa henkilön elokuva- ja 
 
 ## Lähdekattavuuden lähtörekisteri: aihekohtainen laajennus
 
-`data/source-catalog.json` sisältää 124 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 132 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi, alueet ja A–D-luokka ylläpidetään kerran; tarvittaessa mukana on `reliability_note`. Käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
+`data/source-catalog.json` sisältää 129 yksilöllisen lähteen yhteiset perustiedot. Kymmenessä tehtäväkohtaisessa käyttörekisterissä (`data/sources/`) on yhteensä 133 lähdekäyttöä (yhdeksän aihekierrosta sekä erillinen näytösvahti). Katalogissa lähteen `id`, nimi, URL, kielet, lähdetyyppi, alueet ja A–D-luokka ylläpidetään kerran; tarvittaessa mukana on `reliability_note`. Käyttörekisterissä ovat `source_id`, kriittisyys, tehtäväkohtainen tarkistusaika ja käyttörajoite. Taulukon lukumäärät tarkoittavat aihekohtaisia lähdekäyttöjä, eivät yksilöllisten katalogilähteiden määrää.
 
 | Tehtävä | Rekisterissä | Kielet / alueet, joihin lähtölista ulottuu | Tärkeä kattavuusrajoite |
 |---|---:|---|---|
 | Tolkien | 28 | englanti, suomi, saksa, ranska, espanja, italia, brasilianportugali, baski; Britannia, Yhdysvallat, Saksa, Ranska, Espanja, Italia, Suomi, Brasilia, Uusi-Seelanti, globaali | Kattavuus on laajentunut Euroopan kieliin, Brasiliaan ja Uuteen-Seelantiin; Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskielinen toimituksellinen seuranta on yhä ohut. |
 | Taylor Swift | 10 | englanti, brasilianportugali; Yhdysvallat, Brasilia, globaali | Yhä englanti- ja Yhdysvalta-painotteinen; yksi brasilianportugalinkielinen alueellinen toimituksellinen lähde on lisätty. |
 | Gurmeet Ram Rahim Singh | 7 | englanti, hindi, pandžabi; Haryana, Punjab, Chandigarh, Intian valtakunnallinen | Alueellisten hindin- ja pandžabinkielisten lähteiden saavutettavuus vaihtelee. |
-| Muumit | 8 | suomi, ruotsi, englanti, japani; Suomi, Ruotsi, Britannia, Japani, globaali | Pohjoismaiden ja Japanin lisäksi muita lisenssimarkkinoita voidaan lisätä. |
+| Muumit | 9 | suomi, ruotsi, englanti, japani; Suomi, Ruotsi, Britannia, Japani, globaali | Pohjoismaiden ja Japanin lisäksi muita lisenssimarkkinoita voidaan lisätä. |
 | Wakaliwood | 5 | englanti; Uganda ja Itä-Afrikka | Lugandan- ja swahilinkielinen kattavuus on vielä ohut. |
 | Euroviisut | 10 | englanti, suomi, ruotsi sekä Aasian osallistujamaiden kieliä; Eurooppa, Aasia, globaali | Aasian osallistujamaiden omia yleisradioyhtiöitä on lisättävä erikseen; yksi kilpailun virallinen sivusto ei korvaa niitä. |
 | Sompote Sands | 6 | thai, japani, englanti; Thaimaa ja Japani | Thai- ja japaninkielinen elokuvahistoria on tärkeä; oikeus- ja lisenssikiistoissa ensisijaiset asiakirjat ratkaisevat. |
