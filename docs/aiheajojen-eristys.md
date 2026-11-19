@@ -208,7 +208,7 @@ Vikainjektiotestit kattavat API-kuittauksen katoamisen RSS-julkaisun jälkeen, j
 - PR-todiste sidotaan täsmälliseen `module_id`-/`run_id`-pariin PR:n otsikon ja rungon avulla. Tietue sisältää PR-numeron, URL:n, tilan, yhdistämisajan ja commit-SHA:n.
 - Pages-todiste haetaan erikseen `github-pages`-ympäristön deploymentista, jonka commit-SHA vastaa PR:n yhdistämiscommittia. Puuttuva deployment kirjataan tilana `not_found`; PR:n yhdistäminen ei tarkoita onnistunutta Pages-julkaisua.
 - Julkinen RSS luetaan katalogin topic-syöte-URL:sta välimuistin ohittavilla HTTP-otsakkeilla. Tietueeseen tallennetaan vain URL, tarkistusaika, raakasyötteen SHA-256, item-määrä ja GUIDit. RSS-itemien sisältöä ei kopioida.
-- Checkpoint-todiste yhdistää ennen- ja jälkeen-tilan Git-blob-SHA:t, run_id:t, aikaleimat ja manifestivaiheen. Jälkitila luetaan uudelleen runtime-haarasta ja sen run_id varmennetaan.
+- Julkaisumanifesti luetaan ja validoidaan erikseen: auditointiin tallennetaan manifestin blob-SHA, artifact-versio, raportti-/artefakti-/tilatiivisteet, seurantajakso sekä vaihehistoria ilman raporttisisältöä. Checkpoint-todiste yhdistää ennen- ja jälkeen-tilan Git-blob-SHA:t, run_id:t, aikaleimat ja manifestivaiheen. Jälkitila luetaan uudelleen runtime-haarasta ja sen run_id varmennetaan.
 - Vanhan raportointipolun havainto sisältää tarkistetun lähde-URL:n, jakson, tilan, perustelun ja mahdolliset GUIDit. Kerääjä ei väitä vanhaa julkaisua puuttuvaksi ilman kutsujan tekemää lähdetarkistusta; epäselvä tila kirjataan muodossa `unknown`.
 - Palautuspäätös lasketaan uudelleen `recovery_action`-funktiolla ja tallennetaan syötteineen. Mahdollinen vanhaan polkuun palaamisen hyväksyntä kirjataan erillisenä tapahtumana; lokitus ei anna hyväksyntää.
 
@@ -238,7 +238,7 @@ Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutis
 
 ### Versiohistoria
 
-- **2.2.0 – 2026-11-19:** lisättiin PR-, Pages-, julkisen RSS:n, checkpointin, vanhan polun ja palautuspäätöksen read-only-todistekerääjä sekä sisällön SHA-256-tiivisteellä nimetyt ajokohtaiset auditointitietueet, skeema, validoija ja CI-testit. Ei live-siirtymää.
+- **2.2.0 – 2026-11-19:** lisättiin PR-, Pages-, julkisen RSS:n, julkaisumanifestin vaihehistorian, checkpointin, vanhan polun ja palautuspäätöksen read-only-todistekerääjä sekä sisällön SHA-256-tiivisteellä nimetyt ajokohtaiset auditointitietueet, skeema, validoija ja CI-testit. Ei live-siirtymää.
 - **2.1.0 – 2026-11-19:** lisättiin keskeytyneen moduulijulkaisun fail-closed-palautumispäätökset, vanhaan raportointipolkuun siirtymisen hyväksyntäportti sekä vikainjektiotestit.
 - **2.0.0 – 2026-11-19:** lisättiin oletusarvoisesti pois päältä oleva moduulikohtainen tuotantoluparekisteri, fail-closed-validointi sekä moduuli–seurantajakso-yksinoikeus GitHub-julkaisumanifestiin. Mitään moduulia ei aktivoitu.
 
