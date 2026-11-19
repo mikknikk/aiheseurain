@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/module-input-bundle.schema.json",
+  "title": "Yhden seurantamoduulin eristetty syötepaketti",
+  "type": "object",
+  "required": ["bundle_schema_version", "module_id", "module_definition_version", "run", "module", "targets", "sources", "module_state"],
+  "properties": {
+    "bundle_schema_version": {"const": 1},
+    "module_id": {"type": "string", "minLength": 1},
+    "module_definition_version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "run": {"type": "object", "required": ["run_id", "period"], "properties": {
+      "run_id": {"type": "string", "minLength": 1},
+      "period": {"type": "object", "required": ["start", "end"], "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"}
+      }, "additionalProperties": false}
+    }, "additionalProperties": false},
+    "module": {"type": "object"},
+    "targets": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+    "sources": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["source", "module_reference", "usage"], "properties": {
+      "source": {"type": "object"}, "module_reference": {"type": "object"}, "usage": {"type": "object"}
+    }, "additionalProperties": false}},
+    "module_state": {"type": "object", "required": ["schema_version", "module_id", "checkpoint", "publication"], "properties": {
+      "schema_version": {"type": "integer"}, "module_id": {"type": "string"},
+      "module_definition_version": {"type": ["string", "null"]},
+      "checkpoint": {"type": "object"}, "publication": {"type": "object"}
+    }, "additionalProperties": false}
+  },
+  "additionalProperties": false
+}

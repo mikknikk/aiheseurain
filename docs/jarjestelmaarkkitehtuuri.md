@@ -1,8 +1,8 @@
 # Aiheseuraimen järjestelmäarkkitehtuuri
 
 **Tarkoitus:** kuvata ensin Aiheseuraimen toimintamalli ilman sidosta yksittäiseen palveluun ja sen jälkeen nykyinen ChatGPT- ja GitHub-toteutus.  
-**Nykytilan tarkistus:** 18.11.2026  
-**Versio:** 1.18.0  
+**Nykytilan tarkistus:** 19.11.2026  
+**Versio:** 1.18.1  
 **Liittyvät kehitystehtävät:** [#75 – Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/75), [#100 – Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus](https://github.com/mikknikk/aiheseurain/issues/100), [#102 – Määrittele seurantamoduulien tietosopimus ja määritysskeemat](https://github.com/mikknikk/aiheseurain/issues/102), [#103 – Toteuta seurantamoduulien rekisteri ja määritysten lataus](https://github.com/mikknikk/aiheseurain/issues/103), [#104 – Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä](https://github.com/mikknikk/aiheseurain/issues/104), [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105), [#106 – Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria](https://github.com/mikknikk/aiheseurain/issues/106), [#107 – Määrittele tekoäly- ja tutkimuspalvelujen adapterisopimukset](https://github.com/mikknikk/aiheseurain/issues/107), [#108 – Rakenna yhteinen moduulien suoritusorkestrointi](https://github.com/mikknikk/aiheseurain/issues/108), [#109 – Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi](https://github.com/mikknikk/aiheseurain/issues/109), [#142 – Rajaa julkaisureititys yhteen RSS-syötteeseen seurantakohdetta kohti](https://github.com/mikknikk/aiheseurain/issues/142), [#144 – Erota käyttöliittymätestit seurantajulkaisujen pakollisista tarkistuksista](https://github.com/mikknikk/aiheseurain/issues/144), [#169 – Määrittele Aiheseurannan yleinen ja versioitu julkaisupakettisopimus](https://github.com/mikknikk/aiheseurain/issues/169), [#167 – Rakenna Aiheseurannan yleisen vastaanottorajapinnan eristetty prototyyppi](https://github.com/mikknikk/aiheseurain/issues/167), [#170 – Perusta Aiheseuranta-julkaisurepositorio ja rajatut käyttöoikeudet](https://github.com/mikknikk/aiheseurain/issues/170)
 
 ## 1. Järjestelmän tarkoitus ja rajat
@@ -841,3 +841,14 @@ Seurantajulkaisun pakollinen status check on työpaikka **Tarkista RSS, HTML, do
 `tests/test_workflow_isolation.py` tarkistaa tämän riippumattomuussopimuksen automaattisesti. Erityisesti testi estää muutoksen, jossa seurantavalidointi alkaisi odottaa UI-testien tulosta tai UI-työnkulku muuttuisi seurantavalidoinnin edellyttämäksi jatkotyöksi.
 
 Testi tarkistaa repositorion versionhallinnassa olevat työnkulut, ei GitHubin palvelussa ylläpidettävän branch ruleset -asetuksen sisältöä. Siksi rulesetin vaadittujen tarkistusten luettelo on edelleen erillinen hallinta-asetus: sen tulee vaatia seurantavalidoinnin status check, eikä UI-työnkulun tarkistuksia. Muutos ei muuta ruleset-asetusta eikä automaatioiden ajastuksia, asetuksia tai kohdekeskusteluja.
+
+
+## Aiheajojen sisältöeristys
+
+Aihekohtaisen suorituksen rajattu syöte muodostetaan tiedostossa scripts/module_input_bundle.py. Luotettu koordinaattori ratkaisee yhden moduulin rekisteriviitteen ja kokoaa vain sen määrityksen, omat seurantakohteet, source_refs-viitteisiin rajatut lähdetiedot, saman aiheen lähdekäyttöasetukset sekä moduulin oman viimeisimmän checkpointin ja julkaisusyötteen GUID-viitteet. Paketin sopimus on schemas/module-input-bundle.schema.json, ja paketin sisältöä tarkistavat tests/test_module_input_bundle.py-testit.
+
+Tämä on ensimmäinen sovellusrajapinnan eristyskerros, ei käyttöjärjestelmätason tiedostojärjestelmäsandbox. Aihekohtainen runner ei saa paketin mukana koko moduulirekisteriä, lähdekatalogia, kohderekisteriä tai yhteistä seurantatilaa. Vahvempi erilliseen työtilaan tai prosessiin perustuva eristys ja pääautomaation siirto uuteen käynnistysmalliin ovat erillisiä avoimia töitä (#200 ja #202); CI:n ristiinriippuvuustestit toteutetaan tiketissä #201. Nykyisiä automaatioita tai moduulien inactive-tiloja ei muutettu.
+
+### Versiohistoria
+
+- **1.18.1 – 2026-11-19:** dokumentoitiin aiheajojen sisältöeristys ja ensimmäinen moduulikohtainen syötepakettirajaus.
