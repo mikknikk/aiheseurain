@@ -38,6 +38,23 @@ class ModuleRecoveryTests(unittest.TestCase):
             "return_to_legacy_path",
         )
 
+    def test_open_or_merged_module_pr_is_blocked_if_legacy_path_already_published(self):
+        for publication_status in ("open", "merged"):
+            with self.subTest(publication_status=publication_status):
+                self.assertEqual(
+                    recovery_action(manifest(), publication_status=publication_status,
+                                    public_feed_matches=False, checkpoint_status="not_advanced",
+                                    legacy_period_status="present", legacy_fallback_authorized=True),
+                    "manual_review",
+                )
+
+    def test_unknown_legacy_period_blocks_even_an_open_module_pr(self):
+        self.assertEqual(
+            recovery_action(manifest(), publication_status="open", public_feed_matches=False,
+                            checkpoint_status="not_advanced", legacy_period_status="unknown"),
+            "inspect_external_state",
+        )
+
     def test_legacy_fallback_is_blocked_when_old_path_already_published(self):
         self.assertEqual(
             recovery_action(manifest(), publication_status="closed_unmerged",
