@@ -475,6 +475,7 @@ class PublicationCandidate:
     files: dict[str, str]
     feed_path: str
     public_url: str
+    report_guid_refs: tuple[str, ...] = ()
 
 
 class GitHubPagesRssPublisher:
@@ -532,8 +533,19 @@ class GitHubPagesRssPublisher:
 
     def _build(self, module_id: str, run_id: str, report_content: str, *,
                expected_feed_path: str, expected_public_url: str | None = None,
-               target_id: str | None = None) -> PublicationCandidate:
-        if target_id is None:
+               target_id: str | None = None,
+               target_reports: list[dict[str, Any]] | None = None,
+               publication_id: str | None = None,
+               publication_metadata: dict[str, Any] | None = None) -> PublicationCandidate:
+        if target_reports is not None:
+            candidate = self.candidate_builder(
+                module_id, run_id, report_content,
+                target_reports=target_reports, publication_id=publication_id,
+                publication_metadata=publication_metadata or {},
+                expected_feed_path=expected_feed_path,
+                expected_public_url=expected_public_url,
+            )
+        elif target_id is None:
             candidate = self.candidate_builder(module_id, run_id, report_content)
         else:
             candidate = self.candidate_builder(module_id, run_id, report_content, target_id=target_id)
@@ -565,16 +577,25 @@ class GitHubPagesRssPublisher:
         expected_task = candidate.feed_path.removeprefix("feeds/").removesuffix(".xml")
         if gate.get("task_id") not in {module_id, expected_task}:
             raise GitHubAdapterError("Porttiraportin task_id ei vastaa moduulia tai syötettä.")
-        self.expected[guids[-1]] = (
+        report_guids = tuple(candidate.report_guid_refs) or tuple(guids[-1:])
+        if (not report_guids or len(report_guids) != len(set(report_guids))
+                or any(guid not in guids for guid in report_guids)):
+            raise GitHubAdapterError("Ehdokkaan uusien raporttien GUID-viitteet eivät vastaa RSS-syötettä.")
+        expected = (
             candidate.public_url, tuple(guids), count, hashlib.sha256(feed_bytes).hexdigest()
         )
-        self.run_guids[f"{module_id}:{run_id}"] = guids[-1]
+        for guid in report_guids:
+            self.expected[guid] = expected
+        self.run_guids[f"{module_id}:{run_id}"] = report_guids
         return candidate
 
     def publish(self, module_id: str, run_id: str, report_content: str, *,
                 idempotency_key: str, expected_feed_path: str | None = None,
                 expected_public_url: str | None = None,
-                target_id: str | None = None) -> PublicationReceipt:
+                target_id: str | None = None,
+                target_reports: list[dict[str, Any]] | None = None,
+                publication_id: str | None = None,
+                publication_metadata: dict[str, Any] | None = None) -> PublicationReceipt:
         """Luo yhden julkaisuehdokkaan PR:n; sama ajo käyttää aina samaa haaraa."""
         module_id, run_id = _module(module_id), _run(run_id)
         if idempotency_key != f"{module_id}:{run_id}":
@@ -591,6 +612,9 @@ class GitHubPagesRssPublisher:
             expected_feed_path=expected_feed_path,
             expected_public_url=expected_public_url,
             target_id=target_id,
+            target_reports=target_reports,
+            publication_id=publication_id,
+            publication_metadata=publication_metadata,
         )
         branch_id = hashlib.sha256(f"{module_id}:{run_id}".encode("utf-8")).hexdigest()[:20]
         branch = f"module-publish/{module_id}/{branch_id}"
@@ -629,48 +653,78 @@ class GitHubPagesRssPublisher:
                  "käynnistää nykyisen Pages-julkaisun ja julkisen takaisinluvun. "
                  "Tämä sovitin ei yhdistä PR:ää."),
                 branch)
-        guid = (self.run_guids[f"{module_id}:{run_id}"],)
+        guids = self.run_guids[f"{module_id}:{run_id}"]
         if not (pull.get("merged") or pull.get("merged_at")):
             if pull.get("state") == "closed":
                 raise GitHubAdapterConflict("Julkaisun PR suljettiin yhdistämättä; samaa ajoa ei voi julkaista uudelleen.")
-            return PublicationReceipt(False, guid, 1)
-        receipt = PublicationReceipt(True, guid, 1)
-        return receipt if self.verify(receipt) else PublicationReceipt(False, guid, 1)
+            return PublicationReceipt(False, guids, len(guids))
+        receipt = PublicationReceipt(True, guids, len(guids))
+        return receipt if self.verify(receipt) else PublicationReceipt(False, guids, len(guids))
 
-    def publish_target_reports(self, module_id: str, run_id: str,
-                               reports: list[dict[str, Any]]) -> PublicationReceipt:
-        """Rajaa ensimmäisen toteutuksen yhteen kohderaporttiin ja RSS-kohteeseen."""
-        if len(reports) != 1:
-            raise GitHubAdapterError("Yksi GitHub-julkaisupyyntö voi sisältää tässä vaiheessa yhden kohderaportin.")
-        report = reports[0]
+    def publish_target_reports(
+        self, module_id: str, run_id: str, reports: list[dict[str, Any]], *,
+        publication_metadata: dict[str, Any] | None = None,
+    ) -> PublicationReceipt:
+        """Julkaise moduulin kaikki kohderaportit yhteen topic-syötteeseen."""
+        if not reports:
+            raise GitHubAdapterError("Julkaisupyyntö ei sisällä kohderaportteja.")
+        target_ids = [item.get("target_id") for item in reports]
+        if len(target_ids) != len(set(target_ids)):
+            raise GitHubAdapterError("Julkaisupyyntö sisältää saman kohteen useammin kuin kerran.")
         context = load_publication_context(self.root)
         module = context["modules"].get(module_id)
         if module is None or module.get("module_type") != "topic":
             raise GitHubAdapterError("RSS-julkaisusovitin hyväksyy vain topic-moduuleja.")
-        plan = resolve_publication_plan(
-            context, module_id=module_id, target_id=report["target_id"],
-            run_id=run_id, observation_types=report["observation_types"],
-        )
-        if len(plan.publication_ids) != 1:
-            raise GitHubAdapterError("Kohteelle ei ratkennut yhtä aktiivista RSS-julkaisukohdetta.")
-        publication = context["publications"][plan.publication_ids[0]][1]
+        publication_ids: set[str] = set()
+        for report in reports:
+            if not isinstance(report, dict):
+                raise GitHubAdapterError("Kohderaportin pitää olla JSON-olio.")
+            types = report.get("observation_types")
+            plan = resolve_publication_plan(
+                context, module_id=module_id, target_id=report["target_id"],
+                run_id=run_id, observation_types=types,
+            )
+            if len(plan.publication_ids) != 1:
+                raise GitHubAdapterError("Kohteelle ei ratkennut yhtä aktiivista RSS-julkaisukohdetta.")
+            publication_ids.update(plan.publication_ids)
+            # Jokaisen raportin kaikki havaintotyypit pitää kattaa aktiivisilla reiteillä.
+            active_types = {
+                observation_type
+                for route in context["routing"]["routes"]
+                if route["status"] == "active"
+                and route["module_ref"] == module_id
+                and route["target_ref"] == report["target_id"]
+                and plan.publication_ids[0] in route["publication_refs"]
+                for observation_type in route["observation_types"]
+            }
+            if not set(types).issubset(active_types):
+                raise GitHubAdapterError("Kaikille kohderaportin havaintotyypeille ei ole aktiivista julkaisureittiä.")
+        if len(publication_ids) != 1:
+            raise GitHubAdapterError(
+                "Yhden topic-ajon kohderaporttien pitää tässä vaiheessa reitittyä samaan RSS-syötteeseen."
+            )
+        publication_id = next(iter(publication_ids))
+        publication = context["publications"][publication_id][1]
         destination = publication["destination"]
         return self.publish(
-            module_id, run_id, report["report_content"],
+            module_id, run_id, "",
             idempotency_key=f"{module_id}:{run_id}",
             expected_feed_path=destination["path"],
             expected_public_url=destination["url"],
-            target_id=report["target_id"],
+            target_reports=reports,
+            publication_id=publication_id,
+            publication_metadata=publication_metadata or {},
         )
 
     def verify(self, receipt: PublicationReceipt) -> bool:
         """Varmista julkisen Pages-syötteen GUIDit ja item-määrä."""
-        if len(receipt.report_guid_refs) != 1 or receipt.published_items != 1:
+        if (not receipt.report_guid_refs or len(receipt.report_guid_refs) != receipt.published_items
+                or len(receipt.report_guid_refs) != len(set(receipt.report_guid_refs))):
             return False
-        expected = self.expected.get(receipt.report_guid_refs[0])
-        if expected is None:
+        expected_values = [self.expected.get(guid) for guid in receipt.report_guid_refs]
+        if any(value is None for value in expected_values) or len(set(expected_values)) != 1:
             return False
-        url, guids, count, expected_sha256 = expected
+        url, guids, count, expected_sha256 = expected_values[0]
         try:
             actual = self.public_fetcher(url)
             actual_guids, actual_count = self._metadata(actual)
