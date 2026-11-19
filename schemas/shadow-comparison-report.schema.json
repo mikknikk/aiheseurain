@@ -1,0 +1,351 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/shadow-comparison-report.schema.json",
+  "title": "Varjotilan vanhan ja uuden ajon vertailuraportti",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "comparison_id",
+    "module_id",
+    "run_ids",
+    "period",
+    "period_match",
+    "statuses",
+    "source_comparison",
+    "report_comparison",
+    "guid_comparison",
+    "uncertainty_comparison",
+    "publication_readiness",
+    "side_effects"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "comparison_id": {
+      "type": "string"
+    },
+    "module_id": {
+      "type": "string"
+    },
+    "run_ids": {
+      "type": "object",
+      "required": [
+        "legacy",
+        "module"
+      ],
+      "properties": {
+        "legacy": {
+          "type": "string"
+        },
+        "module": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "period": {
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "period_match": {
+      "const": true
+    },
+    "statuses": {
+      "type": "object",
+      "required": [
+        "legacy",
+        "module"
+      ],
+      "properties": {
+        "legacy": {
+          "enum": [
+            "succeeded",
+            "partial",
+            "failed"
+          ]
+        },
+        "module": {
+          "enum": [
+            "succeeded",
+            "partial",
+            "failed"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_comparison": {
+      "type": "object",
+      "required": [
+        "legacy_source_ids",
+        "module_source_ids",
+        "shared_source_ids",
+        "legacy_only_source_ids",
+        "module_only_source_ids",
+        "legacy_statuses",
+        "module_statuses"
+      ],
+      "properties": {
+        "legacy_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "module_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shared_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "legacy_only_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "module_only_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "legacy_statuses": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "module_statuses": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "report_comparison": {
+      "type": "object",
+      "required": [
+        "legacy_sha256",
+        "module_sha256",
+        "exact_match",
+        "legacy_word_count",
+        "module_word_count",
+        "legacy_only_claims",
+        "module_only_claims",
+        "shared_claims"
+      ],
+      "properties": {
+        "legacy_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exact_match": {
+          "type": "boolean"
+        },
+        "legacy_word_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "module_word_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "legacy_only_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "module_only_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shared_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "guid_comparison": {
+      "type": "object",
+      "required": [
+        "legacy_guid_refs",
+        "module_guid_refs",
+        "legacy_unique",
+        "module_unique",
+        "module_format_valid",
+        "shared_guid_refs"
+      ],
+      "properties": {
+        "legacy_guid_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "module_guid_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "legacy_unique": {
+          "type": "boolean"
+        },
+        "module_unique": {
+          "type": "boolean"
+        },
+        "module_format_valid": {
+          "type": "boolean"
+        },
+        "shared_guid_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "uncertainty_comparison": {
+      "type": "object",
+      "required": [
+        "legacy_notes",
+        "module_status",
+        "module_note",
+        "module_claim_verification_statuses",
+        "module_documented"
+      ],
+      "properties": {
+        "legacy_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "module_status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module_note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module_claim_verification_statuses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "module_documented": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "publication_readiness": {
+      "type": "object",
+      "required": [
+        "legacy_ready",
+        "module_ready",
+        "module_blockers",
+        "automated_checks"
+      ],
+      "properties": {
+        "legacy_ready": {
+          "type": "boolean"
+        },
+        "module_ready": {
+          "type": "boolean"
+        },
+        "module_blockers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "automated_checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "side_effects": {
+      "type": "object",
+      "required": [
+        "production_writes",
+        "rss_written",
+        "checkpoint_updated",
+        "rotation_advanced",
+        "files_written"
+      ],
+      "properties": {
+        "production_writes": {
+          "const": false
+        },
+        "rss_written": {
+          "const": false
+        },
+        "checkpoint_updated": {
+          "const": false
+        },
+        "rotation_advanced": {
+          "const": false
+        },
+        "files_written": {
+          "type": "array",
+          "maxItems": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
