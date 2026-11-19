@@ -83,14 +83,23 @@ class GitHubAdapterTests(unittest.TestCase):
         client = GitHubApiClient("mikknikk/aiheseurain", "test-token")
         content = b'{"durable":true}\\n'
         encoded = __import__("base64").b64encode(content).decode("ascii")
+        calls = {"get": 0}
         def request(method, path, payload=None):
+            if method == "GET":
+                calls["get"] += 1
+                if calls["get"] == 1:
+                    error = GitHubApiError("not found")
+                    error.status = 404
+                    raise error
+                return {"type": "file", "content": encoded, "sha": blob_sha(content)}
             if method == "PUT":
                 raise GitHubApiError("connection closed after write")
-            return {"type": "file", "content": encoded, "sha": blob_sha(content)}
+            raise AssertionError(method)
         with patch.object(client, "request", side_effect=request):
             result = client.put_file("data/test.json", content, "module-runtime-state",
                                      message="test write")
         self.assertEqual(result.content, content)
+        self.assertEqual(calls["get"], 2)
 
     def test_github_contents_write_retries_unrelated_branch_conflict(self):
         client = GitHubApiClient("mikknikk/aiheseurain", "test-token")
