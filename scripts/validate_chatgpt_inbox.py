@@ -17,7 +17,7 @@ import jsonschema
 ROOT = Path(__file__).resolve().parents[1]
 INBOX_PATTERN = re.compile(
     r"^data/chatgpt-inbox/(?P<module>[a-z0-9][a-z0-9-]*)/"
-    r"(?P<run>[A-Za-z0-9][A-Za-z0-9._:-]{2,127})\\.json$"
+    r"(?P<run>[A-Za-z0-9][A-Za-z0-9._:-]{2,127})\.json$"
 )
 
 class InboxValidationError(ValueError):
