@@ -223,6 +223,10 @@ def _audit_record(result: ModuleRunResult) -> dict[str, Any]:
         "quality_passed": result.quality_passed,
         "published": result.published,
         "checkpoint_updated": result.checkpoint_updated,
+        "checked_at": result.checked_at,
+        "published_items": result.published_items,
+        "sources_checked": result.sources_checked,
+        "report_guid_refs": list(result.report_guid_refs),
         "comparison_equivalent": comparison.get("equivalent"),
         "error_code": result.error_code,
     }
