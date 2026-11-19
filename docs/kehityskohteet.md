@@ -87,6 +87,10 @@ Uusien RSS-itemien GUID-muoto on `urn:aiheseurain:<aihe>:<alkuperäinen-päiväm
 
 Tiketin #107 AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, kustannusrajat, aikakatkaisut, uusinnat ja auditointi ovat valmiit. Tuotannon reitityskonfiguraatio on edelleen tyhjä eikä testiadaptereissa käytetä verkkoa tai tunnuksia. Todellisen palveluntarjoajan, GitHub-pohjaisen tallennuksen, tuotantojulkaisun ja automaatiokytkennän käyttöönotto vaatii erillisen teknisen suunnitelman ja käyttäjän hyväksynnän.
 
+### Ajastusalustan virhediagnostiikka (#188)
+
+**Toteutus käynnissä:** erotetaan ajastusalustan ulkopuolelta todennetut virhehavainnot automaation itse kirjaamista suoritusvaiheista ja näytetään ero Valvomossa. Uutta ajastettua monitoria ei luoda.
+
 ### Näytösseurannan muutoshistorian käyttöönotto
 
 **Valmis:** ensimmäinen varmennettu lähtötilanne muodostettiin 16.11.2026. `baseline_status` on `active`, ja nykytila sekä tapahtumaloki ovat käytössä. Jatkuva seuranta varmistaa käytännössä uusien muutostyyppien ja takaisinluvun toiminnan.
