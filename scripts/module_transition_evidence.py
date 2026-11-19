@@ -316,6 +316,8 @@ class GitHubTransitionEvidenceCollector:
         """Laske ja tallenna palautuspäätös; ei suorita palautusta."""
         if manifest is not None and (manifest.get("module_id") != module_id or manifest.get("run_id") != run_id):
             raise TransitionEvidenceError("Palautusmanifestin moduuli/run_id ei vastaa auditointitietuetta.")
+        if manifest is not None and (manifest.get("module_id") != module_id or manifest.get("run_id") != run_id):
+            raise TransitionEvidenceError("Palautusmanifestin moduuli/run_id ei vastaa auditointitietuetta.")
         action = recovery_action(
             manifest, publication_status=publication_status,
             deployment_status=deployment_status, public_feed_matches=public_feed_matches,
