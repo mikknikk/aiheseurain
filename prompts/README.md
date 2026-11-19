@@ -32,3 +32,7 @@ Kun käynnistyskehotteen sisältöä muutetaan, anna sille uusi tunniste ja päi
 Tämän hakemiston tiedostot ovat käynnistyskehotteiden versionhallinnassa ylläpidettävät kanoniset lähteet. Reaaliaikaisten automaatioasetusten sisältö on tarkistettava erikseen; GitHubissa tehty muutos ei päivitä asetuksia automaattisesti.
 
 Pääuutisseurannan käynnistyskehotetta on päivitetty vastaamaan lähdekatalogin ja tehtäväkohtaisten käyttörekisterien uutta rakennetta. Kopioi päivitetty `paauutisseuranta.txt` kokonaisuudessaan pääautomaation asetuksiin ja varmista, että tallennettu teksti vastaa tiedostoa. Muut käynnistyskehotteet eivät muutu tämän lähdetietomallin uudistuksen vuoksi.
+
+## Palautuskehotteen luonnos
+
+`paauutisseuranta-moduulipalautus-luonnos.txt` on uuden moduulipolun palautuskehotteen luonnos, ei aktiivinen käynnistyskehote. Se kuvaa, miten yhden moduulin tulos palautetaan GitHubiin uutena, vain yhden JSON-tiedoston sisältävänä pull requestina. Luonnosta ei saa kopioida tallennetun automaation asetuksiin ennen erillistä hyväksyttyä live-siirtymää. Jos automaatiolla ei ole GitHub-yhteyttä tai kirjoitusoikeutta, sen on palautettava JSON käyttäjälle eikä väitettävä GitHub-kirjoituksen onnistuneen.
