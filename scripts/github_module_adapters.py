@@ -31,6 +31,7 @@ MODULE_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
 RUN_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{2,180}$")
 RUNTIME_BRANCH = "module-runtime-state"
 MAIN_BRANCH = "main"
+MAX_GITHUB_FILE_BYTES = 50 * 1024 * 1024
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -139,13 +140,26 @@ class GitHubApiClient:
         if not isinstance(value, dict) or value.get("type") != "file":
             raise GitHubAdapterError(f"Polku ei ole tiedosto: {path}")
         try:
-            return GitHubFile(base64.b64decode(value["content"]), value["sha"])
+            sha = value["sha"]
+            size = int(value.get("size", 0))
+            if size > MAX_GITHUB_FILE_BYTES:
+                raise GitHubAdapterError(f"GitHub-tiedosto ylittää 50 MiB:n turvarajan: {path}")
+            encoded_content = value.get("content", "")
+            if not encoded_content and value.get("encoding") == "none":
+                blob = self.request("GET", f"git/blobs/{sha}")
+                encoded_content = blob["content"]
+            content = base64.b64decode(encoded_content)
+            if len(content) > MAX_GITHUB_FILE_BYTES:
+                raise GitHubAdapterError(f"GitHub-tiedosto ylittää 50 MiB:n turvarajan: {path}")
+            return GitHubFile(content, sha)
         except (KeyError, ValueError, TypeError) as exc:
             raise GitHubAdapterError(f"Tiedoston sisältö on virheellinen: {path}") from exc
 
     def put_file(self, path: str, content: bytes, branch: str, *,
                  message: str, sha: str | None = None) -> GitHubFile:
         """Kirjoita tiedosto; ratkaise epäselvyys takaisinluvulla ja yritä rinnakkaiskonflikti rajatusti."""
+        if len(content) > MAX_GITHUB_FILE_BYTES:
+            raise GitHubAdapterError("GitHub-tiedoston kirjoitus ylittää 50 MiB:n turvarajan.")
         expected_sha = sha
         for _attempt in range(3):
             current = self.get_file(path, branch)
@@ -309,6 +323,7 @@ class GitHubArtifactStore:
         module_id, run_id = _module(module_id), _run(run_id)
         if not isinstance(artifacts, dict):
             raise GitHubAdapterError("Artefaktien pitää olla JSON-olio.")
+        _reject_sensitive_fields(artifacts)
         index, version = self._read_index(module_id)
         if version != expected_version:
             if run_id in index["runs"]:
