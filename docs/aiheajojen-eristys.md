@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.2.0  
+**Versio:** 2.3.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211), [#232 – Siirtymän julkaisu- ja palautustodisteiden pysyvä loki](https://github.com/mikknikk/aiheseurain/issues/232)
 
