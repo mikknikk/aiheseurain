@@ -296,6 +296,8 @@ def recovery_action(journal: dict[str, Any], *, deployment_status: str,
         raise ScreeningJournalError("Tuntematon Pages-deploymentin tila.")
     runs = journal.get("runs", [])
     if not runs:
+        if checkpoint_advanced is None:
+            return "inspect_publication_state"
         if checkpoint_advanced is True:
             raise ScreeningJournalError("Onnistumispistettä ei voi siirtää ilman päiväkirja-ajoa.")
         return "start_new_run"
@@ -308,21 +310,25 @@ def recovery_action(journal: dict[str, Any], *, deployment_status: str,
     if latest.get("phase") == "prepared":
         if checkpoint_advanced is True:
             raise ScreeningJournalError("Keskeneräisen ajon onnistumispistettä ei saa olla siirretty.")
-        if checkpoint_advanced is None or deployment_status == "unknown" or public_feed_matches is None:
+        if checkpoint_advanced is None or deployment_status == "unknown":
             return "inspect_publication_state"
         if deployment_status in {"not_started", "in_progress"}:
             return "wait_for_pages"
+        if public_feed_matches is None:
+            return "inspect_publication_state"
         if deployment_status == "success" and public_feed_matches is True:
             return "finalize_checkpoint"
         return "retry_pages_publication"
 
     if latest.get("phase") == "completed":
+        if checkpoint_advanced is None or deployment_status == "unknown":
+            return "inspect_publication_state"
         if checkpoint_advanced is False:
             raise ScreeningJournalError("Valmiin päiväkirjamerkinnän onnistumispiste puuttuu seurantatilasta.")
-        if checkpoint_advanced is None or deployment_status == "unknown" or public_feed_matches is None:
-            return "inspect_publication_state"
         if deployment_status in {"not_started", "in_progress"}:
             return "wait_for_pages"
+        if public_feed_matches is None:
+            return "inspect_publication_state"
         if deployment_status == "success" and public_feed_matches is True:
             return "verify_completed_run"
         return "reconcile_completed_publication"
