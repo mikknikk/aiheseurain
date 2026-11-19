@@ -143,6 +143,17 @@ class GitHubAdapterTests(unittest.TestCase):
         self.assertEqual(actual["migration"]["notes"], updated["migration"]["notes"])
         self.assertEqual(actual_sha, new_sha)
 
+    def test_state_store_recovers_ambiguous_checkpoint_write(self):
+        store = GitHubModuleStateStore(self.client)
+        state, sha = store.load("tolkien")
+        updated = deepcopy(state)
+        updated["migration"]["notes"] += " Kirjoitus ehti perille."
+        self.client.fail_after_write_path = "data/module-state/tolkien.json"
+        new_sha = store.save("tolkien", updated, expected_sha=sha)
+        actual, actual_sha = store.load("tolkien")
+        self.assertEqual(actual["migration"]["notes"], updated["migration"]["notes"])
+        self.assertEqual(new_sha, actual_sha)
+
     def test_state_store_rejects_stale_sha(self):
         store = GitHubModuleStateStore(self.client)
         state, sha = store.load("tolkien")
