@@ -450,7 +450,6 @@ class ProductionRecoveryFaultInjectionTests(unittest.TestCase):
         self.assertEqual(len(self.publisher.receipts), 1)
 
     def test_retry_after_artifact_manifest_write_ack_is_lost(self):
-        self.setUp()
         self.journal = FailOncePublicationJournal("artifacts_persisted")
         self.orchestrator.publication_journal = self.journal
         req = request(mode="production", run_id="recovery-artifacts-001")
@@ -462,7 +461,6 @@ class ProductionRecoveryFaultInjectionTests(unittest.TestCase):
         self.assertEqual(self.journal.records[("tolkien", req.run_id)]["phase"], "checkpoint_updated")
 
     def test_retry_after_checkpoint_manifest_write_ack_is_lost(self):
-        self.setUp()
         self.journal = FailOncePublicationJournal("checkpoint_updated")
         self.orchestrator.publication_journal = self.journal
         req = request(mode="production", run_id="recovery-checkpoint-journal-001")
