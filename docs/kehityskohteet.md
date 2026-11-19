@@ -310,7 +310,7 @@ Suositeltu toteutusjärjestys:
 - [x] Artefaktit tallennetaan muuttumattomina moduuli-/ajokohtaisina tiedostoina; moduuli-indeksi päivitetään SHA-tarkistetusti ja idempotentisti.
 - [x] Julkaisumanifesti säilyttää ajokohtaisen neljän vaiheen historian ja estää vaiheiden ohittamisen tai saman run_id:n ristiriitaisen sisällön.
 - [x] Ajotulosten pysyvä auditointiloki tallentaa vain tekniset metatiedot eikä raporttisisältöä tai salaisuuskenttiä.
-- [x] RSS-julkaisusovitin käyttää nykyistä RSS/Pages-putkea PR:n kautta. Se ei yhdistä PR:ää eikä ohita RSS- ja julkaisulaadun portteja; se vaatii yhdistetyn PR:n ja julkisen syötteen takaisinluvun ennen varmennettua kuittia.
+- [x] RSS-julkaisusovitin käyttää nykyistä RSS/Pages-putkea PR:n kautta. Se ei yhdistä PR:ää eikä ohita RSS- ja julkaisulaadun portteja; se vaatii yhdistetyn PR:n sekä julkisen syötteen SHA-256-sisältötiivisteen, GUID-listan ja item-määrän takaisinluvun ennen varmennettua kuittia.
 - [x] Kohderaportin julkaisureitti ratkaistaan nykyisistä rekistereistä; vain aktiivinen topic-reitti hyväksytään. Näytösvahti/prosessimoduuli on rajattu ulos.
 - [x] Lisättiin runtime-tietueiden JSON Schema -sopimukset ja offline-testit: SHA-konfliktit, idempotenssi, epäselvä API-vastaus, rinnakkaisen haarakirjoituksen uusinta, vaihekatkot ja Pages-takaisinluku.
 - [ ] Varmista PR-CI ja korjaa mahdolliset virheet.
