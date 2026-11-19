@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 1.1.0  
+**Versio:** 1.2.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202)
 
@@ -27,11 +27,20 @@ Paketista jätetään pois moduulirekisteri, koko kohde- ja lähderekisteri, kai
 
 schemas/module-input-bundle.schema.json määrittelee paketin rakenteen. Paketin rakentaja tarkistaa moduulin, kohteiden, lähteiden ja lähdekäyttörekisterin omistajuuden ennen tietojen luovutusta. Runnerille annettava rakenne on rekursiivisesti vain luku -muotoinen.
 
-Testaa syötepaketti ja eristetty runner komennolla:
+Testaa syötepaketti, eristyksen regressiotestit ja sandbox komennolla:
 
 ```bash
-python -m unittest tests.test_module_input_bundle tests.test_isolated_module_runner -v
+python -m unittest tests.test_module_input_bundle tests.test_module_isolation_guards tests.test_isolated_module_runner -v
 ```
+
+Sama testikokonaisuus suoritetaan PR-CI:ssä osana `python -m unittest discover -s tests -v` -komentoa. `tests/test_module_isolation_guards.py` sisältää tarkoituksellisesti virheellisiä testitapauksia, joissa:
+- toisen moduulin sisältö ja käyttämätön lähdekatalogin tietue yritetään saada pakettiin;
+- moduulirekisteri ohjataan toisen moduulin määritykseen tai repositorion ulkopuoliseen polkuun;
+- seurantakohteen omistajaksi vaihdetaan toinen moduuli;
+- Tolkien-moduulille yritetään antaa Muumien lähdekäyttörekisteri;
+- runnerin julkiseen funktiorajapintaan yritetään edellyttää repositorion juurta tai yhteisten rekisterien polkuja.
+
+Testit käyttävät väliaikaista kopiota data- ja moduulitiedostoista. Ne eivät muuta repositorion varsinaisia rekistereitä, moduuleja, seurantatilaa tai RSS-syötteitä.
 
 ## Eristyksen rehellinen rajaus
 
@@ -65,15 +74,13 @@ result = run_isolated_module(bundle, runner_source)
 
 Runnerin lähdekoodi annetaan merkkijonona, ei repositorion tiedostopolkuna. Runner palauttaa JSON-olion kirjoittamalla `/output/result.json`-tiedoston. Koordinaattori vastaa tuloksen sopimusvalidoinnista ja moduulitilan päivittämisestä; sandbox-funktio ei muuta repositoriota eikä tilatiedostoja.
 
-Tiketti #200 kattaa tämän sandbox-toteutuksen. Tiketti #201 jatkaa kattavia CI-estotestejä ja ristiinviittausten validointia. Tiketti #202 kattaa varsinaisen automaation käynnistysmallin muutoksen.
-
 ## Koordinaattorin ja aiheajon vastuut
 
 Koordinaattori saa nähdä tehtäväjonon valintaan tarvittavat tekniset tunnisteet ja tilatiedot. Se ei tee aihekohtaista uutishakua eikä välitä koko tehtäväjonoa aiheajolle. Aiheajo saa vain oman moduulipakettinsa ja palauttaa rajatun tuloksen. Koordinaattori validoi tuloksen ja hoitaa julkaisu- sekä checkpoint-siirtymät yhteisten sopimusten kautta.
 
-Syötepaketin ja sandboxin integraatiotestit suoritetaan CI:ssä. Laajemmat aihemoduulien väliset riippuvuus- ja ristiinviittaustestit kuuluvat tikettiin #201. Pääautomaation käynnistyskehotteen ja varsinaisen ChatGPT-ajon siirtäminen tähän malliin tehdään erikseen (#202). GitHub-muutos ei muuta ChatGPT:n tehtäväasetuksia, ajastuksia tai kohdekeskusteluja.
-
+Tiketti #199 kattaa syötepaketin sopimuksen, #200 käyttöjärjestelmätason sandboxin ja #201 paketin rajausta, omistajuutta sekä runnerin rajapintaa valvovat CI-regressiotestit. Pääautomaation käynnistyskehotteen ja varsinaisen ChatGPT-ajon siirtäminen tähän malliin tehdään erikseen (#202). GitHub-muutos ei muuta ChatGPT:n tehtäväasetuksia, ajastuksia tai kohdekeskusteluja.
 
 ### Versiohistoria
 
+- **1.2.0 – 2026-11-19:** lisättiin CI:ssä suoritettavat aihemoduulien välisten tietovuotojen, väärien moduuli- ja kohdeomistajuuksien, polkuturvallisuuden, lähdekatalogin täsmällisen suodatuksen sekä runnerin julkisen rajapinnan regressiotestit.
 - **1.1.0 – 2026-11-19:** lisättiin Linux/bubblewrap-sandbox, vain luku -syöte ja runner-koodi, rajattu tuloshakemisto, verkoton namespace, aikaraja sekä fail-closed-käyttäytyminen.
