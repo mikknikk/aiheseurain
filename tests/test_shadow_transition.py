@@ -30,6 +30,9 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
             period_start="2026-11-18T00:00:00Z",
             period_end="2026-11-19T00:00:00Z",
         )
+        # Testituplan PR:n on vastattava tämän harjoituksen ajotunnistetta.
+        self.client.pr["title"] = "RSS-julkaisu: taylor-swift / swift-run-239"
+        self.client.pr["body"] = "- Moduuli: taylor-swift\\n- run_id: swift-run-239"
         self.now = "2026-11-19T21:00:00Z"
 
     def _collectors(self):
