@@ -16,6 +16,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from typing import Any, Callable
+import jsonschema
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -30,6 +31,7 @@ MODULE_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
 RUN_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{2,180}$")
 RUNTIME_BRANCH = "module-runtime-state"
 MAIN_BRANCH = "main"
+ROOT = Path(__file__).resolve().parents[1]
 
 
 class GitHubAdapterError(AdapterError):
@@ -61,6 +63,15 @@ def _run(value: str) -> str:
 def _json(value: Any) -> bytes:
     """Muodosta deterministinen JSON-tavujono."""
     return (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+
+
+def _validate_schema(value: dict[str, Any], filename: str) -> None:
+    """Validoi pysyvä runtime-tietue repositorion versionoidulla JSON-skeemalla."""
+    schema = json.loads((ROOT / "schemas" / filename).read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.Draft202012Validator(
+        schema, format_checker=jsonschema.FormatChecker()
+    ).validate(value)
 
 
 def _time(value: str) -> None:
@@ -285,6 +296,7 @@ class GitHubArtifactStore:
         if (value.get("schema_version") != 1 or value.get("module_id") != module_id
                 or not isinstance(value.get("runs"), dict)):
             raise GitHubAdapterError("Artefakti-indeksin rakenne tai omistajuus on virheellinen.")
+        _validate_schema(value, "module-artifact-index.schema.json")
         return value, file.sha
 
     def load_version(self, module_id: str) -> str:
@@ -322,6 +334,7 @@ class GitHubArtifactStore:
             raise GitHubAdapterConflict("Artefakti-indeksi muuttui rinnakkaisen kirjoituksen aikana.")
         latest = deepcopy(latest)
         latest["runs"][run_id] = {"path": path, "sha256": digest, "size_bytes": len(content)}
+        _validate_schema(latest, "module-artifact-index.schema.json")
         index_content = _json(latest)
         current_file = self.client.get_file(self._index(module_id), self.branch)
         try:
@@ -355,6 +368,7 @@ class GitHubPublicationJournal:
         if (value.get("module_id") != module_id or value.get("run_id") != run_id
                 or value.get("phase") not in PHASES or not isinstance(value.get("history"), list)):
             raise PublicationJournalError("Manifestin tunnisteet tai vaihehistoria ovat virheellisiä.")
+        _validate_schema(value, "module-publication-journal.schema.json")
         return value, file.sha
 
     def prepare(self, record: dict[str, Any]) -> dict[str, Any]:
@@ -380,6 +394,7 @@ class GitHubPublicationJournal:
         value = {**record, "phase": "prepared", "updated_at": record["prepared_at"],
                  "receipt": None, "history": [{"phase": "prepared",
                  "updated_at": record["prepared_at"], "receipt": None}]}
+        _validate_schema(value, "module-publication-journal.schema.json")
         content = _json(value)
         try:
             self.client.put_file(path, content, self.branch,
@@ -415,6 +430,7 @@ class GitHubPublicationJournal:
                 updated["receipt"] = deepcopy(receipt)
             updated["history"].append({"phase": phase, "updated_at": updated_at,
                                        "receipt": deepcopy(receipt)})
+            _validate_schema(updated, "module-publication-journal.schema.json")
             try:
                 self.client.put_file(self._path(module_id, run_id), _json(updated),
                     self.branch, message=f"Advance {module_id} {run_id}: {phase}", sha=sha)
