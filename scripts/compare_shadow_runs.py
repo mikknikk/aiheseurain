@@ -157,6 +157,20 @@ def compare_shadow_runs(data: dict[str, Any], *, root: Path = ROOT) -> dict[str,
         raise ShadowComparisonError("Vanhan ja uuden ajon seurantajaksot eroavat.")
 
     definition = _module_definition(module_id, root)
+    if module["module_definition_version"] != definition["definition_version"]:
+        raise ShadowComparisonError("Uuden tuloksen moduuliversio ei vastaa rekisteriä.")
+    if module["contract_version"] != definition["contract_version"]:
+        raise ShadowComparisonError("Uuden tuloksen sopimusversio ei vastaa moduulimääritystä.")
+    handoff = module["handoff"]
+    for field, expected in (
+        ("module_id", module_id),
+        ("module_definition_version", module["module_definition_version"]),
+        ("contract_version", module["contract_version"]),
+        ("run_id", module["run_id"]),
+        ("period", module["period"]),
+    ):
+        if handoff.get(field) != expected:
+            raise ShadowComparisonError(f"Uuden tuloksen handoff-kenttä {field} ei vastaa tulosta.")
     registered_sources = {
         item["source_id"] for item in definition.get("source_refs", [])
         if isinstance(item, dict) and isinstance(item.get("source_id"), str)
@@ -197,6 +211,29 @@ def compare_shadow_runs(data: dict[str, Any], *, root: Path = ROOT) -> dict[str,
     module_guid_valid = bool(module_guids) and all(
         _module_guid_is_valid(guid, module_id) for guid in module_guids
     )
+    if module.get("target_reports"):
+        feed_catalog = _read_json(root / "data/feed-catalog.json")
+        feed_matches = [
+            item for item in feed_catalog.get("feeds", [])
+            if item.get("id") == module_id and item.get("type") == "topic"
+        ]
+        if len(feed_matches) != 1:
+            raise ShadowComparisonError("Moduulille ei löydy yksikäsitteistä topic-syötettä GUID-tarkistusta varten.")
+        feed_id = module_id
+        expected_guids = []
+        for report in module["target_reports"]:
+            checked_date = datetime.fromisoformat(
+                report["checked_at"].replace("Z", "+00:00")
+            ).date().isoformat()
+            stable_id = uuid.uuid5(
+                uuid.NAMESPACE_URL,
+                f"aiheseurain:{module_id}:{module['run_id']}:{report['target_id']}",
+            )
+            expected_guids.append(
+                f"urn:aiheseurain:{feed_id}:{checked_date}:{stable_id}"
+            )
+        if module_guids != expected_guids:
+            module_guid_valid = False
     if not module_guid_valid and "module_guid_format_invalid" not in blockers:
         blockers.append("module_guid_format_invalid")
         module_ready = False
