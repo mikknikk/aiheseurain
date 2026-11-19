@@ -1,0 +1,101 @@
+{
+  "schema_version": 2,
+  "run_id": "muumit-20261119T121429-0200",
+  "task_id": "muumit",
+  "feed_path": "feeds/muumit.xml",
+  "checked_at": "2026-11-19T12:23:45+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Kaikki raportin lähteet avattiin alkuperäissivuina ja niiden sisältö tarkistettiin.",
+      "evidence": [
+        "https://live.sonymusic.fi/muumit-pyrstotahtea-etsimassa-kiertaa-suomea-syksylla-2026/",
+        "https://live.sonymusic.fi/artists/muumiperheen-lauluretki/",
+        "https://www.lippu.fi/en/artist/muumit/",
+        "https://www.espoo.fi/fi/tapahtumat/espooevents:agphi6nlvy",
+        "https://www.kouvola.fi/vapaa-aika/tapahtumat/"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Esityksen sisältö, ensi-ilta ja tulevat päivämäärät vastaavat Sony Music Finland Liven alkuperäistä tiedotetta ja ajantasaista ohjelmasivua.",
+      "evidence": [
+        "Kiertueen alkuperäinen ilmoitus 7.7.2026: https://live.sonymusic.fi/muumit-pyrstotahtea-etsimassa-kiertaa-suomea-syksylla-2026/",
+        "Tulevien esitysten ohjelmasivu: https://live.sonymusic.fi/artists/muumiperheen-lauluretki/",
+        "Lippu.fi:n päivämäärälista: https://www.lippu.fi/en/artist/muumit/"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Sony Live -tiedote ja Sony Liven esityskalenteri ovat samaa ensisijaista julkaisijaa. Lippu.fi on tapahtuma- ja lipunmyyntipalvelu, eikä sitä lasketa riippumattomaksi toimitukselliseksi vahvistukseksi.",
+      "evidence": [
+        "Sony Music Finland Live: https://live.sonymusic.fi/",
+        "Lippu.fi: https://www.lippu.fi/"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Julkaisupäivä 7.7.2026 erotetaan ensi-illasta 29.9.2026 ja tulevista esityspäivistä. Ristiriitaisia aikatauluja ei havaittu."
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Alkuperäinen ilmoitus 7.7.2026, ensi-ilta 29.9.2026, tulevat esitykset 21., 22., 28. ja 29.11.2026 sekä myöhempi 3.4.2027."
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Dokumentoitu seurannan aloituspäivä on 16.11.2026; aiempaa kellonaikaa ei tunneta eikä sitä ole arvattu. Tarkistus päättyi 19.11.2026 klo 12.23.45 Europe/Helsinki-ajassa."
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Muumien aiempi Japanin pelitapahtuma-item säilytettiin, eikä samaa Suomen-kiertuetta ollut aiemmassa syötteessä. Uusi GUID tarkistettiin kaikkia kymmentä syötettä vasten."
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Saman PR:n CI vertaa aiemmat GUIDit kohdehaaran syötteeseen ja tarkistaa niiden säilymisen."
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "Saman PR:n CI suorittaa RSS/XML- ja kuvauksen HTML-rakennetarkistukset."
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Saman PR:n CI tarkistaa yksilölliset GUIDit, item-tason linkin puuttumisen sekä raportin ja lähdeluettelon sijainnin description-elementissä."
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Item sisältää otsikon, alkuperäisen ilmoituspäivän, seurantajakson, tulevat esitykset, väitteen varmennustason ja otsikoidun lähdeluettelon."
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "Käytössä on semanttinen article-rakenne, looginen h2/h3-hierarkia, luettelo sekä kuvaavat linkkitekstit. Kuvia ei käytetä."
+    }
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "muumit-tour-and-upcoming-performances",
+      "claim": "Muumit – Pyrstötähteä etsimässä -musiikkiteatterikiertue ja sen neljä marraskuun 2026 esitystä Suomessa sekä myöhempi 3.4.2027 Helsinki-esitys.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "sony-live",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Kiertueen järjestäjän oma tiedote ja ajantasainen esityskalenteri."
+        },
+        {
+          "source_id": "lippu-fi-events",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Täydentävä tapahtuma- ja lipunmyyntilistaus; ei riippumaton toimituksellinen vahvistus."
+        }
+      ],
+      "note": "Väite vahvistuu suoraan kiertueen järjestäjän alkuperäisestä ilmoituksesta ja sen nykyisestä esityskalenterista."
+    }
+  ],
+  "decision": "approved",
+  "reviewer_notes": [
+    "7.7.2026 julkaistu kiertueilmoitus jäi aiemmin käsittelemättä, mutta on edelleen ajankohtainen neljän tulevan marraskuun esityksen vuoksi. Aiempi Japanin pelitapahtuma-item säilytettiin."
+  ]
+}
