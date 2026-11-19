@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task_id": "intialaiset_elokuvat_naytokset",
-  "updated_at": "2026-11-19T06:10:58+02:00",
+  "updated_at": "2026-11-18T17:37:16+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Intialaisten elokuvien näytösseuranta. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
@@ -10,31 +10,31 @@
     {
       "source_id": "finnkino",
       "critical": true,
-      "last_checked_at": "2026-11-19T05:43:38+02:00",
+      "last_checked_at": "2026-11-18T17:37:16+02:00",
       "access_limit": null
     },
     {
       "source_id": "biorex",
       "critical": true,
-      "last_checked_at": "2026-11-19T06:10:58+02:00",
+      "last_checked_at": "2026-11-18T17:37:16+02:00",
       "access_limit": null
     },
     {
       "source_id": "kino-regina",
       "critical": true,
-      "last_checked_at": "2026-11-19T05:43:38+02:00",
+      "last_checked_at": "2026-11-18T17:37:16+02:00",
       "access_limit": null
     },
     {
       "source_id": "cinema-orion",
       "critical": true,
-      "last_checked_at": "2026-11-19T05:43:38+02:00",
+      "last_checked_at": "2026-11-18T17:37:16+02:00",
       "access_limit": null
     },
     {
       "source_id": "kino-myyri",
       "critical": false,
-      "last_checked_at": "2026-11-19T06:10:58+02:00",
+      "last_checked_at": "2026-11-18T17:37:16+02:00",
       "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy."
     },
     {
@@ -58,19 +58,19 @@
     {
       "source_id": "finnish-film-foundation",
       "critical": false,
-      "last_checked_at": "2026-11-19T05:43:38+02:00",
+      "last_checked_at": "2026-11-18T17:37:16+02:00",
       "access_limit": null
     },
     {
       "source_id": "cinema-mondo",
       "critical": false,
-      "last_checked_at": "2026-11-19T05:43:38+02:00",
+      "last_checked_at": "2026-11-18T05:51:32+02:00",
       "access_limit": null
     },
     {
       "source_id": "filmikamari",
       "critical": false,
-      "last_checked_at": "2026-11-19T05:43:38+02:00",
+      "last_checked_at": "2026-11-18T17:37:16+02:00",
       "access_limit": null
     }
   ]
