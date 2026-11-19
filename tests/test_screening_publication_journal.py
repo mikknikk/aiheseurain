@@ -48,9 +48,18 @@ def feed_catalog():
     return [{"id": "intialaisten-elokuvien-naytokset", "type": "screening", "path": FEED_PATH}]
 
 
-def state(last_success=START):
-    """Luo testiin seurantatilan onnistumispisteen."""
-    return {"separate_screening_watch": {"last_successful_check": last_success}}
+def state(last_success=START, last_period_start="2026-11-18T17:37:16+02:00",
+          last_period_end=START, last_result="success", sources_checked=1):
+    """Luo testiin seurantatilan onnistumispisteen ja viimeisimmän jakson."""
+    return {
+        "separate_screening_watch": {
+            "last_successful_check": last_success,
+            "last_period_start": last_period_start,
+            "last_period_end": last_period_end,
+            "last_result": last_result,
+            "sources_checked": sources_checked,
+        }
+    }
 
 
 class ScreeningPublicationJournalTests(unittest.TestCase):
@@ -94,7 +103,7 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
             rss_verified=True,
             state_synchronized=True,
         )
-        completed_state = state(END)
+        completed_state = state(END, START, END, "success", 1)
         validate_journal(completed, completed_state, feed_catalog())
         self.assertEqual(completed["runs"][0]["phase"], "completed")
 
@@ -209,13 +218,49 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
 
     def validate_consistent(self, journal, last_success=START):
         source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        state_data = state(last_success)
+        if last_success == END:
+            state_data = state(END, START, END, "success", 1)
         validate_journal(
-            journal, state(last_success), feed_catalog(),
+            journal, state_data, feed_catalog(),
             source_log=source_log,
             source_registry=source_registry,
             module_state=module_state,
             feed_bytes=feed_bytes,
         )
+
+
+    def test_cross_file_consistency_accepts_completed_run_and_checkpoint(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        completed = complete_run(
+            journal, RUN_ID,
+            publication_commit_sha="1" * 40,
+            deployment_id=12345,
+            rss_verified_at="2026-11-20T07:00:00+02:00",
+            synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
+        )
+        self.validate_consistent(completed, END)
+
+    def test_cross_file_consistency_rejects_completed_source_count_mismatch(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        completed = complete_run(
+            journal, RUN_ID,
+            publication_commit_sha="1" * 40,
+            deployment_id=12345,
+            rss_verified_at="2026-11-20T07:00:00+02:00",
+            synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
+        )
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(completed)
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                completed, state(END, START, END, "success", 2), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
 
     def test_cross_file_consistency_accepts_matching_pending_run(self):
         journal = prepare_run(empty_journal(), prepared_record())
