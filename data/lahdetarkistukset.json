@@ -369,69 +369,13 @@
         "cinema-mondo",
         "filmikamari"
       ]
-    },
-    {
-      "run_id": "intialaiset_elokuvat_naytokset-20261119T061058-0200",
-      "task_id": "intialaiset_elokuvat_naytokset",
-      "started_at": "2026-11-19T05:43:38+02:00",
-      "ended_at": "2026-11-19T06:10:58+02:00",
-      "status": "complete",
-      "checked_source_ids": [
-        "finnkino",
-        "biorex",
-        "kino-regina",
-        "cinema-orion",
-        "kino-myyri",
-        "finnish-film-foundation",
-        "cinema-mondo",
-        "filmikamari"
-      ],
-      "unchecked_sources": [
-        {
-          "source_id": "finbolly",
-          "reason": "Facebook-sivua ei saatu avattua luettavana julkisena sisältönä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena."
-        },
-        {
-          "source_id": "fintamil",
-          "reason": "Facebook-sivua ei saatu avattua luettavana julkisena sisältönä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena."
-        },
-        {
-          "source_id": "rasa-entertainment",
-          "reason": "Facebook-sivua ei saatu avattua luettavana julkisena sisältönä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena."
-        }
-      ],
-      "coverage_notes": [
-        "Seurantajakso Suomen ajassa: 2026-11-18T17:37:16+02:00–2026-11-19T06:10:58+02:00.",
-        "Kaikki neljä kriittistä lähdettä Finnkino, BioRex, Kino Regina ja Cinema Orion tarkistettiin. Lisäksi tarkistettiin Kino Myyrin ohjelmisto, Suomen elokuvasäätiö, Cinema Mondo ja Filmikamari.",
-        "Lisäksi tarkistettiin Kinoonin valtakunnallinen näytöskooste, Valkokankaan Klara ja aurinko -listaus sekä Cinema Niagaran ja Kinopirtin omat näytös-/elokuvasivut. Cinema Niagara vahvisti 25.11. klo 12.30 ja Kinopirtti 25.11. klo 15.40; Kinopirtin oma sivu ilmoittaa esityskieleksi englannin ja tekstityksiksi suomen ja ruotsin.",
-        "Klara ja aurinko -elokuvalle löytyi seitsemän uutta 25.11. näytöstä: Cinema Niagara Tampereella 12.30, Finnkino Scala Kuopiossa 14.45, Kinopirtti Kemissä 15.40, Riviera Punavuoressa 17.00, Ihme Kompleksissa Kankaanpäässä 17.45 sekä Finnkino Kinopalatsissa Turussa 20.45 ja Helsingissä 21.15. Kaksi näytöstä vahvistettiin teatterien omilta sivuilta; viisi jäivät kolmannen osapuolen ilmoituksiksi.",
-        "Ramayana: Rise of a Legend -elokuvalle löytyi kaksi uutta 25.11. näytöstä: Finnkino Kinopalatsi Helsinki 18.45 ja Turku 19.40. Molemmat jäivät Kinoonin kolmannen osapuolen ilmoituksiksi, koska teatterin omilta sivuilta ei saatu täsmävahvistusta.",
-        "12 aiemmin seurannassa ollutta näytöstä siirtyi completed-tilaan niiden alkamisaikojen ohituttua. Näytöksiä ei tulkittu perutuiksi eikä poistettu historiasta.",
-        "Kielihaku kattoi suomen ja englannin lisäksi hindin, tamilin, telugun, kannadan, malajalamin, bengalin, marathin, punjabin, assamin ja odian kirjoitusasut. Aluehaku kattoi valtakunnalliset ohjelmistot ja löydettyjen näytösten paikkakunnat.",
-        "Klo 06.10 tehty lisävarmistus vahvisti Kinoonin ja BioRexin ajantasaiset listaukset; klo 05.43 jälkeen ei löytynyt uusia näytöksiä tai muutoksia.",
-        "FinBolly Movies-, FinTamil Movies- ja Rasa Entertainment -Facebook-sivut jäivät tarkistamatta, koska niistä ei saatu luettavaa julkista sisältöä. Tavoittamattomuutta ei tulkittu tyhjäksi ohjelmistoksi.",
-        "Klara ja aurinko säilytetään tuotantomaan rajatapauksena aiemman Cinema Orionin ja Kino Myyrin lähderistiriidan vuoksi."
-      ],
-      "registry_source_ids": [
-        "finnkino",
-        "biorex",
-        "kino-regina",
-        "cinema-orion",
-        "kino-myyri",
-        "finbolly",
-        "fintamil",
-        "rasa-entertainment",
-        "finnish-film-foundation",
-        "cinema-mondo",
-        "filmikamari"
-      ]
     }
   ],
   "latest_by_task": {
     "tolkien": "2026-11-16T18:00:19+02:00",
-    "intialaiset_elokuvat_naytokset": "2026-11-19T06:10:58+02:00",
+    "intialaiset_elokuvat_naytokset": "2026-11-18T17:37:16+02:00",
     "taylor_swift": "2026-11-17T13:03:45+02:00",
     "gurmeet_ram_rahim_singh": "2026-11-18T14:00:19+02:00"
   },
-  "updated_at": "2026-11-19T06:10:58+02:00"
+  "updated_at": "2026-11-18T17:37:16+02:00"
 }
