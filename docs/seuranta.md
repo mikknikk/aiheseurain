@@ -127,6 +127,12 @@ Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään k
 
 ### Muumit
 
+- **19.11.2026 – ENSISIJAISELLÄ LÄHTEELLÄ VAHVISTETTU:** Sony Music Finland Live ilmoitti 7.7.2026 valtakunnallisesta *Pyrstötähteä etsimässä* -musiikkiteatterikiertueesta. Esitys perustuu Tove Janssonin teokseen *Muumipeikko ja pyrstötähti*, sen on käsikirjoittanut ja ohjannut Henna Tanskanen, ja siinä kuullaan uusia Muumi-kappaleita sekä klassikoita uusina sovituksina. Ensi-ilta oli 29.9.2026; alkuperäisen tiedotteen mukaan kiertue vierailee 18 paikkakunnalla. Sony Liven ajantasainen ohjelmasivu listaa seuraaviksi esityksiksi 21.11. Hyvinkääsali, 22.11. Sellosali (Espoo), 28.11. Kuusankoskitalo (Kouvola) ja 29.11. Keravasali. Seuraava myöhempi listattu esitys on 3.4.2027 Savoy-teatterissa Helsingissä. Heinäkuun tiedote jäi aiemmin käsittelemättä, mutta on edelleen ajankohtainen neljän tulevan marraskuun esityksen vuoksi.
+  - Lähteiden riippuvuus: Sony Music Finland Liven alkuperäinen tiedote ja sen nykyinen ohjelmasivu ovat saman ensisijaisen julkaisijan aineistoa. Lippu.fi on täydentävä tapahtuma- ja lipunmyyntilistaus, ei riippumaton toimituksellinen vahvistus.
+  - Lähteet: Sony Music Finland Live (A, ensisijainen), https://live.sonymusic.fi/muumit-pyrstotahtea-etsimassa-kiertaa-suomea-syksylla-2026/ ja https://live.sonymusic.fi/artists/muumiperheen-lauluretki/; Lippu.fi (C, tapahtumahakupalvelu), https://www.lippu.fi/en/artist/muumit/.
+  - RSS GUID: `urn:aiheseurain:muumit:2026-11-19:b936e62f-45fc-4f47-bc01-250d010bf58c`.
+  - Seuraava tarkistus: tarkista marraskuun esitysten toteutuminen ja mahdolliset aikataulumuutokset 29.11. jälkeen; seuraava erikseen listattu esitys on 3.4.2027.
+
 - RSS: `feeds/muumit.xml`
 - Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
 - Seuranta: Tove Janssonin teokset ja perintö, Moomin Characters ja oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja kulttuurihankkeet. Tarkista erikseen Suomessa järjestettävät Muumi-näyttelyt, museo- ja teemapuistotapahtumat, teatteri, konsertit, elokuvanäytökset, festivaalit ja perhetapahtumat.
