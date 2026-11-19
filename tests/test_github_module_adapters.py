@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from scripts.module_orchestrator import ModuleRunResult, PublicationReceipt
 from scripts.module_state import StateConflictError
@@ -13,7 +14,7 @@ from scripts.publication_journal import PublicationJournalConflict
 from scripts.github_module_adapters import (
     GitHubFile, GitHubModuleStateStore, GitHubArtifactStore,
     GitHubPublicationJournal, GitHubPagesRssPublisher, GitHubRunRecorder,
-    GitHubAdapterConflict, GitHubAdapterError, PublicationCandidate,
+    GitHubAdapterConflict, GitHubAdapterError, GitHubApiClient, GitHubApiError, PublicationCandidate,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -72,6 +73,47 @@ class GitHubAdapterTests(unittest.TestCase):
         self.client.files[("main", "data/module-state/tolkien.json")] = GitHubFile(
             json.dumps(source, ensure_ascii=False).encode("utf-8"), "source-sha"
         )
+
+    def test_read_only_state_load_does_not_create_runtime_branch(self):
+        store = GitHubModuleStateStore(self.client)
+        store.load("tolkien")
+        self.assertEqual(self.client.branches, {"main"})
+
+    def test_github_contents_write_ambiguous_response_is_resolved_by_readback(self):
+        client = GitHubApiClient("mikknikk/aiheseurain", "test-token")
+        content = b'{"durable":true}\\n'
+        encoded = __import__("base64").b64encode(content).decode("ascii")
+        def request(method, path, payload=None):
+            if method == "PUT":
+                raise GitHubApiError("connection closed after write")
+            return {"type": "file", "content": encoded, "sha": blob_sha(content)}
+        with patch.object(client, "request", side_effect=request):
+            result = client.put_file("data/test.json", content, "module-runtime-state",
+                                     message="test write")
+        self.assertEqual(result.content, content)
+
+    def test_github_contents_write_retries_unrelated_branch_conflict(self):
+        client = GitHubApiClient("mikknikk/aiheseurain", "test-token")
+        content = b'{"retry":true}\\n'
+        encoded = __import__("base64").b64encode(content).decode("ascii")
+        calls = {"put": 0}
+        def request(method, path, payload=None):
+            if method == "GET":
+                return {"type": "file", "content": encoded, "sha": blob_sha(content)} if calls["put"] else None
+            if method == "PUT":
+                calls["put"] += 1
+                if calls["put"] == 1:
+                    error = GitHubApiError("branch advanced")
+                    error.status = 409
+                    raise error
+                return {"content": {"sha": blob_sha(content)}}
+            raise AssertionError(method)
+        # Ensimmäinen GET näkee tiedoston vasta epäselvän ensimmäisen kirjoituksen jälkeen.
+        with patch.object(client, "request", side_effect=request):
+            result = client.put_file("data/test.json", content, "module-runtime-state",
+                                     message="test retry")
+        self.assertEqual(result.content, content)
+        self.assertEqual(calls["put"], 1)
 
     def test_state_store_load_and_sha_checked_save(self):
         store = GitHubModuleStateStore(self.client)
