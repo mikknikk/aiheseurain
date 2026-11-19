@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/chatgpt-source-audit.schema.json",
+  "title": "ChatGPT-moduuliajon lähdetarkastus",
+  "type": "object",
+  "required": [
+    "source_checks",
+    "supplemental_sources"
+  ],
+  "properties": {
+    "source_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "status",
+          "note"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "status": {
+            "enum": [
+              "checked",
+              "partial",
+              "unavailable",
+              "skipped"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "supplemental_sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "url",
+          "title",
+          "publisher",
+          "verification_status"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "publisher": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verification_status": {
+            "enum": [
+              "primary_confirmed",
+              "independently_reported",
+              "single_editorial_report",
+              "anonymous_source",
+              "rumor",
+              "unverified"
+            ]
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
