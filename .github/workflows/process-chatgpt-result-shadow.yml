@@ -1,0 +1,39 @@
+name: Käsittele hyväksytty ChatGPT-moduulitulos varjotilassa
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/chatgpt-inbox/**/*.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: chatgpt-result-shadow-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  process-shadow-result:
+    name: Käsittele yksi hyväksytty moduulitulos varjotilassa
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae yhdistetty main-haara ja vertailuhistoria
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Asenna validointiriippuvuus
+        run: python -m pip install jsonschema
+
+      - name: Käsittele vain yksi uusi vastaanotettu tulos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python scripts/process_chatgpt_result.py \
+            --before "${{ github.event.before }}" \
+            --after "${{ github.sha }}" \
+            --mode shadow
