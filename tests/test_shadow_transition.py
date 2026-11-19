@@ -181,7 +181,12 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
         base = self._base_collectors()
         base.update({
             "pages_deployment": lambda: self._pages_record("failure"),
-            "public_feed": lambda: self._feed_record(),
+            "public_feed": lambda: self._record(
+                "public_feed", "public_pages_http_no_cache", {
+                    "url": "https://mikknikk.github.io/aiheseurain/taylor-swift.xml",
+                    "sha256": "f" * 64, "item_count": 0, "guids": [],
+                }
+            ),
             "publication_manifest": lambda: self._manifest_record("published"),
             "checkpoint": lambda: self._checkpoint_record(),
         })
@@ -209,15 +214,11 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
         )
         self.assertEqual(result["recovery_action"], "reconcile_publication")
 
-        wrong_manifest = self._manifest_record("published")
-        wrong_manifest["evidence"]["period_start"] = "2026-11-17T00:00:00Z"
-        # event_id on muuttumaton sisältötiiviste; väärä jakso havaitaan ennen tallennusta.
-        import hashlib, json
-        core = {k: v for k, v in wrong_manifest.items() if k != "event_id"}
-        wrong_manifest["event_id"] = hashlib.sha256(
-            (json.dumps(core, ensure_ascii=False, sort_keys=True,
-                        separators=(",", ":")) + "\\n").encode("utf-8")
-        ).hexdigest()
+        wrong_evidence = dict(self._manifest_record("published")["evidence"])
+        wrong_evidence["period_start"] = "2026-11-17T00:00:00Z"
+        wrong_manifest = self._record(
+            "publication_manifest", "github_contents_api", wrong_evidence
+        )
         base["publication_manifest"] = lambda: wrong_manifest
         with self.assertRaises(ShadowTransitionError):
             self.orchestrator.run(
@@ -286,6 +287,7 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
             observed_at=self.now,
         )
         base["publication_manifest"] = lambda: self._manifest_record("prepared")
+        base["checkpoint"] = lambda: self._checkpoint_record()
         result = self.orchestrator.run(
             self.request, collect=base, observed_at=self.now,
         )
@@ -306,7 +308,8 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
             {key: value for key, value in self.client.files.items() if key not in audit_files},
             before_files,
         )
-        self.assertEqual(self.client.branches, before_branches)
+        # Store saa luoda vain auditointivaraston runtime-haaran.
+        self.assertEqual(self.client.branches, before_branches | {"module-runtime-state"})
         self.assertEqual(self.client.writes, result["event_count"])
 
 
