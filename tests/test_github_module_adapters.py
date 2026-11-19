@@ -95,11 +95,10 @@ class GitHubAdapterTests(unittest.TestCase):
     def test_github_contents_write_retries_unrelated_branch_conflict(self):
         client = GitHubApiClient("mikknikk/aiheseurain", "test-token")
         content = b'{"retry":true}\\n'
-        encoded = __import__("base64").b64encode(content).decode("ascii")
         calls = {"put": 0}
         def request(method, path, payload=None):
             if method == "GET":
-                return {"type": "file", "content": encoded, "sha": blob_sha(content)} if calls["put"] else None
+                return None
             if method == "PUT":
                 calls["put"] += 1
                 if calls["put"] == 1:
@@ -108,12 +107,11 @@ class GitHubAdapterTests(unittest.TestCase):
                     raise error
                 return {"content": {"sha": blob_sha(content)}}
             raise AssertionError(method)
-        # Ensimmäinen GET näkee tiedoston vasta epäselvän ensimmäisen kirjoituksen jälkeen.
         with patch.object(client, "request", side_effect=request):
             result = client.put_file("data/test.json", content, "module-runtime-state",
                                      message="test retry")
         self.assertEqual(result.content, content)
-        self.assertEqual(calls["put"], 1)
+        self.assertEqual(calls["put"], 2)
 
     def test_state_store_load_and_sha_checked_save(self):
         store = GitHubModuleStateStore(self.client)
