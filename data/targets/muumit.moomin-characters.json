@@ -3,7 +3,7 @@
   "target_version": "1.0.0",
   "module_ref": {
     "module_id": "muumit",
-    "definition_version": "1.0.0"
+    "definition_version": "1.0.1"
   },
   "name": "Moomin Characters",
   "description": "organization: Moomin Characters",
