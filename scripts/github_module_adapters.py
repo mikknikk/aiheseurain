@@ -486,6 +486,7 @@ class GitHubPagesRssPublisher:
         self.pages_base_url = pages_base_url.rstrip("/")
         self.root = Path(repository_root or Path(__file__).resolve().parents[1])
         self.expected: dict[str, tuple[str, tuple[str, ...], int]] = {}
+        self.run_guids: dict[str, str] = {}
 
     @staticmethod
     def _fetch_public(url: str) -> bytes:
@@ -546,6 +547,7 @@ class GitHubPagesRssPublisher:
         if gate.get("task_id") not in {module_id, expected_task}:
             raise GitHubAdapterError("Porttiraportin task_id ei vastaa moduulia tai syötettä.")
         self.expected[guids[-1]] = (candidate.public_url, tuple(guids), count)
+        self.run_guids[f"{module_id}:{run_id}"] = guids[-1]
         return candidate
 
     def publish(self, module_id: str, run_id: str, report_content: str, *,
@@ -572,10 +574,29 @@ class GitHubPagesRssPublisher:
         branch_id = hashlib.sha256(f"{module_id}:{run_id}".encode("utf-8")).hexdigest()[:20]
         branch = f"module-publish/{module_id}/{branch_id}"
         self.client.ensure_branch(branch)
-        for path, text in candidate.files.items():
-            self.client.put_file(path, text.encode("utf-8"), branch,
-                message=f"Prepare RSS publication {module_id} {run_id}")
         pull = self.client.find_pull_request(branch)
+        gate_path = f"reports/julkaisuportit/{run_id}.json"
+        for path, text in candidate.files.items():
+            desired = text.encode("utf-8")
+            current = self.client.get_file(path, branch)
+            if pull is not None:
+                # Kun PR on jo olemassa, sen ehdokastiedostot ovat muuttumattomia.
+                if current is None or current.content != desired:
+                    raise GitHubAdapterConflict("Saman ajon olemassa olevan julkaisun sisältöä ei voi vaihtaa.")
+                continue
+            if current is not None:
+                if current.content == desired:
+                    continue
+                main_file = self.client.get_file(path, MAIN_BRANCH)
+                if path == gate_path or main_file is None or current.content != main_file.content:
+                    raise GitHubAdapterConflict("Julkaisuehdokkaan haara sisältää aiemmasta yrityksestä poikkeavaa sisältöä.")
+                self.client.put_file(path, desired, branch,
+                    message=f"Prepare RSS publication {module_id} {run_id}", sha=current.sha)
+            else:
+                if path == gate_path and self.client.get_file(path, MAIN_BRANCH) is not None:
+                    raise GitHubAdapterConflict("Julkaisulaadun porttiraportin run_id on jo käytössä main-haarassa.")
+                self.client.put_file(path, desired, branch,
+                    message=f"Prepare RSS publication {module_id} {run_id}")
         if pull is None:
             pull = self.client.create_pull_request(
                 f"RSS-julkaisu: {module_id} / {run_id}",
@@ -585,9 +606,10 @@ class GitHubPagesRssPublisher:
                  "käynnistää nykyisen Pages-julkaisun ja julkisen takaisinluvun. "
                  "Tämä sovitin ei yhdistä PR:ää."),
                 branch)
-        guid = next((refs[-1:] for url, refs, count in self.expected.values()
-                     if url == candidate.public_url and refs == tuple(self._metadata(candidate.files[candidate.feed_path].encode("utf-8"))[0])), ())
-        if not pull.get("merged"):
+        guid = (self.run_guids[f"{module_id}:{run_id}"],)
+        if not (pull.get("merged") or pull.get("merged_at")):
+            if pull.get("state") == "closed":
+                raise GitHubAdapterConflict("Julkaisun PR suljettiin yhdistämättä; samaa ajoa ei voi julkaista uudelleen.")
             return PublicationReceipt(False, guid, 1)
         receipt = PublicationReceipt(True, guid, 1)
         return receipt if self.verify(receipt) else PublicationReceipt(False, guid, 1)
