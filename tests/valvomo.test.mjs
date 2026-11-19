@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { classifyFreshness, latestRotationTask, estimateNextTaskUpdates, validateStateShape, TASK_ORDER, loadDashboard, validateRunHistory, displayRunStatus } from "../assets/js/valvomo.js";
+import { classifyFreshness, latestRotationTask, estimateNextTaskUpdates, validateStateShape, TASK_ORDER, loadDashboard, loadRunHistory, validateRunHistory, displayRunStatus } from "../assets/js/valvomo.js";
 
 test("tuoreus erottaa tuoreen, vanhentuneen ja tuntemattoman ajan", () => {
   const now = Date.parse("2026-11-16T20:00:00+02:00");
@@ -258,6 +258,90 @@ test("ajohistorian rakenne sidotaan oikeaan automaatioon ja sisältää vaiheet"
   assert.equal(validateRunHistory(history, "screening_watch"), false);
   history.runs[0].steps[0].status = "invented";
   assert.equal(validateRunHistory(history, "main_automation"), false);
+});
+
+test("alustatason epäonnistuminen erotetaan automaation omasta suoritusajosta", async () => {
+  const oldDocument = globalThis.document;
+  const oldFetch = globalThis.fetch;
+  const dom = fakeDom();
+  const mainHistory = sampleRunHistory();
+  const screeningHistory = {
+    schema_version: 1,
+    automation_id: "screening_watch",
+    updated_at: "2026-11-19T06:40:00Z",
+    runs: [{
+      run_id: "e93435ca-f034-832e-8787-d9c65dd82b84",
+      automation_id: "screening_watch",
+      status: "failed",
+      started_at: "2026-11-19T04:40:14.605964Z",
+      finished_at: "2026-11-19T05:05:20.087466Z",
+      updated_at: "2026-11-19T06:40:00Z",
+      source: "chatgpt_platform_observation",
+      summary: "Ajastusalusta merkitsi ajon epäonnistuneeksi; keskusteluviitettä ei palautettu eikä teknistä juurisyytä voitu varmistaa.",
+      steps: [],
+      warnings: ["chat_ref=null; keskustelu- tai vaihekohtaista lokia ei ole saatavilla."],
+      errors: ["There was a problem with your scheduled task."],
+      diagnostics: {
+        stage: "platform_execution",
+        category: "platform_error",
+        retryable: null,
+        root_cause_confirmed: false,
+        chat_ref_present: false,
+        platform_run_id: "e93435ca-f034-832e-8787-d9c65dd82b84"
+      }
+    }]
+  };
+  const qualityHistory = { ...mainHistory, automation_id: "quality_check", runs: [] };
+  globalThis.document = dom;
+  globalThis.fetch = async (url) => ({
+    ok: true,
+    async json() {
+      if (url.includes("main-automation")) return mainHistory;
+      if (url.includes("screening-watch")) return screeningHistory;
+      return qualityHistory;
+    }
+  });
+  try {
+    await loadRunHistory();
+    const html = dom.getElementById("run-history-content").innerHTML;
+    assert.match(html, /Ajastusalustan havainto/);
+    assert.match(html, /Juurisyy: ei varmistettu/);
+    assert.match(html, /Keskusteluviite: puuttuu/);
+    assert.match(html, /There was a problem with your scheduled task/);
+    assert.match(html, /Vaiheita ei ole kirjattu/);
+  } finally {
+    globalThis.document = oldDocument;
+    globalThis.fetch = oldFetch;
+  }
+});
+
+test("alustatason havainto hylätään, jos se väittää juurisyyn varmistuneen", () => {
+  const history = {
+    schema_version: 1,
+    automation_id: "screening_watch",
+    updated_at: "2026-11-19T06:40:00Z",
+    runs: [{
+      run_id: "e93435ca-f034-832e-8787-d9c65dd82b84",
+      automation_id: "screening_watch",
+      status: "failed",
+      started_at: "2026-11-19T04:40:14.605964Z",
+      finished_at: "2026-11-19T05:05:20.087466Z",
+      updated_at: "2026-11-19T06:40:00Z",
+      source: "chatgpt_platform_observation",
+      steps: [],
+      warnings: [],
+      errors: [],
+      diagnostics: {
+        stage: "platform_execution",
+        category: "platform_error",
+        retryable: null,
+        root_cause_confirmed: true,
+        chat_ref_present: false,
+        platform_run_id: "e93435ca-f034-832e-8787-d9c65dd82b84"
+      }
+    }]
+  };
+  assert.equal(validateRunHistory(history, "screening_watch"), false);
 });
 
 test("vanhentunutta running-tilaa ei näytetä käynnissä olevana", () => {

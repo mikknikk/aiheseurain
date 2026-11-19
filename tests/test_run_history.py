@@ -74,6 +74,73 @@ class RunHistorySchemaTests(unittest.TestCase):
         history["runs"][0]["steps"][0]["status"] = "unknown"
         jsonschema.validate(history, SCHEMA)
 
+
+    def test_platform_observation_is_valid_without_fabricated_steps(self):
+        history = valid_history()
+        run = history["runs"][0]
+        run.update({
+            "run_id": "e93435ca-f034-832e-8787-d9c65dd82b84",
+            "status": "failed",
+            "started_at": "2026-11-19T04:40:14.605964Z",
+            "finished_at": "2026-11-19T05:05:20.087466Z",
+            "updated_at": "2026-11-19T06:40:00Z",
+            "source": "chatgpt_platform_observation",
+            "summary": "Ajastusalusta ilmoitti epäonnistumisesta; teknistä juurisyytä ei voitu varmistaa.",
+            "steps": [],
+            "warnings": ["chat_ref=null; keskustelulokia ei ole saatavilla."],
+            "errors": ["There was a problem with your scheduled task."],
+            "diagnostics": {
+                "stage": "platform_execution",
+                "category": "platform_error",
+                "retryable": None,
+                "root_cause_confirmed": False,
+                "chat_ref_present": False,
+                "platform_run_id": "e93435ca-f034-832e-8787-d9c65dd82b84",
+            },
+        })
+        jsonschema.validate(history, SCHEMA)
+
+    def test_platform_observation_requires_diagnostics_and_no_steps(self):
+        history = valid_history()
+        run = history["runs"][0]
+        run["source"] = "chatgpt_platform_observation"
+        run["status"] = "failed"
+        run["steps"] = []
+        with self.assertRaises(jsonschema.ValidationError):
+            jsonschema.validate(history, SCHEMA)
+        run["diagnostics"] = {
+            "stage": "platform_execution",
+            "category": "platform_error",
+            "retryable": None,
+            "root_cause_confirmed": False,
+            "chat_ref_present": False,
+            "platform_run_id": run["run_id"],
+        }
+        run["steps"] = [{"id": "invented", "name": "Keksitty vaihe", "status": "failed",
+                         "started_at": run["started_at"], "finished_at": run["finished_at"],
+                         "updated_at": run["updated_at"], "warnings": [], "errors": []}]
+        with self.assertRaises(jsonschema.ValidationError):
+            jsonschema.validate(history, SCHEMA)
+
+    def test_platform_observation_cannot_claim_confirmed_root_cause(self):
+        history = valid_history()
+        run = history["runs"][0]
+        run.update({
+            "source": "chatgpt_platform_observation",
+            "status": "failed",
+            "steps": [],
+            "diagnostics": {
+                "stage": "platform_execution",
+                "category": "platform_error",
+                "retryable": None,
+                "root_cause_confirmed": True,
+                "chat_ref_present": False,
+                "platform_run_id": run["run_id"],
+            },
+        })
+        with self.assertRaises(jsonschema.ValidationError):
+            jsonschema.validate(history, SCHEMA)
+
     def test_wrong_automation_id_is_rejected(self):
         history = valid_history()
         history["runs"][0]["automation_id"] = "screening_watch"

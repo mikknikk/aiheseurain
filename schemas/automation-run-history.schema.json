@@ -158,7 +158,10 @@
           "format": "date-time"
         },
         "source": {
-          "const": "chatgpt_scheduled_task"
+          "enum": [
+            "chatgpt_scheduled_task",
+            "chatgpt_platform_observation"
+          ]
         },
         "summary": {
           "type": "string",
@@ -184,9 +187,112 @@
             "$ref": "#/$defs/message"
           },
           "maxItems": 50
+        },
+        "diagnostics": {
+          "type": "object",
+          "required": [
+            "stage",
+            "category",
+            "retryable",
+            "root_cause_confirmed",
+            "chat_ref_present",
+            "platform_run_id"
+          ],
+          "properties": {
+            "stage": {
+              "enum": [
+                "platform_execution",
+                "preflight",
+                "source_search",
+                "screening_validation",
+                "history_update",
+                "rss_update",
+                "validation",
+                "pull_request",
+                "ci",
+                "merge",
+                "verification",
+                "unknown"
+              ]
+            },
+            "category": {
+              "enum": [
+                "platform_error",
+                "network_error",
+                "rate_limit",
+                "permission_error",
+                "validation_error",
+                "ci_failure",
+                "pages_failure",
+                "state_conflict",
+                "unknown"
+              ]
+            },
+            "retryable": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "root_cause_confirmed": {
+              "type": "boolean"
+            },
+            "chat_ref_present": {
+              "type": "boolean"
+            },
+            "platform_run_id": {
+              "type": "string",
+              "minLength": 8,
+              "maxLength": 100
+            }
+          },
+          "additionalProperties": false
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "chatgpt_platform_observation"
+              }
+            },
+            "required": [
+              "source"
+            ]
+          },
+          "then": {
+            "required": [
+              "diagnostics"
+            ],
+            "properties": {
+              "status": {
+                "const": "failed"
+              },
+              "steps": {
+                "maxItems": 0
+              },
+              "diagnostics": {
+                "properties": {
+                  "stage": {
+                    "const": "platform_execution"
+                  },
+                  "category": {
+                    "const": "platform_error"
+                  },
+                  "root_cause_confirmed": {
+                    "const": false
+                  },
+                  "chat_ref_present": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "allOf": [
