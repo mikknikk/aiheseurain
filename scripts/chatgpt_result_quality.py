@@ -15,7 +15,7 @@ from scripts.target_execution import load_module_targets, TargetExecutionError
 ROOT = Path(__file__).resolve().parents[1]
 ASSESSMENT_SCHEMA = ROOT / "schemas/chatgpt-publication-assessment.schema.json"
 SENSITIVE_KEYS = {
-    "api_key", "access_token", "authorization", "credential", "credentials",
+    "api_key", "api_token", "access_token", "authorization", "credential", "credentials", "private_key",
     "password", "secret", "token", "report_content", "source_snippet",
     "snippet", "prompt", "request_content",
 }
@@ -98,6 +98,8 @@ class ChatGPTResultQualityGate:
             errors.append("artifacts_contain_restricted_fields")
         if output.metadata is not None and not isinstance(output.metadata, dict):
             errors.append("metadata_not_object")
+        elif _sensitive_field(output.metadata or {}):
+            errors.append("metadata_contain_restricted_fields")
 
         if targets:
             if not output.target_reports:
