@@ -90,6 +90,8 @@ def validate_journal(journal: dict[str, Any], state: dict[str, Any],
     if runs:
         latest = max(runs, key=lambda run: _time(run["prepared_at"], "prepared_at"))
         last_success = state.get("separate_screening_watch", {}).get("last_successful_check")
+        if pending and latest["run_id"] != pending[0]["run_id"]:
+            raise ScreeningJournalError("Keskeneräisen ajon pitää olla päiväkirjan viimeisin ajo.")
         if latest["phase"] == "prepared":
             if last_success != latest["period"]["start"]:
                 raise ScreeningJournalError(
@@ -120,8 +122,11 @@ def prepare_run(journal: dict[str, Any], record: dict[str, Any]) -> dict[str, An
 
 def complete_run(journal: dict[str, Any], run_id: str, *,
                  publication_commit_sha: str, deployment_id: int,
-                 rss_verified_at: str, synchronization_commit_sha: str) -> dict[str, Any]:
+                 rss_verified_at: str, synchronization_commit_sha: str,
+                 *, rss_verified: bool, state_synchronized: bool) -> dict[str, Any]:
     """Merkitse ajo valmiiksi vasta julkisen RSS:n ja tilasynkronoinnin varmennuttua."""
+    if rss_verified is not True or state_synchronized is not True:
+        raise ScreeningJournalError("Ajon valmistuminen vaatii julkisen RSS:n ja tilasynkronoinnin varmennuksen.")
     updated = deepcopy(journal)
     run = next((item for item in updated.get("runs", []) if item.get("run_id") == run_id), None)
     if run is None:
@@ -138,7 +143,10 @@ def complete_run(journal: dict[str, Any], run_id: str, *,
         return updated
     if run["phase"] != "prepared":
         raise ScreeningJournalError("Ajon vaihe ei salli valmistumista.")
-    _time(rss_verified_at, "rss_verified_at")
+    verified_time = _time(rss_verified_at, "rss_verified_at")
+    prepared_time = _time(run["prepared_at"], "prepared_at")
+    if verified_time < prepared_time:
+        raise ScreeningJournalError("RSS-varmennus ei voi edeltää julkaisun valmistelua.")
     if not isinstance(deployment_id, int) or deployment_id < 1:
         raise ScreeningJournalError("Pages-deploymentin tunniste ei ole kelvollinen.")
     for value, label in (
