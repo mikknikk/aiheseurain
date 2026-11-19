@@ -158,14 +158,14 @@ Varaus on tarkoituksella fail-closed: epäselvässä tai keskeneräisessä tilan
 
 ## Keskeytyneen moduulijulkaisun palautus (#227)
 
-`scripts/module_recovery.py` sisältää sivuvaikutuksettoman `recovery_action`-päätösfunktion. Se arvioi yhdessä ajokohtaisen julkaisumanifestin vaiheen, RSS-PR:n tilan, julkisen syötteen takaisinluvun, moduulin checkpointin ja vanhan raportointipolun saman seurantajakson julkaisutilan.
+`scripts/module_recovery.py` sisältää sivuvaikutuksettoman `recovery_action`-päätösfunktion. Se arvioi yhdessä ajokohtaisen julkaisumanifestin vaiheen, RSS-PR:n tilan, erillisen Pages-deploymentin tilan, julkisen syötteen takaisinluvun, moduulin checkpointin ja vanhan raportointipolun saman seurantajakson julkaisutilan.
 
 Päätökset ovat tarkoituksella erillisiä:
 - Avoin RSS-PR: odota; vanhaan polkuun ei saa siirtyä.
-- Yhdistetty PR ja täsmälleen ehdokasta vastaava julkinen RSS: jatka saman `run_id`:n manifesti-, artefakti- ja checkpoint-vaihetta.
+- Yhdistetty PR: odota erikseen Pages-deploymentin valmistumista. Vasta onnistunut deployment ja täsmälleen ehdokasta vastaava julkinen RSS oikeuttavat saman `run_id`:n manifesti-, artefakti- ja checkpoint-vaiheen jatkamiseen.
 - Julkaistu RSS, mutta puuttuva artefakti tai checkpoint: viimeistele sama ajo idempotentisti; älä tee uutta lähdehakua tai luo uutta GUIDia.
 - Suljettu yhdistämätön PR tai ennen PR:n avaamista keskeytynyt valmistelu: vanha polku on mahdollinen vain, jos julkinen takaisinluku osoittaa ehdokkaan puuttuvan, vanhan polun saman jakson julkaisua ei ole ja erillinen hyväksyntä on annettu.
-- Epäselvä GitHub-/Pages-vastaus, puuttuva takaisinluku tai ristiriitainen checkpoint: pysäytä molemmat polut ja selvitä tila. Tuntematonta ei tulkita onnistumiseksi.
+- Epäonnistunut Pages-deployment: toista tai selvitä sama julkaisu; älä luo uutta RSS-itemiä. Epäselvä GitHub-/Pages-vastaus, puuttuva takaisinluku tai ristiriitainen checkpoint: pysäytä molemmat polut ja selvitä tila. Tuntematonta ei tulkita onnistumiseksi.
 
 Päätösfunktio ei käynnistä automaatioita, julkaise RSS:ää, vapauta jaksolukkoa, muuta checkpointia eikä muuta ChatGPT-tehtävien asetuksia. Se ei yksinään todista vanhan polun julkaisutilaa: kutsujan on annettava se luotettavasti tarkistetun RSS:n ja ajohistorian perusteella. Vanhaan polkuun palaaminen vaatii aina eksplisiittisen hyväksynnän.
 
