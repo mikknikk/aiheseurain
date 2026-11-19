@@ -265,14 +265,28 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
             "merge_commit_sha": "b" * 40,
         })
         base = self._base_collectors()
+        def competing_checkpoint_observation():
+            # Simuloi toisen prosessin tekemää muutosta baseline-luvun ja
+            # jälkitilan luvun välissä; orkestroija ei tee tätä kirjoitusta.
+            competing_state = {
+                "module_id": "taylor-swift",
+                "checkpoint": {"last_successful_run": {
+                    "run_id": "competing-run-002", "checked_at": self.now,
+                }},
+            }
+            self.client.files[(
+                "module-runtime-state", "data/module-state/taylor-swift.json"
+            )] = GitHubFile(json.dumps(competing_state).encode("utf-8"), "1" * 40)
+            return self._checkpoint_record(
+                before_sha="e" * 40, after_sha="1" * 40,
+                before_run="old-run-001", after_run="competing-run-002",
+            )
+
         base.update({
             "pages_deployment": lambda: self._pages_record("success"),
             "public_feed": lambda: self._feed_record(),
             "publication_manifest": lambda: self._manifest_record("artifacts_persisted"),
-            "checkpoint": lambda: self._checkpoint_record(
-                before_sha="e" * 40, after_sha="1" * 40,
-                before_run="old-run-001", after_run="competing-run-002",
-            ),
+            "checkpoint": competing_checkpoint_observation,
         })
         result = self.orchestrator.run(
             self.request, collect=base, observed_at=self.now,
