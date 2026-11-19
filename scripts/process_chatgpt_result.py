@@ -1,26 +1,22 @@
 """Kytke yksi vastaanotettu ChatGPT-tulos moduuliorkestrointiin.
 
 Tämä komentorivityökalu käsittelee vain main-haaraan hyväksytyn yhden tulostiedoston.
-Shadow-tila on oletus eikä muuta RSS-syötteitä, moduulicheckpointia tai tehtäväkiertoa.
+Se suorittaa tuloksen ainoastaan kirjoituksettomassa varjotilassa; tuotantokytkentä kuuluu tikettiin #215.
 """
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timezone
-import hashlib
 import json
 from pathlib import Path
 import subprocess
 import sys
-from typing import Any, Callable
+from typing import Any
 
 from scripts.chatgpt_module_result import ChatGPTResultExecutor
 from scripts.chatgpt_result_quality import ChatGPTResultQualityGate
-from scripts.chatgpt_rss_candidate import ChatGPTRssCandidateBuilder
 from scripts.github_module_adapters import (
-    GitHubApiClient, GitHubArtifactStore, GitHubHandoffStore,
-    GitHubModuleStateStore, GitHubPagesRssPublisher,
-    GitHubPublicationJournal, GitHubRotationStateStore, GitHubRunRecorder,
+    GitHubApiClient, GitHubHandoffStore, GitHubModuleStateStore,
+    GitHubRotationStateStore, GitHubRunRecorder,
 )
 from scripts.module_input_bundle import build_module_input_bundle, bundle_to_json
 from scripts.module_orchestrator import (
@@ -145,14 +141,12 @@ def _validated_request_context(
 def process_inbox_result(
     file_path: Path, *, relative_path: str, mode: str = "shadow",
     root: Path = ROOT, client: Any | None = None,
-    candidate_builder: Callable[..., Any] | None = None,
-    allow_production: bool = False,
 ) -> ModuleRunResult:
-    """Validoi, sido alkuperään ja suorita yksi ChatGPT-tulos turvallisesti."""
-    if mode not in {"shadow", "production"}:
-        raise ChatGPTProcessingError("Ajon tila on virheellinen.")
-    if mode == "production" and not allow_production:
-        raise ChatGPTProcessingError("Tuotantotila edellyttää erillistä hyväksyntälippua.")
+    """Validoi ja suorita yksi ChatGPT-tulos vain kirjoituksettomassa varjotilassa."""
+    if mode != "shadow":
+        raise ChatGPTProcessingError(
+            "Tämä käsittelijä tukee vain varjotilaa. Tuotantokytkentä kuuluu tikettiin #215."
+        )
     root = Path(root).resolve()
     payload = validate_inbox_result(
         Path(file_path), relative_path=relative_path, root=root
@@ -161,7 +155,7 @@ def process_inbox_result(
     rotation_store = GitHubRotationStateStore(runtime_client, repository_root=root)
     state_store = GitHubModuleStateStore(runtime_client)
     handoff_store = GitHubHandoffStore(runtime_client)
-    request, definition, accepted, task_id = _validated_request_context(
+    request, definition, _accepted, _task_id = _validated_request_context(
         payload, root=root, rotation_store=rotation_store,
         module_state_store=state_store, handoff_store=handoff_store,
     )
@@ -172,50 +166,21 @@ def process_inbox_result(
         run_id=request.run_id,
         period_start=request.period_start,
         period_end=request.period_end,
-        mode=mode,
+        mode="shadow",
         requested_at=request.requested_at,
     )
     executor = ChatGPTResultExecutor(payload)
     quality_gate = ChatGPTResultQualityGate(root=root)
     recorder = GitHubRunRecorder(runtime_client)
-
-    if mode == "shadow":
-        orchestrator = ModuleOrchestrator(
-            registry_loader=lambda include_inactive=False: load_registry(
-                root=root, include_inactive=include_inactive
-            ),
-            executor=executor,
-            quality_gate=quality_gate,
-            recorder=recorder,
-        )
-        return orchestrator.run(request)
-
-    publisher_token = __import__("os").getenv("AIHESEURAIN_GITHUB_TOKEN")
-    if not publisher_token:
-        raise ChatGPTProcessingError("Tuotantojulkaisu edellyttää AIHESEURAIN_GITHUB_TOKEN-tunnusta.")
-    if candidate_builder is None:
-        candidate_builder = ChatGPTRssCandidateBuilder(root=root)
-    publisher_client = GitHubApiClient(token=publisher_token)
-    publisher = GitHubPagesRssPublisher(
-        publisher_client, candidate_builder, repository_root=root
-    )
     orchestrator = ModuleOrchestrator(
         registry_loader=lambda include_inactive=False: load_registry(
             root=root, include_inactive=include_inactive
         ),
         executor=executor,
         quality_gate=quality_gate,
-        state_store=state_store,
-        artifact_store=GitHubArtifactStore(runtime_client),
-        publication_journal=GitHubPublicationJournal(runtime_client),
-        publisher=publisher,
         recorder=recorder,
-        production_authorized=True,
     )
-    result = orchestrator.run(request)
-    if result.status == "succeeded" and result.published and result.checkpoint_updated:
-        rotation_store.advance(result, task_id=task_id, feed_path=accepted["feed_path"])
-    return result
+    return orchestrator.run(request)
 
 
 def changed_inbox_file(before: str, after: str, *, root: Path = ROOT) -> str:
@@ -244,7 +209,6 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--before", help="GitHub push -tapahtuman before-SHA.")
     parser.add_argument("--after", help="GitHub push -tapahtuman after-SHA.")
     parser.add_argument("--mode", choices=["shadow", "production"], default="shadow")
-    parser.add_argument("--allow-production", action="store_true")
     parser.add_argument("--root", type=Path, default=ROOT, help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     try:
@@ -259,7 +223,7 @@ def main(argv: list[str] | None = None) -> int:
             file_path = args.root / relative_path
         result = process_inbox_result(
             file_path, relative_path=relative_path, mode=args.mode,
-            root=args.root, allow_production=args.allow_production,
+            root=args.root,
         )
         print(json.dumps(result.to_dict(), ensure_ascii=False, indent=2))
         return 0
