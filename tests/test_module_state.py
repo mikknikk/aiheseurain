@@ -90,6 +90,7 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 # Jos osittainen ajo yritetään merkitä onnistumisen checkpointiksi,
                 # vastaavaa complete-lähdeajoa ja hyväksyttyä julkaisuraporttia ei ole.
                 task["last_successful_check"] = partial_run["ended_at"]
+                state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                 errors = validate_state_migration()
                 self.assertTrue(any("uudempi vanhan automaation seurantatila" in error for error in errors), errors)
 
