@@ -388,7 +388,7 @@ Suositeltu toteutusjärjestys:
 - [x] Kerää RSS-PR:n tunniste, URL, tila ja yhdistämiscommit moduuli-/ajokohtaisesti; PR:n otsikko ja run_id sidotaan pyydettyyn moduuliin.
 - [x] Kerää Pages-deploymentin tunniste ja tila erillään PR:n yhdistämisestä; deployment sidotaan täsmälliseen yhdistämiscommittiin.
 - [x] Tallenna julkisen RSS:n takaisinluvun URL, aika, SHA-256, item-määrä ja GUIDit välimuistin ohittavalla luvulla.
-- [x] Sido lähtö- ja jälkitilan Git-blob-SHA:t sekä checkpointin ennen/jälkeen run_id:t ja aikaleimat samaan ajoon.
+- [x] Sido julkaisumanifestin blob-SHA, artifact-versio, sisältötiivisteet ja vaihehistoria sekä checkpointin ennen/jälkeen Git-blob-SHA:t, run_id:t ja aikaleimat samaan ajoon.
 - [x] Kirjaa vanhan raportointipolun tarkistettu jaksohavainto lähde-URL:ineen ja aikaleimoineen sekä palautuspäätös ja erillinen hyväksyntätietue.
 - [x] Toteuta sisällön SHA-256-tiivisteellä nimetyt muuttumattomat tapahtumatiedostot, skeema, validoija ja epäselvän kirjoituskuittauksen uusintatesti.
 - [ ] Varmista moduulirajaus, idempotenssi ja salaisuuksien sekä raporttisisällön poissulkeminen CI:ssä.
