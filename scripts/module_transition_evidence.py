@@ -143,6 +143,8 @@ class GitHubTransitionEvidenceCollector:
         if not isinstance(value, dict):
             raise TransitionEvidenceError("GitHubin PR-vastaus ei ole JSON-olio.")
         body = value.get("body") or ""
+        if not isinstance(body, str):
+            raise TransitionEvidenceError("PR:n run_id-/moduuliteksti ei ole merkkijono.")
         expected_title = f"RSS-julkaisu: {module_id} / {run_id}"
         if value.get("title") != expected_title or f"- Moduuli: {module_id}" not in body or f"- run_id: {run_id}" not in body:
             raise TransitionEvidenceError("PR:n sisältö ei sido sitä pyydettyyn moduuliin ja run_id:hin.")
@@ -299,6 +301,8 @@ class GitHubTransitionEvidenceCollector:
             raise TransitionEvidenceError("Vanhan polun GUID-lista on virheellinen.")
         if status == "present" and not matching_guids:
             raise TransitionEvidenceError("Löytyneelle vanhan polun julkaisulle on kirjattava GUID.")
+        if status == "absent" and matching_guids:
+            raise TransitionEvidenceError("Julkaisemattomaksi merkityllä jaksolla ei voi olla täsmääviä GUIDeja.")
         evidence = {
             "status": status, "source_url": source_url,
             "period_start": period_start, "period_end": period_end,
@@ -314,6 +318,8 @@ class GitHubTransitionEvidenceCollector:
                           legacy_period_status: str, legacy_fallback_authorized: bool,
                           observed_at: str) -> dict[str, Any]:
         """Laske ja tallenna palautuspäätös; ei suorita palautusta."""
+        if manifest is not None and not isinstance(manifest, dict):
+            raise TransitionEvidenceError("Palautusmanifestin pitää olla JSON-olio.")
         if manifest is not None and (manifest.get("module_id") != module_id or manifest.get("run_id") != run_id):
             raise TransitionEvidenceError("Palautusmanifestin moduuli/run_id ei vastaa auditointitietuetta.")
         if manifest is not None and (manifest.get("module_id") != module_id or manifest.get("run_id") != run_id):
@@ -402,8 +408,11 @@ class GitHubTransitionEvidenceStore:
         records = []
         for entry in entries:
             name = entry.get("name", "")
-            if not name.endswith(".json") or entry.get("type") != "file":
+            if entry.get("type") != "file" or not name.endswith(".json"):
                 continue
+            if (Path(name).name != name or not re.fullmatch(
+                    r"(?:pull_request|pages_deployment|public_feed|checkpoint|legacy_period|recovery_decision|legacy_approval)-[a-f0-9]{64}\\.json", name)):
+                raise TransitionEvidenceError("Auditointihakemiston tiedostonimi ei vastaa tapahtumamuotoa.")
             file = self.client.get_file(f"{prefix}/{name}", self.branch)
             if file is None:
                 raise TransitionEvidenceError("Auditointitiedosto katosi lukemisen aikana.")
