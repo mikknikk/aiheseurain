@@ -11,241 +11,281 @@
       "source_id": "indian-express-regional",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "india-today-regional",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "telugucinema",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "cinema-express",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "daily-thanthi",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "cinisuddi",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "simply-mollywood",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "yle",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "hs",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "the-hindu-cinema",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "times-of-india-entertainment",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "ndtv-entertainment",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "bollywood-hungama",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "pinkvilla",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "eenadu-cinema",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "sakshi-telugu",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "123telugu",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "hindu-tamil-thisai",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "maalaimalar",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "dinamani",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "vijaya-karnataka",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "prajavani",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "kannada-prabha",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "onmanorama",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "mathrubhumi",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "manorama-online",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "anandabazar",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "sangbad-pratidin",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "lokmat",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "sakal",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "loksatta",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "ajit-punjabi",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "punjabi-tribune",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "assam-tribune",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "asomiya-pratidin",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "sambad-odia",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "dharitri",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "episodi",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "elokuvauutiset",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "film-o-holic",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     }
   ]
 }

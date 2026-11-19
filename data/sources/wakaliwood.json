@@ -11,31 +11,36 @@
       "source_id": "wakaliwood-official",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "wakaliwood-supa-store",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "new-vision-uganda",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "daily-monitor-uganda",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "ugandan-film-festival",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     }
   ]
 }

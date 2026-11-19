@@ -70,6 +70,13 @@
             "string",
             "null"
           ]
+        },
+        "retry_after": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         }
       },
       "additionalProperties": false

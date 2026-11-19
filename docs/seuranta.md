@@ -47,11 +47,12 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 
 ## Lähdekattavuuden koneellinen seuranta
 
-- `data/source-catalog.json` sisältää lähteiden yhteiset perustiedot (nimi, URL, kielet, lähdetyyppi ja alueet) kerran. `data/sources/{task_id}.json` sisältää tehtäväkohtaiset `source_id`-viittaukset sekä kriittisyyden, viimeisimmän tarkistusajan ja käyttörajoitteet. Yhdistä tiedot ID:n perusteella; lähteen tarkistus yhdessä tehtävässä ei tarkoita, että se olisi tarkistettu muissa tehtävissä.
+- `data/source-catalog.json` sisältää lähteiden yhteiset perustiedot (nimi, URL, kielet, lähdetyyppi ja alueet) kerran. `data/sources/{task_id}.json` sisältää tehtäväkohtaiset `source_id`-viittaukset sekä kriittisyyden, viimeisimmän tarkistusajan ja käyttörajoitteet. Pääautomaation yhdeksän aihekäytön rekistereissä on lisäksi `retry_after`-uudelleentarkistusaika; erillinen näytösvahti käyttää omaa virheistä palautumisen menettelyään. Yhdistä tiedot ID:n perusteella; lähteen tarkistus yhdessä tehtävässä ei tarkoita, että se olisi tarkistettu muissa tehtävissä.
 - `schemas/lahdekatalogi.schema.json` ja `schemas/lahderekisteri.schema.json` määrittävät katalogin ja käyttörekisterien rakenteet. `scripts/validate_source_coverage.py` tarkistaa viittausten eheyden ja ajolokin tehtäväkohtaisuuden.
 - `data/lahdetarkistukset.json` säilyttää ajokohtaiset tarkistustulokset. Jokaisessa ajossa eritellään tarkistetut lähteet sekä tarkistamatta jääneet lähteet syineen. Osittainen tai epäonnistunut ajo ei saa näyttää täydelliseltä.
 - Tehtävätunnisteet `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset` ovat erilliset. Uutisautomaatio ei lisää näytöslähteiden tarkistuksia omaan ajoonsa.
-- `complete` on operatiivinen merkintä siitä, että tehtävän rekisteriin merkityt kriittiset lähteet on käsitelty. Se ei ole todiste täydellisestä maailmanlaajuisesta kattavuudesta. Kieli- ja aluepuutteet kirjataan `coverage_notes`-kenttään.
+- Ajolokin `complete` tarkoittaa, että kaikki ajon odotettavissa olevat lähteet tarkistettiin; `partial` tarkoittaa, että vähintään yksi lähde jäi tarkistamatta tai oli jäähdytysajalla. Tämä ajolokin tila erotetaan tehtävän hyväksymisestä: vuoro voi edetä myös `partial`-ajon jälkeen, jos pääautomaation käsikirjan numeeriset kattavuus- ja kriittisten lähteiden ehdot täyttyvät. Kieli- ja aluepuutteet kirjataan `coverage_notes`-kenttään.
+- Käyttörekisterin `retry_after` estää lähteen tarpeettoman toistuvan tarkistamisen: robots.txt 30 päivää, 401/403 tai pysyvä käyttöesto 14 päivää, 429 seitsemän päivää ja tilapäinen verkkovirhe seuraavalla saman aiheen vuorolla. Onnistunut alkuperäissivun tarkistus nollaa `retry_after`-arvon.
 - `data/seurantatila.json`-tiedoston `sources_checked` säilyy yhteenvetolukuna; lähdekohtaiset tiedot ovat ajolokissa.
 
 ## Koneellinen seurantatila ja automaattiset testit

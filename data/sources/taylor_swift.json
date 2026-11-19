@@ -12,61 +12,71 @@
       "source_id": "taylor-swift-official",
       "critical": true,
       "last_checked_at": "2026-11-17T12:57:03+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "umg-news",
       "critical": true,
       "last_checked_at": "2026-11-17T13:03:45+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "republic-records",
       "critical": true,
       "last_checked_at": "2026-11-17T12:57:03+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "billboard",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "ap-entertainment",
       "critical": false,
       "last_checked_at": "2026-11-17T12:57:03+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "rolling-stone",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "lippu-fi-events",
       "critical": false,
       "last_checked_at": "2026-11-17T12:57:03+02:00",
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     },
     {
       "source_id": "ticketmaster-fi-events",
       "critical": false,
       "last_checked_at": "2026-11-17T12:57:03+02:00",
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     },
     {
       "source_id": "tiketti-fi-events",
       "critical": false,
       "last_checked_at": "2026-11-17T12:57:03+02:00",
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     },
     {
       "source_id": "uol-splash",
       "critical": false,
       "last_checked_at": "2026-11-17T13:00:26+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     }
   ]
 }

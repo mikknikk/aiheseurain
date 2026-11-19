@@ -15,169 +15,197 @@
       "source_id": "tolkien-estate",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "tolkien-society",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "harpercollins-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "warnerbros-newsroom",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "tolkiengateway",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "theguardian-books",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "variety-film",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "hmh-books-tolkien",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "christian-bourgois-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "planeta-minotauro-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "harpercollins-brasil-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "deutsche-tolkien-gesellschaft",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Tolkien-yhdistyksen uutiset, tapahtumat ja tutkimus; ulkopuoliset uutisväitteet varmennettava alkuperäislähteestä."
+      "access_limit": "Tolkien-yhdistyksen uutiset, tapahtumat ja tutkimus; ulkopuoliset uutisväitteet varmennettava alkuperäislähteestä.",
+      "retry_after": null
     },
     {
       "source_id": "tolkiendil",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Ranskalainen Tolkien-yhdistys ja erikoissivusto; käytä myös tapahtuma- ja tutkimuslähteenä."
+      "access_limit": "Ranskalainen Tolkien-yhdistys ja erikoissivusto; käytä myös tapahtuma- ja tutkimuslähteenä.",
+      "retry_after": null
     },
     {
       "source_id": "societa-tolkieniana-italiana",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Italialaisen Tolkien-yhdistyksen tiedotteet ja tapahtumat; ulkopuoliset väitteet varmennettava."
+      "access_limit": "Italialaisen Tolkien-yhdistyksen tiedotteet ja tapahtumat; ulkopuoliset väitteet varmennettava.",
+      "retry_after": null
     },
     {
       "source_id": "sociedad-tolkien-espanola",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Espanjankielinen Tolkien-yhdistys, julkaisut, tapahtumat ja uutislinkit."
+      "access_limit": "Espanjankielinen Tolkien-yhdistys, julkaisut, tapahtumat ja uutislinkit.",
+      "retry_after": null
     },
     {
       "source_id": "suomen-tolkien-seura",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Suomen Tolkien-yhteisön omat tiedotteet ja tapahtumat; ei riippumaton lähde kansainvälisille tuotantouutisille."
+      "access_limit": "Suomen Tolkien-yhteisön omat tiedotteet ja tapahtumat; ei riippumaton lähde kansainvälisille tuotantouutisille.",
+      "retry_after": null
     },
     {
       "source_id": "yle-tolkien",
       "critical": true,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Suomen yleisradioyhtiön Tolkien-aihesivu; tarkista artikkelikohtainen julkaisupäivä ja alkuperäislähteet."
+      "access_limit": "Suomen yleisradioyhtiön Tolkien-aihesivu; tarkista artikkelikohtainen julkaisupäivä ja alkuperäislähteet.",
+      "retry_after": null
     },
     {
       "source_id": "elfenomeno",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Itsenäinen Tolkien-erikoismedia; asiantuntijakonteksti ja uutisvihjeet, varmista uutisväitteet ensisijaislähteestä."
+      "access_limit": "Itsenäinen Tolkien-erikoismedia; asiantuntijakonteksti ja uutisvihjeet, varmista uutisväitteet ensisijaislähteestä.",
+      "retry_after": null
     },
     {
       "source_id": "journal-tolkien-research",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Vertaisarvioitu avoin tutkimusjulkaisu; seuraa uusia tutkimusartikkeleita, ei ajankohtaisuutisia."
+      "access_limit": "Vertaisarvioitu avoin tutkimusjulkaisu; seuraa uusia tutkimusartikkeleita, ei ajankohtaisuutisia.",
+      "retry_after": null
     },
     {
       "source_id": "the-one-ring",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Pitkään toiminut fanien ylläpitämä erikoissivusto; käytä uutisvihjeenä ja varmista väitteet virallisista tai riippumattomista lähteistä."
+      "access_limit": "Pitkään toiminut fanien ylläpitämä erikoissivusto; käytä uutisvihjeenä ja varmista väitteet virallisista tai riippumattomista lähteistä.",
+      "retry_after": null
     },
     {
       "source_id": "ehu-tartalo-programme",
       "critical": false,
       "last_checked_at": "2026-11-16T17:56:58+02:00",
-      "access_limit": "Virallinen tapahtumaohjelma PDF-muodossa; avattu ja tarkistettu 16.11.2026."
+      "access_limit": "Virallinen tapahtumaohjelma PDF-muodossa; avattu ja tarkistettu 16.11.2026.",
+      "retry_after": null
     },
     {
       "source_id": "mythopoeic-society",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Yhdistyksen kotisivu avautui, mutta David Bratmanin Sad News -ilmoitus näkyi vain hakutulosotteessa eikä avatulla sivulla; ilmoitusta ei lasketa tarkistetuksi ennen suoraa sisältöavausta."
+      "access_limit": "Yhdistyksen kotisivu avautui, mutta David Bratmanin Sad News -ilmoitus näkyi vain hakutulosotteessa eikä avatulla sivulla; ilmoitusta ei lasketa tarkistetuksi ennen suoraa sisältöavausta.",
+      "retry_after": null
     },
     {
       "source_id": "file770",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "David Bratman -muistokirjoituksen koko tekstisisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi."
+      "access_limit": "David Bratman -muistokirjoituksen koko tekstisisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
+      "retry_after": null
     },
     {
       "source_id": "gamesradar-film",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Artikkelin koko sisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi."
+      "access_limit": "Artikkelin koko sisältö näkyi hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
+      "retry_after": null
     },
     {
       "source_id": "new-zealand-film-map",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Artikkelin koko sisältö ja 12.11. päivitys näkyivät hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi."
+      "access_limit": "Artikkelin koko sisältö ja 12.11. päivitys näkyivät hakutulosotteessa, mutta suora sivun avaus palautti cache miss; ei lasketa tarkistetuksi.",
+      "retry_after": null
     },
     {
       "source_id": "lippu-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     },
     {
       "source_id": "ticketmaster-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     },
     {
       "source_id": "tiketti-fi-events",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     }
   ]
 }

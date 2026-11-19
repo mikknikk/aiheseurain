@@ -12,49 +12,57 @@
       "source_id": "moomin-official",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": "2026-12-19T10:10:56+02:00"
     },
     {
       "source_id": "moomin-museum",
       "critical": true,
       "last_checked_at": "2026-11-19T10:10:56+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "moomin-characters-news",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": "2026-12-19T10:10:56+02:00"
     },
     {
       "source_id": "tove-jansson-society",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": "2026-12-03T10:10:56+02:00"
     },
     {
       "source_id": "yle-culture",
       "critical": false,
       "last_checked_at": "2026-11-19T10:10:56+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "lippu-fi-events",
       "critical": false,
       "last_checked_at": "2026-11-19T10:10:56+02:00",
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     },
     {
       "source_id": "ticketmaster-fi-events",
       "critical": false,
       "last_checked_at": "2026-11-19T10:10:56+02:00",
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     },
     {
       "source_id": "tiketti-fi-events",
       "critical": false,
       "last_checked_at": "2026-11-19T10:10:56+02:00",
-      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
     }
   ]
 }
