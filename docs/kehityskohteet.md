@@ -377,6 +377,6 @@ Suositeltu toteutusjärjestys:
 - [x] Epäselvät API-/Pages-tilat ja ristiriitaiset checkpointit johtavat selvitykseen tai manuaaliseen katselmointiin, eivät automaattiseen onnistumiseen.
 - [x] Lisätään vikainjektiotestit julkaisun, manifestin vaihekirjoitusten ja checkpoint-tallennuksen kuittauskatkoille sekä saman run_id:n idempotentille uusinnalle.
 - [ ] PR-CI ja katselmointi.
-- [ ] Päivitetään tuotantoonottopäätösten ja aihekohtaisen siirtojärjestyksen dokumentointi testitulosten jälkeen.
+- [x] Dokumentoidaan ehdotettu aihekohtainen siirtojärjestys, hyväksyntäportit ja palautuspäätöksen vähimmäislokitietue `docs/aiheajojen-eristys.md`-tiedostoon.
 
 **Rajaus:** ei live-siirtymää, moduulin aktivointia, RSS-julkaisua tai automaatioiden asetusten, ajastusten, käynnistyskehotteiden tai kohdekeskustelujen muutoksia. Näytösvahti pysyy erillisenä.
