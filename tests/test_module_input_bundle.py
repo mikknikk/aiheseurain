@@ -28,6 +28,31 @@ class ModuleInputBundleTests(unittest.TestCase):
         schema = json.loads((ROOT / "schemas/module-input-bundle.schema.json").read_text(encoding="utf-8"))
         Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER).validate(json.loads(serialized))
 
+    def test_bundle_uses_explicit_runtime_module_state_override(self):
+        state = json.loads((ROOT / "data/module-state/tolkien.json").read_text(encoding="utf-8"))
+        state["checkpoint"]["last_successful_run"]["run_id"] = "runtime-only-checkpoint"
+        bundle = build_module_input_bundle(
+            "tolkien", task_id="tolkien", run_id="isolation-test-003",
+            period_start="2026-11-18T00:00:00+02:00",
+            period_end="2026-11-18T23:59:59+02:00",
+            module_state_override=state, root=ROOT,
+        )
+        serialized = bundle_to_json(bundle)
+        self.assertIn("runtime-only-checkpoint", serialized)
+        self.assertNotIn("runtime-only-checkpoint",
+                         (ROOT / "data/module-state/tolkien.json").read_text(encoding="utf-8"))
+
+    def test_wrong_module_state_override_is_rejected(self):
+        state = json.loads((ROOT / "data/module-state/tolkien.json").read_text(encoding="utf-8"))
+        state["module_id"] = "muumit"
+        with self.assertRaises(ModuleInputBundleError):
+            build_module_input_bundle(
+                "tolkien", task_id="tolkien", run_id="isolation-test-004",
+                period_start="2026-11-18T00:00:00+02:00",
+                period_end="2026-11-18T23:59:59+02:00",
+                module_state_override=state, root=ROOT,
+            )
+
     def test_bundle_is_recursively_read_only(self):
         bundle = self.build()
         with self.assertRaises(TypeError):
