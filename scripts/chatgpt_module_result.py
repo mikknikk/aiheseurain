@@ -56,6 +56,18 @@ def validate_chatgpt_result(
         raise ChatGPTResultError("ChatGPT-tuloksen seurantajakso ei vastaa suorituspyyntöä.")
     if _timestamp(payload["checked_at"], "checked_at") < _timestamp(request.requested_at, "requested_at"):
         raise ChatGPTResultError("Tuloksen tarkistusajankohta edeltää suorituspyyntöä.")
+    handoff = payload["handoff"]
+    expected_handoff = {
+        "module_id": request.module_id,
+        "module_definition_version": request.module_definition_version,
+        "contract_version": request.contract_version,
+        "run_id": request.run_id,
+        "period": {"start": request.period_start, "end": request.period_end},
+        "requested_at": request.requested_at,
+    }
+    for field, expected in expected_handoff.items():
+        if handoff.get(field) != expected:
+            raise ChatGPTResultError(f"ChatGPT-tuloksen handoff-kenttä {field} ei vastaa alkuperäistä pyyntöä.")
     if payload["status"] == "succeeded" and not payload["source_scan_complete"]:
         raise ChatGPTResultError("Onnistunut tulos edellyttää täydellistä lähdetarkistusta.")
     if "target_reports" in payload and "report_content" in payload:

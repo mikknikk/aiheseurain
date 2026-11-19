@@ -223,6 +223,10 @@ def _audit_record(result: ModuleRunResult) -> dict[str, Any]:
         "quality_passed": result.quality_passed,
         "published": result.published,
         "checkpoint_updated": result.checkpoint_updated,
+        "checked_at": result.checked_at,
+        "published_items": result.published_items,
+        "sources_checked": result.sources_checked,
+        "report_guid_refs": list(result.report_guid_refs),
         "comparison_equivalent": comparison.get("equivalent"),
         "error_code": result.error_code,
     }
@@ -499,7 +503,8 @@ class RoutedReportPublisher:
         self._last_receipt_details: list[dict[str, Any]] = []
 
     def publish_target_reports(self, module_id: str, run_id: str,
-                               target_reports: list[dict[str, Any]]) -> PublicationReceipt:
+                               target_reports: list[dict[str, Any]], *,
+                               publication_metadata: dict[str, Any] | None = None) -> PublicationReceipt:
         """Reititä ja julkaise yksi raportti kutakin seurantakohdetta kohti."""
         from scripts.publication_routing import (
             PublicationRoutingError, resolve_publication_plan,
@@ -511,7 +516,9 @@ class RoutedReportPublisher:
             raise AdapterError("Kohderaporteissa on virheellinen tai toistuva seurantakohde.")
         plans = []
         for item in target_reports:
-            if set(item) != {"target_id", "observation_types", "report_content"}:
+            required_fields = {"target_id", "observation_types", "report_content"}
+            optional_fields = {"target_version", "period", "checked_at"}
+            if not required_fields.issubset(item) or not set(item).issubset(required_fields | optional_fields):
                 raise AdapterError("Kohderaportin kentät eivät vastaa julkaisusopimusta.")
             try:
                 plan = resolve_publication_plan(

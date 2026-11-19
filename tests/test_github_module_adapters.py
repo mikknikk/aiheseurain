@@ -15,6 +15,7 @@ from scripts.publication_journal import PublicationJournalConflict
 from scripts.github_module_adapters import (
     GitHubFile, GitHubModuleStateStore, GitHubArtifactStore,
     GitHubPublicationJournal, GitHubPagesRssPublisher, GitHubRunRecorder,
+    GitHubHandoffStore, GitHubRotationStateStore,
     GitHubAdapterConflict, GitHubAdapterError, GitHubApiClient, GitHubApiError, PublicationCandidate,
 )
 
@@ -81,6 +82,10 @@ class GitHubAdapterTests(unittest.TestCase):
         old_feed = b'<rss version="2.0"><channel><title>Tolkien</title></channel></rss>'
         self.client.files[("main", "feeds/tolkien.xml")] = GitHubFile(
             old_feed, blob_sha(old_feed)
+        )
+        rotation = (ROOT / "data/seurantatila.json").read_bytes()
+        self.client.files[("main", "data/seurantatila.json")] = GitHubFile(
+            rotation, blob_sha(rotation)
         )
 
     def test_rss_publisher_rejects_default_actions_token(self):
@@ -431,13 +436,98 @@ class GitHubAdapterTests(unittest.TestCase):
             started_at="2026-11-19T09:00:00+02:00",
             finished_at="2026-11-19T09:05:00+02:00",
             source_scan_complete=True, quality_passed=True,
+            checked_at="2026-11-19T09:04:00+02:00",
+            published_items=1, sources_checked=3,
+            report_guid_refs=("urn:aiheseurain:tolkien:2026-11-19:abc",),
         )
         recorder.record(result)
-        path = "data/module-run-history/tolkien/run-212-history.json"
-        content = self.client.get_file(path, "module-runtime-state").content
+        prefix = "data/module-run-history/tolkien/run-212-history/"
+        paths = [path for (branch, path) in self.client.files if branch == "module-runtime-state" and path.startswith(prefix)]
+        self.assertEqual(len(paths), 1)
+        content = self.client.get_file(paths[0], "module-runtime-state").content
         self.assertIn(b"run-212-history", content)
+        self.assertIn(b"report_guid_refs", content)
         self.assertNotIn(b"report_content", content)
-        recorder.record(result)
+        # Uusi yritys samalle run_id:lle saa oman muuttumattoman auditointitietueen.
+        recorder.record(replace(
+            result, started_at="2026-11-19T09:10:00+02:00",
+            finished_at="2026-11-19T09:15:00+02:00",
+        ))
+        paths = [path for (branch, path) in self.client.files if branch == "module-runtime-state" and path.startswith(prefix)]
+        self.assertEqual(len(paths), 2)
+
+    def test_handoff_store_is_immutable_and_idempotent(self):
+        store = GitHubHandoffStore(self.client)
+        record = {
+            "schema_version": 1, "module_id": "tolkien",
+            "module_definition_version": "1.0.0", "contract_version": "1.0.0",
+            "run_id": "run-213-handoff", "task_id": "tolkien",
+            "feed_path": "feeds/tolkien.xml",
+            "period": {"start": "2026-11-18T00:00:00+02:00", "end": "2026-11-19T00:00:00+02:00"},
+            "requested_at": "2026-11-19T09:00:00+02:00",
+            "input_sha256": "a" * 64, "validated_at": "2026-11-19T09:01:00+02:00",
+        }
+        stored = store.store_or_verify(record)
+        self.assertEqual(store.load("tolkien", "run-213-handoff"), stored)
+        retried = dict(record, validated_at="2026-11-19T09:02:00+02:00")
+        self.assertEqual(store.store_or_verify(retried), stored)
+        with self.assertRaises(GitHubAdapterConflict):
+            store.store_or_verify(dict(retried, input_sha256="b" * 64))
+
+    def test_handoff_store_read_does_not_create_runtime_branch(self):
+        store = GitHubHandoffStore(self.client)
+        self.assertIsNone(store.load("tolkien", "run-213-missing"))
+        self.assertEqual(self.client.branches, {"main"})
+
+    def _successful_rotation_result(self, run_id="run-213-rotation"):
+        return ModuleRunResult(
+            module_id="muumit", module_type="topic",
+            module_definition_version="1.0.0", contract_version="1.0.0",
+            run_id=run_id, period_start="2026-11-18T00:00:00+02:00",
+            period_end="2026-11-19T00:00:00+02:00", mode="production",
+            status="succeeded", phase="complete",
+            started_at="2026-11-19T09:00:00+02:00",
+            finished_at="2026-11-19T09:05:00+02:00",
+            source_scan_complete=True, quality_passed=True,
+            published=True, checkpoint_updated=True,
+            checked_at="2026-11-19T09:04:00+02:00",
+            published_items=1, sources_checked=4,
+            report_guid_refs=("urn:aiheseurain:muumit:2026-11-19:abc",),
+        )
+
+    def test_rotation_advances_only_after_verified_checkpoint_and_is_idempotent(self):
+        store = GitHubRotationStateStore(self.client)
+        before, _ = store.load()
+        screening_before = deepcopy(before["separate_screening_watch"])
+        result = self._successful_rotation_result()
+        after, sha = store.advance(result, task_id="muumit", feed_path="feeds/muumit.xml")
+        self.assertEqual(after["rotation"]["next_task"], "wakaliwood")
+        self.assertEqual(after["rotation"]["last_completed_run_id"], result.run_id)
+        self.assertEqual(after["rotation"]["tasks"]["muumit"]["last_result"], "published")
+        self.assertEqual(after["separate_screening_watch"], screening_before)
+        retried, retry_sha = store.advance(result, task_id="muumit", feed_path="feeds/muumit.xml")
+        self.assertEqual(retried, after)
+        self.assertEqual(retry_sha, sha)
+
+    def test_rotation_rejects_partial_or_unpublished_result(self):
+        store = GitHubRotationStateStore(self.client)
+        result = replace(self._successful_rotation_result(), status="partial")
+        with self.assertRaises(GitHubAdapterError):
+            store.advance(result, task_id="muumit", feed_path="feeds/muumit.xml")
+        result = replace(self._successful_rotation_result(), published=False)
+        with self.assertRaises(GitHubAdapterError):
+            store.advance(result, task_id="muumit", feed_path="feeds/muumit.xml")
+
+    def test_rotation_rejects_out_of_order_task_and_process_module(self):
+        store = GitHubRotationStateStore(self.client)
+        with self.assertRaises(GitHubAdapterError):
+            store.advance(self._successful_rotation_result(), task_id="tolkien", feed_path="feeds/tolkien.xml")
+        process_result = replace(
+            self._successful_rotation_result(),
+            module_id="indian-film-screening-watch", module_type="process",
+        )
+        with self.assertRaises(GitHubAdapterError):
+            store.advance(process_result, task_id="indian_film_screenings", feed_path="feeds/intialaisten-elokuvien-naytokset.xml")
 
 
 if __name__ == "__main__":

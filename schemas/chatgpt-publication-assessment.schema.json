@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/chatgpt-publication-assessment.schema.json",
+  "title": "ChatGPT-raportin toimituksellinen julkaisuarvio",
+  "type": "object",
+  "required": [
+    "checklist",
+    "decision",
+    "reviewer_notes",
+    "claim_assessments"
+  ],
+  "properties": {
+    "checklist": {
+      "type": "object",
+      "required": [
+        "sources_opened",
+        "claim_support",
+        "source_independence",
+        "uncertainty",
+        "dates",
+        "tracking_period",
+        "duplicates",
+        "guid_preservation",
+        "xml_html",
+        "rss_structure",
+        "report_completeness",
+        "accessibility"
+      ],
+      "properties": {
+        "sources_opened": {
+          "$ref": "#/$defs/check"
+        },
+        "claim_support": {
+          "$ref": "#/$defs/check"
+        },
+        "source_independence": {
+          "$ref": "#/$defs/check"
+        },
+        "uncertainty": {
+          "$ref": "#/$defs/check"
+        },
+        "dates": {
+          "$ref": "#/$defs/check"
+        },
+        "tracking_period": {
+          "$ref": "#/$defs/check"
+        },
+        "duplicates": {
+          "$ref": "#/$defs/check"
+        },
+        "guid_preservation": {
+          "$ref": "#/$defs/check"
+        },
+        "xml_html": {
+          "$ref": "#/$defs/check"
+        },
+        "rss_structure": {
+          "$ref": "#/$defs/check"
+        },
+        "report_completeness": {
+          "$ref": "#/$defs/check"
+        },
+        "accessibility": {
+          "$ref": "#/$defs/check"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "properties": {
+            "sources_opened": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "claim_support": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "source_independence": {
+              "required": [
+                "evidence"
+              ],
+              "properties": {
+                "evidence": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "rejected"
+      ]
+    },
+    "reviewer_notes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "claim_assessments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/claim_assessment"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "check": {
+      "type": "object",
+      "required": [
+        "status",
+        "note"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "not_applicable"
+          ]
+        },
+        "note": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "not_applicable"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "minLength": 5
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "fail"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "note": {
+                "minLength": 5
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "claim_assessment": {
+      "type": "object",
+      "required": [
+        "claim_id",
+        "claim",
+        "verification_status",
+        "sources"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_status": {
+          "enum": [
+            "ensisijaislahteella_vahvistettu",
+            "riippumattomissa_toimituksellisissa_lahteissa_vahvistettu",
+            "yhden_toimituksellisen_lahteen_raportoima",
+            "nimettomaan_lahteeseen_perustuva",
+            "huhu",
+            "ristiriitainen_tai_selvittamaton"
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "source_id",
+              "source_class",
+              "source_role",
+              "independence"
+            ],
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]*$"
+              },
+              "source_class": {
+                "enum": [
+                  "A",
+                  "B",
+                  "C",
+                  "D"
+                ]
+              },
+              "source_role": {
+                "enum": [
+                  "ensisijainen",
+                  "toimituksellinen",
+                  "nimetty_asiantuntija",
+                  "anonyymi_tietolahde",
+                  "some_tai_yhteiso",
+                  "muu"
+                ]
+              },
+              "independence": {
+                "enum": [
+                  "riippumaton",
+                  "sama_alkupera",
+                  "ei_sovellu",
+                  "tuntematon"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

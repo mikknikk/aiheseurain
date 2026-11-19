@@ -41,7 +41,7 @@ jobs:
             }
             const file = files.data[0];
             const pattern = /^data\/chatgpt-inbox\/([a-z0-9][a-z0-9-]*)\/([A-Za-z0-9][A-Za-z0-9._:-]{2,127})\.json$/;
-            if (!["added", "modified"].includes(file.status) || !pattern.test(file.filename)) {
+            if (file.status !== "added" || !pattern.test(file.filename)) {
               core.setFailed("Palautus-PR saa lisätä vain uuden moduulitulos-JSONin oikeaan polkuun.");
               return;
             }

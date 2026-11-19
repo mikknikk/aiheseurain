@@ -91,7 +91,10 @@ class TargetReport:
         """Rajaa julkaisureitittimelle vain sen tarvitsemat tiedot."""
         return {
             "target_id": self.target_id,
+            "target_version": self.target_version,
             "observation_types": list(self.observation_types),
+            "period": {"start": self.period_start, "end": self.period_end},
+            "checked_at": self.checked_at,
             "report_content": self.report_content,
         }
 
@@ -157,6 +160,10 @@ class ModuleRunResult:
     checkpoint_updated: bool = False
     comparison: dict[str, Any] | None = None
     error_code: str | None = None
+    checked_at: str | None = None
+    published_items: int | None = None
+    sources_checked: int | None = None
+    report_guid_refs: tuple[str, ...] = ()
     schema_version: int = 1
 
     def to_dict(self) -> dict[str, Any]:
@@ -167,7 +174,9 @@ class ModuleRunResult:
             "mode":self.mode,"status":self.status,"phase":self.phase,"started_at":self.started_at,
             "finished_at":self.finished_at,"source_scan_complete":self.source_scan_complete,
             "quality_passed":self.quality_passed,"published":self.published,
-            "checkpoint_updated":self.checkpoint_updated,"comparison":self.comparison,"error_code":self.error_code
+            "checkpoint_updated":self.checkpoint_updated,"comparison":self.comparison,"error_code":self.error_code,
+            "checked_at":self.checked_at,"published_items":self.published_items,
+            "sources_checked":self.sources_checked,"report_guid_refs":list(self.report_guid_refs)
         }
 
 
@@ -197,6 +206,7 @@ class PublicationJournal(Protocol):
 
 class Publisher(Protocol):
     def publish(self, module_id: str, run_id: str, report_content: str, *, idempotency_key: str) -> PublicationReceipt: ...
+    def publish_target_reports(self, module_id: str, run_id: str, reports: list[dict[str, Any]], *, publication_metadata: dict[str, Any] | None = None) -> PublicationReceipt: ...
     def verify(self, receipt: PublicationReceipt) -> bool: ...
 
 
@@ -329,7 +339,9 @@ class ModuleOrchestrator:
                 status: str, phase: str, source_scan_complete: bool=False,
                 quality_passed: bool | None=None, published: bool=False,
                 checkpoint_updated: bool=False, comparison: ShadowComparison | None=None,
-                error_code: str | None=None) -> ModuleRunResult:
+                error_code: str | None=None, checked_at: str | None=None,
+                published_items: int | None=None, sources_checked: int | None=None,
+                report_guid_refs: tuple[str, ...]=()) -> ModuleRunResult:
         # Virheellisestä pyynnöstäkin muodostetaan turvallinen, skeeman mukainen
         # virhetulos. Alkuperäinen virhe kuvataan error_code-kentässä.
         version_pattern = re.compile(r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$")
@@ -358,7 +370,8 @@ class ModuleOrchestrator:
             source_scan_complete=source_scan_complete,quality_passed=quality_passed,
             published=published,checkpoint_updated=checkpoint_updated,
             comparison=({"equivalent":comparison.equivalent,"summary":comparison.summary} if comparison else None),
-            error_code=error_code
+            error_code=error_code,checked_at=checked_at,published_items=published_items,
+            sources_checked=sources_checked,report_guid_refs=tuple(report_guid_refs)
         )
         validate_run_result(result)
         self.run_records.append(result)
@@ -419,13 +432,17 @@ class ModuleOrchestrator:
                 return self._result(request,module_type,started,status="partial" if output.status!="failed" else "failed",
                                     phase="shadow_comparison" if request.mode=="shadow" else phase,
                                     source_scan_complete=output.source_scan_complete,quality_passed=True,
-                                    comparison=comparison,error_code="incomplete_source_scan")
+                                    comparison=comparison,error_code="incomplete_source_scan",
+                                    checked_at=output.checked_at,sources_checked=output.sources_checked,
+                                    report_guid_refs=output.report_guid_refs)
 
             if request.mode=="shadow":
                 phase="shadow_comparison"
                 comparison=self.comparator.compare(definition,request,output) if self.comparator else None
                 return self._result(request,module_type,started,status="succeeded",phase=phase,
-                                    source_scan_complete=True,quality_passed=True,comparison=comparison)
+                                    source_scan_complete=True,quality_passed=True,comparison=comparison,
+                                    checked_at=output.checked_at,sources_checked=output.sources_checked,
+                                    report_guid_refs=output.report_guid_refs)
 
             target_reports = (
                 [item.to_publication_dict() for item in output.target_reports]
@@ -457,16 +474,21 @@ class ModuleOrchestrator:
                     raise OrchestrationError(
                         "Kohdekohtaiset raportit vaativat reititetyn julkaisusovittimen."
                     )
-                receipt = routed_publish(request.module_id, request.run_id, target_reports)
+                receipt = routed_publish(
+                    request.module_id, request.run_id, target_reports,
+                    publication_metadata=output.metadata or {},
+                )
             else:
                 # Vanha moduulikohtainen julkaisupolku säilyy yhteensopivana.
                 receipt=self.publisher.publish(
                     request.module_id,request.run_id,output.report_content,
                     idempotency_key=f"{request.module_id}:{request.run_id}"
                 )
-            if not self.publisher.verify(receipt) or not receipt.verified:
+            if not receipt.verified or not self.publisher.verify(receipt):
                 return self._result(request,module_type,started,status="failed",phase=phase,
-                                    source_scan_complete=True,quality_passed=True,error_code="publication_unverified")
+                                    source_scan_complete=True,quality_passed=True,error_code="publication_unverified",
+                                    checked_at=output.checked_at,sources_checked=output.sources_checked,
+                                    report_guid_refs=receipt.report_guid_refs,published_items=receipt.published_items)
             self.publication_journal.advance(
                 request.module_id, request.run_id, "published",
                 updated_at=output.checked_at,
@@ -504,7 +526,9 @@ class ModuleOrchestrator:
             )
             return self._result(request,module_type,started,status="succeeded",phase="complete",
                                 source_scan_complete=True,quality_passed=True,published=True,
-                                checkpoint_updated=True)
+                                checkpoint_updated=True,checked_at=output.checked_at,
+                                published_items=receipt.published_items,sources_checked=output.sources_checked,
+                                report_guid_refs=receipt.report_guid_refs)
         except ProductionActivationRequired as exc:
             return self._result(request,module_type,started,status="rejected",phase=phase,error_code=exc.code)
         except ModuleInactiveError as exc:
@@ -513,7 +537,11 @@ class ModuleOrchestrator:
             code=getattr(exc,"code", "state_conflict" if isinstance(exc,StateConflictError) else type(exc).__name__)
             published=phase in {"artifact_persistence","checkpoint"}
             return self._result(request,module_type,started,status="partial" if published else "failed",
-                                phase=phase,published=published,error_code=str(code))
+                                phase=phase,published=published,error_code=str(code),
+                                checked_at=(output.checked_at if "output" in locals() else None),
+                                published_items=(receipt.published_items if "receipt" in locals() else None),
+                                sources_checked=(output.sources_checked if "output" in locals() else None),
+                                report_guid_refs=(receipt.report_guid_refs if "receipt" in locals() else ()))
 
     def run_many(self, requests: list[ModuleRunRequest], *, production_authorized: bool=False) -> list[ModuleRunResult]:
         """Aja moduulit erikseen ja eristä yhden moduulin virhe muista."""
