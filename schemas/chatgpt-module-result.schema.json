@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChatGPT module result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "module_id",
+    "module_definition_version",
+    "contract_version",
+    "run_id",
+    "period",
+    "status",
+    "source_scan_complete",
+    "checked_at",
+    "report_content"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "module_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "module_definition_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "contract_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128
+    },
+    "period": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "status": {
+      "enum": [
+        "succeeded",
+        "partial",
+        "failed"
+      ]
+    },
+    "source_scan_complete": {
+      "type": "boolean"
+    },
+    "checked_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "report_content": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources_checked": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "source_check_run_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "report_guid_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "artifacts": {
+      "type": "object"
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}
