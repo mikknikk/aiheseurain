@@ -812,9 +812,20 @@ class GitHubHandoffStore:
         file = self.client.get_file(self._path(module_id, run_id), self.branch)
         if file is None:
             return None
-        value = json.loads(file.content.decode("utf-8"))
-        if value.get("module_id") != module_id or value.get("run_id") != run_id:
-            raise GitHubAdapterError("Handoff-tiivisteen omistajuus ei vastaa polkua.")
+        try:
+            value = json.loads(file.content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise GitHubAdapterError("Handoff-tiiviste ei ole kelvollista JSONia.") from exc
+        required = {
+            "schema_version", "module_id", "module_definition_version",
+            "contract_version", "run_id", "task_id", "feed_path", "period",
+            "requested_at", "input_sha256", "validated_at",
+        }
+        if (not isinstance(value, dict) or set(value) != required
+                or value.get("module_id") != module_id or value.get("run_id") != run_id
+                or value.get("schema_version") != 1
+                or not re.fullmatch(r"[a-f0-9]{64}", str(value.get("input_sha256", "")))):
+            raise GitHubAdapterError("Handoff-tiivisteen omistajuus tai rakenne ei vastaa polkua.")
         return value
 
 
