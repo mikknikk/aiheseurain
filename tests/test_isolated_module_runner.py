@@ -69,6 +69,22 @@ class IsolatedModuleRunnerTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == "posix" and shutil.which("bwrap") and Path("/usr/bin/python3").is_file(),
                          "Linux bubblewrap and system Python are required for integration test")
+    def test_runner_cannot_replace_output_file_with_host_symlink(self):
+        with tempfile.TemporaryDirectory() as temp:
+            secret = Path(temp) / "host-secret.txt"
+            secret.write_text("DO NOT READ", encoding="utf-8")
+            source = (
+                "import pathlib, sys\\n"
+                "target = pathlib.Path(sys.argv[2])\\n"
+                "target.unlink()\\n"
+                "target.symlink_to(" + repr(str(secret)) + ")\\n"
+            )
+            with self.assertRaises(IsolatedRunnerError):
+                run_isolated_module(self.bundle, source, timeout_seconds=30)
+            self.assertEqual(secret.read_text(encoding="utf-8"), "DO NOT READ")
+
+    @unittest.skipUnless(os.name == "posix" and shutil.which("bwrap") and Path("/usr/bin/python3").is_file(),
+                         "Linux bubblewrap and system Python are required for integration test")
     def test_runner_cannot_modify_read_only_input(self):
         source = (
             "import pathlib, sys\n"
