@@ -48,8 +48,7 @@
         "source_id",
         "critical",
         "last_checked_at",
-        "access_limit",
-        "retry_after"
+        "access_limit"
       ],
       "properties": {
         "source_id": {
