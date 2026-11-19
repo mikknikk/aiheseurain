@@ -153,12 +153,13 @@ Hae myös muista suomalaisista sanoma-, kulttuuri- ja paikallismedioista. Tauluk
 | [Finnkino – elokuvat ja näytökset](https://www.finnkino.fi/elokuvat/) | Valtakunnallinen kaupallinen levitys, tulevat elokuvat ja näytösajat |
 | [BioRex – elokuvat ja näytökset](https://biorex.fi/ELOKUVAT/) | BioRexin teatteriverkoston ohjelmisto ja näytösajat |
 | [Kinoon.fi – Suomen näytösajat](https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157) | Kolmannen osapuolen näytöskooste ja lipunmyyntiin ohjaavat linkit; käytä löytämiseen ja täsmällisten päivien/aikojen ristiintarkistukseen. Lähdeluokka säilytetään docs/intialaisen-elokuvan-seuranta.md:ssa; RSS:ssä linkkiteksti nimeää lähteen mutta vahvistustasoa ei näytetä. |
+| [Valkokangas – Klara ja aurinko](https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/) | Kolmannen osapuolen näytöskooste; käytä täydentävänä lähteenä ja vahvista ajat teatterin omilta sivuilta. |
 | [Jämsän Kinotar – näytösajat](https://jamsankinotar.fi/elokuvat/naytosajat) | Kinotar 123:n oma ohjelmisto ja lipunmyynti; ensisijainen lähde Jämsän näytösaikojen vahvistamiseen. |
 | [Kinoafisha – Ramayana Turussa](https://fi.kinoafisha.info/turku/movies/8385353/) | Kolmannen osapuolen kaupunkikohtainen näytöslista; käytä ristiintarkistukseen ja täsmällisen teatteri-, päivä- ja kellonaikavastaavuuden tarkistamiseen. Ei korvaa teatterin omaa lähdettä. |
 | [Oulun kansainvälinen lasten- ja nuortenelokuvien festivaali – esitysaikataulu 2026](https://www.oulufilmfestival.fi/esitysaikataulu-2026/) | Festivaalin järjestäjän oma ohjelmisto ja päiväkohtainen esitysaikataulu; tarkista elokuvakohtaiselta sivulta tuotantomaa, kieli ja tekstitykset. |
 | [Kino Regina](https://kinoregina.fi/) | Arkisto-, erikois- ja festivaalinäytökset |
 | [Cinema Orion](https://www.cinemaorion.fi/) | Erikoisohjelmisto ja tapahtumanäytökset |
-| [Cinema Niagara](https://cinemaniagara.fi/) | Turun elokuvateatterin oma ohjelmisto ja näytösajat |
+| [Cinema Niagara](https://cinemaniagara.fi/) | Tampereen elokuvateatterin oma ohjelmisto ja näytösajat |
 | [Ihme Kompleksi](https://www.ihmekompleksi.fi/elokuvat/naytosajat) | Kankaanpään elokuvateatterin oma näytöslista ja lipunmyynti |
 | [Kotkan Leffat – Trio 123](https://www.kotkanleffat.fi/elokuvat/naytosajat?lang=fi) | Kotkan Trio 123:n oma näytöslista ja lipunmyynti |
 | [Kino 123 Veturi](https://www.kino123.fi/elokuvat/naytosajat) | Kuusankosken/Kouvolan teatterin oma näytöslista ja lipunmyynti |

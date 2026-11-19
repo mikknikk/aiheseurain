@@ -1,0 +1,207 @@
+{
+  "schema_version": 2,
+  "run_id": "intialaiset_elokuvat_naytokset-20261119T061058-0200",
+  "task_id": "intialaisten-elokuvien-naytokset",
+  "feed_path": "feeds/intialaisten-elokuvien-naytokset.xml",
+  "checked_at": "2026-11-19T06:10:58+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Kriittiset teatterilähteet Finnkino, BioRex, Kino Regina ja Cinema Orion tarkistettiin. Lisäksi avattiin Kinoon, Valkokangas, Cinema Niagara ja Kinopirtti sekä Suomen elokuvasäätiön, Cinema Mondon ja Filmikamarin lähteet; Cinema Niagaran näytöskohtainen lipunmyyntisivu tarkistettiin.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+        "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
+        "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
+        "https://cinemaniagara.fi/salikartta?id=54469",
+        "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
+        "https://biorex.fi/elokuvat/klara-and-the-sun/",
+        "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/",
+        "https://kinoregina.fi/",
+        "https://cinemaorion.fi/",
+        "https://www.ses.fi/",
+        "https://www.cinemamondo.fi/",
+        "https://www.filmikamari.fi/"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Kinoonin ajantasaiset listaukset näyttävät seitsemän Klara ja aurinko -näytöstä ja kaksi Ramayana-näytöstä 25.11.2026. Cinema Niagara ja Kinopirtti vahvistavat kaksi Klara-näytöstä omilla sivuillaan; Cinema Niagaran lipunmyyntisivu yksilöi 12.30 näytöksen. Kinopirtti ilmoittaa lisäksi englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset. Kahdentoista aiemman näytöksen tilamuutos perustuu tallennettuihin alkuaikoihin ja tarkistushetkeen.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+        "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
+        "https://cinemaniagara.fi/salikartta?id=54469",
+        "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Kinoon ja Valkokangas ovat koontipalveluja eikä niitä lasketa toisistaan riippumattomiksi teatterivahvistuksiksi. Cinema Niagara ja Kinopirtti ovat erilliset ensisijaiset teatterilähteet ja vahvistavat omat näytöksensä.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+        "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
+        "https://cinemaniagara.fi/salikartta?id=54469",
+        "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Viisi Klara-näytöstä ja kaksi Ramayana-näytöstä jäävät kolmannen osapuolen ilmoituksiksi. Klara ja aurinko säilyy tuotantomaan rajatapauksena; aiempaa ristiriitaa ei esitetä ratkaistuna. Facebook-lähteiden tavoittamattomuutta ei tulkita tyhjäksi ohjelmistoksi."
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Näytöspäivät 25.11.2026 erotetaan lähteiden tarkistusajoista. 12 aiemman näytöksen alkamisaika oli ohitettu 19.11.2026 klo 05.43.38; ajon viimeinen tarkistus tehtiin klo 06.10.58."
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Seurantajakso vastaa edellistä onnistunutta tarkistusta ja ajon päättymistä Suomen ajassa: 18.11.2026 klo 17.37.16–19.11.2026 klo 06.10.58."
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Pysyvät screening_id-tunnisteet ja kaikki aiemmat 113 tapahtumaa säilytettiin. Lisättiin yhdeksän uutta näytöstä, 12 tilamuutosta ja kaksi lähde-/esitystietojen korjaustapahtumaa; tunnisteissa ei ole duplikaatteja."
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Kaikki 17 main-haaran aiempaa RSS-GUIDia säilyvät muuttumattomina. Kaksi uutta päivitysitemiä saa yksilölliset, tämän ajon sisällöstä johdetut GUIDit; CI tarkistaa vanhojen GUIDien säilymisen."
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "RSS/XML:n jäsennettävyys ja kaikkien kuvausten HTML-elementtien tasapaino tarkistettiin. Sama PR:n CI suorittaa projektin XML- ja HTML-validoinnin."
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Syötteessä on 19 itemiä ja yksilölliset GUIDit. Item-tason link-elementtejä ei ole; koko raportti ja otsikoitu lähdeluettelo ovat description-CDATAssa."
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Klara- ja Ramayana-itemit sisältävät koko ajantasaisen tulevien näytösten listan, historiallisen listan, muutokset edelliseen julkaisuun ja suorat lähdelinkit. Kinopirtin 25.11. näytöksen esityskieli ja tekstitykset on täydennetty teatterin omasta elokuvasivusta."
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "Uusissa kuvauksissa on lang=fi, yksi h1, loogiset h2/h3-otsikot, semanttiset listat ja näytöskohtaiset kuvaavat linkkitekstit. Kuvia ei lisätty. Täyttä WCAG 2.2 AAA -vaatimustenmukaisuutta ei väitetä ilman erillistä avustavan teknologian testausta."
+    }
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "klara-2026-11-25-seven-showings",
+      "claim": "Klara ja aurinko -elokuvalle on listattu seitsemän näytöstä Suomessa 25.11.2026: Cinema Niagara Tampereella klo 12.30, Finnkino Scala Kuopiossa klo 14.45, Kinopirtti Kemissä klo 15.40, Riviera Punavuoressa klo 17.00, Ihme Kompleksi Kankaanpäässä klo 17.45 sekä Finnkino Kinopalatsi Turussa klo 20.45 ja Helsingissä klo 21.15.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kinoon",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Valtakunnallinen kolmannen osapuolen näytöskooste."
+        },
+        {
+          "source_id": "valkokangas",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Listaa lisäksi Riviera Punavuoren näytöksen."
+        },
+        {
+          "source_id": "cinema-niagara",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Teatterin oma lipunmyyntisivu vahvistaa Tampereen klo 12.30 näytöksen."
+        },
+        {
+          "source_id": "kinopirtti",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Teatterin oma elokuvasivu vahvistaa Kemin klo 15.40 näytöksen."
+        }
+      ],
+      "note": "Kaksi seitsemästä näytöksestä vahvistettiin teatterien omilta sivuilta; viisi muuta säilyvät kolmannen osapuolen ilmoituksina."
+    },
+    {
+      "claim_id": "ramayana-2026-11-25-two-showings",
+      "claim": "Ramayana: Rise of a Legend -elokuvalla on 25.11.2026 näytökset Finnkino Kinopalatsissa Helsingissä klo 18.45 ja Turussa klo 19.40.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kinoon",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Kinoon listaa molemmat ajat; Finnkinon omilta sivuilta ei saatu täsmävahvistusta."
+        }
+      ],
+      "note": "Molemmat ajat julkaistaan kolmannen osapuolen ilmoituksina."
+    },
+    {
+      "claim_id": "twelve-screenings-completed-2026-11-19",
+      "claim": "Kaksitoista aiemmin seurannassa ollutta näytöstä siirrettiin completed-tilaan, koska niiden tallennettu alkamisaika oli ohitettu tarkistushetkellä 19.11.2026 klo 05.43.38.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kinoon",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon"
+        },
+        {
+          "source_id": "finnkino",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        },
+        {
+          "source_id": "biorex",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        }
+      ],
+      "note": "Tämä on ajalliseen tarkistukseen perustuva tilamuutos, ei väite siitä, että jokainen näytös olisi varmasti toteutunut; mitään ei merkitty perutuksi."
+    },
+    {
+      "claim_id": "klara-production-country-boundary",
+      "claim": "Klara ja aurinko säilyy seurannassa tuotantomaan rajatapauksena: Cinema Orion ilmoittaa Intian tuotantomaaksi, mutta Kino Myyrin tuotantomaaluettelo poikkeaa.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "cinema-orion",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        },
+        {
+          "source_id": "kino-myyri",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon"
+        }
+      ],
+      "note": "Aiempi lähderistiriita säilytetään ratkaisemattomana."
+    },
+    {
+      "claim_id": "kinopirtti-2026-11-25-language-subtitles",
+      "claim": "Kinopirtin 25.11.2026 klo 15.40 Klara ja aurinko -näytös esitetään englanniksi, ja tekstitykset ovat suomeksi ja ruotsiksi.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "kinopirtti",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Teatterin oma elokuvasivu ilmoittaa esityskielen ja molemmat tekstityskielet."
+        }
+      ],
+      "note": "Tiedot koskevat nimenomaan Kinopirtin elokuvakohtaista näytöslistaa."
+    }
+  ],
+  "decision": "approved",
+  "reviewer_notes": [
+    "Ajo lisäsi kaksi RSS-päivitysitemiä: seitsemän uutta Klara ja aurinko -näytöstä ja kaksi Ramayana-näytöstä 25.11.2026.",
+    "Kaksi Klara-näytöstä vahvistettiin teatterien omilta sivuilta. Viisi Klara- ja kaksi Ramayana-näytöstä jäävät kolmannen osapuolen ilmoituksiksi.",
+    "Kaksitoista aiemmin julkaistua näytöstä siirtyi historiallisiin näytösaikoihin; aiempia tietueita tai RSS-versioita ei poistettu.",
+    "Kolme Facebook-lähdettä jäi teknisten käyttörajoitusten vuoksi tarkistamatta. Kaikki neljä kriittistä teatterilähdettä tarkistettiin.",
+    "Päähaaran onnistumisen tarkistuspistettä ei siirretä tässä PR:ssä. Se päivitetään vasta yhdistämisen, Pages-julkaisun ja julkisen RSS-takaisinluvun onnistuttua.",
+    "Kinopirtin oma elokuvasivu vahvisti englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset; tiedot lisättiin näytöshistoriaan ja RSS-riville.",
+    "Lopullisessa linkkitarkistuksessa viisi väärällä Turun alueparametrilla tallennettua Kinoon-linkkiä korjattiin koko Suomen listausnäkymään. Cinema Niagaran linkki tarkennettiin näytöskohtaiseen lipunmyyntisivuun; näytösajat eivät muuttuneet."
+  ]
+}
