@@ -20,6 +20,7 @@ from zoneinfo import ZoneInfo
 from urllib.parse import urlsplit
 
 from validate_source_coverage import validate_source_coverage
+from screening_publication_journal import ScreeningJournalError, validate_journal
 
 
 # ROOT tarkoittaa projektin juurikansiota. Koska tämä skripti on scripts/-
@@ -1110,6 +1111,24 @@ def validate_feeds():
 
 
 
+
+def validate_screening_publication_journal(state):
+    """Tarkistaa näytösvahdin keskeneräisten ja valmiiden julkaisujen päiväkirjan.
+
+    Päiväkirja yhdistää saman ajon RSS-sisällön, Pages-varmennuksen ja
+    tilatietojen synkronoinnin. Keskeneräinen merkintä ei saa siirtää
+    viimeisimmän onnistuneen tarkistuksen aikaleimaa.
+    """
+    path = ROOT / "data/screening-publication-journal.json"
+    if not path.is_file():
+        fail("data/screening-publication-journal.json puuttuu")
+    try:
+        journal = json.loads(path.read_text(encoding="utf-8"))
+        validate_journal(journal, state, FEED_CATALOG)
+    except (json.JSONDecodeError, UnicodeDecodeError, ScreeningJournalError) as exc:
+        fail(f"näytösvahdin julkaisupäiväkirja on virheellinen: {exc}")
+
+
 def validate_startup_prompts(state):
     """Varmistaa kolmen automaation käynnistyskehotteiden tunnisteiden eheyden.
 
@@ -1193,6 +1212,9 @@ def main():
     screening_history = validate_screening_history()
     validate_screening_history_rss(screening_history)
 
+    # Varmistetaan, ettei keskeneräisen näytösjulkaisun checkpointia ole siirretty.
+    validate_screening_publication_journal(state)
+
     # Tarkistetaan lähderekisteri ja ajokohtaisen kattavuuslokin eheys.
     validate_source_coverage()
 
@@ -1208,7 +1230,7 @@ def main():
     print("OK: README, tehtäväjono, feed-polut, seurantatila ja käynnistyskehotteiden tunnisteet ovat yhdenmukaiset.")
     print("OK: aikaleimat, seurantajaksot, erillinen näytösvahti ja näytösten muutoshistoria.")
     print("OK: seurantatila vastaa JSON Schema Draft 2020-12 -määrittelyä.")
-    print("OK: näytöshistoria ja Kehitysjonon aineiston skeema ovat kelvollisia JSON Schema Draft 2020-12 -määrittelyjä.")
+    print("OK: näytöshistoria, näytösvahdin julkaisupäiväkirja ja Kehitysjonon aineiston skeema ovat kelvollisia JSON Schema Draft 2020-12 -määrittelyjä.")
     print("OK: RSS:n historialliset näytösajat vastaavat JSON-historian completed-tietueita.")
 
 
