@@ -98,7 +98,9 @@ class GitHubAdapterTests(unittest.TestCase):
         calls = {"put": 0}
         def request(method, path, payload=None):
             if method == "GET":
-                return None
+                error = GitHubApiError("not found")
+                error.status = 404
+                raise error
             if method == "PUT":
                 calls["put"] += 1
                 if calls["put"] == 1:
