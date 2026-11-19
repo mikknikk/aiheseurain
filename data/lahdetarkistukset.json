@@ -425,13 +425,72 @@
         "cinema-mondo",
         "filmikamari"
       ]
+    },
+    {
+      "run_id": "intialaiset_elokuvat_naytokset-20261119T094800-0200",
+      "task_id": "intialaiset_elokuvat_naytokset",
+      "started_at": "2026-11-19T09:48:00+02:00",
+      "ended_at": "2026-11-19T09:48:00+02:00",
+      "status": "partial",
+      "checked_source_ids": [
+        "finnkino",
+        "biorex",
+        "cinema-orion",
+        "kino-myyri",
+        "finnish-film-foundation",
+        "cinema-mondo",
+        "filmikamari"
+      ],
+      "unchecked_sources": [
+        {
+          "source_id": "kino-regina",
+          "reason": "Kino Reginan virallinen ohjelmistosivu ei palauttanut luettavaa ajantasaista ohjelmaa (sivu jäi lataus-/virhetilaan). Kolmannen osapuolen teatterisivun ohjelmatieto oli vanhentunut (päivitetty 11.10.2026), joten sitä ei käytetty korvaavana lähdetarkistuksena."
+        },
+        {
+          "source_id": "finbolly",
+          "reason": "FinBolly Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena."
+        },
+        {
+          "source_id": "fintamil",
+          "reason": "FinTamil Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena."
+        },
+        {
+          "source_id": "rasa-entertainment",
+          "reason": "Rasa Entertainment -Facebook-sivulta ei saatu luettavaa julkista sisältöä; hakutulosten katkelmia ei käsitelty lähteen tarkistuksena."
+        }
+      ],
+      "coverage_notes": [
+        "Seurantajakso Suomen ajassa: 2026-11-19T06:10:58+02:00–2026-11-19T09:48:00+02:00.",
+        "Löydökset: ei uusia näytöksiä, näytösaikojen muutoksia, peruutuksia tai jakson aikana päättyneitä näytöksiä. RSS:ää ja näytöshistoriaa ei muutettu.",
+        "Finnkinon virallinen lipunvarausnäkymä vahvisti Ramayana: Rise of a Legend -näytöksen Kinopalatsissa 19.11. klo 19.30 (hindi, englanninkielinen tekstitys). Kolmannen osapuolen Leffa-ajat-listaus näytti ristiriitaisesti 18.30; virallinen showtimeId=1100-17034 -varausnäkymä ratkaisi ristiriidan klo 19.30:een.",
+        "Kinoonin tämänhetkiset Klara ja aurinko -listaukset (19.–25.11.) sekä Ramayana-listaukset (19. ja 21.–25.11.) vastasivat näytöshistorian tulevia tietueita; uusia eroja ei löytynyt.",
+        "BioRexin oma ohjelmisto näytti Klara ja aurinko -näytöksen 19.11. klo 15.15 Hämeenlinnassa, joka vastaa jo kirjattua näytöstä. BioRexin Ramayana-sivulla ei ollut julkaistuja BioRex-näytöksiä.",
+        "Cinema Orionin Ohjelmistossa nyt- ja Tulossa pian -listat eivät sisältäneet seurannan piiriin kuuluvaa intialaista elokuvaa; Klara ja aurinko -sivulla ei ollut tulevia Orion-näytöksiä.",
+        "Kino Myyrin oma ohjelmisto sisälsi Klara ja aurinko -näytöksen 18.11.; tulevassa ohjelmistossa ei näkynyt uutta intialaista näytöstä. Suomen elokuvasäätiön, Cinema Mondon ja Filmikamarin ajankohtaisista sivuista ei löytynyt uutta Suomessa järjestettävää intialaisten elokuvien näytöstä tai tapahtumaa.",
+        "Kielihaku kattoi suomen ja englannin sekä hindin, tamilin, telugun, kannadan, malajalamin, bengalin, marathin, punjabin, assamin ja odian omakielisiä hakutermejä. Uusia Suomeen sijoittuvia tapahtumia ei löytynyt.",
+        "Kriittisistä lähteistä Finnkino, BioRex ja Cinema Orion tarkistettiin. Kino Regina jäi tarkistamatta sivun lataus-/virhetilan vuoksi; siksi ajo on partial eikä onnistumisen tarkistuspistettä siirretä.",
+        "FinBolly Movies-, FinTamil Movies- ja Rasa Entertainment -Facebook-sivut jäivät tarkistamatta käyttörajoituksen vuoksi. Tavoittamattomuutta ei tulkittu tyhjäksi ohjelmistoksi."
+      ],
+      "registry_source_ids": [
+        "finnkino",
+        "biorex",
+        "kino-regina",
+        "cinema-orion",
+        "kino-myyri",
+        "finbolly",
+        "fintamil",
+        "rasa-entertainment",
+        "finnish-film-foundation",
+        "cinema-mondo",
+        "filmikamari"
+      ]
     }
   ],
   "latest_by_task": {
     "tolkien": "2026-11-16T18:00:19+02:00",
-    "intialaiset_elokuvat_naytokset": "2026-11-19T06:10:58+02:00",
+    "intialaiset_elokuvat_naytokset": "2026-11-19T09:48:00+02:00",
     "taylor_swift": "2026-11-17T13:03:45+02:00",
     "gurmeet_ram_rahim_singh": "2026-11-18T14:00:19+02:00"
   },
-  "updated_at": "2026-11-19T06:10:58+02:00"
+  "updated_at": "2026-11-19T09:48:00+02:00"
 }

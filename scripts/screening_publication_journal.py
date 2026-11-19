@@ -175,27 +175,48 @@ def _validate_cross_references(latest: dict[str, Any], state: dict[str, Any],
             or checked & unchecked or checked | unchecked != registry_ids):
         raise ScreeningJournalError("Lähdeajon tarkistetut, tarkistamatta jääneet ja rekisterin lähdejoukot eivät täsmää.")
 
-    # Viimeisimmän lähdeajon pitää olla myös tehtävän latest_by_task-viite.
-    if source_log.get("latest_by_task", {}).get(TASK_ID) != source_run.get("ended_at"):
-        raise ScreeningJournalError("latest_by_task ei osoita päiväkirjan viimeisimpään näytösvahtiajoon.")
+    source_ended = _time(source_run["ended_at"], "source_run.ended_at")
+
+    # latest_by_task and the mutable registry describe the newest source scan.
+    # An older prepared/completed publication must remain valid after a later
+    # partial scan; its immutable source-run record remains the publication evidence.
+    latest_task_run = next(
+        (run for run in reversed(source_log.get("runs", [])) if run.get("task_id") == TASK_ID),
+        None,
+    )
+    if latest_task_run is None:
+        raise ScreeningJournalError("Näytösvahtitehtävältä puuttuu lähdetarkistusajo.")
+    if source_log.get("latest_by_task", {}).get(TASK_ID) != latest_task_run.get("ended_at"):
+        raise ScreeningJournalError("latest_by_task ei osoita tehtävän viimeisimpään lähdetarkistusajoon.")
+    if _time(latest_task_run["ended_at"], "latest_task_run.ended_at") < source_ended:
+        raise ScreeningJournalError("Viimeisin lähdetarkistusajo on päiväkirjan lähdeajoa vanhempi.")
 
     registry_sources = source_registry.get("sources", [])
     registry_by_id = {item.get("source_id"): item for item in registry_sources}
     if len(registry_by_id) != len(registry_sources) or set(registry_by_id) != registry_ids:
         raise ScreeningJournalError("Näytösvahtiajon lähdejoukko ei vastaa aihekohtaista lähderekisteriä.")
 
-    started = _time(source_run["started_at"], "source_run.started_at")
-    ended = _time(source_run["ended_at"], "source_run.ended_at")
-    for source_id in checked:
+    latest_checked = set(latest_task_run.get("checked_source_ids", []))
+    latest_unchecked_list = [item.get("source_id") for item in latest_task_run.get("unchecked_sources", [])]
+    latest_unchecked = set(latest_unchecked_list)
+    latest_registry_ids = set(latest_task_run.get("registry_source_ids", []))
+    if (None in latest_unchecked or len(latest_unchecked_list) != len(latest_unchecked)
+            or latest_checked & latest_unchecked or latest_checked | latest_unchecked != latest_registry_ids
+            or latest_registry_ids != set(registry_by_id)):
+        raise ScreeningJournalError("Viimeisimmän lähdeajon lähdejoukot eivät täsmää rekisteriin.")
+
+    latest_started = _time(latest_task_run["started_at"], "latest_task_run.started_at")
+    latest_ended = _time(latest_task_run["ended_at"], "latest_task_run.ended_at")
+    for source_id in latest_checked:
         checked_at = registry_by_id[source_id].get("last_checked_at")
         if checked_at is None:
             raise ScreeningJournalError(f"Tarkistetulta lähteeltä {source_id} puuttuu last_checked_at.")
         checked_time = _time(checked_at, f"{source_id}.last_checked_at")
-        if checked_time < started or checked_time > ended:
-            raise ScreeningJournalError(f"Lähteen {source_id} tarkistusaika ei kuulu tähän lähdeajoon.")
-    for source_id in unchecked:
+        if checked_time < latest_started or checked_time > latest_ended:
+            raise ScreeningJournalError(f"Lähteen {source_id} tarkistusaika ei kuulu viimeisimpään lähdeajoon.")
+    for source_id in latest_unchecked:
         checked_at = registry_by_id[source_id].get("last_checked_at")
-        if checked_at is not None and _time(checked_at, f"{source_id}.last_checked_at") >= started:
+        if checked_at is not None and _time(checked_at, f"{source_id}.last_checked_at") >= latest_started:
             raise ScreeningJournalError(f"Tarkistamatta jääneen lähteen {source_id} tarkistusaika on virheellisesti päivitetty.")
 
     # Legacy-seurantatila saa siirtyä vasta, kun Pages on varmennettu ja
