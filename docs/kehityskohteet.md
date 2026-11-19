@@ -284,3 +284,19 @@ Suositeltu toteutusjärjestys:
 **Käyttöönoton portit:** kaikki moduulit pysyvät oletusarvoisesti inactive-tilassa. Tuotantotila edellyttää moduulikohtaista aktivointia, hyväksyttyä varjotilan vertailua, toimivaa palautusmenettelyä sekä pysyviä GitHub-sovittimia. Vanha ja uusi polku eivät saa julkaista samaa aihetta tai seurantajaksoa rinnakkain.
 
 **Erillistä hyväksyntää vaativat muutokset:** tallennetun ChatGPT-automaation käynnistyskehote, tehtäväasetukset, ajastus, aikavyöhyke ja kohdekeskustelu. Näitä ei muuteta teknisten tiketöintien tai varjotilan toteutuksen perusteella. Jokainen live-siirtymä vaatii käyttäjän nimenomaisen hyväksynnän. Intialaisten elokuvien päivittäinen näytösvahti pysyy tämän työn ulkopuolella eikä sitä siirretä aihekierrokseen.
+
+
+### Issue #211 – ChatGPT-tuloksen turvallinen palautuskanava
+
+**Tila:** toteutus PR:ssä; live-automaation asetuksia ei muutettu.
+
+- [x] Valittiin auditoitava GitHub-pull request -palautuskanava ilman ulkoista AI-palvelua tai uutta pysyvää automaatiota.
+- [x] Lisättiin yhden moduulin tulokselle handoff-tunnisteet ja tiivistekenttä tulossopimukseen.
+- [x] Lisättiin vastaanottovalidaattori, joka tarkistaa tiedostopolun, skeeman, topic-moduulin omistajuuden, rekisteriversiot sekä handoffin tunnisteiden vastaavuuden.
+- [x] Lisättiin `pull_request_target`-työnkulku, joka käyttää vain kohdehaaran luotettua validointikoodia, lukee PR:stä yhden uuden JSON-tiedoston eikä suorita PR:n koodia.
+- [x] Lisättiin päähaaran vastaanottotulosten uudelleenvalidointi ja regressiotestit.
+- [x] Lisättiin palautuskehotteen luonnos muuttamatta aktiivista käynnistyskehotetta.
+- [ ] Varmista GitHub Actions -CI:n läpäisy PR:ssä ja tee tarvittavat korjaukset.
+- [ ] Varmista erikseen, onko GitHub-yhteys ja kirjoitusoikeus käytettävissä nykyisessä ajastetussa ChatGPT-tehtävässä ennen live-käyttöä.
+
+**Rajoite:** `input_sha256` tarkistetaan tässä vaiheessa muodoltaan ja handoff-metatietojen sisäisenä viitteenä. Sitä ei vielä verrata riippumattomasti pysyvästi tallennettuun alkuperäiseen handoffiin. Tämä tehdään osana tikettejä #212–#213. Vastaanotto-PR ei julkaise RSS:ää eikä päivitä checkpointia.
