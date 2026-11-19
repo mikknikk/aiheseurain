@@ -29,6 +29,8 @@ def prepared_record(run_id=RUN_ID):
         "run_id": run_id,
         "period": {"start": START, "end": END},
         "prepared_at": END,
+        "source_check_run_id": "screening-source-run-20261120",
+        "source_check_ended_at": END,
         "phase": "prepared",
         "feed": {
             "path": FEED_PATH,
@@ -164,6 +166,137 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
         )
         with self.assertRaises(ScreeningJournalError):
             validate_journal(completed, state(START), feed_catalog())
+
+
+    def consistent_inputs(self, journal):
+        """Luo päiväkirjaan täsmäävät lähde-, moduuli- ja RSS-aineistot."""
+        import hashlib
+
+        record = journal["runs"][-1]
+        guids = record["feed"]["guids"]
+        feed_bytes = (
+            "<rss><channel>"
+            + "".join(f"<item><guid>{guid}</guid></item>" for guid in guids)
+            + "</channel></rss>"
+        ).encode("utf-8")
+        record["feed"]["sha256"] = hashlib.sha256(feed_bytes).hexdigest()
+        source_run = {
+            "run_id": record["source_check_run_id"],
+            "task_id": "intialaiset_elokuvat_naytokset",
+            "started_at": START,
+            "ended_at": END,
+            "status": "complete",
+            "checked_source_ids": ["source-a"],
+            "unchecked_sources": [{"source_id": "source-b", "reason": "Sivua ei saatu avattua."}],
+            "registry_source_ids": ["source-a", "source-b"],
+        }
+        source_log = {
+            "runs": [source_run],
+            "latest_by_task": {"intialaiset_elokuvat_naytokset": END},
+        }
+        source_registry = {
+            "updated_at": END,
+            "sources": [
+                {"source_id": "source-a", "last_checked_at": END},
+                {"source_id": "source-b", "last_checked_at": None},
+            ],
+        }
+        module_state = {
+            "history": {"source_check_run_refs": [record["source_check_run_id"]]},
+            "publication": {"feed_path": FEED_PATH, "guid_refs": guids},
+        }
+        return source_log, source_registry, module_state, feed_bytes
+
+    def validate_consistent(self, journal, last_success=START):
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        validate_journal(
+            journal, state(last_success), feed_catalog(),
+            source_log=source_log,
+            source_registry=source_registry,
+            module_state=module_state,
+            feed_bytes=feed_bytes,
+        )
+
+    def test_cross_file_consistency_accepts_matching_pending_run(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        self.validate_consistent(journal)
+
+    def test_cross_file_consistency_rejects_rss_hash_mismatch(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        feed_bytes += b" "
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                journal, state(), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
+
+    def test_cross_file_consistency_rejects_rss_guid_mismatch(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        module_state["publication"]["guid_refs"] = ["wrong-guid"]
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                journal, state(), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
+
+    def test_cross_file_consistency_requires_source_run(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        source_log["runs"] = []
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                journal, state(), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
+
+    def test_cross_file_consistency_requires_latest_by_task(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        source_log["latest_by_task"]["intialaiset_elokuvat_naytokset"] = START
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                journal, state(), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
+
+    def test_cross_file_consistency_rejects_source_registry_timestamp_mismatch(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        source_registry["sources"][0]["last_checked_at"] = "2026-11-18T23:00:00+02:00"
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                journal, state(), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
+
+    def test_cross_file_consistency_requires_module_source_reference(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        module_state["history"]["source_check_run_refs"] = []
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                journal, state(), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
+
+    def test_cross_file_consistency_rejects_missing_registry_source(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        source_log, source_registry, module_state, feed_bytes = self.consistent_inputs(journal)
+        source_registry["sources"].pop()
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(
+                journal, state(), feed_catalog(),
+                source_log=source_log, source_registry=source_registry,
+                module_state=module_state, feed_bytes=feed_bytes,
+            )
 
 
 if __name__ == "__main__":
