@@ -39,6 +39,7 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Toteutetut kohteet
 
+- [x] **Näytösvahtijulkaisun keskeytystestit (#185).** PR #186 lisää `recovery_action`-päätösfunktion ja vikainjektiotestit, jotka kattavat Pagesin odottamisen ja uusinnan, julkisen takaisinluvun ristiriidat, epäselvät API-tilat, checkpointin viimeistelyn sekä valmiin julkaisun varmennuksen. Tuntematonta tilaa ei tulkita onnistumiseksi.
 - [x] **Näytösvahtijulkaisun tietojen eheys (#182).** PR #183 vertaa päiväkirjan RSS-tiivistettä, itemien GUIDeja, lähdeajolokia, lähderekisterin tarkistusaikoja, moduulitilan lähde- ja GUID-viitteitä sekä seurantatilan onnistumispistettä. Regressiotesti validoi myös 19.11.2026 ajon todelliset tiedostot. Moduulin migraation checkpoint jätetään tarkoituksellisesti vanhaksi snapshotiksi.
 - [x] **Näytösvahtiajon julkaisun palautuminen (#179).** PR #180 lisää pysyvän, skeemavalidoidun ajopäiväkirjan, idempotentit valmistelu- ja valmistumissiirtymät sekä palautumisen CI-testit. Keskeneräinen ajo estää uuden seurantajakson aloittamisen, ja viimeisin onnistumispiste sidotaan päiväkirjan vaiheeseen. Näytösvahtiohje päivitettiin versioon 1.4.4; ajastusta ja käynnistyskehotetta ei muutettu.
 - [x] **Moduulikohtainen tila ja historia (#106).** Kymmenen tilatiedostoa, vanhojen checkpointien ja historiaviitteiden migraatio sekä idempotentti, osittaisia ajoja hylkäävä checkpoint-siirtymä.
@@ -85,10 +86,6 @@ Uusien RSS-itemien GUID-muoto on `urn:aiheseurain:<aihe>:<alkuperäinen-päiväm
 ### Tuotantopalvelujen käyttöönotto (erillinen päätös)
 
 Tiketin #107 AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, kustannusrajat, aikakatkaisut, uusinnat ja auditointi ovat valmiit. Tuotannon reitityskonfiguraatio on edelleen tyhjä eikä testiadaptereissa käytetä verkkoa tai tunnuksia. Todellisen palveluntarjoajan, GitHub-pohjaisen tallennuksen, tuotantojulkaisun ja automaatiokytkennän käyttöönotto vaatii erillisen teknisen suunnitelman ja käyttäjän hyväksynnän.
-
-### Näytösvahtijulkaisun keskeytystestit (#185)
-
-**Toteutus käynnissä:** lisätään palautumisen päätöslogiikka ja vikainjektiotestit, jotka simuloivat Pages-julkaisun, julkisen takaisinluvun ja checkpointin viimeistelyn keskeytyksiä sekä epäselviä GitHub-vastauksia.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
