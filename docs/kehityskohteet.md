@@ -256,3 +256,15 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 - [ ] Tee laaja fault-injection-testaus oikeassa GitHub Actions- ja Pages-ympäristössä, mukaan lukien katkaisu jokaisen vaiheen jälkeen.
 
 **Rajaus:** nykyiset RSS-URL-osoitteet, Pages-asetukset ja automaatioiden ajastukset, ohjeet sekä kohdekeskustelut säilyivät. Toteutus ei luo erillistä julkaisurepositoriota eikä muuta tuotannon julkaisukohdetta. Keskeytyneen ajon idempotentti jatkaminen, GitHub API:n epäselvien vastausten käsittely ja operatiivinen hälytys ovat edelleen avoinna; tätä ei pidä tulkita täysin toimintavarmaksi palautusratkaisuksi.
+
+
+### Aiheajojen tekninen eristäminen
+
+**Tavoite:** jokainen aiheajo saa vain oman moduulinsa sisällön. Yhteinen koordinaattori valitsee tehtävän ja hoitaa teknisen elinkaaren; aihekohtainen runner ei lue muiden aiheiden ohjeita, lähteitä, kohteita, tilaa tai historiaa.
+
+- [ ] **#199 – Eristetyn syötepaketin sopimus:** ensimmäinen sovellusrajapinnan toteutus lisätty; jatka sopimuksen skeema- ja reunatapausten vahvistamista.
+- [ ] **#200 – Eristetty suoritusympäristö:** erillinen työtila/prosessi ja rajattu tiedostonäkymä; ei väitetä OS-tason sandboxia ennen sen todentamista.
+- [ ] **#201 – CI-eristystestit:** estä muiden moduulien tietojen päätyminen runner-pakettiin ja estä ristiinviittaukset.
+- [ ] **#202 – Pääautomaation siirto:** vaihda laaja aihekierron lukujärjestys koordinaattorin ja moduulikohtaisen käynnistyksen malliin. Käynnistyskehotteen ja live-automaation asetusten muuttaminen vaatii erillisen hyväksynnän.
+
+Nykyinen ensimmäinen toteutus on sovelluskerroksen rajaus: se antaa runnerille vain moduulin määrityksen, omat kohteet, omat lähteet, oman viimeisimmän checkpointin ja oman julkaisusyötteen GUID-viitteet. Se ei vielä estä saman prosessin erikseen valtuutettua tiedostolukua. Näytösvahti pysyy erillisenä päivittäisenä prosessina eikä kuulu uutisaiheiden kiertoon.
