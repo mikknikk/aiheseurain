@@ -1,11 +1,12 @@
 """Kytke yksi vastaanotettu ChatGPT-tulos moduuliorkestrointiin.
 
 Tämä komentorivityökalu käsittelee vain main-haaraan hyväksytyn yhden tulostiedoston.
-Se suorittaa tuloksen ainoastaan kirjoituksettomassa varjotilassa; tuotantokytkentä kuuluu tikettiin #215.
+Oletustila on kirjoitukseton shadow; tuotantotila vaatii erillisen kutsulipun ja aktiivisen moduulin.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import subprocess
