@@ -22,7 +22,7 @@ class ModuleStateMigrationTests(unittest.TestCase):
         self.assertEqual(validate_state_migration(), [])
 
     def test_screening_legacy_state_can_advance_after_verified_publication(self):
-        """Vanha automaatiotila saa edetä, kun täydellinen ajo ja julkaisu on todennettu."""
+        """Uudempi osittainen yritys ei mitätöi aiempaa hyväksyttyä onnistumista."""
         with tempfile.TemporaryDirectory() as temporary:
             test_root = Path(temporary)
             for folder in ("data", "modules", "feeds", "docs", "reports"):
@@ -36,21 +36,17 @@ class ModuleStateMigrationTests(unittest.TestCase):
 
                 log_path = test_root / "data/lahdetarkistukset.json"
                 log = json.loads(log_path.read_text(encoding="utf-8"))
-                latest = next(
+                successful = next(
                     item for item in reversed(log["runs"])
                     if item["task_id"] == "intialaiset_elokuvat_naytokset"
+                    and item["status"] == "complete"
+                    and item["ended_at"] == task["last_successful_check"]
                 )
-                self.assertEqual(latest["status"], "complete")
-                self.assertEqual(latest["ended_at"], task["last_successful_check"])
-                self.assertEqual(
-                    log["latest_by_task"]["intialaiset_elokuvat_naytokset"],
-                    task["last_successful_check"],
-                )
-                self.assertEqual(len(latest["checked_source_ids"]), task["sources_checked"])
+                self.assertEqual(successful["ended_at"], task["last_successful_check"])
                 expected_period_note = (
                     f"Seurantajakso Suomen ajassa: {task['last_period_start']}–{task['last_period_end']}."
                 )
-                self.assertIn(expected_period_note, latest["coverage_notes"])
+                self.assertIn(expected_period_note, successful["coverage_notes"])
 
                 module_path = test_root / "data/module-state/indian-film-screening-watch.json"
                 module_state = json.loads(module_path.read_text(encoding="utf-8"))
@@ -60,26 +56,30 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 )
                 self.assertEqual(validate_state_migration(), [])
 
-                # Uudempi osittainen yritys kirjataan viimeisimmäksi havainnoksi,
-                # mutta se ei muuta viimeisintä onnistunutta tarkistuspistettä.
+                # Lisää erillinen myöhempi partial-ajo. Se saa päivittää viimeisimmän
+                # yrityksen tilan ja lähdeviitteet, mutta ei onnistumisen checkpointia.
                 partial_run = {
-                    "run_id": "intialaiset_elokuvat_naytokset-20261119T094800-0200",
+                    "run_id": "intialaiset_elokuvat_naytokset-test-partial-20990101",
                     "task_id": "intialaiset_elokuvat_naytokset",
-                    "started_at": "2026-11-19T09:48:00+02:00",
-                    "ended_at": "2026-11-19T09:48:00+02:00",
+                    "started_at": "2099-01-01T00:00:00+02:00",
+                    "ended_at": "2099-01-01T00:00:00+02:00",
                     "status": "partial",
-                    "checked_source_ids": ["finnkino", "biorex", "cinema-orion", "kino-myyri", "finnish-film-foundation", "cinema-mondo", "filmikamari"],
+                    "checked_source_ids": ["finnkino"],
                     "unchecked_sources": [
                         {"source_id": "kino-regina", "reason": "Ohjelmistosivu ei ollut luettavissa."}
                     ],
-                    "coverage_notes": ["Seurantajakso Suomen ajassa: 2026-11-19T06:10:58+02:00–2026-11-19T09:48:00+02:00."],
-                    "registry_source_ids": ["finnkino", "biorex", "kino-regina", "cinema-orion", "kino-myyri", "finbolly", "fintamil", "rasa-entertainment", "finnish-film-foundation", "cinema-mondo", "filmikamari"]
+                    "coverage_notes": ["Testiajo: osittainen lähdekattavuus."],
+                    "registry_source_ids": [
+                        "finnkino", "biorex", "kino-regina", "cinema-orion", "kino-myyri",
+                        "finbolly", "fintamil", "rasa-entertainment", "finnish-film-foundation",
+                        "cinema-mondo", "filmikamari"
+                    ]
                 }
                 log["runs"].append(partial_run)
                 log["latest_by_task"]["intialaiset_elokuvat_naytokset"] = partial_run["ended_at"]
                 task["last_result"] = "partial"
                 task["published_items"] = 0
-                task["sources_checked"] = len(partial_run["checked_source_ids"])
+                task["sources_checked"] = 1
                 task["errors"] = ["kino-regina: Ohjelmistosivu ei ollut luettavissa."]
                 module_state["history"]["source_check_run_refs"].append(partial_run["run_id"])
                 log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -87,12 +87,11 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 module_path.write_text(json.dumps(module_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                 self.assertEqual(validate_state_migration(), [])
 
-                # Jos osittainen yritys yritetään merkitä onnistumisen checkpointiksi,
+                # Jos osittainen ajo yritetään merkitä onnistumisen checkpointiksi,
                 # vastaavaa complete-lähdeajoa ja hyväksyttyä julkaisuraporttia ei ole.
                 task["last_successful_check"] = partial_run["ended_at"]
                 errors = validate_state_migration()
                 self.assertTrue(any("uudempi vanhan automaation seurantatila" in error for error in errors), errors)
-
 
     def test_unknown_historical_checkpoints_remain_unknown(self):
         """Puuttuvia tarkistusaikoja tai ajotunnisteita ei ole päätelty."""
