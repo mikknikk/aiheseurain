@@ -58,7 +58,7 @@ class ChatGPTRssCandidateBuilder:
             raise GitHubAdapterError("run_id ei sovi julkaisulaadun porttiraportin tunnisteeksi.")
 
         registry = load_registry(root=self.root, include_inactive=True)
-        module = registry.modules.get(module_id)
+        module = next((item for item in registry.modules if item.module_id == module_id), None)
         if module is None or module.definition.get("module_type") != "topic":
             raise GitHubAdapterError("RSS-ehdokas voidaan rakentaa vain topic-moduulille.")
         targets = load_module_targets(module.definition, root=self.root, require_active=False)
