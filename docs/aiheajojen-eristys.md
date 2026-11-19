@@ -129,14 +129,14 @@ Käynnistyskehotteen palautusohje on luonnoksena tiedostossa `prompts/paauutisse
 
 ## ChatGPT-tuloksen kytkentä orkestrointiin (#213)
 
-Yhdistetty vastaanottotulos voidaan käsitellä yhdellä moduulikohtaisella prosessilla komennolla `python scripts/process_chatgpt_result.py`. Päähaaran `.github/workflows/process-chatgpt-result-shadow.yml` käynnistyy vain, kun uusi tulos on ensin yhdistetty `main)-haaraan polkuun `data/chatgpt-inbox/{module_id}/{run_id}.json`. Työnkulku lukee vain yhdistetyn tuloksen, hakee täyden Git-historian ja tarkistaa, että push lisäsi täsmälleen yhden uuden tulostiedoston.
+Yhdistetty vastaanottotulos voidaan käsitellä yhdellä moduulikohtaisella prosessilla komennolla `python scripts/process_chatgpt_result.py`. Päähaaran `.github/workflows/process-chatgpt-result-shadow.yml` käynnistyy vain, kun uusi tulos on ensin yhdistetty `main`-haaraan polkuun `data/chatgpt-inbox/{module_id}/{run_id}.json`. Työnkulku lukee vain yhdistetyn tuloksen, hakee täyden Git-historian ja tarkistaa, että push lisäsi täsmälleen yhden uuden tulostiedoston.
 
 Käsittelijä sitoo tuloksen alkuperäiseen handoffiin:
 - tarkistaa nykyisen kiertovuoron ja tehtävä–moduulikartan;
 - tarkistaa moduulin tyypin, määritys- ja sopimusversion, run_id:n sekä seurantajakson;
 - muodostaa alkuperäisen yhden moduulin syötepaketin uudelleen ja vertaa sen SHA-256-tiivistettä;
 - tallentaa handoffin muuttumattoman hyväksyntätietueen runtime-haaraan ensimmäisellä vastaanotolla ja käyttää sitä saman ajon uusintojen vertailuun;
-- muuntaa ChatGPT-tuloksen `ModuleExecutionOutput)-arvoksi ja suorittaa moduulin kohteiden omistajuuden sekä raporttien laadunvarmistuksen;
+- muuntaa ChatGPT-tuloksen `ModuleExecutionOutput`-arvoksi ja suorittaa moduulin kohteiden omistajuuden sekä raporttien laadunvarmistuksen;
 - tallentaa vain teknisen ajon auditointitiedon, ei raporttitekstiä.
 
 Tämä automaatiopolku on tarkoituksella **shadow-tilassa**. Se ei julkaise RSS:ää, päivitä moduulin checkpointia eikä siirrä aihekierrosta. Tuotantojulkaisu ja kierron päivitys kuuluvat myöhempään hyväksyttyyn tuotantosiirtymään (#215). Näytösvahti ei kuulu tähän työnkulkuun. Työnkulku ei muuta ChatGPT:n tallennettuja tehtäviä, käynnistyskehotteita, aikatauluja tai kohdekeskusteluja.
