@@ -341,7 +341,7 @@ Suositeltu toteutusjärjestys:
 **Rajaus:** päähaaran automaatio käyttää vain shadow-tilaa. Tuotantotilan koodi on erikseen portitettu ja edellyttää eksplisiittistä kutsulippua, aktiivista moduulia sekä GitHub-julkaisuoikeuksia; sitä ei käynnistetä tässä PR:ssä. Tallennettuja ChatGPT-tehtäviä, käynnistyskehotteita, ajastuksia, aikavyöhykkeitä tai kohdekeskusteluja ei muuteta.
 ### Issue #214 – uuden ChatGPT-moduulipolun varjotilan vertailu
 
-**Tila:** toteutus PR:ssä; live-ajoa tai tuotantokirjoituksia ei ole tehty.
+**Tila:** valmis; PR #222 yhdistetty ja dokumentaatio PR #225 yhdistetty. Live-ajoa ei ole tehty.
 
 - [x] Lisätään rakenteinen source_audit ChatGPT-tulossopimukseen: moduulin omien lähteiden tarkistustilat, saavuttamattomuuden ja ohituksen syyt sekä erilliset täydentävät lähteet.
 - [x] Laadunvarmistus tarkistaa lähde-ID:iden moduuliomistajuuden, duplikaatit ja sources_checked-lukumäärän; tuotantotila edellyttää auditointia ilman numeerista vähimmäislähdemäärää.
@@ -349,7 +349,20 @@ Suositeltu toteutusjärjestys:
 - [x] Lisätään rajattu synteettinen Tolkien-fixture samalle seurantajaksolle. Se ei ole live-raportti eikä sillä väitetä todellista tutkimustulosten vastaavuutta.
 - [x] Vertailu näyttää lähteiden tilat ja erot, raporttitekstien tiivisteet ja sanamäärät, väitteiden tekstuaaliset erot, GUID-käytännön, epävarmuudet ja julkaisukelpoisuuden esteet.
 - [x] Lisätään testit saavuttamattomille lähteille, tyhjälle uutistulokselle, partial/failed/invalid-tuloksille, uusinnalle, keskeytykselle, väärälle moduulille ja kirjoituksettomuudelle.
-- [ ] Aja PR-CI ja korjaa mahdolliset regressiot ennen yhdistämistä.
+- [x] Aja PR-CI ja korjaa mahdolliset regressiot ennen yhdistämistä; Python-, skeema-, RSS-, dokumentaatio-, UI- ja Pages-tarkistukset läpäisivät.
 - [ ] Mahdollinen oikea rinnakkaistutkimus vanhan automaation kanssa vaatii erillisen käyttäjän hyväksynnän; tässä tikettissä ei käynnistetä live-ajoa.
 
 **Rajaus:** vertailukomento lukee vain sille annetun JSON-fixturen ja repositorion moduulirekisterin. Se ei käytä GitHub-kirjoitussovittimia eikä muuta RSS:ää, lähderekistereitä, moduulitiloja, checkpointteja, vuorojonoa tai tallennettuja ChatGPT-automaation asetuksia. Näytösvahti ei osallistu vertailuun.
+
+### Issue #226 – moduulikohtaiset tuotantoluvat ja kaksoisjulkaisun esto
+
+**Tila:** toteutus PR:ssä; moduulit pysyvät inactive-tilassa ja kaikki tuotantoluvat ovat pois päältä.
+
+- [x] Lisätään erillinen moduulikohtainen tuotantoluparekisteri ja skeema; kaikki kymmenen moduulia ovat oletusarvoisesti `false`.
+- [x] Tuotantoajo vaatii eksplisiittisen ajoluvan, aktiivisen moduulin ja erillisen moduulikohtaisen tuotantoluvan.
+- [x] Virheellinen, puuttuva tai moduulirekisterin kanssa ristiriitainen lupatieto estää tuotantoajon.
+- [x] Prosessimoduuli/näytösvahti estetään topic-julkaisupolun aktivoinnista.
+- [x] Julkaisumanifesti sitoo varauksen moduuliin ja täsmälliseen seurantajaksoon; GitHubin SHA-CAS-indeksi estää toisen run_id:n saman jakson kaksoisjulkaisun.
+- [ ] PR-CI ja katselmointi.
+
+**Rajaus:** yhtään moduulia ei aktivoida, live-ajoa ei tehdä eikä automaatioiden asetuksia, ajastuksia, käynnistyskehotteita tai kohdekeskusteluja muuteta. Näytösvahti pysyy erillisenä.
