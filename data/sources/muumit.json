@@ -17,7 +17,7 @@
     {
       "source_id": "moomin-museum",
       "critical": true,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-19T10:10:56+02:00",
       "access_limit": null
     },
     {
@@ -35,25 +35,25 @@
     {
       "source_id": "yle-culture",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-19T10:10:56+02:00",
       "access_limit": null
     },
     {
       "source_id": "lippu-fi-events",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-19T10:10:56+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
       "source_id": "ticketmaster-fi-events",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-19T10:10:56+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     },
     {
       "source_id": "tiketti-fi-events",
       "critical": false,
-      "last_checked_at": null,
+      "last_checked_at": "2026-11-19T10:10:56+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta."
     }
   ]
