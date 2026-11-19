@@ -38,6 +38,25 @@ class WorkflowIsolationTests(unittest.TestCase):
         self.assertIn("python scripts/validate_feeds.py", commands)
         self.assertIn("python scripts/validate_publication_gate.py", commands)
 
+    def test_chatgpt_result_processor_runs_only_on_main_in_shadow_mode(self):
+        workflow = read_workflow(".github/workflows/process-chatgpt-result-shadow.yml")
+        self.assertEqual(workflow["on"]["push"]["branches"], ["main"])
+        self.assertEqual(
+            workflow["on"]["push"]["paths"],
+            ["data/chatgpt-inbox/**/*.json"],
+        )
+        self.assertNotIn("schedule", workflow["on"])
+        self.assertNotIn("workflow_dispatch", workflow["on"])
+        self.assertEqual(set(workflow["jobs"]), {"process-shadow-result"})
+        commands = "\\n".join(
+            step.get("run", "") for step in workflow["jobs"]["process-shadow-result"]["steps"]
+        )
+        self.assertIn("--mode shadow", commands)
+        self.assertNotIn("--mode production", commands)
+        self.assertNotIn("--allow-production", commands)
+        self.assertNotIn("pages: write", yaml.dump(workflow))
+        self.assertEqual(workflow["permissions"]["contents"], "write")
+
     def test_ui_tests_run_in_their_own_workflow(self):
         workflow = read_workflow(".github/workflows/test-ui.yml")
         job = workflow["jobs"]["ui-tests"]
