@@ -323,7 +323,7 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #213 – ChatGPT-tuloksen kytkentä moduuliorkestroinnin elinkaareen
 
-**Tila:** toteutus PR:ssä; tuotantokytkentää ei ole otettu käyttöön. Live-automaation asetuksia ei muutettu.
+**Tila:** valmis; PR #220 yhdistetty main-haaraan commitilla 24ea2d2d6a12a9c480d6c2cb48227a2a78b61adc. Tuotantokytkentää ei ole otettu käyttöön.
 
 - [x] Varmistetaan tuloksen moduuli-, sopimus-, ajo- ja seurantajaksotunnisteet sekä alkuperäisen handoffin syötepaketin SHA-256.
 - [x] Tallennetaan hyväksytty handoff muuttumattomana moduuli-/ajokohtaisena runtime-tietueena; sama tunniste ja sisältö on idempotentti, eri tiiviste hylätään.
@@ -334,6 +334,6 @@ Suositeltu toteutusjärjestys:
 - [x] Lisätään päähaaran vastaanottotuloksen shadow-työnkulku. Se käsittelee vain yhden uuden JSON-tiedoston, tallentaa teknisen ajohistorian eikä julkaise RSS:ää tai siirrä tehtäväkiertoa.
 - [x] Lisätään regressiotestit handoffin idempotenssille, väärälle moduulille, puuttuvalle tai virheelliselle julkaisuarviolle, arkaluonteisille metatiedoille, epäonnistuneelle/puutteelliselle tulokselle ja shadow-työnkulun rajoille.
 - [x] PR-CI läpäisi: 335 Python-yksikkötestiä sekä RSS-/dokumentaatio-/seurantatilan tarkistus, käyttöliittymätestit ja Pages-build onnistuivat.
-- [ ] Varjotilan rinnakkaisvertailu ja tuotantosiirtymän hyväksyntä kuuluvat tiketteihin #214 ja #215.
+**Seuraavat erilliset vaiheet:** #214 vertaa vanhaa ja uutta tutkimuspolkua varjotilassa. #215 toteuttaa vaiheittaisen tuotantosiirtymän ja palautuksen erillisellä hyväksynnällä.
 
 **Rajaus:** päähaaran automaatio käyttää vain shadow-tilaa. Tuotantotilan koodi on erikseen portitettu ja edellyttää eksplisiittistä kutsulippua, aktiivista moduulia sekä GitHub-julkaisuoikeuksia; sitä ei käynnistetä tässä PR:ssä. Tallennettuja ChatGPT-tehtäviä, käynnistyskehotteita, ajastuksia, aikavyöhykkeitä tai kohdekeskusteluja ei muuteta.
