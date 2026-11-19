@@ -168,13 +168,14 @@ Käyttöönotto on vain kooditasolla. Käynnistyskehotetta, ChatGPT-tehtävän a
 
 ## Muutoshistoria
 
+- **1.5.0 – 2026-11-19:** lisättiin GitHubin SHA-tarkistetut checkpoint-, artefakti- ja julkaisumanifestisovittimet sekä nykyiseen RSS/Pages-putkeen PR:nä liittyvä julkaisusovitin. Live-moduuleja ei aktivoitu; asynkroninen jatkaminen rajattiin tikettiin #213.
 - **1.4.0 – 2026-11-19:** lisättiin yhden aiheen kiertokoordinaattori ja sandboxattu handoff-varjotila. Varsinainen tutkimuspalvelubrokeri ja live-automaation siirto rajattiin erillisiksi vaiheiksi.
 - **1.3.0 – 2026-11-18:** lisättiin rekisteristä kohteet lataava ja jokaisen kohteen erikseen suorittava TargetExecutionCoordinator.
 - **1.2.0 – 2026-11-18:** lisättiin versioitu kohderaportin tulossopimus, suorittajan usean kohderaportin tulos ja laadunvarmistuksen kohde-, versio-, havaintotyyppi- ja seurantajaksojen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin paikalliset SHA-tarkistetut tallennus-, ajotulos- ja RSS-julkaisusovittimet sekä niiden testaus- ja tuotantorajaukset.
 - **1.0.0 – 2026-11-18:** määriteltiin yhteinen suorituspyyntö ja tulos, orkestroinnin elinkaari, varjotila, tuotannon hyväksyntäportti, idempotentit tallennus- ja julkaisurajapinnat sekä yleisen tapahtumavahdin moduuli-integraatio.
 
-## Julkaisumanifesti ja palautuminen (versio 1.2.0)
+## Julkaisumanifesti ja palautuminen (versio 1.3.0)
 
 Tuotantotilan orkestrointi vaatii pysyvän `PublicationJournal`-sovittimen. Se luo manifestin ennen ensimmäistä julkaisukirjoitusta. Jos manifestin valmistelu ei onnistu, julkaisua ei aloiteta. Manifestiin ei tallenneta raporttien tai lähteiden varsinaista sisältöä, vaan niiden SHA-256-tiivisteet, moduuli- ja ajotunnisteet, julkaisukohteet, lähtötilan SHA, artefaktiversio ja idempotenssiavain.
 
@@ -191,4 +192,5 @@ Saman moduuli-/ajotunnisteen ja saman raporttisisällön uusinta käyttää sama
 
 ### Versiohistoria
 
+- **1.3.0 – 2026-11-19:** lisättiin GitHubin pysyvä julkaisumanifesti, vaihehistorian takaisinluku ja PR-pohjainen RSS-julkaisusovitin; Pagesin julkinen sisältö varmennetaan ennen checkpointin siirtoa.
 - **1.2.0 – 2026-11-18:** lisättiin pysyvä julkaisumanifesti, neljän vaiheen yksisuuntaiset tilasiirtymät ja saman ajon ristiriita-/uusintatestit. Tuotantosovitin ja nykyisen Pages-julkaisun kytkentä rajattiin erilliseksi vaiheeksi.
