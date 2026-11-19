@@ -37,6 +37,35 @@ class ChatGPTResultProcessingTests(unittest.TestCase):
             "feed_path": "feeds/tolkien.xml",
         }
 
+    def test_handoff_digest_must_match_immutable_record(self):
+        payload = {
+            "handoff": {
+                "module_id": "tolkien",
+                "module_definition_version": "1.0.0",
+                "contract_version": "1.0.0",
+                "run_id": "tolkien-shadow-001",
+                "period": {
+                    "start": self.request.period_start,
+                    "end": self.request.period_end,
+                },
+                "requested_at": self.request.requested_at,
+                "input_sha256": "a" * 64,
+            }
+        }
+        record = {
+            "module_id": "tolkien",
+            "module_definition_version": "1.0.0",
+            "contract_version": "1.0.0",
+            "run_id": "tolkien-shadow-001",
+            "period": payload["handoff"]["period"],
+            "requested_at": self.request.requested_at,
+            "input_sha256": "a" * 64,
+        }
+        processor._compare_handoff(payload, record)
+        record["input_sha256"] = "b" * 64
+        with self.assertRaises(processor.ChatGPTProcessingError):
+            processor._compare_handoff(payload, record)
+
     def test_processing_always_uses_shadow_orchestrator_without_writers(self):
         fake_result = object()
         fake_orchestrator = MagicMock()
