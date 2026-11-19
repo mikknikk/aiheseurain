@@ -15,6 +15,7 @@ from scripts.module_transition_evidence import (
     GitHubTransitionEvidenceStore,
     TransitionEvidenceError,
     _feed_url,
+    _validate_record,
 )
 from scripts.github_module_adapters import _module, _run, _time
 
@@ -102,13 +103,17 @@ class ShadowTransitionOrchestrator:
 
         # Kerää kaikki havainnot ensin. Jos yksikin lukeminen epäonnistuu,
         # auditointiin ei synny harhaanjohtavaa osittaista siirtymäpäätöstä.
-        records = [collect[event_type]() for event_type in sorted(collect)]
-        for record in records:
+        records = []
+        for event_type in sorted(collect):
+            record = collect[event_type]()
             if (not isinstance(record, dict)
                     or record.get("module_id") != request.module_id
                     or record.get("run_id") != request.run_id
-                    or record.get("event_type") not in allowed):
-                raise ShadowTransitionError("Todiste kuuluu väärälle moduulille/ajolle tai tapahtumatyyppi ei kelpaa.")
+                    or record.get("event_type") != event_type):
+                raise ShadowTransitionError("Todiste kuuluu väärälle moduulille/ajolle tai tapahtumatyyppi ei vastaa keräyssuunnitelmaa.")
+            # Validoi kaikki tietueet ennen ensimmäistäkään kirjoitusta.
+            _validate_record(record, self.store.schema_path)
+            records.append(record)
         if len({record["event_type"] for record in records}) != len(records):
             raise ShadowTransitionError("Sama todistetyyppi kerättiin useammin kuin kerran.")
 
@@ -157,6 +162,8 @@ class ShadowTransitionOrchestrator:
             legacy_fallback_authorized=approval,
             observed_at=observed_at,
         )
+        # Myös päätöstietue validoidaan ennen ensimmäistäkään kirjoitusta.
+        _validate_record(decision, self.store.schema_path)
         # Vasta täydellisen keruun ja päätöksen jälkeen tallennetaan tapahtumat.
         for record in records:
             self.store.record(record)
