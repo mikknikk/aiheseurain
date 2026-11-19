@@ -207,6 +207,66 @@ class TransitionEvidenceTests(unittest.TestCase):
         with self.assertRaises(TransitionEvidenceError):
             collector.collect_public_feed("taylor-swift", "swift-run-001", observed_at=self.now)
 
+
+    def test_publication_manifest_evidence_preserves_phase_history_and_hashes(self):
+        manifest = {
+            "module_id": "taylor-swift", "run_id": "swift-run-001",
+            "idempotency_key": "taylor-swift:swift-run-001",
+            "report_sha256": "a" * 64, "artifacts_sha256": "b" * 64,
+            "state_sha256": "c" * 64, "artifact_version": "artifact-v1",
+            "publication_targets": ["taylor-swift"], 
+            "period_start": "2026-11-18T00:00:00Z",
+            "period_end": "2026-11-19T00:00:00Z",
+            "prepared_at": "2026-11-19T20:00:00Z",
+            "phase": "published", "updated_at": "2026-11-19T20:10:00Z",
+            "receipt": {"verified": True, "report_guid_refs": ["urn:swift:one"],
+                        "published_items": 1},
+            "history": [
+                {"phase": "prepared", "updated_at": "2026-11-19T20:00:00Z", "receipt": None},
+                {"phase": "published", "updated_at": "2026-11-19T20:10:00Z",
+                 "receipt": {"verified": True, "report_guid_refs": ["urn:swift:one"],
+                             "published_items": 1}},
+            ],
+        }
+        content = json.dumps(manifest).encode("utf-8")
+        self.client.files[("module-runtime-state",
+                           "data/module-publication-journal/taylor-swift/swift-run-001.json")] = GitHubFile(
+            content, blob_sha(content)
+        )
+        record = self.collector.collect_publication_manifest(
+            "taylor-swift", "swift-run-001", observed_at=self.now
+        )
+        self.assertEqual(record["event_type"], "publication_manifest")
+        self.assertEqual(record["evidence"]["phase"], "published")
+        self.assertEqual(len(record["evidence"]["history"]), 2)
+        self.assertEqual(record["evidence"]["receipt_guid_count"], 1)
+        self.assertNotIn("urn:swift:one", record["evidence"]["history"][0].values())
+
+    def test_publication_manifest_rejects_cross_module_ownership(self):
+        manifest = {
+            "module_id": "tolkien", "run_id": "swift-run-001",
+            "idempotency_key": "tolkien:swift-run-001",
+            "report_sha256": "a" * 64, "artifacts_sha256": "b" * 64,
+            "state_sha256": "c" * 64, "artifact_version": "artifact-v1",
+            "publication_targets": ["tolkien"],
+            "period_start": "2026-11-18T00:00:00Z",
+            "period_end": "2026-11-19T00:00:00Z",
+            "prepared_at": "2026-11-19T20:00:00Z",
+            "phase": "prepared", "updated_at": "2026-11-19T20:00:00Z",
+            "receipt": None,
+            "history": [{"phase": "prepared", "updated_at": "2026-11-19T20:00:00Z",
+                         "receipt": None}],
+        }
+        content = json.dumps(manifest).encode("utf-8")
+        self.client.files[("module-runtime-state",
+                           "data/module-publication-journal/taylor-swift/swift-run-001.json")] = GitHubFile(
+            content, blob_sha(content)
+        )
+        with self.assertRaises(TransitionEvidenceError):
+            self.collector.collect_publication_manifest(
+                "taylor-swift", "swift-run-001", observed_at=self.now
+            )
+
     def test_checkpoint_evidence_checks_current_module_and_run(self):
         state = json.loads((ROOT / "data/module-state/taylor-swift.json").read_text(encoding="utf-8"))
         state["checkpoint"]["last_successful_run"].update({
