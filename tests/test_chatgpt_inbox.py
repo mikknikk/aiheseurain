@@ -65,6 +65,14 @@ class ChatGPTInboxTests(unittest.TestCase):
         with self.assertRaises(InboxValidationError):
             validate_inbox_result(self.file, relative_path="data/chatgpt-inbox/indian-film-screening-watch/screening-test-001.json", root=self.root)
 
+    def test_same_run_id_with_different_existing_content_is_rejected(self):
+        existing = self.root / "data/chatgpt-inbox/tolkien/tolkien-test-001.json"
+        existing.parent.mkdir(parents=True)
+        changed = dict(self.payload, report_content="Aiemmin vastaanotettu eri sisältö.")
+        existing.write_text(json.dumps(changed), encoding="utf-8")
+        with self.assertRaises(InboxValidationError):
+            validate_inbox_result(self.file, relative_path=self.relative, root=self.root)
+
     def test_succeeded_requires_complete_scan(self):
         self.payload["source_scan_complete"] = False
         self.file.write_text(json.dumps(self.payload), encoding="utf-8")
