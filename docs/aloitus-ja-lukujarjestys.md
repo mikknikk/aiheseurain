@@ -192,3 +192,8 @@ Kun haluat ymmärtää ChatGPT-automaation käynnissäolon ja vaiheiden tallennu
 ## Seurantamoduulien ja julkaisun käsitteet
 
 Kun haluat ymmärtää, miten seurannan prosessi, seurannan kohde ja jakelukanava eroavat toisistaan, lue [Seurantakohteet ja julkaisukohteet](seurantakohteet-ja-julkaisukohteet.md). Sen jälkeen voit tarkastella `data/module-registry.json`- ja `data/target-registry.json`-rekistereitä sekä esimerkin `examples/julkaisureititys/naytosvahti.json`-reititystä.
+
+
+## Aiheajojen eristäminen
+
+Kun haluat ymmärtää, miten aihekohtainen suorittaja saa vain oman aiheensa tiedot, lue [Aiheajojen tekninen eristäminen](aiheajojen-eristys.md). Dokumentti erottaa jo toteutetun sovellusrajapinnan sisältörajauksen tulevasta erillisestä suoritusympäristöstä.
