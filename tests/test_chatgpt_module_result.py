@@ -78,6 +78,36 @@ class ChatGPTModuleResultTests(unittest.TestCase):
         with self.assertRaises(ChatGPTResultError):
             chatgpt_result_to_execution_output(payload, self.definition, self.request)
 
+    def test_converts_target_reports_for_separate_publication_targets(self):
+        payload = dict(self.payload)
+        payload.pop("report_content")
+        payload["target_reports"] = [{
+            "target_id": "moomin-news",
+            "target_version": "1.0.0",
+            "observation_types": ["news"],
+            "period": self.payload["period"],
+            "checked_at": "2026-11-19T10:30:00+02:00",
+            "report_content": "Kohderaportti",
+        }]
+        output = chatgpt_result_to_execution_output(payload, self.definition, self.request)
+        self.assertEqual(len(output.target_reports), 1)
+        self.assertEqual(output.target_reports[0].target_id, "moomin-news")
+        self.assertEqual(output.target_reports[0].report_content, "Kohderaportti")
+
+    def test_rejects_target_report_with_wrong_period(self):
+        payload = dict(self.payload)
+        payload.pop("report_content")
+        payload["target_reports"] = [{
+            "target_id": "moomin-news",
+            "target_version": "1.0.0",
+            "observation_types": ["news"],
+            "period": {"start": "2026-11-18T00:00:00+02:00", "end": self.payload["period"]["end"]},
+            "checked_at": "2026-11-19T10:30:00+02:00",
+            "report_content": "Kohderaportti",
+        }]
+        with self.assertRaises(ChatGPTResultError):
+            chatgpt_result_to_execution_output(payload, self.definition, self.request)
+
 
 if __name__ == "__main__":
     unittest.main()

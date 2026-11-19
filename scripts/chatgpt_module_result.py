@@ -8,7 +8,7 @@ from typing import Any
 
 import jsonschema
 
-from scripts.module_orchestrator import ModuleExecutionOutput, ModuleRunRequest
+from scripts.module_orchestrator import ModuleExecutionOutput, ModuleRunRequest, TargetReport
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "schemas/chatgpt-module-result.schema.json"
@@ -58,6 +58,14 @@ def validate_chatgpt_result(
         raise ChatGPTResultError("Tuloksen tarkistusajankohta edeltää suorituspyyntöä.")
     if payload["status"] == "succeeded" and not payload["source_scan_complete"]:
         raise ChatGPTResultError("Onnistunut tulos edellyttää täydellistä lähdetarkistusta.")
+    if "target_reports" in payload and "report_content" in payload:
+        raise ChatGPTResultError("Tuloksessa käytetään joko moduuliraporttia tai kohderaportteja.")
+    for report in payload.get("target_reports", []):
+        if report["period"]["start"] != request.period_start or report["period"]["end"] != request.period_end:
+            raise ChatGPTResultError("Kohderaportin seurantajakso ei vastaa suorituspyyntöä.")
+        if _timestamp(report["checked_at"], "target_report.checked_at") < _timestamp(request.requested_at, "requested_at"):
+            raise ChatGPTResultError("Kohderaportin tarkistusajankohta edeltää suorituspyyntöä.")
+
 
 
 def chatgpt_result_to_execution_output(
@@ -65,18 +73,31 @@ def chatgpt_result_to_execution_output(
 ) -> ModuleExecutionOutput:
     """Muunna ChatGPT:n JSON-tulos orkestroinnin sisäiseksi tulosolioksi."""
     validate_chatgpt_result(payload, definition, request)
+    target_reports = tuple(
+        TargetReport(
+            target_id=item["target_id"],
+            target_version=item["target_version"],
+            observation_types=tuple(item["observation_types"]),
+            period_start=item["period"]["start"],
+            period_end=item["period"]["end"],
+            checked_at=item["checked_at"],
+            report_content=item["report_content"],
+        )
+        for item in payload.get("target_reports", [])
+    )
     return ModuleExecutionOutput(
         status=payload["status"],
         source_scan_complete=payload["source_scan_complete"],
         checked_at=payload["checked_at"],
         period_start=payload["period"]["start"],
         period_end=payload["period"]["end"],
-        report_content=payload["report_content"],
+        report_content=payload.get("report_content", ""),
         sources_checked=payload.get("sources_checked"),
         source_check_run_refs=tuple(payload.get("source_check_run_refs", [])),
         report_guid_refs=tuple(payload.get("report_guid_refs", [])),
         artifacts=payload.get("artifacts"),
         metadata=payload.get("metadata"),
+        target_reports=target_reports,
     )
 
 
