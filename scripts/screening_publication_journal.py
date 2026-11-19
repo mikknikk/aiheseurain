@@ -122,12 +122,12 @@ def validate_journal(journal: dict[str, Any], state: dict[str, Any],
             raise ScreeningJournalError("Ristiviittausten tarkistus vaatii lähdelokin, lähderekisterin, moduulitilan ja RSS-tavut.")
         if runs:
             _validate_cross_references(
-                latest, source_log, source_registry, module_state, feed_bytes
+                latest, state, source_log, source_registry, module_state, feed_bytes
             )
 
 
-def _validate_cross_references(latest: dict[str, Any], source_log: dict[str, Any],
-                               source_registry: dict[str, Any],
+def _validate_cross_references(latest: dict[str, Any], state: dict[str, Any],
+                               source_log: dict[str, Any], source_registry: dict[str, Any],
                                module_state: dict[str, Any], feed_bytes: bytes) -> None:
     """Vertaa viimeisintä päiväkirja-ajoa sen todellisiin RSS- ja tilatiedostoihin."""
     # RSS-tavut ovat kanoninen sisältö. Hash, item-määrä ja GUIDit tarkistetaan
@@ -197,6 +197,20 @@ def _validate_cross_references(latest: dict[str, Any], source_log: dict[str, Any
         checked_at = registry_by_id[source_id].get("last_checked_at")
         if checked_at is not None and _time(checked_at, f"{source_id}.last_checked_at") >= started:
             raise ScreeningJournalError(f"Tarkistamatta jääneen lähteen {source_id} tarkistusaika on virheellisesti päivitetty.")
+
+    # Legacy-seurantatila saa siirtyä vasta, kun Pages on varmennettu ja
+    # päiväkirja merkitään completed-tilaan. Valmistellussa ajossa vanha
+    # onnistumispiste ja sitä vastaava edellinen jakson loppu säilyvät.
+    watch = state.get("separate_screening_watch", {})
+    if latest["phase"] == "prepared":
+        if watch.get("last_period_end") != latest["period"]["start"]:
+            raise ScreeningJournalError("Keskeneräinen ajo ei säilytä edellisen jakson loppua seurantatilassa.")
+    else:
+        if (watch.get("last_period_start") != latest["period"]["start"]
+                or watch.get("last_period_end") != latest["period"]["end"]
+                or watch.get("last_result") != "success"
+                or watch.get("sources_checked") != len(checked)):
+            raise ScreeningJournalError("Valmiin päiväkirja-ajon seurantatiedot eivät vastaa lähdeajoa ja seurantajaksoa.")
 
     # Moduulitila säilyttää lähdeajon viitteen ja koko syötteen GUID-joukon.
     # Sen migraation checkpoint voi olla tarkoituksellisesti vanha snapshot,
