@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 from unittest.mock import patch
 
 from scripts.chatgpt_rss_candidate import ChatGPTRssCandidateBuilder
+from scripts.github_module_adapters import GitHubAdapterError
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -141,7 +142,7 @@ class ChatGPTRssCandidateTests(unittest.TestCase):
 
     def test_unknown_target_or_wrong_version_is_rejected(self):
         unknown = [dict(self.reports[0], target_id="another-module.private"), self.reports[1]]
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GitHubAdapterError):
             self.build(unknown)
         wrong_version = [dict(self.reports[0], target_version="9.9.9"), self.reports[1]]
         with self.assertRaises(ValueError):
