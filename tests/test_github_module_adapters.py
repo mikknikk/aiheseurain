@@ -32,6 +32,7 @@ class FakeGitHubClient:
         self.files = {}
         self.branches = {"main"}
         self.pull_requests = {}
+        self.fail_after_write_path = None
 
     def ensure_branch(self, branch, base="main"):
         if branch not in self.branches:
@@ -53,6 +54,9 @@ class FakeGitHubClient:
             raise GitHubAdapterConflict("SHA-konflikti.")
         result = GitHubFile(content, blob_sha(content))
         self.files[(branch, path)] = result
+        if self.fail_after_write_path == path:
+            self.fail_after_write_path = None
+            raise GitHubApiError("simulated lost response after successful write")
         return result
 
     def find_pull_request(self, branch, base="main"):
@@ -174,6 +178,33 @@ class GitHubAdapterTests(unittest.TestCase):
         ).content)
         self.assertEqual(stored, artifact)
 
+    def test_artifact_store_recovers_after_artifact_write_before_index(self):
+        store = GitHubArtifactStore(self.client)
+        version = store.load_version("tolkien")
+        path = "data/module-artifacts/tolkien/run-212-recovery.json"
+        self.client.fail_after_write_path = path
+        with self.assertRaises(GitHubApiError):
+            store.commit("tolkien", "run-212-recovery", {"value": "persisted"},
+                         expected_version=version)
+        self.assertIsNotNone(self.client.get_file(path, "module-runtime-state"))
+        store.commit("tolkien", "run-212-recovery", {"value": "persisted"},
+                     expected_version=version)
+        index = json.loads(self.client.get_file(
+            "data/module-artifacts/tolkien/index.json", "module-runtime-state"
+        ).content)
+        self.assertIn("run-212-recovery", index["runs"])
+
+    def test_artifact_store_resolves_ambiguous_index_write_by_readback(self):
+        store = GitHubArtifactStore(self.client)
+        version = store.load_version("tolkien")
+        index_path = "data/module-artifacts/tolkien/index.json"
+        self.client.fail_after_write_path = index_path
+        result = store.commit("tolkien", "run-212-index-retry", {"value": "persisted"},
+                              expected_version=version)
+        self.assertNotEqual(result, "missing")
+        index = json.loads(self.client.get_file(index_path, "module-runtime-state").content)
+        self.assertIn("run-212-index-retry", index["runs"])
+
     def test_artifact_store_rejects_different_content_for_same_run(self):
         store = GitHubArtifactStore(self.client)
         version = store.load_version("tolkien")
@@ -213,6 +244,18 @@ class GitHubAdapterTests(unittest.TestCase):
         self.assertEqual(final["phase"], "checkpoint_updated")
         self.assertEqual([item["phase"] for item in final["history"]],
                          ["prepared", "published", "artifacts_persisted", "checkpoint_updated"])
+
+    def test_publication_journal_recovers_ambiguous_phase_write(self):
+        journal = GitHubPublicationJournal(self.client)
+        record = self.journal_record("run-212-journal-retry")
+        journal.prepare(record)
+        path = "data/module-publication-journal/tolkien/run-212-journal-retry.json"
+        self.client.fail_after_write_path = path
+        advanced = journal.advance("tolkien", record["run_id"], "published",
+                                   updated_at="2026-11-19T09:10:00+02:00",
+                                   receipt={"verified": True, "report_guid_refs": ["urn:test"], "published_items": 1})
+        self.assertEqual(advanced["phase"], "published")
+        self.assertEqual(journal.load("tolkien", record["run_id"])["phase"], "published")
 
     def test_publication_journal_rejects_skipped_phase_and_conflicting_run(self):
         journal = GitHubPublicationJournal(self.client)
