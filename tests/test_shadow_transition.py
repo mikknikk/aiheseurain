@@ -89,15 +89,18 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
 
     def test_rejects_cross_module_or_cross_run_evidence_before_writing(self):
         wrong = self.collector.collect_pull_request(
-            "taylor-swift", "swift-run-001", 42, observed_at=self.now
+            self.request.module_id, self.request.run_id, 42, observed_at=self.now
         )
         legacy = self.collector.legacy_period_observation(
-            "taylor-swift", "swift-run-001", status="absent",
+            self.request.module_id, self.request.run_id, status="absent",
             source_url="https://example.org/archive.xml",
             period_start=self.request.period_start, period_end=self.request.period_end,
             reason="Tarkistettu synteettinen vanhan polun arkisto.",
             matching_guids=[], observed_at=self.now,
         )
+        # Simuloi virheellistä ajokytkentää vasta kerääjän jälkeen.
+        wrong["run_id"] = "another-run-001"
+        legacy["run_id"] = "another-run-001"
         with self.assertRaises(ShadowTransitionError):
             self.orchestrator.run(
                 self.request,
