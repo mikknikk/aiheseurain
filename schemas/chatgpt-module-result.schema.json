@@ -602,16 +602,35 @@
       }
     }
   },
-  "anyOf": [
+  "allOf": [
     {
-      "required": [
-        "report_content"
-      ]
-    },
-    {
-      "required": [
-        "target_reports"
-      ]
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "succeeded",
+              "partial"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "anyOf": [
+          {
+            "required": [
+              "report_content"
+            ]
+          },
+          {
+            "required": [
+              "target_reports"
+            ]
+          }
+        ]
+      }
     }
   ]
 }
