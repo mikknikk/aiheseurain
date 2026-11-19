@@ -175,6 +175,9 @@ def _validate_cross_references(latest: dict[str, Any], state: dict[str, Any],
             or checked & unchecked or checked | unchecked != registry_ids):
         raise ScreeningJournalError("Lähdeajon tarkistetut, tarkistamatta jääneet ja rekisterin lähdejoukot eivät täsmää.")
 
+    source_started = _time(source_run["started_at"], "source_run.started_at")
+    source_ended = _time(source_run["ended_at"], "source_run.ended_at")
+
     # latest_by_task and the mutable registry describe the newest source scan.
     # An older prepared/completed publication must remain valid after a later
     # partial scan; its immutable source-run record remains the publication evidence.
@@ -186,7 +189,7 @@ def _validate_cross_references(latest: dict[str, Any], state: dict[str, Any],
         raise ScreeningJournalError("Näytösvahtitehtävältä puuttuu lähdetarkistusajo.")
     if source_log.get("latest_by_task", {}).get(TASK_ID) != latest_task_run.get("ended_at"):
         raise ScreeningJournalError("latest_by_task ei osoita tehtävän viimeisimpään lähdetarkistusajoon.")
-    if _time(latest_task_run["ended_at"], "latest_task_run.ended_at") < ended:
+    if _time(latest_task_run["ended_at"], "latest_task_run.ended_at") < source_ended:
         raise ScreeningJournalError("Viimeisin lähdetarkistusajo on päiväkirjan lähdeajoa vanhempi.")
 
     registry_sources = source_registry.get("sources", [])
