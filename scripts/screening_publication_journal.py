@@ -282,3 +282,56 @@ def complete_run(journal: dict[str, Any], run_id: str, *,
     run["synchronization"] = completed_sync
     run["phase"] = "completed"
     return updated
+
+def recovery_action(journal: dict[str, Any], *, deployment_status: str,
+                   public_feed_matches: bool | None,
+                   checkpoint_advanced: bool | None) -> str:
+    """Palauta turvallinen seuraava toimi keskeytyneen näytösvahtijulkaisun perusteella.
+
+    Funktio on tarkoitettu sekä automaation päätösavuksi että vikainjektiotestien
+    kohteeksi. Epäselvää GitHub- tai CDN-tilaa ei koskaan tulkita onnistumiseksi.
+    """
+    allowed_statuses = {"not_started", "in_progress", "success", "failure", "unknown"}
+    if deployment_status not in allowed_statuses:
+        raise ScreeningJournalError("Tuntematon Pages-deploymentin tila.")
+    runs = journal.get("runs", [])
+    if not runs:
+        if checkpoint_advanced is None:
+            return "inspect_publication_state"
+        if checkpoint_advanced is True:
+            raise ScreeningJournalError("Onnistumispistettä ei voi siirtää ilman päiväkirja-ajoa.")
+        return "start_new_run"
+
+    pending = [run for run in runs if run.get("phase") == "prepared"]
+    if len(pending) > 1:
+        raise ScreeningJournalError("Useampi keskeneräinen ajo estää palautumispäätöksen.")
+    latest = max(runs, key=lambda run: _time(run["prepared_at"], "prepared_at"))
+
+    if latest.get("phase") == "prepared":
+        if checkpoint_advanced is True:
+            raise ScreeningJournalError("Keskeneräisen ajon onnistumispistettä ei saa olla siirretty.")
+        if checkpoint_advanced is None or deployment_status == "unknown":
+            return "inspect_publication_state"
+        if deployment_status in {"not_started", "in_progress"}:
+            return "wait_for_pages"
+        if public_feed_matches is None:
+            return "inspect_publication_state"
+        if deployment_status == "success" and public_feed_matches is True:
+            return "finalize_checkpoint"
+        return "retry_pages_publication"
+
+    if latest.get("phase") == "completed":
+        if checkpoint_advanced is None or deployment_status == "unknown":
+            return "inspect_publication_state"
+        if checkpoint_advanced is False:
+            raise ScreeningJournalError("Valmiin päiväkirjamerkinnän onnistumispiste puuttuu seurantatilasta.")
+        if deployment_status in {"not_started", "in_progress"}:
+            return "wait_for_pages"
+        if public_feed_matches is None:
+            return "inspect_publication_state"
+        if deployment_status == "success" and public_feed_matches is True:
+            return "verify_completed_run"
+        return "reconcile_completed_publication"
+
+    raise ScreeningJournalError("Julkaisupäiväkirjan vaihe ei ole tunnistettu.")
+

@@ -6,7 +6,7 @@ from pathlib import Path
 import unittest
 
 from scripts.screening_publication_journal import (
-    ScreeningJournalError, complete_run, prepare_run, validate_journal,
+    ScreeningJournalError, complete_run, prepare_run, recovery_action, validate_journal,
 )
 
 
@@ -66,6 +66,141 @@ def state(last_success=START, last_period_start="2026-11-18T17:37:16+02:00",
 
 
 class ScreeningPublicationJournalTests(unittest.TestCase):
+
+    def test_recovery_action_starts_new_run_only_when_journal_is_empty(self):
+        self.assertEqual(
+            recovery_action(empty_journal(), deployment_status="not_started",
+                            public_feed_matches=None, checkpoint_advanced=False),
+            "start_new_run",
+        )
+
+    def test_recovery_action_waits_after_candidate_commit_before_pages(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        self.assertEqual(
+            recovery_action(journal, deployment_status="in_progress",
+                            public_feed_matches=None, checkpoint_advanced=False),
+            "wait_for_pages",
+        )
+        self.assertEqual(
+            recovery_action(journal, deployment_status="not_started",
+                            public_feed_matches=False, checkpoint_advanced=False),
+            "wait_for_pages",
+        )
+
+    def test_recovery_action_retries_failed_or_mismatched_pages_publication(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        self.assertEqual(
+            recovery_action(journal, deployment_status="failure",
+                            public_feed_matches=False, checkpoint_advanced=False),
+            "retry_pages_publication",
+        )
+        self.assertEqual(
+            recovery_action(journal, deployment_status="success",
+                            public_feed_matches=False, checkpoint_advanced=False),
+            "retry_pages_publication",
+        )
+
+    def test_recovery_action_finalizes_only_after_public_feed_verification(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        self.assertEqual(
+            recovery_action(journal, deployment_status="success",
+                            public_feed_matches=True, checkpoint_advanced=False),
+            "finalize_checkpoint",
+        )
+
+    def test_recovery_action_inspects_ambiguous_external_state(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        self.assertEqual(
+            recovery_action(journal, deployment_status="unknown",
+                            public_feed_matches=True, checkpoint_advanced=False),
+            "inspect_publication_state",
+        )
+        self.assertEqual(
+            recovery_action(journal, deployment_status="success",
+                            public_feed_matches=None, checkpoint_advanced=False),
+            "inspect_publication_state",
+        )
+        self.assertEqual(
+            recovery_action(journal, deployment_status="success",
+                            public_feed_matches=True, checkpoint_advanced=None),
+            "inspect_publication_state",
+        )
+
+    def test_recovery_action_rejects_premature_checkpoint_for_prepared_run(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        with self.assertRaises(ScreeningJournalError):
+            recovery_action(journal, deployment_status="success",
+                            public_feed_matches=True, checkpoint_advanced=True)
+
+    def test_recovery_action_verifies_completed_run_after_all_receipts(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        completed = complete_run(
+            journal, RUN_ID,
+            publication_commit_sha="1" * 40,
+            deployment_id=12345,
+            rss_verified_at="2026-11-20T07:00:00+02:00",
+            synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
+        )
+        self.assertEqual(
+            recovery_action(completed, deployment_status="success",
+                            public_feed_matches=True, checkpoint_advanced=True),
+            "verify_completed_run",
+        )
+
+    def test_recovery_action_reconciles_completed_but_mismatched_publication(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        completed = complete_run(
+            journal, RUN_ID,
+            publication_commit_sha="1" * 40,
+            deployment_id=12345,
+            rss_verified_at="2026-11-20T07:00:00+02:00",
+            synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
+        )
+        self.assertEqual(
+            recovery_action(completed, deployment_status="failure",
+                            public_feed_matches=False, checkpoint_advanced=True),
+            "reconcile_completed_publication",
+        )
+
+    def test_recovery_action_rejects_completed_record_without_checkpoint(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        completed = complete_run(
+            journal, RUN_ID,
+            publication_commit_sha="1" * 40,
+            deployment_id=12345,
+            rss_verified_at="2026-11-20T07:00:00+02:00",
+            synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
+        )
+        with self.assertRaises(ScreeningJournalError):
+            recovery_action(completed, deployment_status="success",
+                            public_feed_matches=True, checkpoint_advanced=False)
+
+    def test_recovery_action_rejects_unknown_deployment_state(self):
+        with self.assertRaises(ScreeningJournalError):
+            recovery_action(empty_journal(), deployment_status="pending",
+                            public_feed_matches=False, checkpoint_advanced=False)
+
+
+    def test_recovery_action_does_not_start_when_checkpoint_is_unknown(self):
+        self.assertEqual(
+            recovery_action(empty_journal(), deployment_status="unknown",
+                            public_feed_matches=None, checkpoint_advanced=None),
+            "inspect_publication_state",
+        )
+
+    def test_duplicate_guids_are_rejected_before_publication(self):
+        record = prepared_record()
+        record["feed"]["guids"][1] = record["feed"]["guids"][0]
+        journal = prepare_run(empty_journal(), record)
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(journal, state(), feed_catalog())
+
     def test_empty_journal_is_valid(self):
         validate_journal(empty_journal(), state(), feed_catalog())
 

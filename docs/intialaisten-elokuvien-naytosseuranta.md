@@ -1,4 +1,4 @@
-Ohjeversion tunniste: 1.4.5
+Ohjeversion tunniste: 1.4.6
 
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/aiheseurain näytös-RSS-syötettä https://mikknikk.github.io/aiheseurain/feeds/intialaisten-elokuvien-naytokset.xml.
 
@@ -61,6 +61,8 @@ JULKAISUN PYSYVÄ PÄIVÄKIRJA JA PALAUTUMISEN ENSISIJAINEN TARKISTUS
 - Jos ensimmäisen PR:n Pages-julkaisu epäonnistuu tai palautuu, älä tee uutta lähdehakua. Main-haaraan jäävä `prepared`-merkintä ja samaan PR:ään tallennetut lähde-, historia- ja moduulitiedot mahdollistavat saman ehdokkaan uudelleenjulkaisun ja varmennuksen. Jos toisen PR:n CI tai yhdistäminen epäonnistuu, palauta seurantatilan ja päiväkirjan viimeistely samasta `run_id`:stä ilman uutta lähdehakua.
 - Jos Pages-palautus on käynnistynyt, tarkista sekä deploymentin lopputila että julkinen sisältö. Älä päättele pelkästä workflow'n virheilmoituksesta, onko ehdokas vai palautus julkinen. Jos julkinen sisältö ei vastaa valmisteltua ehdokasta, säilytä keskeneräinen päiväkirjamerkintä ja onnistumispiste. Älä luo uutta RSS-itemiä tai uutta ajotunnistetta palautusyritystä varten.
 - Valmiin päiväkirjamerkinnän uudelleenlukeminen on turvallista. Jos GitHubin takaisinluku epäonnistuu yhdistämisen jälkeen, älä väitä varmennusta tehdyksi; seuraava ajo tarkistaa saman valmiin tietueen ja sen viittaamat commitit ennen uutta työtä.
+- Palautumisen päätöslogiikka on toteutettu funktiossa `recovery_action` tiedostossa `scripts/screening_publication_journal.py`. Se erottaa uuden ajon, Pagesin odottamisen, epäselvän tilan tarkistamisen, Pages-julkaisun uusinnan, onnistumispisteen viimeistelyn, valmiin ajon varmennuksen ja jo valmiin julkaisun korjaamisen. Älä koskaan tulkitse tuntematonta deployment- tai takaisinlukutilaa onnistumiseksi.
+- Jos Pages on vielä käynnissä, odota. Jos deployment epäonnistui tai julkinen RSS ei vastaa ehdokasta, tarkista palautusmanifesti ja toista sama Pages-julkaisu; älä tee uutta lähdehakua. Jos deployment onnistui ja julkinen RSS vastaa täsmälleen ehdokasta, tee vain onnistumispisteen viimeistely-PR. Jos päiväkirja on jo `completed`, varmista seurantatila, deployment ja julkinen RSS ennen kuin aloitat uuden ajon.
 
 PALAUTUMISJAKSO JA SEURAAVAN AJON TOIMINTA
 - data/seurantatila.json-tiedoston separate_screening_watch.last_successful_check on ainoa hyväksytty onnistuneen tarkistuksen tarkistuspiste. Älä korvaa sitä viimeisimmän yrityksen ajalla, ajastetun vuoron päivämäärällä tai osittaisen tarkistuksen ajalla.
