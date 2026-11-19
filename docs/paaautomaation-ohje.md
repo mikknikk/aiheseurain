@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.3.1
+Ohjeversion tunniste: 1.4.0
 Viimeksi päivitetty: 2026-11-17
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -55,6 +55,29 @@ Tehtävien kiertojärjestys ja seuraava vuoro määritellään vain tiedostossa 
 - Erota julkaisupäivä ja tapahtumapäivä. Tarkista nimet, roolit, luvut ja lainaukset. Älä keksi väitteitä, lähteitä, päivämääriä tai URL-osoitteita. Jos alkuperäistä sisältöä ei voi tarkistaa, älä esitä sitä vahvistettuna.
 - Erota lähteen yleinen A–D-luokka yksittäisen uutisväitteen varmennustasosta. Noudata kokonaan `docs/luotettavuusluokitus.md`-ohjetta. Älä käytä lähteen luokkaa väitteen vahvistuksena. Merkitse jokaisen olennaisen väitteen varmennustaso ja lähdeluettelossa kunkin lähteen yleinen luokka. Älä julkaise huhua faktana. Oikeus-, kurinpito- ja vilppiasioissa käytä täsmällisiä menettelytermejä.
 
+## 4.1. Lähteiden käyttökatkot ja uudelleentarkistus
+
+Käsittele lähteen tavoittamattomuus lähdekohtaisena käyttökatkona, älä automaattisesti koko aiheen epäonnistumisena.
+
+- Tarkista ennen hakua käyttörekisterin `retry_after`. Jos aikaleima on tulevaisuudessa, älä yritä avata lähdettä tällä ajolla. Kirjaa se `unchecked_sources`-kenttään syyllä, että lähde on jäähdytysajalla, ja ilmoita seuraava tarkistuspäivä.
+- Tilapäinen verkkovirhe, aikakatkaisu tai palvelimen hetkellinen 5xx-virhe: jätä `retry_after` tyhjäksi; lähde yritetään uudelleen seuraavalla kyseisen aiheen vuorolla.
+- 401/403-esto tai muu toistuva käyttörajoitus: aseta `retry_after` 14 päivän päähän. Robots.txt-esto: aseta `retry_after` 30 päivän päähän. 429-nopeusrajoitus: aseta `retry_after` 7 päivän päähän. Kirjaa tarkka syy ajolokiin; älä tulkitse estoa tyhjäksi sisällöksi.
+- Kun lähde avautuu ja alkuperäinen sisältö tarkistetaan onnistuneesti, nollaa sen `retry_after` arvoksi `null`. Älä muuta `last_checked_at`-arvoa epäonnistuneen tai ohitetun yrityksen perusteella.
+- Kun jäähdytysaika päättyy, lähde kuuluu taas tarkistettaviin lähteisiin. Jos esto jatkuu, aseta uusi jäähdytysaika saman virheluokan mukaisesti. Älä tee ylimääräisiä toistuvia yrityksiä saman ajon aikana.
+
+### Lähdekattavuuden hyväksymiskriteerit ja vuoron eteneminen
+
+Erota ajon tekninen/toimituksellinen onnistuminen lähteiden täydellisestä tavoitettavuudesta. Lähdelokin `status` voi olla `partial`, vaikka aiheen tarkistus hyväksytään ja vuoro etenee.
+
+1. Laske odotettavissa oleva lähdejoukko: kaikki käyttörekisterin lähteet, joiden `retry_after` on tyhjä tai on ohitettu nykyhetki. Jäähdytysajalla olevia lähteitä ei lasketa tämän ajon odotettuun joukkoon, mutta ne kirjataan tarkistamatta jääneiksi.
+2. Kattavuus on riittävä, kun vähintään kolme odotettavissa olevaa lähdettä on tarkistettu ja tarkistettujen osuus odotettavissa olevista lähteistä on vähintään 60 %. Jos rekisterissä on alle kolme odotettavissa olevaa lähdettä, tarkista kaikki käytettävissä olevat lähteet.
+3. Lisäksi vähintään yhden rekisterin kriittisistä lähteistä on oltava tarkistettu. Jos kaikki kriittiset lähteet ovat dokumentoidusti käyttökatkon tai jäähdytysajan vuoksi saavuttamattomia, hyväksy kattavuus vain, jos vähintään kaksi toisistaan riippumatonta A- tai B-luokan vaihtoehtoista lähdettä on tarkistettu ja ne kattavat saman olennaisen aihealueen. Riippumattomuus on arvioitava toimituksellisen raportointityön perusteella, ei URL-osoitteiden lukumäärästä.
+4. Kaikkien muiden toimituksellisten vaatimusten, hakukielten, alueiden, uutisarvon arvioinnin, RSS-tarkistusten ja tarvittavien takaisinlukujen on silti täytyttävä. Prosenttiraja ei korvaa aihekohtaisia hakuja eikä oikeuta jättämään olennaista kieli- tai aluealuetta tutkimatta.
+5. Jos ehdot täyttyvät, ajo hyväksytään: päivitä tehtävän onnistunut tarkistuspiste, käytetty ohjeversio ja tehtäväkierron vuoro normaalisti. Lähdelokiin merkitään silti `partial`, jos jokin rekisterilähde jäi tarkistamatta. Kirjaa puutteet ja niiden syyt kattavuushuomioihin.
+6. Jos ehdot eivät täyty, ajo jää keskeneräiseksi: älä päivitä onnistumisen tarkistuspistettä äläkä siirrä vuoroa. Raportoi, mikä kriteeri jäi täyttymättä. Älä yritä ratkaista lähde-estettä muuttamalla automaation aikataulua tai asetuksia.
+
+**Muumien 19.11.2026 ajon käsittely:** viisi kahdeksasta lähteestä tarkistettiin; Moomin Museum oli kriittinen lähde ja tarkistettiin. Kolme saavuttamatonta lähdettä kirjataan niiden virheluokan mukaisiin jäähdytysaikoihin. Tämä ajo pysyy alkuperäisen ohjeversion mukaisesti `partial`-tilassa eikä sille tehdä takautuvaa onnistumis- tai vuoromerkintää. Uutta käytäntöä sovelletaan vasta sen hyväksymisen jälkeen alkaviin ajoihin.
+
 ## 5. Uutisarvo, seurantajakso ja deduplikointi
 
 - Raportoi ensisijaisesti edellisen kyseisen tehtävän onnistuneen tarkistuksen jälkeen tapahtuneet olennaiset kehitykset. Seurantajakso alkaa kyseisen tehtävän edellisestä onnistuneesta tarkistuksesta ja päättyy nykyiseen tarkistushetkeen Europe/Helsinki-ajassa. Älä käytä edellisen automaatioajon aikaa, jos kyseinen aihe ei ollut silloin vuorossa.
@@ -99,7 +122,7 @@ Toimita tiivis suomenkielinen kooste vain tämän ajon valitusta tehtävästä. 
 
 Ajo on onnistunut vasta, kun valitun aiheen haku ja arviointi on tehty, mahdolliset julkaisut on tallennettu ja takaisinluettu, tarvittavat seuranta-/lähdetiedot on päivitetty ja pakolliset tarkistukset ovat valmiit. Aja `python scripts/validate_feeds.py`, jos komentojen suoritusympäristö on käytettävissä. Jos ei ole, tee vastaavat tarkistukset muilla käytettävissä olevilla keinoilla ja kerro rajoite. Älä väitä automaattista testiä ajetuksi, ellei sitä ajettu.
 
-Myös onnistunut haku ilman julkaistavaa uutista kuluttaa vuoron. Onnistuneen ajon jälkeen siirrä `docs/tehtavajono.md`:n seuraava-tehtävä-merkintä täsmälleen yhden kohdan eteenpäin kiinteässä yhdeksän tehtävän järjestyksessä; yhdeksännen jälkeen palaa Tolkieniin. Jos haku tai pakollinen tarkistus jää olennaisesti kesken tai epäonnistuu, älä siirrä vuoroa.
+Myös onnistunut haku ilman julkaistavaa uutista kuluttaa vuoron. Onnistuneen ajon jälkeen siirrä `docs/tehtavajono.md`:n seuraava-tehtävä-merkintä täsmälleen yhden kohdan eteenpäin kiinteässä yhdeksän tehtävän järjestyksessä; yhdeksännen jälkeen palaa Tolkieniin. Jos lähdekattavuuden hyväksymiskriteerit tai jokin muu pakollinen tarkistus jää täyttymättä, älä siirrä vuoroa. Osittainen lähdeloki ei yksin estä vuoron siirtämistä, jos kohdan 4.1 hyväksymiskriteerit ja kaikki muut onnistumisehdot täyttyvät.
 
 Päivitä onnistuneen ajon lopuksi `data/seurantatila.json`:
 - valitun tehtävän `last_successful_check`, `last_period_start`, `last_period_end`, `last_result` (published/no_news), `published_items`, `sources_checked` ja `errors` (tyhjä taulukko);
@@ -120,10 +143,10 @@ Aina kun dokumentaatiota muutetaan tai lisätään:
 
 ## 10. Lähteiden kattavuus ja ajokohtainen loki
 
-- Kaikki lähteiden yhteiset perustiedot ylläpidetään kerran tiedostossa `data/source-catalog.json` (`schemas/lahdekatalogi.schema.json`). Kymmenen tehtäväkohtaista käyttörekisteriä ovat `data/sources/{task_id}.json` (`schemas/lahderekisteri.schema.json`); niissä on vain `source_id`-viittaus sekä tehtäväkohtaiset `critical`-, `last_checked_at`- ja `access_limit`-kentät. Yhdistä viittaukset katalogiin ID:n perusteella. Katalogin lähteitä ei pidä automaattisesti tarkistaa kaikissa tehtävissä. Intialaisen elokuvan uutisilla ja erillisellä näytösseurannalla on eri käyttörekisterit ja tehtävätunnisteet.
+- Kaikki lähteiden yhteiset perustiedot ylläpidetään kerran tiedostossa `data/source-catalog.json` (`schemas/lahdekatalogi.schema.json`). Kymmenen tehtäväkohtaista käyttörekisteriä ovat `data/sources/{task_id}.json` (`schemas/lahderekisteri.schema.json`); niissä on `source_id`-viittaus sekä tehtäväkohtaiset `critical`-, `last_checked_at`-, `access_limit`- ja `retry_after`-kentät. Yhdistä viittaukset katalogiin ID:n perusteella. Katalogin lähteitä ei pidä automaattisesti tarkistaa kaikissa tehtävissä. Intialaisen elokuvan uutisilla ja erillisellä näytösseurannalla on eri käyttörekisterit ja tehtävätunnisteet.
 - Rekisterin lähde on lähtöpiste, ei suljettu lista eikä luotettavuusleima. Lisää löydetyt olennaiset lähteet rekisteriin vasta, kun nimi, URL, aihe, kieli/alue ja lähdetyyppi on tarkistettu. Älä keksi osoitteita.
 - `data/lahdetarkistukset.json` säilyttää ajokohtaisen jäljen. Lue valitun tehtävän käyttörekisteri ennen lähdehakua ja tallenna sen `source_id`-arvot ajon alun lähdejoukoksi. Lue sama rekisteri uudelleen juuri ennen ajolokin kirjoittamista. Kirjaa `registry_source_ids`-kenttään näiden kahden lukukerran ID-joukkojen unioni, jotta myös ajon aikana lisätyt viittaukset jäävät näkyviin. Kirjaa jokainen `registry_source_ids`-arvo täsmälleen joko `checked_source_ids`- tai `unchecked_sources`-kenttään. Jos lähde lisättiin rekisteriin ajon alettua eikä sitä ehditty tarkistaa, kirjaa se tarkistamatta jääneeksi ja syyksi, että se lisättiin ajon aikana. Älä poista lähdeviittauksia käyttörekisteristä kesken aktiivisen ajon; tee rekisterin ylläpitomuutokset vasta ajon päätyttyä. Älä merkitse lähdettä tarkistetuksi, jos vain hakutuloskatkelma löytyi tai alkuperäistä sisältöä ei voitu tarkistaa. Osittainen tai epäonnistunut ajo merkitään vastaavasti; se ei saa näyttää täydelliseltä kattavuudelta.
-- `complete` tarkoittaa, että ajon aikana havaitun lähdejoukon kriittiset lähteet on käsitelty; se ei todista kaikkien mahdollisten lähteiden tai koko kieli-/maantieteellisen alueen kattavuutta. Ajon aikana lisätty ei-kriittinen lähde voidaan kirjata tarkistamatta jääneeksi perusteluineen ilman, että se yksin muuttaa ajon osittaiseksi. Kirjaa kattavuushuomiot ja tunnistetut puutteet.
+- Ajolokin `complete` tarkoittaa, että kaikki kyseisen ajon odotettavissa olevat lähteet tarkistettiin. `partial` tarkoittaa, että vähintään yksi lähde jäi tarkistamatta tai oli jäähdytysajalla. Kumpikaan tila ei yksin ratkaise tehtäväkierron etenemistä: käytä kohdan 4.1 erillisiä kattavuuden hyväksymiskriteerejä. Kumpikaan tila ei todista täydellistä maailmanlaajuista kattavuutta. Kirjaa kattavuushuomiot ja tunnistetut puutteet.
 - `data/seurantatila.json`-tiedoston `sources_checked` säilyy yhteenvetolukuna. Yksittäiset lähteet ja epäonnistumissyyt löytyvät ajolokista.
 - Älä muuta toisen tehtävän tai toisen automaation lokia. Pääautomaation uutisajo ei kirjaa näytösvahtia eikä tee näytöslähteiden tarkistuksia.
 
