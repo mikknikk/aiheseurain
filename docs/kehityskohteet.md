@@ -39,6 +39,7 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Toteutetut kohteet
 
+- [x] **Valvomon puuttuvien ajojen tunnistus (#191).** PR #192 merkitsee vanhentuneet onnistumiset varoituksiksi, säilyttää vanhentuneiden epäonnistumisten virheluokan ja näyttää tyhjän ajohistorian puuttuvana havaintona. Tuoreus tarkistetaan Valvomon latauksessa lähdekohtaisilla 36 h / 240 h rajoilla; uutta ajastettua monitoria ei luotu.
 - [x] **Ajastusalustan virhediagnostiikka (#188).** PR #189 erottaa alustalta ulkopuolelta todennetut virhehavainnot automaation omista vaihekirjauksista. Valvomo näyttää lähteen, virheluokan, uudelleenyrityksen arvion ja juurisyyn varmistustilan. 19.11.2026 alustavirhe kirjattiin run-history-haaraan todennetuilla ajoajoilla ja `chat_ref=null`-tiedolla; teknistä juurisyytä ei väitetä varmistetuksi.
 - [x] **Näytösvahtijulkaisun keskeytystestit (#185).** PR #186 lisää `recovery_action`-päätösfunktion ja vikainjektiotestit, jotka kattavat Pagesin odottamisen ja uusinnan, julkisen takaisinluvun ristiriidat, epäselvät API-tilat, checkpointin viimeistelyn sekä valmiin julkaisun varmennuksen. Tuntematonta tilaa ei tulkita onnistumiseksi.
 - [x] **Näytösvahtijulkaisun tietojen eheys (#182).** PR #183 vertaa päiväkirjan RSS-tiivistettä, itemien GUIDeja, lähdeajolokia, lähderekisterin tarkistusaikoja, moduulitilan lähde- ja GUID-viitteitä sekä seurantatilan onnistumispistettä. Regressiotesti validoi myös 19.11.2026 ajon todelliset tiedostot. Moduulin migraation checkpoint jätetään tarkoituksellisesti vanhaksi snapshotiksi.
@@ -87,10 +88,6 @@ Uusien RSS-itemien GUID-muoto on `urn:aiheseurain:<aihe>:<alkuperäinen-päiväm
 ### Tuotantopalvelujen käyttöönotto (erillinen päätös)
 
 Tiketin #107 AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, kustannusrajat, aikakatkaisut, uusinnat ja auditointi ovat valmiit. Tuotannon reitityskonfiguraatio on edelleen tyhjä eikä testiadaptereissa käytetä verkkoa tai tunnuksia. Todellisen palveluntarjoajan, GitHub-pohjaisen tallennuksen, tuotantojulkaisun ja automaatiokytkennän käyttöönotto vaatii erillisen teknisen suunnitelman ja käyttäjän hyväksynnän.
-
-### Valvomon puuttuvien ajojen tunnistus (#191)
-
-**Toteutus käynnissä:** näytetään vanhentunut viimeisin ajo ja kokonaan puuttuva ajohistoria varoituksena Valvomon latauksen yhteydessä. Ratkaisu on passiivinen eikä luo uutta ajastettua monitoria.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
