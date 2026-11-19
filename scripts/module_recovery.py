@@ -47,7 +47,7 @@ def recovery_action(
         raise ModuleRecoveryError("Tuntematon checkpointin tila.")
     if legacy_period_status not in LEGACY_STATES:
         raise ModuleRecoveryError("Tuntematon vanhan raportointipolun julkaisutila.")
-    if public_feed_matches not in (True, False, None):
+    if public_feed_matches is not None and type(public_feed_matches) is not bool:
         raise ModuleRecoveryError("Julkisen RSS-takaisinluvun tulos on virheellinen.")
     if not isinstance(legacy_fallback_authorized, bool):
         raise ModuleRecoveryError("Vanhaan raportointipolkuun paluun hyväksynnän pitää olla boolean.")
@@ -69,11 +69,17 @@ def recovery_action(
         raise ModuleRecoveryError("Julkaisumanifestin pitää olla JSON-olio.")
     phase = manifest.get("phase")
     module_id, run_id = manifest.get("module_id"), manifest.get("run_id")
-    if phase not in MANIFEST_PHASES or not isinstance(module_id, str) or not module_id or not isinstance(run_id, str) or not run_id:
+    if not isinstance(phase, str) or phase not in MANIFEST_PHASES or not isinstance(module_id, str) or not module_id or not isinstance(run_id, str) or not run_id:
         raise ModuleRecoveryError("Julkaisumanifestin vaihe tai tunnisteet ovat virheellisiä.")
 
     if checkpoint_status == "conflict":
         return "manual_review"
+    if legacy_period_status == "unknown":
+        return "inspect_external_state"
+    if legacy_period_status == "present":
+        if publication_status in {"open", "merged"} or public_feed_matches is True:
+            return "manual_review"
+        return "legacy_period_already_published"
     if checkpoint_status == "unknown" or publication_status == "unknown":
         return "inspect_external_state"
 
