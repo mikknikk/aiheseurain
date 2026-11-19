@@ -31,6 +31,16 @@ Varsinaisia raporttitekstejä tai lähdeaineistoa ei kopioida manifestiin. GitHu
 
 Jos commit ei muuta RSS-syötteitä, Pages-sivusto voidaan julkaista normaalisti ilman RSS-manifestia. Ajastettu Pages-rakennus ei itsessään muodosta uutta RSS-julkaisumanifestia.
 
+## Näytösvahdin ajon tilojen palautuminen
+
+Tämä dokumentti käsittelee RSS:n julkisen Pages-jakelun palautusta. Erillisen näytösvahdin ajon tilojen palautumista varten käytetään lisäksi `data/screening-publication-journal.json`-tiedostoa. Sen skeema ja eheystarkistukset ovat `schemas/screening-publication-journal.schema.json` ja `scripts/screening_publication_journal.py`.
+
+Pages-palautus ja näytösvahtipäiväkirja ratkaisevat eri ongelmat:
+- Pages-manifesti varmistaa, mikä RSS-sisältö on julkisesti saatavilla, ja palauttaa tarvittaessa aiemman julkisen version.
+- Näytösvahtipäiväkirja varmistaa, ettei RSS-julkaisun jälkeinen lähde-, historia-, moduuli- ja seurantatilan synkronointi katoa ajon keskeytyessä.
+
+Jos Pages palauttaa vanhan RSS-version, näytösvahtipäiväkirjan ajo jää `prepared`-tilaan. Se ei oikeuta onnistumispisteen siirtämiseen. Seuraava näytösvahti tarkistaa Pages-deploymentin ja julkisen syötteen ennen kuin jatkaa saman ajon käsittelyä. Päiväkirjan valmistuminen edellyttää sekä julkisen RSS:n varmennusta että tilasynkronoinnin onnistunutta yhdistämistä.
+
 ## Rinnakkaisuus ja viimeisin hyvä julkaisu
 
 Kaikki tuotannon Pages-ajot ovat saman GitHub Actions -concurrency-ryhmän takana. Lisäksi juuri ennen deployta tarkistetaan main-haaran kärki. Tämä estää jonossa vanhentuneen buildin julkaisemisen uudemman commitin päälle. Manifesti kirjataan ennen ulkoista Pages-kirjoitusta, joten myös epäonnistunut julkaisu jää jäljitettäväksi.
