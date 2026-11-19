@@ -134,25 +134,40 @@ class GitHubApiClient:
 
     def put_file(self, path: str, content: bytes, branch: str, *,
                  message: str, sha: str | None = None) -> GitHubFile:
-        """Kirjoita tiedosto; epäselvä vastaus ratkaistaan aina takaisinluvulla."""
-        payload = {"message": message, "content": base64.b64encode(content).decode("ascii"),
-                   "branch": branch}
-        if sha:
-            payload["sha"] = sha
-        try:
-            result = self.request("PUT", f"contents/{urllib.parse.quote(path, safe='/')}", payload)
-            returned = result.get("content", {})
-            if returned.get("sha"):
-                return GitHubFile(content, returned["sha"])
-        except GitHubApiError:
+        """Kirjoita tiedosto; ratkaise epäselvyys takaisinluvulla ja yritä rinnakkaiskonflikti rajatusti."""
+        expected_sha = sha
+        for _attempt in range(3):
+            current = self.get_file(path, branch)
+            if current is not None and current.content == content:
+                return current
+            if expected_sha is not None and (current is None or current.sha != expected_sha):
+                raise GitHubAdapterConflict(f"Tiedoston SHA muuttui ennen kirjoitusta: {path}")
+            if expected_sha is None and current is not None:
+                raise GitHubAdapterConflict(f"Tiedosto on jo olemassa eri sisällöllä: {path}")
+            payload = {"message": message, "content": base64.b64encode(content).decode("ascii"),
+                       "branch": branch}
+            if current is not None:
+                payload["sha"] = current.sha
+            try:
+                result = self.request("PUT", f"contents/{urllib.parse.quote(path, safe='/')}", payload)
+                returned = result.get("content", {})
+                if returned.get("sha"):
+                    return GitHubFile(content, returned["sha"])
+            except GitHubApiError as exc:
+                actual = self.get_file(path, branch)
+                if actual is not None and actual.content == content:
+                    return actual
+                if getattr(exc, "status", None) not in {409, 422}:
+                    raise
+                if expected_sha is not None and (actual is None or actual.sha != expected_sha):
+                    raise GitHubAdapterConflict(f"Tiedoston SHA muuttui rinnakkaisessa kirjoituksessa: {path}") from exc
+                # Muu haara-commit ehti edelle; yritä uudelleen, jos tämä tiedosto ei muuttunut.
+                continue
             actual = self.get_file(path, branch)
             if actual is not None and actual.content == content:
                 return actual
-            raise
-        actual = self.get_file(path, branch)
-        if actual is None or actual.content != content:
             raise GitHubAdapterError(f"GitHub ei vahvistanut kirjoitusta: {path}")
-        return actual
+        raise GitHubAdapterConflict(f"GitHubin rinnakkaiskirjoitus ei rauhoittunut kolmella yrityksellä: {path}")
 
     def ensure_branch(self, branch: str, base: str = MAIN_BRANCH) -> None:
         """Luo runtime-haara mainin nykyisestä kärjestä vain ensimmäisellä käyttökerralla."""
@@ -198,7 +213,6 @@ class GitHubModuleStateStore:
         return f"data/module-state/{_module(module_id)}.json"
 
     def _file(self, module_id: str) -> GitHubFile:
-        self.client.ensure_branch(self.branch)
         path = self._path(module_id)
         value = self.client.get_file(path, self.branch)
         if value is None:
@@ -261,7 +275,6 @@ class GitHubArtifactStore:
         return f"data/module-artifacts/{_module(module_id)}/{_run(run_id)}.json"
 
     def _read_index(self, module_id: str) -> tuple[dict[str, Any], str]:
-        self.client.ensure_branch(self.branch)
         file = self.client.get_file(self._index(module_id), self.branch)
         if file is None:
             return {"schema_version": 1, "module_id": module_id, "runs": {}}, "missing"
@@ -291,6 +304,7 @@ class GitHubArtifactStore:
                 if index["runs"][run_id].get("sha256") == expected_digest:
                     return version
             raise GitHubAdapterConflict("Artefakti-indeksi muuttui ennen kirjoitusta.")
+        self.client.ensure_branch(self.branch)
         path, content = self._artifact(module_id, run_id), _json(artifacts)
         digest = hashlib.sha256(content).hexdigest()
         old = self.client.get_file(path, self.branch)
@@ -331,7 +345,6 @@ class GitHubPublicationJournal:
         return f"data/module-publication-journal/{_module(module_id)}/{_run(run_id)}.json"
 
     def _read(self, module_id: str, run_id: str) -> tuple[dict[str, Any], str]:
-        self.client.ensure_branch(self.branch)
         file = self.client.get_file(self._path(module_id, run_id), self.branch)
         if file is None:
             raise PublicationJournalError("Julkaisumanifestia ei löydy.")
