@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "comparison_id": "tolkien-fixture-shadow-2026-11-19",
+  "legacy": {
+    "module_id": "tolkien",
+    "run_id": "tolkien-legacy-shadow-fixture-001",
+    "period": {
+      "start": "2026-11-18T00:00:00+02:00",
+      "end": "2026-11-19T00:00:00+02:00"
+    },
+    "checked_at": "2026-11-19T09:25:00+02:00",
+    "status": "succeeded",
+    "source_checks": [
+      {
+        "source_id": "tolkien-estate",
+        "status": "checked",
+        "note": "Virallinen lähde tarkistettiin."
+      },
+      {
+        "source_id": "tolkien-society",
+        "status": "unavailable",
+        "note": "Lähde ei ollut testiajossa saavutettavissa."
+      },
+      {
+        "source_id": "yle-tolkien",
+        "status": "checked",
+        "note": "Suomalainen toimituksellinen lähde tarkistettiin."
+      }
+    ],
+    "report_content": "<article><p>Tolkienin elämäntyötä käsittelevä väite.</p><p>Vanha raportti sisältää lisäväitteen.</p></article>",
+    "guid_refs": [
+      "urn:aiheseurain:tolkien:2026-11-19:legacy-fixture-001"
+    ],
+    "uncertainty_notes": [
+      "Yksi lähde oli saavuttamattomissa; siitä ei päätellä vahvistusta."
+    ],
+    "claims": [
+      "Tolkienin elämäntyötä käsittelevä väite.",
+      "Vanha raportti sisältää lisäväitteen."
+    ],
+    "publication_ready": true
+  },
+  "module_result": {
+    "schema_version": 1,
+    "module_id": "tolkien",
+    "module_definition_version": "1.0.0",
+    "contract_version": "1.0.0",
+    "run_id": "tolkien-module-shadow-fixture-001",
+    "period": {
+      "start": "2026-11-18T00:00:00+02:00",
+      "end": "2026-11-19T00:00:00+02:00"
+    },
+    "status": "succeeded",
+    "source_scan_complete": true,
+    "checked_at": "2026-11-19T09:30:00+02:00",
+    "sources_checked": 3,
+    "source_check_run_refs": [
+      "tolkien-source-check-fixture-001"
+    ],
+    "report_guid_refs": [
+      "urn:aiheseurain:tolkien:2026-11-19:5a2f34a7-1a0b-5c10-8d20-123456789abc",
+      "urn:aiheseurain:tolkien:2026-11-19:7b3f45b8-2b1c-5d21-9e31-23456789abcd"
+    ],
+    "target_reports": [
+      {
+        "target_id": "tolkien.j-r-r-tolkien",
+        "target_version": "1.0.0",
+        "observation_types": [
+          "news"
+        ],
+        "period": {
+          "start": "2026-11-18T00:00:00+02:00",
+          "end": "2026-11-19T00:00:00+02:00"
+        },
+        "checked_at": "2026-11-19T09:28:00+02:00",
+        "report_content": "<p>Tolkienin elämäntyötä käsittelevä väite.</p>"
+      },
+      {
+        "target_id": "tolkien.tolkien-estate",
+        "target_version": "1.0.0",
+        "observation_types": [
+          "rights-news"
+        ],
+        "period": {
+          "start": "2026-11-18T00:00:00+02:00",
+          "end": "2026-11-19T00:00:00+02:00"
+        },
+        "checked_at": "2026-11-19T09:29:00+02:00",
+        "report_content": "<p>Tapahtumien seuranta käsittelee Suomessa järjestettävän tapahtuman.</p>"
+      }
+    ],
+    "metadata": {
+      "source_audit": {
+        "source_checks": [
+          {
+            "source_id": "tolkien-estate",
+            "status": "checked",
+            "note": "Virallinen lähde tarkistettiin."
+          },
+          {
+            "source_id": "tolkien-society",
+            "status": "unavailable",
+            "note": "Lähde ei ollut testiajossa saavutettavissa.",
+            "reason": "HTTP 403 -testitapaus."
+          },
+          {
+            "source_id": "yle-tolkien",
+            "status": "checked",
+            "note": "Suomalainen toimituksellinen lähde tarkistettiin."
+          }
+        ],
+        "supplemental_sources": []
+      },
+      "publication_assessment": {
+        "checklist": {
+          "sources_opened": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "claim_support": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "source_independence": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "uncertainty": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "dates": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "tracking_period": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "duplicates": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "guid_preservation": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "xml_html": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "rss_structure": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "report_completeness": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          },
+          "accessibility": {
+            "status": "pass",
+            "note": "Synteettisen vertailuaineiston tarkistus.",
+            "evidence": [
+              "Testitapaus: tolkien-fixture"
+            ]
+          }
+        },
+        "decision": "approved",
+        "reviewer_notes": [
+          "Synteettinen raportti täyttää esimerkin toimitukselliset tarkistukset."
+        ],
+        "claim_assessments": [
+          {
+            "claim_id": "claim-1",
+            "claim": "Tolkienin elämäntyötä käsittelevä väite.",
+            "verification_status": "riippumattomissa_toimituksellisissa_lahteissa_vahvistettu",
+            "sources": [
+              {
+                "source_id": "tolkien-estate",
+                "source_class": "A",
+                "source_role": "ensisijainen",
+                "independence": "ei_sovellu"
+              },
+              {
+                "source_id": "yle-tolkien",
+                "source_class": "B",
+                "source_role": "toimituksellinen",
+                "independence": "riippumaton"
+              }
+            ]
+          },
+          {
+            "claim_id": "claim-2",
+            "claim": "Tapahtumien seuranta käsittelee Suomessa järjestettävän tapahtuman.",
+            "verification_status": "yhden_toimituksellisen_lahteen_raportoima",
+            "sources": [
+              {
+                "source_id": "yle-tolkien",
+                "source_class": "B",
+                "source_role": "toimituksellinen",
+                "independence": "riippumaton"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "handoff": {
+      "dispatch_schema_version": 1,
+      "module_id": "tolkien",
+      "module_definition_version": "1.0.0",
+      "contract_version": "1.0.0",
+      "run_id": "tolkien-module-shadow-fixture-001",
+      "period": {
+        "start": "2026-11-18T00:00:00+02:00",
+        "end": "2026-11-19T00:00:00+02:00"
+      },
+      "requested_at": "2026-11-19T09:00:00+02:00",
+      "input_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  }
+}
