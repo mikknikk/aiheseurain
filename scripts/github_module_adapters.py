@@ -499,6 +499,7 @@ class GitHubPagesRssPublisher:
                 "GitHub App/PAT -tunnuksen, jotta PR:n CI käynnistyy."
             )
         self.client, self.candidate_builder = client, candidate_builder
+        self._retry_public_backread = public_fetcher is None
         self.public_fetcher = public_fetcher or self._fetch_public
         self.pages_base_url = pages_base_url.rstrip("/")
         self.root = Path(repository_root or Path(__file__).resolve().parents[1])
@@ -507,22 +508,11 @@ class GitHubPagesRssPublisher:
 
     @staticmethod
     def _fetch_public(url: str) -> bytes:
-        """Odota Pagesin päivitystä rajatusti; älä tulkitse vanhaa välimuistisisältöä onnistumiseksi."""
+        """Lue julkinen Pages-syöte ilman välimuistia."""
         request = urllib.request.Request(url, headers={"Cache-Control": "no-cache",
             "Pragma": "no-cache", "User-Agent": "aiheseurain-module-publisher"})
-        last_error: Exception | None = None
-        for attempt in range(12):
-            try:
-                with urllib.request.urlopen(request, timeout=20) as response:
-                    body = response.read()
-                if body:
-                    return body
-                last_error = GitHubAdapterError("Julkinen RSS-vastaus oli tyhjä.")
-            except Exception as exc:
-                last_error = exc
-            if attempt < 11:
-                time.sleep(10)
-        raise GitHubAdapterError("Pages-syöte ei päivittynyt varmennusikkunan aikana.") from last_error
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return response.read()
 
     @staticmethod
     def _metadata(data: bytes) -> tuple[list[str], int]:
@@ -736,13 +726,19 @@ class GitHubPagesRssPublisher:
         if any(value is None for value in expected_values) or len(set(expected_values)) != 1:
             return False
         url, guids, count, expected_sha256 = expected_values[0]
-        try:
-            actual = self.public_fetcher(url)
-            actual_guids, actual_count = self._metadata(actual)
-        except Exception:
-            return False
-        return (actual_guids == list(guids) and actual_count == count
-                and hashlib.sha256(actual).hexdigest() == expected_sha256)
+        attempts = 12 if self._retry_public_backread else 1
+        for attempt in range(attempts):
+            try:
+                actual = self.public_fetcher(url)
+                actual_guids, actual_count = self._metadata(actual)
+                if (actual_guids == list(guids) and actual_count == count
+                        and hashlib.sha256(actual).hexdigest() == expected_sha256):
+                    return True
+            except Exception:
+                pass
+            if attempt + 1 < attempts:
+                time.sleep(10)
+        return False
 
 
 class GitHubHandoffStore:
