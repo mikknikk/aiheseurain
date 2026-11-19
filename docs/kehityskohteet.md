@@ -385,12 +385,12 @@ Suositeltu toteutusjärjestys:
 
 **Tila:** avoin; ennen tuotantosiirtymää tarvittava auditointikerros. Ei live-käyttöönottoa.
 
-- [ ] Kerää RSS-PR:n tunniste, URL, tila ja yhdistämiscommit moduuli-/ajokohtaisesti.
-- [ ] Kerää Pages-deploymentin tunniste ja tila erillään PR:n yhdistämisestä.
-- [ ] Tallenna julkisen RSS:n takaisinluvun URL, aika, SHA-256, item-määrä ja GUIDit.
-- [ ] Sido lähtö- ja jälkitilan SHA:t sekä checkpointin ennen/jälkeen tunnisteet samaan ajoon.
-- [ ] Kirjaa vanhan raportointipolun saman seurantajakson julkaisutilan todiste ja palautuspäätöksen hyväksyntä.
-- [ ] Toteuta append-only-/SHA-CAS-loki, skeema, validoija ja ulkoisten tilojen vikainjektiotestit.
+- [x] Kerää RSS-PR:n tunniste, URL, tila ja yhdistämiscommit moduuli-/ajokohtaisesti; PR:n otsikko ja run_id sidotaan pyydettyyn moduuliin.
+- [x] Kerää Pages-deploymentin tunniste ja tila erillään PR:n yhdistämisestä; deployment sidotaan täsmälliseen yhdistämiscommittiin.
+- [x] Tallenna julkisen RSS:n takaisinluvun URL, aika, SHA-256, item-määrä ja GUIDit välimuistin ohittavalla luvulla.
+- [x] Sido lähtö- ja jälkitilan Git-blob-SHA:t sekä checkpointin ennen/jälkeen run_id:t ja aikaleimat samaan ajoon.
+- [x] Kirjaa vanhan raportointipolun tarkistettu jaksohavainto lähde-URL:ineen ja aikaleimoineen sekä palautuspäätös ja erillinen hyväksyntätietue.
+- [x] Toteuta sisällön SHA-256-tiivisteellä nimetyt muuttumattomat tapahtumatiedostot, skeema, validoija ja epäselvän kirjoituskuittauksen uusintatesti.
 - [ ] Varmista moduulirajaus, idempotenssi ja salaisuuksien sekä raporttisisällön poissulkeminen CI:ssä.
 
 **Rajaus:** kerääjä on read-only eikä yhdistä/sulje PR:iä, käynnistä deploymentia, aktivoi moduuleja tai muuta ChatGPT-automaation asetuksia. Näytösvahti pysyy erillisenä.
