@@ -31,7 +31,7 @@ class TransitionEvidenceError(ValueError):
 
 
 EVENT_TYPES = {
-    "pull_request", "pages_deployment", "public_feed", "checkpoint",
+    "pull_request", "pages_deployment", "public_feed", "publication_manifest", "checkpoint",
     "legacy_period", "recovery_decision", "legacy_approval",
 }
 SENSITIVE_KEYS = {
@@ -248,6 +248,52 @@ class GitHubTransitionEvidenceCollector:
         return self._make_record(module_id, run_id, "public_feed", observed_at,
                             "public_pages_http_no_cache", evidence)
 
+    def collect_publication_manifest(self, module_id: str, run_id: str, *,
+                                     observed_at: str, branch: str = RUNTIME_BRANCH) -> dict[str, Any]:
+        """Lue ja validoi ajon manifesti; tallenna vain tekninen metadata ja vaihehistoria."""
+        module_id, run_id = _module(module_id), _run(run_id)
+        path = f"data/module-publication-journal/{module_id}/{run_id}.json"
+        current = self.client.get_file(path, branch)
+        if current is None:
+            raise TransitionEvidenceError("Ajon julkaisumanifestia ei löydy.")
+        try:
+            value = json.loads(current.content.decode("utf-8"))
+            schema = json.loads((self.root / "schemas/module-publication-journal.schema.json").read_text(encoding="utf-8"))
+            jsonschema.Draft202012Validator(
+                schema, format_checker=jsonschema.FormatChecker()
+            ).validate(value)
+        except (UnicodeDecodeError, json.JSONDecodeError, OSError,
+                jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+            raise TransitionEvidenceError("Julkaisumanifesti ei läpäise skeemavalidointia.") from exc
+        if value.get("module_id") != module_id or value.get("run_id") != run_id:
+            raise TransitionEvidenceError("Julkaisumanifestin moduuli/run_id ei vastaa pyydettyä ajoa.")
+        receipt = value.get("receipt")
+        history = value.get("history")
+        if not isinstance(history, list):
+            raise TransitionEvidenceError("Julkaisumanifestin vaihehistoria puuttuu.")
+        evidence = {
+            "manifest_blob_sha": current.sha,
+            "phase": value["phase"],
+            "artifact_version": value["artifact_version"],
+            "report_sha256": value["report_sha256"],
+            "artifacts_sha256": value["artifacts_sha256"],
+            "state_sha256": value["state_sha256"],
+            "publication_targets": value["publication_targets"],
+            "period_start": value["period_start"],
+            "period_end": value["period_end"],
+            "prepared_at": value["prepared_at"],
+            "updated_at": value["updated_at"],
+            "history": [
+                {"phase": item["phase"], "updated_at": item["updated_at"]}
+                for item in history
+            ],
+            "receipt_present": receipt is not None,
+            "receipt_guid_count": len(receipt.get("report_guid_refs", [])) if isinstance(receipt, dict) else 0,
+            "receipt_published_items": receipt.get("published_items") if isinstance(receipt, dict) else None,
+        }
+        return self._make_record(module_id, run_id, "publication_manifest", observed_at,
+                                 "github_contents_api", evidence)
+
     def collect_checkpoint(self, module_id: str, run_id: str, *,
                            before_blob_sha: str, before_run_id: str | None,
                            before_checked_at: str | None, manifest_phase: str,
@@ -411,7 +457,7 @@ class GitHubTransitionEvidenceStore:
             if entry.get("type") != "file" or not name.endswith(".json"):
                 continue
             if (Path(name).name != name or not re.fullmatch(
-                    r"(?:pull_request|pages_deployment|public_feed|checkpoint|legacy_period|recovery_decision|legacy_approval)-[a-f0-9]{64}\\.json", name)):
+                    r"(?:pull_request|pages_deployment|public_feed|publication_manifest|checkpoint|legacy_period|recovery_decision|legacy_approval)-[a-f0-9]{64}\\.json", name)):
                 raise TransitionEvidenceError("Auditointihakemiston tiedostonimi ei vastaa tapahtumamuotoa.")
             file = self.client.get_file(f"{prefix}/{name}", self.branch)
             if file is None:
