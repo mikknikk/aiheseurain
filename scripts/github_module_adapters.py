@@ -1,0 +1,568 @@
+"""GitHub-pohjaiset pysyvät moduuliorkestroinnin sovittimet.
+
+Runtime-tila tallennetaan erilliselle haaralle. RSS-ehdokas toimitetaan PR:na
+main-haaraan, jotta nykyinen julkaisulaadun portti ja Pages-varmennus säilyvät.
+"""
+from __future__ import annotations
+import base64
+from copy import deepcopy
+from dataclasses import dataclass
+import hashlib
+import json
+import os
+from datetime import datetime
+import re
+import urllib.error
+import urllib.parse
+import urllib.request
+from typing import Any, Callable
+import xml.etree.ElementTree as ET
+
+from scripts.module_state import validate_module_state, StateConflictError
+from scripts.module_orchestrator import PublicationReceipt
+from scripts.publication_journal import PHASES, PublicationJournalConflict, PublicationJournalError
+from scripts.module_run_adapters import AdapterError, AdapterConflictError, _audit_record, _reject_sensitive_fields
+
+REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+MODULE_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
+RUN_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{2,180}$")
+RUNTIME_BRANCH = "module-runtime-state"
+MAIN_BRANCH = "main"
+
+
+class GitHubAdapterError(AdapterError):
+    """GitHub-pohjaisen sovittimen yleinen virhe."""
+
+
+class GitHubAdapterConflict(AdapterConflictError):
+    """GitHubin optimistisen kirjoituksen ristiriita."""
+
+
+class GitHubApiError(GitHubAdapterError):
+    """GitHub API -virhe, jota takaisinluku ei ratkaissut."""
+
+
+def _module(value: str) -> str:
+    """Validoi moduulitunniste ennen tiedostopolun muodostamista."""
+    if not isinstance(value, str) or not MODULE_RE.fullmatch(value):
+        raise GitHubAdapterError("Virheellinen moduulitunniste.")
+    return value
+
+
+def _run(value: str) -> str:
+    """Validoi ajotunniste ennen tiedostopolun muodostamista."""
+    if not isinstance(value, str) or not RUN_RE.fullmatch(value):
+        raise GitHubAdapterError("Virheellinen ajotunniste.")
+    return value
+
+
+def _json(value: Any) -> bytes:
+    """Muodosta deterministinen JSON-tavujono."""
+    return (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+
+
+def _time(value: str) -> None:
+    """Vaadi aikavyöhykkeellinen ISO 8601 -aikaleima."""
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except (AttributeError, TypeError, ValueError) as exc:
+        raise GitHubAdapterError("Virheellinen ISO 8601 -aikaleima.") from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise GitHubAdapterError("Aikaleimasta puuttuu aikavyöhyke.")
+
+
+@dataclass(frozen=True)
+class GitHubFile:
+    """Tiedoston tavut ja GitHubin blob-SHA."""
+    content: bytes
+    sha: str
+
+
+class GitHubApiClient:
+    """Pieni GitHub REST -asiakas, jonka verkkorajapinnan voi korvata testeissä."""
+
+    def __init__(self, repository: str | None = None, token: str | None = None,
+                 *, api_url: str = "https://api.github.com", timeout: int = 30):
+        self.repository = repository or os.getenv("GITHUB_REPOSITORY", "")
+        self.token = token or os.getenv("GITHUB_TOKEN", "")
+        self.api_url = api_url.rstrip("/")
+        self.timeout = timeout
+        if not REPO_RE.fullmatch(self.repository) or not self.token:
+            raise GitHubAdapterError("GITHUB_REPOSITORY tai GITHUB_TOKEN puuttuu.")
+
+    def request(self, method: str, path: str, payload: dict | None = None) -> Any:
+        """Suorita GitHub API -pyyntö ja säilytä HTTP-tilakoodi virheluokassa."""
+        body = _json(payload) if payload is not None else None
+        request = urllib.request.Request(
+            f"{self.api_url}/repos/{self.repository}/{path.lstrip('/')}",
+            data=body, method=method,
+            headers={"Authorization": f"Bearer {self.token}",
+                     "Accept": "application/vnd.github+json",
+                     "X-GitHub-Api-Version": "2022-11-28",
+                     "Content-Type": "application/json",
+                     "User-Agent": "aiheseurain-module-runtime"})
+        try:
+            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                raw = response.read()
+            return json.loads(raw) if raw else {}
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", "replace")[:800]
+            error = GitHubApiError(f"GitHub API {method} {path}: HTTP {exc.code}: {detail}")
+            error.status = exc.code
+            raise error from exc
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            raise GitHubApiError(f"GitHub API -pyyntö epäonnistui: {exc}") from exc
+
+    def get_file(self, path: str, branch: str) -> GitHubFile | None:
+        """Lue yksi tiedosto täsmälliseltä haaralta."""
+        query = urllib.parse.urlencode({"ref": branch})
+        encoded = urllib.parse.quote(path, safe="/")
+        try:
+            value = self.request("GET", f"contents/{encoded}?{query}")
+        except GitHubApiError as exc:
+            if getattr(exc, "status", None) == 404:
+                return None
+            raise
+        if not isinstance(value, dict) or value.get("type") != "file":
+            raise GitHubAdapterError(f"Polku ei ole tiedosto: {path}")
+        try:
+            return GitHubFile(base64.b64decode(value["content"]), value["sha"])
+        except (KeyError, ValueError, TypeError) as exc:
+            raise GitHubAdapterError(f"Tiedoston sisältö on virheellinen: {path}") from exc
+
+    def put_file(self, path: str, content: bytes, branch: str, *,
+                 message: str, sha: str | None = None) -> GitHubFile:
+        """Kirjoita tiedosto; epäselvä vastaus ratkaistaan aina takaisinluvulla."""
+        payload = {"message": message, "content": base64.b64encode(content).decode("ascii"),
+                   "branch": branch}
+        if sha:
+            payload["sha"] = sha
+        try:
+            result = self.request("PUT", f"contents/{urllib.parse.quote(path, safe='/')}", payload)
+            returned = result.get("content", {})
+            if returned.get("sha"):
+                return GitHubFile(content, returned["sha"])
+        except GitHubApiError:
+            actual = self.get_file(path, branch)
+            if actual is not None and actual.content == content:
+                return actual
+            raise
+        actual = self.get_file(path, branch)
+        if actual is None or actual.content != content:
+            raise GitHubAdapterError(f"GitHub ei vahvistanut kirjoitusta: {path}")
+        return actual
+
+    def ensure_branch(self, branch: str, base: str = MAIN_BRANCH) -> None:
+        """Luo runtime-haara mainin nykyisestä kärjestä vain ensimmäisellä käyttökerralla."""
+        ref = urllib.parse.quote(branch, safe="/")
+        try:
+            self.request("GET", f"git/ref/heads/{ref}")
+            return
+        except GitHubApiError as exc:
+            if getattr(exc, "status", None) != 404:
+                raise
+        base_ref = self.request("GET", f"git/ref/heads/{urllib.parse.quote(base, safe='/')}")
+        try:
+            self.request("POST", "git/refs", {"ref": f"refs/heads/{branch}",
+                                              "sha": base_ref["object"]["sha"]})
+        except GitHubApiError as exc:
+            if getattr(exc, "status", None) not in {409, 422}:
+                raise
+            self.request("GET", f"git/ref/heads/{ref}")
+
+    def find_pull_request(self, branch: str, base: str = MAIN_BRANCH) -> dict | None:
+        """Etsi aiempi PR myös suljetuista ja yhdistetyistä."""
+        owner = self.repository.split("/")[0]
+        query = urllib.parse.urlencode({"head": f"{owner}:{branch}", "base": base,
+                                        "state": "all", "per_page": 100})
+        values = self.request("GET", f"pulls?{query}")
+        return values[0] if values else None
+
+    def create_pull_request(self, title: str, body: str, branch: str,
+                            base: str = MAIN_BRANCH) -> dict:
+        """Avaa RSS-ehdokkaan PR ilman automaattista yhdistämistä."""
+        return self.request("POST", "pulls", {
+            "title": title, "body": body, "head": branch, "base": base,
+            "maintainer_can_modify": False})
+
+
+class GitHubModuleStateStore:
+    """Moduulikohtainen checkpoint-varasto GitHubin blob-SHA-CAS-menetelmällä."""
+
+    def __init__(self, client: Any, *, branch: str = RUNTIME_BRANCH):
+        self.client, self.branch = client, branch
+
+    def _path(self, module_id: str) -> str:
+        return f"data/module-state/{_module(module_id)}.json"
+
+    def _file(self, module_id: str) -> GitHubFile:
+        self.client.ensure_branch(self.branch)
+        path = self._path(module_id)
+        value = self.client.get_file(path, self.branch)
+        if value is None:
+            value = self.client.get_file(path, MAIN_BRANCH)
+        if value is None:
+            raise GitHubAdapterError(f"Moduulin tilatiedostoa ei löydy: {module_id}")
+        return value
+
+    def load(self, module_id: str) -> tuple[dict[str, Any], str]:
+        """Lue vain pyydetyn moduulin tila ja palauta blob-SHA."""
+        file = self._file(module_id)
+        try:
+            state = json.loads(file.content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise GitHubAdapterError("Moduulitilan JSON on virheellinen.") from exc
+        validate_module_state(state)
+        if state.get("module_id") != module_id:
+            raise GitHubAdapterError("Moduulitiedoston omistajuus ei vastaa pyydettyä moduulia.")
+        return state, file.sha
+
+    def save(self, module_id: str, state: dict[str, Any], *, expected_sha: str) -> str:
+        """Tallenna checkpoint vain odotetun SHA:n ollessa edelleen voimassa."""
+        module_id = _module(module_id)
+        validate_module_state(state)
+        if state.get("module_id") != module_id:
+            raise GitHubAdapterError("Checkpointin moduulitunniste ei vastaa tiedostopolkua.")
+        self.client.ensure_branch(self.branch)
+        path, content = self._path(module_id), _json(state)
+        current = self.client.get_file(path, self.branch)
+        if current is None:
+            source = self.client.get_file(path, MAIN_BRANCH)
+            if source is None or source.sha != expected_sha:
+                raise StateConflictError("Moduulin lähtötila muuttui ennen runtime-haaran alustusta.")
+            current = self.client.put_file(path, source.content, self.branch,
+                                           message=f"Initialize {module_id} runtime state")
+        if current.sha != expected_sha:
+            if current.content == content:
+                return current.sha
+            raise StateConflictError("Moduulin GitHub-blob-SHA muuttui rinnakkaisen ajon aikana.")
+        try:
+            return self.client.put_file(path, content, self.branch,
+                message=f"Update {module_id} module checkpoint", sha=current.sha).sha
+        except GitHubApiError:
+            actual = self.client.get_file(path, self.branch)
+            if actual is not None and actual.content == content:
+                return actual.sha
+            raise
+
+
+class GitHubArtifactStore:
+    """Ajokohtaiset muuttumattomat artefaktit ja SHA-tarkistettu moduuli-indeksi."""
+
+    def __init__(self, client: Any, *, branch: str = RUNTIME_BRANCH):
+        self.client, self.branch = client, branch
+
+    def _index(self, module_id: str) -> str:
+        return f"data/module-artifacts/{_module(module_id)}/index.json"
+
+    def _artifact(self, module_id: str, run_id: str) -> str:
+        return f"data/module-artifacts/{_module(module_id)}/{_run(run_id)}.json"
+
+    def _read_index(self, module_id: str) -> tuple[dict[str, Any], str]:
+        self.client.ensure_branch(self.branch)
+        file = self.client.get_file(self._index(module_id), self.branch)
+        if file is None:
+            return {"schema_version": 1, "module_id": module_id, "runs": {}}, "missing"
+        try:
+            value = json.loads(file.content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise GitHubAdapterError("Artefakti-indeksin JSON on virheellinen.") from exc
+        if (value.get("schema_version") != 1 or value.get("module_id") != module_id
+                or not isinstance(value.get("runs"), dict)):
+            raise GitHubAdapterError("Artefakti-indeksin rakenne tai omistajuus on virheellinen.")
+        return value, file.sha
+
+    def load_version(self, module_id: str) -> str:
+        """Palauta indeksin blob-SHA tai missing."""
+        return self._read_index(_module(module_id))[1]
+
+    def commit(self, module_id: str, run_id: str, artifacts: dict[str, Any], *,
+               expected_version: str) -> str:
+        """Kirjoita artefakti ensin muuttumattomana ja sitten indeksoi se CAS:lla."""
+        module_id, run_id = _module(module_id), _run(run_id)
+        if not isinstance(artifacts, dict):
+            raise GitHubAdapterError("Artefaktien pitää olla JSON-olio.")
+        index, version = self._read_index(module_id)
+        if version != expected_version:
+            if run_id in index["runs"]:
+                expected_digest = hashlib.sha256(_json(artifacts)).hexdigest()
+                if index["runs"][run_id].get("sha256") == expected_digest:
+                    return version
+            raise GitHubAdapterConflict("Artefakti-indeksi muuttui ennen kirjoitusta.")
+        path, content = self._artifact(module_id, run_id), _json(artifacts)
+        digest = hashlib.sha256(content).hexdigest()
+        old = self.client.get_file(path, self.branch)
+        if old is not None and old.content != content:
+            raise GitHubAdapterConflict("Sama artefaktipolku on jo varattu eri sisällölle.")
+        if old is None:
+            self.client.put_file(path, content, self.branch,
+                                 message=f"Store {module_id} artifacts {run_id}")
+        latest, latest_version = self._read_index(module_id)
+        if run_id in latest["runs"]:
+            if latest["runs"][run_id].get("sha256") == digest:
+                return latest_version
+            raise GitHubAdapterConflict("Sama run_id on jo sidottu eri artefaktiin.")
+        if latest_version != expected_version:
+            raise GitHubAdapterConflict("Artefakti-indeksi muuttui rinnakkaisen kirjoituksen aikana.")
+        latest = deepcopy(latest)
+        latest["runs"][run_id] = {"path": path, "sha256": digest, "size_bytes": len(content)}
+        index_content = _json(latest)
+        current_file = self.client.get_file(self._index(module_id), self.branch)
+        try:
+            return self.client.put_file(self._index(module_id), index_content, self.branch,
+                message=f"Index {module_id} artifacts {run_id}",
+                sha=current_file.sha if current_file else None).sha
+        except GitHubApiError:
+            confirmed, confirmed_sha = self._read_index(module_id)
+            if confirmed.get("runs", {}).get(run_id, {}).get("sha256") == digest:
+                return confirmed_sha
+            raise
+
+
+class GitHubPublicationJournal:
+    """Ajokohtainen pysyvä manifesti ja yksisuuntainen vaihehistoria."""
+
+    def __init__(self, client: Any, *, branch: str = RUNTIME_BRANCH):
+        self.client, self.branch = client, branch
+
+    def _path(self, module_id: str, run_id: str) -> str:
+        return f"data/module-publication-journal/{_module(module_id)}/{_run(run_id)}.json"
+
+    def _read(self, module_id: str, run_id: str) -> tuple[dict[str, Any], str]:
+        self.client.ensure_branch(self.branch)
+        file = self.client.get_file(self._path(module_id, run_id), self.branch)
+        if file is None:
+            raise PublicationJournalError("Julkaisumanifestia ei löydy.")
+        try:
+            value = json.loads(file.content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise PublicationJournalError("Julkaisumanifestin JSON on virheellinen.") from exc
+        if (value.get("module_id") != module_id or value.get("run_id") != run_id
+                or value.get("phase") not in PHASES or not isinstance(value.get("history"), list)):
+            raise PublicationJournalError("Manifestin tunnisteet tai vaihehistoria ovat virheellisiä.")
+        return value, file.sha
+
+    def prepare(self, record: dict[str, Any]) -> dict[str, Any]:
+        """Luo prepared-manifesti tai palauta täsmälleen saman ajon aiempi manifesti."""
+        required = {"module_id", "run_id", "idempotency_key", "report_sha256",
+                    "artifacts_sha256", "state_sha256", "artifact_version",
+                    "publication_targets", "prepared_at"}
+        if not isinstance(record, dict) or set(record) != required:
+            raise PublicationJournalError("Manifestin kentät eivät vastaa sopimusta.")
+        module_id, run_id = _module(record["module_id"]), _run(record["run_id"])
+        if not isinstance(record["publication_targets"], list) or not record["publication_targets"]:
+            raise PublicationJournalError("Julkaisukohteiden pitää olla ei-tyhjä lista.")
+        _time(record["prepared_at"])
+        self.client.ensure_branch(self.branch)
+        path = self._path(module_id, run_id)
+        old = self.client.get_file(path, self.branch)
+        stable_keys = required - {"state_sha256", "artifact_version"}
+        if old is not None:
+            value = json.loads(old.content.decode("utf-8"))
+            if {key: value.get(key) for key in stable_keys} != {key: record[key] for key in stable_keys}:
+                raise PublicationJournalConflict("Sama moduuli/run_id on varattu eri julkaisusisällölle.")
+            return value
+        value = {**record, "phase": "prepared", "updated_at": record["prepared_at"],
+                 "receipt": None, "history": [{"phase": "prepared",
+                 "updated_at": record["prepared_at"], "receipt": None}]}
+        content = _json(value)
+        try:
+            self.client.put_file(path, content, self.branch,
+                                 message=f"Prepare {module_id} publication {run_id}")
+        except GitHubApiError:
+            check = self.client.get_file(path, self.branch)
+            if check is None or check.content != content:
+                raise
+        return value
+
+    def load(self, module_id: str, run_id: str) -> dict[str, Any]:
+        """Lue ajokohtainen manifesti."""
+        return self._read(module_id, run_id)[0]
+
+    def advance(self, module_id: str, run_id: str, phase: str, *,
+                updated_at: str, receipt: dict[str, Any] | None = None) -> dict[str, Any]:
+        """Siirrä vaihetta yhden askeleen SHA-CAS-kirjoituksella."""
+        if phase not in PHASES:
+            raise PublicationJournalError("Tuntematon julkaisumanifestin vaihe.")
+        _time(updated_at)
+        for _ in range(3):
+            current, sha = self._read(module_id, run_id)
+            old_index, new_index = PHASES.index(current["phase"]), PHASES.index(phase)
+            if new_index <= old_index:
+                if receipt is not None and current.get("receipt") not in (None, receipt):
+                    raise PublicationJournalConflict("Julkaisukuittaus poikkeaa aiemmasta.")
+                return current
+            if new_index != old_index + 1:
+                raise PublicationJournalConflict("Manifestivaihetta ei voi ohittaa.")
+            updated = deepcopy(current)
+            updated.update({"phase": phase, "updated_at": updated_at})
+            if receipt is not None:
+                updated["receipt"] = deepcopy(receipt)
+            updated["history"].append({"phase": phase, "updated_at": updated_at,
+                                       "receipt": deepcopy(receipt)})
+            try:
+                self.client.put_file(self._path(module_id, run_id), _json(updated),
+                    self.branch, message=f"Advance {module_id} {run_id}: {phase}", sha=sha)
+                return updated
+            except (GitHubApiError, GitHubAdapterConflict):
+                actual, _ = self._read(module_id, run_id)
+                if actual["phase"] == phase:
+                    if receipt is not None and actual.get("receipt") != receipt:
+                        raise PublicationJournalConflict("Tallennettu kuittaus poikkeaa uusinnasta.")
+                    return actual
+                if PHASES.index(actual["phase"]) != old_index:
+                    raise PublicationJournalConflict("Manifesti muuttui rinnakkaisen tilasiirtymän aikana.")
+        raise PublicationJournalConflict("Manifestin SHA-CAS epäonnistui kolmesti.")
+
+
+@dataclass(frozen=True)
+class PublicationCandidate:
+    """Nykyiseen RSS/Pages-putkeen toimitettava yhden syötteen ehdokas."""
+    files: dict[str, str]
+    feed_path: str
+    public_url: str
+
+
+class GitHubPagesRssPublisher:
+    """Avaa hyväksytyn RSS-ehdokkaan PR:n ja odottaa Pages-takaisinlukua.
+
+    Candidate builderin on tuotettava yksi RSS/XML-tiedosto ja saman run_id:n
+    hyväksytty julkaisulaadun porttiraportti. Adapteri ei yhdistä PR:ää eikä
+    hyväksy toimituksellista sisältöä itse.
+    """
+
+    def __init__(self, client: Any, candidate_builder: Callable[..., PublicationCandidate],
+                 *, public_fetcher: Callable[[str], bytes] | None = None,
+                 pages_base_url: str = "https://mikknikk.github.io/aiheseurain"):
+        self.client, self.candidate_builder = client, candidate_builder
+        self.public_fetcher = public_fetcher or self._fetch_public
+        self.pages_base_url = pages_base_url.rstrip("/")
+        self.expected: dict[str, tuple[str, tuple[str, ...], int]] = {}
+
+    @staticmethod
+    def _fetch_public(url: str) -> bytes:
+        """Lue julkinen RSS-syöte ilman välimuistia."""
+        request = urllib.request.Request(url, headers={"Cache-Control": "no-cache",
+            "Pragma": "no-cache", "User-Agent": "aiheseurain-module-publisher"})
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return response.read()
+
+    @staticmethod
+    def _metadata(data: bytes) -> tuple[list[str], int]:
+        """Tarkista RSS/XML, GUIDien yksilöllisyys ja item-linkkien kielto."""
+        try:
+            root = ET.fromstring(data)
+        except ET.ParseError as exc:
+            raise GitHubAdapterError("RSS-ehdokkaan XML ei jäsenny.") from exc
+        channel = root.find("./channel")
+        if root.tag != "rss" or channel is None:
+            raise GitHubAdapterError("RSS channel puuttuu.")
+        items = channel.findall("./item")
+        guids = [(item.findtext("guid") or "").strip() for item in items]
+        if any(not guid for guid in guids) or len(guids) != len(set(guids)):
+            raise GitHubAdapterError("RSS-itemien GUIDit puuttuvat tai eivät ole yksilöllisiä.")
+        if any(item.find("link") is not None for item in items):
+            raise GitHubAdapterError("RSS-item ei saa sisältää link-elementtiä.")
+        return guids, len(items)
+
+    def _build(self, module_id: str, run_id: str, report_content: str) -> PublicationCandidate:
+        candidate = self.candidate_builder(module_id, run_id, report_content)
+        if not isinstance(candidate, PublicationCandidate):
+            raise GitHubAdapterError("candidate_builder palautti väärän tulossopimuksen.")
+        gate_path = f"reports/julkaisuportit/{run_id}.json"
+        if set(candidate.files) != {candidate.feed_path, gate_path}:
+            raise GitHubAdapterError("Julkaisu-PR saa sisältää vain yhden RSS-syötteen ja porttiraportin.")
+        if not candidate.feed_path.startswith("feeds/") or not candidate.feed_path.endswith(".xml"):
+            raise GitHubAdapterError("Julkaisupolun pitää olla feeds/*.xml.")
+        if candidate.public_url != f"{self.pages_base_url}/{candidate.feed_path}":
+            raise GitHubAdapterError("Julkinen URL ei vastaa nykyistä Pages-syötepolkua.")
+        guids, count = self._metadata(candidate.files[candidate.feed_path].encode("utf-8"))
+        try:
+            gate = json.loads(candidate.files[gate_path])
+        except json.JSONDecodeError as exc:
+            raise GitHubAdapterError("Julkaisulaadun porttiraportti ei ole JSONia.") from exc
+        if (gate.get("decision") != "approved" or gate.get("run_id") != run_id
+                or gate.get("feed_path") != candidate.feed_path):
+            raise GitHubAdapterError("Porttiraportin hyväksyntä tai tunnisteet eivät täsmää.")
+        expected_task = candidate.feed_path.removeprefix("feeds/").removesuffix(".xml")
+        if gate.get("task_id") not in {module_id, expected_task}:
+            raise GitHubAdapterError("Porttiraportin task_id ei vastaa moduulia tai syötettä.")
+        self.expected[f"{module_id}:{run_id}"] = (candidate.public_url, tuple(guids), count)
+        return candidate
+
+    def publish(self, module_id: str, run_id: str, report_content: str, *,
+                idempotency_key: str) -> PublicationReceipt:
+        """Luo yhden julkaisuehdokkaan PR:n; sama ajo käyttää aina samaa haaraa."""
+        module_id, run_id = _module(module_id), _run(run_id)
+        if idempotency_key != f"{module_id}:{run_id}":
+            raise GitHubAdapterError("Julkaisun idempotenssiavain ei täsmää.")
+        candidate = self._build(module_id, run_id, report_content)
+        branch = f"module-publish/{module_id}/{run_id}"
+        self.client.ensure_branch(branch)
+        for path, text in candidate.files.items():
+            self.client.put_file(path, text.encode("utf-8"), branch,
+                message=f"Prepare RSS publication {module_id} {run_id}")
+        pull = self.client.find_pull_request(branch)
+        if pull is None:
+            pull = self.client.create_pull_request(
+                f"RSS-julkaisu: {module_id} / {run_id}",
+                ("Tämä PR toimittaa yhden RSS-ehdokkaan nykyiseen RSS/Pages-putkeen.\n\n"
+                 f"- Moduuli: {module_id}\n- run_id: {run_id}\n- Syöte: {candidate.feed_path}\n\n"
+                 "PR:n CI tarkistaa RSS:n ja julkaisulaadun porttiraportin. Yhdistäminen "
+                 "käynnistää nykyisen Pages-julkaisun ja julkisen takaisinluvun. "
+                 "Tämä sovitin ei yhdistä PR:ää."),
+                branch)
+        guid = self.expected[f"{module_id}:{run_id}"][1][-1:]
+        if not pull.get("merged"):
+            return PublicationReceipt(False, guid, 1)
+        receipt = PublicationReceipt(True, guid, 1)
+        return receipt if self.verify(receipt) else PublicationReceipt(False, guid, 1)
+
+    def publish_target_reports(self, module_id: str, run_id: str,
+                               reports: list[dict[str, Any]]) -> PublicationReceipt:
+        """Rajaa ensimmäisen toteutuksen yhteen kohderaporttiin ja RSS-kohteeseen."""
+        if len(reports) != 1:
+            raise GitHubAdapterError("Yksi GitHub-julkaisupyyntö voi sisältää tässä vaiheessa yhden kohderaportin.")
+        return self.publish(module_id, run_id, reports[0]["report_content"],
+                            idempotency_key=f"{module_id}:{run_id}")
+
+    def verify(self, receipt: PublicationReceipt) -> bool:
+        """Varmista julkisen Pages-syötteen GUIDit ja item-määrä."""
+        matches = [item for item in self.expected.values()
+                   if item[1][-1:] == receipt.report_guid_refs and item[2] == receipt.published_items]
+        if len(matches) != 1:
+            return False
+        url, guids, count = matches[0]
+        try:
+            actual = self.public_fetcher(url)
+            actual_guids, actual_count = self._metadata(actual)
+        except Exception:
+            return False
+        return actual_guids == list(guids) and actual_count == count
+
+
+class GitHubRunRecorder:
+    """Pysyvä, tietosuojattu ajotulosloki muuttumattomina ajokohtaisina tiedostoina."""
+
+    def __init__(self, client: Any, *, branch: str = RUNTIME_BRANCH):
+        self.client, self.branch = client, branch
+
+    def record(self, result: Any) -> None:
+        """Tallenna vain ajon metatiedot; raporttisisältö ja salaisuudet rajataan pois."""
+        record = _audit_record(result)
+        _reject_sensitive_fields(record)
+        module_id, run_id = _module(record["module_id"]), _run(record["run_id"])
+        path, content = f"data/module-run-history/{module_id}/{run_id}.json", _json(record)
+        self.client.ensure_branch(self.branch)
+        old = self.client.get_file(path, self.branch)
+        if old is not None:
+            if old.content == content:
+                return
+            raise GitHubAdapterConflict("Sama moduuli/run_id on jo kirjattu eri ajotuloksella.")
+        try:
+            self.client.put_file(path, content, self.branch,
+                                 message=f"Record {module_id} run {run_id}")
+        except GitHubApiError:
+            check = self.client.get_file(path, self.branch)
+            if check is None or check.content != content:
+                raise
