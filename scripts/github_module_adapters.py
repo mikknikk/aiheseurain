@@ -578,6 +578,9 @@ class GitHubPagesRssPublisher:
             raise GitHubAdapterError("Yksi GitHub-julkaisupyyntö voi sisältää tässä vaiheessa yhden kohderaportin.")
         report = reports[0]
         context = load_publication_context(self.root)
+        module = context["modules"].get(module_id)
+        if module is None or module.get("module_type") != "topic":
+            raise GitHubAdapterError("RSS-julkaisusovitin hyväksyy vain topic-moduuleja.")
         plan = resolve_publication_plan(
             context, module_id=module_id, target_id=report["target_id"],
             run_id=run_id, observation_types=report["observation_types"],
