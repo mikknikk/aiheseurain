@@ -16,12 +16,14 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from typing import Any, Callable
+from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from scripts.module_state import validate_module_state, StateConflictError
 from scripts.module_orchestrator import PublicationReceipt
 from scripts.publication_journal import PHASES, PublicationJournalConflict, PublicationJournalError
 from scripts.module_run_adapters import AdapterError, AdapterConflictError, _audit_record, _reject_sensitive_fields
+from scripts.publication_routing import load_publication_context, resolve_publication_plan
 
 REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 MODULE_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
@@ -433,10 +435,12 @@ class GitHubPagesRssPublisher:
 
     def __init__(self, client: Any, candidate_builder: Callable[..., PublicationCandidate],
                  *, public_fetcher: Callable[[str], bytes] | None = None,
-                 pages_base_url: str = "https://mikknikk.github.io/aiheseurain"):
+                 pages_base_url: str = "https://mikknikk.github.io/aiheseurain",
+                 repository_root: Path | None = None):
         self.client, self.candidate_builder = client, candidate_builder
         self.public_fetcher = public_fetcher or self._fetch_public
         self.pages_base_url = pages_base_url.rstrip("/")
+        self.root = Path(repository_root or Path(__file__).resolve().parents[1])
         self.expected: dict[str, tuple[str, tuple[str, ...], int]] = {}
 
     @staticmethod
@@ -465,7 +469,8 @@ class GitHubPagesRssPublisher:
             raise GitHubAdapterError("RSS-item ei saa sisältää link-elementtiä.")
         return guids, len(items)
 
-    def _build(self, module_id: str, run_id: str, report_content: str) -> PublicationCandidate:
+    def _build(self, module_id: str, run_id: str, report_content: str, *,
+               expected_feed_path: str, expected_public_url: str | None = None) -> PublicationCandidate:
         candidate = self.candidate_builder(module_id, run_id, report_content)
         if not isinstance(candidate, PublicationCandidate):
             raise GitHubAdapterError("candidate_builder palautti väärän tulossopimuksen.")
@@ -474,9 +479,14 @@ class GitHubPagesRssPublisher:
             raise GitHubAdapterError("Julkaisu-PR saa sisältää vain yhden RSS-syötteen ja porttiraportin.")
         if not candidate.feed_path.startswith("feeds/") or not candidate.feed_path.endswith(".xml"):
             raise GitHubAdapterError("Julkaisupolun pitää olla feeds/*.xml.")
-        if candidate.public_url != f"{self.pages_base_url}/{candidate.feed_path}":
-            raise GitHubAdapterError("Julkinen URL ei vastaa nykyistä Pages-syötepolkua.")
+        if candidate.feed_path != expected_feed_path:
+            raise GitHubAdapterError("Ehdokkaan syötepolku ei vastaa rekisterin julkaisukohdetta.")
+        expected_url = expected_public_url or f"{self.pages_base_url}/{candidate.feed_path}"
+        if candidate.public_url != expected_url:
+            raise GitHubAdapterError("Julkinen URL ei vastaa rekisterin Pages-syötepolkua.")
         guids, count = self._metadata(candidate.files[candidate.feed_path].encode("utf-8"))
+        if count < 1:
+            raise GitHubAdapterError("RSS-ehdokas ei sisällä yhtään itemiä.")
         try:
             gate = json.loads(candidate.files[gate_path])
         except json.JSONDecodeError as exc:
@@ -491,12 +501,24 @@ class GitHubPagesRssPublisher:
         return candidate
 
     def publish(self, module_id: str, run_id: str, report_content: str, *,
-                idempotency_key: str) -> PublicationReceipt:
+                idempotency_key: str, expected_feed_path: str | None = None,
+                expected_public_url: str | None = None) -> PublicationReceipt:
         """Luo yhden julkaisuehdokkaan PR:n; sama ajo käyttää aina samaa haaraa."""
         module_id, run_id = _module(module_id), _run(run_id)
         if idempotency_key != f"{module_id}:{run_id}":
             raise GitHubAdapterError("Julkaisun idempotenssiavain ei täsmää.")
-        candidate = self._build(module_id, run_id, report_content)
+        if expected_feed_path is None:
+            catalog = json.loads((self.root / "data/feed-catalog.json").read_text(encoding="utf-8"))
+            matches = [item for item in catalog.get("feeds", [])
+                       if item.get("id") == module_id and item.get("type") == "topic"]
+            if len(matches) != 1:
+                raise GitHubAdapterError("Moduulille ei löydy yksikäsitteistä topic-RSS-syötettä.")
+            expected_feed_path = matches[0]["path"]
+        candidate = self._build(
+            module_id, run_id, report_content,
+            expected_feed_path=expected_feed_path,
+            expected_public_url=expected_public_url,
+        )
         branch_id = hashlib.sha256(f"{module_id}:{run_id}".encode("utf-8")).hexdigest()[:20]
         branch = f"module-publish/{module_id}/{branch_id}"
         self.client.ensure_branch(branch)
@@ -525,8 +547,22 @@ class GitHubPagesRssPublisher:
         """Rajaa ensimmäisen toteutuksen yhteen kohderaporttiin ja RSS-kohteeseen."""
         if len(reports) != 1:
             raise GitHubAdapterError("Yksi GitHub-julkaisupyyntö voi sisältää tässä vaiheessa yhden kohderaportin.")
-        return self.publish(module_id, run_id, reports[0]["report_content"],
-                            idempotency_key=f"{module_id}:{run_id}")
+        report = reports[0]
+        context = load_publication_context(self.root)
+        plan = resolve_publication_plan(
+            context, module_id=module_id, target_id=report["target_id"],
+            run_id=run_id, observation_types=report["observation_types"],
+        )
+        if len(plan.publication_ids) != 1:
+            raise GitHubAdapterError("Kohteelle ei ratkennut yhtä aktiivista RSS-julkaisukohdetta.")
+        publication = context["publications"][plan.publication_ids[0]][1]
+        destination = publication["destination"]
+        return self.publish(
+            module_id, run_id, report["report_content"],
+            idempotency_key=f"{module_id}:{run_id}",
+            expected_feed_path=destination["path"],
+            expected_public_url=destination["url"],
+        )
 
     def verify(self, receipt: PublicationReceipt) -> bool:
         """Varmista julkisen Pages-syötteen GUIDit ja item-määrä."""
