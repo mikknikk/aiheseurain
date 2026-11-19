@@ -16,6 +16,7 @@ from typing import Any, Callable
 
 from scripts.chatgpt_module_result import ChatGPTResultExecutor
 from scripts.chatgpt_result_quality import ChatGPTResultQualityGate
+from scripts.chatgpt_rss_candidate import ChatGPTRssCandidateBuilder
 from scripts.github_module_adapters import (
     GitHubApiClient, GitHubArtifactStore, GitHubHandoffStore,
     GitHubModuleStateStore, GitHubPagesRssPublisher,
@@ -193,7 +194,7 @@ def process_inbox_result(
     if not publisher_token:
         raise ChatGPTProcessingError("Tuotantojulkaisu edellyttää AIHESEURAIN_GITHUB_TOKEN-tunnusta.")
     if candidate_builder is None:
-        raise ChatGPTProcessingError("Tuotantojulkaisu edellyttää hyväksyttyä RSS-ehdokasrakentajaa.")
+        candidate_builder = ChatGPTRssCandidateBuilder(root=root)
     publisher_client = GitHubApiClient(token=publisher_token)
     publisher = GitHubPagesRssPublisher(
         publisher_client, candidate_builder, repository_root=root
