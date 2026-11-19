@@ -120,6 +120,29 @@ class ShadowComparisonTests(unittest.TestCase):
         with self.assertRaises(ShadowComparisonError):
             compare_shadow_runs(data)
 
+    def test_handoff_mismatch_is_rejected(self):
+        data = deepcopy(self.data)
+        data["module_result"]["handoff"]["run_id"] = "another-run-id"
+        with self.assertRaises(ShadowComparisonError):
+            compare_shadow_runs(data)
+
+    def test_guid_that_does_not_match_deterministic_target_identity_blocks_readiness(self):
+        data = deepcopy(self.data)
+        data["module_result"]["report_guid_refs"][0] = (
+            "urn:aiheseurain:tolkien:2026-11-19:11111111-1111-5111-8111-111111111111"
+        )
+        report = compare_shadow_runs(data)
+        self.assertFalse(report["guid_comparison"]["module_format_valid"])
+        self.assertFalse(report["publication_readiness"]["module_ready"])
+        self.assertIn("module_guid_format_invalid", report["publication_readiness"]["module_blockers"])
+
+    def test_source_audit_count_mismatch_blocks_readiness(self):
+        data = deepcopy(self.data)
+        data["module_result"]["sources_checked"] = 2
+        report = compare_shadow_runs(data)
+        self.assertFalse(report["publication_readiness"]["module_ready"])
+        self.assertIn("source_audit_count_mismatch", report["publication_readiness"]["module_blockers"])
+
     def test_unregistered_source_cannot_be_smuggled_into_module_audit(self):
         data = deepcopy(self.data)
         data["module_result"]["metadata"]["source_audit"]["source_checks"].append({
