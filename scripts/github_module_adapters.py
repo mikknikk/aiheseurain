@@ -680,27 +680,203 @@ class GitHubPagesRssPublisher:
                 and hashlib.sha256(actual).hexdigest() == expected_sha256)
 
 
+class GitHubHandoffStore:
+    """Tallenna ensimmäisen validoinnin jälkeen yhden moduulin handoff-tiiviste.
+
+    Tietue ei sisällä koko lähdepakettia tai promptia. Se säilyttää vain
+    alkuperän tunnisteet ja SHA-256-tiivisteen, jotta uusinnat voidaan tarkistaa
+    myös sen jälkeen, kun moduulin checkpoint tai kiertotila on muuttunut.
+    """
+
+    def __init__(self, client: Any, *, branch: str = RUNTIME_BRANCH):
+        self.client, self.branch = client, branch
+
+    def _path(self, module_id: str, run_id: str) -> str:
+        return f"data/module-handoffs/{_module(module_id)}/{_run(run_id)}.json"
+
+    def store_or_verify(self, record: dict[str, Any]) -> dict[str, Any]:
+        """Luo hyväksytyn handoff-tiivisteen kerran tai vertaa aiempaan täsmälleen."""
+        required = {
+            "schema_version", "module_id", "module_definition_version",
+            "contract_version", "run_id", "task_id", "feed_path", "period",
+            "requested_at", "input_sha256", "validated_at",
+        }
+        if not isinstance(record, dict) or set(record) != required:
+            raise GitHubAdapterError("Handoff-tiivisteen kentät eivät vastaa sopimusta.")
+        module_id, run_id = _module(record["module_id"]), _run(record["run_id"])
+        if record["schema_version"] != 1 or not re.fullmatch(r"[a-f0-9]{64}", record["input_sha256"]):
+            raise GitHubAdapterError("Handoffin versio tai syötepaketin SHA-256 on virheellinen.")
+        _time(record["requested_at"])
+        _time(record["validated_at"])
+        if record["period"].get("start") is None or record["period"].get("end") is None:
+            raise GitHubAdapterError("Handoffin seurantajakso puuttuu.")
+        _time(record["period"]["start"])
+        _time(record["period"]["end"])
+        self.client.ensure_branch(self.branch)
+        path, content = self._path(module_id, run_id), _json(record)
+        existing = self.client.get_file(path, self.branch)
+        if existing is not None:
+            try:
+                value = json.loads(existing.content.decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise GitHubAdapterError("Aiempi handoff-tiiviste ei ole kelvollista JSONia.") from exc
+            # validated_at voi olla uusintayrityksessä eri; alkuperäiset tunnisteet
+            # ja tiiviste eivät saa muuttua.
+            stable = {key: value.get(key) for key in required if key != "validated_at"}
+            expected = {key: record[key] for key in required if key != "validated_at"}
+            if stable != expected:
+                raise GitHubAdapterConflict("Sama run_id on jo sidottu eri handoffiin.")
+            return value
+        try:
+            self.client.put_file(path, content, self.branch,
+                                 message=f"Record {module_id} handoff {run_id}")
+        except GitHubApiError:
+            actual = self.client.get_file(path, self.branch)
+            if actual is None:
+                raise
+            value = json.loads(actual.content.decode("utf-8"))
+            stable = {key: value.get(key) for key in required if key != "validated_at"}
+            expected = {key: record[key] for key in required if key != "validated_at"}
+            if stable != expected:
+                raise GitHubAdapterConflict("Handoffin epäselvä kirjoitus tuotti eri sisällön.")
+            return value
+        return record
+
+    def load(self, module_id: str, run_id: str) -> dict[str, Any] | None:
+        """Lue yhden moduulin yhden ajon handoff-tiiviste."""
+        self.client.ensure_branch(self.branch)
+        file = self.client.get_file(self._path(module_id, run_id), self.branch)
+        if file is None:
+            return None
+        value = json.loads(file.content.decode("utf-8"))
+        if value.get("module_id") != module_id or value.get("run_id") != run_id:
+            raise GitHubAdapterError("Handoff-tiivisteen omistajuus ei vastaa polkua.")
+        return value
+
+
+class GitHubRotationStateStore:
+    """Päivitä kiertotila vain julkaistun ja checkpointatun topic-ajon jälkeen."""
+
+    def __init__(self, client: Any, *, branch: str = RUNTIME_BRANCH,
+                 repository_root: Path | None = None):
+        self.client, self.branch = client, branch
+        self.root = Path(repository_root or ROOT)
+
+    def load(self) -> tuple[dict[str, Any], str]:
+        """Lue runtime-kiertotila tai käytä main-haaran aloitustilaa."""
+        file = self.client.get_file("data/seurantatila.json", self.branch)
+        if file is None:
+            file = self.client.get_file("data/seurantatila.json", MAIN_BRANCH)
+        if file is None:
+            raise GitHubAdapterError("Kiertotilan tiedostoa ei löydy.")
+        try:
+            value = json.loads(file.content.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise GitHubAdapterError("Kiertotilan JSON on virheellinen.") from exc
+        schema = json.loads((self.root / "schemas/seurantatila.schema.json").read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator.check_schema(schema)
+        jsonschema.Draft202012Validator(
+            schema, format_checker=jsonschema.FormatChecker()
+        ).validate(value)
+        return value, file.sha
+
+    def advance(self, result: Any, *, task_id: str, feed_path: str) -> tuple[dict[str, Any], str]:
+        """Siirrä seuraavaa tehtävää vain yhden varmennetun tuotantoajon jälkeen."""
+        if (getattr(result, "mode", None) != "production"
+                or getattr(result, "status", None) != "succeeded"
+                or not getattr(result, "published", False)
+                or not getattr(result, "checkpoint_updated", False)
+                or not getattr(result, "checked_at", None)
+                or not isinstance(getattr(result, "published_items", None), int)
+                or result.published_items < 1):
+            raise GitHubAdapterError("Kiertoa voi siirtää vain julkaistun ja checkpointatun tuotantoajon jälkeen.")
+        module_id, run_id = _module(result.module_id), _run(result.run_id)
+        _time(result.checked_at)
+        state, expected_sha = self.load()
+        rotation = state["rotation"]
+        if rotation.get("last_completed_run_id") == run_id:
+            if rotation.get("last_completed_task") != task_id:
+                raise GitHubAdapterConflict("run_id on jo kuluttanut toisen kiertotehtävän.")
+            current = self.client.get_file("data/seurantatila.json", self.branch)
+            return state, current.sha if current else expected_sha
+        if rotation.get("next_task") != task_id:
+            raise GitHubAdapterConflict("Ajo ei vastaa kierron nykyistä seuraavaa tehtävää.")
+        task = rotation["tasks"].get(task_id)
+        if not isinstance(task, dict) or task.get("feed") != feed_path:
+            raise GitHubAdapterError("Kiertotehtävän RSS-polku ei vastaa valittua moduulia.")
+        if result.published_items is None or result.published_items < 1:
+            raise GitHubAdapterError("Julkaistujen raporttien määrä puuttuu.")
+        order = list(rotation["tasks"])
+        if len(order) != 9 or task_id not in order:
+            raise GitHubAdapterError("Kiertojärjestyksessä pitää olla yhdeksän tehtävää.")
+        next_task = order[(order.index(task_id) + 1) % len(order)]
+        updated = deepcopy(state)
+        updated_task = updated["rotation"]["tasks"][task_id]
+        updated_task.update({
+            "last_successful_check": result.checked_at,
+            "last_period_start": result.period_start,
+            "last_period_end": result.period_end,
+            "last_result": "published",
+            "published_items": result.published_items,
+            "sources_checked": result.sources_checked,
+            "errors": [],
+        })
+        updated["rotation"]["next_task"] = next_task
+        updated["rotation"]["last_completed_run_id"] = run_id
+        updated["rotation"]["last_completed_task"] = task_id
+        updated["rotation"]["last_completed_at"] = result.checked_at
+        updated["updated_at"] = result.checked_at
+        schema = json.loads((self.root / "schemas/seurantatila.schema.json").read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator(schema, format_checker=jsonschema.FormatChecker()).validate(updated)
+        self.client.ensure_branch(self.branch)
+        current = self.client.get_file("data/seurantatila.json", self.branch)
+        if current is None:
+            source = self.client.get_file("data/seurantatila.json", MAIN_BRANCH)
+            if source is None or source.sha != expected_sha:
+                raise GitHubAdapterConflict("Kiertotilan lähtö-SHA muuttui runtime-haaran alustuksessa.")
+            current = self.client.put_file(
+                "data/seurantatila.json", source.content, self.branch,
+                message="Initialize runtime topic rotation state",
+            )
+        if current.sha != expected_sha:
+            raise GitHubAdapterConflict("Kiertotilan SHA muuttui rinnakkaisen ajon aikana.")
+        content = _json(updated)
+        try:
+            saved = self.client.put_file(
+                "data/seurantatila.json", content, self.branch,
+                message=f"Advance topic rotation after {run_id}", sha=current.sha,
+            )
+            return updated, saved.sha
+        except GitHubApiError:
+            actual = self.client.get_file("data/seurantatila.json", self.branch)
+            if actual is not None and actual.content == content:
+                return updated, actual.sha
+            raise
+
+
 class GitHubRunRecorder:
-    """Pysyvä, tietosuojattu ajotulosloki muuttumattomina ajokohtaisina tiedostoina."""
+    """Pysyvä, tietosuojattu ajotulosloki erillisinä yritystietueina."""
 
     def __init__(self, client: Any, *, branch: str = RUNTIME_BRANCH):
         self.client, self.branch = client, branch
 
     def record(self, result: Any) -> None:
-        """Tallenna vain ajon metatiedot; raporttisisältö ja salaisuudet rajataan pois."""
+        """Tallenna vain tekniset metatiedot; uusintayritys saa oman muuttumattoman tietueen."""
         record = _audit_record(result)
         _reject_sensitive_fields(record)
         module_id, run_id = _module(record["module_id"]), _run(record["run_id"])
-        path, content = f"data/module-run-history/{module_id}/{run_id}.json", _json(record)
+        attempt_id = hashlib.sha256(_json(record)).hexdigest()[:20]
+        path = f"data/module-run-history/{module_id}/{run_id}/{attempt_id}.json"
+        content = _json(record)
         self.client.ensure_branch(self.branch)
-        old = self.client.get_file(path, self.branch)
-        if old is not None:
-            if old.content == content:
+        existing = self.client.get_file(path, self.branch)
+        if existing is not None:
+            if existing.content == content:
                 return
-            raise GitHubAdapterConflict("Sama moduuli/run_id on jo kirjattu eri ajotuloksella.")
+            raise GitHubAdapterConflict("Saman ajoyrityksen auditointitietue sisältää ristiriitaista sisältöä.")
         try:
             self.client.put_file(path, content, self.branch,
-                                 message=f"Record {module_id} run {run_id}")
+                                 message=f"Record {module_id} run attempt {run_id}")
         except GitHubApiError:
             check = self.client.get_file(path, self.branch)
             if check is None or check.content != content:
