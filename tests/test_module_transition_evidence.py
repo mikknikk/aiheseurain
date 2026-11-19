@@ -78,12 +78,12 @@ class FakeEvidenceClient:
             raise AssertionError("Todistekerääjän pitää käyttää vain GET-pyyntöjä.")
         if path == "pulls/42":
             return deepcopy(self.pr)
-        if path == "deployments?environment=github-pages&per_page=100":
+        if path == f"deployments?environment=github-pages&sha={"b" * 40}&per_page=100":
             return deepcopy(self.deployments)
         if path == "deployments/99/statuses?per_page=100":
             return deepcopy(self.statuses)
         if path.startswith("contents/data/module-transition-evidence/"):
-            prefix = path.split("?", 1)[0]
+            prefix = path.split("?", 1)[0].removeprefix("contents/")
             rows = []
             for (branch, file_path), value in self.files.items():
                 if branch == "module-runtime-state" and file_path.startswith(prefix + "/"):
@@ -282,7 +282,7 @@ class TransitionEvidenceTests(unittest.TestCase):
             manifest_phase="checkpoint_updated", observed_at=self.now,
         )
         self.assertEqual(record["evidence"]["after_run_id"], "swift-run-001")
-        self.assertEqual(record["evidence"]["before_blob_sha"], "before-sha")
+        self.assertEqual(record["evidence"]["before_blob_sha"], "c" * 40)
 
     def test_checkpoint_refuses_wrong_current_run(self):
         with self.assertRaises(TransitionEvidenceError):
