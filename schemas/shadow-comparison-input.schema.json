@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/shadow-comparison-input.schema.json",
+  "title": "Varjotilan vanhan ja uuden ajon vertailusyöte",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "comparison_id",
+    "legacy",
+    "module_result"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "comparison_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{2,100}$"
+    },
+    "legacy": {
+      "type": "object",
+      "required": [
+        "module_id",
+        "run_id",
+        "period",
+        "checked_at",
+        "status",
+        "source_checks",
+        "guid_refs",
+        "uncertainty_notes",
+        "publication_ready"
+      ],
+      "properties": {
+        "module_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 3
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "partial",
+            "failed"
+          ]
+        },
+        "source_checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source_check"
+          }
+        },
+        "report_content": {
+          "type": "string"
+        },
+        "guid_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "uncertainty_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "publication_ready": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "succeeded"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "report_content"
+            ],
+            "properties": {
+              "guid_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "module_result": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "period": {
+      "type": "object",
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_check": {
+      "type": "object",
+      "required": [
+        "source_id",
+        "status",
+        "note"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "status": {
+          "enum": [
+            "checked",
+            "partial",
+            "unavailable",
+            "skipped"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
