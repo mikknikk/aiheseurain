@@ -19,7 +19,7 @@ Jos moduulilla ei ole aiempaa onnistunutta ajoa, `run_id` ja `checked_at` ovat e
 
 ## Käyttö osana siirtymätodistetta
 
-Varjosiirtymän orkestroija kutsuu `read_checkpoint_baseline`-toimintoa itse aina, kun harjoitukseen sisältyy checkpointin jälkitilan tarkistus. Se ei hyväksy lähtötilaa keräyscallbackilta. Orkestroija vertaa suoraan runtime-haarasta luetun lähtöhavainnon `blob_sha`-, `run_id`- ja `checked_at`-arvoja checkpoint-jälkitodisteen vastaaviin `before_*`-kenttiin. Mikä tahansa ero pysäyttää harjoituksen ennen ensimmäistä auditointikirjoitusta. Jälkitodisteen `after_*`-kentät kuvaavat erikseen kerättyä jälkitilaa.
+Varjosiirtymän orkestroija kutsuu `read_checkpoint_baseline`-toimintoa itse aina, kun harjoitukseen sisältyy checkpointin jälkitilan tarkistus. Se ei hyväksy lähtötilaa keräyscallbackilta. Orkestroija vertaa suoraan runtime-haarasta luetun lähtöhavainnon `blob_sha`-, `run_id`- ja `checked_at`-arvoja checkpoint-jälkitodisteen vastaaviin `before_*`-kenttiin. Jälkitodisteen keräämisen jälkeen orkestroija lukee runtime-haaran uudelleen ja vertaa myös `after_*`-kentät suoraan luettuun jälkitilaan. Mikä tahansa ero pysäyttää harjoituksen ennen ensimmäistä auditointikirjoitusta; callback ei voi väärentää kumpaakaan päätetilaa.
 
 Tämä apuväline ei itsessään tee siirtymää, päivitä checkpointia, julkaise RSS:ää, muuta moduulin aktivointia tai tehtäväjonoa eikä koske ChatGPT-automaation asetuksiin. Se ei myöskään yksin todista, että myöhempi checkpoint kuuluu oikeaan julkaisuun; manifestin, RSS:n ja ajon tunnisteiden vastaavuus tarkistetaan erikseen.
 
