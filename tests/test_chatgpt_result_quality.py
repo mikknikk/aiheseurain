@@ -103,6 +103,14 @@ class ChatGPTResultQualityTests(unittest.TestCase):
         self.assertFalse(result.passed)
         self.assertIn("artifacts_contain_restricted_fields", result.errors)
 
+    def test_sensitive_fields_are_rejected_from_metadata(self):
+        result = self.gate.validate(
+            self.definition, self.request,
+            self.output(metadata={"api_token": "must-not-be-stored"}),
+        )
+        self.assertFalse(result.passed)
+        self.assertIn("metadata_contain_restricted_fields", result.errors)
+
     def test_partial_result_can_report_only_completed_targets(self):
         result = self.gate.validate(
             self.definition, self.request,
