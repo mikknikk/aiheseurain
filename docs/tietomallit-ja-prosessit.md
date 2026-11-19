@@ -223,7 +223,7 @@ Tässä esimerkissä:
 
 - `run_id` yksilöi yhden ajon.
 - `task_id` kertoo, mitä aihetta ajo käsitteli.
-- `status` kertoo ajon lähdekattavuuden: `complete`, `partial` tai `failed`. `complete` tarkoittaa, että kaikki ajon lähdejoukon kriittiset lähteet on käsitelty; se ei tarkoita, että jokainen rekisterin lähde tai kaikki mahdolliset maailman lähteet olisi avattu.
+- `status` kertoo ajon lähdekattavuuden: `complete`, `partial` tai `failed`. `complete` tarkoittaa, että kaikki kyseiselle ajolle odotetut rekisterilähteet on tarkistettu; se ei tarkoita, että kaikki mahdolliset maailman lähteet olisi avattu.
 - `checked_source_ids` sisältää lähteet, joiden alkuperäinen sisältö avattiin ja tarkistettiin.
 - `unchecked_sources` sisältää lähteet, joita ei saatu tarkistettua, sekä syyn.
 - `coverage_notes` selittää kattavuuteen vaikuttavia asioita, kuten kieli- tai aluepuutteita.
@@ -249,7 +249,7 @@ flowchart TD
 
 Tarkistamattomuuden syy on olennainen tieto. Esimerkiksi 403-esto ei tarkoita, että lähde olisi tarkistettu. Myöskään hakutuloskatkelma ei yksin riitä tarkistetuksi lähteeksi.
 
-**Älä tulkitse lokin tilaa koko automaation julkaisutilaksi.** `complete`, `partial` ja `failed` kuvaavat lähdetarkistuksen kattavuutta. `complete` voi sisältää myös tarkistamatta jääneitä ei-kriittisiä lähteitä, kunhan kriittiset lähteet on käsitelty ja puutteet kirjattu. Tila ei yksin kerro, julkaistiinko RSS-artikkeli tai onnistuiko koko automaatio.
+**Älä tulkitse lokin tilaa koko automaation julkaisutilaksi.** `complete`, `partial` ja `failed` kuvaavat lähdetarkistuksen kattavuutta. `complete` ei sisällä odotettuja tarkistamatta jääneitä rekisterilähteitä; jäähdytysajalla olevat lähteet eivät kuulu odotettuun joukkoon ja ne kirjataan puutteina. Tehtävän hyväksyntä ja vuoron eteneminen ratkaistaan erikseen tutkimusprosessin ja muiden pakollisten tarkistusten perusteella, ilman lähdemäärä- tai prosenttirajaa. Tila ei yksin kerro, julkaistiinko RSS-artikkeli tai onnistuiko koko automaatio.
 
 ## 6. Raporttikohtainen julkaisulaadun portti
 
