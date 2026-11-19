@@ -139,6 +139,14 @@ class ChatGPTResultQualityTests(unittest.TestCase):
         self.assertFalse(result.passed)
         self.assertIn("source_audit_unregistered_source", result.errors)
 
+    def test_source_audit_count_must_match_sources_checked(self):
+        result = self.gate.validate(
+            self.definition, self.request,
+            self.output(metadata={"source_audit": self.source_audit()}, sources_checked=2),
+        )
+        self.assertFalse(result.passed)
+        self.assertIn("source_audit_count_mismatch", result.errors)
+
     def test_duplicate_source_checks_are_rejected(self):
         audit = self.source_audit()
         audit["source_checks"].append(dict(audit["source_checks"][0]))
