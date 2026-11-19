@@ -2,7 +2,7 @@
   "contract_version": "1.0.0",
   "module_id": "muumit",
   "module_type": "topic",
-  "definition_version": "1.0.0",
+  "definition_version": "1.0.1",
   "name": "Muumit",
   "description": "Muumien, Tove Janssonin perinnön ja Moomin Charactersin hankkeiden kansainvälinen seuranta.",
   "capabilities": [
@@ -40,6 +40,11 @@
     },
     {
       "source_id": "moomin-characters-news",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "sony-live",
       "role": "primary",
       "required": false
     },
