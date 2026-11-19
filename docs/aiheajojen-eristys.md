@@ -35,12 +35,12 @@ python -m unittest tests.test_module_input_bundle tests.test_isolated_module_run
 
 ## Eristyksen rehellinen rajaus
 
-Ensimmäinen toteutus rajaa runnerille annettavan tietosisällön sovellusrajapinnassa. Se estää normaalin runner-kutsun kautta tapahtuvan muiden aiheiden tietojen vuotamisen, mutta ei ole käyttöjärjestelmän tiedostojärjestelmäsandbox: saman prosessin koodi, jolla olisi erikseen pääsy koko repositorion tiedostojärjestelmään, voisi edelleen yrittää avata niitä.
+Syötepaketin muodostaminen rajaa runnerille annettavan tietosisällön sovellusrajapinnassa. Pelkkä pakettirajaus ei estä saman prosessin koodia avaamasta muita tiedostoja; siksi runner suoritetaan lisäksi erillisessä käyttöjärjestelmätason sandboxissa.
 
 Vahvempi prosessieristys on toteutettu tiedostossa `scripts/isolated_module_runner.py`. Runner käynnistetään Linuxissa `bubblewrap`-mount- ja namespace-sandboxissa. Sandboxiin liitetään vain:
 - `/input/bundle.json`: validoitu moduulikohtainen syöte, vain luku;
 - `/runner/runner.py`: ajettava ohjelmakoodi, vain luku;
-- `/output`: ainoa kirjoitettava pysyvä hakemisto;
+- `/output/result.json`: ainoa runnerille kirjoitettavaksi annettu pysyvä tiedosto; hakemisto on vain luku -muotoinen;
 - Pythonin suorittamiseen tarvittavat järjestelmäkirjastot, vain luku.
 
 Sandbox käyttää erillisiä user-, PID-, IPC-, UTS- ja network-namespaceja (`--unshare-all`), tyhjennettyä ympäristöä, erillistä `/tmp`-hakemistoa ja eristettyä prosessiryhmää. Päärepon työpuuta, kotihakemistoa, GitHub-tunnuksia, muita moduuleja tai verkkoa ei liitetä sandboxiin. Syöte ja runner-koodi ovat vain luku -muotoisia. Runner voi kirjoittaa vain ennalta luotuun `/output/result.json`-tiedostoon; hakemisto itsessään on vain luku -muotoinen. Tulos luetaan ilman symbolisten linkkien seuraamista vasta prosessin onnistuneen päättymisen jälkeen. Tulostiedoston koko rajataan viiteen mebitavuun, ja runner-prosessille asetetaan CPU-, tiedostokoko-, tiedostokuvaus- ja core-dump-rajat. Aikarajan ylitys, puuttuva bubblewrap tai sandboxin käynnistysvirhe pysäyttää ajon; tavalliseen eristämättömään subprocessiin ei pudota.
