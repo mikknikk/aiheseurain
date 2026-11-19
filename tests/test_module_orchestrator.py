@@ -241,7 +241,8 @@ class ProductionLifecycleTests(unittest.TestCase):
         self.orchestrator=ModuleOrchestrator(
             executor=self.executor,quality_gate=self.gate,state_store=self.state_store,
             artifact_store=self.artifacts,publisher=self.publisher,
-            publication_journal=self.journal,registry_loader=active_registry_loader
+            publication_journal=self.journal,registry_loader=active_registry_loader,
+            activation_loader=lambda module_id: True
         )
 
     def test_successful_production_run_publishes_persists_and_advances_checkpoint(self):
