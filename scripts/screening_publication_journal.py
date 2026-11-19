@@ -8,9 +8,11 @@ from __future__ import annotations
 
 from copy import deepcopy
 from datetime import datetime
+import hashlib
 from pathlib import Path
 from typing import Any
 import json
+import xml.etree.ElementTree as ET
 
 import jsonschema
 
@@ -38,7 +40,11 @@ def _time(value: str, label: str) -> datetime:
 
 
 def validate_journal(journal: dict[str, Any], state: dict[str, Any],
-                     feed_catalog: list[dict[str, Any]]) -> None:
+                     feed_catalog: list[dict[str, Any]], *,
+                     source_log: dict[str, Any] | None = None,
+                     source_registry: dict[str, Any] | None = None,
+                     module_state: dict[str, Any] | None = None,
+                     feed_bytes: bytes | None = None) -> None:
     """Validoi skeeman lisäksi ajopäiväkirjan suhteet todelliseen seurantatilaan.
 
     Skeema tarkistaa yksittäisten kenttien muodot. Tämä funktio tarkistaa
@@ -101,6 +107,102 @@ def validate_journal(journal: dict[str, Any], state: dict[str, Any],
             raise ScreeningJournalError(
                 "Viimeisimmän valmiin päiväkirjamerkinnän jakson loppu ei vastaa seurantatilan onnistumispistettä."
             )
+
+
+    # Kun kaikki riippuvat aineistot annetaan, tarkistetaan niiden keskinäiset
+    # viitteet. Yksikkötestit voivat kutsua perusvalidointia pienillä fixtureillä.
+    cross_values = (source_log, source_registry, module_state, feed_bytes)
+    if any(value is not None for value in cross_values):
+        if any(value is None for value in cross_values):
+            raise ScreeningJournalError("Ristiviittausten tarkistus vaatii lähdelokin, lähderekisterin, moduulitilan ja RSS-tavut.")
+        if runs:
+            _validate_cross_references(
+                latest, source_log, source_registry, module_state, feed_bytes
+            )
+
+
+def _validate_cross_references(latest: dict[str, Any], source_log: dict[str, Any],
+                               source_registry: dict[str, Any],
+                               module_state: dict[str, Any], feed_bytes: bytes) -> None:
+    """Vertaa viimeisintä päiväkirja-ajoa sen todellisiin RSS- ja tilatiedostoihin."""
+    # RSS-tavut ovat kanoninen sisältö. Hash, item-määrä ja GUIDit tarkistetaan
+    # samoista tavuista, jotta eri tiedostojen välinen vertailu ei perustu otsikoihin.
+    actual_hash = hashlib.sha256(feed_bytes).hexdigest()
+    if actual_hash != latest["feed"]["sha256"]:
+        raise ScreeningJournalError("RSS-tiedoston SHA-256 ei vastaa päiväkirjan ehdokasta.")
+    try:
+        root = ET.fromstring(feed_bytes)
+    except ET.ParseError as exc:
+        raise ScreeningJournalError(f"Julkaistu RSS ei ole kelvollista XML:ää: {exc}") from exc
+    channel = root.find("channel")
+    if channel is None:
+        raise ScreeningJournalError("Näytösvahtisyötteen channel-elementti puuttuu.")
+    items = channel.findall("item")
+    actual_guids = [(item.findtext("guid") or "").strip() for item in items]
+    if len(items) != latest["feed"]["item_count"]:
+        raise ScreeningJournalError("RSS-itemien määrä ei vastaa päiväkirjan item_count-arvoa.")
+    if actual_guids != latest["feed"]["guids"]:
+        raise ScreeningJournalError("RSS-itemien GUID-järjestys tai sisältö ei vastaa päiväkirjaa.")
+    if not all(actual_guids) or len(actual_guids) != len(set(actual_guids)):
+        raise ScreeningJournalError("RSS:ssä on puuttuva tai kahdentunut GUID.")
+
+    # Päiväkirjan source-check-tunnisteen on osoitettava yhteen täydelliseen
+    # näytösvahtiajoon. Tämä säilyy palautettavana myös, jos seuraava vaihe keskeytyy.
+    source_runs = [
+        run for run in source_log.get("runs", [])
+        if run.get("run_id") == latest["source_check_run_id"]
+    ]
+    if len(source_runs) != 1:
+        raise ScreeningJournalError("Päiväkirjan lähdeajon tunniste ei osoita täsmälleen yhteen lokimerkintään.")
+    source_run = source_runs[0]
+    if source_run.get("task_id") != TASK_ID or source_run.get("status") != "complete":
+        raise ScreeningJournalError("Päiväkirjan lähdeajon tehtävätunniste tai tila ei ole kelvollinen.")
+    if source_run.get("ended_at") != latest["source_check_ended_at"]:
+        raise ScreeningJournalError("Päiväkirjan ja lähdetarkistuslokin päättymisajat eroavat.")
+    if source_run.get("ended_at") != latest["period"]["end"]:
+        raise ScreeningJournalError("Lähdetarkistusajon päättymisaika ei vastaa seurantajakson loppua.")
+
+    checked = set(source_run.get("checked_source_ids", []))
+    unchecked = {item.get("source_id") for item in source_run.get("unchecked_sources", [])}
+    registry_ids = set(source_run.get("registry_source_ids", []))
+    if None in unchecked or checked & unchecked or checked | unchecked != registry_ids:
+        raise ScreeningJournalError("Lähdeajon tarkistetut, tarkistamatta jääneet ja rekisterin lähdejoukot eivät täsmää.")
+
+    # Viimeisimmän lähdeajon pitää olla myös tehtävän latest_by_task-viite.
+    if source_log.get("latest_by_task", {}).get(TASK_ID) != source_run.get("ended_at"):
+        raise ScreeningJournalError("latest_by_task ei osoita päiväkirjan viimeisimpään näytösvahtiajoon.")
+
+    registry_sources = source_registry.get("sources", [])
+    registry_by_id = {item.get("source_id"): item for item in registry_sources}
+    if len(registry_by_id) != len(registry_sources) or set(registry_by_id) != registry_ids:
+        raise ScreeningJournalError("Näytösvahtiajon lähdejoukko ei vastaa aihekohtaista lähderekisteriä.")
+
+    started = _time(source_run["started_at"], "source_run.started_at")
+    ended = _time(source_run["ended_at"], "source_run.ended_at")
+    for source_id in checked:
+        checked_at = registry_by_id[source_id].get("last_checked_at")
+        if checked_at is None:
+            raise ScreeningJournalError(f"Tarkistetulta lähteeltä {source_id} puuttuu last_checked_at.")
+        checked_time = _time(checked_at, f"{source_id}.last_checked_at")
+        if checked_time < started or checked_time > ended:
+            raise ScreeningJournalError(f"Lähteen {source_id} tarkistusaika ei kuulu tähän lähdeajoon.")
+    for source_id in unchecked:
+        checked_at = registry_by_id[source_id].get("last_checked_at")
+        if checked_at is not None and _time(checked_at, f"{source_id}.last_checked_at") >= started:
+            raise ScreeningJournalError(f"Tarkistamatta jääneen lähteen {source_id} tarkistusaika on virheellisesti päivitetty.")
+
+    # Moduulitila säilyttää lähdeajon viitteen ja koko syötteen GUID-joukon.
+    # Sen migraation checkpoint voi olla tarkoituksellisesti vanha snapshot,
+    # joten sitä ei verrata legacy-seurantatilan viimeisimpään onnistumiseen.
+    history_refs = module_state.get("history", {}).get("source_check_run_refs", [])
+    if latest["source_check_run_id"] not in history_refs:
+        raise ScreeningJournalError("Moduulitilan historiasta puuttuu päiväkirjan lähdeajon viite.")
+    publication = module_state.get("publication", {})
+    if publication.get("feed_path") != latest["feed"]["path"]:
+        raise ScreeningJournalError("Moduulitilan julkaisupolku ei vastaa näytösvahtisyötettä.")
+    module_guids = publication.get("guid_refs", [])
+    if len(module_guids) != len(set(module_guids)) or set(module_guids) != set(actual_guids):
+        raise ScreeningJournalError("Moduulitilan GUID-viitteet eivät vastaa julkaistua RSS-syötettä.")
 
 
 def prepare_run(journal: dict[str, Any], record: dict[str, Any]) -> dict[str, Any]:
