@@ -47,7 +47,8 @@ flowchart TB
     subgraph NAYTOS["Erillinen näytösvahti"]
       N["data/naytosten-muutoshistoria.json<br/>Näytösten nykytila ja tapahtumat"]
     end
-\n    subgraph PALAUTUMINEN["Näytösvahtiajon julkaisun palautuminen"]
+
+    subgraph PALAUTUMINEN["Näytösvahtiajon julkaisun palautuminen"]
       J["data/screening-publication-journal.json<br/>Ajokohtainen julkaisuvaihe ja kuittaukset"]
       J -->|"RSS-tiiviste ja GUIDit"| XML
       J -->|"onnistumispisteen suojaus"| S
@@ -160,14 +161,16 @@ Käyttörekisteri ei toista lähteen nimeä tai URL-osoitetta. Se viittaa katalo
   "source_id": "tolkien-estate",
   "critical": true,
   "last_checked_at": "2026-11-16T17:56:58+02:00",
-  "access_limit": null,\n  "retry_after": null
+  "access_limit": null,
+  "retry_after": null
 }
 ```
 
 - `source_id`: viittaus yhteisen katalogin `id`-arvoon.
 - `critical`: onko lähde tämän aiheen kattavuuden kannalta kriittinen. Tämä ei ole luotettavuusarvosana.
 - `last_checked_at`: milloin lähde viimeksi tarkistettiin tämän tehtävän yhteydessä. `null` tarkoittaa, ettei tarkistusaikaa ole kirjattu.
-- `access_limit`: käyttöä rajaava huomio, esimerkiksi se, että lähde toimii vain uutisvihjeenä.\n- `retry_after`: aikaleima, jota ennen lähdettä ei yritetä uudelleen. `null` tarkoittaa, että lähde kuuluu seuraavaan normaaliin tarkistukseen. Epäonnistunut yritys ei päivitä `last_checked_at`-arvoa.
+- `access_limit`: käyttöä rajaava huomio, esimerkiksi se, että lähde toimii vain uutisvihjeenä.
+- `retry_after`: aikaleima, jota ennen lähdettä ei yritetä uudelleen. `null` tarkoittaa, että lähde kuuluu seuraavaan normaaliin tarkistukseen. Epäonnistunut yritys ei päivitä `last_checked_at`-arvoa.
 
 Tehtäväkohtaisuus on tärkeää: jos sama sivusto tarkistetaan Tolkien- ja Muumi-seurannassa, Tolkien-rekisterin tarkistusaika ei automaattisesti päivitä Muumien rekisteriä.
 
