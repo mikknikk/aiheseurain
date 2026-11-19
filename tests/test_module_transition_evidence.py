@@ -78,7 +78,7 @@ class FakeEvidenceClient:
             raise AssertionError("Todistekerääjän pitää käyttää vain GET-pyyntöjä.")
         if path == "pulls/42":
             return deepcopy(self.pr)
-        if path == f"deployments?environment=github-pages&sha={"b" * 40}&per_page=100":
+        if path == "deployments?environment=github-pages&sha=" + "b" * 40 + "&per_page=100":
             return deepcopy(self.deployments)
         if path == "deployments/99/statuses?per_page=100":
             return deepcopy(self.statuses)
