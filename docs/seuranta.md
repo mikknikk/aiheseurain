@@ -52,7 +52,8 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 - `data/lahdetarkistukset.json` säilyttää ajokohtaiset tarkistustulokset. Jokaisessa ajossa eritellään tarkistetut lähteet sekä tarkistamatta jääneet lähteet syineen. Osittainen tai epäonnistunut ajo ei saa näyttää täydelliseltä.
 - Tehtävätunnisteet `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset` ovat erilliset. Uutisautomaatio ei lisää näytöslähteiden tarkistuksia omaan ajoonsa.
 - Ajolokin `complete` tarkoittaa, että kaikki ajon odotettavissa olevat lähteet tarkistettiin; `partial` tarkoittaa, että vähintään yksi lähde jäi tarkistamatta tai oli jäähdytysajalla. Tämä ajolokin tila erotetaan tehtävän hyväksymisestä: vuoro voi edetä myös `partial`-ajon jälkeen, jos pääautomaation käsikirjan numeeriset kattavuus- ja kriittisten lähteiden ehdot täyttyvät. Kieli- ja aluepuutteet kirjataan `coverage_notes`-kenttään.
-- Käyttörekisterin `retry_after` estää lähteen tarpeettoman toistuvan tarkistamisen: robots.txt 30 päivää, 401/403 tai pysyvä käyttöesto 14 päivää, 429 seitsemän päivää ja tilapäinen verkkovirhe seuraavalla saman aiheen vuorolla. Onnistunut alkuperäissivun tarkistus nollaa `retry_after`-arvon.\n- `data/seurantatila.json`-tiedoston `sources_checked` säilyy yhteenvetolukuna; lähdekohtaiset tiedot ovat ajolokissa.
+- Käyttörekisterin `retry_after` estää lähteen tarpeettoman toistuvan tarkistamisen: robots.txt 30 päivää, 401/403 tai pysyvä käyttöesto 14 päivää, 429 seitsemän päivää ja tilapäinen verkkovirhe seuraavalla saman aiheen vuorolla. Onnistunut alkuperäissivun tarkistus nollaa `retry_after`-arvon.
+- `data/seurantatila.json`-tiedoston `sources_checked` säilyy yhteenvetolukuna; lähdekohtaiset tiedot ovat ajolokissa.
 
 ## Koneellinen seurantatila ja automaattiset testit
 
