@@ -432,11 +432,13 @@ class SaveThenRaiseOnceStateStore(FakeStateStore):
         return sha
 
 
-class ProductionRecoveryFaultInjectionTests(ProductionLifecycleTests):
+class ProductionRecoveryFaultInjectionTests(unittest.TestCase):
     """Varmistaa saman run_id:n turvallisen uusinnan jokaisen pysyvän vaiheen jälkeen."""
 
+    def setUp(self):
+        ProductionLifecycleTests.setUp(self)
+
     def test_retry_after_published_manifest_write_ack_is_lost(self):
-        self.setUp()
         self.journal = FailOncePublicationJournal("published")
         self.orchestrator.publication_journal = self.journal
         req = request(mode="production", run_id="recovery-published-001")
@@ -471,7 +473,6 @@ class ProductionRecoveryFaultInjectionTests(ProductionLifecycleTests):
         self.assertEqual(self.state_store.state["checkpoint"]["last_successful_run"]["run_id"], req.run_id)
 
     def test_retry_after_checkpoint_store_write_ack_is_lost(self):
-        self.setUp()
         self.state_store = SaveThenRaiseOnceStateStore(self.state)
         self.orchestrator.state_store = self.state_store
         req = request(mode="production", run_id="recovery-checkpoint-store-001")
@@ -485,7 +486,6 @@ class ProductionRecoveryFaultInjectionTests(ProductionLifecycleTests):
         )
 
     def test_retry_after_publication_api_response_is_lost(self):
-        self.setUp()
         self.publisher = PublishThenRaiseOnce()
         self.orchestrator.publisher = self.publisher
         req = request(mode="production", run_id="recovery-publisher-001")
