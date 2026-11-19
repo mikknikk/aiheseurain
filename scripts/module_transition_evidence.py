@@ -208,7 +208,7 @@ class GitHubTransitionEvidenceCollector:
                 "created_at": deployment.get("created_at"),
                 "updated_at": latest.get("created_at") or deployment.get("created_at"),
             }
-        return self._record(module_id, run_id, "pages_deployment", observed_at,
+        return self._make_record(module_id, run_id, "pages_deployment", observed_at,
                             "github_deployments_api", evidence)
 
     @staticmethod
@@ -241,7 +241,7 @@ class GitHubTransitionEvidenceCollector:
             "url": url, "sha256": hashlib.sha256(data).hexdigest(),
             "item_count": count, "guids": guids,
         }
-        return self._record(module_id, run_id, "public_feed", observed_at,
+        return self._make_record(module_id, run_id, "public_feed", observed_at,
                             "public_pages_http_no_cache", evidence)
 
     def collect_checkpoint(self, module_id: str, run_id: str, *,
@@ -273,7 +273,7 @@ class GitHubTransitionEvidenceCollector:
             "before_checked_at": before_checked_at, "after_checked_at": checkpoint.get("checked_at"),
             "manifest_phase": manifest_phase,
         }
-        return self._record(module_id, run_id, "checkpoint", observed_at,
+        return self._make_record(module_id, run_id, "checkpoint", observed_at,
                             "github_contents_api", evidence)
 
     def legacy_period_observation(self, module_id: str, run_id: str, *,
@@ -300,7 +300,7 @@ class GitHubTransitionEvidenceCollector:
             "period_start": period_start, "period_end": period_end,
             "reason": reason, "matching_guids": matching_guids,
         }
-        return self._record(_module(module_id), _run(run_id), "legacy_period", observed_at,
+        return self._make_record(_module(module_id), _run(run_id), "legacy_period", observed_at,
                             "legacy_archive_review", evidence)
 
     def recovery_decision(self, module_id: str, run_id: str, *,
@@ -323,7 +323,7 @@ class GitHubTransitionEvidenceCollector:
             "legacy_period_status": legacy_period_status,
             "legacy_fallback_authorized": legacy_fallback_authorized, "action": action,
         }
-        return self._record(_module(module_id), _run(run_id), "recovery_decision",
+        return self._make_record(_module(module_id), _run(run_id), "recovery_decision",
                             observed_at, "module_recovery_action", evidence)
 
     def legacy_fallback_approval(self, module_id: str, run_id: str, *,
@@ -337,7 +337,7 @@ class GitHubTransitionEvidenceCollector:
         _time(approved_at)
         evidence = {"approval_id": approval_id, "approved_at": approved_at,
                     "reason": reason, "scope": scope}
-        return self._record(_module(module_id), _run(run_id), "legacy_approval",
+        return self._make_record(_module(module_id), _run(run_id), "legacy_approval",
                             observed_at, "explicit_external_approval", evidence)
 
 
