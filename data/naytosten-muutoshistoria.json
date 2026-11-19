@@ -2773,13 +2773,14 @@
         },
         {
           "publisher": "Cinema Niagara",
-          "url": "https://cinemaniagara.fi/salikartta?id=54469",
+          "url": "https://cinemaniagara.fi/?lang=fi",
           "published_at": null,
-          "checked_at": "2026-11-19T05:43:38+02:00",
-          "claim_type": "TEATTERIN VAHVISTAMA"
+          "checked_at": "2026-11-19T06:10:58+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA",
+          "notes": "Teatterin oma ohjelmisto näyttää ke 25.11. klo 12.30."
         }
       ],
-      "booking_url": "https://cinemaniagara.fi/salikartta?id=54469"
+      "booking_url": "https://cinemaniagara.fi/?lang=fi"
     },
     {
       "screening_id": "klara-ja-aurinko-finnkino-scala-20261125-1445",
@@ -2811,20 +2812,23 @@
       "sources": [
         {
           "publisher": "Kinoon",
-          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
           "published_at": null,
           "checked_at": "2026-11-19T05:43:38+02:00",
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         },
         {
           "publisher": "Kinopirtti",
-          "url": "https://kinopirtti.fi/salikartta?id=54450",
+          "url": "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
           "published_at": null,
-          "checked_at": "2026-11-19T05:43:38+02:00",
-          "claim_type": "TEATTERIN VAHVISTAMA"
+          "checked_at": "2026-11-19T06:10:58+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA",
+          "notes": "Teatterin oma elokuvasivu vahvistaa 25.11. klo 15.40, englanninkielisen esityksen sekä suomen- ja ruotsinkieliset tekstitykset."
         }
       ],
-      "booking_url": "https://kinopirtti.fi/salikartta?id=54450"
+      "booking_url": "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
+      "language": "englanti",
+      "subtitles": "suomi ja ruotsi"
     },
     {
       "screening_id": "klara-ja-aurinko-riviera-punavuori-20261125-1700",
@@ -9954,6 +9958,162 @@
         }
       ],
       "note": "Uusi näytös löytyi Kinoonin Suomen näytöslistauksesta; teatterin omaa täsmävahvistusta ei saatu."
+    },
+    {
+      "event_id": "correction-klara-ja-aurinko-cinema-niagara-20261125-1230-screening-watch-20261119T041058Z-a2-official-url",
+      "observed_at": "2026-11-19T06:10:58+02:00",
+      "type": "correction",
+      "screening_id": "klara-ja-aurinko-cinema-niagara-20261125-1230",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-cinema-niagara-20261125-1230",
+        "film": "Klara ja aurinko",
+        "venue": "Cinema Niagara",
+        "city": "Tampere",
+        "starts_at": "2026-11-25T12:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Cinema Niagara",
+            "url": "https://cinemaniagara.fi/salikartta?id=54469",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://cinemaniagara.fi/salikartta?id=54469"
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-cinema-niagara-20261125-1230",
+        "film": "Klara ja aurinko",
+        "venue": "Cinema Niagara",
+        "city": "Tampere",
+        "starts_at": "2026-11-25T12:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Cinema Niagara",
+            "url": "https://cinemaniagara.fi/?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:10:58+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA",
+            "notes": "Teatterin oma ohjelmisto näyttää ke 25.11. klo 12.30."
+          }
+        ],
+        "booking_url": "https://cinemaniagara.fi/?lang=fi"
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+          "published_at": null,
+          "checked_at": "2026-11-19T05:43:38+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        },
+        {
+          "publisher": "Cinema Niagara",
+          "url": "https://cinemaniagara.fi/?lang=fi",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:10:58+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA",
+          "notes": "Teatterin oma ohjelmisto näyttää ke 25.11. klo 12.30."
+        }
+      ],
+      "note": "Teatterin oma ohjelmisto avattiin ja näytös 25.11. klo 12.30 vahvistettiin. Lähdeviite ja RSS-linkki vaihdettiin luettavaan teatterin omaan ohjelmistosivuun."
+    },
+    {
+      "event_id": "details-changed-klara-ja-aurinko-kinopirtti-20261125-1540-screening-watch-20261119T041058Z-a2-language-subtitles",
+      "observed_at": "2026-11-19T06:10:58+02:00",
+      "type": "details_changed",
+      "screening_id": "klara-ja-aurinko-kinopirtti-20261125-1540",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-kinopirtti-20261125-1540",
+        "film": "Klara ja aurinko",
+        "venue": "Kinopirtti",
+        "city": "Kemi",
+        "starts_at": "2026-11-25T15:40:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Kinopirtti",
+            "url": "https://kinopirtti.fi/salikartta?id=54450",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA"
+          }
+        ],
+        "booking_url": "https://kinopirtti.fi/salikartta?id=54450"
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-kinopirtti-20261125-1540",
+        "film": "Klara ja aurinko",
+        "venue": "Kinopirtti",
+        "city": "Kemi",
+        "starts_at": "2026-11-25T15:40:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Kinopirtti",
+            "url": "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:10:58+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA",
+            "notes": "Teatterin oma elokuvasivu vahvistaa 25.11. klo 15.40, englanninkielisen esityksen sekä suomen- ja ruotsinkieliset tekstitykset."
+          }
+        ],
+        "booking_url": "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
+        "language": "englanti",
+        "subtitles": "suomi ja ruotsi"
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+          "published_at": null,
+          "checked_at": "2026-11-19T05:43:38+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        },
+        {
+          "publisher": "Kinopirtti",
+          "url": "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:10:58+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA",
+          "notes": "Teatterin oma elokuvasivu vahvistaa 25.11. klo 15.40, englanninkielisen esityksen sekä suomen- ja ruotsinkieliset tekstitykset."
+        }
+      ],
+      "note": "Kinopirtin oma elokuvasivu vahvisti näytösajan 25.11. klo 15.40 sekä esityskielen englanti ja tekstitykset suomeksi ja ruotsiksi. Lähdeviite ja RSS-linkki päivitettiin teatterin omaan elokuvasivuun."
     }
   ]
 }
