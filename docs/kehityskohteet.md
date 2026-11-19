@@ -315,7 +315,7 @@ Suositeltu toteutusjärjestys:
 - [x] Lisättiin runtime-tietueiden JSON Schema -sopimukset ja offline-testit: SHA-konfliktit, idempotenssi, epäselvä API-vastaus, rinnakkaisen haarakirjoituksen uusinta, vaihekatkot ja Pages-takaisinluku.
 - [ ] Varmista PR-CI ja korjaa mahdolliset virheet.
 - [ ] Kytke sovittimet orkestroinnin asynkroniseen elinkaareen tiketissä #213. Avoin RSS-PR ei ole julkaisu eikä saa päivittää artefakteja tai checkpointia.
-- [ ] Varmista ennen live-käyttöä tarvittavat GitHub Actions -oikeudet erikseen; tämän tiketin toteutus ei muuta nykyisiä työnkulkujen käyttöoikeuksia.
+- [ ] Varmista ennen live-käyttöä tarvittavat GitHub Actions -oikeudet erikseen, mukaan lukien PR-tapahtumat käynnistävä GitHub App/PAT -tunnus. Oletusarvoista GITHUB_TOKEN-tunnusta ei käytetä RSS-PR:n avaamiseen; tämän tiketin toteutus ei muuta nykyisiä työnkulkujen käyttöoikeuksia.
 
 **Tallennusmalli:** runtime-tietueet tallentuvat ensimmäisen kirjoituksen yhteydessä luotavalle module-runtime-state-haaralle. Luenta ei luo haaraa. Tiedostopolut ovat data/module-state/{module_id}.json, data/module-artifacts/{module_id}/, data/module-publication-journal/{module_id}/ ja data/module-run-history/{module_id}/. Runtime-haaraa ei vielä luotu tässä PR:ssä eikä sinne kirjoitettu tuotantotietoja.
 
