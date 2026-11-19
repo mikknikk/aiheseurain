@@ -304,7 +304,7 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #212 – moduuliorkestroinnin pysyvät GitHub-tallennus- ja julkaisusovittimet
 
-**Tila:** toteutus PR:ssä; live-moduuleja ei aktivoitu.
+**Tila:** valmis; PR #218 yhdistetty main-haaraan commitilla 215ad2d8e87369fdedf2a9204936da36e71f7b78. Live-moduuleja ei aktivoitu.
 
 - [x] GitHub-pohjainen moduulitilan tallennus käyttää blob-SHA-CAS-vertailua, moduulikohtaista tiedostopolkua ja ristiriitojen hylkäystä.
 - [x] Artefaktit tallennetaan muuttumattomina moduuli-/ajokohtaisina tiedostoina; moduuli-indeksi päivitetään SHA-tarkistetusti ja idempotentisti.
@@ -313,7 +313,7 @@ Suositeltu toteutusjärjestys:
 - [x] RSS-julkaisusovitin käyttää nykyistä RSS/Pages-putkea PR:n kautta. Se ei yhdistä PR:ää eikä ohita RSS- ja julkaisulaadun portteja; se vaatii yhdistetyn PR:n sekä julkisen syötteen SHA-256-sisältötiivisteen, GUID-listan ja item-määrän takaisinluvun ennen varmennettua kuittia.
 - [x] Kohderaportin julkaisureitti ratkaistaan nykyisistä rekistereistä; vain aktiivinen topic-reitti hyväksytään. Näytösvahti/prosessimoduuli on rajattu ulos.
 - [x] Lisättiin runtime-tietueiden JSON Schema -sopimukset ja offline-testit: SHA-konfliktit, idempotenssi, epäselvä API-vastaus, rinnakkaisen haarakirjoituksen uusinta, vaihekatkot ja Pages-takaisinluku.
-- [ ] Varmista PR-CI ja korjaa mahdolliset virheet.
+- [x] PR-CI läpäisi: 307 Python-yksikkötestiä, RSS-/dokumentaatio-/seurantatilan tarkistus, käyttöliittymätestit ja Pages-build onnistuivat.
 - [ ] Kytke sovittimet orkestroinnin asynkroniseen elinkaareen tiketissä #213. Avoin RSS-PR ei ole julkaisu eikä saa päivittää artefakteja tai checkpointia.
 - [ ] Varmista ennen live-käyttöä tarvittavat GitHub Actions -oikeudet erikseen, mukaan lukien PR-tapahtumat käynnistävä GitHub App/PAT -tunnus. Oletusarvoista GITHUB_TOKEN-tunnusta ei käytetä RSS-PR:n avaamiseen; tämän tiketin toteutus ei muuta nykyisiä työnkulkujen käyttöoikeuksia.
 
