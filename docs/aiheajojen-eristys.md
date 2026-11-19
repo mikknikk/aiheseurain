@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.0.0  
+**Versio:** 2.1.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211)
 
@@ -153,7 +153,23 @@ Kaikkien moduulien tuotantoluvat ovat oletusarvoisesti `false`. Rekisterin latau
 
 Julkaisumanifesti sisältää tarkan seurantajakson. GitHub-pohjainen julkaisumanifesti varaa moduuli–seurantajakso-yhdistelmän erillisessä SHA-CAS-indeksissä ennen RSS-julkaisua. Sama run_id voi uusia saman ehdokkaan idempotentisti, mutta eri run_id ei voi varata saman moduulin samaa seurantajaksoa uudelleen. Rinnakkaiset varausyritykset ratkaistaan takaisinluvulla; ristiriita hylätään. Indeksi on moduulikohtainen, joten eri aiheet ja saman aiheen eri jaksot eivät estä toisiaan.
 
-Varaus on tarkoituksella fail-closed: epäselvässä tai keskeneräisessä tilanteessa jakso jää varatuksi, kunnes palautusmenettely selvittää sen. Varausta ei vapauteta automaattisesti, koska se voisi sallia kaksoisjulkaisun. Palautus ja hallittu vapautus käsitellään erikseen tiketin #227 yhteydessä.
+Varaus on tarkoituksella fail-closed: epäselvässä tai keskeneräisessä tilanteessa jakso jää varatuksi, kunnes palautusmenettely selvittää sen. Varausta ei vapauteta automaattisesti, koska se voisi sallia kaksoisjulkaisun. Palautus ja hallittu vanhaan raportointipolkuun siirtyminen arvioidaan erikseen tiketin #227 päätöslogiikalla.
+
+
+## Keskeytyneen moduulijulkaisun palautus (#227)
+
+`scripts/module_recovery.py` sisältää sivuvaikutuksettoman `recovery_action`-päätösfunktion. Se arvioi yhdessä ajokohtaisen julkaisumanifestin vaiheen, RSS-PR:n tilan, julkisen syötteen takaisinluvun, moduulin checkpointin ja vanhan raportointipolun saman seurantajakson julkaisutilan.
+
+Päätökset ovat tarkoituksella erillisiä:
+- Avoin RSS-PR: odota; vanhaan polkuun ei saa siirtyä.
+- Yhdistetty PR ja täsmälleen ehdokasta vastaava julkinen RSS: jatka saman `run_id`:n manifesti-, artefakti- ja checkpoint-vaihetta.
+- Julkaistu RSS, mutta puuttuva artefakti tai checkpoint: viimeistele sama ajo idempotentisti; älä tee uutta lähdehakua tai luo uutta GUIDia.
+- Suljettu yhdistämätön PR tai ennen PR:n avaamista keskeytynyt valmistelu: vanha polku on mahdollinen vain, jos julkinen takaisinluku osoittaa ehdokkaan puuttuvan, vanhan polun saman jakson julkaisua ei ole ja erillinen hyväksyntä on annettu.
+- Epäselvä GitHub-/Pages-vastaus, puuttuva takaisinluku tai ristiriitainen checkpoint: pysäytä molemmat polut ja selvitä tila. Tuntematonta ei tulkita onnistumiseksi.
+
+Päätösfunktio ei käynnistä automaatioita, julkaise RSS:ää, vapauta jaksolukkoa, muuta checkpointia eikä muuta ChatGPT-tehtävien asetuksia. Se ei yksinään todista vanhan polun julkaisutilaa: kutsujan on annettava se luotettavasti tarkistetun RSS:n ja ajohistorian perusteella. Vanhaan polkuun palaaminen vaatii aina eksplisiittisen hyväksynnän.
+
+Vikainjektiotestit kattavat API-kuittauksen katoamisen RSS-julkaisun jälkeen, jokaisen julkaisumanifestin vaihekirjoituksen jälkeen sekä checkpointin tallennuksen jälkeen. Uusinta käyttää samaa `run_id`:tä ja todentaa, ettei checkpoint-historiaan tai artefakteihin synny duplikaatteja. Lisäksi päätöslogiikan testit kattavat avoimen ja suljetun RSS-PR:n, yhdistetyn julkaisun, epäselvät API-/takaisinlukutilat, vanhan polun jo julkaistun jakson ja mahdottomat vaihejärjestykset.
 
 ## Lähdeauditointi ja varjotilan vertailu (#214)
 
@@ -175,6 +191,7 @@ Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutis
 
 ### Versiohistoria
 
+- **2.1.0 – 2026-11-19:** lisättiin keskeytyneen moduulijulkaisun fail-closed-palautumispäätökset, vanhaan raportointipolkuun siirtymisen hyväksyntäportti sekä vikainjektiotestit.
 - **2.0.0 – 2026-11-19:** lisättiin oletusarvoisesti pois päältä oleva moduulikohtainen tuotantoluparekisteri, fail-closed-validointi sekä moduuli–seurantajakso-yksinoikeus GitHub-julkaisumanifestiin. Mitään moduulia ei aktivoitu.
 
 - **1.9.0 – 2026-11-19:** lisättiin moduulikohtainen lähdeauditointi ja kirjoitukseton vanhan/uuden raporttipolun vertailija synteettisellä Tolkien-testiaineistolla. Vertailu ei käynnistä live-ajoa eikä kirjoita tuotantotiedostoihin.
