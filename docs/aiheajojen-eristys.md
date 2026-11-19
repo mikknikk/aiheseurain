@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.0.0  
+**Versio:** 2.1.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211)
 
@@ -153,7 +153,52 @@ Kaikkien moduulien tuotantoluvat ovat oletusarvoisesti `false`. Rekisterin latau
 
 Julkaisumanifesti sisältää tarkan seurantajakson. GitHub-pohjainen julkaisumanifesti varaa moduuli–seurantajakso-yhdistelmän erillisessä SHA-CAS-indeksissä ennen RSS-julkaisua. Sama run_id voi uusia saman ehdokkaan idempotentisti, mutta eri run_id ei voi varata saman moduulin samaa seurantajaksoa uudelleen. Rinnakkaiset varausyritykset ratkaistaan takaisinluvulla; ristiriita hylätään. Indeksi on moduulikohtainen, joten eri aiheet ja saman aiheen eri jaksot eivät estä toisiaan.
 
-Varaus on tarkoituksella fail-closed: epäselvässä tai keskeneräisessä tilanteessa jakso jää varatuksi, kunnes palautusmenettely selvittää sen. Varausta ei vapauteta automaattisesti, koska se voisi sallia kaksoisjulkaisun. Palautus ja hallittu vapautus käsitellään erikseen tiketin #227 yhteydessä.
+Varaus on tarkoituksella fail-closed: epäselvässä tai keskeneräisessä tilanteessa jakso jää varatuksi, kunnes palautusmenettely selvittää sen. Varausta ei vapauteta automaattisesti, koska se voisi sallia kaksoisjulkaisun. Palautus ja hallittu vanhaan raportointipolkuun siirtyminen arvioidaan erikseen tiketin #227 päätöslogiikalla.
+
+
+## Keskeytyneen moduulijulkaisun palautus (#227)
+
+`scripts/module_recovery.py` sisältää sivuvaikutuksettoman `recovery_action`-päätösfunktion. Se arvioi yhdessä ajokohtaisen julkaisumanifestin vaiheen, RSS-PR:n tilan, erillisen Pages-deploymentin tilan, julkisen syötteen takaisinluvun, moduulin checkpointin ja vanhan raportointipolun saman seurantajakson julkaisutilan.
+
+Päätökset ovat tarkoituksella erillisiä:
+- Avoin RSS-PR: odota; vanhaan polkuun ei saa siirtyä.
+- Yhdistetty PR: odota erikseen Pages-deploymentin valmistumista. Vasta onnistunut deployment ja täsmälleen ehdokasta vastaava julkinen RSS oikeuttavat saman `run_id`:n manifesti-, artefakti- ja checkpoint-vaiheen jatkamiseen.
+- Julkaistu RSS, mutta puuttuva artefakti tai checkpoint: viimeistele sama ajo idempotentisti; älä tee uutta lähdehakua tai luo uutta GUIDia.
+- Suljettu yhdistämätön PR tai ennen PR:n avaamista keskeytynyt valmistelu: vanha polku on mahdollinen vain, jos julkinen takaisinluku osoittaa ehdokkaan puuttuvan, vanhan polun saman jakson julkaisua ei ole ja erillinen hyväksyntä on annettu.
+- Epäonnistunut Pages-deployment: toista tai selvitä sama julkaisu; älä luo uutta RSS-itemiä. Epäselvä GitHub-/Pages-vastaus, puuttuva takaisinluku tai ristiriitainen checkpoint: pysäytä molemmat polut ja selvitä tila. Tuntematonta ei tulkita onnistumiseksi.
+
+Päätösfunktio ei käynnistä automaatioita, julkaise RSS:ää, vapauta jaksolukkoa, muuta checkpointia eikä muuta ChatGPT-tehtävien asetuksia. Se ei yksinään todista vanhan polun julkaisutilaa: kutsujan on annettava se luotettavasti tarkistetun RSS:n ja ajohistorian perusteella. Vanhaan polkuun palaaminen vaatii aina eksplisiittisen hyväksynnän.
+
+### Suositeltu aihekohtainen siirtojärjestys
+
+Ehdotettu tekninen järjestys etenee nykyisten moduulimäärittelyjen seurantakohteiden ja lähdeviitteiden määrän sekä toimituksellisen riskin perusteella. Järjestys ei ole aiheiden tärkeysjärjestys eikä aktivoi mitään moduulia:
+
+1. **Taylor Swift** – yksi kohde, 10 lähdettä; sopiva ensimmäinen pilotti selkeällä virallisten lähteiden rungolla.
+2. **Sompote Sands** – yksi kohde, 6 lähdettä; rajattu aihe ja arkistolähteisiin nojaava varmennus.
+3. **Muumit** – kaksi kohdetta, 8 lähdettä; virallisten toimijoiden ja tapahtumien reititys.
+4. **Wakaliwood** – kaksi kohdetta, 5 lähdettä; rajattu kohdejoukko, mutta alueellisten lähteiden saatavuus tarkistetaan.
+5. **Euroviisut** – kaksi kilpailukokonaisuutta ja 10 lähdettä; kansallisten valintojen sekä kansainvälisen kattavuuden reititys.
+6. **Tolkien** – kaksi kohdetta ja 28 lähdettä; laaja kieli- ja aluekattavuus.
+7. **Gurmeet Ram Rahim Singh** – yksi kohde ja 7 lähdettä; oikeudellisten tapahtumien tarkka luokittelu vaatii erityisen katselmoinnin.
+8. **Shakkidraamat** – viisi kohdetta ja 7 lähdettä; väitteiden, vastineiden ja useiden samanaikaisten tapausten erottelu.
+9. **Intialaisen elokuvan uutiset** – 18 kohdetta ja 40 lähdettä; laajin kieli-, alue-, henkilö- ja tuotantokokonaisuus, joten viimeinen tekninen siirto.
+
+Järjestys on alustava. Kunkin aiheen varjotilan tulokset, lähde- ja kohdeomistajuuden tarkistus sekä palautustestit arvioidaan ennen aiheen omaa hyväksyntäpäätöstä. Jos portti ei täyty, siirtoa ei tehdä eikä seuraava aihe saa periä keskeneräistä tilaa. Näytösvahti ei kuulu järjestykseen.
+
+### Tuotantosiirtymän vähimmäislokitietue
+
+Jokaisesta tuotantosiirtymän tai palautuksen päätöksestä on voitava jälkikäteen rekonstruoida vähintään:
+
+- **Ajon tunnisteet:** `module_id`, moduulimäärittelyn ja sopimuksen versiot, `run_id`, `mode`.
+- **Seurantajakso:** aikavyöhykkeelliset alku- ja loppuajat.
+- **Ajon tila:** aloitus- ja päättymisaika, viimeinen vaihe, tulostila, virhekoodi, lähdehaun täydellisyys ja laadunvarmistuksen tulos.
+- **Julkaisun todisteet:** RSS-PR:n tunniste ja tila, yhdistämiscommit, Pages-deploymentin tunniste ja tila, julkinen syöte-URL, takaisinluvun aika, SHA-256, GUID-lista ja item-määrä.
+- **Tallennuksen todisteet:** lähtötilan SHA, artefaktiversio, manifestin vaihehistoria sekä checkpointin ennen/jälkeen run_id ja aikaleima.
+- **Palautuspäätös:** havaitut ulkoiset tilat, `recovery_action`-tulos, vanhan polun saman jakson julkaisutila sekä mahdollisen erillisen hyväksynnän tunniste, aika ja perustelu.
+
+Lokiin ei kopioida raporttitekstiä, koko lähdepakettia, salasanoja, tokeneita tai muita salaisuuksia. Nykyiset manifesti- ja ajotulostietueet kattavat osan näistä kentistä; ennen tuotantosiirtymää ulkoisten PR-/deployment-todisteiden pysyvä tallennus on varmistettava erikseen.
+
+Vikainjektiotestit kattavat API-kuittauksen katoamisen RSS-julkaisun jälkeen, jokaisen julkaisumanifestin vaihekirjoituksen jälkeen sekä checkpointin tallennuksen jälkeen. Uusinta käyttää samaa `run_id`:tä ja todentaa, ettei checkpoint-historiaan tai artefakteihin synny duplikaatteja. Lisäksi päätöslogiikan testit kattavat avoimen ja suljetun RSS-PR:n, yhdistetyn julkaisun, epäselvät API-/takaisinlukutilat, vanhan polun jo julkaistun jakson ja mahdottomat vaihejärjestykset.
 
 ## Lähdeauditointi ja varjotilan vertailu (#214)
 
@@ -175,6 +220,7 @@ Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutis
 
 ### Versiohistoria
 
+- **2.1.0 – 2026-11-19:** lisättiin keskeytyneen moduulijulkaisun fail-closed-palautumispäätökset, vanhaan raportointipolkuun siirtymisen hyväksyntäportti sekä vikainjektiotestit.
 - **2.0.0 – 2026-11-19:** lisättiin oletusarvoisesti pois päältä oleva moduulikohtainen tuotantoluparekisteri, fail-closed-validointi sekä moduuli–seurantajakso-yksinoikeus GitHub-julkaisumanifestiin. Mitään moduulia ei aktivoitu.
 
 - **1.9.0 – 2026-11-19:** lisättiin moduulikohtainen lähdeauditointi ja kirjoitukseton vanhan/uuden raporttipolun vertailija synteettisellä Tolkien-testiaineistolla. Vertailu ei käynnistä live-ajoa eikä kirjoita tuotantotiedostoihin.

@@ -384,3 +384,139 @@ class GenericEventWatchTests(unittest.TestCase):
 
 if __name__=="__main__":
     unittest.main()
+
+
+class FailOncePublicationJournal(FakePublicationJournal):
+    """Simuloi manifestikirjoituksen onnistumista, jonka API-kuittaus katoaa."""
+
+    def __init__(self, fail_phase):
+        super().__init__()
+        self.fail_phase = fail_phase
+        self.failed = False
+
+    def advance(self, module_id, run_id, phase, *, updated_at, receipt=None):
+        result = super().advance(module_id, run_id, phase, updated_at=updated_at, receipt=receipt)
+        if phase == self.fail_phase and not self.failed:
+            self.failed = True
+            raise RuntimeError("simuloitu epäselvä API-vastaus onnistuneen kirjoituksen jälkeen")
+        return result
+
+
+class PrepareThenRaiseOnceJournal(FakePublicationJournal):
+    """Simuloi manifestin luonnin onnistumista, jonka kuittaus katoaa."""
+
+    def __init__(self):
+        super().__init__()
+        self.raised = False
+
+    def prepare(self, record):
+        value = super().prepare(record)
+        if not self.raised:
+            self.raised = True
+            raise RuntimeError("simuloitu manifestin valmistelun epäselvä API-vastaus")
+        return value
+
+
+class PublishThenRaiseOnce(FakePublisher):
+    """Simuloi tilannetta, jossa RSS-julkaisu onnistuu mutta kuittaus katoaa."""
+
+    def __init__(self):
+        super().__init__()
+        self.raised = False
+
+    def publish(self, module_id, run_id, report_content, *, idempotency_key):
+        receipt = super().publish(module_id, run_id, report_content, idempotency_key=idempotency_key)
+        if not self.raised:
+            self.raised = True
+            raise RuntimeError("simuloitu julkaisun API-kuittauksen katoaminen")
+        return receipt
+
+
+class SaveThenRaiseOnceStateStore(FakeStateStore):
+    """Simuloi checkpointin tallennusta, jonka onnistumiskuittaus katoaa."""
+
+    def __init__(self, state):
+        super().__init__(state)
+        self.raised = False
+
+    def save(self, module_id, state, *, expected_sha):
+        sha = super().save(module_id, state, expected_sha=expected_sha)
+        if not self.raised:
+            self.raised = True
+            raise RuntimeError("simuloitu checkpoint-tallennuksen epäselvä vastaus")
+        return sha
+
+
+class ProductionRecoveryFaultInjectionTests(unittest.TestCase):
+    """Varmistaa saman run_id:n turvallisen uusinnan jokaisen pysyvän vaiheen jälkeen."""
+
+    def setUp(self):
+        ProductionLifecycleTests.setUp(self)
+
+
+    def test_retry_after_prepared_manifest_write_ack_is_lost(self):
+        self.journal = PrepareThenRaiseOnceJournal()
+        self.orchestrator.publication_journal = self.journal
+        req = request(mode="production", run_id="recovery-prepared-001")
+        first = self.orchestrator.run(req, production_authorized=True)
+        second = self.orchestrator.run(req, production_authorized=True)
+        self.assertEqual(first.status, "failed")
+        self.assertEqual(second.status, "succeeded")
+        self.assertEqual(self.journal.records[("tolkien", req.run_id)]["phase"], "checkpoint_updated")
+        self.assertEqual(len(self.publisher.receipts), 1)
+
+    def test_retry_after_published_manifest_write_ack_is_lost(self):
+        self.journal = FailOncePublicationJournal("published")
+        self.orchestrator.publication_journal = self.journal
+        req = request(mode="production", run_id="recovery-published-001")
+        first = self.orchestrator.run(req, production_authorized=True)
+        second = self.orchestrator.run(req, production_authorized=True)
+        self.assertNotEqual(first.status, "succeeded")
+        self.assertEqual(second.status, "succeeded")
+        self.assertEqual(self.journal.records[("tolkien", req.run_id)]["phase"], "checkpoint_updated")
+        self.assertEqual(len(self.publisher.receipts), 1)
+
+    def test_retry_after_artifact_manifest_write_ack_is_lost(self):
+        self.journal = FailOncePublicationJournal("artifacts_persisted")
+        self.orchestrator.publication_journal = self.journal
+        req = request(mode="production", run_id="recovery-artifacts-001")
+        first = self.orchestrator.run(req, production_authorized=True)
+        second = self.orchestrator.run(req, production_authorized=True)
+        self.assertEqual(first.status, "partial")
+        self.assertEqual(second.status, "succeeded")
+        self.assertEqual(len(self.artifacts.commits), 1)
+        self.assertEqual(self.journal.records[("tolkien", req.run_id)]["phase"], "checkpoint_updated")
+
+    def test_retry_after_checkpoint_manifest_write_ack_is_lost(self):
+        self.journal = FailOncePublicationJournal("checkpoint_updated")
+        self.orchestrator.publication_journal = self.journal
+        req = request(mode="production", run_id="recovery-checkpoint-journal-001")
+        first = self.orchestrator.run(req, production_authorized=True)
+        second = self.orchestrator.run(req, production_authorized=True)
+        self.assertEqual(first.status, "partial")
+        self.assertEqual(second.status, "succeeded")
+        self.assertEqual(self.state_store.state["checkpoint"]["last_successful_run"]["run_id"], req.run_id)
+
+    def test_retry_after_checkpoint_store_write_ack_is_lost(self):
+        self.state_store = SaveThenRaiseOnceStateStore(self.state)
+        self.orchestrator.state_store = self.state_store
+        req = request(mode="production", run_id="recovery-checkpoint-store-001")
+        first = self.orchestrator.run(req, production_authorized=True)
+        second = self.orchestrator.run(req, production_authorized=True)
+        self.assertEqual(first.status, "partial")
+        self.assertEqual(second.status, "succeeded")
+        self.assertEqual(
+            [item["run_id"] for item in self.state_store.state["checkpoint_history"]].count(req.run_id),
+            1,
+        )
+
+    def test_retry_after_publication_api_response_is_lost(self):
+        self.publisher = PublishThenRaiseOnce()
+        self.orchestrator.publisher = self.publisher
+        req = request(mode="production", run_id="recovery-publisher-001")
+        first = self.orchestrator.run(req, production_authorized=True)
+        second = self.orchestrator.run(req, production_authorized=True)
+        self.assertEqual(first.status, "failed")
+        self.assertEqual(second.status, "succeeded")
+        self.assertEqual(len(self.publisher.receipts), 1)
+        self.assertEqual(self.journal.records[("tolkien", req.run_id)]["phase"], "checkpoint_updated")
