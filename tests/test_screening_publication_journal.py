@@ -1,5 +1,8 @@
 """Näytösvahdin julkaisupäiväkirjan palautumis- ja idempotenssitestit."""
 import copy
+import hashlib
+import json
+from pathlib import Path
 import unittest
 
 from scripts.screening_publication_journal import (
@@ -65,6 +68,56 @@ def state(last_success=START, last_period_start="2026-11-18T17:37:16+02:00",
 class ScreeningPublicationJournalTests(unittest.TestCase):
     def test_empty_journal_is_valid(self):
         validate_journal(empty_journal(), state(), feed_catalog())
+
+    def test_existing_november_run_artifacts_are_cross_consistent(self):
+        """Tarkista todellinen 19.11. ajo; moduulin vanha migraatiocheckpoint säilyy snapshotina."""
+        root = Path(__file__).resolve().parents[1]
+        source_log = json.loads((root / "data/lahdetarkistukset.json").read_text(encoding="utf-8"))
+        source_registry = json.loads((root / "data/sources/intialaiset_elokuvat_naytokset.json").read_text(encoding="utf-8"))
+        module_state = json.loads((root / "data/module-state/indian-film-screening-watch.json").read_text(encoding="utf-8"))
+        feed_bytes = (root / FEED_PATH).read_bytes()
+        import xml.etree.ElementTree as ET
+        channel = ET.fromstring(feed_bytes).find("channel")
+        guids = [(item.findtext("guid") or "").strip() for item in channel.findall("item")]
+        run_id = "intialaiset_elokuvat_naytokset-20261119T061058-0200"
+        record = {
+            "run_id": run_id,
+            "period": {
+                "start": "2026-11-18T17:37:16+02:00",
+                "end": "2026-11-19T06:10:58+02:00",
+            },
+            "prepared_at": "2026-11-19T06:10:58+02:00",
+            "source_check_run_id": run_id,
+            "source_check_ended_at": "2026-11-19T06:10:58+02:00",
+            "phase": "prepared",
+            "feed": {
+                "path": FEED_PATH,
+                "sha256": hashlib.sha256(feed_bytes).hexdigest(),
+                "item_count": len(guids),
+                "guids": guids,
+            },
+            "publication": {"commit_sha": None, "deployment_id": None, "verified_at": None},
+            "synchronization": {"commit_sha": None},
+        }
+        journal = empty_journal()
+        journal["runs"].append(record)
+        previous_state = state(
+            "2026-11-18T17:37:16+02:00",
+            "2026-11-18T05:51:32+02:00",
+            "2026-11-18T17:37:16+02:00",
+            "success",
+            8,
+        )
+        validate_journal(
+            journal, previous_state, feed_catalog(),
+            source_log=source_log,
+            source_registry=source_registry,
+            module_state=module_state,
+            feed_bytes=feed_bytes,
+        )
+        # Tämä checkpoint on migraation snapshot eikä sitä saa väkisin siirtää 19.11. ajoon.
+        self.assertEqual(module_state["checkpoint"]["last_successful_run"]["checked_at"], "2026-11-18T05:51:32+02:00")
+
 
     def test_preparing_same_run_is_idempotent(self):
         journal = empty_journal()
