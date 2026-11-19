@@ -11,37 +11,43 @@
       "source_id": "thai-film-archive",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "thai-film-archive-news",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "thai-pbs",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "nation-thailand",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "ultraman-official",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "eiga-com",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     }
   ]
 }
