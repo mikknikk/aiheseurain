@@ -170,7 +170,7 @@ Käyttörekisteri ei toista lähteen nimeä tai URL-osoitetta. Se viittaa katalo
 - `critical`: onko lähde tämän aiheen kattavuuden kannalta kriittinen. Tämä ei ole luotettavuusarvosana.
 - `last_checked_at`: milloin lähde viimeksi tarkistettiin tämän tehtävän yhteydessä. `null` tarkoittaa, ettei tarkistusaikaa ole kirjattu.
 - `access_limit`: käyttöä rajaava huomio, esimerkiksi se, että lähde toimii vain uutisvihjeenä.
-- `retry_after`: aikaleima, jota ennen lähdettä ei yritetä uudelleen. `null` tarkoittaa, että lähde kuuluu seuraavaan normaaliin tarkistukseen. Epäonnistunut yritys ei päivitä `last_checked_at`-arvoa.
+- `retry_after` (pääautomaation yhdeksän aiheen rekistereissä): aikaleima, jota ennen lähdettä ei yritetä uudelleen. `null` tarkoittaa, että lähde kuuluu seuraavaan normaaliin tarkistukseen. Epäonnistunut yritys ei päivitä `last_checked_at`-arvoa. Erillinen näytösvahti käyttää omaa palautumismalliaan.
 
 Tehtäväkohtaisuus on tärkeää: jos sama sivusto tarkistetaan Tolkien- ja Muumi-seurannassa, Tolkien-rekisterin tarkistusaika ei automaattisesti päivitä Muumien rekisteriä.
 
