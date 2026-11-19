@@ -22,7 +22,7 @@ Tämä tiedosto on tehtäväjonon ensisijainen totuuslähde: se määrittää yh
 
 - Käsittele kullakin käynnistyskerralla täsmälleen yksi seuraavaksi merkitty tehtävä. Älä suorita muiden jonotehtävien varsinaisia hakuja samalla ajolla.
 - Onnistuneen tehtävän jälkeen siirrä seuraava-tehtävä-merkintä täsmälleen yhden kohdan eteenpäin. Yhdeksännen tehtävän jälkeen kierto alkaa jälleen Tolkienista.
-- Jos tehtävän haku, arviointi, mahdollinen julkaisu, pakollinen takaisinlukutarkistus tai pääautomaation ohjeen lähdekattavuuden hyväksymiskriteerit eivät täyty, älä siirrä vuoroa. Lähdelokin `partial`-tila ei kuitenkaan yksin estä vuoron etenemistä, jos pääautomaation käsikirjan kattavuuskriteerit täyttyvät.
+- Jos tehtävän mukainen tutkimus, arviointi, mahdollinen julkaisu ja pakolliset tarkistukset eivät ole valmiit tai jokin niistä epäonnistuu, älä siirrä vuoroa. Lähdelokin `partial`-tila tai lähteiden pieni määrä ei yksin estä vuoron etenemistä, kun tutkimusprosessi ja muut hyväksymisvaiheet on suoritettu pääautomaation käsikirjan mukaisesti.
 - Myös onnistunut tarkistus, jossa ei löydy julkaistavaa uutta tietoa, kuluttaa vuoron.
 - Älä muuta tehtävien järjestystä ilman käyttäjän nimenomaista pyyntöä. Älä luo rinnakkaisia automaatioita.
 - Nykyinen automaatio käynnistyy päivittäin klo 12.00 Europe/Helsinki. Koska jonossa on yhdeksän tehtävää, kukin tehtävä tarkistetaan normaalisti noin yhdeksän päivän välein. Päivittäinen käynnistys ei tarkoita päivittäistä seurantaa jokaiselle aiheelle.
