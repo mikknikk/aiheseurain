@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/module-publication-period-index.schema.json",
+  "title": "Moduulin julkaisujaksojen yksinoikeusindeksi",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "module_id",
+    "periods"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "module_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "periods": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,180}$"
+      }
+    }
+  },
+  "additionalProperties": false
+}
