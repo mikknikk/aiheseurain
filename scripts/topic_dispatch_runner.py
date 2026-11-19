@@ -34,15 +34,13 @@ def main():
         raise SystemExit(6)
     if not isinstance(bundle.get("targets"), list) or not isinstance(bundle.get("sources"), list):
         raise SystemExit(7)
-    # Varmista, ettei bundle sisällä koordinaattorin globaalia tehtäväjonoa,
-    # koko moduulirekisteriä tai erillisen näytösvahdin tietoja.
-    serialized = json.dumps(bundle, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-    forbidden = (
-        "indian-film-screening-watch", "module_registry", "task_queue",
-        "rotation", "other_modules",
-    )
-    if any(token in serialized for token in forbidden):
+    # Ylimmän tason kenttälista on tarkka: koordinaattorin jonoa tai
+    # globaaleja rekistereitä ei voi ujuttaa runnerille lisäkenttinä.
+    if module_id == "indian-film-screening-watch":
         raise SystemExit(8)
+    if any(key in bundle for key in ("rotation", "task_queue", "module_registry", "other_modules")):
+        raise SystemExit(9)
+    serialized = json.dumps(bundle, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     digest = hashlib.sha256(serialized.encode("utf-8")).hexdigest()
     result = {
         "dispatch_schema_version": 1,
