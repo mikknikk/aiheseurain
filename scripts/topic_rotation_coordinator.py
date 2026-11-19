@@ -3,8 +3,7 @@
 Koordinaattori lukee teknisen vuorotilan, jonon ja aihe–moduuli-kytkennän.
 Se muodostaa yhdelle moduulille rajatun syötepaketin ja käynnistää sen
 bubblewrap-sandboxissa. Se ei tee verkkohakuja, julkaise RSS:ää eikä päivitä
-checkpointteja. Tuloksena syntyy rajattu handoff-paketti erilliselle AI-
-tutkimusajolle. Näytösvahti suljetaan pois tehtäväkierrosta.
+checkpointteja. Tuloksena syntyy rajattu handoff-paketti nykyisen ChatGPT-automaation suoritettavaksi. Näytösvahti suljetaan pois tehtäväkierrosta.
 """
 from __future__ import annotations
 
@@ -55,10 +54,11 @@ class TopicDispatch:
     runner_result: dict[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
-        """Palauta koneellisesti siirrettävä yhden aiheen handoff."""
+        """Palauta koneellisesti siirrettävä yhden aiheen ChatGPT-handoff."""
         return {
             "dispatch_schema_version": 1,
-            "status": "ready_for_external_research",
+            "status": "ready_for_chatgpt_execution",
+            "execution_contract": self.runner_result["execution_contract"],
             "request": self.request,
             "selection": asdict(self.selection),
             "runner_result": self.runner_result,
@@ -199,7 +199,7 @@ def dispatch_next_topic(
 ) -> TopicDispatch:
     """Valmistele ja käynnistä täsmälleen yksi seuraava topic-moduuli varjotilassa.
 
-    Tämä vaihe luovuttaa yhden aiheen tietopaketin erilliselle tutkimuspalvelulle.
+    Tämä vaihe luovuttaa yhden aiheen tietopaketin ChatGPT-automaation suoritettavaksi.
     Se ei itse tee uutishakua eikä väitä tutkimusta tai julkaisua suoritetuksi.
     """
     if not isinstance(run_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:-]{2,127}", run_id):
@@ -249,8 +249,15 @@ def dispatch_next_topic(
     if not isinstance(result, dict):
         raise TopicCoordinatorError("Eristetty runner ei palauttanut JSON-oliota.")
     expected_bundle = json.loads(bundle_to_json(bundle))
-    if result.get("dispatch_schema_version") != 1 or result.get("status") != "ready_for_external_research":
-        raise TopicCoordinatorError("Eristetyn runnerin tulos ei ole hyväksytty dispatch-handoff.")
+    if result.get("dispatch_schema_version") != 1 or result.get("status") != "ready_for_chatgpt_execution":
+        raise TopicCoordinatorError("Eristetyn runnerin tulos ei ole hyväksytty ChatGPT-handoff.")
+    contract = result.get("execution_contract")
+    if not isinstance(contract, dict) or contract.get("executor") != "chatgpt_scheduled_task":
+        raise TopicCoordinatorError("Handoff ei määritä ChatGPT-automaatiota suorittajaksi.")
+    if contract.get("scope") != "input_bundle_only":
+        raise TopicCoordinatorError("ChatGPT-handoff ei rajaa suoritusta yhden moduulin syötepakettiin.")
+    if not isinstance(contract.get("rules"), list) or not contract["rules"]:
+        raise TopicCoordinatorError("ChatGPT-handoffin suoritusohjeet puuttuvat.")
     if result.get("module_id") != selection.module_id or result.get("run_id") != run_id:
         raise TopicCoordinatorError("Eristetyn runnerin moduuli- tai ajotunniste ei vastaa pyyntöä.")
     if result.get("input_bundle") != expected_bundle:
