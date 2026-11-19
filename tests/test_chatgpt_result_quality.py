@@ -111,6 +111,74 @@ class ChatGPTResultQualityTests(unittest.TestCase):
         self.assertFalse(result.passed)
         self.assertIn("metadata_contain_restricted_fields", result.errors)
 
+    def source_audit(self):
+        return {
+            "source_checks": [{
+                "source_id": "moomin-official",
+                "status": "checked",
+                "note": "Virallinen lähde avattiin ja tarkistettiin.",
+            }],
+            "supplemental_sources": [],
+        }
+
+    def test_registered_source_audit_is_accepted(self):
+        audit = self.source_audit()
+        result = self.gate.validate(
+            self.definition, self.request,
+            self.output(metadata={"source_audit": audit}, sources_checked=1),
+        )
+        self.assertTrue(result.passed)
+
+    def test_unregistered_source_is_rejected_from_source_audit(self):
+        audit = self.source_audit()
+        audit["source_checks"][0]["source_id"] = "tolkien-estate"
+        result = self.gate.validate(
+            self.definition, self.request,
+            self.output(metadata={"source_audit": audit}, sources_checked=1),
+        )
+        self.assertFalse(result.passed)
+        self.assertIn("source_audit_unregistered_source", result.errors)
+
+    def test_source_audit_count_must_match_sources_checked(self):
+        result = self.gate.validate(
+            self.definition, self.request,
+            self.output(metadata={"source_audit": self.source_audit()}, sources_checked=2),
+        )
+        self.assertFalse(result.passed)
+        self.assertIn("source_audit_count_mismatch", result.errors)
+
+    def test_duplicate_source_checks_are_rejected(self):
+        audit = self.source_audit()
+        audit["source_checks"].append(dict(audit["source_checks"][0]))
+        result = self.gate.validate(
+            self.definition, self.request,
+            self.output(metadata={"source_audit": audit}, sources_checked=2),
+        )
+        self.assertFalse(result.passed)
+        self.assertIn("source_audit_duplicate_source", result.errors)
+
+    def test_skipped_source_requires_a_reason(self):
+        audit = self.source_audit()
+        audit["source_checks"][0] = {
+            "source_id": "moomin-official",
+            "status": "skipped",
+            "note": "Lähde jätettiin väliin.",
+        }
+        result = self.gate.validate(
+            self.definition, self.request,
+            self.output(metadata={"source_audit": audit}, sources_checked=0),
+        )
+        self.assertFalse(result.passed)
+        self.assertIn("source_audit_invalid", result.errors)
+
+    def test_production_requires_source_audit(self):
+        self.assertEqual(
+            self.gate._source_audit_errors(
+                None, self.definition, required=True, sources_checked=0
+            ),
+            ["source_audit_missing"],
+        )
+
     def test_partial_result_can_report_only_completed_targets(self):
         result = self.gate.validate(
             self.definition, self.request,

@@ -14,6 +14,7 @@ from scripts.target_execution import load_module_targets, TargetExecutionError
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSESSMENT_SCHEMA = ROOT / "schemas/chatgpt-publication-assessment.schema.json"
+SOURCE_AUDIT_SCHEMA = ROOT / "schemas/chatgpt-source-audit.schema.json"
 SENSITIVE_KEYS = {
     "api_key", "api_token", "access_token", "authorization", "credential", "credentials", "private_key",
     "password", "secret", "token", "report_content", "source_snippet",
@@ -66,6 +67,41 @@ class ChatGPTResultQualityGate:
         for key in ("guid_preservation", "xml_html", "rss_structure"):
             if checklist[key]["status"] != "pass":
                 errors.append(f"publication_automated_check_not_passed:{key}")
+        return errors
+
+    def _source_audit_errors(
+        self, audit: Any, definition: dict[str, Any], *, required: bool,
+        sources_checked: int | None,
+    ) -> list[str]:
+        """Tarkista, että lähdeauditointi koskee vain tämän moduulin lähteitä."""
+        if audit is None:
+            return ["source_audit_missing"] if required else []
+        try:
+            schema = json.loads(SOURCE_AUDIT_SCHEMA.read_text(encoding="utf-8"))
+            jsonschema.Draft202012Validator.check_schema(schema)
+            jsonschema.Draft202012Validator(
+                schema, format_checker=jsonschema.FormatChecker()
+            ).validate(audit)
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError, jsonschema.SchemaError):
+            return ["source_audit_schema_unavailable"]
+        except jsonschema.ValidationError:
+            return ["source_audit_invalid"]
+
+        errors: list[str] = []
+        registered = {
+            item.get("source_id")
+            for item in definition.get("source_refs", [])
+            if isinstance(item, dict) and isinstance(item.get("source_id"), str)
+        }
+        checks = audit["source_checks"]
+        source_ids = [item["source_id"] for item in checks]
+        if len(source_ids) != len(set(source_ids)):
+            errors.append("source_audit_duplicate_source")
+        if any(source_id not in registered for source_id in source_ids):
+            errors.append("source_audit_unregistered_source")
+        counted = sum(item["status"] != "skipped" for item in checks)
+        if sources_checked is not None and sources_checked != counted:
+            errors.append("source_audit_count_mismatch")
         return errors
 
     def validate(
@@ -140,5 +176,10 @@ class ChatGPTResultQualityGate:
         assessment = metadata.get("publication_assessment") if isinstance(metadata, dict) else None
         errors.extend(self._assessment_errors(
             assessment, required=request.mode == "production"
+        ))
+        source_audit = metadata.get("source_audit") if isinstance(metadata, dict) else None
+        errors.extend(self._source_audit_errors(
+            source_audit, definition, required=request.mode == "production",
+            sources_checked=output.sources_checked,
         ))
         return QualityGateResult(not errors, tuple(errors))

@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 1.8.0  
+**Versio:** 1.9.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211)
 
@@ -144,8 +144,28 @@ Tämä automaatiopolku on tarkoituksella **shadow-tilassa**. Se ei julkaise RSS:
 Toimituksellinen julkaisuarvio on määritelty tulossopimuksen valinnaiseksi metatiedoksi ja validoidaan omalla skeemallaan. Se ei yksinään ole julkaisulupa: RSS-ehdokkaan automaattiset GUID-, XML- ja rakennevarmennukset sekä nykyinen julkaisulaadun portti pysyvät erillisinä pakollisina vaiheina.
 
 
+
+## Lähdeauditointi ja varjotilan vertailu (#214)
+
+ChatGPT-tulossopimuksen metadataan voidaan liittää rakenteinen source_audit. Se kirjaa moduulin omat lähteet tiloilla checked, partial, unavailable tai skipped; unavailable- ja skipped-tilat edellyttävät syytä. Täydentävät lähteet kirjataan erikseen URL-osoitteineen ja varmennustasoineen. Laadunvarmistus hylkää toisen moduulin lähde-ID:t, toistuvat lähdetietueet ja sources_checked-lukumäärän kanssa ristiriitaisen auditoinnin. Tuotantotilassa source_audit on pakollinen. Lähteiden määrälle ei aseteta vähimmäisrajaa.
+
+scripts/compare_shadow_runs.py vertaa yhtä vanhan raportointipolun tulosta ja yhtä ChatGPT-moduulitulosta. Se vaatii saman topic-moduulin ja saman seurantajakson, validoi molempien sopimukset ja tulostaa vertailuraportin stdoutiin. Komennossa ei ole tiedostoon kirjoittavaa valitsinta eikä se käytä GitHub-kirjoitussovittimia.
+
+Vertailu näyttää lähde-ID:t ja tilat, vanhan ja uuden raporttitekstin tiivisteet ja sanamäärät, väite-erojen tekstuaalisen vertailun, GUID-viitteet ja uuden GUID-muodon, epävarmuusmerkinnät sekä julkaisukelpoisuuden esteet. Väitteiden tekstuaalinen vastaavuus ei ole semanttinen faktantarkistus. Vertailu ei aseta lähdemäärälle tai tekstin samankaltaisuudelle numeerista hyväksymisrajaa.
+
+tests/fixtures/shadow-comparison/tolkien.json on synteettinen, rajattu testiaineisto. Se ei ole vanhan automaation live-raportti eikä osoita tutkimustulosten todellista vastaavuutta. Vertailu ja testit eivät muuta RSS:ää, lähderekistereitä, moduulitiloja, checkpointteja tai vuorojonoa. Näytösvahti ja tallennetut ChatGPT-automaatiot pysyvät tämän työn ulkopuolella.
+
+Aja vertailu:
+
+```bash
+python scripts/compare_shadow_runs.py --input tests/fixtures/shadow-comparison/tolkien.json
+```
+
+Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutistuloksen, partial- ja failed-tilat, virheellisen tuloksen, uusinnan, keskeytyksen, väärän moduulin, väärän seurantajakson ja kirjoituksettomuuden.
+
 ### Versiohistoria
 
+- **1.9.0 – 2026-11-19:** lisättiin moduulikohtainen lähdeauditointi ja kirjoitukseton vanhan/uuden raporttipolun vertailija synteettisellä Tolkien-testiaineistolla. Vertailu ei käynnistä live-ajoa eikä kirjoita tuotantotiedostoihin.
 - **1.8.0 – 2026-11-19:** kytkettiin yhdistetty ChatGPT-tulos alkuperäisen handoffin SHA-256-tarkistukseen, moduuli- ja kohdekohtaiseen laadunvarmistukseen sekä shadow-orkestrointiin. Päähaaran push-työnkulku käsittelee yhden uuden tuloksen ja tallentaa teknisen ajohistorian; se ei julkaise RSS:ää, päivitä checkpointia tai muuta live-automaation asetuksia.
 - **1.7.0 – 2026-11-19:** lisättiin yhden moduulin GitHub-pull request -palautuskanava, luotetusta kohdehaarasta suoritettava PR-validointi, vastaanoton skeema- ja moduulirekisteritarkistukset sekä ei-aktiivinen käynnistyskehoteluonnos. Palautus ei julkaise RSS:ää, päivitä checkpointia tai muuta live-automaation asetuksia.
 

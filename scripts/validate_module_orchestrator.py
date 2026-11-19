@@ -31,6 +31,13 @@ def main() -> None:
     jsonschema.Draft202012Validator.check_schema(target_report_schema)
     assessment_schema = json.loads((ROOT / "schemas/chatgpt-publication-assessment.schema.json").read_text(encoding="utf-8"))
     jsonschema.Draft202012Validator.check_schema(assessment_schema)
+    for schema_name in (
+        "chatgpt-source-audit.schema.json",
+        "shadow-comparison-input.schema.json",
+        "shadow-comparison-report.schema.json",
+    ):
+        comparison_schema = json.loads((ROOT / "schemas" / schema_name).read_text(encoding="utf-8"))
+        jsonschema.Draft202012Validator.check_schema(comparison_schema)
     chatgpt_result_schema = json.loads((ROOT / "schemas/chatgpt-module-result.schema.json").read_text(encoding="utf-8"))
     jsonschema.Draft202012Validator.check_schema(chatgpt_result_schema)
     # Tarkista myös GitHub-runtime-varaston skeemat ennen sovittimien käyttöä.
@@ -45,7 +52,7 @@ def main() -> None:
         started_at="2026-11-18T00:00:00+00:00", finished_at="2026-11-18T00:00:01+00:00"
     )
     validate_run_result(result)
-    print("OK: suorituspyyntö-, tulos-, kohderaportti-, ChatGPT-julkaisuarvio- ja GitHub-runtime-sopimukset validoituvat.")
+    print("OK: suorituspyyntö-, tulos-, kohderaportti-, ChatGPT-julkaisuarvio-, lähdeauditointi-, varjovertaussopimukset ja GitHub-runtime-sopimukset validoituvat.")
     print("OK: kaikki kymmenen moduulia voidaan lukea varjotilaan, mutta yksikään ei ole aktiivinen.")
     print("OK: tuotantokäyttöönotto vaatii erillisen hyväksynnän eikä CI muuta automaatioasetuksia.")
 
