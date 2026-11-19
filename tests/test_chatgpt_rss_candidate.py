@@ -155,7 +155,7 @@ class ChatGPTRssCandidateTests(unittest.TestCase):
             patch("scripts.chatgpt_rss_candidate.load_registry", return_value=self.registry),
             patch("scripts.chatgpt_rss_candidate.load_module_targets", return_value=self.targets),
         ):
-            with self.assertRaises(ValueError):
+            with self.assertRaises(GitHubAdapterError):
                 self.builder(
                     "tolkien", "tolkien-run-001", "",
                     target_reports=self.reports, publication_id="tolkien-feed",
