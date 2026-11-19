@@ -49,7 +49,7 @@ GitHub Pagesin deployment vaihtaa staattisen sivuston julkaisuversiona; RSS-tied
 
 ## Moduuliorchestratorin RSS-julkaisusovitin (#212)
 
-`scripts/github_module_adapters.py` sisältää `GitHubPagesRssPublisher`-sovittimen. Se toimittaa yhden syötteen XML:n ja sitä vastaavan hyväksytyn `reports/julkaisuportit/{run_id}.json`-raportin GitHub-pull requestina main-haaraan. Sovitin ei yhdistä PR:ää eikä ohita nykyistä julkaisulaadun porttia. PR:n yhdistäminen käynnistää tässä dokumentissa kuvatun Pages-buildin, Deployment-manifestin, julkaisun, julkisen takaisinluvun ja tarvittaessa palautuksen.
+`scripts/github_module_adapters.py` sisältää `GitHubPagesRssPublisher`-sovittimen. Se toimittaa yhden syötteen XML:n ja sitä vastaavan hyväksytyn `reports/julkaisuportit/{run_id}.json`-raportin GitHub-pull requestina main-haaraan. Sovitin ei yhdistä PR:ää eikä ohita nykyistä julkaisulaadun porttia. PR:n luomiseen on käytettävä erillistä workflow-tapahtumat käynnistävää GitHub App/PAT -tunnusta; oletusarvoisen Actions GITHUB_TOKEN -tunnuksen tekemä PR ei käynnistä seuraavia työnkulkuja. PR:n yhdistäminen käynnistää tässä dokumentissa kuvatun Pages-buildin, Deployment-manifestin, julkaisun, julkisen takaisinluvun ja tarvittaessa palautuksen.
 
 Sovitin tarkistaa onnistuneen julkaisun vasta, kun PR:n tila on yhdistetty ja julkisen syötteen SHA-256-sisältötiiviste, GUID-lista ja item-määrä vastaavat ehdokasta. Avoin PR tai Pagesin viive tuottaa varmennuksettoman tuloksen; checkpointia ei saa päivittää tässä tilassa. Uusinta käyttää samaa moduuli-/ajotunnisteeseen perustuvaa haaraa ja PR:ää. Kohderaporttien julkaisu edellyttää aktiivista kohde–julkaisukohde-reittiä; prosessimoduulin näytösvahti ei kuulu sovittimen piiriin.
 
