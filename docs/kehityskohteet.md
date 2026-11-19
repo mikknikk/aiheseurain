@@ -369,14 +369,14 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #227 – moduulisiirtymän palautus ja tuotantoonottopäätökset
 
-**Tila:** toteutus PR:ssä; palautuspäätökset ovat kirjoituksettomia eikä live-siirtymää tehdä.
+**Tila:** valmis; PR #230 yhdistetty main-haaraan commitilla ffcb161f7f9c986fb2db2638d5b133b626665bae. Palautuspäätökset ovat kirjoituksettomia eikä live-siirtymää tehty.
 
 - [x] Määritellään palautumisen päätösfunktio, joka yhdistää manifestin, RSS-PR:n tilan, julkisen takaisinluvun, moduulin checkpointin ja vanhan raportointipolun saman jakson julkaisutilan.
 - [x] Avoin RSS-PR pysäyttää vanhaan polkuun siirtymisen; yhdistetty ja varmennettu julkaisu jatkuu saman run_id:n kautta.
 - [x] Vanhaan raportointipolkuun paluu edellyttää varmennettua julkaisemattomuutta, vanhan polun jakson puuttumista ja erillistä hyväksyntää.
 - [x] Epäselvät API-/Pages-tilat ja ristiriitaiset checkpointit johtavat selvitykseen tai manuaaliseen katselmointiin, eivät automaattiseen onnistumiseen.
 - [x] Lisätään vikainjektiotestit julkaisun, manifestin vaihekirjoitusten ja checkpoint-tallennuksen kuittauskatkoille sekä saman run_id:n idempotentille uusinnalle.
-- [ ] PR-CI ja katselmointi.
+- [x] PR-CI ja katselmointi; RSS-/dokumentaatio-, käyttöliittymä- sekä kehitysjonon/Pages-työnkulut läpäisivät.
 - [x] Dokumentoidaan ehdotettu aihekohtainen siirtojärjestys, hyväksyntäportit ja palautuspäätöksen vähimmäislokitietue `docs/aiheajojen-eristys.md`-tiedostoon.
 
 **Rajaus:** ei live-siirtymää, moduulin aktivointia, RSS-julkaisua tai automaatioiden asetusten, ajastusten, käynnistyskehotteiden tai kohdekeskustelujen muutoksia. Näytösvahti pysyy erillisenä.
