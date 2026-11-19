@@ -47,7 +47,7 @@ Tämä tiedosto on luettava kokonaan ennen jokaista ajoa. Päivitä sitä vain, 
 
 ## Lähdekattavuuden koneellinen seuranta
 
-- `data/source-catalog.json` sisältää lähteiden yhteiset perustiedot (nimi, URL, kielet, lähdetyyppi ja alueet) kerran. `data/sources/{task_id}.json` sisältää tehtäväkohtaiset `source_id`-viittaukset sekä kriittisyyden, viimeisimmän tarkistusajan, käyttörajoitteet ja seuraavan sallitun tarkistusajan (`retry_after`). Yhdistä tiedot ID:n perusteella; lähteen tarkistus yhdessä tehtävässä ei tarkoita, että se olisi tarkistettu muissa tehtävissä.
+- `data/source-catalog.json` sisältää lähteiden yhteiset perustiedot (nimi, URL, kielet, lähdetyyppi ja alueet) kerran. `data/sources/{task_id}.json` sisältää tehtäväkohtaiset `source_id`-viittaukset sekä kriittisyyden, viimeisimmän tarkistusajan ja käyttörajoitteet. Pääautomaation yhdeksän aihekäytön rekistereissä on lisäksi `retry_after`-uudelleentarkistusaika; erillinen näytösvahti käyttää omaa virheistä palautumisen menettelyään. Yhdistä tiedot ID:n perusteella; lähteen tarkistus yhdessä tehtävässä ei tarkoita, että se olisi tarkistettu muissa tehtävissä.
 - `schemas/lahdekatalogi.schema.json` ja `schemas/lahderekisteri.schema.json` määrittävät katalogin ja käyttörekisterien rakenteet. `scripts/validate_source_coverage.py` tarkistaa viittausten eheyden ja ajolokin tehtäväkohtaisuuden.
 - `data/lahdetarkistukset.json` säilyttää ajokohtaiset tarkistustulokset. Jokaisessa ajossa eritellään tarkistetut lähteet sekä tarkistamatta jääneet lähteet syineen. Osittainen tai epäonnistunut ajo ei saa näyttää täydelliseltä.
 - Tehtävätunnisteet `intialaiset_elokuvat_uutiset` ja `intialaiset_elokuvat_naytokset` ovat erilliset. Uutisautomaatio ei lisää näytöslähteiden tarkistuksia omaan ajoonsa.
