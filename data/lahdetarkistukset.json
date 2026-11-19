@@ -529,6 +529,55 @@
         "ticketmaster-fi-events",
         "tiketti-fi-events"
       ]
+    },
+    {
+      "run_id": "muumit-20261119T121429-0200",
+      "task_id": "muumit",
+      "started_at": "2026-11-19T12:14:29+02:00",
+      "ended_at": "2026-11-19T12:18:28+02:00",
+      "status": "partial",
+      "checked_source_ids": [
+        "moomin-museum",
+        "yle-culture",
+        "lippu-fi-events",
+        "ticketmaster-fi-events",
+        "tiketti-fi-events",
+        "sony-live"
+      ],
+      "unchecked_sources": [
+        {
+          "source_id": "moomin-official",
+          "reason": "Jäähdytysajalla retry_after=2026-12-19T10:10:56+02:00; aiemman robots.txt-eston vuoksi lähdettä ei yritetty avata tällä ajolla."
+        },
+        {
+          "source_id": "moomin-characters-news",
+          "reason": "Jäähdytysajalla retry_after=2026-12-19T10:10:56+02:00; aiemman robots.txt-eston vuoksi lähdettä ei yritetty avata tällä ajolla."
+        },
+        {
+          "source_id": "tove-jansson-society",
+          "reason": "Jäähdytysajalla retry_after=2026-12-03T10:10:56+02:00; aiemman 403-eston vuoksi lähdettä ei yritetty avata tällä ajolla."
+        }
+      ],
+      "coverage_notes": [
+        "Seurantajakso: aiheen dokumentoitu aloitus 16.11.2026; aiempaa onnistunutta tarkistusta ei ole. Aloitushetken kellonaika on tuntematon. Lähdetarkistus päättyi 19.11.2026 klo 12.18.28 (Europe/Helsinki).",
+        "Kielet: suomi ja englanti tarkistettiin alkuperäissivuista. Japanin- ja ruotsinkieliset haut eivät tuottaneet uutta riippumattomasti varmennettavaa uutista; kahta virallista Moomin.com-lähdettä ei avattu niiden robots.txt-jäähdytysajan vuoksi.",
+        "Alueet: Suomi tarkistettiin Sony Music Finland Liven, Lippu.fi:n, Ylen, Moomin Museumin sekä Espoon ja Kouvolan virallisten tapahtumasivujen avulla. Kansainvälisessä haussa ei löytynyt uutta tarkistettavaa uutista; aiempi Japanin Cocoon City -tapahtuma säilyy vanhassa RSS-itemissä.",
+        "Kuusi lähdettä tarkistettiin alkuperäissivuista: viisi aiempaa käyttörekisterin lähdettä ja ajon aikana lisätty Sony Music Finland Live. Kolme lähdettä jätettiin tarkistamatta aktiivisen jäähdytysajan vuoksi.",
+        "Sony Music Finland Liven 7.7.2026 kiertueilmoitus ja ajantasainen esityskalenteri vahvistavat neljä tulevaa Suomen-esitystä 21.–29.11.2026. Lippu.fi täydentää päivämäärät ja lipunmyyntitiedot, mutta sitä ei laskettu riippumattomaksi toimitukselliseksi vahvistukseksi.",
+        "Moomin Museumin opastukset ja marraskuun käyntitapahtumat arvioitiin säännölliseksi ohjelmaksi. Moominvalley Parkin 20.–21.11. MUIKKU!-tervehdys arvioitiin toistuvaksi ohjelmaksi eikä erilliseksi uutiseksi.",
+        "Uusi RSS-item julkaisee aiemmin käsittelemättä jääneen 7.7.2026 kiertueilmoituksen, koska neljä esitystä on yhä tulossa. Aiempi Japanin pelitapahtumaa koskeva item säilytettiin muuttumattomana."
+      ],
+      "registry_source_ids": [
+        "moomin-official",
+        "moomin-museum",
+        "moomin-characters-news",
+        "tove-jansson-society",
+        "yle-culture",
+        "lippu-fi-events",
+        "ticketmaster-fi-events",
+        "tiketti-fi-events",
+        "sony-live"
+      ]
     }
   ],
   "latest_by_task": {
@@ -536,7 +585,7 @@
     "intialaiset_elokuvat_naytokset": "2026-11-19T09:48:00+02:00",
     "taylor_swift": "2026-11-17T13:03:45+02:00",
     "gurmeet_ram_rahim_singh": "2026-11-18T14:00:19+02:00",
-    "muumit": "2026-11-19T10:10:56+02:00"
+    "muumit": "2026-11-19T12:18:28+02:00"
   },
-  "updated_at": "2026-11-19T10:10:56+02:00"
+  "updated_at": "2026-11-19T12:18:28+02:00"
 }
