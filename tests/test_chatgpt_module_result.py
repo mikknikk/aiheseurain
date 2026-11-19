@@ -43,6 +43,19 @@ class ChatGPTModuleResultTests(unittest.TestCase):
             "sources_checked": 5,
             "source_check_run_refs": ["muumit-source-check-001"],
             "report_guid_refs": ["urn:aiheseurain:muumit:2026-11-19:abc"],
+            "handoff": {
+                "dispatch_schema_version": 1,
+                "module_id": "muumit",
+                "module_definition_version": "1.0.0",
+                "contract_version": "1.0.0",
+                "run_id": "muumit-run-001",
+                "period": {
+                    "start": "2026-11-19T00:00:00+02:00",
+                    "end": "2026-11-19T23:59:59+02:00",
+                },
+                "requested_at": "2026-11-19T09:55:00+02:00",
+                "input_sha256": "a" * 64,
+            },
         }
 
     def test_valid_result_is_converted(self):
