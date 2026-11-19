@@ -131,6 +131,8 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
             deployment_id=12345,
             rss_verified_at="2026-11-20T07:00:00+02:00",
             synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
         )
         with self.assertRaises(ScreeningJournalError):
             complete_run(
@@ -157,6 +159,8 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
             deployment_id=12345,
             rss_verified_at="2026-11-20T07:00:00+02:00",
             synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
         )
         with self.assertRaises(ScreeningJournalError):
             validate_journal(completed, state(START), feed_catalog())
