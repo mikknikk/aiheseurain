@@ -11,67 +11,78 @@
       "source_id": "finnkino",
       "critical": true,
       "last_checked_at": "2026-11-19T09:48:00+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "biorex",
       "critical": true,
       "last_checked_at": "2026-11-19T09:48:00+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "kino-regina",
       "critical": true,
       "last_checked_at": "2026-11-19T05:43:38+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "cinema-orion",
       "critical": true,
       "last_checked_at": "2026-11-19T09:48:00+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "kino-myyri",
       "critical": false,
       "last_checked_at": "2026-11-19T09:48:00+02:00",
-      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy."
+      "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy.",
+      "retry_after": null
     },
     {
       "source_id": "finbolly",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "fintamil",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "rasa-entertainment",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "finnish-film-foundation",
       "critical": false,
       "last_checked_at": "2026-11-19T09:48:00+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "cinema-mondo",
       "critical": false,
       "last_checked_at": "2026-11-19T09:48:00+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "filmikamari",
       "critical": false,
       "last_checked_at": "2026-11-19T09:48:00+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     }
   ]
 }
