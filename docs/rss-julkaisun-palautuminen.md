@@ -1,8 +1,8 @@
 # RSS-julkaisun manifesti ja takaisinluku
 
-**Versio:** 1.1.0  
-**Päiväys:** 2026-11-18  
-**Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148)
+**Versio:** 1.2.0  
+**Päiväys:** 2026-11-19  
+**Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148), [#179](https://github.com/mikknikk/aiheseurain/issues/179)
 
 ## Omistajuus ja tallennus
 
@@ -30,6 +30,16 @@ Varsinaisia raporttitekstejä tai lähdeaineistoa ei kopioida manifestiin. GitHu
 9. **Palautuksen tarkistus ja lopputila:** palautuksen jälkeen kaikki kymmenen RSS-syötettä luetaan uudelleen ja verrataan snapshot-manifestiin. Jos palautus täsmää, aiempi sisältö on palautettu, mutta ehdokasjulkaisu kirjataan silti `failure`-tilaan ja workflow jää epäonnistuneeksi. Jos palautusta ei voida varmentaa, myös tämä kirjataan virheeksi.
 
 Jos commit ei muuta RSS-syötteitä, Pages-sivusto voidaan julkaista normaalisti ilman RSS-manifestia. Ajastettu Pages-rakennus ei itsessään muodosta uutta RSS-julkaisumanifestia.
+
+## Näytösvahdin ajon tilojen palautuminen
+
+Tämä dokumentti käsittelee RSS:n julkisen Pages-jakelun palautusta. Erillisen näytösvahdin ajon tilojen palautumista varten käytetään lisäksi `data/screening-publication-journal.json`-tiedostoa. Sen skeema ja eheystarkistukset ovat `schemas/screening-publication-journal.schema.json` ja `scripts/screening_publication_journal.py`.
+
+Pages-palautus ja näytösvahtipäiväkirja ratkaisevat eri ongelmat:
+- Pages-manifesti varmistaa, mikä RSS-sisältö on julkisesti saatavilla, ja palauttaa tarvittaessa aiemman julkisen version.
+- Näytösvahtipäiväkirja varmistaa, ettei RSS-julkaisun jälkeinen lähde-, historia-, moduuli- ja seurantatilan synkronointi katoa ajon keskeytyessä.
+
+Jos Pages palauttaa vanhan RSS-version, näytösvahtipäiväkirjan ajo jää `prepared`-tilaan. Se ei oikeuta onnistumispisteen siirtämiseen. Seuraava näytösvahti tarkistaa Pages-deploymentin ja julkisen syötteen ennen kuin jatkaa saman ajon käsittelyä. Päiväkirjan valmistuminen edellyttää sekä julkisen RSS:n varmennusta että tilasynkronoinnin onnistunutta yhdistämistä.
 
 ## Rinnakkaisuus ja viimeisin hyvä julkaisu
 

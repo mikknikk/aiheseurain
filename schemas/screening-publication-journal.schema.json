@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/screening-publication-journal.schema.json",
+  "title": "Näytösvahdin RSS-julkaisun palautumispäiväkirja",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "timezone",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "task_id": {
+      "const": "intialaiset_elokuvat_naytokset"
+    },
+    "timezone": {
+      "const": "Europe/Helsinki"
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "run": {
+      "type": "object",
+      "required": [
+        "run_id",
+        "period",
+        "prepared_at",
+        "phase",
+        "feed",
+        "publication",
+        "synchronization"
+      ],
+      "properties": {
+        "run_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,180}$"
+        },
+        "period": {
+          "type": "object",
+          "required": [
+            "start",
+            "end"
+          ],
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "end": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
+        },
+        "prepared_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "phase": {
+          "enum": [
+            "prepared",
+            "completed"
+          ]
+        },
+        "feed": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256",
+            "item_count",
+            "guids"
+          ],
+          "properties": {
+            "path": {
+              "const": "feeds/intialaisten-elokuvien-naytokset.xml"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "item_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "guids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "publication": {
+          "type": "object",
+          "required": [
+            "commit_sha",
+            "deployment_id",
+            "verified_at"
+          ],
+          "properties": {
+            "commit_sha": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "deployment_id": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1
+            },
+            "verified_at": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
+        },
+        "synchronization": {
+          "type": "object",
+          "required": [
+            "commit_sha"
+          ],
+          "properties": {
+            "commit_sha": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{40}$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "prepared"
+              }
+            },
+            "required": [
+              "phase"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publication": {
+                "properties": {
+                  "commit_sha": {
+                    "type": "null"
+                  },
+                  "deployment_id": {
+                    "type": "null"
+                  },
+                  "verified_at": {
+                    "type": "null"
+                  }
+                }
+              },
+              "synchronization": {
+                "properties": {
+                  "commit_sha": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "completed"
+              }
+            },
+            "required": [
+              "phase"
+            ]
+          },
+          "then": {
+            "properties": {
+              "publication": {
+                "properties": {
+                  "commit_sha": {
+                    "type": "string"
+                  },
+                  "deployment_id": {
+                    "type": "integer"
+                  },
+                  "verified_at": {
+                    "type": "string"
+                  }
+                }
+              },
+              "synchronization": {
+                "properties": {
+                  "commit_sha": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  }
+}

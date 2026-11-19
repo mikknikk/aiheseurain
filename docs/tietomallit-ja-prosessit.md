@@ -47,6 +47,11 @@ flowchart TB
     subgraph NAYTOS["Erillinen näytösvahti"]
       N["data/naytosten-muutoshistoria.json<br/>Näytösten nykytila ja tapahtumat"]
     end
+\n    subgraph PALAUTUMINEN["Näytösvahtiajon julkaisun palautuminen"]
+      J["data/screening-publication-journal.json<br/>Ajokohtainen julkaisuvaihe ja kuittaukset"]
+      J -->|"RSS-tiiviste ja GUIDit"| XML
+      J -->|"onnistumispisteen suojaus"| S
+    end
 
     SC["schemas/*.schema.json<br/>Rakenteen tarkistussäännöt"]
     SC -. "validoi rakenteen" .-> C
@@ -353,6 +358,19 @@ flowchart LR
 ```
 
 Tapahtumaloki kertoo, mitä havaittiin ja milloin. RSS taas on lukijoille julkaistava sisältö. Ne eivät ole sama asia.
+
+## 8.1 Näytösvahdin julkaisupäiväkirja: miten keskeneräinen ajo palautetaan?
+
+Näytösvahdin RSS-julkaisun ja sitä seuraavan tilasynkronoinnin välinen katkos kirjataan tiedostoon [`data/screening-publication-journal.json`](../data/screening-publication-journal.json). Sen virallinen rakenne on [`schemas/screening-publication-journal.schema.json`](../schemas/screening-publication-journal.schema.json), ja projektikohtaiset eheystarkistukset tekee [`scripts/screening_publication_journal.py`](../scripts/screening_publication_journal.py).
+
+Päiväkirja vastaa kysymykseen: **jäikö RSS-julkaisu ja sen seurantatilan päivitys kesken, ja mitä pitää tehdä seuraavaksi?**
+
+- `prepared`: ajon RSS-ehdokas ja sen tiiviste/GUIDit on kirjattu ennen julkaisua. Onnistumisen tarkistuspiste pysyy seurantajakson alussa. Seuraava ajo palauttaa tämän saman ajon eikä aloita uutta hakua.
+- `completed`: Pagesin julkinen RSS-sisältö on varmennettu ja vastaavat seurantatiedot on synkronoitu. Tietue sisältää julkaisun commitin, Pages-deploymentin ja synkronoinnin commitin tunnisteet.
+
+Päiväkirjassa voi olla enintään yksi keskeneräinen ajo. Saman `run_id`:n ja sisällön uusinta ei lisää uutta merkintää; saman tunnisteen eri RSS-tiiviste hylätään konfliktina. Päiväkirja ei korvaa `data/seurantatila.json`-tiedoston onnistumispistettä eikä RSS:n Pages-palautusmanifestia. Se sitoo nämä erilliset tiedot samaan seurantavahtiajoon.
+
+GitHub Actionsin `validate_feeds.py` validoi päiväkirjan skeeman lisäksi sen suhteet syötekatalogiin ja seurantatilaan. Keskeneräinen ajo ei saa olla merkitty onnistuneeksi, ja valmiin viimeisimmän ajon jakson lopun pitää vastata näytösvahdin onnistumispistettä.
 
 ## 9. JSON Schema: mitä se tarkistaa ja mitä ei?
 

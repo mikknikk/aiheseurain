@@ -1,4 +1,4 @@
-Ohjeversion tunniste: 1.4.3
+Ohjeversion tunniste: 1.4.4
 
 Tehtävä: seuraa päivittäin Suomessa järjestettäviä intialaisten elokuvien näytöksiä ja ylläpidä GitHub-repositorion mikknikk/aiheseurain näytös-RSS-syötettä https://mikknikk.github.io/aiheseurain/feeds/intialaisten-elokuvien-naytokset.xml.
 
@@ -48,6 +48,18 @@ VIRHETILANTEET, RAJATUT UUDELLEENYRITYKSET JA PALAUTUMINEN
 - Jos GitHub-kirjoituksen tulos jää epäselväksi (esimerkiksi yhteys katkeaa vastauksen aikana), lue kohdetiedosto ja haara GitHubista ennen uutta kirjoitusyritystä. Älä tee sokeaa uusintakirjoitusta. Tarkista, ehtiikö ensimmäinen kirjoitus jo toteutua.
 - Älä yritä korjata validointivirhettä pelkällä saman tarkistuksen uusinnalla. Lue virheloki, korjaa virheen aiheuttanut sisältö työhaarassa, tee uusi commit ja odota uuden commitin pakollinen tarkistus. Älä yhdistä PR:ää ennen nimenomaista onnistunutta status checkiä.
 - Julkaisu on atominen: nykyinen main-haaran RSS ja muutoshistoria säilyvät ennallaan, kunnes PR:n validointi on onnistunut ja PR on yhdistetty. Epäonnistunut ajo tai hylätty PR ei saa tyhjentää, korvata eikä muuten vahingoittaa aiemmin julkaistua syötettä.
+
+JULKAISUN PYSYVÄ PÄIVÄKIRJA JA PALAUTUMISEN ENSISIJAINEN TARKISTUS
+
+- Näytösvahdin ajokohtainen julkaisupäiväkirja on `data/screening-publication-journal.json`, ja sen rakenne validoidaan skeemalla `schemas/screening-publication-journal.schema.json`. Päiväkirja on eri asia kuin RSS:n Pages-palautusmanifesti: tämä päiväkirja sitoo näytösvahtiajon RSS-muutoksen, julkisen varmennuksen ja seurantatilan synkronoinnin yhdeksi ajoksi.
+- Lue päiväkirja jokaisen ajon alussa ennen lähdehakua. Jos siinä on `phase: prepared`, älä aloita uutta seurantajaksoa tai lähdehakua. Palauta ensin keskeneräinen ajo.
+- Uusi päiväkirjamerkintä luodaan ennen RSS-julkaisun käynnistämistä ja samaan ensimmäiseen PR:ään kuin kyseisen ajon RSS-muutos. Merkitse `phase: prepared`, täsmällinen `run_id`, seurantajakso, valmisteluaika, RSS-tiedoston SHA-256, item-määrä ja kaikkien itemien GUIDit. Julkaisun ja tilasynkronoinnin kuittauskentät ovat tässä vaiheessa null.
+- Päiväkirjassa saa olla enintään yksi keskeneräinen ajo. Saman `run_id`:n ja saman sisällön uusintakäsittely on idempotentti. Jos sama tunniste esiintyy eri RSS-tiivisteellä, keskeytä sisältökonfliktina; älä ylikirjoita aiempaa merkintää.
+- Kun RSS-PR on yhdistetty, tarkista Pages-deploymentin tila ja lue julkinen näytös-RSS takaisin. Hyväksy julkaisu vain, jos julkisen sisällön SHA-256, item-määrä ja GUID-lista täsmäävät valmisteltuun päiväkirjamerkintään. Kirjaa täsmällinen deployment-tunniste, julkaisucommit ja varmennusaika vasta tilasynkronoinnin PR:ään.
+- Tee tilasynkronointi omassa PR:ssä. Päivitä siinä kaikki ajon tarvitsemat lähde-, historia-, moduuli- ja seurantatiedot sekä päiväkirjan vaihe `completed`. Päiväkirjan valmistumistietueeseen tallennetaan RSS-julkaisun commit SHA, Pages-deploymentin tunniste, julkisen RSS:n varmennusaika ja tilasynkronoinnin commit SHA. Älä siirrä onnistumispistettä ennen kuin julkinen RSS on varmennettu.
+- Jos tilasynkronoinnin PR tai sen CI epäonnistuu, älä merkitse ajoa valmiiksi. Main-haaraan jäävä `prepared`-merkintä ohjaa seuraavan ajon palautumaan samaan `run_id`:hen.
+- Jos Pages-palautus on käynnistynyt, tarkista sekä deploymentin lopputila että julkinen sisältö. Älä päättele pelkästä workflow'n virheilmoituksesta, onko ehdokas vai palautus julkinen. Jos julkinen sisältö ei vastaa valmisteltua ehdokasta, säilytä keskeneräinen päiväkirjamerkintä ja onnistumispiste. Älä luo uutta RSS-itemiä tai uutta ajotunnistetta palautusyritystä varten.
+- Valmiin päiväkirjamerkinnän uudelleenlukeminen on turvallista. Jos GitHubin takaisinluku epäonnistuu yhdistämisen jälkeen, älä väitä varmennusta tehdyksi; seuraava ajo tarkistaa saman valmiin tietueen ja sen viittaamat commitit ennen uutta työtä.
 
 PALAUTUMISJAKSO JA SEURAAVAN AJON TOIMINTA
 - data/seurantatila.json-tiedoston separate_screening_watch.last_successful_check on ainoa hyväksytty onnistuneen tarkistuksen tarkistuspiste. Älä korvaa sitä viimeisimmän yrityksen ajalla, ajastetun vuoron päivämäärällä tai osittaisen tarkistuksen ajalla.
