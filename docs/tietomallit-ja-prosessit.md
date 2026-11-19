@@ -365,8 +365,8 @@ Näytösvahdin RSS-julkaisun ja sitä seuraavan tilasynkronoinnin välinen katko
 
 Päiväkirja vastaa kysymykseen: **jäikö RSS-julkaisu ja sen seurantatilan päivitys kesken, ja mitä pitää tehdä seuraavaksi?**
 
-- `prepared`: ajon RSS-ehdokas ja sen tiiviste/GUIDit on kirjattu ennen julkaisua. Onnistumisen tarkistuspiste pysyy seurantajakson alussa. Seuraava ajo palauttaa tämän saman ajon eikä aloita uutta hakua.
-- `completed`: Pagesin julkinen RSS-sisältö on varmennettu ja vastaavat seurantatiedot on synkronoitu. Tietue sisältää julkaisun commitin, Pages-deploymentin ja synkronoinnin commitin tunnisteet.
+- `prepared`: ajon RSS-ehdokas, sen tiiviste/GUIDit sekä lähdetarkistusajon tunniste ja päättymisaika on kirjattu ennen julkaisua. Ensimmäiseen PR:ään tallennetaan myös kyseisen ajon lähdeloki, lähderekisterin tarkistusajat, näytöshistoria ja moduulitilan historiaviitteet. Onnistumisen tarkistuspiste pysyy seurantajakson alussa. Seuraava ajo palauttaa tämän saman ajon eikä aloita uutta hakua.
+- `completed`: Pagesin julkinen RSS-sisältö on varmennettu, ja erillinen viimeistely-PR on siirtänyt seurantatilan onnistumispisteen. Tietue sisältää julkaisun commitin, Pages-deploymentin ja viimeistely-PR:n commitin tunnisteet.
 
 Päiväkirjassa voi olla enintään yksi keskeneräinen ajo. Saman `run_id`:n ja sisällön uusinta ei lisää uutta merkintää; saman tunnisteen eri RSS-tiiviste hylätään konfliktina. Päiväkirja ei korvaa `data/seurantatila.json`-tiedoston onnistumispistettä eikä RSS:n Pages-palautusmanifestia. Se sitoo nämä erilliset tiedot samaan seurantavahtiajoon.
 
