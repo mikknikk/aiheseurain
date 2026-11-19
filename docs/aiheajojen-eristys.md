@@ -236,6 +236,21 @@ python scripts/compare_shadow_runs.py --input tests/fixtures/shadow-comparison/t
 
 Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutistuloksen, partial- ja failed-tilat, virheellisen tuloksen, uusinnan, keskeytyksen, väärän moduulin, väärän seurantajakson ja kirjoituksettomuuden.
 
+
+## Aihekohtainen varjosiirtymän orkestrointi (#239, työn alla)
+
+`scripts/shadow_transition.py` yhdistää yhden topic-moduulin read-only-todistekerääjäkutsut, `recovery_action`-päätöksen ja ajokohtaisen auditointivaraston. Syötesopimus sisältää moduulin, run_id:n, moduuliversion, seurantajakson ja eksplisiittisen `mode=shadow`-tilan. Rajapinta hyväksyy vain feed-katalogiin rekisteröidyt topic-syötteet; näytösvahti ei voi käyttää sitä.
+
+Keräämiskutsut suoritetaan ennen auditointikirjoituksia. Jokaisen tapahtuman moduuli- ja run_id tarkistetaan, ja vasta kaikkien havaintojen sekä palautumispäätöksen valmistuttua tapahtumat tallennetaan. Lopuksi sama ajo luetaan takaisin ja tallennettujen tapahtumien tunnisteet varmennetaan. Keräysvirhe tai väärä omistajuus pysäyttää harjoituksen ennen auditointikirjoituksia.
+
+Tämä on synteettisillä testituplilla ajettava varjoharjoituksen tekninen rajapinta, ei live-siirtymä eikä tuotantokäyttöönoton hyväksyntä. Auditointitietueiden tallennus on ainoa kirjoitusoperaatio. RSS-syötteitä, moduulien aktivointilippuja, moduulitiloja, checkpointteja, tehtäväjonoa tai ChatGPT-automaation asetuksia ei muuteta.
+
+Käyttöönottovaihe on edelleen kesken. Erityisesti checkpointin lähtötilan luotettava havainnointi ja eri siirtymävaiheiden kattava end-to-end-testistö on varmistettava ennen kuin tätä rajapintaa voidaan käyttää tuotantosiirtymän hyväksymiskriteerinä.
+
+### Versiohistoria
+
+- **2.3.0 – 2026-11-19 (valmistelu):** lisättiin yhden topic-moduulin varjosiirtymän orkestrointirajapinta ja synteettiset regressiotestit. Ei live-siirtymää eikä moduulien aktivointia.
+
 ### Versiohistoria
 
 - **2.2.0 – 2026-11-19:** lisättiin PR-, Pages-, julkisen RSS:n, julkaisumanifestin vaihehistorian, checkpointin, vanhan polun ja palautuspäätöksen read-only-todistekerääjä sekä sisällön SHA-256-tiivisteellä nimetyt ajokohtaiset auditointitietueet, skeema, validoija ja CI-testit. Ei live-siirtymää.
