@@ -39,6 +39,7 @@ Uutisseurannan tulee olla luotettava, läpinäkyvä, saavutettava ja ylläpidett
 
 ## Toteutetut kohteet
 
+- [x] **Näytösvahtiajon julkaisun palautuminen (#179).** PR #180 lisää pysyvän, skeemavalidoidun ajopäiväkirjan, idempotentit valmistelu- ja valmistumissiirtymät sekä palautumisen CI-testit. Keskeneräinen ajo estää uuden seurantajakson aloittamisen, ja viimeisin onnistumispiste sidotaan päiväkirjan vaiheeseen. Näytösvahtiohje päivitettiin versioon 1.4.4; ajastusta ja käynnistyskehotetta ei muutettu.
 - [x] **Moduulikohtainen tila ja historia (#106).** Kymmenen tilatiedostoa, vanhojen checkpointien ja historiaviitteiden migraatio sekä idempotentti, osittaisia ajoja hylkäävä checkpoint-siirtymä.
 - [x] **Nykyisten aiheiden ja näytösvahdin siirto itsenäisiin moduulimäärittelyihin (#105).** Yhdeksän topic-moduulia ja yksi process-moduuli on rekisteröity inactive-tilassa. Lähdeviitteet, kieli- ja alueprofiilit sekä näytösvahtimoduulin tapahtumatyyppi validoidaan CI:ssä.
 - [x] **Yhteinen moduulien suoritusorkestrointi (#108).** PR #118 toteuttaa suorituspyynnön ja tuloksen, moduulin ratkaisun rekisteristä, suorittajan ja laadunvarmistusportin koordinoinnin, varjotilan, tuotannon erillisen hyväksyntäportin, tapahtumavahtisuorittimen ja moduulikohtaisen virheiden eristyksen. PR #124 täydentää elinkaaren paikallisilla SHA-tarkistetuilla tallennus- ja julkaisusovittimilla. Tuotantokäyttöönottoa tai automaatioasetusten muutoksia ei tehty.
@@ -83,10 +84,6 @@ Uusien RSS-itemien GUID-muoto on `urn:aiheseurain:<aihe>:<alkuperäinen-päiväm
 ### Tuotantopalvelujen käyttöönotto (erillinen päätös)
 
 Tiketin #107 AIProcessor- ja ResearchProvider-sopimukset, tekninen reititin, kustannusrajat, aikakatkaisut, uusinnat ja auditointi ovat valmiit. Tuotannon reitityskonfiguraatio on edelleen tyhjä eikä testiadaptereissa käytetä verkkoa tai tunnuksia. Todellisen palveluntarjoajan, GitHub-pohjaisen tallennuksen, tuotantojulkaisun ja automaatiokytkennän käyttöönotto vaatii erillisen teknisen suunnitelman ja käyttäjän hyväksynnän.
-
-### Näytösvahdin julkaisun palautuminen (#179)
-
-**Toteutus käynnissä:** pysyvä julkaisupäiväkirja sitoo näytösvahtiajon RSS-ehdokkaan, Pagesin julkisen takaisinluvun ja tilatietojen synkronoinnin. Keskeneräinen ajo palautetaan ennen uuden seurantajakson aloittamista. Skeema, JSON-tietue, validoija, testit ja käsikirjan ohjeistus ovat toteutushaarassa; tuotantokäyttöön ei siirrytä ennen PR:n CI-tarkistuksia ja yhdistämistä.
 
 ### Näytösseurannan muutoshistorian käyttöönotto
 
