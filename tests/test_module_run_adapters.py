@@ -112,6 +112,7 @@ class LocalAdapterTests(unittest.TestCase):
             publication_journal=self.journal,
             recorder=self.recorder,
             registry_loader=lambda include_inactive=True: registry,
+            activation_loader=lambda module_id: True,
         )
 
     def test_complete_run_publishes_persists_and_updates_checkpoint(self):
@@ -190,7 +191,9 @@ class LocalAdapterTests(unittest.TestCase):
                 "report_sha256": __import__("scripts.publication_journal", fromlist=["content_digest"]).content_digest(changed.report_content),
                 "artifacts_sha256": __import__("scripts.publication_journal", fromlist=["content_digest"]).content_digest(changed.artifacts),
                 "state_sha256": "state-sha", "artifact_version": "artifact-v",
-                "publication_targets": ["tolkien"], "prepared_at": req.requested_at,
+                "publication_targets": ["tolkien"],
+                "period_start": req.period_start, "period_end": req.period_end,
+                "prepared_at": req.requested_at,
             })
 
     def test_state_store_rejects_stale_sha(self):
