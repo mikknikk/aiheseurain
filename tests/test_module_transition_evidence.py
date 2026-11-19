@@ -215,7 +215,7 @@ class TransitionEvidenceTests(unittest.TestCase):
             content, blob_sha(content)
         )
         record = self.collector.collect_checkpoint(
-            "taylor-swift", "swift-run-001", before_blob_sha="before-sha",
+            "taylor-swift", "swift-run-001", before_blob_sha="c" * 40,
             before_run_id="swift-run-000", before_checked_at="2026-11-18T20:30:00Z",
             manifest_phase="checkpoint_updated", observed_at=self.now,
         )
@@ -225,7 +225,7 @@ class TransitionEvidenceTests(unittest.TestCase):
     def test_checkpoint_refuses_wrong_current_run(self):
         with self.assertRaises(TransitionEvidenceError):
             self.collector.collect_checkpoint(
-                "taylor-swift", "swift-run-001", before_blob_sha="before-sha",
+                "taylor-swift", "swift-run-001", before_blob_sha="c" * 40,
                 before_run_id=None, before_checked_at=None,
                 manifest_phase="checkpoint_updated", observed_at=self.now,
             )
