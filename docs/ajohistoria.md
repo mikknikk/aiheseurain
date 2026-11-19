@@ -21,6 +21,26 @@ Kunkin haaran juuritiedosto `history.json` sisältää enintään 30 viimeisint�
 
 Valvomo lukee tiedostot GitHubin julkisesta Contents APIsta `ref`-parametrilla. Selain tarvitsee vain anonyymin lukuoikeuden. Se ei saa tunnuksia eikä kirjoitusoikeuksia.
 
+## Suorituksen ja alustahavainnon erottaminen
+
+Ajohistorian `source` kertoo, mitä tieto todistaa:
+
+- `chatgpt_scheduled_task`: automaation oma suoritus on käynnistynyt ja se on kirjannut vaiheensa itse.
+- `chatgpt_platform_observation`: ulkopuolelta luettu ChatGPT-ajastusalustan run-tietue kertoo epäonnistumisesta, mutta automaation keskustelu-/vaihekohtaista suoritusta ei voida todentaa.
+
+Alustahavainto kirjataan vain, kun Automationsin lukutieto antaa yksilöllisen run ID:n, aloitus- ja päättymisajat sekä virhetuloksen. Jos `chat_ref` puuttuu, `steps` jätetään tyhjäksi. Älä keksi esitarkistus-, haku-, julkaisu- tai muita vaiheita.
+
+Alustahavainnon `diagnostics` sisältää:
+- `stage=platform_execution` ja `category=platform_error`;
+- `retryable=null`, ellei alusta anna uudelleenyrityksestä täsmällistä tietoa;
+- `root_cause_confirmed=false`, jos teknistä syytä ei ole vahvistettu;
+- `chat_ref_present=false`, jos keskusteluviite puuttuu;
+- alkuperäisen alustan run ID:n.
+
+Tallenna alustan palauttama virheviesti sellaisenaan lyhyenä virheenä. Kirjoita yhteenvetoon, että kyseessä on alustahavainto eikä automaation oma vaihekohtainen loki. Älä päättele yleisestä virheilmoituksesta verkkovirhettä, käyttöoikeusvirhettä tai muuta teknistä juurisyytä.
+
+Alustahavainto voidaan lisätä ajohistoriahaaraan jälkikäteen, kun lukutieto on saatavilla. Se ei muuta varsinaista seurantatilan onnistumispistettä. Valvomo näyttää alustahavainnon erillisenä lähteenä. Tämä menettely ei itsessään valvo puuttuvia ajoja reaaliajassa eikä luo uutta ajastettua tehtävää.
+
 ## Kirjausmenettely
 
 1. Luo ennen varsinaista työtä yksilöllinen ajotunniste (UTC-aikaleima ja satunnainen/uniikki loppuosa) ja lisää ajo tilaan `running`.
