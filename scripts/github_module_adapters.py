@@ -584,11 +584,13 @@ class GitHubPagesRssPublisher:
                 if current is None or current.content != desired:
                     raise GitHubAdapterConflict("Saman ajon olemassa olevan julkaisun sisältöä ei voi vaihtaa.")
                 continue
+            main_file = self.client.get_file(path, MAIN_BRANCH)
+            if path == gate_path and main_file is not None:
+                raise GitHubAdapterConflict("Julkaisulaadun porttiraportin run_id on jo käytössä main-haarassa.")
             if current is not None:
                 if current.content == desired:
                     continue
-                main_file = self.client.get_file(path, MAIN_BRANCH)
-                if path == gate_path or main_file is None or current.content != main_file.content:
+                if main_file is None or current.content != main_file.content:
                     raise GitHubAdapterConflict("Julkaisuehdokkaan haara sisältää aiemmasta yrityksestä poikkeavaa sisältöä.")
                 self.client.put_file(path, desired, branch,
                     message=f"Prepare RSS publication {module_id} {run_id}", sha=current.sha)
