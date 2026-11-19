@@ -40,6 +40,7 @@ Alustahavainnon `diagnostics` sisältää:
 Tallenna alustan palauttama virheviesti sellaisenaan lyhyenä virheenä. Kirjoita yhteenvetoon, että kyseessä on alustahavainto eikä automaation oma vaihekohtainen loki. Älä päättele yleisestä virheilmoituksesta verkkovirhettä, käyttöoikeusvirhettä tai muuta teknistä juurisyytä.
 
 Alustahavainto voidaan lisätä ajohistoriahaaraan jälkikäteen, kun lukutieto on saatavilla. Se ei muuta varsinaista seurantatilan onnistumispistettä. Valvomo näyttää alustahavainnon erillisenä lähteenä. Tämä menettely ei itsessään valvo puuttuvia ajoja reaaliajassa eikä luo uutta ajastettua tehtävää.
+Valvomo tarkistaa myös viimeisimmän havaitun ajon iän sivua ladattaessa. Päivittäisten automaatioiden vanhenemisraja on 36 tuntia ja viikoittaisen laatutarkistuksen 240 tuntia. Vanhentunut onnistunut ajo näytetään varoituksena, vanhentunut epäonnistuminen säilyttää virhetilansa, ja tyhjä ajohistoria näytetään puuttuvana havaintona. Tarkistus on passiivinen käyttöliittymän ominaisuus: se ei käynnistä eikä ajasta uutta työtä eikä lähetä ilmoituksia sivun ollessa suljettuna.
 
 ## Kirjausmenettely
 
