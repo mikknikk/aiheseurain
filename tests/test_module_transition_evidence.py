@@ -3,6 +3,7 @@ from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+import tempfile
 import unittest
 
 from scripts.github_module_adapters import (
@@ -12,6 +13,7 @@ from scripts.module_transition_evidence import (
     GitHubTransitionEvidenceCollector, GitHubTransitionEvidenceStore,
     TransitionEvidenceError,
 )
+from scripts.validate_transition_evidence import validate_evidence_tree
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -324,6 +326,35 @@ class TransitionEvidenceTests(unittest.TestCase):
         sensitive["evidence"]["report_content"] = "koko raportti"
         with self.assertRaises(TransitionEvidenceError):
             self.store.record(sensitive)
+
+
+    def test_repository_validator_checks_schema_and_exact_record_path(self):
+        record = self.collector.collect_pull_request(
+            "taylor-swift", "swift-run-001", 42, observed_at=self.now
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "schemas").mkdir()
+            (root / "schemas/module-transition-evidence.schema.json").write_bytes(
+                (ROOT / "schemas/module-transition-evidence.schema.json").read_bytes()
+            )
+            target = root / "data/module-transition-evidence/taylor-swift/swift-run-001"
+            target.mkdir(parents=True)
+            event = target / f"pull_request-{record['event_id']}.json"
+            event.write_text(json.dumps(record), encoding="utf-8")
+            self.assertEqual(validate_evidence_tree(root), 1)
+            event.rename(target / "wrong-name.json")
+            with self.assertRaises(TransitionEvidenceError):
+                validate_evidence_tree(root)
+
+    def test_legacy_approval_cannot_be_future_dated(self):
+        with self.assertRaises(TransitionEvidenceError):
+            self.collector.legacy_fallback_approval(
+                "taylor-swift", "swift-run-001", approval_id="approval-future",
+                approved_at="2026-11-20T00:00:00Z",
+                reason="Testi.", scope="Yksi ajo.",
+                observed_at=self.now,
+            )
 
     def test_store_rejects_cross_module_or_cross_run_path_content(self):
         record = self.collector.collect_pull_request(
