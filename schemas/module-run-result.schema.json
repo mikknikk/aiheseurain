@@ -21,7 +21,11 @@
     "published",
     "checkpoint_updated",
     "comparison",
-    "error_code"
+    "error_code",
+    "checked_at",
+    "published_items",
+    "sources_checked",
+    "report_guid_refs"
   ],
   "properties": {
     "schema_version": {
@@ -149,6 +153,23 @@
         "null"
       ],
       "minLength": 1
+    },
+    "checked_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "published_items": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "sources_checked": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "report_guid_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
     }
   },
   "additionalProperties": false
