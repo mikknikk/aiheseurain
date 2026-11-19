@@ -7,18 +7,41 @@
       "run_id": null,
       "run_history_ref": null,
       "definition_version": null,
-      "checked_at": null,
+      "checked_at": "2026-11-19T12:23:45+02:00",
       "period": {
         "start": null,
         "end": null
       },
-      "result": "not_recorded",
-      "published_items": null,
-      "sources_checked": null,
+      "result": "published",
+      "published_items": 1,
+      "sources_checked": 6,
       "errors": []
     }
   },
-  "checkpoint_history": [],
+  "checkpoint_history": [
+    {
+      "event_id": "legacy-checkpoint-muumit-20261119122345",
+      "source": "legacy_migration",
+      "run_id": null,
+      "run_history_ref": null,
+      "definition_version": null,
+      "checked_at": "2026-11-19T12:23:45+02:00",
+      "period": {
+        "start": null,
+        "end": null
+      },
+      "result": "published",
+      "published_items": 1,
+      "sources_checked": 6,
+      "source_check_run_refs": [
+        "muumit-20261119T101056-0200",
+        "muumit-20261119T121429-0200"
+      ],
+      "report_guid_refs": [],
+      "recorded_on": "2026-11-19",
+      "notes": "Synkronoitu data/seurantatila.json-tiedoston Muumit-checkpointista. Legacy-tilassa ei ole automaation run_id:tä, run_history_refiä eikä moduuliversiota, joten niitä ei päätellä."
+    }
+  ],
   "history": {
     "document_refs": [
       {
@@ -36,8 +59,8 @@
   "publication": {
     "feed_path": "feeds/muumit.xml",
     "guid_refs": [
-      "urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event",
-      "urn:aiheseurain:muumit:2026-11-19:b936e62f-45fc-4f47-bc01-250d010bf58c"
+      "urn:aiheseurain:muumit:2026-11-19:b936e62f-45fc-4f47-bc01-250d010bf58c",
+      "urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event"
     ]
   },
   "references": {
