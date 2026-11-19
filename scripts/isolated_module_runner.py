@@ -107,7 +107,7 @@ def run_isolated_module(
     if not isinstance(timeout_seconds, int) or timeout_seconds < 1 or timeout_seconds > 3600:
         raise IsolatedRunnerError("Aikarajan pitää olla kokonaisluku väliltä 1–3600 sekuntia.")
     bubblewrap = bubblewrap_path or shutil.which("bwrap")
-    if os.name != "posix" or not Path("/proc").exists() or not bubblewrap:
+    if os.name != "posix" or resource is None or not Path("/proc").exists() or not Path("/var/tmp").is_dir() or not bubblewrap:
         raise IsolatedRunnerError(
             "Turvallista Linux/bubblewrap-sandboxia ei ole saatavilla; ajo estettiin."
         )
@@ -116,7 +116,7 @@ def run_isolated_module(
             f"Sandboxin Python-ajonaika puuttuu: {PYTHON_EXECUTABLE}"
         )
 
-    with tempfile.TemporaryDirectory(prefix="aiheseurain-run-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="aiheseurain-run-", dir="/var/tmp") as temporary:
         workspace = Path(temporary)
         input_dir, runner_dir, output_dir = (
             workspace / "input", workspace / "runner", workspace / "output"
@@ -162,7 +162,7 @@ def run_isolated_module(
             # Avaa vain tavallinen tiedosto; älä seuraa runnerin mahdollisesti luomia symlinkkejä.
             descriptor = os.open(result_file, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
             with os.fdopen(descriptor, "rb") as result_stream:
-                if not os.path.isfile(result_file) or os.fstat(result_stream.fileno()).st_size > MAX_RESULT_BYTES:
+                if not stat.S_ISREG(os.fstat(result_stream.fileno()).st_mode) or os.fstat(result_stream.fileno()).st_size > MAX_RESULT_BYTES:
                     raise IsolatedRunnerError("Runnerin tulostiedosto on virheellinen tai ylittää 5 MiB:n kokorajan.")
                 raw_result = result_stream.read(MAX_RESULT_BYTES + 1)
             if len(raw_result) > MAX_RESULT_BYTES:
