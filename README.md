@@ -144,7 +144,8 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `schemas/seurantamoduuli.schema.json` ja `schemas/module-extensions/`: seurantamoduulien yhteinen sopimus ja tyypitetyt laajennusskeemat.
 - `examples/seurantamoduulit/`: aihe- ja prosessimoduulien validoitavat esimerkkimääritykset.
 - `schemas/automation-run-history.schema.json`: ChatGPT-automaatioiden yhteisen vaihekohtaisen ajohistorian skeema.
-- `scripts/validate_feeds.py`, `scripts/validate_module_contract.py`, `scripts/validate_publication_gate.py` ja `.github/workflows/validate-feeds.yml`: RSS:n rakennetarkistukset, seurantamoduulien tietosopimuksen validointi, raporttikohtainen julkaisulaadun portti ja niiden PR-validointi.
+- `scripts/validate_feeds.py`, `scripts/validate_module_contract.py`, `scripts/topic_rotation_coordinator.py`, `scripts/topic_dispatch_runner.py`, `scripts/validate_topic_dispatch.py`, `scripts/validate_publication_gate.py` ja `.github/workflows/validate-feeds.yml`: RSS:n rakennetarkistukset, moduulisopimuksen validointi, yhden aiheen kiertokoordinaattori, sandboxattu handoff ja raporttikohtainen julkaisulaadun portti.
+- `data/topic-task-map.json` ja `schemas/topic-task-map.schema.json`: yhdeksän uutiskierron tehtävän ja niiden topic-moduulien sekä lähderekisterien koneellisesti validoitu kytkentä. Näytösvahti ei kuulu karttaan.
 - `tests/test_module_contract.py`: seurantamoduulien sopimuksen positiiviset ja negatiiviset yksikkötestit.
 - `reports/julkaisuportit/{run_id}.json` ja `schemas/julkaisuportti.schema.json`: jokaisen RSS-syötemuutoksen ajokohtainen hyväksyntäraportti ja sen rakenne.
 - `scripts/check_links.py` ja `.github/workflows/check-links.yml`: erillinen viikoittainen lähde- ja RSS-linkkien verkkotarkistus; raportti tallennetaan GitHub Actions -artefaktiksi.
