@@ -217,25 +217,6 @@ def _validate_cross_references(latest: dict[str, Any], state: dict[str, Any],
         if checked_at is not None and _time(checked_at, f"{source_id}.last_checked_at") >= latest_started:
             raise ScreeningJournalError(f"Tarkistamatta jääneen lähteen {source_id} tarkistusaika on virheellisesti päivitetty.")
 
-    registry_sources = source_registry.get("sources", [])
-    registry_by_id = {item.get("source_id"): item for item in registry_sources}
-    if len(registry_by_id) != len(registry_sources) or set(registry_by_id) != registry_ids:
-        raise ScreeningJournalError("Näytösvahtiajon lähdejoukko ei vastaa aihekohtaista lähderekisteriä.")
-
-    started = _time(source_run["started_at"], "source_run.started_at")
-    ended = _time(source_run["ended_at"], "source_run.ended_at")
-    for source_id in checked:
-        checked_at = registry_by_id[source_id].get("last_checked_at")
-        if checked_at is None:
-            raise ScreeningJournalError(f"Tarkistetulta lähteeltä {source_id} puuttuu last_checked_at.")
-        checked_time = _time(checked_at, f"{source_id}.last_checked_at")
-        if checked_time < started or checked_time > ended:
-            raise ScreeningJournalError(f"Lähteen {source_id} tarkistusaika ei kuulu tähän lähdeajoon.")
-    for source_id in unchecked:
-        checked_at = registry_by_id[source_id].get("last_checked_at")
-        if checked_at is not None and _time(checked_at, f"{source_id}.last_checked_at") >= started:
-            raise ScreeningJournalError(f"Tarkistamatta jääneen lähteen {source_id} tarkistusaika on virheellisesti päivitetty.")
-
     # Legacy-seurantatila saa siirtyä vasta, kun Pages on varmennettu ja
     # päiväkirja merkitään completed-tilaan. Valmistellussa ajossa vanha
     # onnistumispiste ja sitä vastaava edellinen jakson loppu säilyvät.
