@@ -1,11 +1,12 @@
 {
   "schema_version": 2,
   "task_id": "muumit",
-  "updated_at": null,
+  "updated_at": "2026-11-19T12:18:28+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Muumit. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
-    "Suomen tapahtumahaun yleiset löytölähteet on lisätty rekisteriin. Lipunmyyntipalvelut ovat hakuvihjeitä, eivät tapahtuman ensisijaisia vahvistuslähteitä; tarkista tapahtuma järjestäjän omasta ilmoituksesta."
+    "Suomen tapahtumahaun yleiset löytölähteet on lisätty rekisteriin. Lipunmyyntipalvelut ovat hakuvihjeitä, eivät tapahtuman ensisijaisia vahvistuslähteitä; tarkista tapahtuma järjestäjän omasta ilmoituksesta.",
+    "Sony Music Finland Live on ensisijainen lähde omien Muumi-musiikkiteatterituotantojen ja kiertueiden aikatauluille; lipunmyyntipalvelut säilyvät täydentävinä löytölähteinä."
   ],
   "sources": [
     {
@@ -18,7 +19,7 @@
     {
       "source_id": "moomin-museum",
       "critical": true,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-19T12:18:28+02:00",
       "access_limit": null,
       "retry_after": null
     },
@@ -39,29 +40,36 @@
     {
       "source_id": "yle-culture",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-19T12:18:28+02:00",
       "access_limit": null,
       "retry_after": null
     },
     {
       "source_id": "lippu-fi-events",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-19T12:18:28+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
       "retry_after": null
     },
     {
       "source_id": "ticketmaster-fi-events",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-19T12:18:28+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
       "retry_after": null
     },
     {
       "source_id": "tiketti-fi-events",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-19T12:18:28+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
+    },
+    {
+      "source_id": "sony-live",
+      "critical": false,
+      "last_checked_at": "2026-11-19T12:18:28+02:00",
+      "access_limit": null,
       "retry_after": null
     }
   ]
