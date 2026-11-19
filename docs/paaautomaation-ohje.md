@@ -1,7 +1,7 @@
 # Pääautomaation toimintakäsikirja
 
 Ohjeversion tunniste: 1.4.0
-Viimeksi päivitetty: 2026-11-17
+Viimeksi päivitetty: 2026-11-19
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
 
