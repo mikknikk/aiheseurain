@@ -337,3 +337,17 @@ Suositeltu toteutusjärjestys:
 **Seuraavat erilliset vaiheet:** #214 vertaa vanhaa ja uutta tutkimuspolkua varjotilassa. #215 toteuttaa vaiheittaisen tuotantosiirtymän ja palautuksen erillisellä hyväksynnällä.
 
 **Rajaus:** päähaaran automaatio käyttää vain shadow-tilaa. Tuotantotilan koodi on erikseen portitettu ja edellyttää eksplisiittistä kutsulippua, aktiivista moduulia sekä GitHub-julkaisuoikeuksia; sitä ei käynnistetä tässä PR:ssä. Tallennettuja ChatGPT-tehtäviä, käynnistyskehotteita, ajastuksia, aikavyöhykkeitä tai kohdekeskusteluja ei muuteta.
+### Issue #214 – uuden ChatGPT-moduulipolun varjotilan vertailu
+
+**Tila:** toteutus PR:ssä; live-ajoa tai tuotantokirjoituksia ei ole tehty.
+
+- [x] Lisätään rakenteinen source_audit ChatGPT-tulossopimukseen: moduulin omien lähteiden tarkistustilat, saavuttamattomuuden ja ohituksen syyt sekä erilliset täydentävät lähteet.
+- [x] Laadunvarmistus tarkistaa lähde-ID:iden moduuliomistajuuden, duplikaatit ja sources_checked-lukumäärän; tuotantotila edellyttää auditointia ilman numeerista vähimmäislähdemäärää.
+- [x] Lisätään vanhan raportin ja uuden moduulituloksen vertailuskeemat sekä kirjoitukseton vertailukomento.
+- [x] Lisätään rajattu synteettinen Tolkien-fixture samalle seurantajaksolle. Se ei ole live-raportti eikä sillä väitetä todellista tutkimustulosten vastaavuutta.
+- [x] Vertailu näyttää lähteiden tilat ja erot, raporttitekstien tiivisteet ja sanamäärät, väitteiden tekstuaaliset erot, GUID-käytännön, epävarmuudet ja julkaisukelpoisuuden esteet.
+- [x] Lisätään testit saavuttamattomille lähteille, tyhjälle uutistulokselle, partial/failed/invalid-tuloksille, uusinnalle, keskeytykselle, väärälle moduulille ja kirjoituksettomuudelle.
+- [ ] Aja PR-CI ja korjaa mahdolliset regressiot ennen yhdistämistä.
+- [ ] Mahdollinen oikea rinnakkaistutkimus vanhan automaation kanssa vaatii erillisen käyttäjän hyväksynnän; tässä tikettissä ei käynnistetä live-ajoa.
+
+**Rajaus:** vertailukomento lukee vain sille annetun JSON-fixturen ja repositorion moduulirekisterin. Se ei käytä GitHub-kirjoitussovittimia eikä muuta RSS:ää, lähderekistereitä, moduulitiloja, checkpointteja, vuorojonoa tai tallennettuja ChatGPT-automaation asetuksia. Näytösvahti ei osallistu vertailuun.
