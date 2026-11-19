@@ -172,7 +172,10 @@ def compare_shadow_runs(data: dict[str, Any], *, root: Path = ROOT) -> dict[str,
         raise ShadowComparisonError("Uuden tuloksen source_audit sisältää toisen moduulin tai tuntemattoman lähteen.")
 
     legacy_checks = legacy["source_checks"]
-    legacy_source_ids = sorted({item["source_id"] for item in legacy_checks})
+    legacy_ids_in_order = [item["source_id"] for item in legacy_checks]
+    if len(legacy_ids_in_order) != len(set(legacy_ids_in_order)):
+        raise ShadowComparisonError("Vanhan ajon lähdetarkistus sisältää lähteen useammin kuin kerran.")
+    legacy_source_ids = sorted(set(legacy_ids_in_order))
     module_source_ids = sorted(module_source_ids)
     legacy_set, module_set = set(legacy_source_ids), set(module_source_ids)
 
@@ -196,6 +199,13 @@ def compare_shadow_runs(data: dict[str, Any], *, root: Path = ROOT) -> dict[str,
     )
     if not module_guid_valid and "module_guid_format_invalid" not in blockers:
         blockers.append("module_guid_format_invalid")
+        module_ready = False
+    if len(module_guids) != len(set(module_guids)):
+        blockers.append("module_guid_duplicate")
+        module_ready = False
+    audited_count = sum(item["status"] != "skipped" for item in source_checks)
+    if module.get("sources_checked") is not None and module["sources_checked"] != audited_count:
+        blockers.append("source_audit_count_mismatch")
         module_ready = False
 
     output = {
