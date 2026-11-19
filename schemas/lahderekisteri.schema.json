@@ -48,7 +48,8 @@
         "source_id",
         "critical",
         "last_checked_at",
-        "access_limit"
+        "access_limit",
+        "retry_after"
       ],
       "properties": {
         "source_id": {
@@ -70,6 +71,13 @@
             "string",
             "null"
           ]
+        },
+        "retry_after": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
         }
       },
       "additionalProperties": false
