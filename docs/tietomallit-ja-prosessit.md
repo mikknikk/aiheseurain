@@ -371,6 +371,7 @@ Päiväkirja vastaa kysymykseen: **jäikö RSS-julkaisu ja sen seurantatilan pä
 Päiväkirjassa voi olla enintään yksi keskeneräinen ajo. Saman `run_id`:n ja sisällön uusinta ei lisää uutta merkintää; saman tunnisteen eri RSS-tiiviste hylätään konfliktina. Päiväkirja ei korvaa `data/seurantatila.json`-tiedoston onnistumispistettä eikä RSS:n Pages-palautusmanifestia. Se sitoo nämä erilliset tiedot samaan seurantavahtiajoon.
 
 GitHub Actionsin `validate_feeds.py` validoi päiväkirjan skeeman lisäksi sen suhteet syötekatalogiin ja seurantatilaan. Keskeneräinen ajo ei saa olla merkitty onnistuneeksi, ja valmiin viimeisimmän ajon jakson lopun pitää vastata näytösvahdin onnistumispistettä.
+Palautumispäätöksen funktio `recovery_action` erottaa Pagesin odottamisen, julkaisun uusinnan, epäselvän tilan tarkistamisen, checkpointin viimeistelyn ja valmiin ajon varmennuksen. Tuntematonta ulkoista tilaa ei koskaan tulkita onnistumiseksi. Vikainjektiotestit käyvät läpi keskeytyksen jokaisessa näistä rajoista.
 
 ## 9. JSON Schema: mitä se tarkistaa ja mitä ei?
 
