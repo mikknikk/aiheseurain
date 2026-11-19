@@ -140,6 +140,8 @@ class GitHubTransitionEvidenceCollector:
         if type(pr_number) is not int or pr_number < 1:
             raise TransitionEvidenceError("PR-numero on virheellinen.")
         value = self.client.request("GET", f"pulls/{pr_number}")
+        if not isinstance(value, dict):
+            raise TransitionEvidenceError("GitHubin PR-vastaus ei ole JSON-olio.")
         body = value.get("body") or ""
         expected_title = f"RSS-julkaisu: {module_id} / {run_id}"
         if value.get("title") != expected_title or f"- Moduuli: {module_id}" not in body or f"- run_id: {run_id}" not in body:
@@ -173,8 +175,8 @@ class GitHubTransitionEvidenceCollector:
         deployments = self.client.request(
             "GET", "deployments?environment=github-pages&per_page=100"
         )
-        if not isinstance(deployments, list):
-            raise TransitionEvidenceError("GitHubin deployment-vastaus ei ole lista.")
+        if not isinstance(deployments, list) or any(not isinstance(item, dict) for item in deployments):
+            raise TransitionEvidenceError("GitHubin deployment-vastaus ei ole lista JSON-olioita.")
         matches = [item for item in deployments
                    if item.get("sha") == merge_commit_sha
                    and item.get("environment") == "github-pages"]
@@ -192,8 +194,8 @@ class GitHubTransitionEvidenceCollector:
             statuses = self.client.request(
                 "GET", f"deployments/{deployment_id}/statuses?per_page=100"
             )
-            if not isinstance(statuses, list):
-                raise TransitionEvidenceError("Deployment-tilavastaus ei ole lista.")
+            if not isinstance(statuses, list) or any(not isinstance(item, dict) for item in statuses):
+                raise TransitionEvidenceError("Deployment-tilavastaus ei ole lista JSON-olioita.")
             latest = max(statuses, key=lambda item: item.get("created_at") or "") if statuses else {}
             raw_state = latest.get("state", "pending")
             state_map = {"queued": "pending", "in_progress": "in_progress",
@@ -250,11 +252,11 @@ class GitHubTransitionEvidenceCollector:
                            observed_at: str, branch: str = RUNTIME_BRANCH) -> dict[str, Any]:
         """Lue nykyinen moduulitila ja sido se aiemmin talletettuun lähtö-SHA:han."""
         module_id, run_id = _module(module_id), _run(run_id)
-        if not isinstance(before_blob_sha, str) or not before_blob_sha:
+        if not isinstance(before_blob_sha, str) or not re.fullmatch(r"[a-f0-9]{40}", before_blob_sha):
             raise TransitionEvidenceError("Checkpointin lähtö-SHA puuttuu.")
         if before_checked_at is not None:
             _time(before_checked_at)
-        if manifest_phase not in {"artifacts_persisted", "checkpoint_updated"}:
+        if not isinstance(manifest_phase, str) or manifest_phase not in {"artifacts_persisted", "checkpoint_updated"}:
             raise TransitionEvidenceError("Checkpoint-todisteen manifestivaihe ei ole sallittu.")
         path = f"data/module-state/{module_id}.json"
         current = self.client.get_file(path, branch)
@@ -281,7 +283,7 @@ class GitHubTransitionEvidenceCollector:
                                   period_end: str, reason: str | None,
                                   matching_guids: list[str], observed_at: str) -> dict[str, Any]:
         """Kirjaa vanhan polun tarkistetun havainnon; ei päättele puuttumista itse."""
-        if status not in {"present", "absent", "unknown"} or not _valid_url(source_url):
+        if not isinstance(status, str) or status not in {"present", "absent", "unknown"} or not _valid_url(source_url):
             raise TransitionEvidenceError("Vanhan raportointipolun havainto tai lähde-URL on virheellinen.")
         _time(period_start)
         _time(period_end)
@@ -291,7 +293,9 @@ class GitHubTransitionEvidenceCollector:
             raise TransitionEvidenceError("Epäselvä vanhan polun havainto vaatii perustelun.")
         if status == "absent" and (not isinstance(reason, str) or not reason.strip()):
             raise TransitionEvidenceError("Julkaisemattomuuden toteaminen vaatii tarkistusperustelun.")
-        if not isinstance(matching_guids, list) or any(not isinstance(x, str) or not x for x in matching_guids):
+        if (not isinstance(matching_guids, list)
+                or any(not isinstance(x, str) or not x for x in matching_guids)
+                or len(matching_guids) != len(set(matching_guids))):
             raise TransitionEvidenceError("Vanhan polun GUID-lista on virheellinen.")
         if status == "present" and not matching_guids:
             raise TransitionEvidenceError("Löytyneelle vanhan polun julkaisulle on kirjattava GUID.")
@@ -310,6 +314,8 @@ class GitHubTransitionEvidenceCollector:
                           legacy_period_status: str, legacy_fallback_authorized: bool,
                           observed_at: str) -> dict[str, Any]:
         """Laske ja tallenna palautuspäätös; ei suorita palautusta."""
+        if manifest is not None and (manifest.get("module_id") != module_id or manifest.get("run_id") != run_id):
+            raise TransitionEvidenceError("Palautusmanifestin moduuli/run_id ei vastaa auditointitietuetta.")
         action = recovery_action(
             manifest, publication_status=publication_status,
             deployment_status=deployment_status, public_feed_matches=public_feed_matches,
@@ -335,6 +341,9 @@ class GitHubTransitionEvidenceCollector:
         if not isinstance(reason, str) or not reason.strip() or not isinstance(scope, str) or not scope.strip():
             raise TransitionEvidenceError("Hyväksynnän perustelu tai rajaus puuttuu.")
         _time(approved_at)
+        _time(observed_at)
+        if datetime.fromisoformat(approved_at.replace("Z", "+00:00")) > datetime.fromisoformat(observed_at.replace("Z", "+00:00")):
+            raise TransitionEvidenceError("Hyväksyntäaika ei voi olla auditointihavaintoa myöhempi.")
         evidence = {"approval_id": approval_id, "approved_at": approved_at,
                     "reason": reason, "scope": scope}
         return self._make_record(_module(module_id), _run(run_id), "legacy_approval",
