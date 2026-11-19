@@ -41,11 +41,11 @@ def recovery_action(
     varmennetun julkaisemattomuuden että erillisen eksplisiittisen hyväksynnän.
     Päätösfunktio ei itse käynnistä kumpaakaan polkua.
     """
-    if publication_status not in PUBLICATION_STATES:
+    if not isinstance(publication_status, str) or publication_status not in PUBLICATION_STATES:
         raise ModuleRecoveryError("Tuntematon RSS-julkaisun tila.")
-    if checkpoint_status not in CHECKPOINT_STATES:
+    if not isinstance(checkpoint_status, str) or checkpoint_status not in CHECKPOINT_STATES:
         raise ModuleRecoveryError("Tuntematon checkpointin tila.")
-    if legacy_period_status not in LEGACY_STATES:
+    if not isinstance(legacy_period_status, str) or legacy_period_status not in LEGACY_STATES:
         raise ModuleRecoveryError("Tuntematon vanhan raportointipolun julkaisutila.")
     if public_feed_matches is not None and type(public_feed_matches) is not bool:
         raise ModuleRecoveryError("Julkisen RSS-takaisinluvun tulos on virheellinen.")
@@ -77,7 +77,7 @@ def recovery_action(
     if legacy_period_status == "unknown":
         return "inspect_external_state"
     if legacy_period_status == "present":
-        if publication_status in {"open", "merged"} or public_feed_matches is True:
+        if publication_status not in {"not_started", "closed_unmerged"} or public_feed_matches is True:
             return "manual_review"
         return "legacy_period_already_published"
     if checkpoint_status == "unknown" or publication_status == "unknown":
