@@ -59,7 +59,8 @@ def _thaw(value: Any) -> Any:
 
 def build_module_input_bundle(
     module_id: str, *, task_id: str, run_id: str, period_start: str,
-    period_end: str, source_registry_path: str | None = None, root: Path = ROOT,
+    period_end: str, source_registry_path: str | None = None,
+    module_state_override: dict[str, Any] | None = None, root: Path = ROOT,
 ) -> Mapping[str, Any]:
     """Kokoa vain yhden moduulin tiedot koordinaattorin luotetussa ympäristössä."""
     if not re.fullmatch(r"[a-z][a-z0-9]*(?:-[a-z0-9]+)*", module_id):
@@ -124,8 +125,18 @@ def build_module_input_bundle(
 
     # Vain moduulin viimeisin checkpoint ja oman syötteen GUIDit välitetään eteenpäin.
     state_path = root / "data/module-state" / f"{module_id}.json"
-    state = _read(state_path) if state_path.is_file() else {
-        "schema_version": 1, "module_id": module_id, "checkpoint": {}, "publication": {}}
+    if module_state_override is not None:
+        if not isinstance(module_state_override, dict) or module_state_override.get("module_id") != module_id:
+            raise ModuleInputBundleError("Annetun moduulitilan omistajuus ei täsmää.")
+        from scripts.module_state import validate_module_state
+        try:
+            validate_module_state(module_state_override, module)
+        except ValueError as exc:
+            raise ModuleInputBundleError("Annettu moduulitila ei vastaa moduulin sopimusta.") from exc
+        state = module_state_override
+    else:
+        state = _read(state_path) if state_path.is_file() else {
+            "schema_version": 1, "module_id": module_id, "checkpoint": {}, "publication": {}}
     if state.get("module_id") != module_id:
         raise ModuleInputBundleError("Moduulitilan omistajuus ei täsmää.")
     own_state = {
