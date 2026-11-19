@@ -69,7 +69,7 @@ def _sandbox_command(
         "--setenv", "PYTHONDONTWRITEBYTECODE", "1",
     ]
     command.extend(_runtime_mounts())
-    command.extend([PYTHON_EXECUTABLE, "-I", "/runner/runner.py",
+    command.extend([PYTHON_EXECUTABLE, "-I", "-S", "/runner/runner.py",
                     "/input/bundle.json", "/output/result.json"])
     return command
 
