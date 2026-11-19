@@ -8,7 +8,7 @@ from scripts.shadow_transition import (
 from scripts.module_transition_evidence import (
     GitHubTransitionEvidenceCollector, GitHubTransitionEvidenceStore,
 )
-from tests.test_module_transition_evidence import FakeEvidenceClient, ROOT
+from test_module_transition_evidence import FakeEvidenceClient, ROOT
 
 
 class ShadowTransitionOrchestratorTests(unittest.TestCase):
