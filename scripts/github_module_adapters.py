@@ -307,7 +307,7 @@ class GitHubArtifactStore:
             value = json.loads(file.content.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise GitHubAdapterError("Artefakti-indeksin JSON on virheellinen.") from exc
-        if (value.get("schema_version") != 1 or value.get("module_id") != module_id
+        if (not isinstance(value, dict) or value.get("schema_version") != 1 or value.get("module_id") != module_id
                 or not isinstance(value.get("runs"), dict)):
             raise GitHubAdapterError("Artefakti-indeksin rakenne tai omistajuus on virheellinen.")
         _validate_schema(value, "module-artifact-index.schema.json")
@@ -380,7 +380,7 @@ class GitHubPublicationJournal:
             value = json.loads(file.content.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise PublicationJournalError("Julkaisumanifestin JSON on virheellinen.") from exc
-        if (value.get("module_id") != module_id or value.get("run_id") != run_id
+        if (not isinstance(value, dict) or value.get("module_id") != module_id or value.get("run_id") != run_id
                 or value.get("phase") not in PHASES or not isinstance(value.get("history"), list)):
             raise PublicationJournalError("Manifestin tunnisteet tai vaihehistoria ovat virheellisiä.")
         _validate_schema(value, "module-publication-journal.schema.json")
@@ -523,6 +523,8 @@ class GitHubPagesRssPublisher:
             candidate = self.candidate_builder(module_id, run_id, report_content, target_id=target_id)
         if not isinstance(candidate, PublicationCandidate):
             raise GitHubAdapterError("candidate_builder palautti väärän tulossopimuksen.")
+        if not isinstance(candidate.files, dict) or any(not isinstance(value, str) for value in candidate.files.values()):
+            raise GitHubAdapterError("Julkaisuehdokkaan tiedostojen pitää olla UTF-8-merkkijonoja.")
         gate_path = f"reports/julkaisuportit/{run_id}.json"
         if set(candidate.files) != {candidate.feed_path, gate_path}:
             raise GitHubAdapterError("Julkaisu-PR saa sisältää vain yhden RSS-syötteen ja porttiraportin.")
