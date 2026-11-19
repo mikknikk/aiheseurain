@@ -73,6 +73,10 @@ class GitHubAdapterTests(unittest.TestCase):
         self.client.files[("main", "data/module-state/tolkien.json")] = GitHubFile(
             json.dumps(source, ensure_ascii=False).encode("utf-8"), "source-sha"
         )
+        old_feed = b'<rss version="2.0"><channel><title>Tolkien</title></channel></rss>'
+        self.client.files[("main", "feeds/tolkien.xml")] = GitHubFile(
+            old_feed, blob_sha(old_feed)
+        )
 
     def test_read_only_state_load_does_not_create_runtime_branch(self):
         store = GitHubModuleStateStore(self.client)
