@@ -47,6 +47,11 @@ flowchart TB
     subgraph NAYTOS["Erillinen näytösvahti"]
       N["data/naytosten-muutoshistoria.json<br/>Näytösten nykytila ja tapahtumat"]
     end
+\n    subgraph PALAUTUMINEN["Näytösvahtiajon julkaisun palautuminen"]
+      J["data/screening-publication-journal.json<br/>Ajokohtainen julkaisuvaihe ja kuittaukset"]
+      J -->|"RSS-tiiviste ja GUIDit"| XML
+      J -->|"onnistumispisteen suojaus"| S
+    end
 
     SC["schemas/*.schema.json<br/>Rakenteen tarkistussäännöt"]
     SC -. "validoi rakenteen" .-> C
