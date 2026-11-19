@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class ChatGPTResultQualityTests(unittest.TestCase):
     def setUp(self):
         registry = load_registry(root=ROOT, include_inactive=True)
-        self.definition = registry.modules["muumit"].definition
+        self.definition = next(item for item in registry.modules if item.module_id == "muumit").definition
         self.targets = load_module_targets(self.definition, root=ROOT, require_active=False)
         self.request = ModuleRunRequest(
             module_id="muumit",
