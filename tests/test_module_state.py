@@ -33,32 +33,30 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 state_path = test_root / "data/seurantatila.json"
                 state = json.loads(state_path.read_text(encoding="utf-8"))
                 task = state["separate_screening_watch"]
-                task.update({
-                    "last_successful_check": "2026-11-18T17:37:16+02:00",
-                    "last_period_start": "2026-11-18T05:51:32+02:00",
-                    "last_period_end": "2026-11-18T17:37:16+02:00",
-                    "last_result": "success",
-                    "published_items": 1,
-                    "sources_checked": 7,
-                    "errors": [],
-                })
-                task["automation_instructions"]["last_successful_run_at"] = task["last_successful_check"]
-                task["last_successful_run_at"] = task["last_successful_check"]
-                state["separate_screening_watch"] = task
-                state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
                 log_path = test_root / "data/lahdetarkistukset.json"
                 log = json.loads(log_path.read_text(encoding="utf-8"))
-                latest = next(item for item in log["runs"] if item["run_id"] == "intialaiset_elokuvat_naytokset-20261118T173716-0200")
-                latest["status"] = "complete"
-                log["latest_by_task"]["intialaiset_elokuvat_naytokset"] = task["last_successful_check"]
-                log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                latest = next(
+                    item for item in reversed(log["runs"])
+                    if item["task_id"] == "intialaiset_elokuvat_naytokset"
+                )
+                self.assertEqual(latest["status"], "complete")
+                self.assertEqual(latest["ended_at"], task["last_successful_check"])
+                self.assertEqual(
+                    log["latest_by_task"]["intialaiset_elokuvat_naytokset"],
+                    task["last_successful_check"],
+                )
+                self.assertEqual(len(latest["checked_source_ids"]), task["sources_checked"])
+                expected_period_note = (
+                    f"Seurantajakso Suomen ajassa: {task['last_period_start']}–{task['last_period_end']}."
+                )
+                self.assertIn(expected_period_note, latest["coverage_notes"])
 
                 module_path = test_root / "data/module-state/indian-film-screening-watch.json"
                 module_state = json.loads(module_path.read_text(encoding="utf-8"))
-                self.assertEqual(
+                self.assertLess(
                     module_state["checkpoint"]["last_successful_run"]["checked_at"],
-                    "2026-11-18T05:51:32+02:00",
+                    task["last_successful_check"],
                 )
                 self.assertEqual(validate_state_migration(), [])
 
