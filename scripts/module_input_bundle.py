@@ -106,7 +106,7 @@ def build_module_input_bundle(
     if len(catalog_by_id) != len(catalog.get("sources", [])):
         raise ModuleInputBundleError("Lähdekatalogissa on duplikaattitunnisteita.")
     usage_path = source_registry_path or f"data/sources/{task_id}.json"
-    if not usage_path.startswith("data/sources/") or not usage_path.endswith(".json"):
+    if not re.fullmatch(r"data/sources/[a-z0-9_-]+\\.json", usage_path):
         raise ModuleInputBundleError("Lähdekäyttörekisterin polku ei ole sallittu.")
     usage = _read(_inside(root, usage_path))
     if usage.get("task_id") != task_id:
