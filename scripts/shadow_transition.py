@@ -14,6 +14,7 @@ from scripts.module_transition_evidence import (
     TransitionEvidenceError, _feed_url, _validate_record,
 )
 from scripts.github_module_adapters import _module, _run, _time
+from scripts.checkpoint_baseline import read_checkpoint_baseline
 
 
 class ShadowTransitionError(ValueError):
@@ -113,6 +114,20 @@ class ShadowTransitionOrchestrator:
         feed = next((r["evidence"] for r in records if r["event_type"] == "public_feed"), None)
         manifest_evidence = next((r["evidence"] for r in records if r["event_type"] == "publication_manifest"), None)
         checkpoint = next((r["evidence"] for r in records if r["event_type"] == "checkpoint"), None)
+        if checkpoint is not None:
+            # Älä luota callbackin itse ilmoittamaan lähtötilaan: lue se suoraan
+            # runtime-haarasta ja vaadi jälkitodisteen before_* -kenttien täsmäävän.
+            baseline = read_checkpoint_baseline(
+                self.collector.client, request.module_id, observed_at=observed_at,
+            )
+            if (
+                checkpoint["before_blob_sha"] != baseline["blob_sha"]
+                or checkpoint["before_run_id"] != baseline["run_id"]
+                or checkpoint["before_checked_at"] != baseline["checked_at"]
+            ):
+                raise ShadowTransitionError(
+                    "Checkpointin lähtötodiste ei vastaa runtime-haarasta luettua lähtötilaa."
+                )
 
         publication_status = "merged" if pr["merged"] else (
             "open" if pr["state"] == "open" else "closed_unmerged"
