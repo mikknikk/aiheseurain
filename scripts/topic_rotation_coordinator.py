@@ -124,7 +124,8 @@ def _validate_task_map(task_map: dict[str, Any], schema_path: Path) -> dict[str,
 
 
 def validate_topic_rotation_configuration(
-    root: Path = ROOT, *, state_override: dict[str, Any] | None = None
+    root: Path = ROOT, *, state_override: dict[str, Any] | None = None,
+    expected_task_id: str | None = None,
 ) -> TopicSelection:
     """Tarkista jonon, koneellisen tilan, kartan ja moduulirekisterin yhteensopivuus."""
     root = Path(root).resolve()
@@ -134,7 +135,7 @@ def validate_topic_rotation_configuration(
     rotation = state.get("rotation")
     if not isinstance(rotation, dict) or not isinstance(rotation.get("tasks"), dict):
         raise TopicCoordinatorError("Seurantatilan rotation.tasks-rakenne puuttuu.")
-    task_id = rotation.get("next_task")
+    task_id = expected_task_id or rotation.get("next_task")
     task_state = rotation["tasks"].get(task_id)
     if not isinstance(task_id, str) or not isinstance(task_state, dict):
         raise TopicCoordinatorError("Seuraavaa tehtävää ei löydy koneellisesta seurantatilasta.")
@@ -150,7 +151,7 @@ def validate_topic_rotation_configuration(
         raise TopicCoordinatorError("Dokumentoitu kiertojärjestys ja koneellisen seurantatilan järjestys eroavat.")
     if feed_path not in queue_feeds:
         raise TopicCoordinatorError("Seurantatilan seuraava tehtävä ei vastaa dokumentoitua kiertojonoa.")
-    if state_override is None:
+    if state_override is None and expected_task_id is None:
         try:
             next_section = queue_text.split("## Seuraava tehtävä", 1)[1].split("## Kiertoperiaate", 1)[0]
         except IndexError as exc:
