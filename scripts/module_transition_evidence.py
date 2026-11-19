@@ -37,7 +37,8 @@ EVENT_TYPES = {
 SENSITIVE_KEYS = {
     "report_content", "full_report", "raw_xml", "rss_content", "source_content",
     "token", "password", "authorization", "secret", "api_key", "prompt",
-    "source_package", "full_source_package",
+    "source_package", "full_source_package", "report_text", "raw_report",
+    "raw_feed", "raw_response", "report_body",
 }
 
 
@@ -146,7 +147,10 @@ class GitHubTransitionEvidenceCollector:
         if not isinstance(body, str):
             raise TransitionEvidenceError("PR:n run_id-/moduuliteksti ei ole merkkijono.")
         expected_title = f"RSS-julkaisu: {module_id} / {run_id}"
-        if value.get("title") != expected_title or f"- Moduuli: {module_id}" not in body or f"- run_id: {run_id}" not in body:
+        head_ref = (value.get("head") or {}).get("ref")
+        if (value.get("title") != expected_title or f"- Moduuli: {module_id}" not in body
+                or f"- run_id: {run_id}" not in body
+                or not isinstance(head_ref, str) or not head_ref.startswith(f"module-publish/{module_id}/")):
             raise TransitionEvidenceError("PR:n sisältö ei sido sitä pyydettyyn moduuliin ja run_id:hin.")
         merged_at = value.get("merged_at")
         merged = bool(merged_at or value.get("merged"))
@@ -175,7 +179,7 @@ class GitHubTransitionEvidenceCollector:
         if not isinstance(merge_commit_sha, str) or not re.fullmatch(r"[a-f0-9]{40}", merge_commit_sha):
             raise TransitionEvidenceError("Yhdistämiscommitin SHA on virheellinen.")
         deployments = self.client.request(
-            "GET", "deployments?environment=github-pages&per_page=100"
+            "GET", f"deployments?environment=github-pages&sha={merge_commit_sha}&per_page=100"
         )
         if not isinstance(deployments, list) or any(not isinstance(item, dict) for item in deployments):
             raise TransitionEvidenceError("GitHubin deployment-vastaus ei ole lista JSON-olioita.")
