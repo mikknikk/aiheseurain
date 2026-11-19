@@ -472,6 +472,33 @@ export const RUN_HISTORY_SOURCES = [
   { id: "quality_check", name: "Viikoittainen laatutarkistus", url: "https://raw.githubusercontent.com/mikknikk/aiheseurain/run-history/quality-check/history.json", maxAgeHours: 240 }
 ];
 
+const RUN_DIAGNOSTIC_STAGE_LABELS = {
+  platform_execution: "Ajastusalusta",
+  preflight: "Esitarkistus",
+  source_search: "Lähdehaku",
+  screening_validation: "Näytösten tarkistus",
+  history_update: "Muutoshistorian päivitys",
+  rss_update: "RSS-päivitys",
+  validation: "Validointi",
+  pull_request: "Pull request",
+  ci: "CI",
+  merge: "Yhdistäminen",
+  verification: "Varmennus",
+  unknown: "Tuntematon vaihe"
+};
+
+const RUN_DIAGNOSTIC_CATEGORY_LABELS = {
+  platform_error: "Alustavirhe",
+  network_error: "Verkkovirhe",
+  rate_limit: "Pyyntöraja",
+  permission_error: "Käyttöoikeusvirhe",
+  validation_error: "Validointivirhe",
+  ci_failure: "CI-virhe",
+  pages_failure: "Pages-julkaisuvirhe",
+  state_conflict: "Tilatietojen ristiriita",
+  unknown: "Tuntematon virhe"
+};
+
 const RUN_STATUS_LABELS = {
   running: "Käynnissä", succeeded: "Onnistui", failed: "Epäonnistui",
   partial: "Osittainen", interrupted: "Keskeytynyt", unknown: "Tuntematon",
@@ -482,16 +509,42 @@ const RUN_STATUS_LABELS = {
 export function validateRunHistory(history, expectedId) {
   if (!history || history.schema_version !== 1 || history.automation_id !== expectedId) return false;
   if (!history.updated_at || !Number.isFinite(Date.parse(history.updated_at)) || !Array.isArray(history.runs)) return false;
-  return history.runs.every((run) =>
-    run && run.automation_id === expectedId && typeof run.run_id === "string" &&
-    ["running", "succeeded", "failed", "partial", "interrupted", "unknown"].includes(run.status) &&
-    typeof run.started_at === "string" && Number.isFinite(Date.parse(run.started_at)) &&
-    (run.finished_at === null || run.finished_at === undefined || Number.isFinite(Date.parse(run.finished_at))) &&
-    typeof run.updated_at === "string" && Number.isFinite(Date.parse(run.updated_at)) &&
-    run.source === "chatgpt_scheduled_task" && Array.isArray(run.steps) &&
-    run.steps.every((step) => step && typeof step.id === "string" &&
-      ["pending", "running", "succeeded", "failed", "skipped", "interrupted", "unknown"].includes(step.status))
-  );
+  return history.runs.every((run) => {
+    if (!run || run.automation_id !== expectedId || typeof run.run_id !== "string" ||
+        !["running", "succeeded", "failed", "partial", "interrupted", "unknown"].includes(run.status) ||
+        typeof run.started_at !== "string" || !Number.isFinite(Date.parse(run.started_at)) ||
+        !(run.finished_at === null || run.finished_at === undefined || Number.isFinite(Date.parse(run.finished_at))) ||
+        typeof run.updated_at !== "string" || !Number.isFinite(Date.parse(run.updated_at)) ||
+        !["chatgpt_scheduled_task", "chatgpt_platform_observation"].includes(run.source) ||
+        !Array.isArray(run.steps) ||
+        !run.steps.every((step) => step && typeof step.id === "string" &&
+          ["pending", "running", "succeeded", "failed", "skipped", "interrupted", "unknown"].includes(step.status))) {
+      return false;
+    }
+
+    if (run.diagnostics) {
+      const diagnostic = run.diagnostics;
+      if (!["platform_execution", "preflight", "source_search", "screening_validation", "history_update",
+        "rss_update", "validation", "pull_request", "ci", "merge", "verification", "unknown"].includes(diagnostic.stage) ||
+          !["platform_error", "network_error", "rate_limit", "permission_error", "validation_error",
+            "ci_failure", "pages_failure", "state_conflict", "unknown"].includes(diagnostic.category) ||
+          !(diagnostic.retryable === null || typeof diagnostic.retryable === "boolean") ||
+          typeof diagnostic.root_cause_confirmed !== "boolean" ||
+          typeof diagnostic.chat_ref_present !== "boolean" ||
+          typeof diagnostic.platform_run_id !== "string") {
+        return false;
+      }
+    }
+
+    if (run.source === "chatgpt_platform_observation") {
+      return run.status === "failed" && run.steps.length === 0 &&
+        run.diagnostics?.stage === "platform_execution" &&
+        run.diagnostics?.category === "platform_error" &&
+        run.diagnostics?.root_cause_confirmed === false &&
+        run.diagnostics?.chat_ref_present === false;
+    }
+    return true;
+  });
 }
 
 /** Vanhentunutta running-merkintää ei esitetä aktiivisena ajoina. */
@@ -523,13 +576,20 @@ function renderRunHistory(histories) {
         ...(run.errors || []).map((item) => `<li class="run-error">${escapeHtml(item)}</li>`),
         ...(run.warnings || []).map((item) => `<li class="run-warning">${escapeHtml(item)}</li>`)
       ].join("");
+      const sourceLabel = run.source === "chatgpt_platform_observation"
+        ? "Ajastusalustan havainto (ei keskusteluajoa)"
+        : "Automaation suoritus";
+      const diagnostic = run.diagnostics
+        ? `<p class="muted">Diagnostiikka: ${escapeHtml(RUN_DIAGNOSTIC_STAGE_LABELS[run.diagnostics.stage] || "Tuntematon vaihe")} · ${escapeHtml(RUN_DIAGNOSTIC_CATEGORY_LABELS[run.diagnostics.category] || "Tuntematon virhe")} · Uudelleenyritys: ${run.diagnostics.retryable === null ? "ei arvioitu" : run.diagnostics.retryable ? "mahdollinen" : "ei suositeltu"} · Juurisyy: ${run.diagnostics.root_cause_confirmed ? "varmistettu" : "ei varmistettu"} · Keskusteluviite: ${run.diagnostics.chat_ref_present ? "saatavilla" : "puuttuu"}</p>`
+        : "";
       return `<li class="run-history-item">
         <details>
           <summary><span class="status-line status-${status.key}">${escapeHtml(status.label)}</span>
             <strong>${escapeHtml(dateText(run.started_at))}</strong>
             <span class="muted">Tunniste: ${escapeHtml(run.run_id)}</span></summary>
           <p>${escapeHtml(run.summary || "Ajolle ei ole kirjattu yhteenvetoa.")}</p>
-          <p class="muted">Päivitetty: ${escapeHtml(dateText(run.updated_at))} · Päättynyt: ${escapeHtml(dateText(run.finished_at))}</p>
+          <p class="muted">Tietolähde: ${escapeHtml(sourceLabel)} · Päivitetty: ${escapeHtml(dateText(run.updated_at))} · Päättynyt: ${escapeHtml(dateText(run.finished_at))}</p>
+          ${diagnostic}
           <ol class="run-steps">${steps || "<li>Vaiheita ei ole kirjattu.</li>"}</ol>
           ${messages ? `<ul>${messages}</ul>` : ""}
         </details>
