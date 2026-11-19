@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "module_id": "muumit",
-  "module_definition_version": "1.0.0",
+  "module_definition_version": "1.0.1",
   "checkpoint": {
     "last_successful_run": {
       "run_id": null,
@@ -29,13 +29,15 @@
     "event_refs": [],
     "current_record_refs": [],
     "source_check_run_refs": [
-      "muumit-20261119T101056-0200"
+      "muumit-20261119T101056-0200",
+      "muumit-20261119T121429-0200"
     ]
   },
   "publication": {
     "feed_path": "feeds/muumit.xml",
     "guid_refs": [
-      "urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event"
+      "urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event",
+      "urn:aiheseurain:muumit:2026-11-19:b936e62f-45fc-4f47-bc01-250d010bf58c"
     ]
   },
   "references": {
