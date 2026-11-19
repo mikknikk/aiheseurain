@@ -274,7 +274,8 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
             scope="Vain tämä moduuli ja seurantajakso.", observed_at=self.now,
         )
         approved = self.orchestrator.run(
-            self.request, collect=base, observed_at=self.now, expected_guids=[],
+            self.request, collect=base, observed_at=self.now,
+            expected_guids=[self.expected_guid],
         )
         self.assertEqual(approved["recovery_action"], "return_to_legacy_path")
 
