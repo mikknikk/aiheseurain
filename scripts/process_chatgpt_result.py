@@ -73,7 +73,7 @@ def _validated_request_context(
         raise ChatGPTProcessingError("Handoff ei vastaa Aiheseuraimen nykyistä tehtäväkiertoa.") from exc
 
     registry = load_registry(root=root, include_inactive=True)
-    module_result = registry.modules.get(module_id)
+    module_result = next((item for item in registry.modules if item.module_id == module_id), None)
     if module_result is None:
         raise ChatGPTProcessingError("Handoffin moduulia ei löydy rekisteristä.")
     definition = module_result.definition
