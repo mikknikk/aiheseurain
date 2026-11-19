@@ -37,6 +37,8 @@ jobs:
         run: python -m scripts.validate_module_registry
       - name: Tarkista nykyisten moduulien migraatio ja lähdeviitteet
         run: python -m scripts.validate_module_migration
+      - name: Tarkista yhden aiheen kiertokoordinaattori ja moduulikytkennät
+        run: python -m scripts.validate_topic_dispatch
       - name: Tarkista seurantakohteiden, julkaisukohteiden ja reititysten viitteet
         run: python scripts/validate_target_publication.py
       - name: Tarkista moduulikohtaiset checkpointit ja historiaviitteet
