@@ -60,11 +60,39 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 )
                 self.assertEqual(validate_state_migration(), [])
 
-                # Osittainen ajo ei oikeuta legacy-checkpointin etenemistä.
-                latest["status"] = "partial"
+                # Uudempi osittainen yritys kirjataan viimeisimmäksi havainnoksi,
+                # mutta se ei muuta viimeisintä onnistunutta tarkistuspistettä.
+                partial_run = {
+                    "run_id": "intialaiset_elokuvat_naytokset-20261119T094800-0200",
+                    "task_id": "intialaiset_elokuvat_naytokset",
+                    "started_at": "2026-11-19T09:48:00+02:00",
+                    "ended_at": "2026-11-19T09:48:00+02:00",
+                    "status": "partial",
+                    "checked_source_ids": ["finnkino", "biorex", "cinema-orion", "kino-myyri", "finnish-film-foundation", "cinema-mondo", "filmikamari"],
+                    "unchecked_sources": [
+                        {"source_id": "kino-regina", "reason": "Ohjelmistosivu ei ollut luettavissa."}
+                    ],
+                    "coverage_notes": ["Seurantajakso Suomen ajassa: 2026-11-19T06:10:58+02:00–2026-11-19T09:48:00+02:00."],
+                    "registry_source_ids": ["finnkino", "biorex", "kino-regina", "cinema-orion", "kino-myyri", "finbolly", "fintamil", "rasa-entertainment", "finnish-film-foundation", "cinema-mondo", "filmikamari"]
+                }
+                log["runs"].append(partial_run)
+                log["latest_by_task"]["intialaiset_elokuvat_naytokset"] = partial_run["ended_at"]
+                task["last_result"] = "partial"
+                task["published_items"] = 0
+                task["sources_checked"] = len(partial_run["checked_source_ids"])
+                task["errors"] = ["kino-regina: Ohjelmistosivu ei ollut luettavissa."]
+                module_state["history"]["source_check_run_refs"].append(partial_run["run_id"])
                 log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                module_path.write_text(json.dumps(module_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                self.assertEqual(validate_state_migration(), [])
+
+                # Jos osittainen yritys yritetään merkitä onnistumisen checkpointiksi,
+                # vastaavaa complete-lähdeajoa ja hyväksyttyä julkaisuraporttia ei ole.
+                task["last_successful_check"] = partial_run["ended_at"]
                 errors = validate_state_migration()
                 self.assertTrue(any("uudempi vanhan automaation seurantatila" in error for error in errors), errors)
+
 
     def test_unknown_historical_checkpoints_remain_unknown(self):
         """Puuttuvia tarkistusaikoja tai ajotunnisteita ei ole päätelty."""
