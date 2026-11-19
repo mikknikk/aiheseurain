@@ -60,11 +60,10 @@ class ShadowComparisonTests(unittest.TestCase):
     def test_empty_news_result_is_a_valid_successful_comparison(self):
         data = deepcopy(self.data)
         module = data["module_result"]
-        module["target_reports"] = [dict(
-            module["target_reports"][0],
-            report_content="<p>Seurantajaksolla ei löytynyt vahvistettuja uusia uutisia.</p>",
-        )]
-        module["report_guid_refs"] = [module["report_guid_refs"][0]]
+        module["target_reports"] = [
+            dict(item, report_content="<p>Seurantajaksolla ei löytynyt vahvistettuja uusia uutisia.</p>")
+            for item in module["target_reports"]
+        ]
         assessment = module["metadata"]["publication_assessment"]
         assessment["claim_assessments"] = [{
             "claim_id": "no-news",
