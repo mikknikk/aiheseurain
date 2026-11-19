@@ -484,7 +484,7 @@ class ModuleOrchestrator:
                     request.module_id,request.run_id,output.report_content,
                     idempotency_key=f"{request.module_id}:{request.run_id}"
                 )
-            if not self.publisher.verify(receipt) or not receipt.verified:
+            if not receipt.verified or not self.publisher.verify(receipt):
                 return self._result(request,module_type,started,status="failed",phase=phase,
                                     source_scan_complete=True,quality_passed=True,error_code="publication_unverified",
                                     checked_at=output.checked_at,sources_checked=output.sources_checked,
