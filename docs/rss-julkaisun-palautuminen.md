@@ -1,7 +1,7 @@
 # RSS-julkaisun manifesti ja takaisinluku
 
 **Versio:** 1.2.0  
-**Päiväys:** 2026-11-18  
+**Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148), [#179](https://github.com/mikknikk/aiheseurain/issues/179)
 
 ## Omistajuus ja tallennus
