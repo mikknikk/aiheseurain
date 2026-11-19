@@ -67,7 +67,7 @@ class ChatGPTRssCandidateTests(unittest.TestCase):
             "module_type": "topic",
         }
         self.registry = SimpleNamespace(
-            modules={"tolkien": SimpleNamespace(definition=self.definition)}
+            modules=(SimpleNamespace(module_id="tolkien", definition=self.definition),)
         )
         self.targets = [
             {"target_id": "tolkien.people", "target_version": "1.0.0", "name": "Kirjailijat"},
