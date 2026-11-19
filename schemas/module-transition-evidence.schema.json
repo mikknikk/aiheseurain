@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/module-transition-evidence.schema.json",
+  "title": "Moduulisiirtymän muuttumaton auditointitapahtuma",
+  "type": "object",
+  "required": ["schema_version", "module_id", "run_id", "event_type", "event_id", "observed_at", "source", "evidence"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "module_id": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+    "run_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,180}$"},
+    "event_type": {"enum": ["pull_request", "pages_deployment", "public_feed", "checkpoint", "legacy_period", "recovery_decision", "legacy_approval"]},
+    "event_id": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "source": {"type": "string", "minLength": 1},
+    "evidence": {"type": "object"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"event_type": {"const": "pull_request"}}},
+      "then": {
+        "properties": {
+          "source": {"const": "github_pull_request_api"},
+          "evidence": {
+            "type": "object",
+            "required": ["pr_number", "pr_url", "state", "merged", "merged_at", "merge_commit_sha", "head_sha", "head_ref", "base_ref"],
+            "properties": {
+              "pr_number": {"type": "integer", "minimum": 1},
+              "pr_url": {"type": "string", "format": "uri"},
+              "state": {"enum": ["open", "closed"]},
+              "merged": {"type": "boolean"},
+              "merged_at": {"type": ["string", "null"], "format": "date-time"},
+              "merge_commit_sha": {"type": ["string", "null"]},
+              "head_sha": {"type": "string", "minLength": 7},
+              "head_ref": {"type": "string", "minLength": 1},
+              "base_ref": {"const": "main"}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "pages_deployment"}}},
+      "then": {
+        "properties": {
+          "source": {"const": "github_deployments_api"},
+          "evidence": {
+            "type": "object",
+            "required": ["deployment_id", "status_id", "state", "environment", "commit_sha", "created_at", "updated_at"],
+            "properties": {
+              "deployment_id": {"type": ["integer", "null"]},
+              "status_id": {"type": ["integer", "null"]},
+              "state": {"enum": ["not_found", "pending", "in_progress", "success", "failure", "error", "inactive"]},
+              "environment": {"const": "github-pages"},
+              "commit_sha": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
+              "created_at": {"type": ["string", "null"], "format": "date-time"},
+              "updated_at": {"type": ["string", "null"], "format": "date-time"}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "public_feed"}}},
+      "then": {
+        "properties": {
+          "source": {"const": "public_pages_http_no_cache"},
+          "evidence": {
+            "type": "object",
+            "required": ["url", "sha256", "item_count", "guids"],
+            "properties": {
+              "url": {"type": "string", "format": "uri"},
+              "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+              "item_count": {"type": "integer", "minimum": 0},
+              "guids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "checkpoint"}}},
+      "then": {
+        "properties": {
+          "source": {"const": "github_contents_api"},
+          "evidence": {
+            "type": "object",
+            "required": ["before_blob_sha", "after_blob_sha", "before_run_id", "after_run_id", "before_checked_at", "after_checked_at", "manifest_phase"],
+            "properties": {
+              "before_blob_sha": {"type": "string", "minLength": 1},
+              "after_blob_sha": {"type": "string", "minLength": 1},
+              "before_run_id": {"type": ["string", "null"]},
+              "after_run_id": {"type": "string", "minLength": 1},
+              "before_checked_at": {"type": ["string", "null"], "format": "date-time"},
+              "after_checked_at": {"type": ["string", "null"], "format": "date-time"},
+              "manifest_phase": {"enum": ["artifacts_persisted", "checkpoint_updated"]}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "legacy_period"}}},
+      "then": {
+        "properties": {
+          "source": {"const": "legacy_archive_review"},
+          "evidence": {
+            "type": "object",
+            "required": ["status", "source_url", "period_start", "period_end", "reason", "matching_guids"],
+            "properties": {
+              "status": {"enum": ["present", "absent", "unknown"]},
+              "source_url": {"type": "string", "format": "uri"},
+              "period_start": {"type": "string", "format": "date-time"},
+              "period_end": {"type": "string", "format": "date-time"},
+              "reason": {"type": ["string", "null"]},
+              "matching_guids": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "recovery_decision"}}},
+      "then": {
+        "properties": {
+          "source": {"const": "module_recovery_action"},
+          "evidence": {
+            "type": "object",
+            "required": ["manifest_phase", "publication_status", "deployment_status", "public_feed_matches", "checkpoint_status", "legacy_period_status", "legacy_fallback_authorized", "action"],
+            "properties": {
+              "manifest_phase": {"type": ["string", "null"]},
+              "publication_status": {"enum": ["not_started", "open", "closed_unmerged", "merged", "unknown"]},
+              "deployment_status": {"enum": ["not_started", "in_progress", "success", "failure", "unknown"]},
+              "public_feed_matches": {"type": ["boolean", "null"]},
+              "checkpoint_status": {"enum": ["not_advanced", "advanced", "unknown", "conflict"]},
+              "legacy_period_status": {"enum": ["absent", "present", "unknown"]},
+              "legacy_fallback_authorized": {"type": "boolean"},
+              "action": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"event_type": {"const": "legacy_approval"}}},
+      "then": {
+        "properties": {
+          "source": {"const": "explicit_external_approval"},
+          "evidence": {
+            "type": "object",
+            "required": ["approval_id", "approved_at", "reason", "scope"],
+            "properties": {
+              "approval_id": {"type": "string", "minLength": 1},
+              "approved_at": {"type": "string", "format": "date-time"},
+              "reason": {"type": "string", "minLength": 1},
+              "scope": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
