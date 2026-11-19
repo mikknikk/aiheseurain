@@ -136,24 +136,68 @@ def validate_state_migration() -> list[str]:
                 (item for item in reversed(source_log["runs"]) if item["task_id"] == task_id),
                 None,
             )
+            # A later partial/failed attempt may follow the last successful run.
+            # Validate the legacy success checkpoint against the exact complete
+            # source run at that timestamp, not against the newest attempt.
+            successful_run = next(
+                (
+                    item for item in reversed(source_log["runs"])
+                    if item["task_id"] == task_id
+                    and item["status"] == "complete"
+                    and item["ended_at"] == legacy_checked_at
+                ),
+                None,
+            )
             report = None
-            if latest_run is not None:
-                report_path = ROOT / "reports/julkaisuportit" / f"{latest_run['run_id']}.json"
+            if successful_run is not None:
+                report_path = ROOT / "reports/julkaisuportit" / f"{successful_run['run_id']}.json"
                 if report_path.is_file():
                     report = _read(report_path)
             expected_period_note = (
                 f"Seurantajakso Suomen ajassa: {old_period['start']}–{old_period['end']}."
             )
+            latest_run_matches_pointer = (
+                latest_run is not None
+                and source_log["latest_by_task"].get(task_id) == latest_run["ended_at"]
+            )
+            latest_source_count_matches = (
+                latest_run is not None
+                and len(latest_run["checked_source_ids"]) == old_task.get("sources_checked")
+            )
+            if latest_run is not None and latest_run["status"] == "partial":
+                expected_errors = [
+                    f"{item['source_id']}: {item['reason']}"
+                    for item in latest_run.get("unchecked_sources", [])
+                ]
+                latest_attempt_valid = (
+                    latest_run_matches_pointer
+                    and latest_source_count_matches
+                    and latest_run["ended_at"] != legacy_checked_at
+                    and old_task.get("last_result") == "partial"
+                    and old_task.get("errors", []) == expected_errors
+                )
+            elif latest_run is not None and latest_run["ended_at"] == legacy_checked_at:
+                latest_attempt_valid = (
+                    latest_run_matches_pointer
+                    and latest_source_count_matches
+                    and old_task.get("last_result") == "success"
+                    and old_task.get("errors", []) == []
+                )
+            else:
+                latest_attempt_valid = (
+                    latest_run_matches_pointer
+                    and latest_source_count_matches
+                    and latest_run is not None
+                    and latest_run["ended_at"] != legacy_checked_at
+                    and old_task.get("last_result") in {"partial", "failed"}
+                    and bool(old_task.get("errors", []))
+                )
             valid_legacy_advance = (
                 legacy_advanced
-                and latest_run is not None
-                and latest_run["status"] == "complete"
-                and latest_run["ended_at"] == legacy_checked_at
-                and source_log["latest_by_task"].get(task_id) == legacy_checked_at
-                and len(latest_run["checked_source_ids"]) == old_task.get("sources_checked")
-                and expected_period_note in latest_run["coverage_notes"]
-                and old_task.get("last_result") == "success"
-                and old_task.get("errors", []) == []
+                and successful_run is not None
+                and successful_run["ended_at"] == legacy_checked_at
+                and latest_attempt_valid
+                and expected_period_note in successful_run["coverage_notes"]
                 and report is not None
                 and report.get("decision") == "approved"
                 and report.get("feed_path") == metadata["feed"]
