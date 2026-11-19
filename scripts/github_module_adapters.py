@@ -507,11 +507,22 @@ class GitHubPagesRssPublisher:
 
     @staticmethod
     def _fetch_public(url: str) -> bytes:
-        """Lue julkinen RSS-syöte ilman välimuistia."""
+        """Odota Pagesin päivitystä rajatusti; älä tulkitse vanhaa välimuistisisältöä onnistumiseksi."""
         request = urllib.request.Request(url, headers={"Cache-Control": "no-cache",
             "Pragma": "no-cache", "User-Agent": "aiheseurain-module-publisher"})
-        with urllib.request.urlopen(request, timeout=20) as response:
-            return response.read()
+        last_error: Exception | None = None
+        for attempt in range(12):
+            try:
+                with urllib.request.urlopen(request, timeout=20) as response:
+                    body = response.read()
+                if body:
+                    return body
+                last_error = GitHubAdapterError("Julkinen RSS-vastaus oli tyhjä.")
+            except Exception as exc:
+                last_error = exc
+            if attempt < 11:
+                time.sleep(10)
+        raise GitHubAdapterError("Pages-syöte ei päivittynyt varmennusikkunan aikana.") from last_error
 
     @staticmethod
     def _metadata(data: bytes) -> tuple[list[str], int]:
