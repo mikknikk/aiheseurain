@@ -1,7 +1,7 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.3.2  
-**Päiväys:** 2026-11-19  
+**Versio:** 2.3.3  
+**Päiväys:** 2026-11-20  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211), [#232 – Siirtymän julkaisu- ja palautustodisteiden pysyvä loki](https://github.com/mikknikk/aiheseurain/issues/232)
 
 ## Tavoite
@@ -237,7 +237,7 @@ python scripts/compare_shadow_runs.py --input tests/fixtures/shadow-comparison/t
 Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutistuloksen, partial- ja failed-tilat, virheellisen tuloksen, uusinnan, keskeytyksen, väärän moduulin, väärän seurantajakson ja kirjoituksettomuuden.
 
 
-## Aihekohtainen varjosiirtymän orkestrointi (#239, työn alla)
+## Aihekohtainen varjosiirtymän orkestrointi (#239, toteutus valmis)
 
 `scripts/shadow_transition.py` yhdistää yhden topic-moduulin read-only-todistekerääjäkutsut, `recovery_action`-päätöksen ja ajokohtaisen auditointivaraston. Syötesopimus sisältää moduulin, run_id:n, moduuliversion, seurantajakson ja eksplisiittisen `mode=shadow`-tilan. Rajapinta hyväksyy vain feed-katalogiin rekisteröidyt topic-syötteet; näytösvahti ei voi käyttää sitä.
 
@@ -245,10 +245,11 @@ Keräämiskutsut suoritetaan ennen auditointikirjoituksia. Jokaisen tapahtuman m
 
 Tämä on synteettisillä testituplilla ajettava varjoharjoituksen tekninen rajapinta, ei live-siirtymä eikä tuotantokäyttöönoton hyväksyntä. Auditointitietueiden tallennus on ainoa kirjoitusoperaatio. RSS-syötteitä, moduulien aktivointilippuja, moduulitiloja, checkpointteja, tehtäväjonoa tai ChatGPT-automaation asetuksia ei muuteta.
 
-Käyttöönottovaihe on edelleen kesken. Checkpointin lähtö- ja jälkitilan luku on nyt kytketty orkestroijaan, ja synteettiset testit varmistavat, että callbackin väärentämä lähtö-SHA tai jälkitilan tunnisteet hylätään. Eri siirtymävaiheiden kattava end-to-end-testistö on silti varmistettava ennen kuin tätä rajapintaa voidaan käyttää tuotantosiirtymän hyväksymiskriteerinä.
+Varjosiirtymän tekninen toteutus ja synteettiset hyväksymistestit valmistuivat PR:ssä #240, joka yhdistettiin `main`-haaraan 2026-11-20. Viimeisimmän commitin kaikki kolme PR-CI-työnkulkua läpäisivät. Tämä valmistuminen ei ole tuotantosiirtymän hyväksyntä: rajapinta on edelleen shadow-harjoittelua varten, eikä yhtään moduulia aktivoitu tai live-siirtymää tehty.
 
 ### Versiohistoria
 
+- **2.3.3 – 2026-11-20:** viimeisteltiin #239:n varjosiirtymän toteutuksen dokumentointi PR:n #240 yhdistämisen jälkeen. Tuotantosiirtymää tai moduulien aktivointia ei tehty.
 - **2.3.2 – 2026-11-20 (valmistelu):** sidottiin checkpoint-jälkitodisteen `after_*`-kentät orkestoijan itse lukemaan runtime-haaran jälkitilaan; lisättiin väärän jälkitilan hylkäävä testi.
 - **2.3.1 – 2026-11-20 (valmistelu):** sidottiin checkpoint-jälkitodiste orkestoijan itse lukemaan runtime-haaran lähtötilaan; lisättiin väärän lähtö-SHA:n hylkäävä testi. Ei live-siirtymää eikä moduulien aktivointia.
 - **2.3.0 – 2026-11-19 (valmistelu):** lisättiin yhden topic-moduulin varjosiirtymän orkestrointirajapinta ja synteettiset regressiotestit. Ei live-siirtymää eikä moduulien aktivointia.
