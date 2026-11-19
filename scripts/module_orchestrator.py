@@ -474,6 +474,8 @@ class ModuleOrchestrator:
                 "state_sha256": state_sha,
                 "artifact_version": artifact_version,
                 "publication_targets": publication_targets,
+                "period_start": request.period_start,
+                "period_end": request.period_end,
                 "prepared_at": output.checked_at,
             })
             phase="publication"
