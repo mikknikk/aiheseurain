@@ -2,7 +2,7 @@
 
 **Versio:** 1.2.2  
 **Päiväys:** 2026-11-19  
-**Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148), [#179](https://github.com/mikknikk/aiheseurain/issues/179)
+**Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148), [#179](https://github.com/mikknikk/aiheseurain/issues/179), [#212](https://github.com/mikknikk/aiheseurain/issues/212)
 
 ## Omistajuus ja tallennus
 
