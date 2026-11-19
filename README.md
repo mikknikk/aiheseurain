@@ -106,6 +106,7 @@ Kullakin dokumentilla on yksi ensisijainen vastuu. Muut dokumentit viittaavat si
 - `docs/automaation-hallintaperiaatteet.md`: kaikkia nykyisiä ja tulevia automaatioita koskeva ajastusten, asetusten ja kohdekeskustelujen käyttäjän valtuutukseen perustuva suojaus.
 - `prompts/README.md` ja `prompts/*.txt`: automaatioiden asetuksiin kopioitavat käynnistyskehotteet ja niiden ylläpitomenettely. Tekstit säilytetään sellaisinaan.
 - `docs/intialaisten-elokuvien-naytosseuranta.md`: näytösvahdin täydellinen, versioitu tehtävä- ja toimintakuvaus.
+- `data/screening-publication-journal.json` ja `schemas/screening-publication-journal.schema.json`: näytösvahdin RSS-julkaisun ja tilasynkronoinnin palautumisen pysyvä ajokohtainen päiväkirja ja sen rakenne.
 - `docs/laatutarkistuksen-ohje.md`: viikoittaisen laatutarkistuksen täydellinen, versioitu tehtävä- ja toimintakuvaus.
 - `docs/tehtavajono.md`: yhdeksän tehtävän kiertojärjestys, seuraava vuoro ja vuoron siirtämisen ehdot. Ei yleisiä raportointi- tai koodauskäytäntöjä.
 - `docs/seuranta.md`: tehtäväkohtaiset seurantajaksot, onnistuneiden tarkistusten tila, uutistapahtumien historia ja luotettavuusluokat.
