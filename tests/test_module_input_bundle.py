@@ -30,7 +30,7 @@ class ModuleInputBundleTests(unittest.TestCase):
 
     def test_bundle_uses_explicit_runtime_module_state_override(self):
         state = json.loads((ROOT / "data/module-state/tolkien.json").read_text(encoding="utf-8"))
-        state["checkpoint"]["last_successful_run_id"] = "runtime-only-checkpoint"
+        state["checkpoint"]["last_successful_run"]["run_id"] = "runtime-only-checkpoint"
         bundle = build_module_input_bundle(
             "tolkien", task_id="tolkien", run_id="isolation-test-003",
             period_start="2026-11-18T00:00:00+02:00",
