@@ -1,7 +1,7 @@
 # Moduulien yhteinen suoritusorkestrointi
 
-**Versio:** 1.3.0  
-**Päiväys:** 2026-11-18  
+**Versio:** 1.4.0  
+**Päiväys:** 2026-11-19  
 **Liittyvä tiketti:** [#108 – Rakenna yhteinen moduulien suoritusorkestrointi ja vaiheittainen käyttöönotto](https://github.com/mikknikk/aiheseurain/issues/108)
 
 ## 1. Vastuut ja erilliset tietokokonaisuudet
@@ -136,8 +136,22 @@ Tiketissä #120 lisättiin `scripts/module_run_adapters.py` ja `tests/test_modul
 
 Tallennus- ja julkaisutestit käyttävät väliaikaisia hakemistoja. Ne eivät kirjoita repositorion tuotannon moduulitiloihin, RSS-syötteisiin tai näytöshistoriaan. GitHub-pohjaiset tuotantosovittimet, ajastettujen tehtävien integraatio ja tuotantokäyttöönotto jäävät erillisiksi hyväksyttäviksi vaiheiksi.
 
+
+## 12. Yhden aiheen kiertokoordinaattori (#202)
+
+`scripts/topic_rotation_coordinator.py` valitsee pääkierron seuraavan aiheen teknisistä tunnisteista ja käynnistää vain sen moduulin eristetyn handoff-runnerin. Koordinaattori tarkistaa seuraavan tehtävän `data/seurantatila.json)-tiedostosta ja vertaa sitä `docs/tehtavajono.md)-tiedoston näkyvään vuoroon sekä koko kiertojärjestykseen. `data/topic-task-map.json` yhdistää yhdeksän kiertotehtävää topic-moduuleihin ja oikeisiin lähdekäyttörekistereihin.
+
+Kiertokartta erottaa intialaisen elokuvan uutistehtävän tunnisteen (`intialaiset_elokuvat`) sen varsinaisen lähderekisterin tunnisteesta (`intialaiset_elokuvat_uutiset`). Näytösvahti on prosessimoduuli, eikä sitä hyväksytä kiertokarttaan. Koordinaattori hylkää puuttuvan, toistuvan tai virheellisen kytkennän sekä tehtäväjonon ja JSON-tilan ristiriidan ennen runnerin käynnistystä.
+
+Koordinaattori luo yhteisen `ModuleRunRequest)-sopimuksen shadow-tilassa, muodostaa yhden moduulin `ModuleInputBundle)-paketin ja kutsuu `run_isolated_module)-funktiota. Sandboxin `topic_dispatch_runner.py) tarkistaa paketin rakenteen ja palauttaa sen sekä SHA-256-tiivisteen ulkoiselle tutkimuspalvelulle. Koordinaattori tarkistaa palautetun moduulitunnisteen, ajotunnisteen, paketin sisällön ja tiivisteen ennen handoff-tuloksen palauttamista.
+
+Tämä on tarkoituksella vain handoff-vaihe: se ei vielä tee verkkohakua tai AI-tutkimusta. Handoff-runnerin sandboxissa ei ole verkkoa. `data/provider-routing.json) on tyhjä, joten varsinaista tutkimuspalvelun brokeria ei ole määritelty. Tulos ei ole `ModuleRunResult)-elinkaaren onnistunut tutkimusajo eikä saa julkaista, kirjoittaa artefakteja tai siirtää checkpointia. Seuraava tekninen vaihe on rajatun AI-/tutkimuspalvelubrokerin liittäminen siten, että runnerin tiedostonäkymä pysyy eristettynä ja ulkoiset palvelukutsut kulkevat auditoidun välityksen kautta.
+
+Käyttöönotto on vain kooditasolla. Käynnistyskehotetta, ChatGPT-tehtävän asetuksia, ajastusta tai kohdekeskustelua ei muuteta tässä vaiheessa. Live-automaatio siirretään koordinaattorin käyttöön vasta erillisellä käyttäjän hyväksynnällä.
+
 ## Muutoshistoria
 
+- **1.4.0 – 2026-11-19:** lisättiin yhden aiheen kiertokoordinaattori ja sandboxattu handoff-varjotila. Varsinainen tutkimuspalvelubrokeri ja live-automaation siirto rajattiin erillisiksi vaiheiksi.
 - **1.3.0 – 2026-11-18:** lisättiin rekisteristä kohteet lataava ja jokaisen kohteen erikseen suorittava TargetExecutionCoordinator.
 - **1.2.0 – 2026-11-18:** lisättiin versioitu kohderaportin tulossopimus, suorittajan usean kohderaportin tulos ja laadunvarmistuksen kohde-, versio-, havaintotyyppi- ja seurantajaksojen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin paikalliset SHA-tarkistetut tallennus-, ajotulos- ja RSS-julkaisusovittimet sekä niiden testaus- ja tuotantorajaukset.
