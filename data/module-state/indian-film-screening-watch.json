@@ -614,6 +614,26 @@
       {
         "store_path": "data/naytosten-muutoshistoria.json",
         "record_id": "details-changed-klara-ja-aurinko-kinopirtti-20261125-1540-screening-watch-20261119T041058Z-a2-language-subtitles"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "correction-klara-ja-aurinko-cinema-niagara-20261125-1230-screening-watch-20261119T044017Z-a2-kinoon-link"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "correction-klara-ja-aurinko-finnkino-scala-20261125-1445-screening-watch-20261119T044017Z-a2-kinoon-link"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "correction-klara-ja-aurinko-riviera-punavuori-20261125-1700-screening-watch-20261119T044017Z-a2-kinoon-link"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "correction-klara-ja-aurinko-ihme-kompleksi-20261125-1745-screening-watch-20261119T044017Z-a2-kinoon-link"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "correction-klara-ja-aurinko-finnkino-kinopalatsi-20261125-2115-screening-watch-20261119T044017Z-a2-kinoon-link"
       }
     ],
     "current_record_refs": [
