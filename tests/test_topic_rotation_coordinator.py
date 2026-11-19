@@ -8,7 +8,8 @@ import shutil
 import tempfile
 import unittest
 
-from scripts.module_input_bundle import bundle_to_json
+from scripts.isolated_module_runner import run_isolated_module
+from scripts.module_input_bundle import build_module_input_bundle, bundle_to_json
 from scripts.topic_rotation_coordinator import (
     TopicCoordinatorError,
     dispatch_next_topic,
@@ -171,6 +172,25 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
         self.assertEqual(dispatch.selection.source_registry_task_id, "intialaiset_elokuvat_uutiset")
         self.assertEqual(dispatch.runner_result["input_bundle"]["module"]["module_type"], "topic")
         self.assertNotIn("indian-film-screening-watch", bundle_to_json(runner.calls[0][0]))
+
+
+    def test_dispatch_runner_executes_inside_the_bubblewrap_sandbox(self):
+        """Varsinainen handoff-ohjelma suoritetaan käyttöjärjestelmäsandboxissa."""
+        if shutil.which("bwrap") is None:
+            self.skipTest("bubblewrap ei ole tässä ympäristössä saatavilla.")
+        bundle = build_module_input_bundle(
+            "muumit",
+            task_id="muumit",
+            run_id="topic-dispatch-sandbox-001",
+            period_start="2026-11-19T00:00:00+02:00",
+            period_end="2026-11-19T23:59:59+02:00",
+            root=self.root,
+        )
+        source = (self.root / "scripts/topic_dispatch_runner.py").read_text(encoding="utf-8")
+        result = run_isolated_module(bundle, source)
+        self.assertEqual(result["status"], "ready_for_external_research")
+        self.assertEqual(result["module_id"], "muumit")
+        self.assertNotIn("indian-film-screening-watch", json.dumps(result, ensure_ascii=False))
 
     def test_rejects_period_without_timezone_before_starting_runner(self):
         """Aikavyöhykkeettömän jakson kanssa runneria ei käynnistetä."""
