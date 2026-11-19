@@ -214,6 +214,15 @@ class ShadowModeTests(unittest.TestCase):
         approved_but_inactive=orchestrator.run(request(mode="production",run_id="orchestrator-run-02"),production_authorized=True)
         self.assertEqual(approved_but_inactive.status,"rejected")
         self.assertEqual(approved_but_inactive.error_code,"module_inactive")
+        active_but_not_enabled = ModuleOrchestrator(
+            executor=executor, quality_gate=PassGate(),
+            registry_loader=active_registry_loader,
+        ).run(
+            request(mode="production", run_id="orchestrator-run-03"),
+            production_authorized=True,
+        )
+        self.assertEqual(active_but_not_enabled.status, "rejected")
+        self.assertEqual(active_but_not_enabled.error_code, "production_activation_required")
         self.assertEqual(executor.calls,[])
 
     def test_run_result_contains_module_version_run_id_and_period(self):
@@ -241,7 +250,8 @@ class ProductionLifecycleTests(unittest.TestCase):
         self.orchestrator=ModuleOrchestrator(
             executor=self.executor,quality_gate=self.gate,state_store=self.state_store,
             artifact_store=self.artifacts,publisher=self.publisher,
-            publication_journal=self.journal,registry_loader=active_registry_loader
+            publication_journal=self.journal,registry_loader=active_registry_loader,
+            activation_loader=lambda module_id: True
         )
 
     def test_successful_production_run_publishes_persists_and_advances_checkpoint(self):

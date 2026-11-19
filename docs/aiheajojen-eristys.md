@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 1.9.0  
+**Versio:** 2.0.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211)
 
@@ -145,6 +145,16 @@ Toimituksellinen julkaisuarvio on määritelty tulossopimuksen valinnaiseksi met
 
 
 
+## Tuotantosiirtymän tekniset turvarajat (#215, #226)
+
+Moduulin rekisterissä oleva `status` ja erillinen tuotantolupa ovat eri asioita. Tuotantopolku vaatii kaikki seuraavat ehdot: eksplisiittinen ajokutsu, moduulin aktiivinen tila, moduulikohtainen lupa tiedostossa `data/module-production-activation.json`, kelvollinen moduulimäärittely sekä pysyvät tallennus- ja julkaisusovittimet. Tuotantoluparekisterin skeema on `schemas/module-production-activation.schema.json`.
+
+Kaikkien moduulien tuotantoluvat ovat oletusarvoisesti `false`. Rekisterin lataus hylkää puuttuvat, ylimääräiset tai virheelliset moduulimerkinnät; tuntematon moduuli ja virheellinen tiedosto estävät ajon. Prosessimoduulia, mukaan lukien intialaisten elokuvien näytösvahtia, ei voi aktivoida topic-julkaisupolkuun. Tämä toteutus ei aktivoi yhtään moduulia.
+
+Julkaisumanifesti sisältää tarkan seurantajakson. GitHub-pohjainen julkaisumanifesti varaa moduuli–seurantajakso-yhdistelmän erillisessä SHA-CAS-indeksissä ennen RSS-julkaisua. Sama run_id voi uusia saman ehdokkaan idempotentisti, mutta eri run_id ei voi varata saman moduulin samaa seurantajaksoa uudelleen. Rinnakkaiset varausyritykset ratkaistaan takaisinluvulla; ristiriita hylätään. Indeksi on moduulikohtainen, joten eri aiheet ja saman aiheen eri jaksot eivät estä toisiaan.
+
+Varaus on tarkoituksella fail-closed: epäselvässä tai keskeneräisessä tilanteessa jakso jää varatuksi, kunnes palautusmenettely selvittää sen. Varausta ei vapauteta automaattisesti, koska se voisi sallia kaksoisjulkaisun. Palautus ja hallittu vapautus käsitellään erikseen tiketin #227 yhteydessä.
+
 ## Lähdeauditointi ja varjotilan vertailu (#214)
 
 ChatGPT-tulossopimuksen metadataan voidaan liittää rakenteinen source_audit. Se kirjaa moduulin omat lähteet tiloilla checked, partial, unavailable tai skipped; unavailable- ja skipped-tilat edellyttävät syytä. Täydentävät lähteet kirjataan erikseen URL-osoitteineen ja varmennustasoineen. Laadunvarmistus hylkää toisen moduulin lähde-ID:t, toistuvat lähdetietueet ja sources_checked-lukumäärän kanssa ristiriitaisen auditoinnin. Tuotantotilassa source_audit on pakollinen. Lähteiden määrälle ei aseteta vähimmäisrajaa.
@@ -164,6 +174,8 @@ python scripts/compare_shadow_runs.py --input tests/fixtures/shadow-comparison/t
 Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutistuloksen, partial- ja failed-tilat, virheellisen tuloksen, uusinnan, keskeytyksen, väärän moduulin, väärän seurantajakson ja kirjoituksettomuuden.
 
 ### Versiohistoria
+
+- **2.0.0 – 2026-11-19:** lisättiin oletusarvoisesti pois päältä oleva moduulikohtainen tuotantoluparekisteri, fail-closed-validointi sekä moduuli–seurantajakso-yksinoikeus GitHub-julkaisumanifestiin. Mitään moduulia ei aktivoitu.
 
 - **1.9.0 – 2026-11-19:** lisättiin moduulikohtainen lähdeauditointi ja kirjoitukseton vanhan/uuden raporttipolun vertailija synteettisellä Tolkien-testiaineistolla. Vertailu ei käynnistä live-ajoa eikä kirjoita tuotantotiedostoihin.
 - **1.8.0 – 2026-11-19:** kytkettiin yhdistetty ChatGPT-tulos alkuperäisen handoffin SHA-256-tarkistukseen, moduuli- ja kohdekohtaiseen laadunvarmistukseen sekä shadow-orkestrointiin. Päähaaran push-työnkulku käsittelee yhden uuden tuloksen ja tallentaa teknisen ajohistorian; se ei julkaise RSS:ää, päivitä checkpointia tai muuta live-automaation asetuksia.

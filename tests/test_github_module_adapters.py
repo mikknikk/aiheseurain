@@ -266,6 +266,8 @@ class GitHubAdapterTests(unittest.TestCase):
             "report_sha256": "a" * 64, "artifacts_sha256": "b" * 64,
             "state_sha256": "state-sha", "artifact_version": "artifact-sha",
             "publication_targets": ["tolkien"],
+            "period_start": "2026-11-19T00:00:00+02:00",
+            "period_end": "2026-11-19T23:59:59+02:00",
             "prepared_at": "2026-11-19T09:00:00+02:00",
         }
 
@@ -313,6 +315,26 @@ class GitHubAdapterTests(unittest.TestCase):
         first = journal.prepare(record)
         second = journal.prepare(record)
         self.assertEqual(first, second)
+
+    def test_publication_journal_blocks_second_run_for_same_module_period(self):
+        """Eri run_id ei voi julkaista samaa moduulia ja seurantajaksoa uudelleen."""
+        journal = GitHubPublicationJournal(self.client)
+        first = self.journal_record("period-owner-001")
+        journal.prepare(first)
+        second = self.journal_record("period-owner-002")
+        with self.assertRaises(PublicationJournalConflict):
+            journal.prepare(second)
+
+    def test_publication_journal_allows_same_module_in_a_different_period(self):
+        """Saman aiheen erilliset seurantajaksot eivät estä toisiaan."""
+        journal = GitHubPublicationJournal(self.client)
+        first = self.journal_record("period-one-001")
+        journal.prepare(first)
+        second = self.journal_record("period-two-002")
+        second["period_start"] = "2026-11-20T00:00:00+02:00"
+        second["period_end"] = "2026-11-20T23:59:59+02:00"
+        journal.prepare(second)
+        self.assertIsNotNone(journal.load("tolkien", "period-two-002"))
 
     def test_publisher_opens_pr_but_never_merges_it(self):
         client = self.client

@@ -12,6 +12,8 @@
     "state_sha256",
     "artifact_version",
     "publication_targets",
+    "period_start",
+    "period_end",
     "prepared_at",
     "phase",
     "updated_at",
@@ -110,6 +112,14 @@
         },
         "additionalProperties": false
       }
+    },
+    "period_start": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "period_end": {
+      "type": "string",
+      "format": "date-time"
     }
   },
   "additionalProperties": false

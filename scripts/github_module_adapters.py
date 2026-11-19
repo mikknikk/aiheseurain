@@ -394,18 +394,68 @@ class GitHubPublicationJournal:
         _validate_schema(value, "module-publication-journal.schema.json")
         return value, file.sha
 
+    def _claim_period(self, module_id: str, period_start: str, period_end: str, run_id: str) -> None:
+        """Varaa moduulin seurantajakson yhdelle ajolle SHA-CAS-indeksillä."""
+        period_key = f"{period_start}|{period_end}"
+        path = f"data/module-publication-journal/{module_id}/period-index.json"
+        for _attempt in range(3):
+            current = self.client.get_file(path, self.branch)
+            if current is None:
+                value = {"schema_version": 1, "module_id": module_id, "periods": {}}
+                expected_sha = None
+            else:
+                try:
+                    value = json.loads(current.content.decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                    raise PublicationJournalError("Julkaisujaksojen yksinoikeusindeksi on virheellinen.") from exc
+                _validate_schema(value, "module-publication-period-index.schema.json")
+                if value.get("module_id") != module_id:
+                    raise PublicationJournalError("Julkaisujaksojen indeksin moduuliomistajuus on virheellinen.")
+                expected_sha = current.sha
+            owner = value["periods"].get(period_key)
+            if owner is not None:
+                if owner != run_id:
+                    raise PublicationJournalConflict("Sama moduuli ja seurantajakso on jo varattu toiselle ajolle.")
+                return
+            updated = deepcopy(value)
+            updated["periods"][period_key] = run_id
+            _validate_schema(updated, "module-publication-period-index.schema.json")
+            try:
+                self.client.put_file(path, _json(updated), self.branch,
+                    message=f"Claim {module_id} publication period", sha=expected_sha)
+                return
+            except (GitHubApiError, GitHubAdapterConflict):
+                actual = self.client.get_file(path, self.branch)
+                if actual is not None:
+                    try:
+                        latest = json.loads(actual.content.decode("utf-8"))
+                        _validate_schema(latest, "module-publication-period-index.schema.json")
+                    except Exception as exc:
+                        raise PublicationJournalError("Julkaisujaksojen indeksin takaisinluku epäonnistui.") from exc
+                    latest_owner = latest.get("periods", {}).get(period_key)
+                    if latest_owner == run_id:
+                        return
+                    if latest_owner is not None:
+                        raise PublicationJournalConflict("Sama moduuli ja seurantajakso varattiin rinnakkaisessa ajossa.")
+        raise PublicationJournalConflict("Julkaisujakson yksinoikeuden SHA-CAS epäonnistui kolmesti.")
+
     def prepare(self, record: dict[str, Any]) -> dict[str, Any]:
         """Luo prepared-manifesti tai palauta täsmälleen saman ajon aiempi manifesti."""
         required = {"module_id", "run_id", "idempotency_key", "report_sha256",
                     "artifacts_sha256", "state_sha256", "artifact_version",
-                    "publication_targets", "prepared_at"}
+                    "publication_targets", "period_start", "period_end", "prepared_at"}
         if not isinstance(record, dict) or set(record) != required:
             raise PublicationJournalError("Manifestin kentät eivät vastaa sopimusta.")
         module_id, run_id = _module(record["module_id"]), _run(record["run_id"])
         if not isinstance(record["publication_targets"], list) or not record["publication_targets"]:
             raise PublicationJournalError("Julkaisukohteiden pitää olla ei-tyhjä lista.")
         _time(record["prepared_at"])
+        _time(record["period_start"])
+        _time(record["period_end"])
+        if datetime.fromisoformat(record["period_start"].replace("Z", "+00:00")) > datetime.fromisoformat(record["period_end"].replace("Z", "+00:00")):
+            raise PublicationJournalError("Julkaisujakson alku on loppua myöhempi.")
         self.client.ensure_branch(self.branch)
+        self._claim_period(module_id, record["period_start"], record["period_end"], run_id)
         path = self._path(module_id, run_id)
         old = self.client.get_file(path, self.branch)
         stable_keys = required - {"state_sha256", "artifact_version"}

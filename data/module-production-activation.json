@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "modules": {
+    "euroviisut": false,
+    "gurmeet-ram-rahim-singh": false,
+    "indian-film-news": false,
+    "indian-film-screening-watch": false,
+    "muumit": false,
+    "shakkidraamat": false,
+    "sompote-sands": false,
+    "taylor-swift": false,
+    "tolkien": false,
+    "wakaliwood": false
+  }
+}

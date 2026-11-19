@@ -99,6 +99,27 @@ class JsonFilePublicationJournal:
             raise PublicationJournalError("Manifestipolku poistuu varastosta.")
         return path
 
+    def _claim_period(self, module_id: str, period_start: str, period_end: str, run_id: str) -> None:
+        """Varaa moduulin seurantajakson yhdelle ajolle myös paikallisessa testivarastossa."""
+        index_path = self.root / f"{module_id}-period-index.json"
+        period_key = f"{period_start}|{period_end}"
+        with _lock(index_path):
+            if index_path.exists():
+                try:
+                    index = json.loads(index_path.read_text(encoding="utf-8"))
+                except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+                    raise PublicationJournalError("Julkaisujaksojen indeksiä ei voi lukea.") from exc
+                if index.get("module_id") != module_id or not isinstance(index.get("periods"), dict):
+                    raise PublicationJournalError("Julkaisujaksojen indeksi on virheellinen.")
+            else:
+                index = {"schema_version": 1, "module_id": module_id, "periods": {}}
+            owner = index["periods"].get(period_key)
+            if owner is not None and owner != run_id:
+                raise PublicationJournalConflict("Sama moduuli ja seurantajakso on jo varattu toiselle ajolle.")
+            if owner is None:
+                index["periods"][period_key] = run_id
+                _atomic_write(index_path, index)
+
     def prepare(self, record: dict[str, Any]) -> dict[str, Any]:
         """Luo valmistelumerkinnän tai palauta saman ajon aiemman manifestin."""
         if not isinstance(record, dict):
@@ -107,13 +128,16 @@ class JsonFilePublicationJournal:
         run_id = _safe_id(record.get("run_id"))
         required = {"module_id", "run_id", "idempotency_key", "report_sha256",
                     "artifacts_sha256", "state_sha256", "artifact_version",
-                    "publication_targets", "prepared_at"}
+                    "publication_targets", "period_start", "period_end", "prepared_at"}
         if set(record) != required:
             raise PublicationJournalError("Manifestin kentät eivät vastaa sopimusta.")
         if not isinstance(record["publication_targets"], list):
             raise PublicationJournalError("Julkaisukohteiden pitää olla lista.")
         if any(not isinstance(item, str) or not item for item in record["publication_targets"]):
             raise PublicationJournalError("Julkaisukohteessa on virheellinen tunniste.")
+        if not isinstance(record["period_start"], str) or not isinstance(record["period_end"], str):
+            raise PublicationJournalError("Julkaisumanifestista puuttuu seurantajakso.")
+        self._claim_period(module_id, record["period_start"], record["period_end"], run_id)
         path = self._path(module_id, run_id)
         with _lock(path):
             if path.exists():
