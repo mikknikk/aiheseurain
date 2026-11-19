@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 1.2.0  
+**Versio:** 1.3.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202)
 
@@ -79,6 +79,39 @@ Runnerin lähdekoodi annetaan merkkijonona, ei repositorion tiedostopolkuna. Run
 Koordinaattori saa nähdä tehtäväjonon valintaan tarvittavat tekniset tunnisteet ja tilatiedot. Se ei tee aihekohtaista uutishakua eikä välitä koko tehtäväjonoa aiheajolle. Aiheajo saa vain oman moduulipakettinsa ja palauttaa rajatun tuloksen. Koordinaattori validoi tuloksen ja hoitaa julkaisu- sekä checkpoint-siirtymät yhteisten sopimusten kautta.
 
 Tiketti #199 kattaa syötepaketin sopimuksen, #200 käyttöjärjestelmätason sandboxin ja #201 paketin rajausta, omistajuutta sekä runnerin rajapintaa valvovat CI-regressiotestit. Pääautomaation käynnistyskehotteen ja varsinaisen ChatGPT-ajon siirtäminen tähän malliin tehdään erikseen (#202). GitHub-muutos ei muuta ChatGPT:n tehtäväasetuksia, ajastuksia tai kohdekeskusteluja.
+
+
+## Aihekierron koordinaattori ja eristetty handoff
+
+`scripts/topic_rotation_coordinator.py` on uutiskierron tekninen aloituspiste. Se:
+- lukee `data/seurantatila.json`-tiedoston seuraavan tehtävän tunnisteen;
+- varmistaa, että `docs/tehtavajono.md` ja koneellinen tehtäväjärjestys vastaavat toisiaan;
+- ratkaisee tehtävän moduuliksi `data/topic-task-map.json`-kytkentäkartan avulla;
+- tarkistaa, että valittu moduuli on `topic`-tyyppinen ja sen määritys on kelvollinen;
+- muodostaa vain valitun moduulin syötepaketin;
+- käynnistää `scripts/topic_dispatch_runner.py`-ohjelman bubblewrap-sandboxissa.
+
+Kytkentäkartta sisältää yhdeksän uutiskierron tehtävää. Intialaisen elokuvan uutistehtävä ohjataan moduuliin `indian-film-news` ja sen omaan lähderekisteriin `intialaiset_elokuvat_uutiset`. Erillistä `indian-film-screening-watch`-prosessimoduulia ei saa lisätä karttaan. Kiertojärjestyksen pitää vastata sekä `docs/tehtavajono.md`- että `data/seurantatila.json`-tiedostoa; ristiriita keskeyttää käynnistyksen.
+
+Koordinaattori ei välitä tehtäväjonoa, moduulirekisteriä tai muiden moduulien määrityksiä runnerille. Runner saa vain `module_input_bundle.py`-paketin, jossa on valitun moduulin määritys, sen omat seurantakohteet, lähteet ja moduulitila. Handoff-runner palauttaa saman rajatun paketin sekä SHA-256-tiivisteen. CI validoi sekä kytkentäkartan että jonon ja seurantatilan vastaavuuden.
+
+Käynnistys vaatii eksplisiittisen ajotunnisteen ja aikavyöhykkeelliset seurantajakson rajat:
+
+```bash
+python -m scripts.validate_topic_dispatch
+python -m scripts.topic_rotation_coordinator \
+  --run-id topic-shadow-001 \
+  --period-start 2026-11-19T00:00:00+02:00 \
+  --period-end 2026-11-19T23:59:59+02:00
+```
+
+**Tärkeä rajaus:** tämä toteutus on yhden aiheen eristetty handoff-varjotila, ei vielä uutistutkimuksen suorittaja. Handoff-runner ei tee verkkohakuja eikä käytä AI- tai tutkimuspalvelua. `data/provider-routing.json` on edelleen tyhjä, kaikki moduulit ovat inactive-tilassa eikä tuotannon RSS-julkaisu-, artefakti- tai checkpoint-kirjoituksia tehdä. Varsinainen AI-tutkimuspalvelun brokerointi, tuloksen palautus `ModuleOrchestrator`-elinkaareen ja vanhan pääautomaatiopolun korvaaminen edellyttävät erillistä toteutusta ja hyväksyntää.
+
+GitHub-toteutus ei muuta `prompts/paauutisseuranta.txt`-tiedostoa eikä ChatGPT-tehtävän tallennettua käynnistyskehotetta, ajastusta tai kohdekeskustelua. Käynnistyskehotteen ja live-tehtävän siirto tehdään vasta erikseen hyväksytyssä vaiheessa.
+
+### Versiohistoria
+
+- **1.3.0 – 2026-11-19:** lisättiin yhdeksän aiheen tekninen kiertokoordinaattori, eksplisiittinen tehtävä–moduulikartta, yhden moduulin handoff-runner ja CI-validointi. Toteutus pysyy varjotilan handoff-vaiheessa eikä aktivoi moduuleja tai muuta live-automaatiota.
 
 ### Versiohistoria
 

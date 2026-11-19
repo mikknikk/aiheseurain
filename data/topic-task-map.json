@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "tasks": [
+    {"task_id": "tolkien", "module_id": "tolkien", "module_type": "topic", "source_registry_task_id": "tolkien"},
+    {"task_id": "taylor_swift", "module_id": "taylor-swift", "module_type": "topic", "source_registry_task_id": "taylor_swift"},
+    {"task_id": "gurmeet_ram_rahim_singh", "module_id": "gurmeet-ram-rahim-singh", "module_type": "topic", "source_registry_task_id": "gurmeet_ram_rahim_singh"},
+    {"task_id": "muumit", "module_id": "muumit", "module_type": "topic", "source_registry_task_id": "muumit"},
+    {"task_id": "wakaliwood", "module_id": "wakaliwood", "module_type": "topic", "source_registry_task_id": "wakaliwood"},
+    {"task_id": "euroviisut", "module_id": "euroviisut", "module_type": "topic", "source_registry_task_id": "euroviisut"},
+    {"task_id": "sompote_sands", "module_id": "sompote-sands", "module_type": "topic", "source_registry_task_id": "sompote_sands"},
+    {"task_id": "shakkidraamat", "module_id": "shakkidraamat", "module_type": "topic", "source_registry_task_id": "shakkidraamat"},
+    {"task_id": "intialaiset_elokuvat", "module_id": "indian-film-news", "module_type": "topic", "source_registry_task_id": "intialaiset_elokuvat_uutiset"}
+  ]
+}
