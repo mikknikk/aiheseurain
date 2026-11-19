@@ -79,7 +79,7 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
         self.assertEqual(
             recovery_action(journal, deployment_status="in_progress",
                             public_feed_matches=None, checkpoint_advanced=False),
-            "inspect_publication_state",
+            "wait_for_pages",
         )
         self.assertEqual(
             recovery_action(journal, deployment_status="not_started",
