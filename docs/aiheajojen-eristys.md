@@ -43,7 +43,7 @@ Vahvempi prosessieristys on toteutettu tiedostossa `scripts/isolated_module_runn
 - `/output`: ainoa kirjoitettava pysyvä hakemisto;
 - Pythonin suorittamiseen tarvittavat järjestelmäkirjastot, vain luku.
 
-Sandbox käyttää erillisiä user-, PID-, IPC-, UTS- ja network-namespaceja (`--unshare-all)), tyhjennettyä ympäristöä, erillistä `/tmp)-hakemistoa ja eristettyä prosessiryhmää. Päärepon työpuuta, kotihakemistoa, GitHub-tunnuksia, muita moduuleja tai verkkoa ei liitetä sandboxiin. Syöte ja runner-koodi ovat vain luku -muotoisia. Runnerin tulos luetaan vasta prosessin onnistuneen päättymisen jälkeen, ja tulostiedoston koko rajataan viiteen mebitavuun. Aikarajan ylitys, puuttuva bubblewrap tai sandboxin käynnistysvirhe pysäyttää ajon; tavalliseen eristämättömään subprocessiin ei pudota.
+Sandbox käyttää erillisiä user-, PID-, IPC-, UTS- ja network-namespaceja (`--unshare-all`), tyhjennettyä ympäristöä, erillistä `/tmp`-hakemistoa ja eristettyä prosessiryhmää. Päärepon työpuuta, kotihakemistoa, GitHub-tunnuksia, muita moduuleja tai verkkoa ei liitetä sandboxiin. Syöte ja runner-koodi ovat vain luku -muotoisia. Runner voi kirjoittaa vain ennalta luotuun `/output/result.json`-tiedostoon; hakemisto itsessään on vain luku -muotoinen. Tulos luetaan ilman symbolisten linkkien seuraamista vasta prosessin onnistuneen päättymisen jälkeen. Tulostiedoston koko rajataan viiteen mebitavuun, ja runner-prosessille asetetaan CPU-, tiedostokoko-, tiedostokuvaus- ja core-dump-rajat. Aikarajan ylitys, puuttuva bubblewrap tai sandboxin käynnistysvirhe pysäyttää ajon; tavalliseen eristämättömään subprocessiin ei pudota.
 
 Tämä on Linuxin bubblewrap-eristys, ei erillinen virtuaalikone. Runner näkee käyttöjärjestelmän rajatun runtime-näkymän, mutta ei isäntäkoneen yleistä tiedostojärjestelmää. Muilla käyttöjärjestelmillä suoritus estetään, kunnes vastaava sandbox-toteutus lisätään. GitHub Actions asentaa bubblewrapin ja ajaa sandboxin integraatiotestit osana testikokonaisuutta.
 
@@ -63,7 +63,7 @@ bundle = build_module_input_bundle(
 result = run_isolated_module(bundle, runner_source)
 ```
 
-Runnerin lähdekoodi annetaan merkkijonona, ei repositorion tiedostopolkuna. Runner palauttaa JSON-olion kirjoittamalla `/output/result.json)-tiedoston. Koordinaattori vastaa tuloksen sopimusvalidoinnista ja moduulitilan päivittämisestä; sandbox-funktio ei muuta repositoriota eikä tilatiedostoja.
+Runnerin lähdekoodi annetaan merkkijonona, ei repositorion tiedostopolkuna. Runner palauttaa JSON-olion kirjoittamalla `/output/result.json`-tiedoston. Koordinaattori vastaa tuloksen sopimusvalidoinnista ja moduulitilan päivittämisestä; sandbox-funktio ei muuta repositoriota eikä tilatiedostoja.
 
 Tiketti #200 kattaa tämän sandbox-toteutuksen. Tiketti #201 jatkaa kattavia CI-estotestejä ja ristiinviittausten validointia. Tiketti #202 kattaa varsinaisen automaation käynnistysmallin muutoksen.
 
