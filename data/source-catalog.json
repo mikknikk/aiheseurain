@@ -1341,6 +1341,20 @@
       "reliability_class": "C"
     },
     {
+      "id": "sony-live",
+      "name": "Sony Music Finland Live – Muumit",
+      "url": "https://live.sonymusic.fi/artists/muumiperheen-lauluretki/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "A",
+      "reliability_note": "Sony Music Entertainment Finlandin ohjelmatoimisto; ensisijainen lähde omien Muumi-tuotantojensa kiertue- ja esitystiedoille."
+    },
+    {
       "id": "suomen-tolkien-seura",
       "name": "Suomen Tolkien-seura Kontu ry",
       "url": "https://suomentolkienseura.fi/",
