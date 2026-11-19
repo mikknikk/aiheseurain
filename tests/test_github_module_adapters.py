@@ -277,6 +277,26 @@ class GitHubAdapterTests(unittest.TestCase):
         self.assertTrue(receipt.verified)
         self.assertTrue(publisher.verify(receipt))
 
+    def test_target_publisher_requires_an_active_registry_route(self):
+        publisher = GitHubPagesRssPublisher(self.client, lambda *args, **kwargs: None)
+        report = {
+            "target_id": "tolkien.j-r-r-tolkien",
+            "observation_types": ["news"],
+            "report_content": "Testiraportti",
+        }
+        with self.assertRaises(ValueError):
+            publisher.publish_target_reports("tolkien", "run-212-route", [report])
+
+    def test_process_module_cannot_use_topic_rss_publisher(self):
+        publisher = GitHubPagesRssPublisher(self.client, lambda *args, **kwargs: None)
+        report = {
+            "target_id": "indian-film-screening-watch.all-indian-film-screenings-finland",
+            "observation_types": ["screening"],
+            "report_content": "Näytösraportti",
+        }
+        with self.assertRaises(GitHubAdapterError):
+            publisher.publish_target_reports("indian-film-screening-watch", "run-212-screening", [report])
+
     def test_publisher_rejects_unapproved_gate_report(self):
         gate = {"decision": "pending", "run_id": "run-212-gate",
                 "feed_path": "feeds/tolkien.xml", "task_id": "tolkien"}
