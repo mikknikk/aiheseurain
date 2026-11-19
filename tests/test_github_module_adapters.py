@@ -192,7 +192,7 @@ class GitHubAdapterTests(unittest.TestCase):
                 feed_path="feeds/tolkien.xml",
                 public_url="https://mikknikk.github.io/aiheseurain/feeds/tolkien.xml")
         publisher = GitHubPagesRssPublisher(
-            client, builder, public_fetcher=lambda url: xml.encode("utf-8"))
+            client, builder, public_fetcher=lambda url: b"<rss version=\"2.0\"><channel /></rss>")
         receipt = publisher.publish("tolkien", "run-212-publish", "Raportti",
                                     idempotency_key="tolkien:run-212-publish")
         self.assertFalse(receipt.verified)
