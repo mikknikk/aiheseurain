@@ -1,5 +1,6 @@
 """Varjosiirtymän orkestroinnin päästä päähän -regressiotestit."""
 from pathlib import Path
+import json
 import unittest
 
 from scripts.shadow_transition import (
@@ -9,11 +10,24 @@ from scripts.module_transition_evidence import (
     GitHubTransitionEvidenceCollector, GitHubTransitionEvidenceStore,
 )
 from test_module_transition_evidence import FakeEvidenceClient, ROOT
+from scripts.github_module_adapters import GitHubFile
 
 
 class ShadowTransitionOrchestratorTests(unittest.TestCase):
     def setUp(self):
         self.client = FakeEvidenceClient()
+        # Runtime-haaran synteettinen checkpoint on lähtötilan todellinen
+        # read-only-lähde; sen blob-SHA vastaa checkpoint-testien before_sha-arvoa.
+        baseline_state = {
+            "module_id": "taylor-swift",
+            "checkpoint": {"last_successful_run": {
+                "run_id": "old-run-001", "checked_at": "2026-11-19T21:00:00Z",
+            }},
+        }
+        baseline_content = json.dumps(baseline_state).encode("utf-8")
+        self.client.files[("module-runtime-state", "data/module-state/taylor-swift.json")] = GitHubFile(
+            baseline_content, "e" * 40,
+        )
         self.collector = GitHubTransitionEvidenceCollector(
             self.client,
             public_fetcher=lambda url: (
@@ -225,6 +239,13 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
                 self.request, collect=base, observed_at=self.now,
                 expected_guids=[self.expected_guid],
             )
+
+    def test_checkpoint_callback_cannot_forge_the_baseline(self):
+        base = self._base_collectors()
+        base["checkpoint"] = lambda: self._checkpoint_record(before_sha="f" * 40)
+        with self.assertRaises(ShadowTransitionError):
+            self.orchestrator.run(self.request, collect=base, observed_at=self.now)
+        self.assertEqual(self.client.writes, 0)
 
     def test_checkpoint_changed_by_another_run_forces_manual_review(self):
         self.client.pr.update({
