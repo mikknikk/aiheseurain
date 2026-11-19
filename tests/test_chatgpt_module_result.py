@@ -71,6 +71,19 @@ class ChatGPTModuleResultTests(unittest.TestCase):
         output = ChatGPTResultExecutor(self.payload).execute(self.definition, self.request, None)
         self.assertEqual(output.report_content, "Testiraportti")
 
+    def test_failed_result_can_return_without_a_report(self):
+        payload = dict(self.payload)
+        payload.pop("report_content")
+        payload["status"] = "failed"
+        payload["source_scan_complete"] = False
+        payload["sources_checked"] = 0
+        payload["source_check_run_refs"] = []
+        payload["report_guid_refs"] = []
+        output = chatgpt_result_to_execution_output(payload, self.definition, self.request)
+        self.assertEqual(output.status, "failed")
+        self.assertEqual(output.report_content, "")
+        self.assertEqual(output.target_reports, ())
+
     def test_rejects_another_module(self):
         payload = dict(self.payload, module_id="tolkien")
         with self.assertRaises(ChatGPTResultError):
