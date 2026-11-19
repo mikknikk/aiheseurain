@@ -1,8 +1,8 @@
 # RSS-julkaisun manifesti ja takaisinluku
 
-**Versio:** 1.2.1  
+**Versio:** 1.2.2  
 **Päiväys:** 2026-11-19  
-**Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148), [#179](https://github.com/mikknikk/aiheseurain/issues/179)
+**Liittyvät tiketit:** [#156](https://github.com/mikknikk/aiheseurain/issues/156), [#158](https://github.com/mikknikk/aiheseurain/issues/158), [#148](https://github.com/mikknikk/aiheseurain/issues/148), [#179](https://github.com/mikknikk/aiheseurain/issues/179), [#212](https://github.com/mikknikk/aiheseurain/issues/212)
 
 ## Omistajuus ja tallennus
 
@@ -46,6 +46,14 @@ Jos Pages palauttaa vanhan RSS-version, näytösvahtipäiväkirjan ajo jää `pr
 Kaikki tuotannon Pages-ajot ovat saman GitHub Actions -concurrency-ryhmän takana. Lisäksi juuri ennen deployta tarkistetaan main-haaran kärki. Tämä estää jonossa vanhentuneen buildin julkaisemisen uudemman commitin päälle. Manifesti kirjataan ennen ulkoista Pages-kirjoitusta, joten myös epäonnistunut julkaisu jää jäljitettäväksi.
 
 GitHub Pagesin deployment vaihtaa staattisen sivuston julkaisuversiona; RSS-tiedostoja ei kirjoiteta yksitellen. Jos Pages-deployn tulos on epäselvä tai julkinen takaisinluku epäonnistuu, työnkulku tarkistaa julkisen sisällön deploy-toiminnon palautusarvosta riippumatta. Jos ehdokas ei ole kokonaan julkinen, työnkulku yrittää automaattista palautusta erillisellä Pages-deploylla. Näin myös epäselvä API-vastaus käsitellään todellisen julkisen tilan perusteella. Palautusartefakti sisältää edellisen sivustolähteen ja ennen ehdokasjulkaisua talteen otetut julkiset RSS-tavut, joten se ei oleta Gitin edellisen commitin olevan sama kuin tilaajien näkemä viimeisin sisältö. Palautuksen onnistuminen varmennetaan lukemalla kaikki RSS-URL:t takaisin. Ehdokasjulkaisun workflow merkitään silti epäonnistuneeksi, jotta virhe ei peity onnistuneen palautuksen alle.
+
+## Moduuliorchestratorin RSS-julkaisusovitin (#212)
+
+`scripts/github_module_adapters.py` sisältää `GitHubPagesRssPublisher`-sovittimen. Se toimittaa yhden syötteen XML:n ja sitä vastaavan hyväksytyn `reports/julkaisuportit/{run_id}.json`-raportin GitHub-pull requestina main-haaraan. Sovitin ei yhdistä PR:ää eikä ohita nykyistä julkaisulaadun porttia. PR:n luomiseen on käytettävä erillistä workflow-tapahtumat käynnistävää GitHub App/PAT -tunnusta; oletusarvoisen Actions GITHUB_TOKEN -tunnuksen tekemä PR ei käynnistä seuraavia työnkulkuja. PR:n yhdistäminen käynnistää tässä dokumentissa kuvatun Pages-buildin, Deployment-manifestin, julkaisun, julkisen takaisinluvun ja tarvittaessa palautuksen.
+
+Sovitin tarkistaa onnistuneen julkaisun vasta, kun PR:n tila on yhdistetty ja julkisen syötteen SHA-256-sisältötiiviste, GUID-lista ja item-määrä vastaavat ehdokasta. Avoin PR tai Pagesin viive tuottaa varmennuksettoman tuloksen; checkpointia ei saa päivittää tässä tilassa. Uusinta käyttää samaa moduuli-/ajotunnisteeseen perustuvaa haaraa ja PR:ää. Kohderaporttien julkaisu edellyttää aktiivista kohde–julkaisukohde-reittiä; prosessimoduulin näytösvahti ei kuulu sovittimen piiriin.
+
+Toteutus ei muuta Pages-työnkulkua, syötteitä, julkisia URL-osoitteita, branch protection -asetuksia tai automaatioiden käynnistyskehotteita. Orkestroinnin asynkroninen odotus ja jatkaminen ovat erillinen integraatiovaihe (#213).
 
 ## Käyttöönoton rajat
 

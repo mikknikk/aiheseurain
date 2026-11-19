@@ -1,8 +1,8 @@
 # Moduulien yhteinen suoritusorkestrointi
 
-**Versio:** 1.4.0  
+**Versio:** 1.5.0  
 **Päiväys:** 2026-11-19  
-**Liittyvä tiketti:** [#108 – Rakenna yhteinen moduulien suoritusorkestrointi ja vaiheittainen käyttöönotto](https://github.com/mikknikk/aiheseurain/issues/108)
+**Liittyvät tiketit:** [#108 – Rakenna yhteinen moduulien suoritusorkestrointi ja vaiheittainen käyttöönotto](https://github.com/mikknikk/aiheseurain/issues/108), [#212 – GitHub-pysyvät tallennus- ja julkaisusovittimet](https://github.com/mikknikk/aiheseurain/issues/212)
 
 ## 1. Vastuut ja erilliset tietokokonaisuudet
 
@@ -137,7 +137,24 @@ Tiketissä #120 lisättiin `scripts/module_run_adapters.py` ja `tests/test_modul
 Tallennus- ja julkaisutestit käyttävät väliaikaisia hakemistoja. Ne eivät kirjoita repositorion tuotannon moduulitiloihin, RSS-syötteisiin tai näytöshistoriaan. GitHub-pohjaiset tuotantosovittimet, ajastettujen tehtävien integraatio ja tuotantokäyttöönotto jäävät erillisiksi hyväksyttäviksi vaiheiksi.
 
 
-## 12. Yhden aiheen kiertokoordinaattori (#202)
+## 12. GitHub-pysyvät tallennus- ja julkaisusovittimet (#212)
+
+Tiketissä #212 lisättiin GitHubiin perustuvat tuotantosovittimet tiedostoon `scripts/github_module_adapters.py`. Paikalliset JSON-tiedostosovittimet säilyvät testien ja kuivaharjoittelun välineinä.
+
+- `GitHubModuleStateStore` lukee vain pyydetyn moduulin checkpoint-tiedoston ja käyttää GitHubin blob-SHA:ta optimistisen version vertailuun. Kirjoitus luo runtime-haaran tarvittaessa ja hylkää vanhentuneen SHA:n; saman sisällön epäselvä uusinta ratkaistaan takaisinluvulla.
+- `GitHubArtifactStore` tallentaa yhden muuttumattoman JSON-artefaktin moduuli-/ajotunnisteen mukaan. Erillinen moduulikohtainen indeksi sitoo ajotunnisteen artefaktiin SHA-tarkistetulla päivityksellä. Artefaktin kirjoitus ennen indeksin päivitystä on tarkoituksellinen: keskeytynyt kirjoitus voidaan uusia idempotentisti, eikä orpoa tiedostoa tulkita valmiiksi artefaktiksi.
+- `GitHubPublicationJournal` tallentaa yhden manifestin moduuli-/ajotunnisteelle. Manifestin neljä vaihetta ja aikaleimat säilyvät historiassa. Vaiheita ei voi ohittaa eikä samaa ajoa varata eri raporttisisällölle.
+- `GitHubRunRecorder` tallentaa ajon tekniset metatiedot muuttumattomana tiedostona. Raporttisisältö, lähdekatkelmat ja salaisuuskentät jätetään pois.
+- `GitHubPagesRssPublisher` ei kirjoita suojattuun main-haaraan eikä julkaise Pagesiin suoraan. Se avaa yhden RSS-syötteen ja hyväksytyn julkaisulaadun porttiraportin sisältävän PR:n. PR:n luomiseen vaaditaan erillinen AIHESEURAIN_GITHUB_TOKEN- tai eksplisiittinen GitHub App/PAT -tunnus: GitHub ei käynnistä PR-työnkulkuja oletusarvoisen Actions GITHUB_TOKEN -tunnuksen tekemistä kirjoituksista. PR käyttää nykyistä RSS/XML- ja julkaisulaatu-CI:tä; vasta PR:n yhdistäminen käynnistää nykyisen Pages-putken. Sovitin hyväksyy julkaisun vasta, kun PR on yhdistetty ja julkisen syötteen SHA-256-sisältötiiviste, GUID-lista ja item-määrä on luettu takaisin ja täsmäävät.
+- Kohderaportin reitti ratkaistaan nykyisestä julkaisurekisteristä ja -reitityksestä. Reitin on oltava aktiivinen ja moduulin on oltava topic-tyyppiä. Näytösvahti/prosessimoduuli ei voi käyttää tätä julkaisusovitinta. Yksi julkaisupyyntö sisältää tässä toteutuksessa yhden kohderaportin ja yhden syötteen; usean kohteen orkestrointi vaatii jatkovaiheen.
+
+Runtime-tietueet tallennetaan erilliselle `module-runtime-state`-haaralle polkuihin `data/module-state/`, `data/module-artifacts/`, `data/module-publication-journal/` ja `data/module-run-history/`. Haara luodaan vasta ensimmäisen kirjoituksen yhteydessä main-haaran senhetkisestä kärjestä. Lukeminen ei luo haaraa eikä muuta repositoriota. Tiedostot rajataan 50 MiB:iin; skeemat validoidaan versionoiduilla JSON Schema -tiedostoilla.
+
+GitHub Contents API:n epäselvä kirjoitusvastaus ratkaistaan takaisinluvulla. Rinnakkaisesta, toiseen tiedostoon kohdistuneesta haara-commitista johtuvaa 409/422-konfliktia yritetään rajatusti uudelleen vain, jos kyseinen tiedosto ei ole muuttunut. Saman checkpointin tai manifestin vanhentunut blob-SHA hylätään konfliktina. Sovittimien offline-testit käyttävät muistissa olevaa GitHub-rajapintaa eivätkä tee verkkokirjoituksia.
+
+**Asynkroninen julkaisuraja:** RSS-PR:n avaaminen ei ole julkaisu. Jos PR on vielä avoin tai Pagesin takaisinluku ei ole valmis, sovitin palauttaa varmennuksettoman kuitin. Nykyinen synkroninen `ModuleOrchestrator.run` pysäyttää tällöin etenemisen ennen artefaktien ja checkpointin päivittämistä. Sama ajo voidaan tarkistaa uudelleen PR:n yhdistämisen ja Pages-varmennuksen jälkeen. Orkestroinnin asynkroninen odotus, uudelleenjatkaminen ja usean kohteen erilliset julkaisusiirtymät kuuluvat tikettiin #213. Sovittimia ei ole vielä kytketty live-ajoon.
+
+## 13. Yhden aiheen kiertokoordinaattori (#202)
 
 `scripts/topic_rotation_coordinator.py` valitsee pääkierron seuraavan aiheen teknisistä tunnisteista ja käynnistää vain sen moduulin eristetyn handoff-runnerin. Koordinaattori tarkistaa seuraavan tehtävän `data/seurantatila.json`-tiedostosta ja vertaa sitä `docs/tehtavajono.md`-tiedoston näkyvään vuoroon sekä koko kiertojärjestykseen. `data/topic-task-map.json` yhdistää yhdeksän kiertotehtävää topic-moduuleihin ja oikeisiin lähdekäyttörekistereihin.
 
@@ -151,13 +168,14 @@ Käyttöönotto on vain kooditasolla. Käynnistyskehotetta, ChatGPT-tehtävän a
 
 ## Muutoshistoria
 
+- **1.5.0 – 2026-11-19:** lisättiin GitHubin SHA-tarkistetut checkpoint-, artefakti- ja julkaisumanifestisovittimet sekä nykyiseen RSS/Pages-putkeen PR:nä liittyvä julkaisusovitin. Live-moduuleja ei aktivoitu; asynkroninen jatkaminen rajattiin tikettiin #213.
 - **1.4.0 – 2026-11-19:** lisättiin yhden aiheen kiertokoordinaattori ja sandboxattu handoff-varjotila. Varsinainen tutkimuspalvelubrokeri ja live-automaation siirto rajattiin erillisiksi vaiheiksi.
 - **1.3.0 – 2026-11-18:** lisättiin rekisteristä kohteet lataava ja jokaisen kohteen erikseen suorittava TargetExecutionCoordinator.
 - **1.2.0 – 2026-11-18:** lisättiin versioitu kohderaportin tulossopimus, suorittajan usean kohderaportin tulos ja laadunvarmistuksen kohde-, versio-, havaintotyyppi- ja seurantajaksojen tarkistukset.
 - **1.1.0 – 2026-11-18:** dokumentoitiin paikalliset SHA-tarkistetut tallennus-, ajotulos- ja RSS-julkaisusovittimet sekä niiden testaus- ja tuotantorajaukset.
 - **1.0.0 – 2026-11-18:** määriteltiin yhteinen suorituspyyntö ja tulos, orkestroinnin elinkaari, varjotila, tuotannon hyväksyntäportti, idempotentit tallennus- ja julkaisurajapinnat sekä yleisen tapahtumavahdin moduuli-integraatio.
 
-## Julkaisumanifesti ja palautuminen (versio 1.2.0)
+## Julkaisumanifesti ja palautuminen (versio 1.3.0)
 
 Tuotantotilan orkestrointi vaatii pysyvän `PublicationJournal`-sovittimen. Se luo manifestin ennen ensimmäistä julkaisukirjoitusta. Jos manifestin valmistelu ei onnistu, julkaisua ei aloiteta. Manifestiin ei tallenneta raporttien tai lähteiden varsinaista sisältöä, vaan niiden SHA-256-tiivisteet, moduuli- ja ajotunnisteet, julkaisukohteet, lähtötilan SHA, artefaktiversio ja idempotenssiavain.
 
@@ -170,8 +188,9 @@ Manifestin vaiheet ovat yksisuuntaiset:
 
 Saman moduuli-/ajotunnisteen ja saman raporttisisällön uusinta käyttää samaa idempotenssiavainta. Jo saavutettua manifestivaihetta ei kirjoiteta taaksepäin. Jos ajo katkeaa julkaisun jälkeen, uusinta voi toistaa julkaisupyynnön samalla avaimella; julkaisusovittimen on tunnistettava jo julkaistu sisältö. Artefakti- ja checkpoint-tallennuksen on vastaavasti oltava idempotentteja. Sama ajotunniste eri raporttisisällöllä hylätään ristiriitana. Lähtötilan SHA ja artefaktiversio säilytetään alkuperäisinä auditointitietoina.
 
-`JsonFilePublicationJournal` on paikallinen atominen tiedostosovitin ja testiväline. Se käyttää lukitusta, väliaikaistiedostoa, `fsync`-varmistusta ja atomista tiedostonvaihtoa. Se ei ole GitHubin tuotantosovitin. Tuotantokäyttö vaatii vastaavan pysyvän ja atomisen adapterin; nykyinen RSS/Pages-julkaisu ei vielä käytä tätä uutta manifestia. Manifesti parantaa palautumisen sopimusta ja testattavuutta, mutta ei yksin takaa ulkoisen Pages-julkaisun atomisuutta tai takaisinlukua julkisesta URL-osoitteesta.
+`JsonFilePublicationJournal` on paikallinen atominen tiedostosovitin ja testiväline. Se käyttää lukitusta, väliaikaistiedostoa, `fsync`-varmistusta ja atomista tiedostonvaihtoa. GitHubin pysyvä vastine ja nykyiseen RSS/Pages-putkeen kytketty PR-julkaisusovitin on kuvattu luvussa 12. Julkaisu on asynkroninen: PR:n yhdistäminen ja julkinen takaisinluku ovat erillisiä ehtoja, eikä avoin PR siirrä checkpointia.
 
 ### Versiohistoria
 
+- **1.3.0 – 2026-11-19:** lisättiin GitHubin pysyvä julkaisumanifesti, vaihehistorian takaisinluku ja PR-pohjainen RSS-julkaisusovitin; Pagesin julkinen sisältö varmennetaan ennen checkpointin siirtoa.
 - **1.2.0 – 2026-11-18:** lisättiin pysyvä julkaisumanifesti, neljän vaiheen yksisuuntaiset tilasiirtymät ja saman ajon ristiriita-/uusintatestit. Tuotantosovitin ja nykyisen Pages-julkaisun kytkentä rajattiin erilliseksi vaiheeksi.
