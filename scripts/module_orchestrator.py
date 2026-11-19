@@ -15,6 +15,7 @@ from typing import Any, Protocol, Callable
 import jsonschema
 
 from scripts.module_registry import load_registry, RegistryResult, ModuleResult
+from scripts.production_activation import load_production_activation, ProductionActivationError
 from scripts.module_state import commit_successful_checkpoint, validate_module_state, StateConflictError
 from scripts.event_watch import load_event_type, empty_state, reconcile
 
@@ -311,7 +312,8 @@ class ModuleOrchestrator:
                  artifact_store: ArtifactStore | None = None, publisher: Publisher | None = None,
                  publication_journal: PublicationJournal | None = None,
                  comparator: ShadowComparator | None = None, recorder: RunRecorder | None = None,
-                 registry_loader: Callable[..., RegistryResult] = load_registry):
+                 registry_loader: Callable[..., RegistryResult] = load_registry,
+                 activation_loader: Callable[[str], bool] = load_production_activation):
         self.executor=executor
         self.quality_gate=quality_gate
         self.provider_router=provider_router
@@ -322,6 +324,7 @@ class ModuleOrchestrator:
         self.comparator=comparator
         self.recorder=recorder
         self.registry_loader=registry_loader
+        self.activation_loader=activation_loader
         self.run_records: list[ModuleRunResult]=[]
 
     def _module(self, module_id: str) -> ModuleResult:
@@ -399,6 +402,12 @@ class ModuleOrchestrator:
                     raise ProductionActivationRequired("Tuotantokäyttö vaatii erillisen hyväksynnän.")
                 if module.status!="active":
                     raise ModuleInactiveError("Passiivista moduulia ei voi suorittaa tuotantotilassa.")
+                try:
+                    activation_enabled = self.activation_loader(request.module_id)
+                except ProductionActivationError as exc:
+                    raise ProductionActivationRequired("Tuotantoluparekisteri on virheellinen tai ristiriitainen.") from exc
+                if activation_enabled is not True:
+                    raise ProductionActivationRequired("Moduulikohtaista tuotantolupaa ei ole aktivoitu.")
                 if any(item is None for item in (self.state_store,self.artifact_store,self.publisher,self.publication_journal)):
                     raise OrchestrationError("Tuotantoajon tallennus-, manifesti- ja julkaisupalvelut puuttuvat.")
                 state,state_sha=self.state_store.load(request.module_id)
