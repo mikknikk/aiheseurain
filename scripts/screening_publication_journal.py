@@ -123,7 +123,7 @@ def prepare_run(journal: dict[str, Any], record: dict[str, Any]) -> dict[str, An
 def complete_run(journal: dict[str, Any], run_id: str, *,
                  publication_commit_sha: str, deployment_id: int,
                  rss_verified_at: str, synchronization_commit_sha: str,
-                 *, rss_verified: bool, state_synchronized: bool) -> dict[str, Any]:
+                 rss_verified: bool, state_synchronized: bool) -> dict[str, Any]:
     """Merkitse ajo valmiiksi vasta julkisen RSS:n ja tilasynkronoinnin varmennuttua."""
     if rss_verified is not True or state_synchronized is not True:
         raise ScreeningJournalError("Ajon valmistuminen vaatii julkisen RSS:n ja tilasynkronoinnin varmennuksen.")
