@@ -89,6 +89,13 @@ class ShadowTransitionOrchestrator:
         if set(collect) - allowed or any(not callable(fn) for fn in collect.values()):
             raise ShadowTransitionError("Keräyssuunnitelmassa on tuntematon tapahtuma tai ei-kutsuttava arvo.")
 
+        # Lue lähtötilanne ennen checkpointin jälkitilan kerääjäcallbackia.
+        baseline = None
+        if "checkpoint" in collect:
+            baseline = read_checkpoint_baseline(
+                self.collector.client, request.module_id, observed_at=observed_at,
+            )
+
         records = []
         for event_type in sorted(collect):
             record = collect[event_type]()
@@ -117,9 +124,8 @@ class ShadowTransitionOrchestrator:
         if checkpoint is not None:
             # Älä luota callbackin itse ilmoittamaan lähtötilaan: lue se suoraan
             # runtime-haarasta ja vaadi jälkitodisteen before_* -kenttien täsmäävän.
-            baseline = read_checkpoint_baseline(
-                self.collector.client, request.module_id, observed_at=observed_at,
-            )
+            if baseline is None:
+                raise ShadowTransitionError("Checkpointin lähtötilaa ei voitu lukea.")
             if (
                 checkpoint["before_blob_sha"] != baseline["blob_sha"]
                 or checkpoint["before_run_id"] != baseline["run_id"]
