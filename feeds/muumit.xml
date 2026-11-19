@@ -6,7 +6,36 @@
     <description>Suomenkielinen, maailmanlaajuinen ja lähteistetty uutisseuranta. Syöte sisältää vain tämän aiheen uutisia.</description>
     <language>fi</language>
     <atom:link href="https://mikknikk.github.io/aiheseurain/feeds/muumit.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 16 Nov 2026 10:39:00 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 19 Nov 2026 12:23:45 +0200</lastBuildDate>
+    <item>
+      <title>Muumit – Pyrstötähteä etsimässä -kiertue jatkuu Suomessa neljällä paikkakunnalla</title>
+      <guid isPermaLink="false">urn:aiheseurain:muumit:2026-11-19:b936e62f-45fc-4f47-bc01-250d010bf58c</guid>
+      <pubDate>Thu, 19 Nov 2026 12:23:45 +0200</pubDate>
+      <description><![CDATA[
+        <article>
+          <h2>Muumit – Pyrstötähteä etsimässä -kiertue jatkuu Suomessa neljällä paikkakunnalla</h2>
+          <p><strong>Julkaistu:</strong> 19.11.2026. <strong>Alkuperäinen kiertueilmoitus:</strong> 7.7.2026. <strong>Seurantajakso:</strong> 16.11.2026 (kellonaika tuntematon) – 19.11.2026 klo 12.23.45 (Europe/Helsinki).</p>
+          <p>Sony Music Finland Live ilmoitti 7.7.2026 valtakunnallisesta <em>Pyrstötähteä etsimässä</em> -musiikkiteatterikiertueesta. Esitys perustuu Tove Janssonin klassikkoteokseen <em>Muumipeikko ja pyrstötähti</em>. Henna Tanskanen on käsikirjoittanut ja ohjannut tuotannon, jossa kuullaan uusia Muumi-kappaleita sekä tuttuja lauluja uusina sovituksina. Kiertueen ensi-ilta oli 29.9.2026 Helsingin Aleksanterin teatterissa; alkuperäisen tiedotteen mukaan kiertue vierailee 18 paikkakunnalla Suomessa.</p>
+          <h3>Seuraavat esitykset Suomessa</h3>
+          <ul>
+            <li>21.11.2026 – Hyvinkääsali, Hyvinkää</li>
+            <li>22.11.2026 – Sellosali, Espoo</li>
+            <li>28.11.2026 – Kuusankoskitalo, Kouvola</li>
+            <li>29.11.2026 – Keravasali, Kerava</li>
+          </ul>
+          <p>Sony Music Finland Liven tämänhetkisessä esityskalenterissa seuraava myöhempi päivämäärä on 3.4.2027 Savoy-teatterissa Helsingissä.</p>
+          <p><strong>Väitteen varmennustaso:</strong> ENSISIJAISELLÄ LÄHTEELLÄ VAHVISTETTU. Sony Music Finland Liven alkuperäinen kiertueilmoitus ja sen ajantasainen esityssivu vahvistavat tuotannon sisällön ja päivämäärät. Lippu.fi:n listaus täydentää tapahtuma- ja lipunmyyntitietoja; sitä ei lasketa riippumattomaksi toimitukselliseksi vahvistukseksi.</p>
+          <section aria-labelledby="lahdeluettelo">
+            <h2 id="lahdeluettelo">Lähdeluettelo</h2>
+            <ul>
+              <li><a href="https://live.sonymusic.fi/muumit-pyrstotahtea-etsimassa-kiertaa-suomea-syksylla-2026/">Sony Music Finland Live, 7.7.2026 – kiertueen alkuperäinen ilmoitus (A – ensisijainen lähde)</a></li>
+              <li><a href="https://live.sonymusic.fi/artists/muumiperheen-lauluretki/">Sony Music Finland Live – ajantasainen esityskalenteri, tarkistettu 19.11.2026 (A – ensisijainen lähde)</a></li>
+              <li><a href="https://www.lippu.fi/en/artist/muumit/">Lippu.fi – Muumien esitysluettelo ja lipunmyyntitiedot, tarkistettu 19.11.2026 (C – tapahtumahakupalvelu)</a></li>
+            </ul>
+          </section>
+        </article>
+      ]]></description>
+    </item>
     <item>
       <title>Muumien uusi peli saa julkaisujuhlan Saitamassa 21.–22. marraskuuta</title>
 <guid isPermaLink="false">urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event</guid>
