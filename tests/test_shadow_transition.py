@@ -247,6 +247,18 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
             self.orchestrator.run(self.request, collect=base, observed_at=self.now)
         self.assertEqual(self.client.writes, 0)
 
+    def test_checkpoint_callback_cannot_forge_the_after_state(self):
+        base = self._base_collectors()
+        # Callback väittää checkpointin edenneen tähän ajoon, vaikka runtime-haara
+        # sisältää edelleen vanhan checkpointin.
+        base["checkpoint"] = lambda: self._checkpoint_record(
+            before_sha="e" * 40, after_sha="f" * 40,
+            before_run="old-run-001", after_run="swift-run-239",
+        )
+        with self.assertRaises(ShadowTransitionError):
+            self.orchestrator.run(self.request, collect=base, observed_at=self.now)
+        self.assertEqual(self.client.writes, 0)
+
     def test_checkpoint_changed_by_another_run_forces_manual_review(self):
         self.client.pr.update({
             "state": "closed", "merged": True, "merged_at": self.now,
