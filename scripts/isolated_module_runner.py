@@ -17,9 +17,12 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
-import resource
-import resource
+import stat
 import tempfile
+try:
+    import resource
+except ImportError:  # Windowsissa resource-moduulia ei ole; sandboxia ei siellä käynnistetä.
+    resource = None
 from typing import Any, Mapping
 
 from scripts.module_input_bundle import bundle_to_json
