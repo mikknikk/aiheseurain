@@ -186,6 +186,21 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
             recovery_action(empty_journal(), deployment_status="pending",
                             public_feed_matches=False, checkpoint_advanced=False)
 
+
+    def test_recovery_action_does_not_start_when_checkpoint_is_unknown(self):
+        self.assertEqual(
+            recovery_action(empty_journal(), deployment_status="unknown",
+                            public_feed_matches=None, checkpoint_advanced=None),
+            "inspect_publication_state",
+        )
+
+    def test_duplicate_guids_are_rejected_before_publication(self):
+        record = prepared_record()
+        record["feed"]["guids"][1] = record["feed"]["guids"][0]
+        journal = prepare_run(empty_journal(), record)
+        with self.assertRaises(ScreeningJournalError):
+            validate_journal(journal, state(), feed_catalog())
+
     def test_empty_journal_is_valid(self):
         validate_journal(empty_journal(), state(), feed_catalog())
 
