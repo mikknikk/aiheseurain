@@ -356,13 +356,27 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #226 – moduulikohtaiset tuotantoluvat ja kaksoisjulkaisun esto
 
-**Tila:** toteutus PR:ssä; moduulit pysyvät inactive-tilassa ja kaikki tuotantoluvat ovat pois päältä.
+**Tila:** valmis; PR #229 yhdistetty main-haaraan commitilla 336eaee6930b13ec48945d2180c695963768248a. Kaikkien moduulien tuotantoluvat ovat edelleen pois päältä.
 
 - [x] Lisätään erillinen moduulikohtainen tuotantoluparekisteri ja skeema; kaikki kymmenen moduulia ovat oletusarvoisesti `false`.
 - [x] Tuotantoajo vaatii eksplisiittisen ajoluvan, aktiivisen moduulin ja erillisen moduulikohtaisen tuotantoluvan.
 - [x] Virheellinen, puuttuva tai moduulirekisterin kanssa ristiriitainen lupatieto estää tuotantoajon.
 - [x] Prosessimoduuli/näytösvahti estetään topic-julkaisupolun aktivoinnista.
 - [x] Julkaisumanifesti sitoo varauksen moduuliin ja täsmälliseen seurantajaksoon; GitHubin SHA-CAS-indeksi estää toisen run_id:n saman jakson kaksoisjulkaisun.
-- [ ] PR-CI ja katselmointi.
+- [x] PR-CI ja katselmointi; kaikki vaaditut UI-, RSS-/dokumentaatio- ja Pages-tarkistukset läpäisivät.
 
-**Rajaus:** yhtään moduulia ei aktivoida, live-ajoa ei tehdä eikä automaatioiden asetuksia, ajastuksia, käynnistyskehotteita tai kohdekeskusteluja muuteta. Näytösvahti pysyy erillisenä.
+**Rajaus:** yhtään moduulia ei aktivoitu, live-ajoa ei tehty eikä automaatioiden asetuksia, ajastuksia, käynnistyskehotteita tai kohdekeskusteluja muutettu. Näytösvahti pysyy erillisenä.
+
+### Issue #227 – moduulisiirtymän palautus ja tuotantoonottopäätökset
+
+**Tila:** toteutus PR:ssä; palautuspäätökset ovat kirjoituksettomia eikä live-siirtymää tehdä.
+
+- [x] Määritellään palautumisen päätösfunktio, joka yhdistää manifestin, RSS-PR:n tilan, julkisen takaisinluvun, moduulin checkpointin ja vanhan raportointipolun saman jakson julkaisutilan.
+- [x] Avoin RSS-PR pysäyttää vanhaan polkuun siirtymisen; yhdistetty ja varmennettu julkaisu jatkuu saman run_id:n kautta.
+- [x] Vanhaan raportointipolkuun paluu edellyttää varmennettua julkaisemattomuutta, vanhan polun jakson puuttumista ja erillistä hyväksyntää.
+- [x] Epäselvät API-/Pages-tilat ja ristiriitaiset checkpointit johtavat selvitykseen tai manuaaliseen katselmointiin, eivät automaattiseen onnistumiseen.
+- [x] Lisätään vikainjektiotestit julkaisun, manifestin vaihekirjoitusten ja checkpoint-tallennuksen kuittauskatkoille sekä saman run_id:n idempotentille uusinnalle.
+- [ ] PR-CI ja katselmointi.
+- [ ] Päivitetään tuotantoonottopäätösten ja aihekohtaisen siirtojärjestyksen dokumentointi testitulosten jälkeen.
+
+**Rajaus:** ei live-siirtymää, moduulin aktivointia, RSS-julkaisua tai automaatioiden asetusten, ajastusten, käynnistyskehotteiden tai kohdekeskustelujen muutoksia. Näytösvahti pysyy erillisenä.
