@@ -145,7 +145,7 @@ class ChatGPTRssCandidateTests(unittest.TestCase):
         with self.assertRaises(GitHubAdapterError):
             self.build(unknown)
         wrong_version = [dict(self.reports[0], target_version="9.9.9"), self.reports[1]]
-        with self.assertRaises(ValueError):
+        with self.assertRaises(GitHubAdapterError):
             self.build(wrong_version)
 
     def test_unapproved_editorial_assessment_is_rejected(self):
