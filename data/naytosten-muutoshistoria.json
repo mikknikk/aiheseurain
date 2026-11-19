@@ -2766,21 +2766,21 @@
       "sources": [
         {
           "publisher": "Kinoon",
-          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
           "published_at": null,
-          "checked_at": "2026-11-19T05:43:38+02:00",
+          "checked_at": "2026-11-19T06:40:17+02:00",
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         },
         {
           "publisher": "Cinema Niagara",
-          "url": "https://cinemaniagara.fi/?lang=fi",
+          "url": "https://cinemaniagara.fi/salikartta?id=54469",
           "published_at": null,
-          "checked_at": "2026-11-19T06:10:58+02:00",
+          "checked_at": "2026-11-19T06:40:17+02:00",
           "claim_type": "TEATTERIN VAHVISTAMA",
-          "notes": "Teatterin oma ohjelmisto näyttää ke 25.11. klo 12.30."
+          "notes": "Teatterin oma lipunmyyntisivu vahvistaa 25.11.2026 klo 12.30 näytöksen."
         }
       ],
-      "booking_url": "https://cinemaniagara.fi/?lang=fi"
+      "booking_url": "https://cinemaniagara.fi/salikartta?id=54469"
     },
     {
       "screening_id": "klara-ja-aurinko-finnkino-scala-20261125-1445",
@@ -2793,13 +2793,13 @@
       "sources": [
         {
           "publisher": "Kinoon",
-          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
           "published_at": null,
-          "checked_at": "2026-11-19T05:43:38+02:00",
+          "checked_at": "2026-11-19T06:40:17+02:00",
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         }
       ],
-      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
     },
     {
       "screening_id": "klara-ja-aurinko-kinopirtti-20261125-1540",
@@ -2841,9 +2841,9 @@
       "sources": [
         {
           "publisher": "Kinoon",
-          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
           "published_at": null,
-          "checked_at": "2026-11-19T05:43:38+02:00",
+          "checked_at": "2026-11-19T06:40:17+02:00",
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         },
         {
@@ -2854,7 +2854,7 @@
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         }
       ],
-      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
     },
     {
       "screening_id": "klara-ja-aurinko-ihme-kompleksi-20261125-1745",
@@ -2867,13 +2867,13 @@
       "sources": [
         {
           "publisher": "Kinoon",
-          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
           "published_at": null,
-          "checked_at": "2026-11-19T05:43:38+02:00",
+          "checked_at": "2026-11-19T06:40:17+02:00",
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         }
       ],
-      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
     },
     {
       "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261125-2045",
@@ -2905,13 +2905,13 @@
       "sources": [
         {
           "publisher": "Kinoon",
-          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
           "published_at": null,
-          "checked_at": "2026-11-19T05:43:38+02:00",
+          "checked_at": "2026-11-19T06:40:17+02:00",
           "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
         }
       ],
-      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
     },
     {
       "screening_id": "ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261125-1845",
@@ -10114,6 +10114,321 @@
         }
       ],
       "note": "Kinopirtin oma elokuvasivu vahvisti näytösajan 25.11. klo 15.40 sekä esityskielen englanti ja tekstitykset suomeksi ja ruotsiksi. Lähdeviite ja RSS-linkki päivitettiin teatterin omaan elokuvasivuun."
+    },
+    {
+      "event_id": "correction-klara-ja-aurinko-cinema-niagara-20261125-1230-screening-watch-20261119T044017Z-a2-kinoon-link",
+      "observed_at": "2026-11-19T06:40:17+02:00",
+      "type": "correction",
+      "screening_id": "klara-ja-aurinko-cinema-niagara-20261125-1230",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-cinema-niagara-20261125-1230",
+        "film": "Klara ja aurinko",
+        "venue": "Cinema Niagara",
+        "city": "Tampere",
+        "starts_at": "2026-11-25T12:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Cinema Niagara",
+            "url": "https://cinemaniagara.fi/?lang=fi",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:10:58+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA",
+            "notes": "Teatterin oma ohjelmisto näyttää ke 25.11. klo 12.30."
+          }
+        ],
+        "booking_url": "https://cinemaniagara.fi/?lang=fi"
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-cinema-niagara-20261125-1230",
+        "film": "Klara ja aurinko",
+        "venue": "Cinema Niagara",
+        "city": "Tampere",
+        "starts_at": "2026-11-25T12:30:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "TEATTERIN VAHVISTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:40:17+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Cinema Niagara",
+            "url": "https://cinemaniagara.fi/salikartta?id=54469",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:40:17+02:00",
+            "claim_type": "TEATTERIN VAHVISTAMA",
+            "notes": "Teatterin oma lipunmyyntisivu vahvistaa 25.11.2026 klo 12.30 näytöksen."
+          }
+        ],
+        "booking_url": "https://cinemaniagara.fi/salikartta?id=54469"
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:40:17+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        },
+        {
+          "publisher": "Cinema Niagara",
+          "url": "https://cinemaniagara.fi/salikartta?id=54469",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:40:17+02:00",
+          "claim_type": "TEATTERIN VAHVISTAMA",
+          "notes": "Teatterin oma lipunmyyntisivu vahvistaa 25.11.2026 klo 12.30 näytöksen."
+        }
+      ],
+      "note": "Korjaus: Kinoon-lähteen alueparametri vaihdettiin koko Suomen listausnäkymään ja Cinema Niagaran linkki tarkennettiin näytöskohtaiseen teatterin omaan lipunmyyntisivuun."
+    },
+    {
+      "event_id": "correction-klara-ja-aurinko-finnkino-scala-20261125-1445-screening-watch-20261119T044017Z-a2-kinoon-link",
+      "observed_at": "2026-11-19T06:40:17+02:00",
+      "type": "correction",
+      "screening_id": "klara-ja-aurinko-finnkino-scala-20261125-1445",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-finnkino-scala-20261125-1445",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Scala",
+        "city": "Kuopio",
+        "starts_at": "2026-11-25T14:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-finnkino-scala-20261125-1445",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Scala",
+        "city": "Kuopio",
+        "starts_at": "2026-11-25T14:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:40:17+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:40:17+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Korjaus: Kinoon-lähteen alueparametri vaihdettiin koko Suomen listausnäkymään, koska aiempi Turun aluelinkki ei vastannut tämän näytöksen paikkakuntaa."
+    },
+    {
+      "event_id": "correction-klara-ja-aurinko-riviera-punavuori-20261125-1700-screening-watch-20261119T044017Z-a2-kinoon-link",
+      "observed_at": "2026-11-19T06:40:17+02:00",
+      "type": "correction",
+      "screening_id": "klara-ja-aurinko-riviera-punavuori-20261125-1700",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-riviera-punavuori-20261125-1700",
+        "film": "Klara ja aurinko",
+        "venue": "Riviera Punavuori",
+        "city": "Helsinki",
+        "starts_at": "2026-11-25T17:00:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Valkokangas",
+            "url": "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-riviera-punavuori-20261125-1700",
+        "film": "Klara ja aurinko",
+        "venue": "Riviera Punavuori",
+        "city": "Helsinki",
+        "starts_at": "2026-11-25T17:00:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:40:17+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          },
+          {
+            "publisher": "Valkokangas",
+            "url": "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:40:17+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        },
+        {
+          "publisher": "Valkokangas",
+          "url": "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
+          "published_at": null,
+          "checked_at": "2026-11-19T05:43:38+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Korjaus: Kinoon-lähteen alueparametri vaihdettiin koko Suomen listausnäkymään, koska aiempi Turun aluelinkki ei vastannut tämän näytöksen paikkakuntaa."
+    },
+    {
+      "event_id": "correction-klara-ja-aurinko-ihme-kompleksi-20261125-1745-screening-watch-20261119T044017Z-a2-kinoon-link",
+      "observed_at": "2026-11-19T06:40:17+02:00",
+      "type": "correction",
+      "screening_id": "klara-ja-aurinko-ihme-kompleksi-20261125-1745",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-ihme-kompleksi-20261125-1745",
+        "film": "Klara ja aurinko",
+        "venue": "Ihme Kompleksi",
+        "city": "Kankaanpää",
+        "starts_at": "2026-11-25T17:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-ihme-kompleksi-20261125-1745",
+        "film": "Klara ja aurinko",
+        "venue": "Ihme Kompleksi",
+        "city": "Kankaanpää",
+        "starts_at": "2026-11-25T17:45:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:40:17+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:40:17+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Korjaus: Kinoon-lähteen alueparametri vaihdettiin koko Suomen listausnäkymään, koska aiempi Turun aluelinkki ei vastannut tämän näytöksen paikkakuntaa."
+    },
+    {
+      "event_id": "correction-klara-ja-aurinko-finnkino-kinopalatsi-20261125-2115-screening-watch-20261119T044017Z-a2-kinoon-link",
+      "observed_at": "2026-11-19T06:40:17+02:00",
+      "type": "correction",
+      "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261125-2115",
+      "previous": {
+        "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261125-2115",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Kinopalatsi",
+        "city": "Helsinki",
+        "starts_at": "2026-11-25T21:15:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku",
+            "published_at": null,
+            "checked_at": "2026-11-19T05:43:38+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=turku"
+      },
+      "current": {
+        "screening_id": "klara-ja-aurinko-finnkino-kinopalatsi-20261125-2115",
+        "film": "Klara ja aurinko",
+        "venue": "Finnkino Kinopalatsi",
+        "city": "Helsinki",
+        "starts_at": "2026-11-25T21:15:00+02:00",
+        "status": "scheduled",
+        "source_claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA",
+        "sources": [
+          {
+            "publisher": "Kinoon",
+            "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+            "published_at": null,
+            "checked_at": "2026-11-19T06:40:17+02:00",
+            "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+          }
+        ],
+        "booking_url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155"
+      },
+      "sources": [
+        {
+          "publisher": "Kinoon",
+          "url": "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
+          "published_at": null,
+          "checked_at": "2026-11-19T06:40:17+02:00",
+          "claim_type": "KOLMANNEN OSAPUOLEN ILMOITTAMA"
+        }
+      ],
+      "note": "Korjaus: Kinoon-lähteen alueparametri vaihdettiin koko Suomen listausnäkymään, koska aiempi Turun aluelinkki ei vastannut tämän näytöksen paikkakuntaa."
     }
   ]
 }
