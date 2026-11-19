@@ -503,7 +503,8 @@ class RoutedReportPublisher:
         self._last_receipt_details: list[dict[str, Any]] = []
 
     def publish_target_reports(self, module_id: str, run_id: str,
-                               target_reports: list[dict[str, Any]]) -> PublicationReceipt:
+                               target_reports: list[dict[str, Any]], *,
+                               publication_metadata: dict[str, Any] | None = None) -> PublicationReceipt:
         """Reititä ja julkaise yksi raportti kutakin seurantakohdetta kohti."""
         from scripts.publication_routing import (
             PublicationRoutingError, resolve_publication_plan,
