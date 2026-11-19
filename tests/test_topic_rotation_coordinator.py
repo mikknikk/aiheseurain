@@ -205,7 +205,7 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
         )
         source = (self.root / "scripts/topic_dispatch_runner.py").read_text(encoding="utf-8")
         result = run_isolated_module(bundle, source)
-        self.assertEqual(result["status"], "ready_for_external_research")
+        self.assertEqual(result["status"], "ready_for_chatgpt_execution")
         self.assertEqual(result["module_id"], "muumit")
         self.assertNotIn("indian-film-screening-watch", json.dumps(result, ensure_ascii=False))
 
