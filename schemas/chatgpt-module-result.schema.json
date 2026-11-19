@@ -496,80 +496,110 @@
         "source_checks": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "source_id",
-              "status",
-              "note"
-            ],
-            "properties": {
-              "source_id": {
-                "type": "string",
-                "pattern": "^[a-z0-9][a-z0-9-]*$"
-              },
-              "status": {
-                "enum": [
-                  "checked",
-                  "partial",
-                  "unavailable",
-                  "skipped"
-                ]
-              },
-              "note": {
-                "type": "string",
-                "minLength": 1
-              },
-              "reason": {
-                "type": "string",
-                "minLength": 1
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/$defs/source_audit/$defs/source_check"
           }
         },
         "supplemental_sources": {
           "type": "array",
           "items": {
-            "type": "object",
-            "required": [
-              "url",
-              "title",
-              "publisher",
-              "verification_status"
-            ],
-            "properties": {
-              "url": {
-                "type": "string",
-                "format": "uri",
-                "pattern": "^https?://"
-              },
-              "title": {
-                "type": "string",
-                "minLength": 1
-              },
-              "publisher": {
-                "type": "string",
-                "minLength": 1
-              },
-              "verification_status": {
-                "enum": [
-                  "primary_confirmed",
-                  "independently_reported",
-                  "single_editorial_report",
-                  "anonymous_source",
-                  "rumor",
-                  "unverified"
-                ]
-              },
-              "note": {
-                "type": "string"
-              }
-            },
-            "additionalProperties": false
+            "$ref": "#/$defs/source_audit/$defs/supplemental_source"
           }
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "$defs": {
+        "source_check": {
+          "type": "object",
+          "required": [
+            "source_id",
+            "status",
+            "note"
+          ],
+          "properties": {
+            "source_id": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]*$"
+            },
+            "status": {
+              "enum": [
+                "checked",
+                "partial",
+                "unavailable",
+                "skipped"
+              ]
+            },
+            "note": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "unavailable",
+                      "skipped"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "required": [
+                  "reason"
+                ]
+              }
+            }
+          ],
+          "additionalProperties": false
+        },
+        "supplemental_source": {
+          "type": "object",
+          "required": [
+            "url",
+            "title",
+            "publisher",
+            "verification_status"
+          ],
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "pattern": "^https?://"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "publisher": {
+              "type": "string",
+              "minLength": 1
+            },
+            "verification_status": {
+              "enum": [
+                "primary_confirmed",
+                "independently_reported",
+                "single_editorial_report",
+                "anonymous_source",
+                "rumor",
+                "unverified"
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      }
     }
   },
   "anyOf": [
