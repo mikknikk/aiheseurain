@@ -281,6 +281,31 @@ class GitHubAdapterTests(unittest.TestCase):
         self.assertTrue(receipt.verified)
         self.assertTrue(publisher.verify(receipt))
 
+    def test_publisher_rejects_public_feed_with_same_guids_but_changed_content(self):
+        client = self.client
+        guid = "urn:aiheseurain:tolkien:2026-11-19:00000000-0000-5000-8000-000000000003"
+        xml = ('<?xml version="1.0"?><rss version="2.0"><channel><title>Tolkien</title>'
+               '<item><title>Uusi raportti</title><guid isPermaLink="false">'
+               + guid + '</guid><description>Oikea raportti</description></item></channel></rss>')
+        changed_xml = xml.replace("Oikea raportti", "Eri sisältö")
+        gate = {"decision": "approved", "run_id": "run-212-digest",
+                "feed_path": "feeds/tolkien.xml", "task_id": "tolkien"}
+        def builder(module_id, run_id, report_content):
+            return PublicationCandidate(
+                files={"feeds/tolkien.xml": xml,
+                       f"reports/julkaisuportit/{run_id}.json": json.dumps(gate)},
+                feed_path="feeds/tolkien.xml",
+                public_url="https://mikknikk.github.io/aiheseurain/feeds/tolkien.xml")
+        publisher = GitHubPagesRssPublisher(
+            client, builder, public_fetcher=lambda url: changed_xml.encode("utf-8"))
+        publisher.publish("tolkien", "run-212-digest", "Raportti",
+                          idempotency_key="tolkien:run-212-digest")
+        branch = next(iter(client.pull_requests))
+        client.pull_requests[branch]["merged"] = True
+        receipt = publisher.publish("tolkien", "run-212-digest", "Raportti",
+                                    idempotency_key="tolkien:run-212-digest")
+        self.assertFalse(receipt.verified)
+
     def test_target_publisher_requires_an_active_registry_route(self):
         publisher = GitHubPagesRssPublisher(self.client, lambda *args, **kwargs: None)
         report = {
