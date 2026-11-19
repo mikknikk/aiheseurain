@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 1.4.0  
+**Versio:** 1.6.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202)
 
@@ -107,7 +107,7 @@ python -m scripts.topic_rotation_coordinator \
 
 **ChatGPT on varsinainen tutkimuksen suorittaja.** Handoff-paketin `execution_contract.executor` on `chatgpt_scheduled_task`. ChatGPT lukee vain valitun moduulin `input_bundle`-sisällön ja tekee varsinaiset verkkohakunsa omilla käytettävissä olevilla haku- ja selaustyökaluillaan. Ulkoista AI- tai tutkimuspalvelua eikä `data/provider-routing.json`-reititystä tarvita tähän toimintatapaan. Bubblewrap-sandbox koskee vain paikallista handoff-runneria: se ei eristä ChatGPT:n omaa työskentely-ympäristöä käyttöjärjestelmätasolla. Tietosisällön rajaaminen perustuu siihen, että automaatiolle luovutetaan vain yhden moduulin paketti ja sen ohje kieltää muiden moduulien tietojen pyytämisen tai lukemisen. Tämä raja on kuvattava rehellisesti sovellustason eristykseksi, ei LLM:n prosessieristykseksi.
 
-Tässä vaiheessa handoff ei vielä julkaise RSS:ää eikä päivitä moduulin checkpointia. ChatGPT:n tutkimustuloksen vastaanotto, sen muuntaminen `ModuleExecutionOutput`-sopimukseen ja `ModuleOrchestrator`-elinkaaren käynnistäminen ovat seuraava erillinen repositoriototeutus. Kaikki moduulit pysyvät inactive-tilassa.
+Handoff ei julkaise RSS:ää eikä päivitä moduulin checkpointia. ChatGPT:n rakenteisen tuloksen sopimus on `schemas/chatgpt-module-result.schema.json`. `scripts/chatgpt_module_result.py` validoi moduuli-, versio-, ajo- ja seurantajaksotunnisteet ja muuntaa tuloksen `ModuleExecutionOutput`-arvoksi. Sopimus tukee sekä yhtä moduuliraporttia että useita erillisiä `TargetReport`-kohderaportteja, joiden tunnisteet ja seurantajaksot tarkistetaan ennen orkestrointia. `ChatGPTResultExecutor` toteuttaa `ModuleExecutor`-rajapinnan jo suoritetulle ChatGPT-tutkimukselle. Sovitin ei tee verkkohakuja eikä kutsu ulkoista palvelua. Live-ajon palautuspolku ja tallennetun automaatiotehtävän siirto edellyttävät edelleen erillistä hyväksyntää. Kaikki moduulit pysyvät inactive-tilassa.
 
 GitHub-toteutus ei muuta `prompts/paauutisseuranta.txt`-tiedostoa eikä ChatGPT-tehtävän tallennettua käynnistyskehotetta, ajastusta tai kohdekeskustelua. Käynnistyskehotteen ja live-tehtävän siirto tehdään vasta erikseen hyväksytyssä vaiheessa.
 
