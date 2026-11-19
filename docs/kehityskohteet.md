@@ -314,9 +314,26 @@ Suositeltu toteutusjärjestys:
 - [x] Kohderaportin julkaisureitti ratkaistaan nykyisistä rekistereistä; vain aktiivinen topic-reitti hyväksytään. Näytösvahti/prosessimoduuli on rajattu ulos.
 - [x] Lisättiin runtime-tietueiden JSON Schema -sopimukset ja offline-testit: SHA-konfliktit, idempotenssi, epäselvä API-vastaus, rinnakkaisen haarakirjoituksen uusinta, vaihekatkot ja Pages-takaisinluku.
 - [x] PR-CI läpäisi: 307 Python-yksikkötestiä, RSS-/dokumentaatio-/seurantatilan tarkistus, käyttöliittymätestit ja Pages-build onnistuivat.
-- [ ] Kytke sovittimet orkestroinnin asynkroniseen elinkaareen tiketissä #213. Avoin RSS-PR ei ole julkaisu eikä saa päivittää artefakteja tai checkpointia.
+- [x] Julkaisusovitin palauttaa avoimesta RSS-PR:stä julkaisemattoman kuittauksen ja jatkaa samaa idempotenttia ajoa vasta PR:n yhdistämisen ja Pages-sisällön varmennuksen jälkeen. Orkestrointi päivittää artefaktit ja checkpointin vasta varmennetun kuittauksen jälkeen.
 - [ ] Varmista ennen live-käyttöä tarvittavat GitHub Actions -oikeudet erikseen, mukaan lukien PR-tapahtumat käynnistävä GitHub App/PAT -tunnus. Oletusarvoista GITHUB_TOKEN-tunnusta ei käytetä RSS-PR:n avaamiseen; tämän tiketin toteutus ei muuta nykyisiä työnkulkujen käyttöoikeuksia.
 
 **Tallennusmalli:** runtime-tietueet tallentuvat ensimmäisen kirjoituksen yhteydessä luotavalle module-runtime-state-haaralle. Luenta ei luo haaraa. Tiedostopolut ovat data/module-state/{module_id}.json, data/module-artifacts/{module_id}/, data/module-publication-journal/{module_id}/ ja data/module-run-history/{module_id}/. Runtime-haaraa ei vielä luotu tässä PR:ssä eikä sinne kirjoitettu tuotantotietoja.
 
-**Asynkroninen julkaisuraja:** publisher avaa ehdokas-PR:n, mutta nykyinen ModuleOrchestrator.run on synkroninen. Jos PR on avoin, ajo pysähtyy ennen artefaktien ja checkpointin päivitystä. Tiketti #213 lisää turvallisen jatkamisen PR:n yhdistämisen ja Pages-varmennuksen jälkeen. Kohderaporttien monikohdejulkaisua ei vielä toteuteta tässä sovittimessa.
+**Asynkroninen julkaisuraja:** ModuleOrchestrator.run voidaan käynnistää saman run_id:n tuloksella uudelleen PR:n yhdistämisen jälkeen. Avoin PR ei ole julkaisu: ensimmäinen yritys pysähtyy ennen artefaktien ja checkpointin päivitystä. Uusinta hyväksyy vain muuttumattoman ehdokkaan ja jatkaa vasta, kun PR on yhdistetty ja julkisen Pages-syötteen GUIDit, item-määrä sekä sisältötiiviste vastaavat ehdokasta. Monikohderaportit voidaan yhdistää yhden topic-moduulin yhteen syötteeseen; prosessimoduulit on rajattu ulos.
+
+### Issue #213 – ChatGPT-tuloksen kytkentä moduuliorkestroinnin elinkaareen
+
+**Tila:** toteutus PR:ssä; tuotantokytkentää ei ole otettu käyttöön. Live-automaation asetuksia ei muutettu.
+
+- [x] Varmistetaan tuloksen moduuli-, sopimus-, ajo- ja seurantajaksotunnisteet sekä alkuperäisen handoffin syötepaketin SHA-256.
+- [x] Tallennetaan hyväksytty handoff muuttumattomana moduuli-/ajokohtaisena runtime-tietueena; sama tunniste ja sisältö on idempotentti, eri tiiviste hylätään.
+- [x] Muunnetaan tulos ChatGPTResultExecutor-sovittimella orkestroinnin sisäiseksi tulokseksi ja tarkistetaan rekisteröidyt kohteet, versiot, seurantajaksot, raporttisisällöt sekä arkaluonteisten kenttien puuttuminen.
+- [x] Lisätään toimituksellisen julkaisuarvion skeema ja tarkistukset. Julkaisuarvio ei korvaa RSS:n automaattista rakennetta tai nykyistä julkaisulaadun porttia.
+- [x] Kytketään kohderaportit nykyiseen julkaisureititykseen ja yhteen topic-syötteeseen; näytösvahti/prosessimoduuli ei voi käyttää tätä julkaisupolkua.
+- [x] Varmistetaan, että avoin RSS-PR ei päivitä artefakteja tai checkpointia. Saman ajon uusinta jatkaa vasta yhdistetyn PR:n ja Pages-syötteen tarkan takaisinluvun jälkeen.
+- [x] Lisätään päähaaran vastaanottotuloksen shadow-työnkulku. Se käsittelee vain yhden uuden JSON-tiedoston, tallentaa teknisen ajohistorian eikä julkaise RSS:ää tai siirrä tehtäväkiertoa.
+- [x] Lisätään regressiotestit handoffin idempotenssille, väärälle moduulille, puuttuvalle tai virheelliselle julkaisuarviolle, arkaluonteisille metatiedoille, epäonnistuneelle/puutteelliselle tulokselle ja shadow-työnkulun rajoille.
+- [ ] Aja PR-CI ja korjaa mahdolliset regressiot ennen yhdistämistä.
+- [ ] Varjotilan rinnakkaisvertailu ja tuotantosiirtymän hyväksyntä kuuluvat tiketteihin #214 ja #215.
+
+**Rajaus:** päähaaran automaatio käyttää vain shadow-tilaa. Tuotantotilan koodi on erikseen portitettu ja edellyttää eksplisiittistä kutsulippua, aktiivista moduulia sekä GitHub-julkaisuoikeuksia; sitä ei käynnistetä tässä PR:ssä. Tallennettuja ChatGPT-tehtäviä, käynnistyskehotteita, ajastuksia, aikavyöhykkeitä tai kohdekeskusteluja ei muuteta.
