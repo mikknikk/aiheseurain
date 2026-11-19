@@ -12,43 +12,50 @@
       "source_id": "fide",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "chesscom",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "chessbase",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "lichess-blog",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "us-chess",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "european-chess-union",
       "critical": true,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "finnish-chess",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     }
   ]
 }
