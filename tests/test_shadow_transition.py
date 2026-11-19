@@ -263,7 +263,8 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
             }
         )
         result = self.orchestrator.run(
-            self.request, collect=base, observed_at=self.now, expected_guids=[],
+            self.request, collect=base, observed_at=self.now,
+            expected_guids=[self.expected_guid],
         )
         self.assertEqual(result["recovery_action"], "legacy_fallback_requires_approval")
         base["legacy_approval"] = lambda: self.collector.legacy_fallback_approval(
