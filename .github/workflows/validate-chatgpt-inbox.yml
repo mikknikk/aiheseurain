@@ -1,0 +1,73 @@
+name: ChatGPT-tuloksen vastaanoton tarkistus
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [main]
+    paths:
+      - "data/chatgpt-inbox/**/*.json"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  validate-incoming-result:
+    name: Validoi yksi vastaanotettava moduulitulos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae vain luotettu main-haaran validointikoodi
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          persist-credentials: false
+
+      - name: Nouda PR:stä vain yksi uusi JSON-tiedosto
+        id: incoming
+        uses: actions/github-script@v7
+        env:
+          RESULT_PATH: ${{ runner.temp }}/chatgpt-module-result.json
+        with:
+          script: |
+            const files = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              per_page: 100
+            });
+            if (files.data.length !== 1) {
+              core.setFailed("Palautus-PR saa sisältää täsmälleen yhden tiedoston.");
+              return;
+            }
+            const file = files.data[0];
+            const pattern = /^data\/chatgpt-inbox\/([a-z0-9][a-z0-9-]*)\/([A-Za-z0-9][A-Za-z0-9._:-]{2,127})\.json$/;
+            if (!["added", "modified"].includes(file.status) || !pattern.test(file.filename)) {
+              core.setFailed("Palautus-PR saa lisätä vain uuden moduulitulos-JSONin oikeaan polkuun.");
+              return;
+            }
+            const response = await github.rest.repos.getContent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: file.filename,
+              ref: context.payload.pull_request.head.sha
+            });
+            if (Array.isArray(response.data) || response.data.type !== "file" || !response.data.content) {
+              core.setFailed("PR:n tulostiedostoa ei voitu lukea tavallisena GitHub-tiedostona.");
+              return;
+            }
+            const content = Buffer.from(response.data.content, "base64");
+            if (content.length > 1048576) {
+              core.setFailed("ChatGPT-tulostiedosto ylittää yhden mebitavun rajan.");
+              return;
+            }
+            require("fs").writeFileSync(process.env.RESULT_PATH, content);
+            core.setOutput("relative-path", file.filename);
+
+      - name: Validoi tulos luotetulla skeemalla ja moduulirekisterillä
+        env:
+          RESULT_PATH: ${{ runner.temp }}/chatgpt-module-result.json
+          RELATIVE_PATH: ${{ steps.incoming.outputs.relative-path }}
+        run: |
+          test -s "$RESULT_PATH"
+          python -m pip install jsonschema
+          python scripts/validate_chatgpt_inbox.py --file "$RESULT_PATH" --relative-path "$RELATIVE_PATH"

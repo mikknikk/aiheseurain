@@ -61,5 +61,7 @@ jobs:
           name: julkaisulaadun-porttiraportit
           path: reports/julkaisuportit/*.json
           if-no-files-found: warn
+      - name: Validoi hyväksyttyyn haaraan tallennetut ChatGPT-tulokset
+        run: python -m scripts.validate_chatgpt_inbox --all
       - name: Testaa linkkitarkistimen logiikka
         run: python -m unittest discover -s tests -v
