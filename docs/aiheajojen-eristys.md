@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 1.7.0  
+**Versio:** 1.8.0  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211)
 
@@ -126,8 +126,27 @@ Tuloksen `handoff`-osio kopioi alkuperäisestä handoffista moduuli-, versio-, a
 Käynnistyskehotteen palautusohje on luonnoksena tiedostossa `prompts/paauutisseuranta-moduulipalautus-luonnos.txt`. Se ei korvaa `prompts/paauutisseuranta.txt`-tiedostoa eikä muuta tallennetun ChatGPT-automaation asetuksia, ajastusta, aikavyöhykettä tai kohdekeskustelua. Luonnoksen käyttöönotto edellyttää erillistä hyväksyntää.
 
 
+
+## ChatGPT-tuloksen kytkentä orkestrointiin (#213)
+
+Yhdistetty vastaanottotulos voidaan käsitellä yhdellä moduulikohtaisella prosessilla komennolla `python scripts/process_chatgpt_result.py`. Päähaaran `.github/workflows/process-chatgpt-result-shadow.yml` käynnistyy vain, kun uusi tulos on ensin yhdistetty `main)-haaraan polkuun `data/chatgpt-inbox/{module_id}/{run_id}.json`. Työnkulku lukee vain yhdistetyn tuloksen, hakee täyden Git-historian ja tarkistaa, että push lisäsi täsmälleen yhden uuden tulostiedoston.
+
+Käsittelijä sitoo tuloksen alkuperäiseen handoffiin:
+- tarkistaa nykyisen kiertovuoron ja tehtävä–moduulikartan;
+- tarkistaa moduulin tyypin, määritys- ja sopimusversion, run_id:n sekä seurantajakson;
+- muodostaa alkuperäisen yhden moduulin syötepaketin uudelleen ja vertaa sen SHA-256-tiivistettä;
+- tallentaa handoffin muuttumattoman hyväksyntätietueen runtime-haaraan ensimmäisellä vastaanotolla ja käyttää sitä saman ajon uusintojen vertailuun;
+- muuntaa ChatGPT-tuloksen `ModuleExecutionOutput)-arvoksi ja suorittaa moduulin kohteiden omistajuuden sekä raporttien laadunvarmistuksen;
+- tallentaa vain teknisen ajon auditointitiedon, ei raporttitekstiä.
+
+Tämä automaatiopolku on tarkoituksella **shadow-tilassa**. Se ei julkaise RSS:ää, päivitä moduulin checkpointia eikä siirrä aihekierrosta. Tuotantojulkaisu ja kierron päivitys kuuluvat myöhempään hyväksyttyyn tuotantosiirtymään (#215). Näytösvahti ei kuulu tähän työnkulkuun. Työnkulku ei muuta ChatGPT:n tallennettuja tehtäviä, käynnistyskehotteita, aikatauluja tai kohdekeskusteluja.
+
+Toimituksellinen julkaisuarvio on määritelty tulossopimuksen valinnaiseksi metatiedoksi ja validoidaan omalla skeemallaan. Se ei yksinään ole julkaisulupa: RSS-ehdokkaan automaattiset GUID-, XML- ja rakennevarmennukset sekä nykyinen julkaisulaadun portti pysyvät erillisinä pakollisina vaiheina.
+
+
 ### Versiohistoria
 
+- **1.8.0 – 2026-11-19:** kytkettiin yhdistetty ChatGPT-tulos alkuperäisen handoffin SHA-256-tarkistukseen, moduuli- ja kohdekohtaiseen laadunvarmistukseen sekä shadow-orkestrointiin. Päähaaran push-työnkulku käsittelee yhden uuden tuloksen ja tallentaa teknisen ajohistorian; se ei julkaise RSS:ää, päivitä checkpointia tai muuta live-automaation asetuksia.
 - **1.7.0 – 2026-11-19:** lisättiin yhden moduulin GitHub-pull request -palautuskanava, luotetusta kohdehaarasta suoritettava PR-validointi, vastaanoton skeema- ja moduulirekisteritarkistukset sekä ei-aktiivinen käynnistyskehoteluonnos. Palautus ei julkaise RSS:ää, päivitä checkpointia tai muuta live-automaation asetuksia.
 
 - **1.3.0 – 2026-11-19:** lisättiin yhdeksän aiheen tekninen kiertokoordinaattori, eksplisiittinen tehtävä–moduulikartta, yhden moduulin handoff-runner ja CI-validointi. Toteutus pysyy varjotilan handoff-vaiheessa eikä aktivoi moduuleja tai muuta live-automaatiota.
