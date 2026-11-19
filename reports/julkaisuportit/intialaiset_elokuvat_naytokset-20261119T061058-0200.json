@@ -7,12 +7,12 @@
   "checklist": {
     "sources_opened": {
       "status": "pass",
-      "note": "Kriittiset teatterilähteet Finnkino, BioRex, Kino Regina ja Cinema Orion tarkistettiin. Lisäksi avattiin Kinoon, Valkokangas, Cinema Niagara ja Kinopirtti sekä Suomen elokuvasäätiön, Cinema Mondon ja Filmikamarin lähteet.",
+      "note": "Kriittiset teatterilähteet Finnkino, BioRex, Kino Regina ja Cinema Orion tarkistettiin. Lisäksi avattiin Kinoon, Valkokangas, Cinema Niagara ja Kinopirtti sekä Suomen elokuvasäätiön, Cinema Mondon ja Filmikamarin lähteet; Cinema Niagaran näytöskohtainen lipunmyyntisivu tarkistettiin.",
       "evidence": [
         "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
         "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
         "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
-        "https://cinemaniagara.fi/?lang=fi",
+        "https://cinemaniagara.fi/salikartta?id=54469",
         "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko",
         "https://biorex.fi/elokuvat/klara-and-the-sun/",
         "https://www.finnkino.fi/elokuvat/ramayana-rise-of-a-legend/HO00000625/",
@@ -25,11 +25,11 @@
     },
     "claim_support": {
       "status": "pass",
-      "note": "Kinoonin ajantasaiset listaukset näyttävät seitsemän Klara ja aurinko -näytöstä ja kaksi Ramayana-näytöstä 25.11.2026. Cinema Niagara ja Kinopirtti vahvistavat kaksi Klara-näytöstä omilla sivuillaan; Kinopirtti ilmoittaa lisäksi englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset. Kahdentoista aiemman näytöksen tilamuutos perustuu tallennettuihin alkuaikoihin ja tarkistushetkeen.",
+      "note": "Kinoonin ajantasaiset listaukset näyttävät seitsemän Klara ja aurinko -näytöstä ja kaksi Ramayana-näytöstä 25.11.2026. Cinema Niagara ja Kinopirtti vahvistavat kaksi Klara-näytöstä omilla sivuillaan; Cinema Niagaran lipunmyyntisivu yksilöi 12.30 näytöksen. Kinopirtti ilmoittaa lisäksi englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset. Kahdentoista aiemman näytöksen tilamuutos perustuu tallennettuihin alkuaikoihin ja tarkistushetkeen.",
       "evidence": [
         "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
         "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
-        "https://cinemaniagara.fi/?lang=fi",
+        "https://cinemaniagara.fi/salikartta?id=54469",
         "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko"
       ]
     },
@@ -39,7 +39,7 @@
       "evidence": [
         "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1155",
         "https://valkokangas.app/elokuvat/klara-ja-aurinko-33d6fb2a96/",
-        "https://cinemaniagara.fi/?lang=fi",
+        "https://cinemaniagara.fi/salikartta?id=54469",
         "https://www.kinopirtti.fi/elokuvat/68/klara-ja-aurinko"
       ]
     },
@@ -105,7 +105,7 @@
           "source_class": "A",
           "source_role": "ensisijainen",
           "independence": "ei_sovellu",
-          "note": "Teatterin oma ohjelmisto vahvistaa Tampereen klo 12.30 näytöksen."
+          "note": "Teatterin oma lipunmyyntisivu vahvistaa Tampereen klo 12.30 näytöksen."
         },
         {
           "source_id": "kinopirtti",
@@ -201,6 +201,7 @@
     "Kaksitoista aiemmin julkaistua näytöstä siirtyi historiallisiin näytösaikoihin; aiempia tietueita tai RSS-versioita ei poistettu.",
     "Kolme Facebook-lähdettä jäi teknisten käyttörajoitusten vuoksi tarkistamatta. Kaikki neljä kriittistä teatterilähdettä tarkistettiin.",
     "Päähaaran onnistumisen tarkistuspistettä ei siirretä tässä PR:ssä. Se päivitetään vasta yhdistämisen, Pages-julkaisun ja julkisen RSS-takaisinluvun onnistuttua.",
-    "Kinopirtin oma elokuvasivu vahvisti englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset; tiedot lisättiin näytöshistoriaan ja RSS-riville."
+    "Kinopirtin oma elokuvasivu vahvisti englanninkielisen esityksen ja suomen- ja ruotsinkieliset tekstitykset; tiedot lisättiin näytöshistoriaan ja RSS-riville.",
+    "Lopullisessa linkkitarkistuksessa viisi väärällä Turun alueparametrilla tallennettua Kinoon-linkkiä korjattiin koko Suomen listausnäkymään. Cinema Niagaran linkki tarkennettiin näytöskohtaiseen lipunmyyntisivuun; näytösajat eivät muuttuneet."
   ]
 }
