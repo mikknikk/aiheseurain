@@ -186,11 +186,12 @@ def process_inbox_result(
 def changed_inbox_file(before: str, after: str, *, root: Path = ROOT) -> str:
     """Vaadi pushissa täsmälleen yksi uusi inbox-JSON eikä hyväksy muokkauksia."""
     zero = "0" * 40
-    command = ["git", "diff", "--name-status"]
     if before != zero:
-        command.extend([before, after])
+        command = ["git", "diff", "--name-status", before, after]
     else:
-        command.extend(["--root", after])
+        # Ensimmäinen commit vaatii diff-tree --root -muodon; git diff --root ei
+        # listaa tavallisen commitin lisättyjä tiedostoja tällä syntaksilla.
+        command = ["git", "diff-tree", "--root", "--no-commit-id", "--name-status", "-r", after]
     command.extend(["--", "data/chatgpt-inbox/"])
     completed = subprocess.run(
         command, cwd=root, check=True, capture_output=True, text=True
