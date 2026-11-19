@@ -504,7 +504,7 @@ class GitHubPagesRssPublisher:
         self.pages_base_url = pages_base_url.rstrip("/")
         self.root = Path(repository_root or Path(__file__).resolve().parents[1])
         self.expected: dict[str, tuple[str, tuple[str, ...], int, str]] = {}
-        self.run_guids: dict[str, str] = {}
+        self.run_guids: dict[str, tuple[str, ...]] = {}
 
     @staticmethod
     def _fetch_public(url: str) -> bytes:
