@@ -1,8 +1,8 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.1.0  
+**Versio:** 2.2.0  
 **Päiväys:** 2026-11-19  
-**Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211)
+**Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211), [#232 – Siirtymän julkaisu- ja palautustodisteiden pysyvä loki](https://github.com/mikknikk/aiheseurain/issues/232)
 
 ## Tavoite
 
@@ -200,6 +200,24 @@ Lokiin ei kopioida raporttitekstiä, koko lähdepakettia, salasanoja, tokeneita 
 
 Vikainjektiotestit kattavat API-kuittauksen katoamisen RSS-julkaisun jälkeen, jokaisen julkaisumanifestin vaihekirjoituksen jälkeen sekä checkpointin tallennuksen jälkeen. Uusinta käyttää samaa `run_id`:tä ja todentaa, ettei checkpoint-historiaan tai artefakteihin synny duplikaatteja. Lisäksi päätöslogiikan testit kattavat avoimen ja suljetun RSS-PR:n, yhdistetyn julkaisun, epäselvät API-/takaisinlukutilat, vanhan polun jo julkaistun jakson ja mahdottomat vaihejärjestykset.
 
+## Moduulisiirtymän todisteiden auditointiloki (#232)
+
+`scripts/module_transition_evidence.py` erottaa ulkoisten tilojen lukemisen ja auditointitietueiden tallennuksen:
+
+- `GitHubTransitionEvidenceCollector` käyttää GitHubin PR-, deployment- ja contents-rajapinnoissa vain GET-pyyntöjä. Se ei avaa, yhdistä tai sulje PR:iä eikä käynnistä Pages-deploymentia.
+- PR-todiste sidotaan täsmälliseen `module_id`-/`run_id`-pariin PR:n otsikon ja rungon avulla. Tietue sisältää PR-numeron, URL:n, tilan, yhdistämisajan ja commit-SHA:n.
+- Pages-todiste haetaan erikseen `github-pages`-ympäristön deploymentista, jonka commit-SHA vastaa PR:n yhdistämiscommittia. Puuttuva deployment kirjataan tilana `not_found`; PR:n yhdistäminen ei tarkoita onnistunutta Pages-julkaisua.
+- Julkinen RSS luetaan katalogin topic-syöte-URL:sta välimuistin ohittavilla HTTP-otsakkeilla. Tietueeseen tallennetaan vain URL, tarkistusaika, raakasyötteen SHA-256, item-määrä ja GUIDit. RSS-itemien sisältöä ei kopioida.
+- Checkpoint-todiste yhdistää ennen- ja jälkeen-tilan Git-blob-SHA:t, run_id:t, aikaleimat ja manifestivaiheen. Jälkitila luetaan uudelleen runtime-haarasta ja sen run_id varmennetaan.
+- Vanhan raportointipolun havainto sisältää tarkistetun lähde-URL:n, jakson, tilan, perustelun ja mahdolliset GUIDit. Kerääjä ei väitä vanhaa julkaisua puuttuvaksi ilman kutsujan tekemää lähdetarkistusta; epäselvä tila kirjataan muodossa `unknown`.
+- Palautuspäätös lasketaan uudelleen `recovery_action`-funktiolla ja tallennetaan syötteineen. Mahdollinen vanhaan polkuun palaamisen hyväksyntä kirjataan erillisenä tapahtumana; lokitus ei anna hyväksyntää.
+
+`GitHubTransitionEvidenceStore` tallentaa tapahtumat polkuun `data/module-transition-evidence/{module_id}/{run_id}/`. Tiedostonimi sisältää tapahtumatyypin ja koko tapahtuman SHA-256-tiivisteen. Tietueita ei päivitetä: saman sisällön uusinta palauttaa saman polun, ja ristiriitainen sisältö hylätään. `load_run` kokoaa yhden moduulin/ajon tapahtumat aikajärjestykseen. Skeema on `schemas/module-transition-evidence.schema.json`; `scripts/validate_transition_evidence.py` validoi skeeman ja tietueiden polkuomistajuuden CI:ssä.
+
+Tämä on sovellustason append-only-malli GitHubin runtime-haarassa, ei väite siitä, että ylläpitäjän oikeuksilla tehty haaran historian muuttaminen olisi teknisesti mahdotonta. SHA-256 sitoo tapahtumat niiden sisältöön ja paljastaa tietueen muuttamisen, kun sitä luetaan skeeman ja tunnisteen tarkistavan lukijan kautta.
+
+Auditointilokiin ei tallenneta raporttitekstiä, RSS:n raakasisältöä, lähdepaketteja, promptteja, tunnuksia tai salaisuuksia. Kerääjä on read-only; tallennusluokka tekee vain auditointitietueiden kirjoitukset runtime-haaraan. Näytösvahti ei kuulu topic-auditointiin.
+
 ## Lähdeauditointi ja varjotilan vertailu (#214)
 
 ChatGPT-tulossopimuksen metadataan voidaan liittää rakenteinen source_audit. Se kirjaa moduulin omat lähteet tiloilla checked, partial, unavailable tai skipped; unavailable- ja skipped-tilat edellyttävät syytä. Täydentävät lähteet kirjataan erikseen URL-osoitteineen ja varmennustasoineen. Laadunvarmistus hylkää toisen moduulin lähde-ID:t, toistuvat lähdetietueet ja sources_checked-lukumäärän kanssa ristiriitaisen auditoinnin. Tuotantotilassa source_audit on pakollinen. Lähteiden määrälle ei aseteta vähimmäisrajaa.
@@ -220,6 +238,7 @@ Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutis
 
 ### Versiohistoria
 
+- **2.2.0 – 2026-11-19:** lisättiin PR-, Pages-, julkisen RSS:n, checkpointin, vanhan polun ja palautuspäätöksen read-only-todistekerääjä sekä sisällön SHA-256-tiivisteellä nimetyt ajokohtaiset auditointitietueet, skeema, validoija ja CI-testit. Ei live-siirtymää.
 - **2.1.0 – 2026-11-19:** lisättiin keskeytyneen moduulijulkaisun fail-closed-palautumispäätökset, vanhaan raportointipolkuun siirtymisen hyväksyntäportti sekä vikainjektiotestit.
 - **2.0.0 – 2026-11-19:** lisättiin oletusarvoisesti pois päältä oleva moduulikohtainen tuotantoluparekisteri, fail-closed-validointi sekä moduuli–seurantajakso-yksinoikeus GitHub-julkaisumanifestiin. Mitään moduulia ei aktivoitu.
 
