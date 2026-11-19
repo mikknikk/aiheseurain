@@ -11,43 +11,50 @@
       "source_id": "gurmeet-courts",
       "critical": true,
       "last_checked_at": "2026-11-18T14:00:19+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "punjab-haryana-highcourt",
       "critical": true,
       "last_checked_at": "2026-11-18T13:13:52+02:00",
-      "access_limit": "Suora avaus aikakatkaistiin 18.11.2026; virallista tuomioasiakirjaa ei saatu tarkistettua tässä ajossa."
+      "access_limit": "Suora avaus aikakatkaistiin 18.11.2026; virallista tuomioasiakirjaa ei saatu tarkistettua tässä ajossa.",
+      "retry_after": null
     },
     {
       "source_id": "cbi-india",
       "critical": true,
       "last_checked_at": "2026-11-18T13:13:52+02:00",
-      "access_limit": "Suora avaus aikakatkaistiin 18.11.2026; CBI:n alkuperäistä sisältöä ei saatu tarkistettua tässä ajossa."
+      "access_limit": "Suora avaus aikakatkaistiin 18.11.2026; CBI:n alkuperäistä sisältöä ei saatu tarkistettua tässä ajossa.",
+      "retry_after": null
     },
     {
       "source_id": "the-hindu-india",
       "critical": false,
       "last_checked_at": null,
-      "access_limit": "Robots.txt esti suoran avauksen 18.11.2026; alkuperäistä sisältöä ei saatu tarkistettua tässä ajossa."
+      "access_limit": "Robots.txt esti suoran avauksen 18.11.2026; alkuperäistä sisältöä ei saatu tarkistettua tässä ajossa.",
+      "retry_after": null
     },
     {
       "source_id": "hindustan-times",
       "critical": false,
       "last_checked_at": "2026-11-18T14:00:19+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "tribune-india",
       "critical": false,
       "last_checked_at": "2026-11-18T14:00:19+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     },
     {
       "source_id": "amar-ujala",
       "critical": false,
       "last_checked_at": "2026-11-18T14:00:19+02:00",
-      "access_limit": null
+      "access_limit": null,
+      "retry_after": null
     }
   ]
 }
