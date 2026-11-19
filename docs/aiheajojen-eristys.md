@@ -1,8 +1,8 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 1.6.0  
+**Versio:** 1.7.0  
 **Päiväys:** 2026-11-19  
-**Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202)
+**Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211)
 
 ## Tavoite
 
@@ -111,7 +111,24 @@ Handoff ei julkaise RSS:ää eikä päivitä moduulin checkpointia. ChatGPT:n ra
 
 GitHub-toteutus ei muuta `prompts/paauutisseuranta.txt`-tiedostoa eikä ChatGPT-tehtävän tallennettua käynnistyskehotetta, ajastusta tai kohdekeskustelua. Käynnistyskehotteen ja live-tehtävän siirto tehdään vasta erikseen hyväksytyssä vaiheessa.
 
+## ChatGPT-tuloksen GitHub-palautuskanava (#211)
+
+ChatGPT palauttaa yhden moduulin tuloksen uutena GitHub-pull requestina. Tulostiedoston polku on `data/chatgpt-inbox/{module_id}/{run_id}.json`. PR saa sisältää täsmälleen yhden uuden JSON-tiedoston; se ei saa muuttaa käsikirjoja, moduuleja, rekistereitä, RSS-syötteitä tai muita tuloksia.
+
+Palautus on valittu PR-malliin, koska käytettävissä oleva GitHub-yhteys ei tarjoa tässä toteutuksessa yleistä `workflow_dispatch`-käynnistystä. PR on auditoitava ja uudelleen tarkistettava toimituskanava:
+1. ChatGPT luo tulostiedoston omalla käytettävissä olevalla GitHub-yhteydellään ja avaa PR:n `main`-haaraan. Jos automaatiolla ei ole GitHub-yhteyttä tai kirjoitusoikeutta, se palauttaa JSONin käyttäjälle eikä väitä toimitusta tehdyksi.
+2. `.github/workflows/validate-chatgpt-inbox.yml` käynnistyy `pull_request_target`-tapahtumasta. Työnkulku hakee validointikoodin PR:n kohdehaaran SHA:sta, lukee PR:stä vain yhden tiedoston GitHub API:n kautta ja validoi sen luotetulla koodilla. Se ei suorita PR:n sisältämää koodia eikä saa kirjoitusoikeuksia tai salaisuuksia.
+3. Validointi tarkistaa JSON-skeeman, moduulin topic-tyypin ja rekisteriversiot, tiedostopolun, run_id:n, seurantajakson sekä handoffin tunnisteiden vastaavuuden. Vain uusi tiedostopolku hyväksytään; olemassa olevaa tulosta ei voi korvata.
+4. Tulos tallentuu pysyvästi vastaanottoaineistoksi vasta PR:n hyväksytyn yhdistämisen jälkeen. Päähaaran RSS- ja dokumentaatiotyönkulku validoi kaikki tallennetut vastaanottotulokset uudelleen.
+
+Tuloksen `handoff`-osio kopioi alkuperäisestä handoffista moduuli-, versio-, ajo- ja seurantajaksotunnisteet, pyynnön ajankohdan sekä syötepaketin SHA-256-tiivisteen. Nykyinen vastaanottovalidointi tarkistaa tiivisteen muodon ja metatietojen sisäisen vastaavuuden; se ei vielä vertaa tiivistettä itsenäisesti pysyvästi tallennettuun alkuperäiseen handoffiin. Tämä rajoite on tarkoituksellinen ja dokumentoitu: alkuperäisen handoffin pysyvä tallennus ja riippumaton vertailu kuuluvat jatkotiketteihin #212 ja #213. Palautus-PR:n hyväksyntä ei myöskään ole toimituksellinen julkaisupäätös.
+
+Käynnistyskehotteen palautusohje on luonnoksena tiedostossa `prompts/paauutisseuranta-moduulipalautus-luonnos.txt`. Se ei korvaa `prompts/paauutisseuranta.txt`-tiedostoa eikä muuta tallennetun ChatGPT-automaation asetuksia, ajastusta, aikavyöhykettä tai kohdekeskustelua. Luonnoksen käyttöönotto edellyttää erillistä hyväksyntää.
+
+
 ### Versiohistoria
+
+- **1.7.0 – 2026-11-19:** lisättiin yhden moduulin GitHub-pull request -palautuskanava, luotetusta kohdehaarasta suoritettava PR-validointi, vastaanoton skeema- ja moduulirekisteritarkistukset sekä ei-aktiivinen käynnistyskehoteluonnos. Palautus ei julkaise RSS:ää, päivitä checkpointia tai muuta live-automaation asetuksia.
 
 - **1.3.0 – 2026-11-19:** lisättiin yhdeksän aiheen tekninen kiertokoordinaattori, eksplisiittinen tehtävä–moduulikartta, yhden moduulin handoff-runner ja CI-validointi. Toteutus pysyy varjotilan handoff-vaiheessa eikä aktivoi moduuleja tai muuta live-automaatiota.
 
