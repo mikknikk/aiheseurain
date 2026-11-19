@@ -253,6 +253,7 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
         base.update({
             "public_feed": lambda: self._feed_record(),
             "publication_manifest": lambda: self._manifest_record("prepared"),
+            "checkpoint": lambda: self._checkpoint_record(),
         })
         # Tyhjä julkinen GUID-lista todistaa, ettei ehdokas ole julkaistu.
         base["public_feed"] = lambda: self._record(
