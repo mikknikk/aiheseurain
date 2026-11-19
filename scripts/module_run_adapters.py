@@ -516,7 +516,9 @@ class RoutedReportPublisher:
             raise AdapterError("Kohderaporteissa on virheellinen tai toistuva seurantakohde.")
         plans = []
         for item in target_reports:
-            if set(item) != {"target_id", "observation_types", "report_content"}:
+            required_fields = {"target_id", "observation_types", "report_content"}
+            optional_fields = {"target_version", "period", "checked_at"}
+            if not required_fields.issubset(item) or not set(item).issubset(required_fields | optional_fields):
                 raise AdapterError("Kohderaportin kentät eivät vastaa julkaisusopimusta.")
             try:
                 plan = resolve_publication_plan(
