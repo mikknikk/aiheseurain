@@ -135,6 +135,20 @@ class ShadowTransitionOrchestrator:
                     "Checkpointin lähtötodiste ei vastaa runtime-haarasta luettua lähtötilaa."
                 )
 
+            # Varmista myös jälkitila itse runtime-haarasta. Callbackin ilmoittama
+            # after_* ei yksin riitä osoittamaan checkpointin etenemistä.
+            after_baseline = read_checkpoint_baseline(
+                self.collector.client, request.module_id, observed_at=observed_at,
+            )
+            if (
+                checkpoint["after_blob_sha"] != after_baseline["blob_sha"]
+                or checkpoint["after_run_id"] != after_baseline["run_id"]
+                or checkpoint["after_checked_at"] != after_baseline["checked_at"]
+            ):
+                raise ShadowTransitionError(
+                    "Checkpointin jälkitodiste ei vastaa runtime-haarasta luettua jälkitilaa."
+                )
+
         publication_status = "merged" if pr["merged"] else (
             "open" if pr["state"] == "open" else "closed_unmerged"
         )
