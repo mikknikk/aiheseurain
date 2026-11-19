@@ -764,6 +764,7 @@ class GitHubRotationStateStore:
     def load(self) -> tuple[dict[str, Any], str]:
         """Lue runtime-kiertotila tai käytä main-haaran aloitustilaa."""
         file = self.client.get_file("data/seurantatila.json", self.branch)
+        self.last_source_branch = self.branch if file is not None else MAIN_BRANCH
         if file is None:
             file = self.client.get_file("data/seurantatila.json", MAIN_BRANCH)
         if file is None:
