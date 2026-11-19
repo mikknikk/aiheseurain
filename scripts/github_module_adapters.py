@@ -487,7 +487,7 @@ class GitHubPagesRssPublisher:
         expected_task = candidate.feed_path.removeprefix("feeds/").removesuffix(".xml")
         if gate.get("task_id") not in {module_id, expected_task}:
             raise GitHubAdapterError("Porttiraportin task_id ei vastaa moduulia tai syötettä.")
-        self.expected[f"{module_id}:{run_id}"] = (candidate.public_url, tuple(guids), count)
+        self.expected[guids[-1]] = (candidate.public_url, tuple(guids), count)
         return candidate
 
     def publish(self, module_id: str, run_id: str, report_content: str, *,
@@ -497,7 +497,8 @@ class GitHubPagesRssPublisher:
         if idempotency_key != f"{module_id}:{run_id}":
             raise GitHubAdapterError("Julkaisun idempotenssiavain ei täsmää.")
         candidate = self._build(module_id, run_id, report_content)
-        branch = f"module-publish/{module_id}/{run_id}"
+        branch_id = hashlib.sha256(f"{module_id}:{run_id}".encode("utf-8")).hexdigest()[:20]
+        branch = f"module-publish/{module_id}/{branch_id}"
         self.client.ensure_branch(branch)
         for path, text in candidate.files.items():
             self.client.put_file(path, text.encode("utf-8"), branch,
@@ -512,7 +513,8 @@ class GitHubPagesRssPublisher:
                  "käynnistää nykyisen Pages-julkaisun ja julkisen takaisinluvun. "
                  "Tämä sovitin ei yhdistä PR:ää."),
                 branch)
-        guid = self.expected[f"{module_id}:{run_id}"][1][-1:]
+        guid = next((refs[-1:] for url, refs, count in self.expected.values()
+                     if url == candidate.public_url and refs == tuple(self._metadata(candidate.files[candidate.feed_path].encode("utf-8"))[0])), ())
         if not pull.get("merged"):
             return PublicationReceipt(False, guid, 1)
         receipt = PublicationReceipt(True, guid, 1)
@@ -528,11 +530,12 @@ class GitHubPagesRssPublisher:
 
     def verify(self, receipt: PublicationReceipt) -> bool:
         """Varmista julkisen Pages-syötteen GUIDit ja item-määrä."""
-        matches = [item for item in self.expected.values()
-                   if item[1][-1:] == receipt.report_guid_refs and item[2] == receipt.published_items]
-        if len(matches) != 1:
+        if len(receipt.report_guid_refs) != 1 or receipt.published_items != 1:
             return False
-        url, guids, count = matches[0]
+        expected = self.expected.get(receipt.report_guid_refs[0])
+        if expected is None:
+            return False
+        url, guids, count = expected
         try:
             actual = self.public_fetcher(url)
             actual_guids, actual_count = self._metadata(actual)
