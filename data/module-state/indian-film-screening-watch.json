@@ -606,6 +606,14 @@
       {
         "store_path": "data/naytosten-muutoshistoria.json",
         "record_id": "added-ramayana-rise-of-a-legend-finnkino-kinopalatsi-20261125-1940-screening-watch-20261119T034338Z-a2-added"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "correction-klara-ja-aurinko-cinema-niagara-20261125-1230-screening-watch-20261119T041058Z-a2-official-url"
+      },
+      {
+        "store_path": "data/naytosten-muutoshistoria.json",
+        "record_id": "details-changed-klara-ja-aurinko-kinopirtti-20261125-1540-screening-watch-20261119T041058Z-a2-language-subtitles"
       }
     ],
     "current_record_refs": [
