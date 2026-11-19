@@ -6,6 +6,8 @@ Kaikkia automaatioita koskeva ajastusten ja asetusten suojaus on määritelty ti
 
 ## Tiedostot ja vastuut
 
+Varsinaisten käynnistyskehotteiden lisäksi hakemistossa voi olla selvästi luonnoksiksi nimettyjä tekstejä. Luonnokset eivät ole aktiivisia, eikä niitä saa kopioida automaation asetuksiin ilman erillistä hyväksyntää.
+
 | Automaatio | Kanoninen käynnistyskehote | Varsinainen käsikirja |
 |---|---|---|
 | Päivittäinen uutisseurannan aihekierros | [`paauutisseuranta.txt`](paauutisseuranta.txt) | [`docs/paaautomaation-ohje.md`](../docs/paaautomaation-ohje.md) |
