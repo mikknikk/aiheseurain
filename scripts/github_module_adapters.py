@@ -744,7 +744,6 @@ class GitHubHandoffStore:
 
     def load(self, module_id: str, run_id: str) -> dict[str, Any] | None:
         """Lue yhden moduulin yhden ajon handoff-tiiviste."""
-        self.client.ensure_branch(self.branch)
         file = self.client.get_file(self._path(module_id, run_id), self.branch)
         if file is None:
             return None
@@ -791,7 +790,13 @@ class GitHubRotationStateStore:
                 or result.published_items < 1):
             raise GitHubAdapterError("Kiertoa voi siirtää vain julkaistun ja checkpointatun tuotantoajon jälkeen.")
         module_id, run_id = _module(result.module_id), _run(result.run_id)
+        if getattr(result, "module_type", None) != "topic":
+            raise GitHubAdapterError("Vain topic-moduuli voi siirtää uutiskierron vuoroa.")
         _time(result.checked_at)
+        task_map = json.loads((self.root / "data/topic-task-map.json").read_text(encoding="utf-8"))
+        matches = [item for item in task_map.get("tasks", []) if item.get("task_id") == task_id]
+        if len(matches) != 1 or matches[0].get("module_id") != module_id:
+            raise GitHubAdapterError("Kiertotehtävän ja moduulin omistajuus ei vastaa toisiaan.")
         state, expected_sha = self.load()
         rotation = state["rotation"]
         if rotation.get("last_completed_run_id") == run_id:
