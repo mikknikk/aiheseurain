@@ -294,6 +294,40 @@ class ShadowTransitionOrchestratorTests(unittest.TestCase):
         )
         self.assertEqual(result["recovery_action"], "manual_review")
 
+    def test_checkpoint_updated_manifest_phase_verifies_completed_run(self):
+        self.client.pr.update({
+            "state": "closed", "merged": True, "merged_at": self.now,
+            "merge_commit_sha": "b" * 40,
+        })
+        def completed_checkpoint_observation():
+            completed_state = {
+                "module_id": "taylor-swift",
+                "checkpoint": {"last_successful_run": {
+                    "run_id": self.request.run_id, "checked_at": self.now,
+                }},
+            }
+            self.client.files[(
+                "module-runtime-state", "data/module-state/taylor-swift.json"
+            )] = GitHubFile(json.dumps(completed_state).encode("utf-8"), "2" * 40)
+            return self._checkpoint_record(
+                before_sha="e" * 40, after_sha="2" * 40,
+                before_run="old-run-001", after_run=self.request.run_id,
+                phase="checkpoint_updated",
+            )
+
+        base = self._base_collectors()
+        base.update({
+            "pages_deployment": lambda: self._pages_record("success"),
+            "public_feed": lambda: self._feed_record(),
+            "publication_manifest": lambda: self._manifest_record("checkpoint_updated"),
+            "checkpoint": completed_checkpoint_observation,
+        })
+        result = self.orchestrator.run(
+            self.request, collect=base, observed_at=self.now,
+            expected_guids=[self.expected_guid],
+        )
+        self.assertEqual(result["recovery_action"], "verify_completed_run")
+
     def test_closed_unmerged_pr_requires_explicit_legacy_approval(self):
         self.client.pr.update({"state": "closed", "merged": False})
         base = self._base_collectors()
