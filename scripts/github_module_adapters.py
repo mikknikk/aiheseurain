@@ -98,7 +98,15 @@ class GitHubApiClient:
     def __init__(self, repository: str | None = None, token: str | None = None,
                  *, api_url: str = "https://api.github.com", timeout: int = 30):
         self.repository = repository or os.getenv("GITHUB_REPOSITORY", "")
-        self.token = token or os.getenv("GITHUB_TOKEN", "")
+        if token:
+            self.token = token
+            self.token_source = "explicit"
+        elif os.getenv("AIHESEURAIN_GITHUB_TOKEN"):
+            self.token = os.environ["AIHESEURAIN_GITHUB_TOKEN"]
+            self.token_source = "AIHESEURAIN_GITHUB_TOKEN"
+        else:
+            self.token = os.getenv("GITHUB_TOKEN", "")
+            self.token_source = "GITHUB_TOKEN"
         self.api_url = api_url.rstrip("/")
         self.timeout = timeout
         if not REPO_RE.fullmatch(self.repository) or not self.token:
@@ -481,6 +489,14 @@ class GitHubPagesRssPublisher:
                  *, public_fetcher: Callable[[str], bytes] | None = None,
                  pages_base_url: str = "https://mikknikk.github.io/aiheseurain",
                  repository_root: Path | None = None):
+        # GitHub suppresses follow-up workflow events for writes made with the
+        # default Actions GITHUB_TOKEN. PR creation therefore needs a dedicated
+        # GitHub App/PAT token configured explicitly for this publication path.
+        if getattr(client, "token_source", None) == "GITHUB_TOKEN":
+            raise GitHubAdapterError(
+                "RSS-julkaisun PR vaatii AIHESEURAIN_GITHUB_TOKEN- tai eksplisiittisen "
+                "GitHub App/PAT -tunnuksen, jotta PR:n CI käynnistyy."
+            )
         self.client, self.candidate_builder = client, candidate_builder
         self.public_fetcher = public_fetcher or self._fetch_public
         self.pages_base_url = pages_base_url.rstrip("/")
