@@ -119,7 +119,7 @@ class GitHubTransitionEvidenceCollector:
             return response.read()
 
     @staticmethod
-    def _record(module_id: str, run_id: str, event_type: str, observed_at: str,
+    def _make_record(module_id: str, run_id: str, event_type: str, observed_at: str,
                 source: str, evidence: dict[str, Any]) -> dict[str, Any]:
         _module(module_id)
         _run(run_id)
@@ -161,7 +161,7 @@ class GitHubTransitionEvidenceCollector:
             raise TransitionEvidenceError("PR:n URL, head-SHA tai base-haara ei kelpaa.")
         if merged and (not evidence["merge_commit_sha"] or not merged_at):
             raise TransitionEvidenceError("Yhdistetyn PR:n commit tai yhdistämisaika puuttuu.")
-        return self._record(module_id, run_id, "pull_request", observed_at,
+        return self._make_record(module_id, run_id, "pull_request", observed_at,
                             "github_pull_request_api", evidence)
 
     def collect_pages_deployment(self, module_id: str, run_id: str, merge_commit_sha: str,
@@ -340,15 +340,7 @@ class GitHubTransitionEvidenceCollector:
         return self._record(_module(module_id), _run(run_id), "legacy_approval",
                             observed_at, "explicit_external_approval", evidence)
 
-    def _record(self, module_id: str, run_id: str, event_type: str, observed_at: str,
-                source: str, evidence: dict[str, Any]) -> dict[str, Any]:
-        return self._record_factory(module_id, run_id, event_type, observed_at, source, evidence)
 
-    @staticmethod
-    def _record_factory(module_id: str, run_id: str, event_type: str, observed_at: str,
-                        source: str, evidence: dict[str, Any]) -> dict[str, Any]:
-        return GitHubTransitionEvidenceCollector._record(module_id, run_id, event_type,
-                                                          observed_at, source, evidence)
 
 
 class GitHubTransitionEvidenceStore:
