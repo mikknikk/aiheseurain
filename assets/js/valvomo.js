@@ -549,17 +549,30 @@ export function validateRunHistory(history, expectedId) {
 
 /** Vanhentunutta running-merkintää ei esitetä aktiivisena ajoina. */
 export function displayRunStatus(run, maxAgeHours, now = Date.now()) {
-  if (!run || !RUN_STATUS_LABELS[run.status]) return { key: "unknown", label: "Tuntematon" };
+  if (!run || !RUN_STATUS_LABELS[run.status]) return { key: "unknown", label: "Tuntematon", stale: false };
+  // Valmiin ajon ikä perustuu sen todelliseen päättymisaikaan, ei siihen,
+  // milloin alustahavainto mahdollisesti lisättiin ajohistoriaan jälkikäteen.
+  const ageTimestamp = run.status === "running" ? run.updated_at : (run.finished_at || run.updated_at);
+  const freshness = classifyFreshness(ageTimestamp, maxAgeHours, now);
+  const stale = freshness.key === "warning";
+
   if (run.status === "running") {
-    const freshness = classifyFreshness(run.updated_at, maxAgeHours, now);
-    return freshness.key === "good"
-      ? { key: "running", label: "Käynnissä" }
-      : { key: "warning", label: "Päivitys vanhentunut – mahdollisesti keskeytynyt" };
+    return stale
+      ? { key: "warning", label: "Päivitys vanhentunut – mahdollisesti keskeytynyt", stale: true }
+      : { key: "running", label: "Käynnissä", stale: false };
   }
-  if (run.status === "succeeded") return { key: "good", label: RUN_STATUS_LABELS[run.status] };
-  if (run.status === "failed" || run.status === "interrupted") return { key: "error", label: RUN_STATUS_LABELS[run.status] };
-  if (run.status === "partial") return { key: "warning", label: RUN_STATUS_LABELS[run.status] };
-  return { key: "unknown", label: RUN_STATUS_LABELS[run.status] };
+  if (run.status === "succeeded") {
+    return stale
+      ? { key: "warning", label: "Vanhentunut – viimeisin ajo onnistui", stale: true }
+      : { key: "good", label: RUN_STATUS_LABELS[run.status], stale: false };
+  }
+  if (run.status === "failed" || run.status === "interrupted") {
+    return { key: "error", label: stale ? "Epäonnistunut – havainto vanhentunut" : RUN_STATUS_LABELS[run.status], stale };
+  }
+  if (run.status === "partial") {
+    return { key: "warning", label: stale ? "Osittainen – havainto vanhentunut" : RUN_STATUS_LABELS[run.status], stale };
+  }
+  return { key: "unknown", label: RUN_STATUS_LABELS[run.status], stale };
 }
 
 function renderRunHistory(histories) {
@@ -568,7 +581,7 @@ function renderRunHistory(histories) {
     const history = histories[source.id];
     if (!history) return `<article class="run-history-card"><h3>${escapeHtml(source.name)}</h3><p class="status-line status-unknown">Ajohistoriaa ei voitu lukea</p><p>Historiatiedosto puuttuu tai ei ole saatavilla. Ajon tilaa ei päätellä muista lähteistä.</p></article>`;
     const runs = [...history.runs].sort((a,b) => Date.parse(b.started_at)-Date.parse(a.started_at));
-    if (!runs.length) return `<article class="run-history-card"><h3>${escapeHtml(source.name)}</h3><p class="status-line status-unknown">Ei vielä kirjattuja ajoja</p></article>`;
+    if (!runs.length) return `<article class="run-history-card"><h3>${escapeHtml(source.name)}</h3><p class="status-line status-warning">Ajohistoria puuttuu</p><p>Yhtään ajoa ei ole kirjattu. Tätä ei tulkita onnistumiseksi.</p></article>`;
     const items = runs.map((run) => {
       const status = displayRunStatus(run, source.maxAgeHours);
       const steps = run.steps.map((step) => `<li><span>${escapeHtml(step.name)}</span><span class="run-step-status">${escapeHtml(RUN_STATUS_LABELS[step.status] || "Tuntematon")}</span><span class="run-step-meta">Alkoi: ${escapeHtml(dateText(step.started_at))} · Päättyi: ${escapeHtml(dateText(step.finished_at))}</span>${step.errors?.length ? `<ul>${step.errors.map((item) => `<li class="run-error">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}${step.warnings?.length ? `<ul>${step.warnings.map((item) => `<li class="run-warning">${escapeHtml(item)}</li>`).join("")}</ul>` : ""}</li>`).join("");
@@ -584,7 +597,7 @@ function renderRunHistory(histories) {
         : "";
       return `<li class="run-history-item">
         <details>
-          <summary><span class="status-line status-${status.key}">${escapeHtml(status.label)}</span>
+          <summary><span class="status-line status-${status.key}">${escapeHtml(status.label)}</span>${status.stale ? ` <span class="muted">(viimeisin havainto yli ${source.maxAgeHours} h vanha)</span>` : ""}
             <strong>${escapeHtml(dateText(run.started_at))}</strong>
             <span class="muted">Tunniste: ${escapeHtml(run.run_id)}</span></summary>
           <p>${escapeHtml(run.summary || "Ajolle ei ole kirjattu yhteenvetoa.")}</p>
