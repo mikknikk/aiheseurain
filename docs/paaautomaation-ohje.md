@@ -1,6 +1,6 @@
 # Pääautomaation toimintakäsikirja
 
-Ohjeversion tunniste: 1.4.0
+Ohjeversion tunniste: 1.5.0
 Viimeksi päivitetty: 2026-11-19
 
 Tämä on pääautomaation ensisijainen ja täydellinen toimintakäsikirja. ChatGPT-automaation asetuksissa oleva kehote on vain vakaa käynnistysosoite. Tehtävien sisältöä ja toimintatapoja ylläpidetään tässä repositoriossa, ei rinnakkaisina kopioina automaation asetuksissa.
@@ -65,18 +65,25 @@ Käsittele lähteen tavoittamattomuus lähdekohtaisena käyttökatkona, älä au
 - Kun lähde avautuu ja alkuperäinen sisältö tarkistetaan onnistuneesti, nollaa sen `retry_after` arvoksi `null`. Älä muuta `last_checked_at`-arvoa epäonnistuneen tai ohitetun yrityksen perusteella.
 - Kun jäähdytysaika päättyy, lähde kuuluu taas tarkistettaviin lähteisiin. Jos esto jatkuu, aseta uusi jäähdytysaika saman virheluokan mukaisesti. Älä tee ylimääräisiä toistuvia yrityksiä saman ajon aikana.
 
-### Lähdekattavuuden hyväksymiskriteerit ja vuoron eteneminen
+### Lähteiden käyttökatkojen vaikutus vuoron etenemiseen
 
-Erota ajon tekninen/toimituksellinen onnistuminen lähteiden täydellisestä tavoitettavuudesta. Lähdelokin `status` voi olla `partial`, vaikka aiheen tarkistus hyväksytään ja vuoro etenee.
+Erota ajon tekninen ja toimituksellinen onnistuminen lähteiden täydellisestä tavoitettavuudesta. Lähdelokin `status` kuvaa vain lähdetarkistuksen toteutumista; se ei yksin ratkaise tehtävän onnistumista eikä tehtäväkierron etenemistä.
 
-1. Laske odotettavissa oleva lähdejoukko: kaikki käyttörekisterin lähteet, joiden `retry_after` on tyhjä tai on ohitettu nykyhetki. Jäähdytysajalla olevia lähteitä ei lasketa tämän ajon odotettuun joukkoon, mutta ne kirjataan tarkistamatta jääneiksi.
-2. Kattavuus on riittävä, kun vähintään kolme odotettavissa olevaa lähdettä on tarkistettu ja tarkistettujen osuus odotettavissa olevista lähteistä on vähintään 60 %. Jos rekisterissä on alle kolme odotettavissa olevaa lähdettä, tarkista kaikki käytettävissä olevat lähteet.
-3. Lisäksi vähintään yhden rekisterin kriittisistä lähteistä on oltava tarkistettu. Jos kaikki kriittiset lähteet ovat dokumentoidusti käyttökatkon tai jäähdytysajan vuoksi saavuttamattomia, hyväksy kattavuus vain, jos vähintään kaksi toisistaan riippumatonta A- tai B-luokan vaihtoehtoista lähdettä on tarkistettu ja ne kattavat saman olennaisen aihealueen. Riippumattomuus on arvioitava toimituksellisen raportointityön perusteella, ei URL-osoitteiden lukumäärästä.
-4. Kaikkien muiden toimituksellisten vaatimusten, hakukielten, alueiden, uutisarvon arvioinnin, RSS-tarkistusten ja tarvittavien takaisinlukujen on silti täytyttävä. Prosenttiraja ei korvaa aihekohtaisia hakuja eikä oikeuta jättämään olennaista kieli- tai aluealuetta tutkimatta.
-5. Jos ehdot täyttyvät, ajo hyväksytään: päivitä tehtävän onnistunut tarkistuspiste, käytetty ohjeversio ja tehtäväkierron vuoro normaalisti. Lähdelokiin merkitään silti `partial`, jos jokin rekisterilähde jäi tarkistamatta. Kirjaa puutteet ja niiden syyt kattavuushuomioihin.
-6. Jos ehdot eivät täyty, ajo jää keskeneräiseksi: älä päivitä onnistumisen tarkistuspistettä äläkä siirrä vuoroa. Raportoi, mikä kriteeri jäi täyttymättä. Älä yritä ratkaista lähde-estettä muuttamalla automaation aikataulua tai asetuksia.
+1. Tarkista kaikki käyttörekisterin lähteet, joiden `retry_after` on tyhjä tai ohitettu. Jäähdytysajalla olevia lähteitä ei yritetä uudelleen, vaan ne kirjataan `unchecked_sources`-kenttään syineen ja seuraavine tarkistuspäivineen.
+2. Käyttörekisteri on hakujen lähtökohta, ei suljettu eikä laadullisesti riittäväksi oletettu lähdelista. Täydennä hakua aiheen kannalta olennaisilla, rekisterin ulkopuolisilla lähteillä ja hakukonehauilla aina, kun rekisterin lähteet eivät kata olennaisia kieliä, alueita, toimijoita tai aihealueita tai niiden kautta ei saada riittävää näyttöä. Uudet pysyvästi hyödylliset lähteet lisätään katalogiin ja aiheen käyttörekisteriin.
+3. Arvioi tutkimuksen riittävyys laadullisesti: onko aiheen olennaiset osa-alueet, kielet ja alueet tutkittu tehtäväohjeen mukaisesti, onko merkittävät löydökset varmennettu asianmukaisesti ja onko lähteiden puutteet sekä epävarmuudet kirjattu. Lähteiden lukumäärälle, prosenttiosuudelle tai kriittisten lähteiden tavoittamiselle ei aseteta tehtävän hyväksymisen ehtoa.
+4. Kirjaa `coverage_notes`-kenttään olennaiset puutteet: mitkä lähteet tai aihealueet jäivät tarkistamatta, miksi, mitä täydentäviä hakuja tehtiin ja mitä epävarmuutta jäi. Älä esitä hakutuloskatkelmaa tai tavoittamatonta sivua tarkistettuna lähteenä.
+5. Kun tehtävän mukainen tutkimus, toimituksellinen arviointi, mahdollinen julkaisu, pakolliset RSS-tarkistukset ja takaisinluvut sekä muut tehtäväkohtaiset vaatimukset on suoritettu, tehtävä hyväksytään ja vuoro etenee normaalisti myös silloin, kun lähdeloki on `partial`, lähteitä on vähän tai julkaistavaa uutta tietoa ei löydy. Lähdelistan puutteellisuus käsitellään erillisenä kehityskohteena, ei syynä jättää vuoroa pysyvästi samaan aiheeseen.
+6. Älä siirrä vuoroa, jos itse tutkimusprosessi tai jokin muu pakollinen hyväksymisvaihe jäi tekemättä, jos olennaisia väitteitä ei voitu arvioida tai jos julkaisu-/takaisinlukutarkistus epäonnistui. Tällöin kirjaa keskeneräisyyden täsmällinen syy. Pelkkä `partial`-tila tai lähteiden pieni määrä ei kuitenkaan ole tällainen syy.
 
-**Muumien 19.11.2026 ajon käsittely:** viisi kahdeksasta lähteestä tarkistettiin; Moomin Museum oli kriittinen lähde ja tarkistettiin. Kolme saavuttamatonta lähdettä kirjataan niiden virheluokan mukaisiin jäähdytysaikoihin. Tämä ajo pysyy alkuperäisen ohjeversion mukaisesti `partial`-tilassa eikä sille tehdä takautuvaa onnistumis- tai vuoromerkintää. Uutta käytäntöä sovelletaan vasta sen hyväksymisen jälkeen alkaviin ajoihin.
+Lähdelokin tilat säilyvät erillisinä:
+- `complete`: kaikki kyseiselle ajolle odotetut rekisterilähteet tarkistettiin.
+- `partial`: vähintään yksi odotettu lähde jäi tarkistamatta tai oli jäähdytysajalla.
+- `failed`: lähdetarkistusajo epäonnistui olennaisesti.
+
+Nämä tilat kuvaavat lähdetarkistuksen kattavuutta, eivät koko tehtäväajon hyväksyntää. Tehtäväajon hyväksyntä ja vuoron eteneminen ratkaistaan yllä kuvattujen tutkimusprosessin ja muiden pakollisten tarkistusten perusteella.
+
+**Muumien 19.11.2026 ajon käsittely:** ajo pysyy alkuperäisen ohjeversion mukaisesti `partial`-tilassa eikä sille tehdä takautuvaa onnistumis- tai vuoromerkintää. Uutta käytäntöä sovelletaan vasta sen hyväksymisen jälkeen alkaviin ajoihin.
 
 ## 5. Uutisarvo, seurantajakso ja deduplikointi
 
