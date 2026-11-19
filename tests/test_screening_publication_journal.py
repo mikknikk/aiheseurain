@@ -89,10 +89,25 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
             deployment_id=12345,
             rss_verified_at="2026-11-20T07:00:00+02:00",
             synchronization_commit_sha="2" * 40,
+            rss_verified=True,
+            state_synchronized=True,
         )
         completed_state = state(END)
         validate_journal(completed, completed_state, feed_catalog())
         self.assertEqual(completed["runs"][0]["phase"], "completed")
+
+    def test_completion_is_rejected_without_both_verifications(self):
+        journal = prepare_run(empty_journal(), prepared_record())
+        with self.assertRaises(ScreeningJournalError):
+            complete_run(
+                journal, RUN_ID,
+                publication_commit_sha="1" * 40,
+                deployment_id=12345,
+                rss_verified_at="2026-11-20T07:00:00+02:00",
+                synchronization_commit_sha="2" * 40,
+                rss_verified=True,
+                state_synchronized=False,
+            )
 
     def test_completing_same_run_with_same_receipts_is_idempotent(self):
         journal = prepare_run(empty_journal(), prepared_record())
@@ -101,6 +116,8 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
             "deployment_id": 12345,
             "rss_verified_at": "2026-11-20T07:00:00+02:00",
             "synchronization_commit_sha": "2" * 40,
+            "rss_verified": True,
+            "state_synchronized": True,
         }
         first = complete_run(journal, RUN_ID, **kwargs)
         second = complete_run(first, RUN_ID, **kwargs)
@@ -122,6 +139,8 @@ class ScreeningPublicationJournalTests(unittest.TestCase):
                 deployment_id=12345,
                 rss_verified_at="2026-11-20T07:00:00+02:00",
                 synchronization_commit_sha="2" * 40,
+                rss_verified=True,
+                state_synchronized=True,
             )
 
     def test_duplicate_run_ids_are_rejected_by_validator(self):
