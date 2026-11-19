@@ -175,7 +175,6 @@ def _validate_cross_references(latest: dict[str, Any], state: dict[str, Any],
             or checked & unchecked or checked | unchecked != registry_ids):
         raise ScreeningJournalError("Lähdeajon tarkistetut, tarkistamatta jääneet ja rekisterin lähdejoukot eivät täsmää.")
 
-    source_started = _time(source_run["started_at"], "source_run.started_at")
     source_ended = _time(source_run["ended_at"], "source_run.ended_at")
 
     # latest_by_task and the mutable registry describe the newest source scan.
