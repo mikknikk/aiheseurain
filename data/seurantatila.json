@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "timezone": "Europe/Helsinki",
-  "updated_at": "2026-11-18T11:13:52.839Z",
+  "updated_at": "2026-11-19T06:10:58+02:00",
   "notes": [
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
@@ -123,22 +123,22 @@
     "name": "Intialaisten elokuvien näytösvahti",
     "feed": "feeds/intialaisten-elokuvien-naytokset.xml",
     "cadence": "daily",
-    "last_successful_check": "2026-11-18T17:37:16+02:00",
-    "last_period_start": "2026-11-18T05:51:32+02:00",
-    "last_period_end": "2026-11-18T17:37:16+02:00",
+    "last_successful_check": "2026-11-19T06:10:58+02:00",
+    "last_period_start": "2026-11-18T17:37:16+02:00",
+    "last_period_end": "2026-11-19T06:10:58+02:00",
     "last_result": "success",
-    "published_items": 1,
-    "sources_checked": 7,
+    "published_items": 2,
+    "sources_checked": 8,
     "errors": [],
     "automation_instructions": {
       "document": "docs/intialaisten-elokuvien-naytosseuranta.md",
       "current_version": "1.4.3",
       "last_successful_run_version": "1.4.3",
-      "last_successful_run_at": "2026-11-18T17:37:16+02:00",
+      "last_successful_run_at": "2026-11-19T06:10:58+02:00",
       "startup_prompt_id": "naytosvahti-2026-11-17-02"
     },
     "last_successful_run_version": "1.4.3",
-    "last_successful_run_at": "2026-11-18T17:37:16+02:00"
+    "last_successful_run_at": "2026-11-19T06:10:58+02:00"
   },
   "automation_instructions": {
     "document": "docs/paaautomaation-ohje.md",
