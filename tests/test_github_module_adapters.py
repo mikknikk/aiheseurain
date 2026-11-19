@@ -15,6 +15,7 @@ from scripts.publication_journal import PublicationJournalConflict
 from scripts.github_module_adapters import (
     GitHubFile, GitHubModuleStateStore, GitHubArtifactStore,
     GitHubPublicationJournal, GitHubPagesRssPublisher, GitHubRunRecorder,
+    GitHubHandoffStore, GitHubRotationStateStore,
     GitHubAdapterConflict, GitHubAdapterError, GitHubApiClient, GitHubApiError, PublicationCandidate,
 )
 
