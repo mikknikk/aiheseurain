@@ -122,10 +122,11 @@ def _publication_readiness(result: dict[str, Any]) -> tuple[bool, list[str], dic
         blockers.append("source_scan_incomplete")
     if not isinstance(assessment, dict):
         blockers.append("publication_assessment_missing")
-        return False, blockers, {}
-    if assessment.get("decision") != "approved":
-        blockers.append("publication_assessment_not_approved")
-    checklist = assessment.get("checklist", {})
+        checklist = {}
+    else:
+        if assessment.get("decision") != "approved":
+            blockers.append("publication_assessment_not_approved")
+        checklist = assessment.get("checklist", {})
     automated = {}
     for key in ("guid_preservation", "xml_html", "rss_structure"):
         status = checklist.get(key, {}).get("status")
