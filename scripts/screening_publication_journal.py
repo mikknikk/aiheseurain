@@ -75,8 +75,11 @@ def validate_journal(journal: dict[str, Any], state: dict[str, Any],
 
     runs = journal["runs"]
     run_ids = [run["run_id"] for run in runs]
+    source_run_ids = [run["source_check_run_id"] for run in runs]
     if len(run_ids) != len(set(run_ids)):
         raise ScreeningJournalError("Julkaisupäiväkirjassa on sama run_id useammin kuin kerran.")
+    if len(source_run_ids) != len(set(source_run_ids)):
+        raise ScreeningJournalError("Julkaisupäiväkirjassa on sama source-check-run_id useammin kuin kerran.")
 
     pending = [run for run in runs if run["phase"] == "prepared"]
     if len(pending) > 1:
@@ -90,6 +93,8 @@ def validate_journal(journal: dict[str, Any], state: dict[str, Any],
         prepared_at = _time(run["prepared_at"], f"{run['run_id']} prepared_at")
         if prepared_at < period_end:
             raise ScreeningJournalError(f"{run['run_id']}: päiväkirja on valmisteltu ennen seurantajakson loppua.")
+        if run["source_check_ended_at"] != run["period"]["end"]:
+            raise ScreeningJournalError(f"{run['run_id']}: lähdetarkistusajon loppu ei vastaa seurantajakson loppua.")
         if run["feed"]["item_count"] != len(run["feed"]["guids"]):
             raise ScreeningJournalError(f"{run['run_id']}: RSS-itemien määrä ei vastaa GUID-listaa.")
 
@@ -163,9 +168,11 @@ def _validate_cross_references(latest: dict[str, Any], source_log: dict[str, Any
         raise ScreeningJournalError("Lähdetarkistusajon päättymisaika ei vastaa seurantajakson loppua.")
 
     checked = set(source_run.get("checked_source_ids", []))
-    unchecked = {item.get("source_id") for item in source_run.get("unchecked_sources", [])}
+    unchecked_list = [item.get("source_id") for item in source_run.get("unchecked_sources", [])]
+    unchecked = set(unchecked_list)
     registry_ids = set(source_run.get("registry_source_ids", []))
-    if None in unchecked or checked & unchecked or checked | unchecked != registry_ids:
+    if (None in unchecked or len(unchecked_list) != len(unchecked)
+            or checked & unchecked or checked | unchecked != registry_ids):
         raise ScreeningJournalError("Lähdeajon tarkistetut, tarkistamatta jääneet ja rekisterin lähdejoukot eivät täsmää.")
 
     # Viimeisimmän lähdeajon pitää olla myös tehtävän latest_by_task-viite.
