@@ -383,7 +383,7 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #232 – moduulisiirtymän julkaisu- ja palautustodisteiden pysyvä loki
 
-**Tila:** avoin; ennen tuotantosiirtymää tarvittava auditointikerros. Ei live-käyttöönottoa.
+**Tila:** valmis; toteutus PR:ssä #237 yhdistetty main-haaraan commitilla 2a868db091edf7c1f3d885292e4bf2b88d0c64a1. Ei live-käyttöönottoa.
 
 - [x] Kerää RSS-PR:n tunniste, URL, tila ja yhdistämiscommit moduuli-/ajokohtaisesti; PR:n otsikko ja run_id sidotaan pyydettyyn moduuliin.
 - [x] Kerää Pages-deploymentin tunniste ja tila erillään PR:n yhdistämisestä; deployment sidotaan täsmälliseen yhdistämiscommittiin.
@@ -391,6 +391,6 @@ Suositeltu toteutusjärjestys:
 - [x] Sido julkaisumanifestin blob-SHA, artifact-versio, sisältötiivisteet ja vaihehistoria sekä checkpointin ennen/jälkeen Git-blob-SHA:t, run_id:t ja aikaleimat samaan ajoon.
 - [x] Kirjaa vanhan raportointipolun tarkistettu jaksohavainto lähde-URL:ineen ja aikaleimoineen sekä palautuspäätös ja erillinen hyväksyntätietue.
 - [x] Toteuta sisällön SHA-256-tiivisteellä nimetyt muuttumattomat tapahtumatiedostot, skeema, validoija ja epäselvän kirjoituskuittauksen uusintatesti.
-- [ ] Varmista moduulirajaus, idempotenssi ja salaisuuksien sekä raporttisisällön poissulkeminen CI:ssä.
+- [x] Varmista moduulirajaus, idempotenssi ja salaisuuksien sekä raporttisisällön poissulkeminen CI:ssä; kaikki kolme vaadittua työnkulkua onnistuivat.
 
 **Rajaus:** kerääjä on read-only eikä yhdistä/sulje PR:iä, käynnistä deploymentia, aktivoi moduuleja tai muuta ChatGPT-automaation asetuksia. Näytösvahti pysyy erillisenä.
