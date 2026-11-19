@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import resource
 import tempfile
 from typing import Any, Mapping
 
@@ -34,10 +35,20 @@ class IsolatedRunnerError(RuntimeError):
 def _runtime_mounts() -> list[str]:
     """Määritä vain Python-ajon vaatimat järjestelmäkirjastot luettaviksi."""
     mounts: list[str] = []
-    for path in ("/usr", "/etc", "/lib", "/lib64"):
+    for path in ("/usr", "/lib", "/lib64"):
         if os.path.exists(path):
             mounts.extend(["--ro-bind", path, path])
     return mounts
+
+
+def _limit_child_resources(timeout_seconds: int):
+    """Rajoita runnerin CPU-aikaa, tiedostokokoa, tiedostokuvauksia ja core-dumppeja."""
+    def apply_limits() -> None:
+        resource.setrlimit(resource.RLIMIT_CPU, (timeout_seconds, timeout_seconds + 1))
+        resource.setrlimit(resource.RLIMIT_FSIZE, (MAX_RESULT_BYTES, MAX_RESULT_BYTES))
+        resource.setrlimit(resource.RLIMIT_NOFILE, (64, 64))
+        resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+    return apply_limits
 
 
 def _sandbox_command(
@@ -47,6 +58,7 @@ def _sandbox_command(
     input_dir = workspace / "input"
     runner_dir = workspace / "runner"
     output_dir = workspace / "output"
+    output_file = output_dir / "result.json"
     command = [
         bubblewrap,
         "--unshare-all",
@@ -61,7 +73,8 @@ def _sandbox_command(
         "--dir", "/output",
         "--ro-bind", str(input_dir), "/input",
         "--ro-bind", str(runner_dir), "/runner",
-        "--bind", str(output_dir), "/output",
+        "--ro-bind", str(output_dir), "/output",
+        "--bind", str(output_file), "/output/result.json",
         "--chdir", "/tmp",
         "--setenv", "PATH", "/usr/bin",
         "--setenv", "HOME", "/tmp",
@@ -111,10 +124,13 @@ def run_isolated_module(
             directory.mkdir(mode=0o700)
         input_file = input_dir / "bundle.json"
         runner_file = runner_dir / "runner.py"
+        result_file = output_dir / "result.json"
         input_file.write_text(bundle_to_json(bundle), encoding="utf-8")
         runner_file.write_text(runner_source, encoding="utf-8")
+        result_file.write_bytes(b"")
         input_file.chmod(0o400)
         runner_file.chmod(0o400)
+        result_file.chmod(0o600)
 
         command = _sandbox_command(bubblewrap, workspace, timeout_seconds=timeout_seconds)
         try:
@@ -123,8 +139,9 @@ def run_isolated_module(
                 cwd=workspace,
                 env={"PATH": "/usr/bin"},
                 stdin=subprocess.DEVNULL,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                preexec_fn=_limit_child_resources(timeout_seconds),
                 text=True,
                 timeout=timeout_seconds,
                 check=False,
@@ -135,19 +152,23 @@ def run_isolated_module(
             raise IsolatedRunnerError("Sandbox-prosessia ei voitu käynnistää.") from exc
 
         if completed.returncode != 0:
-            detail = completed.stderr[-2000:].strip()
             raise IsolatedRunnerError(
-                "Sandboxattu aiheajo epäonnistui"
-                + (f": {detail}" if detail else f" (exit {completed.returncode}).")
+                f"Sandboxattu aiheajo epäonnistui (exit {completed.returncode})."
             )
 
         result_file = output_dir / "result.json"
-        if not result_file.is_file():
-            raise IsolatedRunnerError("Runner ei palauttanut tulossopimuksen mukaista result.json-tiedostoa.")
-        if result_file.stat().st_size > MAX_RESULT_BYTES:
-            raise IsolatedRunnerError("Runnerin tulos ylittää sallitun 5 MiB:n kokorajan.")
         try:
-            result = json.loads(result_file.read_text(encoding="utf-8"))
+            # Avaa vain tavallinen tiedosto; älä seuraa runnerin mahdollisesti luomia symlinkkejä.
+            descriptor = os.open(result_file, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+            with os.fdopen(descriptor, "rb") as result_stream:
+                if not os.path.isfile(result_file) or os.fstat(result_stream.fileno()).st_size > MAX_RESULT_BYTES:
+                    raise IsolatedRunnerError("Runnerin tulostiedosto on virheellinen tai ylittää 5 MiB:n kokorajan.")
+                raw_result = result_stream.read(MAX_RESULT_BYTES + 1)
+            if len(raw_result) > MAX_RESULT_BYTES:
+                raise IsolatedRunnerError("Runnerin tulos ylittää sallitun 5 MiB:n kokorajan.")
+            result = json.loads(raw_result.decode("utf-8"))
+        except IsolatedRunnerError:
+            raise
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise IsolatedRunnerError("Runnerin tulos ei ole kelvollista UTF-8 JSON -dataa.") from exc
         if not isinstance(result, dict):
