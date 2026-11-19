@@ -380,3 +380,17 @@ Suositeltu toteutusjärjestys:
 - [x] Dokumentoidaan ehdotettu aihekohtainen siirtojärjestys, hyväksyntäportit ja palautuspäätöksen vähimmäislokitietue `docs/aiheajojen-eristys.md`-tiedostoon.
 
 **Rajaus:** ei live-siirtymää, moduulin aktivointia, RSS-julkaisua tai automaatioiden asetusten, ajastusten, käynnistyskehotteiden tai kohdekeskustelujen muutoksia. Näytösvahti pysyy erillisenä.
+
+### Issue #232 – moduulisiirtymän julkaisu- ja palautustodisteiden pysyvä loki
+
+**Tila:** avoin; ennen tuotantosiirtymää tarvittava auditointikerros. Ei live-käyttöönottoa.
+
+- [ ] Kerää RSS-PR:n tunniste, URL, tila ja yhdistämiscommit moduuli-/ajokohtaisesti.
+- [ ] Kerää Pages-deploymentin tunniste ja tila erillään PR:n yhdistämisestä.
+- [ ] Tallenna julkisen RSS:n takaisinluvun URL, aika, SHA-256, item-määrä ja GUIDit.
+- [ ] Sido lähtö- ja jälkitilan SHA:t sekä checkpointin ennen/jälkeen tunnisteet samaan ajoon.
+- [ ] Kirjaa vanhan raportointipolun saman seurantajakson julkaisutilan todiste ja palautuspäätöksen hyväksyntä.
+- [ ] Toteuta append-only-/SHA-CAS-loki, skeema, validoija ja ulkoisten tilojen vikainjektiotestit.
+- [ ] Varmista moduulirajaus, idempotenssi ja salaisuuksien sekä raporttisisällön poissulkeminen CI:ssä.
+
+**Rajaus:** kerääjä on read-only eikä yhdistä/sulje PR:iä, käynnistä deploymentia, aktivoi moduuleja tai muuta ChatGPT-automaation asetuksia. Näytösvahti pysyy erillisenä.
