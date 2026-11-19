@@ -394,3 +394,20 @@ Suositeltu toteutusjärjestys:
 - [x] Varmista moduulirajaus, idempotenssi ja salaisuuksien sekä raporttisisällön poissulkeminen CI:ssä; kaikki kolme vaadittua työnkulkua onnistuivat.
 
 **Rajaus:** kerääjä on read-only eikä yhdistä/sulje PR:iä, käynnistä deploymentia, aktivoi moduuleja tai muuta ChatGPT-automaation asetuksia. Näytösvahti pysyy erillisenä.
+
+### Issue #239 – siirtymätodisteiden kytkentä testattuun varjosiirtymään
+
+**Tila:** toteutus ja hyväksymistestit valmiit PR:ssä #240; PR odottaa yhdistämistä. Kaikki kolme PR-CI-työnkulkua läpäisivät commitilla `8d1c2bdee455976f0112e04629824dc97368afb8`. Live-siirtymää ei tehty.
+
+- [x] Yhden topic-moduulin, run_id:n, moduuliversion, seurantajakson ja `mode=shadow`-tilan syötesopimus.
+- [x] Todistekerääjän, palautumispäätöksen ja ajokohtaisen auditointivaraston yhdistävä orkestroija; tapahtumien moduuli-/ajo-omistajuus ja takaisinluku varmennetaan.
+- [x] Keräys, päätöksenteko ja tallennus erotetaan; keräys- tai validointivirhe ei jätä osittaista auditointikirjoitusta.
+- [x] Idempotentti uusinta ja muuttuneen havainnon erillinen auditointitietue.
+- [x] E2E-testit avoimelle PR:lle, Pagesin odottavalle/onnistuneelle/epäonnistuneelle tilalle, julkisen RSS:n täsmällisille GUIDeille ja item-määrälle, manifestin vaiheille, checkpointin ristiriidoille, suljetun yhdistämättömän PR:n hyväksyntäportille sekä jo julkaistulle vanhalle jaksolle.
+- [x] Checkpointin lähtö- ja jälkitila luetaan suoraan runtime-haarasta; callbackin väärentämät SHA-, run_id- ja aikaleimat hylätään ennen auditointikirjoituksia.
+- [x] Sivuvaikutustestit rajaavat kirjoitukset ajokohtaisiin auditointitietueisiin; RSS, aktivointiliput, moduulitilat, checkpointit ja tehtäväjono eivät muutu.
+- [x] Näytösvahti/prosessimoduuli estetään topic-siirtymärajapinnasta.
+- [x] Eristys- ja checkpoint-ohjeet päivitetty; PR:n kuvaus vastaa dokumentaation versiota 2.3.2.
+
+**Rajaus:** synteettinen varjoharjoitus ei tee live-tutkimusta, julkaise RSS:ää, aktivoi moduulia, muuta ChatGPT-automaation asetuksia tai käynnistä tuotantosiirtymää. PR #240 on jätetty avoimeksi katselmointia ja yhdistämispäätöstä varten.
+
