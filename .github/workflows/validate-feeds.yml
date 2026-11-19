@@ -63,5 +63,7 @@ jobs:
           if-no-files-found: warn
       - name: Validoi hyväksyttyyn haaraan tallennetut ChatGPT-tulokset
         run: python -m scripts.validate_chatgpt_inbox --all
+      - name: Validoi moduulisiirtymän auditointitietueet
+        run: python -m scripts.validate_transition_evidence
       - name: Testaa linkkitarkistimen logiikka
         run: python -m unittest discover -s tests -v
