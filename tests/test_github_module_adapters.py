@@ -266,6 +266,8 @@ class GitHubAdapterTests(unittest.TestCase):
             "report_sha256": "a" * 64, "artifacts_sha256": "b" * 64,
             "state_sha256": "state-sha", "artifact_version": "artifact-sha",
             "publication_targets": ["tolkien"],
+            "period_start": "2026-11-19T00:00:00+02:00",
+            "period_end": "2026-11-19T23:59:59+02:00",
             "prepared_at": "2026-11-19T09:00:00+02:00",
         }
 
