@@ -91,7 +91,10 @@ class TargetReport:
         """Rajaa julkaisureitittimelle vain sen tarvitsemat tiedot."""
         return {
             "target_id": self.target_id,
+            "target_version": self.target_version,
             "observation_types": list(self.observation_types),
+            "period": {"start": self.period_start, "end": self.period_end},
+            "checked_at": self.checked_at,
             "report_content": self.report_content,
         }
 
@@ -470,7 +473,10 @@ class ModuleOrchestrator:
                     raise OrchestrationError(
                         "Kohdekohtaiset raportit vaativat reititetyn julkaisusovittimen."
                     )
-                receipt = routed_publish(request.module_id, request.run_id, target_reports)
+                receipt = routed_publish(
+                    request.module_id, request.run_id, target_reports,
+                    publication_metadata=output.metadata or {},
+                )
             else:
                 # Vanha moduulikohtainen julkaisupolku säilyy yhteensopivana.
                 receipt=self.publisher.publish(
