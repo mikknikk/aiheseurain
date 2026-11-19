@@ -457,7 +457,7 @@ class GitHubTransitionEvidenceStore:
             if entry.get("type") != "file" or not name.endswith(".json"):
                 continue
             if (Path(name).name != name or not re.fullmatch(
-                    r"(?:pull_request|pages_deployment|public_feed|publication_manifest|checkpoint|legacy_period|recovery_decision|legacy_approval)-[a-f0-9]{64}\\.json", name)):
+                    r"(?:pull_request|pages_deployment|public_feed|publication_manifest|checkpoint|legacy_period|recovery_decision|legacy_approval)-[a-f0-9]{64}\.json", name)):
                 raise TransitionEvidenceError("Auditointihakemiston tiedostonimi ei vastaa tapahtumamuotoa.")
             file = self.client.get_file(f"{prefix}/{name}", self.branch)
             if file is None:
