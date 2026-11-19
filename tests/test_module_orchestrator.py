@@ -402,6 +402,21 @@ class FailOncePublicationJournal(FakePublicationJournal):
         return result
 
 
+class PrepareThenRaiseOnceJournal(FakePublicationJournal):
+    """Simuloi manifestin luonnin onnistumista, jonka kuittaus katoaa."""
+
+    def __init__(self):
+        super().__init__()
+        self.raised = False
+
+    def prepare(self, record):
+        value = super().prepare(record)
+        if not self.raised:
+            self.raised = True
+            raise RuntimeError("simuloitu manifestin valmistelun epäselvä API-vastaus")
+        return value
+
+
 class PublishThenRaiseOnce(FakePublisher):
     """Simuloi tilannetta, jossa RSS-julkaisu onnistuu mutta kuittaus katoaa."""
 
@@ -437,6 +452,18 @@ class ProductionRecoveryFaultInjectionTests(unittest.TestCase):
 
     def setUp(self):
         ProductionLifecycleTests.setUp(self)
+
+
+    def test_retry_after_prepared_manifest_write_ack_is_lost(self):
+        self.journal = PrepareThenRaiseOnceJournal()
+        self.orchestrator.publication_journal = self.journal
+        req = request(mode="production", run_id="recovery-prepared-001")
+        first = self.orchestrator.run(req, production_authorized=True)
+        second = self.orchestrator.run(req, production_authorized=True)
+        self.assertEqual(first.status, "failed")
+        self.assertEqual(second.status, "succeeded")
+        self.assertEqual(self.journal.records[("tolkien", req.run_id)]["phase"], "checkpoint_updated")
+        self.assertEqual(len(self.publisher.receipts), 1)
 
     def test_retry_after_published_manifest_write_ack_is_lost(self):
         self.journal = FailOncePublicationJournal("published")
