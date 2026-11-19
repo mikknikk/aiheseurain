@@ -520,7 +520,7 @@ class GitHubAdapterTests(unittest.TestCase):
 
     def test_rotation_rejects_out_of_order_task_and_process_module(self):
         store = GitHubRotationStateStore(self.client)
-        with self.assertRaises(GitHubAdapterConflict):
+        with self.assertRaises(GitHubAdapterError):
             store.advance(self._successful_rotation_result(), task_id="tolkien", feed_path="feeds/tolkien.xml")
         process_result = replace(
             self._successful_rotation_result(),
