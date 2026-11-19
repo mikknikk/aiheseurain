@@ -3,6 +3,7 @@ from copy import deepcopy
 from dataclasses import replace
 import hashlib
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
@@ -81,6 +82,28 @@ class GitHubAdapterTests(unittest.TestCase):
         self.client.files[("main", "feeds/tolkien.xml")] = GitHubFile(
             old_feed, blob_sha(old_feed)
         )
+
+    def test_rss_publisher_rejects_default_actions_token(self):
+        with patch.dict(os.environ, {
+            "GITHUB_REPOSITORY": "mikknikk/aiheseurain",
+            "GITHUB_TOKEN": "actions-token",
+        }, clear=True):
+            client = GitHubApiClient()
+            self.assertEqual(client.token_source, "GITHUB_TOKEN")
+            with self.assertRaises(GitHubAdapterError):
+                GitHubPagesRssPublisher(client, lambda *args, **kwargs: None)
+
+    def test_rss_publisher_accepts_dedicated_workflow_triggering_token(self):
+        with patch.dict(os.environ, {
+            "GITHUB_REPOSITORY": "mikknikk/aiheseurain",
+            "GITHUB_TOKEN": "actions-token",
+            "AIHESEURAIN_GITHUB_TOKEN": "app-installation-token",
+        }, clear=True):
+            client = GitHubApiClient()
+            self.assertEqual(client.token, "app-installation-token")
+            self.assertEqual(client.token_source, "AIHESEURAIN_GITHUB_TOKEN")
+            publisher = GitHubPagesRssPublisher(client, lambda *args, **kwargs: None)
+            self.assertIsNotNone(publisher)
 
     def test_read_only_state_load_does_not_create_runtime_branch(self):
         store = GitHubModuleStateStore(self.client)
