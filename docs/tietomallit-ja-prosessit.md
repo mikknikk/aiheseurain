@@ -160,14 +160,14 @@ Käyttörekisteri ei toista lähteen nimeä tai URL-osoitetta. Se viittaa katalo
   "source_id": "tolkien-estate",
   "critical": true,
   "last_checked_at": "2026-11-16T17:56:58+02:00",
-  "access_limit": null
+  "access_limit": null,\n  "retry_after": null
 }
 ```
 
 - `source_id`: viittaus yhteisen katalogin `id`-arvoon.
 - `critical`: onko lähde tämän aiheen kattavuuden kannalta kriittinen. Tämä ei ole luotettavuusarvosana.
 - `last_checked_at`: milloin lähde viimeksi tarkistettiin tämän tehtävän yhteydessä. `null` tarkoittaa, ettei tarkistusaikaa ole kirjattu.
-- `access_limit`: käyttöä rajaava huomio, esimerkiksi sivuston esto tai se, että lähde toimii vain uutisvihjeenä.
+- `access_limit`: käyttöä rajaava huomio, esimerkiksi se, että lähde toimii vain uutisvihjeenä.\n- `retry_after`: aikaleima, jota ennen lähdettä ei yritetä uudelleen. `null` tarkoittaa, että lähde kuuluu seuraavaan normaaliin tarkistukseen. Epäonnistunut yritys ei päivitä `last_checked_at`-arvoa.
 
 Tehtäväkohtaisuus on tärkeää: jos sama sivusto tarkistetaan Tolkien- ja Muumi-seurannassa, Tolkien-rekisterin tarkistusaika ei automaattisesti päivitä Muumien rekisteriä.
 
@@ -179,7 +179,7 @@ flowchart LR
     R --> ID["Lue source_id<br/>tolkien-estate"]
     ID --> C["Etsi sama id<br/>data/source-catalog.json"]
     C --> INFO["Nyt käytössä ovat<br/>nimi, URL, kielet,<br/>alueet ja lähdetyyppi"]
-    R --> RULE["Käyttöasetukset<br/>critical, last_checked_at,<br/>access_limit"]
+    R --> RULE["Käyttöasetukset<br/>critical, last_checked_at,<br/>access_limit, retry_after"]
     INFO --> SEARCH["Hae ja avaa<br/>alkuperäinen julkaisu"]
     RULE --> SEARCH
 ```
