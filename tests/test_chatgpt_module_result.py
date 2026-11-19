@@ -24,7 +24,7 @@ class ChatGPTModuleResultTests(unittest.TestCase):
             period_start="2026-11-19T00:00:00+02:00",
             period_end="2026-11-19T23:59:59+02:00",
             mode="shadow",
-            requested_at="2026-11-19T10:00:00+02:00",
+            requested_at="2026-11-19T09:55:00+02:00",
         )
         self.payload = {
             "schema_version": 1,
@@ -83,6 +83,18 @@ class ChatGPTModuleResultTests(unittest.TestCase):
 
     def test_rejects_wrong_period(self):
         payload = dict(self.payload, period={**self.payload["period"], "start":"2026-11-18T00:00:00+02:00"})
+        with self.assertRaises(ChatGPTResultError):
+            chatgpt_result_to_execution_output(payload, self.definition, self.request)
+
+    def test_rejects_handoff_module_mismatch(self):
+        payload = dict(self.payload)
+        payload["handoff"] = dict(self.payload["handoff"], module_id="tolkien")
+        with self.assertRaises(ChatGPTResultError):
+            chatgpt_result_to_execution_output(payload, self.definition, self.request)
+
+    def test_rejects_handoff_requested_at_mismatch(self):
+        payload = dict(self.payload)
+        payload["handoff"] = dict(self.payload["handoff"], requested_at="2026-11-19T09:54:00+02:00")
         with self.assertRaises(ChatGPTResultError):
             chatgpt_result_to_execution_output(payload, self.definition, self.request)
 
