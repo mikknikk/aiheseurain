@@ -1,7 +1,7 @@
 # Nykyisten moduulien siirron toteutus
 
-**Versio:** 1.0.0  
-**Päiväys:** 2026-11-18  
+**Versio:** 1.0.1  
+**Päiväys:** 2026-11-19  
 **Liittyvä tiketti:** [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105)  
 **Lähtöinventaario:** [Nykyisten moduulien inventaario ja siirtymäsuunnitelma](moduulisiirtyman-inventaario.md)
 
@@ -18,13 +18,15 @@ Kaikki kymmenen moduulia on lisätty tiedostoon data/module-registry.json tilass
 | tolkien | topic | modules/topics/tolkien/module.json | 28 |
 | taylor-swift | topic | modules/topics/taylor-swift/module.json | 10 |
 | gurmeet-ram-rahim-singh | topic | modules/topics/gurmeet-ram-rahim-singh/module.json | 7 |
-| muumit | topic | modules/topics/muumit/module.json | 8 |
+| muumit | topic | modules/topics/muumit/module.json | 9 |
 | wakaliwood | topic | modules/topics/wakaliwood/module.json | 5 |
 | euroviisut | topic | modules/topics/euroviisut/module.json | 10 |
 | sompote-sands | topic | modules/topics/sompote-sands/module.json | 6 |
 | shakkidraamat | topic | modules/topics/shakkidraamat/module.json | 7 |
 | indian-film-news | topic | modules/topics/indian-film-news/module.json | 40 |
 | indian-film-screening-watch | process | modules/processes/indian-film-screening-watch/module.json | 11 |
+
+Lähdeviitteiden määrät kuvaavat 19.11.2026 ajantasaisia moduulimäärityksiä; 17.11.2026 päivätty inventaario säilyy historiallisena lähtötilannekuvauksena.
 
 Näytösvahtimoduulin tapahtumatyypin määritys sijaitsee erikseen tiedostossa modules/processes/indian-film-screening-watch/event-type.json. Se käyttää #109:n yleistä film-screening-tapahtumatyyppiä. Prosessilaajennuksen versio on 1.1.0, ja sen tapahtumatyyppiviite sekä identiteettikentät tarkistetaan migraatiovalidoinnissa.
 
@@ -91,4 +93,5 @@ Jos määritysten vertailussa tai validoinnissa ilmenee virhe, palauta moduulim�
 
 ## Muutoshistoria
 
+- **1.0.1 – 2026-11-19:** lisättiin Muumien moduuliin Sony Music Finland Live -ensisijaislähde omien Muumi-esitysten kiertue- ja ohjelmatiedoille; määritysversio päivitettiin arvoon 1.0.1.
 - **1.0.0 – 2026-11-18:** ensimmäinen kymmenen moduulin passiivinen migraatio, lähdeviitteiden vastaavuustarkistus, näytösvahtimoduulin tapahtumatyyppimääritys ja CI-validointi.
