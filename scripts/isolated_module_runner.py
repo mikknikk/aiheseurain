@@ -16,8 +16,8 @@ import json
 import os
 from pathlib import Path
 import shutil
-import subprocess
 import stat
+import subprocess
 import tempfile
 try:
     import resource
@@ -51,6 +51,7 @@ def _limit_child_resources(timeout_seconds: int):
         resource.setrlimit(resource.RLIMIT_CPU, (timeout_seconds, timeout_seconds + 1))
         resource.setrlimit(resource.RLIMIT_FSIZE, (MAX_RESULT_BYTES, MAX_RESULT_BYTES))
         resource.setrlimit(resource.RLIMIT_NOFILE, (64, 64))
+        resource.setrlimit(resource.RLIMIT_NPROC, (64, 64))
         resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     return apply_limits
 
@@ -110,7 +111,13 @@ def run_isolated_module(
     if not isinstance(timeout_seconds, int) or timeout_seconds < 1 or timeout_seconds > 3600:
         raise IsolatedRunnerError("Aikarajan pitää olla kokonaisluku väliltä 1–3600 sekuntia.")
     bubblewrap = bubblewrap_path or shutil.which("bwrap")
-    if os.name != "posix" or resource is None or not Path("/proc").exists() or not Path("/var/tmp").is_dir() or not bubblewrap:
+    if (
+        os.name != "posix"
+        or resource is None
+        or not Path("/proc").exists()
+        or not Path("/var/tmp").is_dir()
+        or not bubblewrap
+    ):
         raise IsolatedRunnerError(
             "Turvallista Linux/bubblewrap-sandboxia ei ole saatavilla; ajo estettiin."
         )
@@ -165,7 +172,8 @@ def run_isolated_module(
             # Avaa vain tavallinen tiedosto; älä seuraa runnerin mahdollisesti luomia symlinkkejä.
             descriptor = os.open(result_file, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
             with os.fdopen(descriptor, "rb") as result_stream:
-                if not stat.S_ISREG(os.fstat(result_stream.fileno()).st_mode) or os.fstat(result_stream.fileno()).st_size > MAX_RESULT_BYTES:
+                result_stat = os.fstat(result_stream.fileno())
+                if not stat.S_ISREG(result_stat.st_mode) or result_stat.st_size > MAX_RESULT_BYTES:
                     raise IsolatedRunnerError("Runnerin tulostiedosto on virheellinen tai ylittää 5 MiB:n kokorajan.")
                 raw_result = result_stream.read(MAX_RESULT_BYTES + 1)
             if len(raw_result) > MAX_RESULT_BYTES:
