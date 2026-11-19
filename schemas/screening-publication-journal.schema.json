@@ -34,6 +34,8 @@
         "run_id",
         "period",
         "prepared_at",
+        "source_check_run_id",
+        "source_check_ended_at",
         "phase",
         "feed",
         "publication",
@@ -150,6 +152,15 @@
             }
           },
           "additionalProperties": false
+        },
+        "source_check_run_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 180
+        },
+        "source_check_ended_at": {
+          "type": "string",
+          "format": "date-time"
         }
       },
       "allOf": [

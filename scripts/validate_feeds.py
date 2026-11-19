@@ -1113,20 +1113,37 @@ def validate_feeds():
 
 
 def validate_screening_publication_journal(state):
-    """Tarkistaa näytösvahdin keskeneräisten ja valmiiden julkaisujen päiväkirjan.
+    """Tarkistaa näytösvahdin julkaisupäiväkirjan ja sen viittaamat tiedostot.
 
-    Päiväkirja yhdistää saman ajon RSS-sisällön, Pages-varmennuksen ja
-    tilatietojen synkronoinnin. Keskeneräinen merkintä ei saa siirtää
-    viimeisimmän onnistuneen tarkistuksen aikaleimaa.
+    Vertailu tehdään saman Git-commitin tiedostoihin. Näin kelvollinen mutta
+    väärään ajoon kuuluva JSON-tiedosto ei voi yksin läpäistä julkaisua.
     """
-    path = ROOT / "data/screening-publication-journal.json"
-    if not path.is_file():
-        fail("data/screening-publication-journal.json puuttuu")
+    journal_path = ROOT / "data/screening-publication-journal.json"
+    source_log_path = ROOT / "data/lahdetarkistukset.json"
+    source_registry_path = ROOT / "data/sources/intialaiset_elokuvat_naytokset.json"
+    module_state_path = ROOT / "data/module-state/indian-film-screening-watch.json"
+    feed_path = ROOT / "feeds/intialaisten-elokuvien-naytokset.xml"
+    paths = (journal_path, source_log_path, source_registry_path, module_state_path, feed_path)
+    for path in paths:
+        if not path.is_file():
+            fail(f"näytösvahdin julkaisun eheystarkistuksesta puuttuu tiedosto: {path.relative_to(ROOT)}")
     try:
-        journal = json.loads(path.read_text(encoding="utf-8"))
-        validate_journal(journal, state, FEED_CATALOG)
-    except (json.JSONDecodeError, UnicodeDecodeError, ScreeningJournalError) as exc:
-        fail(f"näytösvahdin julkaisupäiväkirja on virheellinen: {exc}")
+        journal = json.loads(journal_path.read_text(encoding="utf-8"))
+        source_log = json.loads(source_log_path.read_text(encoding="utf-8"))
+        source_registry = json.loads(source_registry_path.read_text(encoding="utf-8"))
+        module_state = json.loads(module_state_path.read_text(encoding="utf-8"))
+        feed_bytes = feed_path.read_bytes()
+        validate_journal(
+            journal,
+            state,
+            FEED_CATALOG,
+            source_log=source_log,
+            source_registry=source_registry,
+            module_state=module_state,
+            feed_bytes=feed_bytes,
+        )
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError, ScreeningJournalError) as exc:
+        fail(f"näytösvahdin julkaisupäiväkirjan tai sen viittaamien tietojen eheysvirhe: {exc}")
 
 
 def validate_startup_prompts(state):
