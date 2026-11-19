@@ -90,6 +90,21 @@ def validate_inbox_result(file_path: Path, *, relative_path: str, root: Path = R
             raise InboxValidationError("Kohderaportin seurantajakso poikkeaa handoffista.")
         if aware_timestamp(report["checked_at"], "target_report.checked_at") < requested_at:
             raise InboxValidationError("Kohderaportin tarkistusajankohta edeltää handoff-pyyntöä.")
+    # Estä saman run_id:n toinen, sisällöltään erilainen vastaanotto. Sama jo
+    # hyväksytty tiedosto ja täsmälleen sama JSON ovat turvallinen idempotentti uusinta.
+    inbox = root / "data/chatgpt-inbox"
+    if inbox.exists():
+        for existing_path in inbox.glob("*/*.json"):
+            if existing_path.resolve() == Path(file_path).resolve():
+                continue
+            existing_payload = read_json(existing_path)
+            if existing_payload.get("run_id") == run_id:
+                if (
+                    existing_path.relative_to(root).as_posix() == relative_path
+                    and existing_payload == payload
+                ):
+                    return payload
+                raise InboxValidationError("Sama run_id on jo vastaanotettu eri sisällöllä tai eri moduulille.")
     # input_sha256:n muoto tarkistetaan skeemassa. Sen riippumaton vertailu
     # alkuperäiseen, pysyvästi tallennettuun handoffiin kuuluu seuraavaan vaiheeseen.
     return payload
