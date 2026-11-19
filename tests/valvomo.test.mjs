@@ -351,3 +351,86 @@ test("vanhentunutta running-tilaa ei näytetä käynnissä olevana", () => {
   run.updated_at = "2026-11-20T09:30:00Z";
   assert.equal(displayRunStatus(run, 36, now).label, "Käynnissä");
 });
+
+
+test("vanhentunut onnistunut ajo ei näy ajan tasalla olevana", () => {
+  const run = {
+    ...sampleRunHistory().runs[0],
+    status: "succeeded",
+    started_at: "2026-11-17T22:00:00Z",
+    finished_at: "2026-11-17T23:00:00Z",
+    updated_at: "2026-11-19T06:49:18Z"
+  };
+  const now = Date.parse("2026-11-19T12:00:00Z");
+  const status = displayRunStatus(run, 36, now);
+  assert.equal(status.key, "warning");
+  assert.equal(status.stale, true);
+  assert.match(status.label, /Vanhentunut/);
+});
+
+test("tuore onnistunut ajo pysyy onnistuneena", () => {
+  const run = {
+    ...sampleRunHistory().runs[0],
+    status: "succeeded",
+    started_at: "2026-11-19T10:00:00Z",
+    finished_at: "2026-11-19T11:30:00Z",
+    updated_at: "2026-11-19T11:30:00Z"
+  };
+  const now = Date.parse("2026-11-19T12:00:00Z");
+  const status = displayRunStatus(run, 36, now);
+  assert.equal(status.key, "good");
+  assert.equal(status.stale, false);
+});
+
+test("vanhentunut virhe säilyttää virheluokan ja näyttää vanhenemisen", () => {
+  const run = {
+    ...sampleRunHistory().runs[0],
+    status: "failed",
+    started_at: "2026-11-17T22:00:00Z",
+    finished_at: "2026-11-17T23:00:00Z",
+    updated_at: "2026-11-19T06:49:18Z"
+  };
+  const now = Date.parse("2026-11-19T12:00:00Z");
+  const status = displayRunStatus(run, 36, now);
+  assert.equal(status.key, "error");
+  assert.equal(status.stale, true);
+  assert.match(status.label, /vanhentunut/);
+});
+
+test("tyhjä ajohistoria näytetään puuttuvana havaintona", async () => {
+  const oldDocument = globalThis.document;
+  const oldFetch = globalThis.fetch;
+  const dom = fakeDom();
+  const mainHistory = sampleRunHistory();
+  const emptyScreeningHistory = {
+    schema_version: 1,
+    automation_id: "screening_watch",
+    updated_at: "2026-11-19T12:00:00Z",
+    runs: []
+  };
+  const emptyQualityHistory = {
+    schema_version: 1,
+    automation_id: "quality_check",
+    updated_at: "2026-11-19T12:00:00Z",
+    runs: []
+  };
+  globalThis.document = dom;
+  globalThis.fetch = async (url) => ({
+    ok: true,
+    async json() {
+      if (url.includes("main-automation")) return mainHistory;
+      if (url.includes("screening-watch")) return emptyScreeningHistory;
+      return emptyQualityHistory;
+    }
+  });
+  try {
+    await loadRunHistory();
+    const html = dom.getElementById("run-history-content").innerHTML;
+    assert.match(html, /Ajohistoria puuttuu/);
+    assert.match(html, /Tätä ei tulkita onnistumiseksi/);
+  } finally {
+    globalThis.document = oldDocument;
+    globalThis.fetch = oldFetch;
+  }
+});
+
