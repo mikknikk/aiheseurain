@@ -56,6 +56,10 @@ jobs:
               return;
             }
             const content = Buffer.from(response.data.content, "base64");
+            if (content.length > 1048576) {
+              core.setFailed("ChatGPT-tulostiedosto ylittää yhden mebitavun rajan.");
+              return;
+            }
             require("fs").writeFileSync(process.env.RESULT_PATH, content);
             core.setOutput("relative-path", file.filename);
 
