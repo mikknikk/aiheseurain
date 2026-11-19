@@ -250,6 +250,19 @@
       "reliability_class": "A"
     },
     {
+      "id": "cinema-niagara",
+      "name": "Cinema Niagara",
+      "url": "https://cinemaniagara.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "A"
+    },
+    {
       "id": "cinema-orion",
       "name": "Cinema Orion",
       "url": "https://cinemaorion.fi/",
@@ -842,6 +855,34 @@
       "id": "kino-regina",
       "name": "Kino Regina",
       "url": "https://kinoregina.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "A"
+    },
+    {
+      "id": "kinoon",
+      "name": "Kinoon",
+      "url": "https://kinoon.fi/",
+      "language_regions": [
+        "fi",
+        "en"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "C",
+      "reliability_note": "Kolmannen osapuolen valtakunnallinen näytöskooste; käytä löytämiseen ja tarkista ajat teatterin omilta sivuilta."
+    },
+    {
+      "id": "kinopirtti",
+      "name": "Kinopirtti",
+      "url": "https://kinopirtti.fi/",
       "language_regions": [
         "fi"
       ],
@@ -1666,6 +1707,20 @@
         "NORTH-AMERICA"
       ],
       "reliability_class": "A"
+    },
+    {
+      "id": "valkokangas",
+      "name": "Valkokangas",
+      "url": "https://valkokangas.app/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "C",
+      "reliability_note": "Kolmannen osapuolen näytöskooste; täydentävä lähde, ei teatterin oma vahvistus."
     },
     {
       "id": "variety-film",
