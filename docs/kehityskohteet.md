@@ -263,7 +263,7 @@ Järjestystä voi muuttaa, jos seurannan käytännön ongelmat tai käyttäjän 
 **Tavoite:** jokainen aiheajo saa vain oman moduulinsa sisällön. Yhteinen koordinaattori valitsee tehtävän ja hoitaa teknisen elinkaaren; aihekohtainen runner ei lue muiden aiheiden ohjeita, lähteitä, kohteita, tilaa tai historiaa.
 
 - [x] **#199 – Eristetyn syötepaketin sopimus:** ensimmäinen versio toteutettu ja yhdistetty PR:ssä #203; syötepaketin sisältö rajataan moduulin omiin lähteisiin, kohteisiin ja tilaan.
-- [ ] **#200 – Eristetty suoritusympäristö:** erillinen työtila/prosessi ja rajattu tiedostonäkymä; ei väitetä OS-tason sandboxia ennen sen todentamista.
+- [x] **#200 – Eristetty suoritusympäristö:** Linux/bubblewrap-sandbox toteutettu; moduulikohtainen syöte ja runner-koodi ovat vain luku -muotoisia, vain tulostiedosto on kirjoitettavissa, verkko ja isäntäkoneen yleinen tiedostonäkymä on rajattu pois. Ei vielä kytketty tuotantoajoihin.
 - [ ] **#201 – CI-eristystestit:** estä muiden moduulien tietojen päätyminen runner-pakettiin ja estä ristiinviittaukset.
 - [ ] **#202 – Pääautomaation siirto:** vaihda laaja aihekierron lukujärjestys koordinaattorin ja moduulikohtaisen käynnistyksen malliin. Käynnistyskehotteen ja live-automaation asetusten muuttaminen vaatii erillisen hyväksynnän.
 
