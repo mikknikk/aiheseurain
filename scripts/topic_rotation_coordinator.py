@@ -21,17 +21,12 @@ from zoneinfo import ZoneInfo
 
 import jsonschema
 
-from scripts.isolated_module_runner import run_isolated_module
+from scripts.isolated_module_runner import IsolatedRunnerError, run_isolated_module
 from scripts.module_input_bundle import build_module_input_bundle, bundle_to_json
 from scripts.module_registry import load_registry
 
 ROOT = Path(__file__).resolve().parents[1]
 TIMEZONE = "Europe/Helsinki"
-QUEUE_PATH = ROOT / "docs/tehtavajono.md"
-STATE_PATH = ROOT / "data/seurantatila.json"
-TASK_MAP_PATH = ROOT / "data/topic-task-map.json"
-TASK_MAP_SCHEMA_PATH = ROOT / "schemas/topic-task-map.schema.json"
-RUNNER_SOURCE_PATH = ROOT / "scripts/topic_dispatch_runner.py"
 
 
 class TopicCoordinatorError(RuntimeError):
@@ -146,6 +141,9 @@ def validate_topic_rotation_configuration(root: Path = ROOT) -> TopicSelection:
 
     queue_text = (root / "docs/tehtavajono.md").read_text(encoding="utf-8")
     queue_feeds = _queue_order(queue_text)
+    state_feeds = [item.get("feed") for item in rotation["tasks"].values() if isinstance(item, dict)]
+    if queue_feeds != state_feeds:
+        raise TopicCoordinatorError("Dokumentoitu kiertojärjestys ja koneellisen seurantatilan järjestys eroavat.")
     if feed_path not in queue_feeds:
         raise TopicCoordinatorError("Seurantatilan seuraava tehtävä ei vastaa dokumentoitua kiertojonoa.")
     try:
@@ -284,7 +282,7 @@ def main(argv: list[str] | None = None) -> int:
             root=args.root,
             timeout_seconds=args.timeout_seconds,
         )
-    except (TopicCoordinatorError, OSError, ValueError) as exc:
+    except (TopicCoordinatorError, IsolatedRunnerError, OSError, ValueError) as exc:
         print(json.dumps({"status": "failed", "error": str(exc)}, ensure_ascii=False), file=sys.stderr)
         return 2
     print(json.dumps(dispatch.to_dict(), ensure_ascii=False, indent=2))
