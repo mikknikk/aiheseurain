@@ -499,8 +499,12 @@ class GitHubPagesRssPublisher:
         return guids, len(items)
 
     def _build(self, module_id: str, run_id: str, report_content: str, *,
-               expected_feed_path: str, expected_public_url: str | None = None) -> PublicationCandidate:
-        candidate = self.candidate_builder(module_id, run_id, report_content)
+               expected_feed_path: str, expected_public_url: str | None = None,
+               target_id: str | None = None) -> PublicationCandidate:
+        if target_id is None:
+            candidate = self.candidate_builder(module_id, run_id, report_content)
+        else:
+            candidate = self.candidate_builder(module_id, run_id, report_content, target_id=target_id)
         if not isinstance(candidate, PublicationCandidate):
             raise GitHubAdapterError("candidate_builder palautti väärän tulossopimuksen.")
         gate_path = f"reports/julkaisuportit/{run_id}.json"
@@ -531,7 +535,8 @@ class GitHubPagesRssPublisher:
 
     def publish(self, module_id: str, run_id: str, report_content: str, *,
                 idempotency_key: str, expected_feed_path: str | None = None,
-                expected_public_url: str | None = None) -> PublicationReceipt:
+                expected_public_url: str | None = None,
+                target_id: str | None = None) -> PublicationReceipt:
         """Luo yhden julkaisuehdokkaan PR:n; sama ajo käyttää aina samaa haaraa."""
         module_id, run_id = _module(module_id), _run(run_id)
         if idempotency_key != f"{module_id}:{run_id}":
@@ -547,6 +552,7 @@ class GitHubPagesRssPublisher:
             module_id, run_id, report_content,
             expected_feed_path=expected_feed_path,
             expected_public_url=expected_public_url,
+            target_id=target_id,
         )
         branch_id = hashlib.sha256(f"{module_id}:{run_id}".encode("utf-8")).hexdigest()[:20]
         branch = f"module-publish/{module_id}/{branch_id}"
@@ -594,6 +600,7 @@ class GitHubPagesRssPublisher:
             idempotency_key=f"{module_id}:{run_id}",
             expected_feed_path=destination["path"],
             expected_public_url=destination["url"],
+            target_id=report["target_id"],
         )
 
     def verify(self, receipt: PublicationReceipt) -> bool:
