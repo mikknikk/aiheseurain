@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.3.1  
+**Versio:** 2.3.2  
 **Päiväys:** 2026-11-19  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211), [#232 – Siirtymän julkaisu- ja palautustodisteiden pysyvä loki](https://github.com/mikknikk/aiheseurain/issues/232)
 
@@ -241,14 +241,15 @@ Regressiotestit kattavat lähdeaukot ja saavuttamattomat lähteet, tyhjän uutis
 
 `scripts/shadow_transition.py` yhdistää yhden topic-moduulin read-only-todistekerääjäkutsut, `recovery_action`-päätöksen ja ajokohtaisen auditointivaraston. Syötesopimus sisältää moduulin, run_id:n, moduuliversion, seurantajakson ja eksplisiittisen `mode=shadow`-tilan. Rajapinta hyväksyy vain feed-katalogiin rekisteröidyt topic-syötteet; näytösvahti ei voi käyttää sitä.
 
-Keräämiskutsut suoritetaan ennen auditointikirjoituksia. Jokaisen tapahtuman moduuli- ja run_id tarkistetaan, ja vasta kaikkien havaintojen sekä palautumispäätöksen valmistuttua tapahtumat tallennetaan. Jos harjoitukseen sisältyy checkpoint-jälkitodiste, orkestroija lukee ensin lähtötilan itse `read_checkpoint_baseline`-toiminnolla runtime-haarasta ja vertaa sen blob-SHA:ta, run_id:tä ja checked_at-aikaa jälkitodisteen `before_*`-kenttiin. Callback ei voi määrittää tai korvata lähtötilaa. Ero tai puuttuva lähtötila pysäyttää harjoituksen ennen auditointikirjoituksia. Lopuksi sama ajo luetaan takaisin ja tallennettujen tapahtumien tunnisteet varmennetaan.
+Keräämiskutsut suoritetaan ennen auditointikirjoituksia. Jokaisen tapahtuman moduuli- ja run_id tarkistetaan, ja vasta kaikkien havaintojen sekä palautumispäätöksen valmistuttua tapahtumat tallennetaan. Jos harjoitukseen sisältyy checkpoint-jälkitodiste, orkestroija lukee ensin lähtötilan itse `read_checkpoint_baseline`-toiminnolla runtime-haarasta ja vertaa sen blob-SHA:ta, run_id:tä ja checked_at-aikaa jälkitodisteen `before_*`-kenttiin. Jälkitodisteen keräämisen jälkeen orkestroija lukee runtime-haaran uudelleen ja vertaa myös `after_*`-kentät suoraan luettuun jälkitilaan. Callback ei voi määrittää tai korvata kumpaakaan päätetilaa. Ero tai puuttuva lähtö-/jälkitila pysäyttää harjoituksen ennen auditointikirjoituksia. Lopuksi sama ajo luetaan takaisin ja tallennettujen tapahtumien tunnisteet varmennetaan.
 
 Tämä on synteettisillä testituplilla ajettava varjoharjoituksen tekninen rajapinta, ei live-siirtymä eikä tuotantokäyttöönoton hyväksyntä. Auditointitietueiden tallennus on ainoa kirjoitusoperaatio. RSS-syötteitä, moduulien aktivointilippuja, moduulitiloja, checkpointteja, tehtäväjonoa tai ChatGPT-automaation asetuksia ei muuteta.
 
-Käyttöönottovaihe on edelleen kesken. Checkpointin lähtötilan luku on nyt kytketty orkestroijan checkpoint-jälkitodisteeseen, ja synteettinen testi varmistaa, että callbackin väärentämä lähtö-SHA hylätään. Eri siirtymävaiheiden kattava end-to-end-testistö on silti varmistettava ennen kuin tätä rajapintaa voidaan käyttää tuotantosiirtymän hyväksymiskriteerinä.
+Käyttöönottovaihe on edelleen kesken. Checkpointin lähtö- ja jälkitilan luku on nyt kytketty orkestroijaan, ja synteettiset testit varmistavat, että callbackin väärentämä lähtö-SHA tai jälkitilan tunnisteet hylätään. Eri siirtymävaiheiden kattava end-to-end-testistö on silti varmistettava ennen kuin tätä rajapintaa voidaan käyttää tuotantosiirtymän hyväksymiskriteerinä.
 
 ### Versiohistoria
 
+- **2.3.2 – 2026-11-20 (valmistelu):** sidottiin checkpoint-jälkitodisteen `after_*`-kentät orkestoijan itse lukemaan runtime-haaran jälkitilaan; lisättiin väärän jälkitilan hylkäävä testi.
 - **2.3.1 – 2026-11-20 (valmistelu):** sidottiin checkpoint-jälkitodiste orkestoijan itse lukemaan runtime-haaran lähtötilaan; lisättiin väärän lähtö-SHA:n hylkäävä testi. Ei live-siirtymää eikä moduulien aktivointia.
 - **2.3.0 – 2026-11-19 (valmistelu):** lisättiin yhden topic-moduulin varjosiirtymän orkestrointirajapinta ja synteettiset regressiotestit. Ei live-siirtymää eikä moduulien aktivointia.
 
