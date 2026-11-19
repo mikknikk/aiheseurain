@@ -485,7 +485,7 @@ class GitHubPagesRssPublisher:
         self.public_fetcher = public_fetcher or self._fetch_public
         self.pages_base_url = pages_base_url.rstrip("/")
         self.root = Path(repository_root or Path(__file__).resolve().parents[1])
-        self.expected: dict[str, tuple[str, tuple[str, ...], int]] = {}
+        self.expected: dict[str, tuple[str, tuple[str, ...], int, str]] = {}
         self.run_guids: dict[str, str] = {}
 
     @staticmethod
@@ -533,7 +533,8 @@ class GitHubPagesRssPublisher:
         expected_url = expected_public_url or f"{self.pages_base_url}/{candidate.feed_path}"
         if candidate.public_url != expected_url:
             raise GitHubAdapterError("Julkinen URL ei vastaa rekisterin Pages-syötepolkua.")
-        guids, count = self._metadata(candidate.files[candidate.feed_path].encode("utf-8"))
+        feed_bytes = candidate.files[candidate.feed_path].encode("utf-8")
+        guids, count = self._metadata(feed_bytes)
         if count < 1:
             raise GitHubAdapterError("RSS-ehdokas ei sisällä yhtään itemiä.")
         try:
@@ -546,7 +547,9 @@ class GitHubPagesRssPublisher:
         expected_task = candidate.feed_path.removeprefix("feeds/").removesuffix(".xml")
         if gate.get("task_id") not in {module_id, expected_task}:
             raise GitHubAdapterError("Porttiraportin task_id ei vastaa moduulia tai syötettä.")
-        self.expected[guids[-1]] = (candidate.public_url, tuple(guids), count)
+        self.expected[guids[-1]] = (
+            candidate.public_url, tuple(guids), count, hashlib.sha256(feed_bytes).hexdigest()
+        )
         self.run_guids[f"{module_id}:{run_id}"] = guids[-1]
         return candidate
 
@@ -649,13 +652,14 @@ class GitHubPagesRssPublisher:
         expected = self.expected.get(receipt.report_guid_refs[0])
         if expected is None:
             return False
-        url, guids, count = expected
+        url, guids, count, expected_sha256 = expected
         try:
             actual = self.public_fetcher(url)
             actual_guids, actual_count = self._metadata(actual)
         except Exception:
             return False
-        return actual_guids == list(guids) and actual_count == count
+        return (actual_guids == list(guids) and actual_count == count
+                and hashlib.sha256(actual).hexdigest() == expected_sha256)
 
 
 class GitHubRunRecorder:
