@@ -134,6 +134,20 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
         self.assertNotIn(marker, bundle_to_json(runner.calls[0][0]))
         self.assertEqual(dispatch.selection.module_id, "muumit")
 
+    def test_runtime_rotation_state_selects_next_task_without_editing_bootstrap_docs(self):
+        state = json.loads((ROOT / "data/seurantatila.json").read_text(encoding="utf-8"))
+        state["rotation"]["next_task"] = "wakaliwood"
+        selection = validate_topic_rotation_configuration(ROOT, state_override=state)
+        self.assertEqual(selection.task_id, "wakaliwood")
+
+    def test_retry_can_resolve_original_task_after_rotation_has_advanced(self):
+        state = json.loads((ROOT / "data/seurantatila.json").read_text(encoding="utf-8"))
+        state["rotation"]["next_task"] = "wakaliwood"
+        selection = validate_topic_rotation_configuration(
+            ROOT, state_override=state, expected_task_id="muumit"
+        )
+        self.assertEqual(selection.task_id, "muumit")
+
     def test_rejects_visible_queue_and_machine_state_disagreement(self):
         """Koordinaattori keskeyttää, jos seuraavan vuoron nimi ei täsmää."""
         queue = self.root / "docs/tehtavajono.md"
