@@ -95,7 +95,7 @@ class ShadowTransitionOrchestrator:
             raise ShadowTransitionError("PR- ja vanhan polun havainto ovat pakollisia.")
         allowed = {
             "pull_request", "pages_deployment", "public_feed",
-            "publication_manifest", "checkpoint", "legacy_period",
+            "publication_manifest", "checkpoint", "legacy_period", "legacy_approval",
         }
         if set(collect) - allowed or any(not callable(fn) for fn in collect.values()):
             raise ShadowTransitionError("Keräyssuunnitelmassa on tuntematon tapahtuma tai ei-kutsuttava arvo.")
