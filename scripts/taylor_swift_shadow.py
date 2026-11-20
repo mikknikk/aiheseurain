@@ -15,6 +15,8 @@ import re
 import xml.etree.ElementTree as ET
 from typing import Any
 
+from scripts.module_input_bundle import build_module_input_bundle, bundle_to_json
+
 ROOT = Path(__file__).resolve().parents[1]
 MODULE_ID = "taylor-swift"
 TASK_ID = "taylor_swift"
@@ -188,11 +190,45 @@ def prepare_taylor_swift_shadow(
         "data/module-state/taylor-swift.json": historical_state_sha,
         "feeds/taylor-swift.xml": feed_sha,
     }
-    handoff_input_sha256 = hashlib.sha256(json.dumps(
-        {"module_id": MODULE_ID, "module": module, "target": target,
-         "source_ids": source_refs, "input_sha256": input_shas},
-        ensure_ascii=False, sort_keys=True, separators=(",", ":")
-    ).encode("utf-8")).hexdigest()
+    # Rakenna varsinainen ChatGPT:lle luovutettava paketti synteettisellä,
+    # tyhjällä moduulitilalla. Tuotannon checkpointia tai GUID-historiaa ei kopioida.
+    empty_shadow_state = {
+        "schema_version": 1,
+        "module_id": MODULE_ID,
+        "module_definition_version": module["definition_version"],
+        "checkpoint": {"last_successful_run": {
+            "run_id": None, "run_history_ref": None, "definition_version": None,
+            "checked_at": None, "period": {"start": None, "end": None},
+            "result": "not_recorded", "published_items": None,
+            "sources_checked": None, "errors": [],
+        }},
+        "checkpoint_history": [],
+        "history": {
+            "document_refs": [], "event_refs": [], "current_record_refs": [],
+            "source_check_run_refs": [],
+        },
+        "publication": {"feed_path": "feeds/taylor-swift.xml", "guid_refs": []},
+        "references": {
+            "source_registry_ref": "data/sources/taylor_swift.json",
+            "source_catalog_ref": "data/source-catalog.json",
+            "feed_catalog_ref": "data/feed-catalog.json",
+            "source_check_log_ref": "data/lahdetarkistukset.json",
+            "legacy_state_pointer": "data/seurantatila.json#/rotation.tasks.taylor_swift",
+        },
+        "migration": {
+            "source_task_id": TASK_ID,
+            "source_state_ref": "data/module-state/taylor-swift.json",
+            "migrated_on": "2026-11-18",
+            "notes": "Harjoituskohtainen synteettinen tyhjä lähtötila; ei tuotannon checkpoint.",
+        },
+    }
+    bundle = build_module_input_bundle(
+        MODULE_ID, task_id=TASK_ID, run_id=run_id,
+        period_start=period_start, period_end=period_end,
+        module_state_override=empty_shadow_state, root=root,
+    )
+    bundle_json = bundle_to_json(bundle)
+    handoff_input_sha256 = hashlib.sha256(bundle_json.encode("utf-8")).hexdigest()
     return {
         "schema_version": 1,
         "artifact_type": "taylor_swift_shadow_preparation",
@@ -221,6 +257,7 @@ def prepare_taylor_swift_shadow(
         },
         "target_id": target["target_id"],
         "source_ids": source_refs,
+        "input_bundle": json.loads(bundle_json),
         "source_registry_updated_at": sources.get("updated_at"),
         "source_freshness_rechecked": False,
         "input_sha256": input_shas,

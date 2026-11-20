@@ -63,6 +63,11 @@ class TaylorSwiftShadowPreparationTests(unittest.TestCase):
         self.assertFalse(result["publication_performed"])
         self.assertFalse(result["production_state_written"])
         self.assertEqual(result["baseline"]["kind"], "isolated_empty_shadow_baseline")
+        self.assertEqual(result["input_bundle"]["module_id"], "taylor-swift")
+        self.assertEqual(len(result["input_bundle"]["targets"]), 1)
+        self.assertTrue(all(item["source"]["id"] in result["source_ids"]
+                            for item in result["input_bundle"]["sources"]))
+        self.assertIsNone(result["input_bundle"]["module_state"]["checkpoint"]["last_successful_run"]["run_id"])
         self.assertFalse(result["baseline"]["historical_checkpoint_reference"]["used_as_baseline"])
         self.assertEqual(before, (self.root / "data/module-state/taylor-swift.json").read_bytes())
         self.assertFalse((self.root / "data/shadow-exercises").exists())

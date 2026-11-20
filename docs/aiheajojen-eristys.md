@@ -272,7 +272,7 @@ Varjosiirtymän tekninen toteutus ja synteettiset hyväksymistestit valmistuivat
 
 ## Taylor Swift -moduulin erillinen varjoharjoituksen valmistelu (#246)
 
-Taylor Swiftin harjoitukselle on erillinen valmistelu- ja tulosadapteri: `scripts/taylor_swift_shadow.py` ja `scripts/taylor_swift_shadow_result.py`. Valmistelija sitoo yhden moduulin, yhden kohteen, yhden seurantajakson ja yhden `run_id`-tunnisteen syötetiedostojen SHA-256-tiivisteisiin. Historiallisesta puutteellisesta checkpointista säilytetään vain viite ja tiiviste; harjoitukselle muodostetaan erillinen tyhjä lähtötila.
+Taylor Swiftin harjoitukselle on erillinen valmistelu- ja tulosadapteri: `scripts/taylor_swift_shadow.py` ja `scripts/taylor_swift_shadow_result.py`. Valmistelija muodostaa `module_input_bundle.py`-rakentajalla vain Taylor Swiftin oman kohteen ja lähteet sisältävän ChatGPT-syötepaketin synteettisellä tyhjällä moduulitilalla sekä sitoo yhden seurantajakson ja yhden `run_id`-tunnisteen paketin ja lähtötiedostojen SHA-256-tiivisteisiin. Historiallisesta puutteellisesta checkpointista säilytetään vain viite ja tiiviste; harjoitukselle muodostetaan erillinen tyhjä lähtötila.
 
 Tulosadapteri validoi jo tuotetun ChatGPT-tuloksen olemassa olevaa tulossopimusta vasten; valmistelu- ja tulosartefaktien erilliset sopimukset ovat `schemas/taylor-swift-shadow-preparation.schema.json` ja `schemas/taylor-swift-shadow-result.schema.json`. Se ei käynnistä tutkimusta eikä käytä tuotannon tallennus- tai julkaisusovittimia. Varjoartefaktit voidaan tallentaa vain polkuun `data/shadow-exercises/taylor-swift/{run_id}/`, eikä olemassa olevaa artefaktia ylikirjoiteta. Toteutuksen yksityiskohdat ja rajaukset ovat [Taylor Swift -varjoharjoituksen ohjeessa](taylor-swift-varjoharjoitus.md).
 

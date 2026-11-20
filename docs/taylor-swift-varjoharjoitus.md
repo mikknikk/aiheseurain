@@ -22,7 +22,7 @@ Varjoharjoitus ei ole tuotantosiirtymä. Se ei saa julkaista RSS:ää tai muutta
 
 `scripts/taylor_swift_shadow.py` muodostaa `prepare_taylor_swift_shadow`-funktiolla erillisen tyhjän varjolähtötilan. Se vaatii yhden eksplisiittisen `run_id`-tunnisteen, aikavyöhykkeelliset seurantajakson rajat ja valmisteluhetken.
 
-Valmistelu tarkistaa moduulin ja kohteen omistajuuden, moduulin tyypin ja tilan, lähdeviitteiden vastaavuuden, oman RSS-syötteen rekisteröinnin, aktivointilipun sekä tyhjät julkaisurekisterit ja -reitityksen. Syötetiedostojen SHA-256-tiivisteet sidotaan valmisteluasiakirjaan. Historiallisesta checkpointista säilytetään vain tiedostoviite ja tiiviste; sen puuttuvia kenttiä ei tulkita eikä korjata.
+Valmistelu tarkistaa moduulin ja kohteen omistajuuden, moduulin tyypin ja tilan, lähdeviitteiden vastaavuuden, oman RSS-syötteen rekisteröinnin, aktivointilipun sekä tyhjät julkaisurekisterit ja -reitityksen. Se rakentaa lisäksi olemassa olevalla `module_input_bundle.py`-rakentajalla varsinaisen moduulikohtaisen ChatGPT-syötepaketin synteettisellä tyhjällä moduulitilalla; paketin tiiviste sidotaan valmisteluasiakirjaan. Syötetiedostojen SHA-256-tiivisteet sidotaan valmisteluasiakirjaan. Historiallisesta checkpointista säilytetään vain tiedostoviite ja tiiviste; sen puuttuvia kenttiä ei tulkita eikä korjata.
 
 Tuotanto-RSS:n GUID- ja julkaisupäivistä tehdään varovainen saman päivävälin kaksoistuloseste. Päivämääräosuma ei todista itemin todellista seurantajaksoa, joten epäselvä osuma pysäyttää valmistelun manuaaliseen tarkistukseen. Vastaavasti päivämääräosuman puuttuminen ei yksin riitä osoittamaan, ettei muualla ole saman jakson julkaisua.
 

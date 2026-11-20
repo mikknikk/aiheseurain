@@ -9,7 +9,7 @@
     "module_definition_version", "contract_version", "run_id", "period",
     "requested_at", "execution_authorized", "research_performed",
     "publication_performed", "production_state_written", "baseline",
-    "target_id", "source_ids", "source_registry_updated_at",
+    "target_id", "source_ids", "input_bundle", "source_registry_updated_at",
     "source_freshness_rechecked", "input_sha256", "handoff_input_sha256", "limitations"
   ],
   "properties": {
@@ -64,6 +64,7 @@
     },
     "target_id": {"const": "taylor-swift.taylor-swift"},
     "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "input_bundle": {"type": "object"},
     "source_registry_updated_at": {"type": ["string", "null"]},
     "source_freshness_rechecked": {"const": false},
     "input_sha256": {
