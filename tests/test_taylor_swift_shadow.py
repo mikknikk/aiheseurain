@@ -22,7 +22,7 @@ class TaylorSwiftShadowPreparationTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
         for relative in (
-            "data/module-registry.json", "data/target-registry.json",
+            "data/module-registry.json", "modules/topics/taylor-swift/module.json", "data/target-registry.json",
             "data/targets/taylor-swift.taylor-swift.json",
             "data/sources/taylor_swift.json", "data/source-catalog.json",
             "data/feed-catalog.json", "data/module-production-activation.json",
