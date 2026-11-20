@@ -49,13 +49,13 @@ Vanhoja dokumentteja ei muotoilla automaattisesti tämän käytäntömuutoksen y
 
 ## GitHub Issues -kehitystehtävien labelit
 
-Aiheseuraimen kehitystehtävät tallennetaan GitHub Issues -tehtävinä. GitHub Project **Aiheseurain** näyttää kehitystehtävät. Issue-labelit ovat tehtävien tilan, prioriteetin ja komponentin ensisijainen tietolähde; Status- ja Priority-kentät synkronoidaan Projectiin automaattisesti. Käytä uusissa tehtävissä ja tehtäviä päivitettäessä seuraavaa kolmen luokan mallia.
+Aiheseuraimen kehitystehtävät tallennetaan GitHub Issues -tehtävinä. GitHub Project **Aiheseurain** näyttää kehitystehtävät. Issue-labelit ovat tehtävien tilan, prioriteetin ja komponentin ensisijainen tietolähde; Status-, Priority- ja Component-kentät synkronoidaan Projectiin automaattisesti ID-tunnisteiden perusteella. Käytä uusissa tehtävissä ja tehtäviä päivitettäessä seuraavaa kolmen luokan mallia.
 
 Jokaisella kehitystehtävällä tulee olla yksi label kustakin luokasta:
 
 | Luokka | Labelit | Merkitys |
 |---|---|---|
-| Komponentti | `component:kehitysjono`, `component:lukija`, `component:valvomo`, `component:aiheseurain` | Mihin käyttöliittymään tai järjestelmän osaan tehtävä kuuluu |
+| Komponentti | `component:automaatio`, `component:etusivu`, `component:lukija`, `component:valvomo` | Mihin Aiheseuraimen komponenttiin tehtävä kuuluu |
 | Prioriteetti | `priority:P0`, `priority:P1`, `priority:P2`, `priority:P3` | Tehtävän prioriteetti |
 | Tila | `status:backlog`, `status:ready-for-development`, `status:in-progress`, `status:done` | Tehtävän etenemisen tila |
 
@@ -66,7 +66,7 @@ Säännöt:
 - Päivitä tilalabelia tehtävän edetessä. Älä käytä vanhoja tilalabeleita kuten `tila:backlog`, `tila:ready`, `tila:in-progress` tai `tila:done`.
 - Älä käytä vanhaa `aihe:`-labelperhettä komponentin merkitsemiseen äläkä irrallisia `P0`–`P3`-labeleita prioriteetin merkitsemiseen.
 - Uusi komponenttilabel lisätään tähän luetteloon ja Project-synkronoinnin käytäntöihin koordinoidusti. Yleinen `component:`-etuliite mahdollistaa komponenttien tunnistamisen.
-- GitHub Projectin Status-kenttä johdetaan issue-labelista. Suljetun issuen tilalabeli tulee silti päivittää asianmukaisesti muotoon `status:done`.
+- GitHub Projectin Status-, Priority- ja Component-kentät johdetaan issue-labeleista niiden kenttä- ja vaihtoehto-ID-tunnisteiden avulla. Näkyvien nimien muuttaminen ei edellytä koodimuutosta; kentän tai vaihtoehdon uudelleenluonti edellyttää ID-määrityksen päivittämistä. Suljetun issuen tilalabeli tulee silti päivittää asianmukaisesti muotoon `status:done`.
 
 Tätä label-mallia noudatetaan kaikessa uudessa kehitystyössä, tehtävien luonnissa ja olemassa olevien tehtävien päivityksissä. Vanhoja labeleita ei pidä käyttää uusissa tehtävissä.
 
