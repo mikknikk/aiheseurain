@@ -7,7 +7,7 @@ GitHub Issues -palvelun natiivit riippuvuussuhteet ovat Aiheseuraimen ainoa pysy
 - **Edeltävä työ / blocked_by:** tiketti, jonka valmistumista tarkasteltava työ odottaa.
 - **Estää / blocking:** tiketit, joiden etenemistä tarkasteltava työ estää.
 
-Jos tiketti A odottaa tikettiä B, A:n `blocked_by)-listassa on B. Käänteinen `blocking)-näkymä johdetaan samasta tiedosta; rinnakkaista riippuvuusrekisteriä ei ylläpidetä.
+Jos tiketti A odottaa tikettiä B, A:n `blocked_by`-listassa on B. Käänteinen `blocking`-näkymä johdetaan samasta tiedosta; rinnakkaista riippuvuusrekisteriä ei ylläpidetä.
 
 ## Nimenomainen muutospyyntö
 
@@ -56,9 +56,9 @@ Riippuvuuksien välitys ei muuta issue-tiketin tilaa, prioriteettia, komponentti
 
 Työnkulku tarvitsee seuraavat rajatut oikeudet:
 
-- `contents: read) – käsittelijäskriptin noutaminen.
-- `issues: write) – natiivien riippuvuuksien muuttaminen, pyyntölohkon kuluttaminen ja tuloskommentti.
-- `actions: write) – kohdistetun välimuistipäivityksen käynnistäminen.
+- `contents: read` – käsittelijäskriptin noutaminen.
+- `issues: write` – natiivien riippuvuuksien muuttaminen, pyyntölohkon kuluttaminen ja tuloskommentti.
+- `actions: write` – kohdistetun välimuistipäivityksen käynnistäminen.
 
 ## Testaus ja käyttöönoton varmennus
 
