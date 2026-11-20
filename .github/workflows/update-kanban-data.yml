@@ -89,7 +89,10 @@ jobs:
         github.event.action == 'reopened' ||
         (
           (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
-          startsWith(github.event.label.name, 'status:')
+          (
+            startsWith(github.event.label.name, 'status:') ||
+            startsWith(github.event.label.name, 'priority:')
+          )
         )
       )
     runs-on: ubuntu-latest
@@ -102,7 +105,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Päivitä Project-kortin Status
+      - name: Päivitä Project-kortin Status ja Priority
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROJECTS_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
