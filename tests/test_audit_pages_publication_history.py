@@ -78,6 +78,13 @@ class PagesHistoryAuditTests(unittest.TestCase):
             with self.assertRaisesRegex(AuditError, "Resource not accessible"):
                 paginated("actions/workflows/123/runs", "token", collection_key="workflow_runs")
 
+    def test_workflow_run_response_with_missing_collection_is_rejected(self):
+        with patch("scripts.audit_pages_publication_history.api_json", return_value={
+            "total_count": 0, "workflow_run": []
+        }):
+            with self.assertRaisesRegex(AuditError, "workflow_runs.*ei ole lista"):
+                paginated("actions/workflows/123/runs", "token", collection_key="workflow_runs")
+
     def test_latest_deployment_status_is_selected(self):
         rows = [{"state": "success", "created_at": "2026-11-19T10:00:00Z"},
                 {"state": "inactive", "created_at": "2026-11-20T10:00:00Z"}]
