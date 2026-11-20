@@ -280,13 +280,6 @@ export async function syncIssueStatus({
   const { label, option } = resolveStatusOption(
     issue.labels || [], config.project.options
   );
-  const { label: priorityLabel, code: priorityCode } = resolvePriorityOption(
-    issue.labels || [],
-    (await findProjectSingleSelectField({
-      token: projectsToken, projectId: config.project.id,
-      fieldName: config.project.priority_field_name || "Priority", fetchImpl
-    })).options
-  );
   const priorityField = await findProjectSingleSelectField({
     token: projectsToken, projectId: config.project.id,
     fieldName: config.project.priority_field_name || "Priority", fetchImpl
