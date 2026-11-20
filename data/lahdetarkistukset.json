@@ -529,14 +529,71 @@
         "ticketmaster-fi-events",
         "tiketti-fi-events"
       ]
+    },
+    {
+      "run_id": "intialaiset_elokuvat_naytokset-20261120T054929-0200",
+      "task_id": "intialaiset_elokuvat_naytokset",
+      "started_at": "2026-11-20T05:36:25+02:00",
+      "ended_at": "2026-11-20T05:49:29+02:00",
+      "status": "complete",
+      "checked_source_ids": [
+        "finnkino",
+        "biorex",
+        "kino-regina",
+        "cinema-orion",
+        "kino-myyri",
+        "finnish-film-foundation",
+        "filmikamari"
+      ],
+      "unchecked_sources": [
+        {
+          "source_id": "finbolly",
+          "reason": "FinBolly Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; sivun avaaminen palautti esto-/rajoitusvirheen eikä hakutulosten katkelmia käsitelty lähdetarkistuksena."
+        },
+        {
+          "source_id": "fintamil",
+          "reason": "FinTamil Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; sivu ei avautunut tarkistettavaksi."
+        },
+        {
+          "source_id": "rasa-entertainment",
+          "reason": "Rasa Entertainment -Facebook-sivulta ei saatu luettavaa julkista sisältöä; sivu ei avautunut tarkistettavaksi."
+        },
+        {
+          "source_id": "cinema-mondo",
+          "reason": "Cinema Mondon virallisen sivuston avaus epäonnistui; hakukoneen vanha katkelma ei ollut riittävä ajantasaiseksi lähdetarkistukseksi."
+        }
+      ],
+      "coverage_notes": [
+        "Seurantajakso: 19.11.2026 klo 06.10.58–20.11.2026 klo 05.49.29 (Europe/Helsinki).",
+        "Kriittiset lähteet Finnkino, BioRex, Kino Regina ja Cinema Orion tarkistettiin. Lisäksi tarkistettiin Kino Myyrin ohjelmisto, Suomen elokuvasäätiön tapahtumat ja Filmikamari. Finnkinon ja BioRexin näkymät olivat osin päivä-/paikkakuntakohtaisia; rajattua tai vanhaa näkymää ei tulkittu koko ketjun tyhjäksi ohjelmistoksi.",
+        "Kielet: suomen- ja englanninkielinen haku sekä erilliset haut hindi-, tamil-, telugu-, malajalam-, kannada-, bengali-, marathi-, punjabi-, assami- ja odia-elokuville. Muita tämän seurantajakson uusia tulevia intialaisia näytöksiä ei löytynyt.",
+        "Alueet: haku kattoi pääkaupunkiseudun lisäksi Jyväskylän, Karkkilan, Tampereen, Turun, Kuopion ja muut haussa näkyneet suomalaiset paikkakunnat. Kino Helios -näytökset Malmitalossa varmistuivat Lippu.fi:n tapahtumasivulta.",
+        "Kinoon ilmoittaa Klara ja aurinko -elokuvan 26.11. näytökset Fantasiassa, Kino Laikassa ja Finnkino Kinopalatsissa. Näiden täsmäaikoja ei saatu vahvistettua teatterien omista ajantasaisista sivuista; ne säilytettiin kolmannen osapuolen ilmoittamina. Kinoafishan 20.11. tarkistettu Kinopalatsin ohjelma ei listaa Kinoonin ilmoittamia 22.–26.11. Klara-näytöksiä eikä 22.–25.11. Ramayana-näytöksiä. Ristiriita kirjattiin näytöshistoriaan, eikä aiempia näytöksiä poistettu tai tulkittu perutuiksi.",
+        "Kinoonin viisi 19.11. lähdelinkkikorjausta sisällytettiin uuteen RSS-versioon. Näytöshistoriaan siirrettiin 17 Klara- ja yksi Ramayana-näytös completed-tilaan niiden alkamisaikojen ohituttua.",
+        "Hakutuloksissa näkyi myös jo päättyneitä näytöksiä 1.11., 11.11. ja 14.11. Ne ovat ennen tämän ajon seurantajaksoa ja vahvistetun historiapohjan 16.11. alkua, joten niitä ei lisätty tähän muutosjaksoon.",
+        "FinBolly Movies, FinTamil Movies, Rasa Entertainment ja Cinema Mondo jäivät tarkistamatta teknisistä syistä. Kaikki tämän tehtävän kriittiset lähteet tarkistettiin."
+      ],
+      "registry_source_ids": [
+        "finnkino",
+        "biorex",
+        "kino-regina",
+        "cinema-orion",
+        "kino-myyri",
+        "finbolly",
+        "fintamil",
+        "rasa-entertainment",
+        "finnish-film-foundation",
+        "cinema-mondo",
+        "filmikamari"
+      ]
     }
   ],
   "latest_by_task": {
     "tolkien": "2026-11-16T18:00:19+02:00",
-    "intialaiset_elokuvat_naytokset": "2026-11-19T09:48:00+02:00",
+    "intialaiset_elokuvat_naytokset": "2026-11-20T05:49:29+02:00",
     "taylor_swift": "2026-11-17T13:03:45+02:00",
     "gurmeet_ram_rahim_singh": "2026-11-18T14:00:19+02:00",
     "muumit": "2026-11-19T10:10:56+02:00"
   },
-  "updated_at": "2026-11-19T10:10:56+02:00"
+  "updated_at": "2026-11-20T05:49:29+02:00"
 }
