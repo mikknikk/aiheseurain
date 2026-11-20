@@ -5,7 +5,7 @@ from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 from scripts.audit_pages_publication_history import (
-    AuditError, deployment_manifest, parse_time, report_period_matches, status_for,
+    AuditError, deployment_manifest, parse_time, report_period_matches, status_for, validate_period,
 )
 
 START = datetime(2026, 11, 18, tzinfo=timezone.utc)
@@ -16,8 +16,9 @@ class PagesHistoryAuditTests(unittest.TestCase):
         with self.assertRaises(AuditError):
             parse_time("2026-11-18T00:00:00", "start")
 
-    def test_reversed_period_can_be_detected_by_ordering(self):
-        self.assertGreater(END, START)
+    def test_reversed_period_is_rejected(self):
+        with self.assertRaises(AuditError):
+            validate_period(END, START)
 
     def test_manifest_object_and_json_payload_are_supported(self):
         obj = {"payload": {"manifest_type": "aiheseurain-rss-publication"}}
@@ -31,6 +32,11 @@ class PagesHistoryAuditTests(unittest.TestCase):
 
     def test_explicit_period_text_matches(self):
         item = ET.fromstring("<item><description><![CDATA[<p>Seurantajakso: 2026-11-18 – 2026-11-19</p>]]></description></item>")
+        self.assertTrue(report_period_matches(item, START, END))
+
+
+    def test_finnish_date_format_in_report_period_matches(self):
+        item = ET.fromstring("<item><description><![CDATA[<p>Seurantajakso: 18.11.2026 – 19.11.2026</p>]]></description></item>")
         self.assertTrue(report_period_matches(item, START, END))
 
     def test_pubdate_inside_period_matches(self):
