@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.7.0  
+**Versio:** 0.7.1  
 **Tila:** luonnos – ei hyväksytty eikä toteutuksen lupa  
 **Päiväys:** 20.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -17,7 +17,7 @@ Tämän määrittelyn tavoitteena on kuvata mahdollisimman yksinkertainen toimin
 - raporttituottaja tekee sovitun tutkimus- ja raportointityön ja muodostaa rakenteisen ajotuloksen;
 - Aiheseurain vastaanottaa, validoi, tallentaa ja julkaisee hyväksytyt tulokset;
 - GitHub säilyttää seurannan määritykset, validointisäännöt, ajotiedot ja julkaistut RSS-syötteet.
-- Jokainen ajo palauttaa yhden rakenteisen ajotuloksen.
+- Jokaisesta käynnistetystä ajosta muodostuu vastaanottavan järjestelmän ylläpitämä ajotietue. Raporttituottajan tulos liitetään siihen yhteisellä `run_id`-tunnisteella, jos tuottaja pystyy toimittamaan tuloksen.
 - RSS-item ja Valvomon tarvitsema ajodata ovat erillisiä mutta samaan ajoon sidottuja tietoja.
 - Valvomo on ensisijainen käyttöliittymä järjestelmän toiminnan ymmärtämiseen.
 - RSS-lukija ja Kehitysjono säilyvät omissa käyttötarkoituksissaan.
@@ -123,11 +123,11 @@ Jokainen ajo noudattaa samaa loogista kulkua:
 4. **Tutkimus ja raportointi:** raporttituottaja käsittelee määritellyt lähteet ja etsii seurantajakson aikana syntyneitä olennaisia uusia havaintoja.
 5. **Arviointi:** lähteiden luotettavuus, havaintojen uutuus ja raportointikelpoisuus arvioidaan seurantatyypin sääntöjen mukaisesti.
 6. **Raportointi:** jos raportoitavaa on, tuottaja muodostaa yhden rakenteisen RSS-itemin. Jos raportoitavaa ei ole, RSS-item jätetään pois.
-7. **Ajotuloksen muodostus:** tuottaja toimittaa ajotiedot myös silloin, kun raporttia ei synny tai ajo epäonnistuu, mikäli ajo on edennyt tuloksen muodostamiseen.
-8. **Vastaanotto ja validointi:** Aiheseuraimen vastaanottokerros tarkistaa ajotuloksen rakenteen, tunnisteet, määritysversiot, kohdeaiheen ja julkaisemisen ehdot.
-9. **Tallennus ja julkaisu:** Aiheseurain tallentaa hyväksytyt ajotiedot ja lisää hyväksytyn RSS-itemin oikeaan syötteeseen muuttamatta aiempia itemeitä.
+7. **Tuloksen toimittaminen:** tuottaja toimittaa tuloksen yhteisellä `run_id`-tunnisteella, jos suoritus pääsee tuloksen muodostamiseen. Jos tuottaja kaatuu tai yhteys katkeaa ennen tuloksen toimittamista, vastaanottava järjestelmä säilyttää ajon keskeneräisenä tai merkitsee sen aikakatkaisun jälkeen epäonnistuneeksi.
+8. **Vastaanotto ja validointi:** Aiheseuraimen vastaanottokerros tarkistaa tuloksen rakenteen, tunnisteet, määritysversiot, kohdeaiheen ja julkaisemisen ehdot.
+9. **Tallennus ja julkaisu:** Aiheseurain tallentaa vastaanotto- ja ajotiedot sekä lisää hyväksytyn RSS-itemin oikeaan syötteeseen muuttamatta aiempia itemeitä.
 10. **Varmistus:** RSS/XML:n kelvollisuus, GUIDien yksilöllisyys, itemin oikea kohdesyöte ja tallennuksen onnistuminen tarkistetaan.
-11. **Tilapäivitys:** aiheen viimeisin onnistunut ajo, seuraava erääntymisaika ja jonotila päivitetään vasta hyväksytyn lopputuloksen perusteella.
+11. **Tilapäivitys:** vastaanottavan järjestelmän ajotila, aiheen viimeisin onnistunut ajo, seuraava erääntymisaika ja jonotila päivitetään varmennetun lopputuloksen perusteella.
 
 Tämä on looginen prosessi. Raportin tuottaminen, tuloksen toimittaminen, vastaanotto, validointi ja julkaiseminen ovat erillisiä vaiheita. Tiedonsiirron tarkka tekninen mekanismi ja vastaanottorajapinnan toteutus valitaan erillisessä toteutussuunnittelussa. Tuottajan ei edellytetä käyttävän tiettyä palvelua tai kirjoittavan suoraan repositorioon.
 
@@ -135,36 +135,64 @@ Tämä on looginen prosessi. Raportin tuottaminen, tuloksen toimittaminen, vasta
 
 ### 6.1 Yksi rakenteinen ajotulos
 
-Jokainen ajo tuottaa yhden rakenteisen tuloksen, jossa on kaksi selvästi erotettua osaa:
+Jokaisesta käynnistetystä ajosta ylläpidetään ajotietuetta. Raporttituottajan toimittama tulos on tätä ajotietuetta täydentävä tietue, jossa on seuraavat osat:
 
 - `schema_version`: pakollinen tietosopimuksen version tunniste;
-- `run_metadata`: pakolliset ajotiedot Valvomoa, historiatietoa ja järjestelmän hallintaa varten;
+- `run_id`: pakollinen, ennen suoritusta muodostettu ajon yksilöllinen tunniste;
+- `run_metadata`: tuottajan tiedossa olevat ajon sisältöä ja suoritusta kuvaavat metatiedot;
 - `report_item`: valinnainen uusi RSS-item;
 - `producer`: valinnaiset tiedot raporttituottajasta, kuten tyyppi tai tunniste, jos ne ovat saatavilla.
 
-Näiden osien yhteinen `run_id` yhdistää raportin ja ajon. Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja. Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
+Vastaanottava järjestelmä täydentää ajotietuetta omilla vastaanotto-, validointi-, tallennus- ja julkaisutiloillaan. Näitä käsittelytiloja ei pidä sekoittaa tuottajan ilmoittamaan tutkimustulokseen. Jos tuottaja ei pysty toimittamaan tulosta esimerkiksi kaatumisen vuoksi, vastaanottavan järjestelmän on silti säilytettävä käynnistetyn ajon tiedot ja voitava merkitä ajo aikakatkaisun tai muun todennetun syyn perusteella epäonnistuneeksi.
+
+Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja. Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
 
 ### 6.2 Ajotietojen vähimmäissisältö
 
-Ajotuloksen tietosopimus versioidaan. Täsmälliset kenttätyypit ja skeemat määritellään erillisessä skeemassa, mutta tietojen pitää mahdollistaa vähintään seuraavien asioiden näyttäminen ja tarkistaminen:
+Ajotuloksen tietosopimus versioidaan. Seuraavat ovat tuottajan tuloksen vähimmäistietoja, jos kyseinen tieto on tuottajan saatavilla; vastaanottava järjestelmä vastaa omista käsittelytiloistaan. Täsmälliset kenttätyypit ja skeemat määritellään erillisessä skeemassa, mutta tietojen pitää mahdollistaa vähintään seuraavien asioiden näyttäminen ja tarkistaminen:
 
 | Tietoryhmä | Tarvittavat tiedot |
 |---|---|
 | Tunnisteet | `run_id`, aihe-/moduulitunniste, seurantatyyppi, käynnistystapa sekä tarvittaessa tuottajan tunniste |
 | Määritykset | käytettyjen yhteisen määrityksen, aiheen määrityksen, seurantatyypin ja raporttipohjan versiot tai yksilöivät sisältötunnisteet |
 | Ajanjakso | seurannan alku ja loppu sekä ajon aloitus- ja lopetusajat |
-| Tila | jonossa, käynnissä, onnistunut, osittainen tai epäonnistunut |
+| Tuottajan tulos | onnistunut, osittainen, ei raportoitavaa tai epäonnistunut; tila kuvaa tutkimus-/raportointityötä, ei vastaanoton tai julkaisun tilaa |
 | Vaiheet | suoritetut vaiheet ja niiden tulokset; pysähtymisvaihe virhetilanteessa |
 | Havainnot | löydettyjen olennaisten havaintojen määrä ja raportoitavien havaintojen määrä |
 | Lähteet | tarkistetut lähteet, onnistuneet tarkistukset, tarkistamatta jääneet lähteet ja niiden syyt |
 | Laadunvarmistus | validoinnin tulos, virheet, varoitukset ja mahdollinen hylkäyksen syy |
 | Raportti | syntyikö RSS-item, sen GUID/tunniste ja otsikko, jos ne ovat olemassa |
-| Julkaisu | kohdesyöte, julkaisun tila ja julkaisuajankohta |
-| Jatko | uudelleenyrityksen tarve, seuraava erääntymisaika ja jonon päivityksen tulos |
+| Julkaisu | vastaanottavan järjestelmän ylläpitämä kohdesyöte, julkaisun tila ja julkaisuajankohta |
+| Jatko | vastaanottavan järjestelmän ylläpitämä uudelleenyrityksen tarve, seuraava erääntymisaika ja jonon päivityksen tulos |
 
 Valvomon myöhempää kehitystä varten ajotiedoissa voidaan lisäksi säilyttää vertailukelpoisia lukumääriä ja poikkeamatietoja, kuten lähdekattavuuden muutos tai poikkeuksellisen pitkä ajo. Niiden tulee perustua todellisiin havaintoihin eikä arvattuihin mittareihin.
 
-### 6.3 Ajotiedot eivät ole raakaa lokia
+### 6.3 Ajon ja vastaanoton tilat
+
+Tuottajan ilmoittama tulos ja Aiheseuraimen käsittelyvaihe ovat eri tilatietoja.
+
+**Tuottajan tulos:**
+- `success`: tutkimus- ja raportointityö valmistui;
+- `partial`: työ valmistui osittain, ja rajoitteet on kuvattu;
+- `no_report`: työ valmistui, mutta uutta raportoitavaa ei löytynyt;
+- `failed`: tuottajan suoritus epäonnistui.
+
+`no_report` on onnistunut seuranta ilman RSS-itemiä, ei virhe. `partial` ei automaattisesti oikeuta julkaisemiseen: vastaanottava järjestelmä arvioi, täyttyvätkö kyseisen aiheen julkaisuehdot.
+
+**Vastaanottavan järjestelmän käsittelytila:** vähintään vastaanotettu, validoitavana, hyväksytty, hylätty, julkaistu tai julkaisu epäonnistui. Ajon elinkaaren hallinnassa voidaan lisäksi käyttää tiloja jonossa, käynnissä, aikakatkaistu ja peruutettu. Tilojen tarkka tekninen toteutus määritellään skeemassa ja toteutussuunnittelussa.
+
+Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Vastaavasti julkaisuvirhe ei muuta onnistunutta tutkimustyötä epäonnistuneeksi: tutkimuksen, vastaanoton ja julkaisun tulokset näytetään erillisinä.
+
+### 6.4 Tietosopimuksen vähimmäistarkistukset
+
+- `schema_version` ja `run_id` ovat pakollisia jokaisessa tuottajan toimittamassa tuloksessa.
+- Aiheen tunniste, seurantatyyppi ja seurannan aikaväli on yksilöitävä; arvot tarkistetaan ajon käynnistyksessä käytettyä määritystä vasten.
+- Tuottajan tulostila on yksi määritellyistä arvoista. `report_item` puuttuu, kun tulos on `no_report` tai `failed`, ellei erikseen määritelty osittaisen raportin julkaisusääntö salli sitä.
+- Jos `report_item` on mukana, sen GUID on yksilöllinen ja item täyttää RSS:n sekä aiheen raporttipohjan vaatimukset.
+- Tuottajan valinnaisia tunnistetietoja ei vaadita ihmisen tekemältä raportilta.
+- Vastaanottava järjestelmä kirjaa tuloksen vastaanottoajan ja oman käsittelytilansa riippumatta tuottajan metatiedoista.
+
+### 6.5 Ajotiedot eivät ole raakaa lokia
 
 Ajotietojen tarkoitus on kuvata, mitä tapahtui ja millä tuloksella. Niihin ei tallenneta tarpeettomasti koko tutkimusketjua, raakaa keskustelutekstiä tai kaikkia lähdesivuista kopioituja sisältöjä.
 
@@ -179,7 +207,7 @@ Salaisuuksia, käyttöoikeustunnuksia, tarpeettomia henkilötietoja tai raakoja 
 - Raportti on suomenkielinen ja sisältää aina seurannan aikavälin.
 - Lähteiden luotettavuus ja olennaiset epävarmuudet ilmaistaan aihekohtaisen raporttipohjan mukaisesti.
 - Tuottaja toimittaa enintään yhden uuden itemin yhtä raportoitavaa ajoa kohti.
-- GitHub validoi itemin ja lisää sen oikean aiheen syötteeseen.
+- Aiheseuraimen vastaanottava julkaisukerros validoi itemin ja lisää sen oikean aiheen syötteeseen.
 - Vastaanottava järjestelmä ei pyydä raporttituottajaa muodostamaan koko RSS-syötettä uudelleen.
 - Aiemmin julkaistujen itemien sisältöä, GUID-tunnisteita tai järjestystä ei muuteta automaattisesti.
 - Korjaus tehdään uutena erillisenä iteminä, joka viittaa korjattavaan julkaisuun.
@@ -217,9 +245,9 @@ Valvomon vähimmäiskokonaisuuteen kuuluvat:
 
 Ajotiedot säilytetään niin, että Valvomo voi näyttää sekä viimeisimmän tilanteen että aiemmat ajot. Yksi kanoninen ajohistoria riittää; samaa tietoa ei kopioida useisiin rinnakkaisiin tilatiedostoihin. Nykytilan yhteenveto voidaan muodostaa historiasta tai ylläpitää kevyenä johdettuna tietona, jos synkronointi voidaan validoida.
 
-## 9. GitHubin vastuut
+## 9. Aiheseuraimen hallinta- ja julkaisukerroksen vastuut
 
-Aiheseuraimen hallinta- ja julkaisukerroksen tehtävät (tavoitetilassa GitHubin toteuttamina) ovat:
+Tavoitetilassa nämä vastuut voidaan toteuttaa GitHubin avulla. Vastuut eivät kuitenkaan edellytä, että raporttituottaja käyttää GitHubia tai että yleinen tietosopimus sidotaan GitHubin rajapintoihin:
 - säilyttää yhteiset ja aihekohtaiset määritykset;
 - säilyttää aihekohtaiset lähderekisterit ja raporttipohjat;
 - määritellä ajotuloksen ja RSS-itemin skeemat;
@@ -240,10 +268,10 @@ Virhetilanteet käsitellään yksinkertaisella, yksiselitteisellä tavalla:
 
 - **Tutkimusvirhe:** ajotulos kertoo virheen ja sen vaiheen; raporttia ei julkaista, ellei erikseen määritelty osittainen tulos täytä julkaisuehtoja.
 - **Osittainen lähdekattavuus:** tallennetaan tarkistetut ja tarkistamatta jääneet lähteet sekä syyt. Valvomo näyttää tuloksen osittaisena.
-- **Virheellinen ajotulos:** GitHub hylkää tuloksen; RSS-syöte ei muutu.
+- **Virheellinen ajotulos:** vastaanottava järjestelmä hylkää tuloksen; RSS-syöte ei muutu.
 - **Väärä aihe tai määritysversio:** tulos hylätään, eikä sitä reititetä toiseen aiheeseen arvaamalla.
 - **Duplikaatti:** samaa `run_id`-tunnistetta tai RSS-GUIDia ei käsitellä uutena julkaisuna.
-- **Julkaisuvirhe:** ajoa ei merkitä julkaistuksi ennen kuin GitHubin tallennus ja julkinen julkaisu on varmennettu.
+- **Julkaisuvirhe:** ajoa ei merkitä julkaistuksi ennen kuin tallennus ja julkaisu on varmennettu.
 - **Uudelleenyritys:** käyttää samaa ajon tunnistetta vain silloin, kun se on saman loogisen ajon turvallinen jatko. Uusi erillinen ajo saa uuden tunnisteen.
 - **Jonon päivitys:** epäonnistunut ajo ei saa kadota jonosta eikä siirtää seuraavaa erääntymistä ikään kuin ajo olisi onnistunut.
 
@@ -330,7 +358,7 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 2. Aiheiden lisääminen ja muuttaminen tapahtuu ensisijaisesti GitHubin määrityksillä.
 3. Kaikki aiheet käyttävät samaa perusajoprosessia ja seurantatyypit erottuvat määritysten ja raporttipohjien avulla.
 4. Myös päivittäinen näytösseuranta on samanarvoinen aihekohtainen ajo, ei erillinen rinnakkaisarkkitehtuuri.
-5. Jokainen ajo tuottaa ajotiedot; RSS-item on valinnainen.
+5. Jokaisesta käynnistetystä ajosta jää ajotietue, vaikka tuottaja ei pystyisi toimittamaan tulosta; RSS-item on valinnainen.
 6. Raporttituottaja toimittaa enintään yhden uuden rakenteisen RSS-itemin yhtä raportoitavaa ajoa kohti, ei kokonaista RSS-syötettä.
 7. Aiheseuraimen vastaanottava julkaisukerros validoi ja lisää hyväksytyn itemin oikeaan syötteeseen.
 8. Julkaistujen itemien historia säilyy muuttumattomana.
@@ -339,7 +367,7 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 11. GitHub Issuesin labelit ovat kehitystehtävien tilan ja prioriteetin kanoninen tieto, ja vastaavat Project-kentät synkronoidaan niistä.
 12. Kehitystehtävien riippuvuudet perustuvat GitHub Issuesin natiiveihin suhteisiin ja näkyvät Projectissa.
 13. Ulkoiset ilmoitukset ovat konfiguroitavia, erillisiä RSS-julkaisusta ja turvallisesti lokitettuja.
-14. Virheet, uusintayritykset ja jonon eteneminen ovat yksiselitteisiä.
+14. Tuottajan tulos, vastaanoton tila ja julkaisun tila erotetaan toisistaan; virheet, uusintayritykset ja jonon eteneminen ovat yksiselitteisiä.
 15. Testaus estää tuotantodatan tahattoman muuttamisen.
 16. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
 
@@ -380,6 +408,7 @@ Kehotteiden tarkka tiedostorakenne, rekisterin kentät ja päivitysmenettely kuv
 
 ## 18. Muutosloki
 
+- **0.7.1 – 20.11.2026:** täsmennetty tuottajan tuloksen ja vastaanottavan järjestelmän käsittelytilojen erottelu, ajotietueen muodostuminen myös puuttuvan tuottajavastauksen tilanteessa, tuloksen tilaluokat sekä tietosopimuksen vähimmäistarkistukset.
 - **0.7.0 – 20.11.2026:** muutettu vaatimusmäärittely tuottajariippumattomaksi. Raporttituottajaksi hyväksytään myös ihminen; raportin tuottaminen, toimittaminen, validointi ja julkaiseminen erotettu toisistaan. Täsmennetty tietosopimuksen versiointi, valinnaiset tuottajametatiedot, määritysten eheys, rinnakkaisten ajojen hallinta, palautuminen, tietosuoja, käyttöoikeudet, jäljitettävyys ja avoimien teknisten kysymysten rajaus.
 - **0.6.0 – 20.11.2026:** päätetty käyttää kehitystehtävien käyttöliittymänä GitHub Projectsia. Oma Kanban-käyttöliittymä, JSON-välimuisti ja niiden automaatiot rajattu pois; Status- ja Priority-kentät johdetaan issue-labeleista ja riippuvuudet hallitaan GitHubin natiiveina suhteina.
 - **0.5.0 – 20.11.2026:** lisätty alun perin Kehitysjonon päivittyvän JSON-välimuistin ja GitHubin natiivien riippuvuuksien vaatimukset sekä konfiguroitavat ulkoiset ilmoitukset ja niiden turvallisuus- ja tilaseuranta.
