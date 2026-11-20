@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.3.3  
+**Versio:** 2.3.4  
 **Päiväys:** 2026-11-20  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211), [#232 – Siirtymän julkaisu- ja palautustodisteiden pysyvä loki](https://github.com/mikknikk/aiheseurain/issues/232)
 
@@ -268,3 +268,12 @@ Varjosiirtymän tekninen toteutus ja synteettiset hyväksymistestit valmistuivat
 
 - **1.2.0 – 2026-11-19:** lisättiin CI:ssä suoritettavat aihemoduulien välisten tietovuotojen, väärien moduuli- ja kohdeomistajuuksien, polkuturvallisuuden, lähdekatalogin täsmällisen suodatuksen sekä runnerin julkisen rajapinnan regressiotestit.
 - **1.1.0 – 2026-11-19:** lisättiin Linux/bubblewrap-sandbox, vain luku -syöte ja runner-koodi, rajattu tuloshakemisto, verkoton namespace, aikaraja sekä fail-closed-käyttäytyminen.
+
+
+## Taylor Swift -moduulin erillinen varjoharjoituksen valmistelu (#246)
+
+Taylor Swiftin harjoitukselle on erillinen valmistelu- ja tulosadapteri: `scripts/taylor_swift_shadow.py` ja `scripts/taylor_swift_shadow_result.py`. Valmistelija sitoo yhden moduulin, yhden kohteen, yhden seurantajakson ja yhden `run_id`-tunnisteen syötetiedostojen SHA-256-tiivisteisiin. Historiallisesta puutteellisesta checkpointista säilytetään vain viite ja tiiviste; harjoitukselle muodostetaan erillinen tyhjä lähtötila.
+
+Tulosadapteri validoi jo tuotetun ChatGPT-tuloksen olemassa olevaa tulossopimusta vasten; valmistelu- ja tulosartefaktien erilliset sopimukset ovat `schemas/taylor-swift-shadow-preparation.schema.json` ja `schemas/taylor-swift-shadow-result.schema.json`. Se ei käynnistä tutkimusta eikä käytä tuotannon tallennus- tai julkaisusovittimia. Varjoartefaktit voidaan tallentaa vain polkuun `data/shadow-exercises/taylor-swift/{run_id}/`, eikä olemassa olevaa artefaktia ylikirjoiteta. Toteutuksen yksityiskohdat ja rajaukset ovat [Taylor Swift -varjoharjoituksen ohjeessa](taylor-swift-varjoharjoitus.md).
+
+Tämä tekninen valmistelu ei ole lupa varsinaiseen harjoitukseen. Live-tutkimus vaatii käyttäjän erillisen hyväksynnän. Runtime-haaraa, tuotannon julkaisupäiväkirjaa, automaatioasetuksia, ajastuksia, RSS-syötettä, tuotannon checkpointia tai tehtäväjonoa ei muuteta valmistelun yhteydessä.

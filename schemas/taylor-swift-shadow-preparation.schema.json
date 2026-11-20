@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikknikk.github.io/aiheseurain/schemas/taylor-swift-shadow-preparation.schema.json",
+  "title": "Taylor Swift -varjoharjoituksen tekninen valmistelu",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_type", "status", "module_id",
+    "module_definition_version", "contract_version", "run_id", "period",
+    "requested_at", "execution_authorized", "research_performed",
+    "publication_performed", "production_state_written", "baseline",
+    "target_id", "source_ids", "source_registry_updated_at",
+    "source_freshness_rechecked", "input_sha256", "handoff_input_sha256", "limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact_type": {"const": "taylor_swift_shadow_preparation"},
+    "status": {"const": "prepared"},
+    "module_id": {"const": "taylor-swift"},
+    "module_definition_version": {"type": "string"},
+    "contract_version": {"type": "string"},
+    "run_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{7,127}$"},
+    "period": {
+      "type": "object", "required": ["start", "end"],
+      "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "requested_at": {"type": "string", "format": "date-time"},
+    "execution_authorized": {"const": false},
+    "research_performed": {"const": false},
+    "publication_performed": {"const": false},
+    "production_state_written": {"const": false},
+    "baseline": {
+      "type": "object", "required": ["kind", "checkpoint", "historical_checkpoint_reference"],
+      "properties": {
+        "kind": {"const": "isolated_empty_shadow_baseline"},
+        "checkpoint": {
+          "type": "object", "required": ["run_id", "period", "result"],
+          "properties": {
+            "run_id": {"type": "null"},
+            "period": {
+              "type": "object", "required": ["start", "end"],
+              "properties": {"start": {"type": "null"}, "end": {"type": "null"}},
+              "additionalProperties": false
+            },
+            "result": {"const": "not_recorded"}
+          },
+          "additionalProperties": false
+        },
+        "historical_checkpoint_reference": {
+          "type": "object", "required": ["path", "sha256", "used_as_baseline"],
+          "properties": {
+            "path": {"const": "data/module-state/taylor-swift.json"},
+            "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "used_as_baseline": {"const": false}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "target_id": {"const": "taylor-swift.taylor-swift"},
+    "source_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}},
+    "source_registry_updated_at": {"type": ["string", "null"]},
+    "source_freshness_rechecked": {"const": false},
+    "input_sha256": {
+      "type": "object", "minProperties": 1,
+      "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+    },
+    "handoff_input_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}
