@@ -54,5 +54,6 @@ jobs:
             echo "Kehitysjonon aineistossa ei ole muutoksia."
           else
             git commit -m "Päivitä Kehitysjonon JSON-välimuisti"
+            git pull --rebase origin main
             git push origin main
           fi
