@@ -45,6 +45,31 @@ preparation = prepare_taylor_swift_shadow(
 
 `write_shadow_artifact` tallentaa valmistelu- tai tulosartefaktin vain polkuun `data/shadow-exercises/taylor-swift/{run_id}/`. Se ei ylikirjoita olemassa olevaa tiedostoa eikä hyväksy toisen moduulin tunnistetta.
 
+## Puhtaan testikierroksen aloittaminen
+
+Testidatan "nollaaminen" tarkoittaa tässä järjestelmässä uuden, yksilöllisen `run_id`-tunnisteen ja uuden varjohakemiston luomista. Aiempi testidata säilytetään auditointia varten. Vanhoja testiajoja ei tyhjennetä eikä niiden artefakteja ylikirjoiteta.
+
+Uuden kierroksen voi alustaa funktiolla `start_fresh_taylor_swift_shadow_run`. Se suorittaa ensin samat moduuli-, lähde-, aktivointi- ja julkaisurajojen tarkistukset kuin tavallinen valmistelu. Vasta niiden onnistuttua se luo hakemiston `data/shadow-exercises/taylor-swift/{run_id}/` ja tallentaa `prepared.json`-tiedoston. Jos `run_id`-hakemisto on jo olemassa, alustus keskeytyy eikä muuta sen sisältöä.
+
+Esimerkki uudesta testikierroksesta:
+
+```python
+from pathlib import Path
+from scripts.taylor_swift_shadow import start_fresh_taylor_swift_shadow_run
+
+preparation, artifact_path = start_fresh_taylor_swift_shadow_run(
+    run_id="swift-shadow-20261121-01",
+    period_start="2026-11-21T00:00:00+02:00",
+    period_end="2026-11-21T23:59:59+02:00",
+    requested_at="2026-11-20T12:00:00+02:00",
+    root=Path("."),
+)
+```
+
+Tämä on vain tekninen valmistelu. Se ei tee uutishakua, live-tutkimusta eikä tulosraporttia. Uusi ajo käyttää synteettistä tyhjää lähtötilaa eikä lue vanhaa Taylor Swift -checkpointia harjoituksen lähtöhistoriana. Vanha checkpoint säilyy kuitenkin valmistelun syötehashissa tunnistettavana tiedostona, eikä sitä muuteta.
+
+Seuraavat tiedot ovat aina suojattuja eikä puhtaan testikierroksen alustus saa muuttaa niitä: `data/module-state/taylor-swift.json`, vanha raportointi- ja lähdetarkistusloki, RSS-syötteet ja GUIDit, julkaisurekisterit ja -manifestit, runtime- ja julkaisupäiväkirjat, muiden moduulien aineistot, Git-historia sekä aiemmat auditointiraportit. Tehtäväjonoa, ChatGPT-automaation asetuksia tai ajastuksia ei muuteta.
+
 ## ChatGPT-tuloksen rajattu vastaanotto
 
 `scripts/taylor_swift_shadow_result.py` tarjoaa tulosadapterin jo tuotetulle ChatGPT JSON -tulokselle. Se käyttää olemassa olevaa `schemas/chatgpt-module-result.schema.json`-sopimusta ja `validate_chatgpt_result`-tarkistusta sekä sitoo tuloksen samaan moduuliin, versioon, `run_id`-tunnisteeseen, seurantajaksoon ja valmistelussa laskettuun `handoff_input_sha256`-tiivisteeseen. Kohderaportit rajataan Taylor Swiftin omaan kohteeseen.
