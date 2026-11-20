@@ -27,7 +27,29 @@ concurrency:
 
 jobs:
   update:
-    if: github.event_name != 'issues' || github.event.issue.pull_request == null
+    if: >-
+      github.event_name != 'issues' ||
+      (
+        github.event.issue.pull_request == null &&
+        (
+          contains(fromJSON('["opened","closed","reopened","deleted"]'), github.event.action) ||
+          (
+            github.event.action == 'edited' &&
+            (
+              github.event.changes.title != null ||
+              github.event.changes.body != null
+            )
+          ) ||
+          (
+            (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
+            (
+              startsWith(github.event.label.name, 'component:') ||
+              startsWith(github.event.label.name, 'priority:') ||
+              startsWith(github.event.label.name, 'status:')
+            )
+          )
+        )
+      )
     runs-on: ubuntu-latest
     steps:
       - name: Hae repositorio ja aiempi välimuisti
