@@ -91,6 +91,11 @@ export function buildDependencyGraph(issues, payloads, complete = true) {
   for (const issue of directory.values()) {
     if (!relations.has(issue.number)) relations.set(issue.number, { blockedBy: [], blocking: [] });
   }
+  // Käytä blocker-issueiden uusinta tietuetta issue-listasta, vaikka välimuistin
+  // riippuvuuslistalla olisi vanhempi otsikko tai tilatieto.
+  for (const value of relations.values()) {
+    value.blockedBy = value.blockedBy.map((blocker) => directory.get(blocker.number) || blocker);
+  }
   for (const [number, value] of relations) {
     for (const blocker of value.blockedBy) relations.get(blocker.number).blocking.push(directory.get(number));
   }
