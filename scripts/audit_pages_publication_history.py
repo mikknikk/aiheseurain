@@ -68,23 +68,26 @@ def paginated(path: str, token: str, collection_key: str | None = None) -> list[
         response = api_json(f"{path}{separator}per_page=100&page={page}", token)
         if isinstance(response, list):
             rows = response
-        elif isinstance(response, dict) and collection_key:
+        elif isinstance(response, dict) and collection_key and collection_key in response:
             # Esimerkiksi Actions workflow-run -listaus palauttaa olion,
             # jonka workflow_runs-kenttä sisältää varsinaisen taulukon.
-            rows = response.get(collection_key)
+            rows = response[collection_key]
             if not isinstance(rows, list):
                 raise AuditError(
                     f"GitHub API -vastauksen {collection_key!r}-kenttä ei ole lista: {path}"
                 )
         elif isinstance(response, dict):
-            # GitHub voi palauttaa virhekuvauksen JSON-oliona. Näytetään sen
-            # message/status/documentation_url, jotta syy voidaan tunnistaa.
+            # Myös nimettyä kokoelmaa käyttävä endpoint voi palauttaa
+            # virheolion. Tunnista se ennen puuttuvan kokoelmakentän virhettä,
+            # jotta API:n varsinainen syy säilyy diagnostiikassa.
             message = response.get("message", "tuntematon API-virhe")
             documentation = response.get("documentation_url")
             status = response.get("status")
             details = f"message={message!r}, status={status!r}"
             if documentation:
                 details += f", documentation_url={documentation}"
+            if collection_key:
+                details += f", odotettu_kokoelma={collection_key!r}"
             raise AuditError(f"GitHub API ei palauttanut listaa: {path} ({details})")
         else:
             raise AuditError(
