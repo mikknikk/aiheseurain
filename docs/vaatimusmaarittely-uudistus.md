@@ -17,7 +17,7 @@ Tämän määrittelyn tavoitteena on kuvata mahdollisimman yksinkertainen toimin
 - raporttituottaja tekee sovitun tutkimus- ja raportointityön ja muodostaa rakenteisen ajotuloksen;
 - Aiheseurain vastaanottaa, validoi, tallentaa ja julkaisee hyväksytyt tulokset;
 - GitHub säilyttää seurannan määritykset, validointisäännöt, ajotiedot ja julkaistut RSS-syötteet.
-- Jokaisesta käynnistetystä ajosta muodostuu vastaanottavan järjestelmän ylläpitämä ajotietue. Raporttituottajan tulos liitetään siihen yhteisellä `run_id`-tunnisteella, jos tuottaja pystyy toimittamaan tuloksen.
+- Jokaisesta käynnistetystä aihekohtaisesta ajosta muodostuu vastaanottavan järjestelmän ylläpitämä ajotietue. Raporttituottajan tulos liitetään siihen yhteisellä `run_id`-tunnisteella, jos tuottaja pystyy toimittamaan tuloksen. Useita aihekohtaisia ajoja yhdistävällä ajokerralla on lisäksi vastaanottavan järjestelmän ylläpitämä ajokertatunniste.
 - RSS-item ja Valvomon tarvitsema ajodata ovat erillisiä mutta samaan ajoon sidottuja tietoja.
 - Valvomo on ensisijainen käyttöliittymä järjestelmän toiminnan ymmärtämiseen.
 - RSS-lukija ja Kehitysjono säilyvät omissa käyttötarkoituksissaan.
@@ -183,7 +183,7 @@ Ajotuloksen tietosopimus versioidaan. Jokaisessa toimitetussa tuloksessa ovat pa
 
 | Tietoryhmä | Tarvittavat tiedot | Tiedon lähde |
 |---|---|---|
-| Tunnisteet | `run_id`, aiheen tunniste ja seurantatyyppi | Käynnistin antaa `run_id`-tunnisteen; tuottaja palauttaa sen tuloksessa |
+| Tunnisteet | `run_id`, aiheen tunniste ja seurantatyyppi; tarvittaessa vastaanottajan `batch_id` | Käynnistin antaa `run_id`-tunnisteen; tuottaja palauttaa sen tuloksessa. Vastaanottava järjestelmä luo ja liittää `batch_id`-tunnisteen |
 | Määritykset | käytettyjen yhteisen määrityksen, aiheen määrityksen, seurantatyypin ja raporttipohjan versiot tai yksilöivät sisältötunnisteet | Vastaanottava järjestelmä kirjaa käynnistyksessä käytetyt versiot |
 | Ajanjakso | seurannan alku ja loppu sekä ajon aloitus- ja lopetusajat | Seurannan aikaväli on pakollinen tuloksessa; ajoajat kirjataan käynnistimessä ja vastaanotossa |
 | Tuottajan tulos | `success`, `partial`, `no_report` tai `failed`; tila kuvaa tutkimus-/raportointityötä, ei vastaanoton tai julkaisun tilaa | Tuottaja
