@@ -174,7 +174,7 @@ def audit_deployments(start: datetime, end: datetime, token: str) -> dict:
 def audit_workflow_runs(start: datetime, end: datetime, token: str) -> dict:
     """List Pages workflow runs and job/step outcomes in the requested interval."""
     created = urllib.parse.quote(
-        f"{start.strftime('%Y-%m-%dT%H:%M:%SZ')}..{end.strftime('%Y-%m-%dT%H:%M:%SZ')}", safe=":"
+        f"{start.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}..{end.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}", safe=":"
     )
     runs = paginated(f"actions/workflows/publish-pages.yml/runs?created={created}", token)
     output = []
