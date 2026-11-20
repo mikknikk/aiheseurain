@@ -7,11 +7,10 @@
  */
 
 export const STATUS_COLUMNS = [
-  { id: "backlog", label: "Backlog", issueLabel: "tila:backlog" },
-  { id: "ready", label: "Valmis työn alle", issueLabel: "tila:ready" },
-  { id: "in-progress", label: "Työn alla", issueLabel: "tila:in-progress" },
-  { id: "blocked", label: "Estynyt", issueLabel: "tila:blocked" },
-  { id: "done", label: "Valmis", issueLabel: "tila:done" }
+  { id: "backlog", label: "Backlog", issueLabel: "status:backlog" },
+  { id: "ready", label: "Valmis työn alle", issueLabel: "status:ready-for-development" },
+  { id: "in-progress", label: "Työn alla", issueLabel: "status:in-progress" },
+  { id: "done", label: "Valmis", issueLabel: "status:done" }
 ];
 
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
@@ -28,8 +27,8 @@ function labelNames(issue) {
 export function normalizeIssue(issue) {
   const labels = labelNames(issue);
   const statusLabels = STATUS_COLUMNS.filter((column) => labels.includes(column.issueLabel));
-  const priorityLabels = PRIORITIES.filter((priority) => labels.includes(priority));
-  const areaLabels = labels.filter((label) => /^aihe:/i.test(label));
+  const priorityLabels = PRIORITIES.filter((priority) => labels.includes("priority:" + priority));
+  const componentLabels = labels.filter((label) => /^component:/i.test(label));
 
   // Suljettu issue on aina valmis, vaikka sen tilatunniste olisi vanhentunut.
   const status = issue.state === "closed"
@@ -43,9 +42,9 @@ export function normalizeIssue(issue) {
     state: issue.state,
     status,
     priority: priorityLabels.length === 1 ? priorityLabels[0] : null,
-    area: areaLabels.length === 1 ? areaLabels[0] : null,
-    areaName: areaLabels.length === 1
-      ? areaLabels[0].replace(/^aihe:/i, "").replace(/[-_]/g, " ")
+    component: componentLabels.length === 1 ? componentLabels[0] : null,
+    componentName: componentLabels.length === 1
+      ? componentLabels[0].replace(/^component:/i, "").replace(/[-_]/g, " ")
       : null,
     labels,
     updatedAt: issue.updated_at || null
@@ -61,7 +60,7 @@ export function normalizeIssues(payload) {
     .filter((issue) => issue.url && issue.title);
 }
 
-/** Suodattaa tiketit hakutekstin, prioriteetin ja aihealueen perusteella. */
+/** Suodattaa tiketit hakutekstin, prioriteetin ja komponentin perusteella. */
 export function filterIssues(issues, filters = {}) {
   const query = String(filters.query || "").trim().toLocaleLowerCase("fi");
   return issues.filter((issue) => {
@@ -70,9 +69,9 @@ export function filterIssues(issues, filters = {}) {
       || String(issue.number).includes(query);
     const matchesPriority = !filters.priority || filters.priority === "all"
       || (filters.priority === "none" ? !issue.priority : issue.priority === filters.priority);
-    const matchesArea = !filters.area || filters.area === "all"
-      || (filters.area === "none" ? !issue.area : issue.area === filters.area);
-    return matchesQuery && matchesPriority && matchesArea;
+    const matchesComponent = !filters.component || filters.component === "all"
+      || (filters.component === "none" ? !issue.component : issue.component === filters.component);
+    return matchesQuery && matchesPriority && matchesComponent;
   });
 }
 
@@ -210,7 +209,7 @@ function currentFilters() {
   return {
     query: document.getElementById("kanban-search").value,
     priority: document.getElementById("kanban-priority").value,
-    area: document.getElementById("kanban-area").value
+    component: document.getElementById("kanban-component").value
   };
 }
 
@@ -258,7 +257,7 @@ function renderBoard(issues) {
       meta.appendChild(makeElement("span", "kanban-priority",
         issue.priority || "Prioriteetti puuttuu"));
       meta.appendChild(makeElement("span", "kanban-area",
-        issue.areaName || "Aihealuetta ei merkitty"));
+        issue.componentName || "Komponenttia ei merkitty"));
       item.append(number, title, meta);
       if (dependencyGraph) {
         const relations = dependencyGraph.byIssue[issue.number] || { blockedBy: [], blocking: [] };
@@ -309,7 +308,7 @@ function renderTable(issues) {
     row.append(
       numberCell, titleCell,
       makeElement("td", "", issue.priority || "Ei määritelty"),
-      makeElement("td", "", issue.areaName || "Ei merkitty"),
+      makeElement("td", "", issue.componentName || "Ei merkitty"),
       makeElement("td", "", STATUS_COLUMNS.find((column) => column.id === issue.status)?.label || "Tila puuttuu"),
       dependencyCell
     );
@@ -389,15 +388,15 @@ function render() {
   document.getElementById("view-list").setAttribute("aria-pressed", String(activeView === "list"));
 }
 
-function populateAreaFilter() {
-  const select = document.getElementById("kanban-area");
+function populateComponentFilter() {
+  const select = document.getElementById("kanban-component");
   const selected = select.value;
-  const areas = [...new Set(allIssues.map((issue) => issue.area).filter(Boolean))].sort();
-  select.replaceChildren(new Option("Kaikki aihealueet", "all"));
-  select.appendChild(new Option("Ei aihealuetta merkitty", "none"));
-  for (const area of areas) {
-    const issue = allIssues.find((item) => item.area === area);
-    select.appendChild(new Option(issue?.areaName || area, area));
+  const components = [...new Set(allIssues.map((issue) => issue.component).filter(Boolean))].sort();
+  select.replaceChildren(new Option("Kaikki komponentit", "all"));
+  select.appendChild(new Option("Ei komponenttia merkitty", "none"));
+  for (const component of components) {
+    const issue = allIssues.find((item) => item.component === component);
+    select.appendChild(new Option(issue?.componentName || component, component));
   }
   if ([...select.options].some((option) => option.value === selected)) select.value = selected;
 }
@@ -415,7 +414,7 @@ function showCachedData(cache, isError = false) {
     ? cache.dependencies : null;
   dependencySavedAt = Number.isFinite(cache.dependenciesSavedAt)
     ? cache.dependenciesSavedAt : null;
-  populateAreaFilter();
+  populateComponentFilter();
   render();
   const age = Number.isFinite(cache.savedAt) ? Date.now() - cache.savedAt : Infinity;
   const stale = age > STALE_AFTER_MS;
@@ -450,7 +449,7 @@ async function refreshIssues() {
     dependencySavedAt = generatedAt;
     selectedDependencyIssue = null;
     safeWriteCache(issues, generatedAt, graph, generatedAt);
-    populateAreaFilter();
+    populateComponentFilter();
     render();
     document.getElementById("kanban-api-error").hidden = true;
     // Riippuvuuksien lataustila näkyy jo yläpuolen aineiston päivitystiedossa.
@@ -489,7 +488,7 @@ function initializeKanban() {
   if (cache) showCachedData(cache);
   document.getElementById("kanban-search").addEventListener("input", render);
   document.getElementById("kanban-priority").addEventListener("change", render);
-  document.getElementById("kanban-area").addEventListener("change", render);
+  document.getElementById("kanban-component").addEventListener("change", render);
   document.getElementById("view-board").addEventListener("click", () => {
     activeView = "board";
     render();
