@@ -1,0 +1,55 @@
+name: Pages-julkaisuhistorian vain luku -tarkistus
+
+on:
+  workflow_dispatch:
+    inputs:
+      period_start:
+        description: "Seurantajakson alku (ISO 8601 aikavyöhykkeellä)"
+        required: true
+        type: string
+        default: "2026-11-18T00:00:00+02:00"
+      period_end:
+        description: "Seurantajakson loppu (ISO 8601 aikavyöhykkeellä)"
+        required: true
+        type: string
+        default: "2026-11-19T23:59:59+02:00"
+
+permissions:
+  contents: read
+  actions: read
+  deployments: read
+
+concurrency:
+  group: pages-history-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Lue Pages-julkaisuhistoria muuttamatta tuotantoa
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Hae repositorio
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Aseta Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Suorita vain luku -tarkistus
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_STEP_SUMMARY: ${{ github.step_summary }}
+        run: |
+          python scripts/audit_pages_publication_history.py \
+            --period-start "${{ inputs.period_start }}" \
+            --period-end "${{ inputs.period_end }}" \
+            --output artifacts/pages-history-audit.json
+      - name: Tallenna tarkistusraportti
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-history-audit-${{ github.run_id }}
+          path: artifacts/pages-history-audit.json
+          if-no-files-found: error
+          retention-days: 90
