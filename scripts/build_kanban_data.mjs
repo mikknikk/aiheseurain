@@ -190,11 +190,18 @@ export function assembleDataset(issues, dependencies, now = new Date(), fullSync
 
 /** Lukee edellisen onnistuneen JSONin; puuttuva tiedosto tarkoittaa ensikäynnistystä. */
 export async function readPreviousDataset(path) {
+  let raw;
   try {
-    return validatePreviousDataset(JSON.parse(await readFile(path, "utf8")));
+    raw = await readFile(path, "utf8");
   } catch (error) {
     if (error?.code === "ENOENT") return null;
     throw error;
+  }
+  try {
+    return validatePreviousDataset(JSON.parse(raw));
+  } catch {
+    // Vioittunut tai vanhentuneella rakenteella oleva välimuisti rakennetaan uudelleen GitHubista.
+    return null;
   }
 }
 
