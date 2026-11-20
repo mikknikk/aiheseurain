@@ -75,6 +75,24 @@ test("täysi täsmäytys käynnistyy ajastuksessa, manuaalisesti ja koodimuutoks
   assert.equal(eventNameIsFullSync({ action: "edited" }, "issues"), false);
 });
 
+
+test("hylkää puuttuvan, toistuvan tai itseensä osoittavan riippuvuustietueen", async () => {
+  const { assembleDataset } = await import("../scripts/build_kanban_data.mjs");
+  const issues = [issue(1), issue(2)];
+  assert.throws(() => assembleDataset(issues, [
+    { issueNumber: 1, blockedBy: [] },
+    { issueNumber: 1, blockedBy: [] }
+  ]), /tunnisteet eivät täsmää/);
+  assert.throws(() => assembleDataset(issues, [
+    { issueNumber: 1, blockedBy: [issue(2)] },
+    { issueNumber: 2, blockedBy: [issue(1)] }
+  ]), /puuttuva, toistuva tai virheellinen/);
+  assert.throws(() => assembleDataset(issues, [
+    { issueNumber: 1, blockedBy: [issue(1)] },
+    { issueNumber: 2, blockedBy: [] }
+  ]), /puuttuva, toistuva tai virheellinen/);
+});
+
 test("ensimmäinen täysi muodostus hakee issue-listan ja riippuvuudet", async () => {
   const calls = [];
   const fetchMock = async (url) => {
