@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.8.0  
+**Versio:** 0.9.0  
 **Tila:** luonnos – ei hyväksytty eikä toteutuksen lupa  
 **Päiväys:** 20.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -437,26 +437,11 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Periaatera
 
 ## 17. Tuottajakohtaiset toteutusohjeet
 
-Yleinen Aiheseuraimen vaatimusmäärittely ei määrää raporttituottajan sisäistä ohjeistusta, kehotteita, ohjelmistoversioita tai ajastuksia. Tuottajakohtaiset ohjeet ja niiden versionhallinta ovat kyseisen tuottajan toteutuksen vastuulla.
-
-Jos raporttituottajana käytetään ajastettua ChatGPT-tehtävää, sen käynnistyskehotteiden versionhallintaan voidaan käyttää tämän repositorion `prompts/`-hakemistoa ja rekisteriä. Tämä on valinnainen ChatGPT-toteutuksen hallintakäytäntö, ei Aiheseuraimen yleinen vaatimus.
-
-ChatGPT-toteutuksessa voidaan soveltaa seuraavia käytäntöjä:
-
-- Kanoniset käynnistyskehotteet voidaan säilyttää repositorion `prompts/`-hakemistossa. Jokaisesta julkaistusta versiosta säilytetään muuttumaton oma tiedosto muodossa `prompts/<task_id>/v<version>.txt`.
-- Kehotetiedosto sisältää täsmälleen ChatGPT-tehtävän asetuksiin kopioitavan tekstin. Tiedostoon ei lisätä otsikoita, kommentteja tai muuta kehotteeseen kuulumatonta sisältöä.
-- Jokaisella kehotteella on semanttinen versionumero (`MAJOR.MINOR.PATCH`). PATCH tarkoittaa rajattua korjausta, MINOR yhteensopivaa toiminnallista lisäystä ja MAJOR yhteensopimatonta tai tehtävän toimintaa olennaisesti muuttavaa muutosta.
-- `prompts/registry.json` ylläpitää tehtävätunnisteen, GitHubissa olevan uusimman kanonisen version, ChatGPT-tehtävässä käytössä olevaksi vahvistetun version, vahvistuksen ajankohdan ja tilan. Uuden järjestelmän tehtävät lisätään rekisteriin vasta, kun ne määritellään; vanhan järjestelmän tehtäviä ei palauteta automaattisesti.
-- ChatGPT-tehtävän asetuksissa oleva versio on erillinen tieto. GitHubissa julkaistu uusi versio ei tarkoita, että ChatGPT-tehtävä olisi jo päivitetty.
-- Kehotteen muuttaminen edellyttää käyttäjän nimenomaista lupaa ChatGPT-tehtävän asetusten muuttamiseen. GitHubin kanonisen tekstin päivittäminen ja ChatGPT-asetusten muuttaminen ovat erillisiä vaiheita.
-- Käytössä olevan version teksti täsmäytetään ChatGPT-tehtävän asetuksiin tallennettuun tekstiin. Vasta täsmäytyksen jälkeen rekisteriin merkitään uusi versio käyttöön vahvistetuksi.
-- Jos kyseisen ChatGPT-toteutuksen hallintamalli niin edellyttää, ajon alussa tarkistetaan tehtävätunniste ja kehotteen versio. Tämä tarkistus ei koske muita tuottajia eikä ole yleinen vastaanottoehto.
-- Vanhoja kehotetiedostoja ei ylikirjoiteta eikä poisteta. Palautus aiempaan versioon tehdään uutena rekisteröitynä käyttöönottona; historiatiedosto säilyy.
-- Kehotteen muutos ei saa muuttaa ajastusta, aikavyöhykettä tai kohdekeskustelua. Niihin sovelletaan erillistä automaatioiden hallinnan suojausperiaatetta.
-
-Kehotteiden tarkka tiedostorakenne, rekisterin kentät ja päivitysmenettely kuvataan dokumentissa [käynnistyskehotteiden versionhallinta](../prompts/README.md).
+Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
 
 ## 18. Muutosloki
+
+- **0.9.0 – 20.11.2026:** poistettu yleisestä vaatimusmäärittelystä ChatGPT-toteutuksen yksityiskohtaiset ohjeet. Tuottajakohtaiset asetukset, kehotteet ja niiden versionhallinta rajattu kunkin integraation omaan dokumentaatioon. Täsmennetty yhteisen tulossopimuksen ja tuottajakohtaisten ohjeiden vastuunjako.
 
 - **0.8.0 – 20.11.2026:** lisätty konfiguraatioihin ja seurantatilaan perustuva dynaaminen aihevalinta, usean yhteensopivan aiheen käsittely samassa ajokerrassa, ajokerran ja aihekohtaisten ajojen erottelu, reilu jonotus, Aiheseuraimen omat resurssirajat, jatkamispäätökset sekä keskeytyksestä palautuminen.
 - **0.7.1 – 20.11.2026:** täsmennetty tuottajan tuloksen ja vastaanottavan järjestelmän käsittelytilojen erottelu, ajotietueen muodostuminen myös puuttuvan tuottajavastauksen tilanteessa, tuloksen tilaluokat, tietosopimuksen pakolliset kentät sekä tietojen vastuutahot.
