@@ -94,7 +94,7 @@ test("löytää Projectin Priority-kentän ja sen vaihtoehdot kentän nimen peru
       ok: true, status: 200,
       json: async () => ({ data: { node: { fields: { nodes: [
         { id: "F_priority", name: "Priority", options: [{ id: "p1", name: "P1" }] }
-      ] } } })
+      ] } } } })
     };
   };
   const field = await findProjectSingleSelectField({
