@@ -81,6 +81,9 @@ def validate_state_migration() -> list[str]:
         ]
 
     for module_id, metadata in MODULES.items():
+        # Aseta tehtävätunniste uudelleen jokaiselle moduulille; edellisen silmukan
+        # paikallinen arvo ei saa vuotaa tämän moduulin lähde- ja tilatarkistuksiin.
+        task_id = metadata["task"]
         path = state_files.get(module_id)
         entry = registry_entries.get(module_id)
         if path is None or entry is None:
