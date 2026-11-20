@@ -67,6 +67,24 @@ jobs:
           GITHUB_EVENT_PATH: ${{ github.event_path }}
           GITHUB_EVENT_NAME: ${{ github.event_name }}
         run: node scripts/build_kanban_data.mjs
+      - name: Synkronoi issue-labelin tila GitHub Projectiin
+        if: >-
+          github.event_name == 'issues' &&
+          github.event.issue.pull_request == null &&
+          (
+            github.event.action == 'opened' ||
+            github.event.action == 'reopened' ||
+            (
+              (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
+              startsWith(github.event.label.name, 'status:')
+            )
+          )
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECTS_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: node .github/scripts/sync_project_status.mjs
       - name: Tallenna uusi kelvollinen välimuisti
         run: |
           git config user.name "github-actions[bot]"
