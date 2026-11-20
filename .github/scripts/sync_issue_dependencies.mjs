@@ -110,7 +110,7 @@ export async function dispatchDatasetRefresh({ owner, repo, token, issueNumber, 
     body: JSON.stringify({ ref: "main", inputs: { issue_number: String(issueNumber) } })
   });
   if (!response.ok) {
-    throw new Error(`Kehitysjonon julkaisun käynnistäminen epäonnistui (HTTP ${response.status}).`);
+    throw new Error(`Kehitysjonon välimuistipäivityksen käynnistäminen epäonnistui (HTTP ${response.status}).`);
   }
 }
 
@@ -258,7 +258,7 @@ async function main() {
     });
 
     // GITHUB_TOKEN ei käynnistä tavallisia uusia workflow-ajoja; workflow_dispatch on poikkeus.
-    // Käynnistä julkaisu ennen pyyntömerkin poistamista, jotta dispatch-virheen voi yrittää uudelleen.
+    // Päivitä välimuisti ennen pyyntömerkin poistamista, jotta dispatch-virheen voi yrittää uudelleen.
     if (result.added.length > 0 || result.removed.length > 0) {
       await dispatchDatasetRefresh({ owner, repo, token, issueNumber });
     }
