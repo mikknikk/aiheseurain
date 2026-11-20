@@ -38,8 +38,8 @@ Tämä on vaatimusmäärittely, ei tekninen toteutussuunnitelma. Siinä ei lukit
 10. **Reilu jonotus:** valinta huomioi erääntymisen ja odotusajan niin, ettei jokin aihe jää jatkuvasti muiden varjoon.
 11. **Seurantatyyppien omat säännöt:** yhteinen ajonhallinta noudattaa kunkin seurantatyypin aikataulu- ja yhteensopivuusrajoituksia.
 12. **Muuttumaton julkaisuhistoria:** julkaistuja RSS-itemeitä ei automaattisesti muokata, poisteta eikä korvata. Korjaus julkaistaan uutena iteminä, joka viittaa alkuperäiseen.
-9. **Ei tarpeetonta rinnakkaisuutta:** samaa tilatietoa ei ylläpidetä useassa toisistaan riippumattomassa tiedostossa tai tietokannassa.
-10. **Turvallinen epäonnistuminen:** epäselvä tai virheellinen tulos ei saa johtaa virheelliseen RSS-julkaisuun tai onnistumisen esittämiseen.
+13. **Ei tarpeetonta rinnakkaisuutta:** samaa tilatietoa ei ylläpidetä useassa toisistaan riippumattomassa tiedostossa tai tietokannassa.
+14. **Turvallinen epäonnistuminen:** epäselvä tai virheellinen tulos ei saa johtaa virheelliseen RSS-julkaisuun tai onnistumisen esittämiseen.
 
 ## 3. Käyttöliittymät ja niiden tärkeysjärjestys
 
@@ -139,7 +139,7 @@ Ajokerta on yhteinen orkestrointijakso, jonka aikana Aiheseurain valitsee ja kä
 
 ## 5. Ajon suoritusprosessi
 
-Aiheseuraimen ajonhallinta käsittelee ajokerran ja sen sisältämät aihekohtaiset ajot erillisinä mutta toisiinsa liittyvinä tasoina. Ajokerran alussa luetaan yhteiset säännöt, aktiiviset aihekonfiguraatiot, seurantatyyppien säännöt ja ajantasainen seurantatila. Niiden perusteella muodostetaan reilu jono erääntyneistä ja muuten kelpoisista aiheista. Seuraava aihe valitaan dynaamisesti ja varataan ristiriidattomasti. Kyseiselle aiheelle luodaan oma ajotietue ja yksilöllinen run_id ennen raporttituottajan työn aloittamista. Vastaanottava järjestelmä liittää aihekohtaisen ajon ajokertaan omalla batch_id-tunnisteellaan.
+Aiheseuraimen ajonhallinta käsittelee ajokerran ja sen sisältämät aihekohtaiset ajot erillisinä mutta toisiinsa liittyvinä tasoina. Ajokerran alussa luetaan yhteiset säännöt, aktiiviset aihekonfiguraatiot, seurantatyyppien säännöt ja ajantasainen seurantatila. Niiden perusteella muodostetaan reilu jono erääntyneistä ja muuten kelpoisista aiheista. Seuraava aihe valitaan dynaamisesti ja varataan ristiriidattomasti. Kyseiselle aiheelle luodaan oma ajotietue ja yksilöllinen `run_id` ennen raporttituottajan työn aloittamista. Vastaanottava järjestelmä liittää aihekohtaisen ajon ajokertaan omalla `batch_id`-tunnisteellaan.
 
 Jokainen aihekohtainen ajo noudattaa samaa loogista kulkua:
 
