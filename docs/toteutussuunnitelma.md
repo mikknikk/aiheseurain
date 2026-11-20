@@ -45,7 +45,7 @@ Raportintuottajan tutkimus- ja raportointikyvykkyys on tästä erillinen. Ohjaus
 
 Raportintuottaja toimittaa tuloksensa Git pushilla erilliseen vastaanottohaaraan. Hyväksytty lähtökohta on esimerkiksi haara `raportit-inbox`.
 
-- Raportintuottaja ei puske suoraan `main)-haaraan eikä julkaistavien RSS-syötteiden hakemistoon.
+- Raportintuottaja ei puske suoraan `main`-haaraan eikä julkaistavien RSS-syötteiden hakemistoon.
 - Toimitus sijoitetaan omaan hakemistoonsa ajo- tai toimitustunnisteen perusteella.
 - GitHub Actions käynnistää toimituksen käsittelyn vastaanottohaaraan tehdyn pushin perusteella.
 - Actions tarkistaa paketin ennen kuin mitään julkaistaan tai tallennetaan tuotannon tietoihin.
@@ -66,7 +66,7 @@ Toimituspaketti sisältää:
 - `metadata.json`: sopimusversion, ajotunnisteen, aiheen tunnisteen, seurantatyypin, seuranta-aikavälin, tulostilan ja muut käsittelyssä tarvittavat metatiedot;
 - `item.xml`: varsinaisen RSS-itemin, jos ajosta syntyi julkaistavaa raporttia.
 
-Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. `no_report)- ja `failed)-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
+Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
 
 ### 2.4 Vastaanotto ja julkaisu käsitellään hallitusti
 
@@ -114,7 +114,7 @@ Osa voidaan säilyttää, osa yksinkertaistaa ja osa toteuttaa uudelleen. Uudell
 
 Toteutussuunnitelmaan sisältyvät seuraavat käyttäjän hyväksymät GitHub-käytännöt:
 
-1. `main)-haaran suojaus: estetään poistaminen ja force push. Suojaus ei tässä vaiheessa pakota pull request -työskentelyyn, koska suora työskentely `main)-haaraan on edelleen sovittu käytäntö.
+1. `main`-haaran suojaus: estetään poistaminen ja force push. Suojaus ei tässä vaiheessa pakota pull request -työskentelyyn, koska suora työskentely `main`-haaraan on edelleen sovittu käytäntö.
 2. Dependabot seuraa käytössä olevia riippuvuuksia. Päivitykset tulevat ehdotuksina, eivät automaattisesti tuotantoon.
 3. GitHub Actions -riippuvuudet kiinnitetään commit-SHA:han ja työnkulkujen oikeudet rajataan vähimmäistarpeeseen.
 4. `SECURITY.md) kuvaa haavoittuvuuksien ilmoitus- ja käsittelytavan.
@@ -127,7 +127,7 @@ Nämä ovat tavoitetilan päätöksiä, eivät vielä toteutettuja käytäntöj�
 
 1. Nykyisen toteutuksen ja arkiston komponenttikohtainen inventaario.
 2. Yhteisten ja aihekohtaisten määritysten sekä toimitussopimuksen skeemojen määrittely.
-3. Ajonhallinta: yhden aiheen valinta, `run_id), ajotietue ja aihekohtainen päällekkäisyyksien esto.
+3. Ajonhallinta: yhden aiheen valinta, `run_id`, ajotietue ja aihekohtainen päällekkäisyyksien esto.
 4. Vastaanottohaara ja Git push -toimituspaketin käsittely.
 5. Validointi, kanoninen ajohistoria ja idempotentti RSS-julkaisu.
 6. Valvomon kolme näkymää ja niiden tietolähteet.
@@ -141,11 +141,11 @@ Vaiheistus on suunnitteluehdotus. Se ei anna lupaa käynnistää tuotantoa tai m
 
 Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
-- miten ajo käynnistetään ja miten raportintuottaja saa tehtävän sekä `run_id)-tunnisteen;
+- miten ajo käynnistetään ja miten raportintuottaja saa tehtävän sekä `run_id`-tunnisteen;
 - millä tunnistautumistavalla raportintuottaja saa push-oikeuden vain vastaanottohaaraan;
 - miten vastaanottohaaran toimituspaketin eheys ja täydellisyys varmistetaan;
 - miten `metadata.json)-tiedoston tarkka skeema määritellään;
-- miten `no_report)- ja `failed)-tulokset toimitetaan ilman RSS-itemiä;
+- miten `no_report`- ja `failed`-tulokset toimitetaan ilman RSS-itemiä;
 - miten vastaanottohaaran toimituksia säilytetään ja siivotaan turvallisesti;
 - miten julkaisun ja ajotietojen tallennuksen virhetilanteista palaudutaan;
 - miten ajotietojen julkisuus rajataan ja tarkistetaan automaattisesti;
