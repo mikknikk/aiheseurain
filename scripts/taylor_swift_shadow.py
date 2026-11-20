@@ -311,7 +311,7 @@ def write_shadow_artifact(
             "run_id on jo käytössä; olemassa olevaa testiajoa ei nollata eikä ylikirjoiteta."
         ) from exc
     destination = directory / f"{kind}.json"
-    payload = json.dumps(artifact, ensure_ascii=False, sort_keys=True, indent=2) + "\\n"
+    payload = json.dumps(artifact, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
     try:
         with destination.open("x", encoding="utf-8") as stream:
             stream.write(payload)

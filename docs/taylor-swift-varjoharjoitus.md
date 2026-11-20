@@ -1,7 +1,8 @@
 # Taylor Swift -moduulin rajattu varjoharjoitus
 
 **Liittyvä tiketti:** [#246 – Toteuta Taylor Swift -moduulin rajattu varjoharjoitus ilman tuotantojulkaisua](https://github.com/mikknikk/aiheseurain/issues/246)  
-**Hyväksyntäaineisto:** [#242 – Taylor Swift -pilotoinnin hyväksyntänäyttö](https://github.com/mikknikk/aiheseurain/issues/242)
+**Hyväksyntäaineisto:** [#242 – Taylor Swift -pilotoinnin hyväksyntänäyttö](https://github.com/mikknikk/aiheseurain/issues/242)  
+**Puhtaan testikierroksen tiketti:** [#256](https://github.com/mikknikk/aiheseurain/issues/256)
 
 ## Tarkoitus ja rajaus
 
