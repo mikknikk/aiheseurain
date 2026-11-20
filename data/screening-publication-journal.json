@@ -2,5 +2,53 @@
   "schema_version": 1,
   "task_id": "intialaiset_elokuvat_naytokset",
   "timezone": "Europe/Helsinki",
-  "runs": []
+  "runs": [
+    {
+      "run_id": "screening-watch-20261120T033625Z-a1",
+      "period": {
+        "start": "2026-11-19T06:10:58+02:00",
+        "end": "2026-11-20T05:49:29+02:00"
+      },
+      "prepared_at": "2026-11-20T05:49:29+02:00",
+      "source_check_run_id": "intialaiset_elokuvat_naytokset-20261120T054929-0200",
+      "source_check_ended_at": "2026-11-20T05:49:29+02:00",
+      "phase": "prepared",
+      "feed": {
+        "path": "feeds/intialaisten-elokuvien-naytokset.xml",
+        "sha256": "ebd438e23d2e2c888cc030b3713229402ba5a9ee2cb19c2f6df66fcd449d5fd3",
+        "item_count": 21,
+        "guids": [
+          "klara-ja-aurinko-update-screening-watch-20261120T034929Z-a1-17-completed-7-added-5-link-corrections-5-source-conflicts-32-future-92-historical",
+          "ramayana-update-screening-watch-20261120T034929Z-a1-1-completed-0-added-4-source-conflicts-10-future-13-historical",
+          "klara-ja-aurinko-update-screening-watch-20261119T041058Z-a2-10-completed-7-added-42-future-75-historical",
+          "ramayana-update-screening-watch-20261119T041058Z-a2-2-completed-2-added-11-future-12-historical",
+          "klara-ja-aurinko-update-screening-watch-20261118T153716Z-a1-19-completed-45-future-65-historical",
+          "klara-ja-aurinko-update-screening-watch-20261118T032342Z-a1-19-completed-14-added",
+          "ramayana-update-screening-watch-20261118T032342Z-a1-5-completed-8-added",
+          "klara-ja-aurinko-update-20261117T062329-17-completed-4-added",
+          "ramayana-update-20261117T062329-5-completed-3-confirmed",
+          "saapasrasvaa-update-20261117T062329-first-publication",
+          "om-operation-mole-update-20261117T062329-first-publication",
+          "klara-ja-aurinko-update-20261116T162700-completed-shows-v1",
+          "klara-ja-aurinko-update-20261116T152400-removed-expired-1515",
+          "ramayana-update-20261116T152400-plaza-oulu-1800-scala-official",
+          "ramayana-screenings-20261116T101600-0200-finnkino-itis-2015-biorex-tripla-source-refinement",
+          "klara-ja-aurinko-update-20261116T075534-48cd13f3",
+          "ramayana-update-20261116T075534-326014be",
+          "klara-ja-aurinko-update-20261116T074158-afe86bc3",
+          "ramayana-update-20261116T074158-a7b14971",
+          "ramayana-screenings-2026-11-12",
+          "klara-ja-aurinko-screenings-2026"
+        ]
+      },
+      "publication": {
+        "commit_sha": null,
+        "deployment_id": null,
+        "verified_at": null
+      },
+      "synchronization": {
+        "commit_sha": null
+      }
+    }
+  ]
 }
