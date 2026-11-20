@@ -370,6 +370,14 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 14. Tuottajan tulos, vastaanoton tila ja julkaisun tila erotetaan toisistaan; virheet, uusintayritykset ja jonon eteneminen ovat yksiselitteisiä.
 15. Testaus estää tuotantodatan tahattoman muuttamisen.
 16. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
+17. Ihmisen toimittama raportti hyväksytään ilman ohjelmisto-, malli-, tehtävä- tai kehoteversiotunnistetta, kun pakolliset ajon ja raportin tiedot täyttyvät.
+18. Ajon tietue säilyy, vaikka tuottaja ei toimittaisi tulosta; aikakatkaisu ja muut keskeytykset voidaan esittää erillään tuottajan ilmoittamasta epäonnistumisesta.
+19. Onnistunut ajo ilman raportoitavaa (`no_report`) tallennetaan onnistuneena ajona ilman RSS-itemiä.
+20. Tuottajan tulos, vastaanoton validointi ja RSS-julkaisun tila ovat erillisiä tietoja, eikä yhden vaiheen onnistumisesta päätellä toisen onnistumista.
+21. Osittainen tulos julkaistaan vain, jos aiheen määritys ja julkaisuehdot sen sallivat.
+22. Saman tuloksen uudelleenlähetys ei luo uutta ajotietuetta tai RSS-julkaisua, eikä rinnakkainen ajo voi ylikirjoittaa saman aiheen tilaa.
+23. Käytetyt määritysversiot voidaan jäljittää myöhemmin myös silloin, kun raporttituottaja ei itse tunne tai ilmoita niitä.
+24. Julkiseen raporttiin, RSS-syötteeseen tai Valvomon julkiseen dataan ei päädy salaisuuksia tai tarpeettomia henkilötietoja.
 
 ## 16. Avoimet suunnittelukysymykset
 
