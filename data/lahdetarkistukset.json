@@ -653,67 +653,6 @@
         "kinoafisha",
         "lippu-fi-events"
       ]
-    },
-    {
-      "run_id": "intialaiset_elokuvat_naytokset-20261120T064725-0200",
-      "task_id": "intialaiset_elokuvat_naytokset",
-      "started_at": "2026-11-20T06:33:48+02:00",
-      "ended_at": "2026-11-20T06:47:25+02:00",
-      "status": "complete",
-      "checked_source_ids": [
-        "finnkino",
-        "biorex",
-        "kino-regina",
-        "cinema-orion",
-        "kino-myyri",
-        "finnish-film-foundation",
-        "filmikamari",
-        "kinoafisha",
-        "lippu-fi-events"
-      ],
-      "unchecked_sources": [
-        {
-          "source_id": "finbolly",
-          "reason": "FinBolly Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; sivun avaaminen palautti esto-/rajoitusvirheen eikä hakutulosten katkelmia käsitelty lähdetarkistuksena."
-        },
-        {
-          "source_id": "fintamil",
-          "reason": "FinTamil Movies -Facebook-sivulta ei saatu luettavaa julkista sisältöä; sivu ei avautunut tarkistettavaksi."
-        },
-        {
-          "source_id": "rasa-entertainment",
-          "reason": "Rasa Entertainment -Facebook-sivulta ei saatu luettavaa julkista sisältöä; sivu ei avautunut tarkistettavaksi."
-        },
-        {
-          "source_id": "cinema-mondo",
-          "reason": "Cinema Mondon virallisen sivuston avaus epäonnistui; hakukoneen vanha katkelma ei ollut riittävä ajantasaiseksi lähdetarkistukseksi."
-        }
-      ],
-      "coverage_notes": [
-        "Seurantajakso Suomen ajassa: 2026-11-20T05:49:29+02:00–2026-11-20T06:47:25+02:00.",
-        "Kriittiset lähteet Finnkino, BioRex, Kino Regina ja Cinema Orion tarkistettiin. Lisäksi tarkistettiin Kino Myyrin ohjelmisto/Kinoon-listaus, Suomen elokuvasäätiön ajantasainen katsojatilasto, Filmikamari, Kinoafisha ja Lippu.fi.",
-        "Uusi teatterin vahvistama näytös: Klara ja aurinko 20.11.2026 klo 16.15 Finnkino Plevna, Tampere; esityskieli englanti, tekstitykset suomeksi ja ruotsiksi. BioRex Redin 21.11. klo 12.30 näytös vahvistui teatterin omalla ohjelmistosivulla. Kinoonin 23.11. klo 14.45 ja 24.11. klo 15.00 BioRex Redi -ajat säilytettiin kolmannen osapuolen ilmoituksina, koska BioRexin sivu näytti vain 21.11. ajan ja merkitsi elokuvan poistuvaksi.",
-        "Tuotantomaatieto: Cinema Orion ja SES:n 16.11.2026 päivittämä tilasto ilmoittavat Klara ja aurinko -elokuvan tuotantomaiksi GB / IN / US; Kino Myyrin sivu ilmoittaa US / GB / NZ. Ristiriitaa ei ratkaistu.",
-        "Lippu.fi:n ajantasainen elokuvan tapahtumalistaus näytti neljä Malmitalon näytöstä 26.11., 3.12., 9.12. ja 11.12. Erillisen Malmitalo-sivun hakukatkelmassa näkyi lisäksi 27.11. ja 4.12., mutta nämä eivät sisältyneet tapahtumalistauksen neljään näytökseen; ristiriitaisia aikoja ei lisätty.",
-        "Kielet: suomen- ja englanninkielinen haku sekä erilliset haut hindi-, tamil-, telugu-, malajalam-, kannada-, bengali-, marathi-, punjabi-, assami- ja odia-elokuville. Muita uusia tulevia intialaisia näytöksiä tai festivaalitapahtumia ei löytynyt.",
-        "Alueet: haku kattoi pääkaupunkiseudun lisäksi Tampereen, Turun, Kuopion, Jyväskylän, Karkkilan ja muut hakutuloksissa näkyneet suomalaiset paikkakunnat.",
-        "FinBolly Movies, FinTamil Movies, Rasa Entertainment ja Cinema Mondo jäivät teknisistä syistä tarkistamatta; niitä ei tulkittu tyhjiksi ohjelmistoiksi. Kaikki tämän tehtävän kriittiset lähteet tarkistettiin."
-      ],
-      "registry_source_ids": [
-        "finnkino",
-        "biorex",
-        "kino-regina",
-        "cinema-orion",
-        "kino-myyri",
-        "finbolly",
-        "fintamil",
-        "rasa-entertainment",
-        "finnish-film-foundation",
-        "cinema-mondo",
-        "filmikamari",
-        "kinoafisha",
-        "lippu-fi-events"
-      ]
     }
   ],
   "latest_by_task": {
