@@ -45,6 +45,29 @@ Automaation asetuksiin kopioitavat käynnistyskehotteet ovat erillisiä tekstipo
 
 Vanhoja dokumentteja ei muotoilla automaattisesti tämän käytäntömuutoksen yhteydessä. Niitä uudistetaan asteittain, jotta ohjeiden merkitys tai koneellisesti tulkittavat osat eivät muutu vahingossa.
 
+## GitHub Issues -kehitystehtävien labelit
+
+Aiheseuraimen kehitystehtävät tallennetaan GitHub Issues -tehtävinä. Kehitysjonon käyttöliittymä lukee tehtävät GitHubista, ja labelien nimet ovat osa sen tietosopimusta. Käytä uusissa tehtävissä ja tehtäviä päivitettäessä seuraavaa kolmen luokan mallia.
+
+Jokaisella kehitystehtävällä tulee olla yksi label kustakin luokasta:
+
+| Luokka | Labelit | Merkitys |
+|---|---|---|
+| Komponentti | `component:kehitysjono`, `component:lukija`, `component:valvomo`, `component:aiheseurain` | Mihin käyttöliittymään tai järjestelmän osaan tehtävä kuuluu |
+| Prioriteetti | `priority:P0`, `priority:P1`, `priority:P2`, `priority:P3` | Tehtävän prioriteetti |
+| Tila | `status:backlog`, `status:ready-for-development`, `status:in-progress`, `status:done` | Tehtävän etenemisen tila |
+
+Säännöt:
+
+- Käytä täsmälleen yllä olevia labelien nimiä. Etuliitteet ovat osa labelia.
+- Valitse yksi komponenttilabel, yksi prioriteettilabel ja yksi tilalabel. Älä lisää samasta luokasta useita keskenään ristiriitaisia labeleita.
+- Päivitä tilalabelia tehtävän edetessä. Älä käytä vanhoja tilalabeleita kuten `tila:backlog`, `tila:ready`, `tila:in-progress` tai `tila:done`.
+- Älä käytä vanhaa `aihe:`-labelperhettä komponentin merkitsemiseen äläkä irrallisia `P0`–`P3`-labeleita prioriteetin merkitsemiseen.
+- Uusi komponenttilabel lisätään tähän luetteloon ja Kehitysjonon toteutukseen koordinoidusti. Yleinen `component:`-etuliite mahdollistaa komponenttien tunnistamisen.
+- Kehitysjonon käyttöliittymä käsittelee suljetun GitHub-issuen Valmis-tilaisena myös silloin, jos sen tilalabeli on vanhentunut. Tämä ei korvaa tehtävän labelien asianmukaista päivittämistä.
+
+Tätä label-mallia noudatetaan kaikessa uudessa kehitystyössä, tehtävien luonnissa ja olemassa olevien tehtävien päivityksissä. Vanhoja labeleita ei pidä käyttää uusissa tehtävissä.
+
 ## Python-skriptien kommentointi
 
 Jokainen uusi skripti kirjoitetaan alusta lähtien yhtä huolellisesti kommentoiduksi kuin `scripts/validate_feeds.py`.
