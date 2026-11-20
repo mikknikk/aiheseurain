@@ -45,7 +45,9 @@ Koneellisesti ylläpidettävät lähteiden perustiedot ovat yhdessä tiedostossa
 
 ## Muumit
 
-- Ensisijaiset: Moomin Characters (moomin.com), Tove Janssonin oikeudenhaltijoiden ja virallisten museoiden, kustantajien, tuotantoyhtiöiden ja tapahtumajärjestäjien tiedotteet.
+- Ensisijaiset: Moomin Characters (moomin.com) ja Moomin Official Website Japan (moomin.co.jp/news), Tove Janssonin oikeudenhaltijoiden, virallisten museoiden, kustantajien, tuotantoyhtiöiden, lisenssikumppanien ja tapahtumajärjestäjien tiedotteet.
+- Suomen tapahtumahaku: Lippu, Ticketmaster, Tiketti ja Biletti ovat löytö- ja lipunmyyntilähteitä; varmista päivämäärät ja ohjelma aina järjestäjän tai tapahtumapaikan omalta sivulta. Muumi Pomppupuiston oma sivu on ensisijainen lähde sen kiertäville perhetapahtumille.
+- Japanin lisensointi- ja muotiyhteistyöuutisissa käytä Moomin Official Website Japanin lisäksi kumppanien virallisia sivuja sekä toimituksellisia muoti- ja kulttuurimedioita, kuten The Fashion Postia ja ELLE Japania.
 - Toimitukselliset: suomalaiset ja kansainväliset kulttuuri-, kirjallisuus-, animaatio-, viihde- ja talousmediat.
 - Hae suomeksi, ruotsiksi, englanniksi ja tarvittaessa japaniksi. Käytä muotoja “Muumit”, “Moomin”, “Moomins” ja “ムーミン”.
 - Seuraa Suomen lisäksi erityisesti Ruotsia, Britanniaa, Japania ja kansainvälisiä markkinoita.
