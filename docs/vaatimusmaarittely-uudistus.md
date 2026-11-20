@@ -180,7 +180,7 @@ Salaisuuksia, käyttöoikeustunnuksia, tarpeettomia henkilötietoja tai raakoja 
 - Lähteiden luotettavuus ja olennaiset epävarmuudet ilmaistaan aihekohtaisen raporttipohjan mukaisesti.
 - Tuottaja toimittaa enintään yhden uuden itemin yhtä raportoitavaa ajoa kohti.
 - GitHub validoi itemin ja lisää sen oikean aiheen syötteeseen.
-- GitHub ei pyydä ChatGPT:tä muodostamaan koko RSS-syötettä uudelleen.
+- Vastaanottava järjestelmä ei pyydä raporttituottajaa muodostamaan koko RSS-syötettä uudelleen.
 - Aiemmin julkaistujen itemien sisältöä, GUID-tunnisteita tai järjestystä ei muuteta automaattisesti.
 - Korjaus tehdään uutena erillisenä iteminä, joka viittaa korjattavaan julkaisuun.
 - RSS/XML validoidaan jokaisen julkaisun yhteydessä.
@@ -190,7 +190,7 @@ Jos ajo onnistuu mutta uutta raportoitavaa ei löydy, ajotiedot tallennetaan ja 
 
 ## 8. Valvomon tietotarpeet ja näkymät
 
-Valvomon tietomalli suunnitellaan ennen sen seuraavaa laajaa käyttöliittymäuudistusta. Tietomallin tulee tukea nykyisen Valvomon kehittämistä ja myöhempiä näkymiä ilman, että jokaista uutta näkymää varten muutetaan ChatGPT:n tutkimusprosessia.
+Valvomon tietomalli suunnitellaan ennen sen seuraavaa laajaa käyttöliittymäuudistusta. Tietomallin tulee tukea nykyisen Valvomon kehittämistä ja myöhempiä näkymiä ilman, että jokaista uutta näkymää varten muutetaan raporttituottajan sisäistä prosessia.
 
 ### 8.1 Keskeiset näkymät
 
