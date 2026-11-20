@@ -64,15 +64,22 @@ test("ohittaa issuet, joilla ei ole kehityskomponentin labelia", async () => {
 test("muuntaa prioriteettilabelit Projectin Priority-vaihtoehdoiksi", async () => {
   const { resolvePriorityOption } = await import("../.github/scripts/sync_project_status.mjs");
   const priorityOptions = [
-    { name: "P0 – Kriittinen", id: "p0" },
-    { name: "P1 – Korkea", id: "p1" },
-    { name: "P2 – Normaali", id: "p2" },
-    { name: "P3 – Matala", id: "p3" }
+    { name: "P0 Kriittinen", id: "p0" },
+    { name: "P1 Korkea", id: "p1" },
+    { name: "P2 Normaali", id: "p2" },
+    { name: "P3 Matala", id: "p3" }
   ];
   assert.equal(resolvePriorityOption([{ name: "priority:P0" }], priorityOptions).option.id, "p0");
   assert.equal(resolvePriorityOption(["priority:P1"], priorityOptions).option.id, "p1");
   assert.equal(resolvePriorityOption([{ name: "priority:P2" }], priorityOptions).option.id, "p2");
   assert.equal(resolvePriorityOption([{ name: "priority:P3" }], priorityOptions).option.id, "p3");
+  // Vastaa täsmälleen käyttäjän Aiheseurain-Projectissa olevia vaihtoehtoja.
+  assert.equal(resolvePriorityOption(["priority:P1"], [
+    { name: "P0 Kriittinen", id: "e8877887" },
+    { name: "P1 Korkea", id: "4eb95e26" },
+    { name: "P2 Normaali", id: "024b8b15" },
+    { name: "P3 Matala", id: "6c5a768d" }
+  ]).option.id, "4eb95e26");
 });
 
 test("hylkää puuttuvan, ristiriitaisen tai tuntemattoman prioriteettilabelin", async () => {
