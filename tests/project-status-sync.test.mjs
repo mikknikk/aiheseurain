@@ -82,7 +82,7 @@ test("hylkää puuttuvan, ristiriitaisen tai tuntemattoman prioriteettilabelin",
   assert.throws(() => resolvePriorityOption([], options), /täsmälleen yksi/);
   assert.throws(() => resolvePriorityOption(["priority:P1", "priority:P2"], options), /täsmälleen yksi/);
   assert.throws(() => resolvePriorityOption(["priority:P9"], options), /Tuntematon prioriteettilabel/);
-  assert.throws(() => resolvePriorityOption(["priority:P1"], []), /täsmälleen yksi vaihtoehto/);
+  assert.throws(() => resolvePriorityOption(["priority:P1"], {}), /ei ole määritetty Project-vaihtoehdon tunnistetta/);
 });
 
 test("prioriteettivaihtoehtojen määritys ei riipu kentän tai vaihtoehdon nimistä", () => {
