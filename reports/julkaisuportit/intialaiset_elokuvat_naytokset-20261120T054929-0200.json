@@ -1,0 +1,182 @@
+{
+  "schema_version": 2,
+  "run_id": "intialaiset_elokuvat_naytokset-20261120T054929-0200",
+  "task_id": "intialaisten-elokuvien-naytokset",
+  "feed_path": "feeds/intialaisten-elokuvien-naytokset.xml",
+  "checked_at": "2026-11-20T05:49:29+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Kriittiset teatterilähteet Finnkino, BioRex, Kino Regina ja Cinema Orion avattiin. Lisäksi tarkistettiin Kino Myyrin ohjelmisto, Suomen elokuvasäätiö ja Filmikamari sekä näytöslöydösten kannalta Kinoon, Kinoafisha ja Lippu.fi. Neljä ei-kriittistä lähdettä (FinBolly, FinTamil, Rasa Entertainment ja Cinema Mondo) jäivät teknisesti tavoittamatta ja on kirjattu lähdelokiin; niitä ei käytetty tyhjän ohjelmiston osoittamiseen.",
+      "evidence": [
+        "https://www.finnkino.fi/teatterit/finnkino-kinopalatsi-helsinki/",
+        "https://www.finnkino.fi/teatterit/finnkino-fantasia/",
+        "https://biorex.fi/elokuvat/klara-and-the-sun/",
+        "https://kinoregina.fi/",
+        "https://cinemaorion.fi/",
+        "https://kinomyyri.fi/film/klara-ja-aurinko/",
+        "https://www.ses.fi/",
+        "https://www.filmikamari.fi/",
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1107",
+        "https://kinoon.fi/en/showtimes/ramayana?scope=FIN:1157",
+        "https://fi.kinoafisha.info/helsinki/cinema/8328026/schedule/",
+        "https://www.lippu.fi/en/artist/kino-helios/kino-helios-klara-ja-aurinko-4288271/"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Seitsemän uutta Klara ja aurinko -näytöstä vastaa Kinoonin ja Lippu.fi:n avattuja listauksia. Kinoafishan ja Finnkinon ohjelmasivujen ristiriidat on kuvattu lähdehuomioissa, eikä puuttuvia listauksia tulkita peruutuksiksi. Kahdeksantoista aiemman näytöksen tilamuutos perustuu tallennettuun alkamisaikaan ja tarkistushetkeen, ei väitteeseen näytöksen toteutumisesta.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1107",
+        "https://www.lippu.fi/en/artist/kino-helios/kino-helios-klara-ja-aurinko-4288271/",
+        "https://fi.kinoafisha.info/helsinki/cinema/8328026/schedule/",
+        "https://www.finnkino.fi/teatterit/finnkino-kinopalatsi-helsinki/"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Kinoon, Kinoafisha ja Lippu.fi ovat erillisiä palveluja, mutta niiden tietojen alkuperän riippumattomuutta ei ole osoitettu. Niitä ei lasketa toisistaan riippumattomiksi vahvistuksiksi. Finnkinon omia ohjelmasivuja käytettiin rinnakkaistarkistukseen; ristiriidat säilytettiin avoimina.",
+      "evidence": [
+        "https://kinoon.fi/en/showtimes/klara-and-the-sun?scope=FIN:1107",
+        "https://fi.kinoafisha.info/helsinki/cinema/8328026/schedule/",
+        "https://www.lippu.fi/en/artist/kino-helios/kino-helios-klara-ja-aurinko-4288271/",
+        "https://www.finnkino.fi/teatterit/finnkino-kinopalatsi-helsinki/"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Kaikki seitsemän uutta näytöstä säilyvät kolmannen osapuolen ilmoituksina. Yhdeksän Kinopalatsin Helsingin 22.–26.11. näytösajassa on lähderistiriita; yhtäkään ei merkitty perutuksi. Kahdeksantoista completed-tilaan siirrettyä näytöstä kuvaavat ohitettua aikataulua, eivät varmistettua toteutumista."
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Seurantajakso päättyi 20.11.2026 klo 05.49.29 Suomen aikaa. Uudet näytösajat ovat 26.11.–11.12.2026; 18 aiemman näytöksen tilamuutos tehtiin vasta niiden tallennettujen alkuaikojen ohituttua."
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Seurantajakso vastaa edellistä onnistunutta tarkistusta ja lähdeajon päättymistä: 19.11.2026 klo 06.10.58–20.11.2026 klo 05.49.29 Europe/Helsinki-ajassa."
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Seitsemän uutta pysyvää screening_id-tunnistetta lisättiin. Lisäksi kirjattiin 18 ajallista tilamuutosta ja kahdeksan lähderistiriidan korjaustapahtumaa; aiempia tietueita tai tapahtumia ei poistettu eikä tunnisteita monistettu."
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Kaikki 19 aiempaa RSS-GUIDia säilyvät. Kaksi uutta päivitysitemiä lisättiin yksilöllisillä GUIDeilla; syötteessä on yhteensä 21 yksilöllistä GUIDia."
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "PR #243:n ensimmäisessä CI-ajossa RSS/XML-, kuvausten HTML-, skeema- ja linkkitarkistukset onnistuivat. Sama tarkistus suoritetaan uudelleen korjatulle commitille."
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Syötteessä on 21 itemiä ja yksilölliset GUIDit. Item-tason link-elementtejä ei ole; koko raportti ja otsikoitu lähdeluettelo ovat description-CDATAssa."
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Klara ja aurinko- ja Ramayana-itemit sisältävät tulevat ja historialliset näytökset, muutokset edelliseen julkaisuun, lähdehuomiot sekä suorat lähdelinkit."
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "Kuvauksissa on lang=fi, yksi h1, loogiset h2/h3-otsikot, semanttiset listat ja kuvaavat linkkitekstit. Kuvia ei lisätty. WCAG 2.2 AAA -vaatimustenmukaisuutta ei väitetä ilman erillistä testausta."
+    }
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "klara-ja-aurinko-seven-new-screenings-20261120",
+      "claim": "Klara ja aurinko -elokuvalle lisättiin seitsemän uutta Suomen näytöstä: Kinoonin ilmoittamat 26.11. klo 14.40 Fantasiassa Jyväskylässä, klo 16.00 Kino Laikassa Karkkilassa ja klo 21.00 Finnkino Kinopalatsissa Helsingissä sekä Lippu.fi:n ilmoittamat Kino Helios -näytökset Malmitalossa 26.11. klo 15.00, 3.12. klo 18.00, 9.12. klo 18.00 ja 11.12. klo 15.00.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kinoon",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Kolmannen osapuolen valtakunnallinen näytöskooste; kolme uutta aikaa jäi ilman teatterin omaa täsmävahvistusta."
+        },
+        {
+          "source_id": "lippu-fi-events",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Kino Helios -tapahtuman lipunmyyntisivu; neljä Malmitalon päivämäärää listattu samalla tapahtumasivulla."
+        }
+      ],
+      "note": "Ajat julkaistaan ilmoituksina, ei teatterien ensisijaisina vahvistuksina."
+    },
+    {
+      "claim_id": "kinopalatsi-nine-source-conflicts-20261120",
+      "claim": "Kinoafishan 20.11. tarkistetussa Finnkino Kinopalatsin Helsingin ohjelmassa ei näy yhdeksää Kinoonin aiemmin ilmoittamaa 22.–26.11. näytösaikaa: viittä Klara ja aurinko -aikaa ja neljää Ramayana-aikaa.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kinoon",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon"
+        },
+        {
+          "source_id": "kinoafisha",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon",
+          "note": "Kolmannen osapuolen teatteriohjelmisto; listaus ei yksin todista kaikkien näytösten täydellistä kattavuutta."
+        },
+        {
+          "source_id": "finnkino",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu",
+          "note": "Finnkinon oma päivämääräkohtainen ohjelmasivu ei vahvistanut kaikkia listattuja aikoja."
+        }
+      ],
+      "note": "Näytökset säilytettiin kolmannen osapuolen tietoina; puuttuva listaus ei yksin osoita peruutusta."
+    },
+    {
+      "claim_id": "eighteen-screenings-past-start-times-20261120",
+      "claim": "Kahdeksantoista aiemmin seurannassa ollutta näytöstä siirrettiin completed-tilaan, koska niiden tallennettu alkamisaika oli ohitettu 20.11.2026 klo 05.49.29 tarkistushetkellä.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "kinoon",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon"
+        },
+        {
+          "source_id": "finnkino",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        },
+        {
+          "source_id": "biorex",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        }
+      ],
+      "note": "Completed ilmaisee aikataulun ohittumista, ei varmistusta näytöksen toteutumisesta tai peruutuksesta."
+    },
+    {
+      "claim_id": "kino-helios-malmitalo-language-subtitles-20261120",
+      "claim": "Lippu.fi:n Kino Helios -tapahtumasivu ilmoittaa neljä Klara ja aurinko -näytöstä Malmitalossa 26.11., 3.12., 9.12. ja 11.12.2026; esityskieli on englanti ja tekstitykset suomeksi ja ruotsiksi.",
+      "verification_status": "ristiriitainen_tai_selvittamaton",
+      "sources": [
+        {
+          "source_id": "lippu-fi-events",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "tuntematon"
+        }
+      ],
+      "note": "Tiedot säilytetään lipunmyyntipalvelun ilmoituksina, kunnes teatterin tai järjestäjän ensisijainen vahvistus löytyy."
+    }
+  ],
+  "decision": "approved",
+  "reviewer_notes": [
+    "Ajo päivitti vain intialaisten elokuvien näytösseurannan aineistoa; pääuutisten syötteitä ja automaatioasetuksia ei muutettu.",
+    "Seitsemän uutta Klara ja aurinko -näytöstä lisättiin; 18 aiempaa näytöstä siirrettiin completed-tilaan aikataulun ohittumisen vuoksi; kahdeksan lähderistiriitaa kirjattiin ja viisi aiempaa Kinoon-lähdelinkkiä tarkennettiin.",
+    "Kaikki neljä kriittistä teatterilähdettä tarkistettiin. Neljä ei-kriittistä lähdettä jäi teknisistä syistä tarkistamatta eikä niitä tulkittu tyhjiksi.",
+    "Kinoafisha ja Lippu.fi lisättiin yhteiseen lähdekatalogiin ja näytösseurannan lähderekisteriin, koska ne tarkistettiin tässä ajossa."
+  ]
+}

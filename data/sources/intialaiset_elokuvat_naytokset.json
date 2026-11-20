@@ -72,6 +72,18 @@
       "critical": false,
       "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": null
+    },
+    {
+      "source_id": "kinoafisha",
+      "critical": false,
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
+      "access_limit": "Kolmannen osapuolen elokuvaohjelmistojen koontipalvelu; teatterin oma ohjelmisto tarkistetaan rinnalla, jos saatavilla."
+    },
+    {
+      "source_id": "lippu-fi-events",
+      "critical": false,
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
+      "access_limit": "Kolmannen osapuolen tapahtuma- ja lipunmyyntisivu; esitystiedot luokitellaan ilmoituksiksi, ellei järjestäjän oma vahvistus ole saatavilla."
     }
   ]
 }

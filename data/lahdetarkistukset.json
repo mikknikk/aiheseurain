@@ -543,7 +543,9 @@
         "cinema-orion",
         "kino-myyri",
         "finnish-film-foundation",
-        "filmikamari"
+        "filmikamari",
+        "kinoafisha",
+        "lippu-fi-events"
       ],
       "unchecked_sources": [
         {
@@ -571,7 +573,8 @@
         "Kinoon ilmoittaa Klara ja aurinko -elokuvan 26.11. näytökset Fantasiassa, Kino Laikassa ja Finnkino Kinopalatsissa. Näiden täsmäaikoja ei saatu vahvistettua teatterien omista ajantasaisista sivuista; ne säilytettiin kolmannen osapuolen ilmoittamina. Kinoafishan 20.11. tarkistettu Kinopalatsin ohjelma ei listaa Kinoonin ilmoittamia 22.–26.11. Klara-näytöksiä eikä 22.–25.11. Ramayana-näytöksiä. Ristiriita kirjattiin näytöshistoriaan, eikä aiempia näytöksiä poistettu tai tulkittu perutuiksi.",
         "Kinoonin viisi 19.11. lähdelinkkikorjausta sisällytettiin uuteen RSS-versioon. Näytöshistoriaan siirrettiin 17 Klara- ja yksi Ramayana-näytös completed-tilaan niiden alkamisaikojen ohituttua.",
         "Hakutuloksissa näkyi myös jo päättyneitä näytöksiä 1.11., 11.11. ja 14.11. Ne ovat ennen tämän ajon seurantajaksoa ja vahvistetun historiapohjan 16.11. alkua, joten niitä ei lisätty tähän muutosjaksoon.",
-        "FinBolly Movies, FinTamil Movies, Rasa Entertainment ja Cinema Mondo jäivät tarkistamatta teknisistä syistä. Kaikki tämän tehtävän kriittiset lähteet tarkistettiin."
+        "FinBolly Movies, FinTamil Movies, Rasa Entertainment ja Cinema Mondo jäivät tarkistamatta teknisistä syistä. Kaikki tämän tehtävän kriittiset lähteet tarkistettiin.",
+        "Kinoafishan Finnkino Kinopalatsin ohjelmasivu ja Lippu.fi:n Kino Helios -tapahtumasivu tarkistettiin tässä ajossa. Ne lisättiin lähdekatalogiin ja tämän tehtävän lähderekisteriin; molemmat ovat ei-kriittisiä kolmannen osapuolen lähteitä."
       ],
       "registry_source_ids": [
         "finnkino",
@@ -584,7 +587,9 @@
         "rasa-entertainment",
         "finnish-film-foundation",
         "cinema-mondo",
-        "filmikamari"
+        "filmikamari",
+        "kinoafisha",
+        "lippu-fi-events"
       ]
     }
   ],
