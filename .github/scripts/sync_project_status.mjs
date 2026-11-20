@@ -41,6 +41,25 @@ export function resolvePriorityOption(labels, optionsByLabel) {
   return { label, code: match[1], option };
 }
 
+/**
+ * Muuntaa issuen component:-labelin Projectin Component-vaihtoehdoksi.
+ * Kentän ja vaihtoehdon nimet eivät vaikuta tunnistukseen; käytössä ovat ID:t.
+ */
+export function resolveComponentOption(labels, optionsByLabel) {
+  const componentLabels = labels
+    .map((label) => typeof label === "string" ? label : label?.name)
+    .filter((name) => typeof name === "string" && name.startsWith("component:"));
+  if (componentLabels.length !== 1) {
+    throw new Error(`Issuella pitää olla täsmälleen yksi component:-label; löytyi ${componentLabels.length}.`);
+  }
+  const label = componentLabels[0];
+  const option = optionsByLabel[label];
+  if (!option?.id) {
+    throw new Error(`Komponenttilabelille ${label} ei ole määritetty Project-vaihtoehdon tunnistetta.`);
+  }
+  return { label, option };
+}
+
 
 /**
  * Päivittää yhden Projectin Single select -kentän ja lukee arvon takaisin.
@@ -180,43 +199,10 @@ export async function ensureProjectItem({
 export async function updateProjectStatus({
   token, projectId, fieldId, optionId, itemId, fetchImpl = fetch
 }) {
-  const mutation = `
-    mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
-      updateProjectV2ItemFieldValue(input: {
-        projectId: $projectId,
-        itemId: $itemId,
-        fieldId: $fieldId,
-        value: { singleSelectOptionId: $optionId }
-      }) {
-        projectV2Item { id }
-      }
-    }`;
-  const data = await graphql(token, mutation, {
-    projectId, itemId, fieldId, optionId
-  }, fetchImpl);
-  if (!data.updateProjectV2ItemFieldValue?.projectV2Item?.id) {
-    throw new Error("GitHub Projectin Status-kentän päivitys ei palauttanut onnistunutta tulosta.");
-  }
-
-  // Lue arvo takaisin: onnistunut mutaatio ei yksin todista oikeaa lopputilaa.
-  const verifyQuery = `
-    query($itemId: ID!) {
-      node(id: $itemId) {
-        ... on ProjectV2Item {
-          fieldValueByName(name: "Status") {
-            ... on ProjectV2ItemFieldSingleSelectValue {
-              name
-              optionId
-            }
-          }
-        }
-      }
-    }`;
-  const verified = await graphql(token, verifyQuery, { itemId }, fetchImpl);
-  const actual = verified.node?.fieldValueByName;
-  if (actual?.optionId !== optionId) {
-    throw new Error(`Projectin Status-varmistus epäonnistui: odotettiin ${optionId}, saatiin ${actual?.optionId ?? "ei arvoa"}.`);
-  }
+  // Käytä samaa ID-pohjaista päivitystä ja takaisinlukua kuin muissa kentissä.
+  return updateProjectSingleSelectField({
+    token, projectId, fieldId, fieldName: "Status", optionId, itemId, fetchImpl
+  });
 }
 
 export async function syncIssueStatus({
@@ -239,13 +225,11 @@ export async function syncIssueStatus({
   if (issue.pull_request) return { skipped: "pull_request" };
 
   // Projektiin kuuluvat vain kehityskomponentilla merkityt issuet.
-  const componentLabels = (issue.labels || [])
+  const allComponentLabels = (issue.labels || [])
     .map((label) => typeof label === "string" ? label : label?.name)
     .filter((name) => typeof name === "string" && name.startsWith("component:"));
-  if (componentLabels.length === 0) return { skipped: "not_a_development_issue" };
-  if (componentLabels.length !== 1) {
-    throw new Error(`Issuella pitää olla täsmälleen yksi component:-label; löytyi ${componentLabels.length}.`);
-  }
+  if (allComponentLabels.length === 0) return { skipped: "not_a_development_issue" };
+  const component = resolveComponentOption(issue.labels || [], config.project.component_options);
 
   const { label, option } = resolveStatusOption(
     issue.labels || [], config.project.options
@@ -266,9 +250,15 @@ export async function syncIssueStatus({
     fieldId: config.project.priority_field_id, fieldName: "Priority",
     optionId: priority.option.id, itemId, fetchImpl
   });
+  await updateProjectSingleSelectField({
+    token: projectsToken, projectId: project.id,
+    fieldId: project.component_field_id, fieldName: "Component",
+    optionId: component.option.id, itemId, fetchImpl
+  });
   return {
     issueNumber, statusLabel: label, status: option.name,
-    priorityLabel: priority.label, priority: priority.code, itemId
+    priorityLabel: priority.label, priority: priority.code,
+    componentLabel: component.label, componentOptionId: component.option.id, itemId
   };
 }
 
