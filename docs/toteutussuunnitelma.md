@@ -1,7 +1,7 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.0  
-**Päiväys:** 20.11.2026  
+**Versio:** 0.3.1  
+**Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
 
@@ -96,7 +96,7 @@ Hakemistonimet ja tiedostopolut ovat suunnitteluesimerkkejä; lopullinen rakenne
 
 Tehtävätyyppi sisältää yleiset, saman tehtäväluokan tehtäville kuuluvat oletukset. Profiilit täydentävät niitä esimerkiksi tapahtumalajin, sisältöalueen, genren tai muun uudelleenkäytettävän ominaisuuden mukaan. Aihekohtainen määritys sisältää yksittäisen seurannan omat hakusanat, rajaukset ja muut erot. Ihmiselle tarkoitetut pitkät toimitukselliset ja menettelyohjeet pidetään Markdown-tiedostoissa; koneellisesti käsiteltävät asetukset ovat JSON-tiedostoissa.
 
-Yksi aihe voi käyttää useita profiileja. Esimerkiksi elokuvanäytösvahti voi yhdistää tapahtumavahdin yleiset oletukset, elokuvanäytösprofiilin ja intialaisen elokuvan profiilin. Konserttivahti voi käyttää tapahtumavahdin ja konserttiprofiilin lisäksi esimerkiksi klassisen musiikin profiilia. Profiilien on ilmoitettava yhteensopiva tehtävätyyppi tai muu sovittu yhteensopivuus, jotta niitä ei voi yhdistää virheellisesti keskenään.
+Yksi aihe voi käyttää useita profiileja. Esimerkiksi elokuvanäytösvahti voi yhdistää tapahtumavahdin yleiset oletukset, elokuvanäytösprofiilin ja intialaisen elokuvan profiilin. Konserttivahti voi käyttää tapahtumavahdin ja konserttiprofiilin lisäksi esimerkiksi klassisen musiikin profiilia. Ensimmäisessä versiossa profiilien välisiä riippuvuuksia, kieltoja tai erillistä yhteensopivuusmatriisia ei mallinneta. Profiileja voidaan yhdistää ilman, että niiden tarvitsee ilmoittaa yhteensopivuuttaan keskenään.
 
 Ensimmäisessä versiossa profiilit ovat itsenäisiä määrityksiä: profiili ei peri toista profiilia eikä muodostu mielivaltaiseksi periytymisketjuksi. Tämä pitää yhdistämisen ennustettavana. Profiilien keskinäinen järjestys ilmoitetaan aihekohtaisessa määrityksessä ja ratkaisee mahdolliset päällekkäiset asetukset.
 
@@ -112,8 +112,10 @@ Yhdistämissäännöt:
 - Myöhempi arvo korvaa aiemman saman asetuksen arvon.
 - Taulukot korvataan kokonaan; niitä ei yhdistetä automaattisesti.
 - Puuttuva asetus periytyy aiemmalta tasolta.
-- Tuntemattomat avaimet, väärän tyyppiset arvot ja yhteensopimattomat profiilit hylätään validoinnissa.
+- Tuntemattomat avaimet ja väärän tyyppiset arvot hylätään skeemavalidoinnissa.
+- Profiilien omat rakenteet validoidaan niiden skeemoja vasten ja ratkaistu konfiguraatio tehtävätyypin skeemaa vasten. Näin tarkistetaan, että lopullinen asetuskokonaisuus sopii tehtävätyypin määrittelemään rakenteeseen.
 - Ylikirjoituksia saa tehdä vain skeemassa sallituissa asetuskohdissa.
+- Ensimmäisessä versiossa ei toteuteta yleistä semanttisten ristiriitojen tunnistusta profiilien välillä. Tarvittaessa tällaisia tarkistuksia voidaan lisätä myöhemmin konkreettisen käyttötarpeen perusteella.
 
 GitHub Actions ratkaisee asetukset ennen tehtävän tarjoamista. Raportintuottajalle annetaan valmis, muuttumaton konfiguraatiokokonaisuus osana tehtäväpyyntöä; raportintuottajan ei tarvitse toteuttaa periytymis- tai yhdistelylogiikkaa. Tehtäväpyyntöön tallennetaan myös käytettyjen määritysten versiot tai Git-commit-viite, jotta ajon asetukset voidaan jäljittää ja tarvittaessa rekonstruoida.
 
