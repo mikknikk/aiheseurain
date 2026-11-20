@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.2  
+**Versio:** 0.3.3  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -52,7 +52,7 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 - `data/tehtava.json` sisältää kerrallaan yhden tehtävän. Tehtäväpyyntö pysyy muuttumattomana, kunnes kyseisen tehtävän käsittelyn valmistuminen on vahvistettu; vasta sen jälkeen muodostetaan seuraava tehtäväpyyntö.
 - Tehtävän tarkka tiedostopolku, tietorakenne ja tilapäivitysten toteutus määritellään myöhemmin.
 
-Tehtäväpyynnön aikamallissa kaikki varsinaiset aikaleimat tallennetaan UTC-muodossa. Paikallinen aikavyöhyke ilmoitetaan erikseen IANA-aikavyöhyketunnisteella, esimerkiksi `Europe/Helsinki`. Näin aikaleimat ovat yksiselitteisiä myös kesä- ja talviaikaan siirryttäessä.\n\nSeuranta-aikavälissä erotetaan kolme tietoa:\n\n- `from`: seurannan alkamishetki;\n- `to`: alkuperäinen päättymishetki, joka voi olla `null`, jos aikaväli oli alun perin avoin;\n- `cutoff_at`: tarkka UTC-hetki, johon asti aineisto voidaan ottaa mukaan kyseiseen ajoon.\n\nAvoimen `to`-arvon tapauksessa `cutoff_at` rajaa silti ajon aineiston täsmällisesti. Tehtäväpyyntöön sisällytetään lisäksi paikallinen aikavyöhyketunniste, jotta raportintuottaja voi tulkita ja esittää aikavälin aiheen paikallisen ajan mukaisesti.\n\nGitHub Actions ratkaisee tehtävätyypin oletukset, profiilit ja aihekohtaiset asetukset ennen tehtävän tarjoamista. Tehtäväpyyntö sisältää valmiin `resolved_config`-konfiguraatiosnapshotin. Raportintuottajan ei tarvitse hakea tai yhdistellä määritystiedostoja itse. Snapshotin alkuperä ja käytettyjen määritysten versiot tai Git-commit-viite säilytetään jäljitettävyyttä varten.
+Tehtäväpyynnön aikamallissa kaikki varsinaiset aikaleimat tallennetaan UTC-muodossa. Paikallinen aikavyöhyke ilmoitetaan erikseen IANA-aikavyöhyketunnisteella, esimerkiksi `Europe/Helsinki`. Näin aikaleimat ovat yksiselitteisiä myös kesä- ja talviaikaan siirryttäessä.\n\nSeuranta-aikavälissä erotetaan kolme tietoa:\n\n- `from`: seurannan alkamishetki;\n- `to`: alkuperäinen päättymishetki, joka voi olla `null`, jos aikaväli oli alun perin avoin;\n- `cutoff_at`: tarkka UTC-hetki, johon asti aineisto voidaan ottaa mukaan kyseiseen ajoon.\n\nAvoimen `to`-arvon tapauksessa `cutoff_at` rajaa silti ajon aineiston täsmällisesti. Tehtäväpyyntöön sisällytetään lisäksi paikallinen aikavyöhyketunniste, jotta raportintuottaja voi tulkita ja esittää aikavälin aiheen paikallisen ajan mukaisesti.\n\nGitHub Actions ratkaisee tehtävätyypin oletukset, profiilit ja aihekohtaiset asetukset ennen tehtävän tarjoamista. Tehtäväpyyntö sisältää valmiin `resolved_config`-konfiguraatiosnapshotin. Raportintuottajan ei tarvitse hakea tai yhdistellä määritystiedostoja itse. Snapshotin alkuperä ja käytettyjen määritysten versiot tai Git-commit-viite säilytetään jäljitettävyyttä varten. Tehtäväpyyntöön tallennetaan `source_revision`-kenttään se Git-commitin SHA, jonka sisältöä tehtävän muodostamisessa käytettiin. Raportintuottaja hakee Markdown-ohjeet tästä täsmälleen samasta commitista eikä muuttuvasta `main`-haarasta. Näin ohjeet ja määritykset pysyvät tehtävän koko käsittelyn ajan samoina ja ajo voidaan jälkikäteen rekonstruoida. Erillistä ohjeiden kopiointia tehtäväpyyntöön ei tarvita.
 
 Ensimmäisessä vaiheessa ei toteuteta erillistä varausmekanismia, varauksen vanhenemista eikä tehtäväkohtaista lukitusta. Yksi raportintuottaja ja yksi aktiivinen tehtäväpyyntö riittävät. Tehtäväpyynnön yksilöllinen `run_id` ja toimituksen idempotentti käsittely säilytetään.
 
@@ -162,7 +162,7 @@ GitHub Actions vastaa koko vastaanottavan käsittelyn loogisesta ketjusta:
 8. varmistaa RSS/XML:n ja tallennuksen onnistumisen;
 9. kirjaa käsittelyn lopputuloksen.
 
-Käsittely suunnitellaan yhdeksi hallituksi työnkuluksi. Julkaisun onnistumista ei saa rakentaa sen varaan, että GitHub Actionsin omalla `GITHUB_TOKEN)-tunnisteella tehty push käynnistäisi automaattisesti uuden työnkulun: tällaiset tapahtumat eivät normaalisti käynnistä uusia työnkulkuja.
+Käsittely suunnitellaan yhdeksi hallituksi työnkuluksi. Julkaisun onnistumista ei saa rakentaa sen varaan, että GitHub Actionsin omalla `GITHUB_TOKEN`-tunnisteella tehty push käynnistäisi automaattisesti uuden työnkulun: tällaiset tapahtumat eivät normaalisti käynnistä uusia työnkulkuja.
 
 Julkaisun ja ajotietojen tallennuksen osittaiset epäonnistumiset käsitellään idempotentisti. Ajoa ei merkitä julkaistuksi ennen kuin julkaisu on varmennettu.
 
@@ -197,7 +197,7 @@ Toteutussuunnitelmaan sisältyvät seuraavat käyttäjän hyväksymät GitHub-k�
 1. `main`-haaran suojaus: estetään poistaminen ja force push. Suojaus ei tässä vaiheessa pakota pull request -työskentelyyn, koska suora työskentely `main`-haaraan on edelleen sovittu käytäntö.
 2. Dependabot seuraa käytössä olevia riippuvuuksia. Päivitykset tulevat ehdotuksina, eivät automaattisesti tuotantoon.
 3. GitHub Actions -riippuvuudet kiinnitetään commit-SHA:han ja työnkulkujen oikeudet rajataan vähimmäistarpeeseen.
-4. `SECURITY.md) kuvaa haavoittuvuuksien ilmoitus- ja käsittelytavan.
+4. `SECURITY.md` kuvaa haavoittuvuuksien ilmoitus- ja käsittelytavan.
 5. Automaattisia laatutarkistuksia laajennetaan RSS/XML:ään, JSON-skeemoihin, dokumenttilinkkeihin, määritysten eheyteen ja soveltuviin saavutettavuustarkistuksiin.
 6. Julkaisu- ja muutoskäytännöt määritellään: merkittävien muutosten CHANGELOG, versioidut GitHub Releases -julkaisut ja commit-viestikäytäntö.
 
@@ -225,7 +225,7 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - miten tehtävätyyppien, profiilien ja aihekohtaisten määritysten tarkat JSON Schema -skeemat, sallitut ylikirjoitukset ja Markdown-ohjeiden viittaukset määritellään;
 - millä tunnistautumistavalla raportintuottaja saa push-oikeuden vain vastaanottohaaraan;
 - miten vastaanottohaaran toimituspaketin eheys ja täydellisyys varmistetaan;
-- miten `metadata.json)-tiedoston tarkka skeema määritellään;
+- miten `metadata.json`-tiedoston tarkka skeema määritellään;
 - miten `no_report`- ja `failed`-tulokset toimitetaan ilman RSS-itemiä;
 - miten vastaanottohaaran toimituksia säilytetään ja siivotaan turvallisesti;
 - miten julkaisun ja ajotietojen tallennuksen virhetilanteista palaudutaan;
