@@ -80,12 +80,12 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
         )
 
     def test_selects_exactly_the_documented_next_topic(self):
-        """Seuraava Muumit-vuoro ratkaistaan yhdelle topic-moduulille."""
+        """Seuraava Wakaliwood-vuoro ratkaistaan yhdelle topic-moduulille."""
         selected = validate_topic_rotation_configuration(self.root)
-        self.assertEqual(selected.task_id, "muumit")
-        self.assertEqual(selected.module_id, "muumit")
+        self.assertEqual(selected.task_id, "wakaliwood")
+        self.assertEqual(selected.module_id, "wakaliwood")
         self.assertEqual(selected.module_status, "inactive")
-        self.assertEqual(selected.source_registry_task_id, "muumit")
+        self.assertEqual(selected.source_registry_task_id, "wakaliwood")
 
     def test_dispatch_invokes_one_runner_with_only_one_module_bundle(self):
         """Runner saa yhden aiheen paketin eikä tehtäväjonoa tai muita moduuleja."""
@@ -99,7 +99,7 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
             runner=runner,
         )
         self.assertEqual(len(runner.calls), 1)
-        self.assertEqual(dispatch.selection.module_id, "muumit")
+        self.assertEqual(dispatch.selection.module_id, "wakaliwood")
         self.assertEqual(dispatch.request["mode"], "shadow")
         self.assertEqual(dispatch.runner_result["status"], "ready_for_chatgpt_execution")
         self.assertEqual(dispatch.to_dict()["status"], "ready_for_chatgpt_execution")
@@ -152,7 +152,7 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
         """Koordinaattori keskeyttää, jos seuraavan vuoron nimi ei täsmää."""
         queue = self.root / "docs/tehtavajono.md"
         text = queue.read_text(encoding="utf-8").replace(
-            "**Vuorossa seuraavaksi: Muumit.**",
+            "**Vuorossa seuraavaksi: Wakaliwood.**",
             "**Vuorossa seuraavaksi: Tolkien.**",
         )
         queue.write_text(text, encoding="utf-8")
@@ -186,7 +186,7 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
         self.write_json("data/seurantatila.json", state)
         queue = self.root / "docs/tehtavajono.md"
         text = queue.read_text(encoding="utf-8").replace(
-            "**Vuorossa seuraavaksi: Muumit.**",
+            "**Vuorossa seuraavaksi: Wakaliwood.**",
             "**Vuorossa seuraavaksi: Intialaisen elokuvan uutisraportti.**",
         )
         queue.write_text(text, encoding="utf-8")

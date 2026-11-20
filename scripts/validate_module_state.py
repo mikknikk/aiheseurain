@@ -310,6 +310,20 @@ def validate_state_migration() -> list[str]:
                     + ", ".join(failed_partial_checks)
                     + "."
                 )
+                # Säilytä myös kenttäkohtaiset virheet, jotta migraation
+                # diagnostiikka ja aiemmat yksikkötestit pysyvät täsmällisinä.
+                if checkpoint_checked_at != legacy_checked_at:
+                    errors.append(f"{module_id}: viimeisin tarkistusaika ei vastaa vanhaa seurantatilaa.")
+                if checkpoint["period"] != old_period:
+                    errors.append(f"{module_id}: seurantajakso ei vastaa vanhaa seurantatilaa.")
+                if checkpoint["result"] != (old_task.get("last_result") or "not_recorded"):
+                    errors.append(f"{module_id}: viimeisin tulos ei vastaa vanhaa seurantatilaa.")
+                if checkpoint["published_items"] != old_task.get("published_items"):
+                    errors.append(f"{module_id}: julkaistujen itemien määrä ei vastaa vanhaa seurantatilaa.")
+                if checkpoint["sources_checked"] != old_task.get("sources_checked"):
+                    errors.append(f"{module_id}: tarkistettujen lähteiden määrä ei vastaa vanhaa seurantatilaa.")
+                if checkpoint["errors"] != old_task.get("errors", []):
+                    errors.append(f"{module_id}: virhelista ei vastaa vanhaa seurantatilaa.")
         else:
             if checkpoint_checked_at != legacy_checked_at:
                 errors.append(f"{module_id}: viimeisin tarkistusaika ei vastaa vanhaa seurantatilaa.")
