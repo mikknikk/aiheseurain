@@ -126,7 +126,7 @@ Oikeudellisten ja virallisten tapahtumien rinnalla seuraa henkilön elokuva- ja 
 | Tolkien | 28 | englanti, suomi, saksa, ranska, espanja, italia, brasilianportugali, baski; Britannia, Yhdysvallat, Saksa, Ranska, Espanja, Italia, Suomi, Brasilia, Uusi-Seelanti, globaali | Kattavuus on laajentunut Euroopan kieliin, Brasiliaan ja Uuteen-Seelantiin; Itä-Euroopan, Aasian ja muun Latinalaisen Amerikan paikalliskielinen toimituksellinen seuranta on yhä ohut. |
 | Taylor Swift | 10 | englanti, brasilianportugali; Yhdysvallat, Brasilia, globaali | Yhä englanti- ja Yhdysvalta-painotteinen; yksi brasilianportugalinkielinen alueellinen toimituksellinen lähde on lisätty. |
 | Gurmeet Ram Rahim Singh | 7 | englanti, hindi, pandžabi; Haryana, Punjab, Chandigarh, Intian valtakunnallinen | Alueellisten hindin- ja pandžabinkielisten lähteiden saavutettavuus vaihtelee. |
-| Muumit | 8 | suomi, ruotsi, englanti, japani; Suomi, Ruotsi, Britannia, Japani, globaali | Pohjoismaiden ja Japanin lisäksi muita lisenssimarkkinoita voidaan lisätä. |
+| Muumit | 14 | suomi, ruotsi, englanti, japani; Suomi, Ruotsi, Britannia, Japani, globaali | Pohjoismaiden ja Japanin lisäksi muita lisenssimarkkinoita voidaan lisätä. |
 | Wakaliwood | 5 | englanti; Uganda ja Itä-Afrikka | Lugandan- ja swahilinkielinen kattavuus on vielä ohut. |
 | Euroviisut | 10 | englanti, suomi, ruotsi sekä Aasian osallistujamaiden kieliä; Eurooppa, Aasia, globaali | Aasian osallistujamaiden omia yleisradioyhtiöitä on lisättävä erikseen; yksi kilpailun virallinen sivusto ei korvaa niitä. |
 | Sompote Sands | 6 | thai, japani, englanti; Thaimaa ja Japani | Thai- ja japaninkielinen elokuvahistoria on tärkeä; oikeus- ja lisenssikiistoissa ensisijaiset asiakirjat ratkaisevat. |
