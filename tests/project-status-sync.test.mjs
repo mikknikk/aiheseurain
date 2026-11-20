@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { resolveStatusOption, resolvePriorityOption } from "../.github/scripts/sync_project_status.mjs";
+import { resolveStatusOption, resolvePriorityOption, resolveComponentOption } from "../.github/scripts/sync_project_status.mjs";
 
 const options = {
   "status:backlog": { name: "Todo", id: "f75ad846" },
@@ -89,4 +89,30 @@ test("prioriteettivaihtoehtojen määritys ei riipu kentän tai vaihtoehdon nimi
   const config = JSON.parse('{"priority_field_id":"PVTSSF_lAHOACf60s4BsfD3zhqtqmU","priority_options":{"priority:P1":{"id":"4eb95e26"}}}');
   assert.equal(config.priority_field_id, "PVTSSF_lAHOACf60s4BsfD3zhqtqmU");
   assert.equal(config.priority_options["priority:P1"].id, "4eb95e26");
+});
+
+const componentOptions = {
+  "component:automaatio": { id: "b27e01e4" },
+  "component:valvomo": { id: "8bf95c0b" },
+  "component:lukija": { id: "31835d81" },
+  "component:etusivu": { id: "3318d8fa" }
+};
+
+test("muuntaa komponenttilabelit Projectin Component-vaihtoehtojen ID-tunnisteiksi", () => {
+  assert.equal(resolveComponentOption(["component:automaatio"], componentOptions).option.id, "b27e01e4");
+  assert.equal(resolveComponentOption([{ name: "component:valvomo" }], componentOptions).option.id, "8bf95c0b");
+  assert.equal(resolveComponentOption(["component:lukija"], componentOptions).option.id, "31835d81");
+  assert.equal(resolveComponentOption(["component:etusivu"], componentOptions).option.id, "3318d8fa");
+});
+
+test("komponenttivaihtoehtojen nimet eivät vaikuta ID-pohjaiseen synkronointiin", () => {
+  const renamedOptions = { "component:automaatio": { id: "b27e01e4", name: "Uusi näkyvä nimi" } };
+  assert.equal(resolveComponentOption(["component:automaatio"], renamedOptions).option.id, "b27e01e4");
+});
+
+test("hylkää puuttuvan, moninkertaisen tai tuntemattoman komponenttilabelin", () => {
+  assert.throws(() => resolveComponentOption([], componentOptions), /täsmälleen yksi/);
+  assert.throws(() => resolveComponentOption(["component:lukija", "component:valvomo"], componentOptions), /täsmälleen yksi/);
+  assert.throws(() => resolveComponentOption(["component:virheellinen"], componentOptions), /ei ole määritetty Project-vaihtoehdon tunnistetta/);
+  assert.throws(() => resolveComponentOption(["compontent:lukija"], componentOptions), /täsmälleen yksi/);
 });
