@@ -67,6 +67,13 @@ class TaylorSwiftPublicationPreflightTests(unittest.TestCase):
         self.assertEqual(result["publication_state"], "conflict")
         self.assertFalse(result["execution_allowed"])
 
+    def test_malformed_observation_is_unknown_not_an_exception(self):
+        data = evidence()
+        data["observations"]["runtime"] = "branch not found"
+        result = assess_taylor_swift_publication_state(data)
+        self.assertEqual(result["publication_state"], "unknown")
+        self.assertFalse(result["execution_allowed"])
+
     def test_period_mismatch_is_rejected(self):
         data = evidence()
         data["observations"]["runtime"]["period"] = {
