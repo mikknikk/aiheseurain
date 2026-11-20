@@ -82,18 +82,23 @@ jobs:
 
   sync-project-status:
     if: >-
-      github.event_name == 'issues' &&
-      github.event.issue.pull_request == null &&
       (
-        github.event.action == 'opened' ||
-        github.event.action == 'reopened' ||
+        github.event_name == 'workflow_dispatch' &&
+        inputs.issue_number != ''
+      ) ||
+      (
+        github.event_name == 'issues' &&
+        github.event.issue.pull_request == null &&
         (
-          (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
-          startsWith(github.event.label.name, 'status:')
-        ) ||
-        (
-          (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
-          startsWith(github.event.label.name, 'priority:')
+          github.event.action == 'opened' ||
+          github.event.action == 'reopened' ||
+          (
+            (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
+            (
+              startsWith(github.event.label.name, 'status:') ||
+              startsWith(github.event.label.name, 'priority:')
+            )
+          )
         )
       )
     runs-on: ubuntu-latest
