@@ -8,7 +8,7 @@
 
 GitHub Issues ja GitHubin natiivit `blocked_by`-riippuvuudet ovat kanoninen tietolähde. `data/kehitysjono.json` on niistä muodostettu, julkinen ja uudelleen rakennettavissa oleva välimuisti. Se ei ole käsin ylläpidettävä rekisteri.
 
-JSON sisältää vain käyttöliittymän tarvitsemat tiedot: issue-numeron, otsikon, URL-osoitteen, avoin/suljettu-tilan, labelit ja päivitysajan sekä jokaisen issue-tiketin `blocked_by)-listan. Tikettien kuvauksia, kommentteja, API-tunnuksia tai raakavastauksia ei kopioida aineistoon.
+JSON sisältää vain käyttöliittymän tarvitsemat tiedot: issue-numeron, otsikon, URL-osoitteen, avoin/suljettu-tilan, labelit ja päivitysajan sekä jokaisen issue-tiketin `blocked_by`-listan. Tikettien kuvauksia, kommentteja, API-tunnuksia tai raakavastauksia ei kopioida aineistoon.
 
 Selain hakee yhden JSON-tiedoston GitHub Pagesista. Selain ei kutsu GitHub APIa eikä sisällä käyttöoikeustunnuksia.
 
@@ -29,7 +29,7 @@ Riippuvuuspyynnön käsittelijä käynnistää onnistuneen natiivin riippuvuusmu
 ### Täysi täsmäytys
 
 - Täysi täsmäytys tehdään kerran vuorokaudessa klo 03.17 UTC.
-- Työnkulun voi käynnistää käsin GitHub Actionsin `workflow_dispatch)-toiminnolla. Kun issue-numeroa ei anneta, tehdään täysi täsmäytys.
+- Työnkulun voi käynnistää käsin GitHub Actionsin `workflow_dispatch`-toiminnolla. Kun issue-numeroa ei anneta, tehdään täysi täsmäytys.
 - Täysi täsmäytys hakee kaikki avoimet ja suljetut issue-tiketit sekä niiden riippuvuudet. Tämä löytää myös suoraan GitHubin käyttöliittymässä tehdyt natiivien riippuvuuksien muutokset, joista GitHub ei lähetä erillistä issue-tapahtumaa.
 - Ylläpitokoodin muutokset käynnistävät täyden muodostuksen.
 
@@ -41,13 +41,13 @@ Täysi täsmäytys on tarkoituksella harvempi kuin tavalliset issue-päivitykset
 - Uusi JSON muodostetaan väliaikaistiedostoon ja nimetään lopulliseksi vasta muodostuksen ja rakennetarkistusten onnistuttua.
 - API-virhe, puuttuva riippuvuustieto tai virheellinen vastausrakenne keskeyttää päivityksen. Viimeisin kelvollinen JSON jää käyttöön.
 - Vioittunut tai vanhentuneella rakenteella oleva välimuisti voidaan muodostaa uudelleen GitHubin kanonisista tiedoista.
-- JSONin `generated_at) kertoo viimeisimmän onnistuneen päivityksen ajan. `full_sync_at) kertoo viimeisimmän onnistuneen täyden täsmäytyksen ajan.
-- Aineiston `status) on `complete) vain, kun kaikki vaaditut tiedot on saatu ja tarkistettu. Osittaista aineistoa ei julkaista täydellisenä.
+- JSONin `generated_at` kertoo viimeisimmän onnistuneen päivityksen ajan. `full_sync_at` kertoo viimeisimmän onnistuneen täyden täsmäytyksen ajan.
+- Aineiston `status` on `complete` vain, kun kaikki vaaditut tiedot on saatu ja tarkistettu. Osittaista aineistoa ei julkaista täydellisenä.
 - Työnkulku tallentaa onnistuneen JSONin repositorioon. Pagesin branch-pohjainen julkaisu voi siten palvella tiedostoa suoraan samalla sivustolla.
 
 ## Oikeudet ja rajaukset
 
-Päivitystyönkulku käyttää `contents: write)-oikeutta vain JSON-välimuistin tallentamiseen ja `issues: read)-oikeutta lähdetietojen hakemiseen. Riippuvuuksien erillinen välitystyönkulku käyttää lisäksi `issues: write)-oikeutta natiivien suhteiden hallintaan sekä `actions: write)-oikeutta kohdistetun välimuistipäivityksen käynnistämiseen.
+Päivitystyönkulku käyttää `contents: write`-oikeutta vain JSON-välimuistin tallentamiseen ja `issues: read`-oikeutta lähdetietojen hakemiseen. Riippuvuuksien erillinen välitystyönkulku käyttää lisäksi `issues: write`-oikeutta natiivien suhteiden hallintaan sekä `actions: write`-oikeutta kohdistetun välimuistipäivityksen käynnistämiseen.
 
 Tämä tietoputki ei muuta ChatGPT-automaatiotehtäviä, ajastuksia, käynnistyskehotteita tai kohdekeskusteluja. Se ei käynnistä aihekohtaisia seurantatehtäviä eikä julkaise RSS-raportteja.
 
