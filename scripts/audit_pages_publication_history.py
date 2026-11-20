@@ -34,9 +34,9 @@ def parse_time(value: str, field: str) -> datetime:
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except (AttributeError, TypeError, ValueError) as exc:
-        raise AuditError(f"{field}: invalid ISO 8601 timestamp") from exc
+        raise AuditError(f"{field}: virheellinen ISO 8601 -aikaleima") from exc
     if parsed.tzinfo is None or parsed.utcoffset() is None:
-        raise AuditError(f"{field}: timezone is required")
+        raise AuditError(f"{field}: aikavyöhyke puuttuu")
     return parsed
 
 def request_bytes(url: str, token: str | None = None) -> bytes:
@@ -44,21 +44,21 @@ def request_bytes(url: str, token: str | None = None) -> bytes:
     headers = {"User-Agent": "aiheseurain-pages-history-audit", "Cache-Control": "no-cache"}
     if token:
         if urllib.parse.urlparse(url).hostname != "api.github.com":
-            raise AuditError("Refusing to send GitHub token outside api.github.com")
+            raise AuditError("GitHub-tunnusta ei lähetetä api.github.com-osoitteen ulkopuolelle")
         headers.update({"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json",
                         "X-GitHub-Api-Version": "2022-11-28"})
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=30) as response:
             return response.read()
     except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as exc:
-        raise AuditError(f"HTTP read failed for {url}: {exc}") from exc
+        raise AuditError(f"HTTP-luvun virhe osoitteessa {url}: {exc}") from exc
 
 def api_json(path: str, token: str) -> Any:
     """Hae JSON-tietoa GitHubin rajapinnasta."""
     try:
         return json.loads(request_bytes(f"{API_BASE}/{path.lstrip('/')}", token))
     except json.JSONDecodeError as exc:
-        raise AuditError(f"Invalid GitHub API JSON: {path}") from exc
+        raise AuditError(f"GitHub API palautti virheellistä JSONia: {path}") from exc
 
 def paginated(path: str, token: str) -> list[dict]:
     """Lue kaikki sivut; keskeytä sen sijaan, että osittaista historiaa pidettäisiin täydellisenä."""
@@ -67,13 +67,13 @@ def paginated(path: str, token: str) -> list[dict]:
         separator = "&" if "?" in path else "?"
         rows = api_json(f"{path}{separator}per_page=100&page={page}", token)
         if not isinstance(rows, list):
-            raise AuditError(f"GitHub API did not return a list: {path}")
+            raise AuditError(f"GitHub API ei palauttanut listaa: {path}")
         output.extend(x for x in rows if isinstance(x, dict))
         if len(rows) < 100:
             return output
         page += 1
         if page > 100:
-            raise AuditError("History exceeds 10,000 records; stopping safely")
+            raise AuditError("Historia ylittää 10 000 tietuetta; tarkistus keskeytetään turvallisesti")
 
 def deployment_manifest(row: dict) -> dict | None:
     """Hyväksy vain tunnetun RSS-julkaisumanifestin sisältö."""
@@ -96,22 +96,17 @@ def status_for(deployment_id: int, token: str) -> dict:
     return {k: latest.get(k) for k in ("state", "description", "created_at")}
 
 def report_period_matches(item: ET.Element, start: datetime, end: datetime) -> bool:
-    """Tunnista RSS-itemin seurantajakso pubDate-arvosta tai kuvauksen jaksomerkinnästä."""
-    pub_date = item.findtext("pubDate")
-    if pub_date:
-        try:
-            published = parsedate_to_datetime(pub_date).astimezone(timezone.utc)
-            if start <= published <= end:
-                return True
-        except (TypeError, ValueError, OverflowError):
-            pass
+    """Tunnista vain raportin eksplisiittinen seurantajakso; pubDate ei yksin riitä."""
     extractor = TextExtractor()
     extractor.feed(item.findtext("description") or "")
     text = html.unescape(extractor.text())
+    if "Seurantajakso" not in text:
+        return False
     dates = set(re.findall(r"\b20\d{2}-\d{2}-\d{2}\b", text))
     for day, month, year in re.findall(r"\b(\d{1,2})\.(\d{1,2})\.(20\d{2})\b", text):
         dates.add(f"{int(year):04d}-{int(month):02d}-{int(day):02d}")
-    return bool({start.date().isoformat(), end.date().isoformat()} & dates) and "Seurantajakso" in text
+    required = {start.date().isoformat(), end.date().isoformat()}
+    return required.issubset(dates)
 
 def rss_items_for_commit(sha: str, start: datetime, end: datetime) -> list[dict]:
     """Lue täsmälleen manifestin lähdecommitin RSS-tiedosto."""
@@ -119,10 +114,10 @@ def rss_items_for_commit(sha: str, start: datetime, end: datetime) -> list[dict]
     try:
         root = ET.fromstring(request_bytes(url))
     except ET.ParseError as exc:
-        raise AuditError(f"Invalid RSS/XML at commit {sha[:12]}") from exc
+        raise AuditError(f"RSS/XML on virheellinen commitissa {sha[:12]}") from exc
     channel = root.find("channel")
     if root.tag != "rss" or channel is None:
-        raise AuditError(f"RSS channel missing at commit {sha[:12]}")
+        raise AuditError(f"RSS channel puuttuu commitista {sha[:12]}")
     matches = []
     for item in channel.findall("item"):
         guid = (item.findtext("guid") or "").strip()
@@ -201,10 +196,10 @@ def audit_current_pages(start: datetime, end: datetime) -> dict:
     try:
         root = ET.fromstring(raw)
     except ET.ParseError as exc:
-        raise AuditError(f"Invalid public RSS/XML: {exc}") from exc
+        raise AuditError(f"Julkinen RSS/XML on virheellinen: {exc}") from exc
     channel = root.find("channel")
     if root.tag != "rss" or channel is None:
-        raise AuditError("Public RSS channel is missing")
+        raise AuditError("Julkisesta RSS:stä puuttuu channel")
     items = []
     for item in channel.findall("item"):
         guid = (item.findtext("guid") or "").strip()
@@ -253,7 +248,7 @@ def main() -> int:
     validate_period(start, end)
     token = os.getenv("GITHUB_TOKEN")
     if not token:
-        raise AuditError("GITHUB_TOKEN is missing")
+        raise AuditError("GITHUB_TOKEN puuttuu")
     result = {
         "schema_version": 1, "audit_type": "aiheseurain-pages-rss-history", "repository": REPO,
         "feed_id": FEED_ID, "period": {"start": args.period_start, "end": args.period_end},
