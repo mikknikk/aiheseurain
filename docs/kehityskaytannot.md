@@ -32,16 +32,18 @@ Esimerkiksi tapahtumalokit, tietomallien kuvaukset ja lähderekisterien dokument
 - Älä kopioi Markdowniin tietoa, jonka koneellisesti ylläpidettävä ensisijainen lähde on JSON- tai skeematiedosto.
 - Kerro, mikä on tiedon ensisijainen lähde ja miten sitä ylläpidetään.
 
-### Automaation käynnistyskehotteet
+### Ajastettujen automaatioiden käynnistyskehotteet
 
-Automaation asetuksiin kopioitavat käynnistyskehotteet ovat erillisiä tekstipohjia, eivät tehtäväkäsikirjoja. Niiden kanoniset versiot säilytetään repositorion `prompts/`-hakemistossa `.txt`-tiedostoina.
+ChatGPT:n ajastettujen tehtävien käynnistyskehotteet ovat erillisiä, tarkasti kopioitavia tekstipohjia. Niiden kanoniset, versioidut tekstit säilytetään repositorion `prompts/`-hakemistossa. Käytännöt ja tiedostorakenne on määritelty dokumentissa [käynnistyskehotteiden versionhallinta](../prompts/README.md).
 
-- Säilytä käynnistyskehotteet täsmälleen sellaisina teksteinä, jotka automaation asetuksiin kopioidaan. Älä lisää Markdown-otsikoita, selityksiä tai muuta sisältöä varsinaisen kehotteen sisään.
-- Käytä `prompts/README.md`-tiedostoa hakemiston selityksiin, automaatioiden ja tiedostojen yhdistämiseen sekä päivitysmenettelyyn.
-- Kun käynnistyskehotetta muutetaan, päivitä ensin repositorion kanoninen teksti ja kopioi sama sisältö automaation asetuksiin. Tarkista lopuksi, että asetuksiin tallennettu teksti vastaa tiedostoa.
-- Jokaisella automaatiolla on yksilöllinen käynnistyskehotteen tunniste, joka vastaa `data/seurantatila.json`-tiedoston saman automaation `startup_prompt_id`-kenttää. Kun promptin sisältö muuttuu, anna uusi tunniste ja päivitä JSON samassa muutossarjassa.
-- Käynnistyskehote käynnistää tehtävän ja ohjaa ensisijaiseen käsikirjaan. Varsinaiset tehtävärajaukset ja toimintatavat kuuluvat käsikirjaan.
-- Kaikkien automaatioiden ajastusten, asetusten ja kohdekeskustelujen muuttamista koskee yhteinen [automaatioiden hallintaperiaate](automaation-hallintaperiaatteet.md). Lisää viittaus sekä nimenomainen kielto jokaiseen käynnistyskehotteeseen. Käynnistyskehotteen muuttaminen GitHubissa ei päivitä ChatGPT:n tehtäväasetuksia automaattisesti; asetusten päivitys ja tekstin täsmäytys ovat erillinen vaihe.
+- Jokaisella ajastetulla tehtävällä on pysyvä `task_id`; jokaisella sen käynnistyskehotteen versiolla on semanttinen versionumero.
+- Tallenna jokainen versio omaan muuttumattomaan tiedostoonsa: `prompts/<task_id>/v<version>.txt`. Älä ylikirjoita vanhaa versiota.
+- Kehotetiedoston sisältö on täsmälleen ChatGPT:n tehtäväasetuksiin kopioitava teksti. Älä lisää tiedostoon otsikoita tai selityksiä.
+- Ylläpidä `prompts/registry.json`-tiedostossa uusinta GitHub-versiota ja erikseen ChatGPT:ssä käyttöön vahvistettua versiota. Älä merkitse uutta versiota käyttöön otetuksi ennen kuin asetusten teksti on täsmäytetty.
+- Kehotteen päivitys GitHubissa ei päivitä ChatGPT:n tehtäväasetuksia. Niiden muuttaminen edellyttää käyttäjän nimenomaista lupaa; suojausperiaatteet ovat dokumentissa [automaatioiden hallinnan suojausperiaatteet](automaation-hallintaperiaatteet.md).
+- Ajon alussa tarkistetaan tehtävätunniste ja kehotteen versio. Puuttuva tai ristiriitainen versiotieto estää varsinaisen seuranta-ajon.
+- Kehote ohjaa ensisijaiseen käsikirjaan. Varsinaiset tehtävärajaukset ja toimintatavat kuuluvat käsikirjaan, eivät käynnistyskehotteen kopioon.
+- Palautus vanhaan versioon tehdään hallittuna uutena käyttöönottona; vanhaa tiedostoa ei muuteta eikä historiaa poisteta.
 
 Vanhoja dokumentteja ei muotoilla automaattisesti tämän käytäntömuutoksen yhteydessä. Niitä uudistetaan asteittain, jotta ohjeiden merkitys tai koneellisesti tulkittavat osat eivät muutu vahingossa.
 
