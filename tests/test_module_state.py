@@ -122,7 +122,9 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 period_end = "2099-01-01T11:59:59+02:00"
                 period_note = f"Seurantajakso Suomen ajassa: {period_start}–{period_end}."
 
-                log["runs"].append({
+                # Uusin ajo sijoitetaan kanonisessa lokissa ensimmäiseksi; validaattorin
+                # on valittava se latest_by_task-osoittimella, ei taulukon järjestyksen perusteella.
+                log["runs"].insert(0, {
                     "run_id": run_id,
                     "task_id": "muumit",
                     "started_at": started_at,
