@@ -55,6 +55,27 @@ Päivitystyönkulku käyttää `contents: write`-oikeutta vain JSON-välimuistin
 
 Tämä tietoputki ei muuta ChatGPT-automaatiotehtäviä, ajastuksia, käynnistyskehotteita tai kohdekeskusteluja. Se ei käynnistä aihekohtaisia seurantatehtäviä eikä julkaise RSS-raportteja.
 
+## GitHub Projectin tilasynkronointi
+
+GitHub Project **Aiheseurain** toimii Kehitysjonon visuaalisena Kanban-näkymänä. Issue-labelit ovat edelleen tilan ensisijainen tietolähde; Projectin Status-kenttä on niistä johdettu näkymätieto.
+
+Määritys on tiedostossa `.github/project-status-sync.json`. Se sisältää Projectin, Status-kentän ja vaihtoehtojen tunnisteet, ei salaisuuksia.
+
+| Issue-label | Projectin Status |
+|---|---|
+| `status:backlog` | Todo |
+| `status:ready-for-development` | Ready for Development |
+| `status:in-progress` | In Progress |
+| `status:done` | Done |
+
+Kun tavalliseen issueen lisätään tai siitä poistetaan `status:`-label, päivitystyönkulku hakee issuen ajantasaiset labelit ja päivittää vastaavan Project-kortin. Uuden issuen avaamisen ja uudelleen avaamisen yhteydessä tila synkronoidaan myös. Jos issue ei vielä ole Projectissa, se lisätään sinne automaattisesti.
+
+Synkronointi on tarkoituksella yksisuuntainen: Projectissa tehty Status-muutos ei muuta issue-labelia. Issue-label on kanoninen tieto. Issuella pitää olla täsmälleen yksi tunnettu `status:`-label; puuttuva, moninkertainen tai tuntematon tilalabel aiheuttaa näkyvän työnkulkuvirheen eikä sitä arvata.
+
+Työnkulku käyttää repositoryn Actions-salaisuutta `PROJECTS_TOKEN`. Sen GitHub-tokenilla pitää olla Projectin luku- ja kirjoitusoikeus (classic PAT: `project`-scope). Tavallinen `GITHUB_TOKEN` hakee issue-tiketin ajantasaiset tiedot. Tunnusta ei tallenneta repositoryn tiedostoihin eikä lokitulosteisiin.
+
+Tämä synkronointi ei muuta issueiden label-sääntöjä, riippuvuuksia, JSON-välimuistin rakennetta tai ChatGPT-automaatiotehtäviä.
+
 ## Testaus
 
 Testit sijaitsevat tiedostoissa:
