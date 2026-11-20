@@ -59,3 +59,47 @@ test("ohittaa issuet, joilla ei ole kehityskomponentin labelia", async () => {
   assert.deepEqual(result, { skipped: "not_a_development_issue" });
   assert.equal(graphqlCalled, false);
 });
+
+
+test("muuntaa prioriteettilabelit Projectin Priority-vaihtoehdoiksi", async () => {
+  const { resolvePriorityOption } = await import("../.github/scripts/sync_project_status.mjs");
+  const priorityOptions = [
+    { name: "P0 – Kriittinen", id: "p0" },
+    { name: "P1 – Korkea", id: "p1" },
+    { name: "P2 – Normaali", id: "p2" },
+    { name: "P3 – Matala", id: "p3" }
+  ];
+  assert.equal(resolvePriorityOption([{ name: "priority:P0" }], priorityOptions).option.id, "p0");
+  assert.equal(resolvePriorityOption(["priority:P1"], priorityOptions).option.id, "p1");
+  assert.equal(resolvePriorityOption([{ name: "priority:P2" }], priorityOptions).option.id, "p2");
+  assert.equal(resolvePriorityOption([{ name: "priority:P3" }], priorityOptions).option.id, "p3");
+});
+
+test("hylkää puuttuvan, ristiriitaisen tai tuntemattoman prioriteettilabelin", async () => {
+  const { resolvePriorityOption } = await import("../.github/scripts/sync_project_status.mjs");
+  const options = [{ name: "P1", id: "p1" }];
+  assert.throws(() => resolvePriorityOption([], options), /täsmälleen yksi/);
+  assert.throws(() => resolvePriorityOption(["priority:P1", "priority:P2"], options), /täsmälleen yksi/);
+  assert.throws(() => resolvePriorityOption(["priority:P9"], options), /Tuntematon prioriteettilabel/);
+  assert.throws(() => resolvePriorityOption(["priority:P1"], []), /täsmälleen yksi vaihtoehto/);
+});
+
+test("löytää Projectin Priority-kentän ja sen vaihtoehdot kentän nimen perusteella", async () => {
+  const { findProjectSingleSelectField } = await import("../.github/scripts/sync_project_status.mjs");
+  const fetchMock = async (url, options) => {
+    assert.equal(url, "https://api.github.com/graphql");
+    const request = JSON.parse(options.body);
+    assert.match(request.query, /ProjectV2SingleSelectField/);
+    return {
+      ok: true, status: 200,
+      json: async () => ({ data: { node: { fields: { nodes: [
+        { id: "F_priority", name: "Priority", options: [{ id: "p1", name: "P1" }] }
+      ] } } })
+    };
+  };
+  const field = await findProjectSingleSelectField({
+    token: "test", projectId: "P_test", fieldName: "Priority", fetchImpl: fetchMock
+  });
+  assert.equal(field.id, "F_priority");
+  assert.equal(field.options[0].id, "p1");
+});
