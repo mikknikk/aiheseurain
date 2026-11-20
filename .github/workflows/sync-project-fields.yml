@@ -1,0 +1,59 @@
+name: Synkronoi GitHub Projectin Status ja Priority
+
+on:
+  issues:
+    types: [opened, reopened, labeled, unlabeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Täsmäytä yksittäinen issue (esim. 261)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  issues: read
+
+concurrency:
+  group: project-field-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-project-fields:
+    if: >-
+      (
+        github.event_name == 'workflow_dispatch' &&
+        inputs.issue_number != ''
+      ) ||
+      (
+        github.event_name == 'issues' &&
+        github.event.issue.pull_request == null &&
+        (
+          github.event.action == 'opened' ||
+          github.event.action == 'reopened' ||
+          (
+            (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
+            (
+              startsWith(github.event.label.name, 'status:') ||
+              startsWith(github.event.label.name, 'priority:')
+            )
+          )
+        )
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae synkronointikoodi
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Päivitä Project-kortin Status ja Priority
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECTS_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: node .github/scripts/sync_project_status.mjs

@@ -49,7 +49,7 @@ Vanhoja dokumentteja ei muotoilla automaattisesti tämän käytäntömuutoksen y
 
 ## GitHub Issues -kehitystehtävien labelit
 
-Aiheseuraimen kehitystehtävät tallennetaan GitHub Issues -tehtävinä. Kehitysjonon käyttöliittymä lukee tehtävät GitHubista, ja labelien nimet ovat osa sen tietosopimusta. Käytä uusissa tehtävissä ja tehtäviä päivitettäessä seuraavaa kolmen luokan mallia.
+Aiheseuraimen kehitystehtävät tallennetaan GitHub Issues -tehtävinä. GitHub Project **Aiheseurain** näyttää kehitystehtävät. Issue-labelit ovat tehtävien tilan, prioriteetin ja komponentin ensisijainen tietolähde; Status- ja Priority-kentät synkronoidaan Projectiin automaattisesti. Käytä uusissa tehtävissä ja tehtäviä päivitettäessä seuraavaa kolmen luokan mallia.
 
 Jokaisella kehitystehtävällä tulee olla yksi label kustakin luokasta:
 
@@ -65,8 +65,8 @@ Säännöt:
 - Valitse yksi komponenttilabel, yksi prioriteettilabel ja yksi tilalabel. Älä lisää samasta luokasta useita keskenään ristiriitaisia labeleita.
 - Päivitä tilalabelia tehtävän edetessä. Älä käytä vanhoja tilalabeleita kuten `tila:backlog`, `tila:ready`, `tila:in-progress` tai `tila:done`.
 - Älä käytä vanhaa `aihe:`-labelperhettä komponentin merkitsemiseen äläkä irrallisia `P0`–`P3`-labeleita prioriteetin merkitsemiseen.
-- Uusi komponenttilabel lisätään tähän luetteloon ja Kehitysjonon toteutukseen koordinoidusti. Yleinen `component:`-etuliite mahdollistaa komponenttien tunnistamisen.
-- Kehitysjonon käyttöliittymä käsittelee suljetun GitHub-issuen Valmis-tilaisena myös silloin, jos sen tilalabeli on vanhentunut. Tämä ei korvaa tehtävän labelien asianmukaista päivittämistä.
+- Uusi komponenttilabel lisätään tähän luetteloon ja Project-synkronoinnin käytäntöihin koordinoidusti. Yleinen `component:`-etuliite mahdollistaa komponenttien tunnistamisen.
+- GitHub Projectin Status-kenttä johdetaan issue-labelista. Suljetun issuen tilalabeli tulee silti päivittää asianmukaisesti muotoon `status:done`.
 
 Tätä label-mallia noudatetaan kaikessa uudessa kehitystyössä, tehtävien luonnissa ja olemassa olevien tehtävien päivityksissä. Vanhoja labeleita ei pidä käyttää uusissa tehtävissä.
 

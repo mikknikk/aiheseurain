@@ -5,20 +5,24 @@ Aiheseuraimen toimintamalli määritellään uudelleen yksinkertaiseksi ChatGPT-
 ## Tavoitetila
 
 - [Uudistetun vaatimusmäärittelyn luonnos (0.5.0)](docs/vaatimusmaarittely-uudistus.md) kuvaa uuden tavoitetilan. Se on edelleen luonnos, jota tarkennetaan ennen laajempaa aihekohtaista tuotantototeutusta.
-- Kehitysjono käyttää aktiivista [JSON-välimuistia ja päivitystyönkulkua](docs/kehitysjonon-aineisto.md) sekä [GitHubin natiiveihin riippuvuuksiin perustuvaa hallintaa](docs/github-riippuvuuksien-hallinta.md).
-- Valvomo on ensisijainen käyttöliittymä. RSS-lukija ja Kehitysjono säilyvät erillisinä käyttötarkoituksina.
-- Aiheiden ja seurantatyyppien tulee olla dynaamisia määrityksiä, eivät yleiseen toteutukseen kovakoodattuja.
+- Kehitystehtäviä hallitaan GitHub Issuesissa ja [Aiheseurain-GitHub Projectissa](https://github.com/users/mikknikk/projects/3). Issue-labelit ovat tilan, prioriteetin ja komponentin ensisijaiset tiedot; Projectin Status- ja Priority-kentät synkronoidaan niistä automaattisesti.
+- GitHub Issuesin natiivit riippuvuudet ovat riippuvuuksien ainoa tietolähde. Katso [riippuvuuksien hallintaohje](docs/github-riippuvuuksien-hallinta.md).
+- Project-kenttien automaattinen päivitys on kuvattu [Project-synkronoinnin ohjeessa](docs/github-project-synkronointi.md).
+- Valvomo on tavoiteltu ensisijainen käyttöliittymä. RSS-lukija säilyy erillisenä käyttötarkoituksena.
+- Aiheiden ja seurantotyyppien tulee olla dynaamisia määrityksiä, eivät yleiseen toteutukseen kovakoodattuja.
 - ChatGPT tekee tutkimus- ja raportointityön. GitHub vastaanottaa ja validoi rakenteiset ajotulokset sekä julkaisee hyväksytyt RSS-itemit.
 
 ## Nykyinen julkaistu sisältö
 
-Nykyiset [GitHub Pages -sivut](https://mikknikk.github.io/aiheseurain/) säilyvät. Kehitysjonon JSON-aineiston päivitys ja sen testit ovat nyt aktiivisia erillisiä GitHub Actions -työnkulkuja. Vanha yleinen Pages/RSS-julkaisuprosessi on edelleen arkistoitu; Kehitysjonon tietopäivitys ei julkaise RSS-syötteitä eikä käynnistä aihekohtaisia seurantatehtäviä.
+Nykyiset [GitHub Pages -sivut](https://mikknikk.github.io/aiheseurain/) säilyvät. Oma Kehitysjono-Kanban-käyttöliittymä ja sen JSON-välimuisti on poistettu käytöstä; kehitystehtäviä tarkastellaan GitHub Projectissa. Projectin Status- ja Priority-synkronointi toimii erillisenä GitHub Actions -työnkulkuna. RSS-syötteitä tai aihekohtaisia seurantatehtäviä tämä synkronointi ei muuta.
 
 ## Historia ja arkisto
 
-Julkaistut RSS-syötteet, raportit sekä seuranta- ja näytöshistoria on säilytetty alkuperäisissä sijainneissaan. Vanha toteutus, sen työnkulut, koodit, testit, skeemat, esimerkit ja vanhentuneet ohjeet on siirretty hakemistoon [archive/legacy-implementation-2026-11-20](archive/legacy-implementation-2026-11-20/).
+Kehitysjonon aiempi selainkäyttöliittymä, JSON-välimuisti, niiden muodostus- ja riippuvuusautomaatiot, testit sekä tekniset ohjeet on siirretty palautettavina tiedostoina hakemistoon [archive/kehitysjono-2026-11-20](archive/kehitysjono-2026-11-20/).
 
-Ajastettujen ChatGPT-kehotteiden uusi kanoninen versiohallinta sijaitsee aktiivisessa [prompts-hakemistossa](prompts/). Arkisto on palautettavissa. Vain nykyiset, aktiiviset työnkulut sijaitsevat `.github/workflows/`-hakemistossa; arkistoidut työnkulut eivät käynnisty.
+Aiempi laajempi toteutus ja julkaistu RSS-/raporttihistoria on säilytetty hakemistossa [archive/legacy-implementation-2026-11-20](archive/legacy-implementation-2026-11-20/). Julkaistua RSS-historiaa ei ole muutettu.
+
+Ajastettujen ChatGPT-kehotteiden uusi kanoninen versiohallinta sijaitsee aktiivisessa [prompts-hakemistossa](prompts/). GitHub Actionsin aktiiviset työnkulut on rajattu nykyisiin toimintoihin; arkistoidut työnkulut eivät käynnisty.
 
 ## Kehittämisen periaatteet
 

@@ -1,0 +1,34 @@
+name: Testaa GitHub Project -synkronointi
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/scripts/sync_project_status.mjs"
+      - ".github/project-status-sync.json"
+      - ".github/workflows/sync-project-fields.yml"
+      - ".github/workflows/test-project-sync.yml"
+      - "tests/project-status-sync.test.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-project-sync
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae repositorio
+        uses: actions/checkout@v4
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Tarkista synkronointiskriptin syntaksi
+        run: node --check .github/scripts/sync_project_status.mjs
+      - name: Aja Project-synkronoinnin testit
+        run: node --test tests/project-status-sync.test.mjs

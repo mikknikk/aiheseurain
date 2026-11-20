@@ -302,7 +302,7 @@ export async function syncIssueStatus({
   });
   return {
     issueNumber, statusLabel: label, status: option.name,
-    priorityLabel, priority: priorityCode, itemId
+    priorityLabel: priority.label, priority: priority.code, itemId
   };
 }
 
