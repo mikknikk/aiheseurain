@@ -92,3 +92,14 @@ Jokaisen havainnon on sisällettävä sama aikavyöhykkeellinen alku- ja loppuai
 Puuttuvaa runtime-haaraa ei luoda eikä tulkita julkaisemattomuuden todisteeksi. Tyhjä main-haaran julkaisurekisteri ei korvaa runtime-päiväkirjaa. Tarkistin ei tee verkkohakuja tai kirjoita mitään; havaintojen kerääminen ja lähteiden luotettavuus dokumentoidaan erikseen. Tämä ennakkotarkistus ei itsessään käynnistä harjoitusta eikä anna tuotantojulkaisulupaa.
 
 Testit: `python -m unittest tests.test_taylor_swift_publication_preflight -v`.
+
+
+## Ennakkotarkistuksen tulos 20.11.2026
+
+PR #249 yhdistettiin `main)-haaraan commitilla `32934e2f48211888cf827a2dae40d3065e5d3e2e`. Kaikki kolme vaadittua CI-työnkulkua läpäisivät.
+
+Harjoitukselle valittiin tarkasteltavaksi jakso 18.11.2026 klo 00.00 – 19.11.2026 klo 23.59.59 Suomen aikaa. Vanhan raportointipolun lähdetarkistuslokissa ei ole tälle jaksolle Taylor Swift -ajoa, ja repositorion Taylor Swift -RSS sisältää vain 16.11.2026 päivättyyn aiheeseen liittyvän aiemman raportin. Nämä kaksi havaintoa eivät kuitenkaan yksin riitä osoittamaan koko julkaisuketjun julkaisemattomuutta.
+
+`module-runtime-state)-haara puuttuu, joten runtime-julkaisupäiväkirjaa ei voitu tarkistaa. Julkisen Pages-RSS:n takaisinlukua ei myöskään saatu vahvistettua. Ennakkotarkistuksen tulos on siksi `unknown`, eikä `execution_allowed) -portti avaudu.
+
+**Päätös:** live-varjoharjoitusta ei käynnistetty. Tutkimusta, varjoartefaktia tai tuotantojulkaisua ei tehty. Puuttuvaa runtime-haaraa ei luoda jälkikäteen, eikä automaatioiden asetuksia muuteta. Harjoitus voidaan suorittaa vasta, kun puuttuvat julkaisutilan havainnot voidaan todentaa ja kaikki neljä kanavaa osoittavat saman jakson julkaisemattomaksi.
