@@ -30,6 +30,7 @@ GitHub Project **Aiheseurain** on kehitystehtävien ensisijainen taulukkonäkym�
 | `component:etusivu` | Etusivu |
 | `component:lukija` | Lukija |
 | `component:valvomo` | Valvomo |
+| `component:kehitysymparisto` | Kehitysympäristö |
 
 Project-kentät ja niiden Single select -vaihtoehdot tunnistetaan asetustiedostoon tallennetuilla ID-tunnisteilla. Näkyviä nimiä ei käytetä kenttien tai vaihtoehtojen etsimiseen, joten nimien muuttaminen ei riko synkronointia. Jos kenttä tai vaihtoehto poistetaan ja luodaan uudelleen, sen ID vaihtuu ja asetustiedosto pitää päivittää.
 
