@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.3.0  
+**Versio:** 0.4.0  
 **Tila:** luonnos – ei hyväksytty eikä toteutuksen lupa  
 **Päiväys:** 20.11.2026  
 **Toimintamalli:** ChatGPT  
@@ -300,7 +300,27 @@ Seuraavat asiat ratkaistaan vasta tämän vaatimusmäärittelyn tarkastelun ja h
 7. **Historiatietojen säilytys:** kuinka paljon yksityiskohtaista ajohistoriaa säilytetään ja miten vanha tieto arkistoidaan.
 8. **Nykyisen toteutuksen siirtymä:** mitkä nykyisen repositorion osat voidaan hyödyntää, mitkä ovat tarpeettoman monimutkaisia ja mitkä pitää korvata. Mitään ei poisteta ennen erillistä suunnitelmaa.
 
-## 15. Muutosloki
+## 15. Ajastettujen käynnistyskehotteiden versionhallinta
 
+Jokaisella Aiheseuraimen ajastetulla ChatGPT-tehtävällä on yksilöllinen tehtävätunniste ja oma kanoninen käynnistyskehote. Kehotteen sisältöä hallitaan GitHubissa versioituna tekstinä. Tehtävän tunniste ja kehotteen versio ovat eri asioita: tehtävätunniste pysyy samana, kun saman tehtävän kehotetta päivitetään.
+
+Vaatimukset:
+
+- Kanoniset käynnistyskehotteet säilytetään repositorion `prompts/`-hakemistossa. Jokaisesta julkaistusta versiosta säilytetään muuttumaton oma tiedosto muodossa `prompts/<task_id>/v<version>.txt`.
+- Kehotetiedosto sisältää täsmälleen ChatGPT-tehtävän asetuksiin kopioitavan tekstin. Tiedostoon ei lisätä otsikoita, kommentteja tai muuta kehotteeseen kuulumatonta sisältöä.
+- Jokaisella kehotteella on semanttinen versionumero (`MAJOR.MINOR.PATCH`). PATCH tarkoittaa rajattua korjausta, MINOR yhteensopivaa toiminnallista lisäystä ja MAJOR yhteensopimatonta tai tehtävän toimintaa olennaisesti muuttavaa muutosta.
+- `prompts/registry.json` ylläpitää tehtävätunnisteen, GitHubissa olevan uusimman kanonisen version, ChatGPT-tehtävässä käytössä olevaksi vahvistetun version, vahvistuksen ajankohdan ja tilan. Uuden järjestelmän tehtävät lisätään rekisteriin vasta, kun ne määritellään; vanhan järjestelmän tehtäviä ei palauteta automaattisesti.
+- ChatGPT-tehtävän asetuksissa oleva versio on erillinen tieto. GitHubissa julkaistu uusi versio ei tarkoita, että ChatGPT-tehtävä olisi jo päivitetty.
+- Kehotteen muuttaminen edellyttää käyttäjän nimenomaista lupaa ChatGPT-tehtävän asetusten muuttamiseen. GitHubin kanonisen tekstin päivittäminen ja ChatGPT-asetusten muuttaminen ovat erillisiä vaiheita.
+- Käytössä olevan version teksti täsmäytetään ChatGPT-tehtävän asetuksiin tallennettuun tekstiin. Vasta täsmäytyksen jälkeen rekisteriin merkitään uusi versio käyttöön vahvistetuksi.
+- Ajon alussa tarkistetaan tehtävätunniste ja kehotteen versio. Jos tunniste tai versio puuttuu, on ristiriidassa rekisterin kanssa tai käytössä olevan kehotteen vastaavuutta ei ole vahvistettu, ajo keskeytetään ennen seurantatyötä ja ristiriita raportoidaan.
+- Vanhoja kehotetiedostoja ei ylikirjoiteta eikä poisteta. Palautus aiempaan versioon tehdään uutena rekisteröitynä käyttöönottona; historiatiedosto säilyy.
+- Kehotteen muutos ei saa muuttaa ajastusta, aikavyöhykettä tai kohdekeskustelua. Niihin sovelletaan erillistä automaatioiden hallinnan suojausperiaatetta.
+
+Kehotteiden tarkka tiedostorakenne, rekisterin kentät ja päivitysmenettely kuvataan dokumentissa [käynnistyskehotteiden versionhallinta](../prompts/README.md).
+
+## 16. Muutosloki
+
+- **0.4.0 – 20.11.2026:** palautettu ajastettujen ChatGPT-käynnistyskehotteiden tehtäväkohtainen versionhallinta. Määritelty muuttumattomat versiotiedostot, tehtävärekisteri, ChatGPT:ssä käytössä olevan version erillinen vahvistaminen sekä ajon alun versiotarkistus.
 - **0.3.0 – 20.11.2026:** lisätty ajojen rakenteiset ajotiedot RSS-itemin rinnalle, Valvomo ensisijaiseksi käyttöliittymäksi sekä Valvomon tietotarpeet, näkymät ja historiatiedot. RSS-lukija ja Kehitysjono säilytetty toissijaisina käyttöliittyminä. Täsmennetty yhteinen ajoprosessi, aihekohtaiset ajotiheydet ja näytösseurannan asema samanarvoisena aiheena. Täsmennetty, että siirtomekanismi ja tekninen toteutus ratkaistaan myöhemmin.
 - **0.2.0 – 20.11.2026:** ensimmäinen vaatimusluonnos: ChatGPT-toimintamalli, yksinkertaisuusperiaate, yhteinen ja aihekohtainen konfiguraatio, seurantatyypit ja raporttipohjat, yhden RSS-itemin rajapinta, muuttumaton RSS-historia, GitHubin validointi ja virhetilanteet.
