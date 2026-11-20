@@ -95,7 +95,8 @@ const componentOptions = {
   "component:automaatio": { id: "b27e01e4" },
   "component:valvomo": { id: "8bf95c0b" },
   "component:lukija": { id: "31835d81" },
-  "component:etusivu": { id: "3318d8fa" }
+  "component:etusivu": { id: "3318d8fa" },
+  "component:kehitysymparisto": { id: "57875c3b" }
 };
 
 test("muuntaa komponenttilabelit Projectin Component-vaihtoehtojen ID-tunnisteiksi", () => {
@@ -103,6 +104,7 @@ test("muuntaa komponenttilabelit Projectin Component-vaihtoehtojen ID-tunnisteik
   assert.equal(resolveComponentOption([{ name: "component:valvomo" }], componentOptions).option.id, "8bf95c0b");
   assert.equal(resolveComponentOption(["component:lukija"], componentOptions).option.id, "31835d81");
   assert.equal(resolveComponentOption(["component:etusivu"], componentOptions).option.id, "3318d8fa");
+  assert.equal(resolveComponentOption(["component:kehitysymparisto"], componentOptions).option.id, "57875c3b");
 });
 
 test("komponenttivaihtoehtojen nimet eivät vaikuta ID-pohjaiseen synkronointiin", () => {
