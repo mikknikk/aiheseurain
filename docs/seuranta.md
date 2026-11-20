@@ -147,7 +147,7 @@ Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään k
 - **20.11.2026 – VIRALLISESTI VAHVISTETTU:** Sapporon Hokkaidon punatiilisessä hallintorakennuksessa alkoi *AKARENGA YUKIGUNI FANTASY*, joka jatkuu 28.2.2027 asti. Muumi-hahmot ovat tapahtuman erityisiä yhteistyökumppaneita; yhteistyöhön kuuluu valokuvauspisteitä, muistokortteja, myyntipiste ja ravintolayhteistyö. Järjestäjän ennakkotiedote on päivätty 6.11.2026, ja Moomin Characters nosti yhteistyön esiin avauspäivänä.
 - Lähteet: Moomin Official Website Japan (A, https://www.moomin.co.jp/news/events/6af516a45c0ad); Hokkaido Red Brick Government Building (A, https://www.hokkaido-redbrick.jp/2026/11/06/760/).
 - RSS GUID: `urn:aiheseurain:muumit:2026-11-20:akarenga-yukiguni-fantasy-sapporo`.
-- **20.11.2026 – VIRALLISESTI VAHVISTETTU:** uusi *MOOMIN SHOP CASUAL EDITION* avataan 4.12.2026 Fukuokan Hakatan alueelle Tenjin Underground Mallin länsipuolen neljännelle käytävälle.
+- **20.11.2026 – VIRALLISESTI VAHVISTETTU:** uusi *MOOMIN SHOP CASUAL EDITION* avataan 4.12.2026 Fukuokan Tenjinin alueelle Tenjin Underground Mallin länsipuolen neljännelle käytävälle.
 - Lähde: Moomin Official Website Japan (A, ensisijainen, https://www.moomin.co.jp/news/products/6afd8d5a943e8).
 - RSS GUID: `urn:aiheseurain:muumit:2026-11-20:moomin-shop-fukuoka-tenjin`.
 - **6.11.2026 – ENNEN NYKYISTÄ SEURANTAJAKSOA ILMOITETTU:** Muumi Pomppupuisto järjestetään Mikkelissä Saimaa Stadiumilla 27.–29.11.2026. Järjestäjän sivu sisältää sunnuntain päivämäärässä kirjoitusvirheen (25.11.); Bilettin tapahtumasivu vahvistaa oikeaksi päiväksi 29.11.2026 ja ajaksi klo 10–18. Mikkelin kaupungin mainoslupapäätös on päivätty 6.11.2026, joten tapahtumaa ei julkaistu tämän seurantajakson uutisena.
