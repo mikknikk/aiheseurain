@@ -431,12 +431,14 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #248 – Taylor Swift -julkaisutilan ennakkotarkistus
 
-**Tila:** ennakkotarkistuksen toteutus valmistellaan PR:ssä; live-varjoharjoitusta ei ole käynnistetty.
+**Tila:** fail-closed-ennakkotarkistin valmis PR:ssä #249, yhdistetty `main`-haaraan commitilla `32934e2f48211888cf827a2dae40d3065e5d3e2e`. Kaikki kolme vaadittua CI-työnkulkua läpäisivät. Varsinaista varjoharjoitusta ei ole käynnistetty, koska valitun jakson julkaisutila jäi tuntemattomaksi.
 
 - [x] Historiallinen 16.–17.11.2026 repositoriotason julkaisu tunnistettu ja dokumentoitu.
-- [x] Määritelty neljän kanavan täsmälliseen seurantajaksoon sidottu luokitus: `published`, `unpublished`, `unknown` ja `conflict`.
-- [ ] Toteuta ja testaa fail-closed-ennakkotarkistin.
-- [ ] Varmenna harjoituksen valitun jakson runtime-päiväkirja, vanha raportointipolku, repositorio-RSS ja julkinen Pages-RSS.
-- [ ] Käynnistä rajattu varjoharjoitus vasta, kun kaikki neljä kanavaa osoittavat saman jakson julkaisemattomaksi ja hyväksytyn valmistelun tiivisteet täsmäävät.
+- [x] Neljän kanavan täsmälliseen seurantajaksoon sidottu luokitus toteutettu: `published`, `unpublished`, `unknown` ja `conflict`.
+- [x] Fail-closed-ennakkotarkistin, skeema, regressiotestit ja ohjeistus toteutettu PR:ssä #249.
+- [x] Harjoitusjakson 18.11.2026 klo 00.00 – 19.11.2026 klo 23.59.59 (+02:00) vanha raportointiloki ja repositorion RSS tarkistettu; niissä ei havaittu kyseisen jakson ajoa tai raporttia.
+- [ ] Runtime-julkaisupäiväkirja: `module-runtime-state`-haara puuttuu, joten tarkistus on tuntematon.
+- [ ] Julkisen Pages-RSS:n takaisinluku: ei voitu vahvistaa.
+- [ ] Varjoharjoitus: estetty, koska julkaisutila ei ole kaikissa kanavissa todennetusti `unpublished`.
 
-**Rajaus:** käyttäjä on hyväksynyt varjoharjoituksen käynnistämisen heti, kun ennakkotarkistus ja muut turvaportit ovat kunnossa. Tämä ei ole tuotantoaktivoinnin tai RSS-julkaisun hyväksyntä. Jos jokin kanava on tuntematon tai ristiriitainen, harjoitusta ei käynnistetä.
+**Rajaus:** käyttäjä on hyväksynyt yhden rajatun varjoharjoituksen käynnistämisen heti, kun ennakkotarkistus ja muut turvaportit ovat kunnossa. Hyväksyntä ei ole tuotantoaktivoinnin tai RSS-julkaisun lupa. Tuntematon tai ristiriitainen julkaisutila estää harjoituksen.
