@@ -1,4 +1,4 @@
-name: Synkronoi GitHub Projectin Status ja Priority
+name: Synkronoi GitHub Projectin Status, Priority ja Component
 
 on:
   issues:
@@ -35,7 +35,8 @@ jobs:
             (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
             (
               startsWith(github.event.label.name, 'status:') ||
-              startsWith(github.event.label.name, 'priority:')
+              startsWith(github.event.label.name, 'priority:') ||
+              startsWith(github.event.label.name, 'component:')
             )
           )
         )
@@ -50,7 +51,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Päivitä Project-kortin Status ja Priority
+      - name: Päivitä Project-kortin Status, Priority ja Component
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROJECTS_TOKEN: ${{ secrets.PROJECTS_TOKEN }}
