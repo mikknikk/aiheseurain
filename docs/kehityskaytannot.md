@@ -55,7 +55,7 @@ Jokaisella kehitystehtävällä tulee olla yksi label kustakin luokasta:
 
 | Luokka | Labelit | Merkitys |
 |---|---|---|
-| Komponentti | `component:automaatio`, `component:etusivu`, `component:lukija`, `component:valvomo` | Mihin Aiheseuraimen komponenttiin tehtävä kuuluu |
+| Komponentti | `component:automaatio`, `component:etusivu`, `component:lukija`, `component:valvomo`, `component:kehitysymparisto` | Mihin Aiheseuraimen komponenttiin tehtävä kuuluu |
 | Prioriteetti | `priority:P0`, `priority:P1`, `priority:P2`, `priority:P3` | Tehtävän prioriteetti |
 | Tila | `status:backlog`, `status:ready-for-development`, `status:in-progress`, `status:done` | Tehtävän etenemisen tila |
 
