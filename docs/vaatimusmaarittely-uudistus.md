@@ -112,8 +112,7 @@ Valinnassa huomioidaan vähintään aiheen aktiivisuus, erääntyminen, viimeisi
 
 Yksi ajokerta voi käsitellä useita aiheita peräkkäin, jos niiden konfiguraatiot sallivat yhteisen ajokerran. Aiheiden yhdistäminen ei yhdistä niiden raportteja, lähteitä, RSS-syötteitä tai seurantatiloja. Aiheiden yhteensopivuus määritellään määrityksissä tai seurantatyyppien yhteisissä säännöissä.
 
-Ajokerran jatkaminen ratkaistaan jokaisen aihekohtaisen käsittelyn jälkeen Aiheseuraimen omien resurssi- ja turvallisuusrajojen perusteella. Rajoja voivat olla esimerkiksi ajokerran enimmäiskesto, käsiteltävien aiheiden enimmäismäärä ja hakukierrosten enimmäismäärä. Jatkamispäätös ei saa perustua oletukseen, että raporttituottaja tai ChatGPT-ajastus pystyisi lukemaan palveluntarjoajan jäljellä olevan käyttökiintiön. Jos todellinen resurssitieto ei ole luotettavasti saatavilla, sitä ei arvioida eikä esitetä tosiasiana.
-
+Ajokerran jatkaminen ratkaistaan jokaisen aihekohtaisen käsittelyn jälkeen Aiheseuraimen omien resurssi- ja turvallisuusrajojen perusteella. Rajoja voivat olla esimerkiksi ajokerran enimmäiskesto, käsiteltävien aiheiden enimmäismäärä ja hakukierrosten enimmäismäärä. Jatkamispäätös ei saa perustua oletukseen, että raporttituottaja tai sen käyttämä ulkoinen palvelu pystyisi lukemaan palveluntarjoajan jäljellä olevan käyttökiintiön. Jos todellinen resurssitieto ei ole luotettavasti saatavilla, sitä ei arvioida eikä esitetä tosiasiana.
 
 - Ajotiheys määritellään aihekohtaisesti.
 - Yhteinen ajonvalinta käsittelee erääntyvät aiheet niiden määritysten mukaisesti.
