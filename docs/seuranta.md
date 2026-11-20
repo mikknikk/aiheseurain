@@ -153,7 +153,7 @@ Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään k
 - **6.11.2026 – ENNEN NYKYISTÄ SEURANTAJAKSOA ILMOITETTU:** Muumi Pomppupuisto järjestetään Mikkelissä Saimaa Stadiumilla 27.–29.11.2026. Järjestäjän sivu sisältää sunnuntain päivämäärässä kirjoitusvirheen (25.11.); Bilettin tapahtumasivu vahvistaa oikeaksi päiväksi 29.11.2026 ja ajaksi klo 10–18. Mikkelin kaupungin mainoslupapäätös on päivätty 6.11.2026, joten tapahtumaa ei julkaistu tämän seurantajakson uutisena.
 - Lähteet: Muumi Pomppupuisto (A, järjestäjän sivu, https://www.muumipomppupuisto.fi/); Biletti (C, lipunmyyntitieto, https://biletti.fi/e/muumi-pomppupuisto-mikkeli); Mikkelin kaupungin viranhaltijapäätös (6.11.2026, https://www.viranhaltija.fi/paatos/54421/).
 - Ei RSS GUIDia: tapahtuma oli ilmoitettu ennen tämän seurantajakson alkua.
-- Seuraava tarkistus: tarkista 22.11. jälkeen Saitaman pelijuhlan toteutuminen; tarkista 29.11. jälkeen Mikkelin Muumi Pomppupuiston toteutuminen sekä 4.12. Fukuokan myymälän avautuminen. Seuraa myös Osakan markkinoiden ja Sapporon talvitapahtuman jatkoa.
+- Seuraava tarkistus: tarkista 22.11. jälkeen Saitaman pelijuhlan toteutuminen; tarkista 30.11. jälkeen Mikkelin Muumi Pomppupuiston toteutuminen sekä seuraavalla mahdollisella ajolla 4.12. tapahtuvan Fukuokan myymälän avautuminen. Seuraa myös Osakan markkinoiden ja Sapporon talvitapahtuman jatkoa.
 
 ### Wakaliwood
 
