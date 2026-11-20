@@ -91,7 +91,12 @@ def status_for(deployment_id: int, token: str) -> dict:
     """Lue deploymentin viimeisin tilamerkintä."""
     statuses = paginated(f"deployments/{deployment_id}/statuses", token)
     if not statuses:
-        return {"state": "no_status", "description": None, "created_at": None}
+        # Puuttuva tilahistoria ei ole onnistumistodiste; palauta silti
+        # sama täydellinen tietorakenne kuin muissa tilahistorian tuloksissa.
+        return {
+            "state": "no_status", "description": None, "created_at": None,
+            "ever_successful": False, "status_count": 0,
+        }
     latest = max(statuses, key=lambda x: x.get("created_at", ""))
     # Deployment voidaan myöhemmin merkitä inactive-tilaan, kun uudempi
     # julkaisu korvaa sen. Tämä ei peruuta sitä, että aiempi RSS-sisältö
