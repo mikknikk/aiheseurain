@@ -16,11 +16,15 @@ Selain hakee yhden JSON-tiedoston GitHub Pagesista. Selain ei kutsu GitHub APIa 
 
 ### Inkrementaalinen päivitys
 
-Seuraavat issue-tapahtumat päivittävät vain tapahtuman kohteena olevan tiketin:
+Päivitystyönkulku kuuntelee GitHubin `issues)-tapahtumaa, ei yleistä repositorion `push)-tapahtumaa. Issue-muutoksista hyväksytään vain Kehitysjonon kannalta olennaiset:
 
-- avaaminen, muokkaaminen, sulkeminen ja uudelleen avaaminen;
-- labelin lisääminen tai poistaminen;
-- tiketin poistaminen.
+- uuden issuen avaaminen, sulkeminen, uudelleen avaaminen ja poistaminen;
+- otsikon tai kuvauksen muokkaus (pelkkä esimerkiksi assigneen tai milestone-tiedon muutos ei käynnistä päivitystä);
+- `component:`-, `priority:`- tai `status:)-labelin lisääminen tai poistaminen.
+
+Muut labelit, kommentit, assignee-muutokset ja muut issue-tapahtumat eivät käynnistä JSON-päivitystä. Pull requestit ohitetaan.
+
+Yleinen tiedostomuutos ei käynnistä tätä työnkulkua. Rajattu `push)-käynnistys on käytössä vain, kun itse välimuistin muodostusskripti tai sen päivitystyönkulku muuttuu; silloin tehdään yksi täysi täsmäytys uuden toteutuksen varmistamiseksi. Päivittäinen ajastus ja käsin käynnistettävä täysi täsmäytys ovat erillisiä varmistusmekanismeja.
 
 Muuttuneen tiketin riippuvuudet haetaan uudelleen. Muiden issueiden tietueet ja riippuvuudet säilyvät aiemmasta kelvollisesta välimuistista. Tämä vähentää tavallisten muutosten API-kutsut käytännössä yhteen riippuvuushakuun; issue-tapahtuman koko tietue saadaan tapahtumaviestistä.
 
