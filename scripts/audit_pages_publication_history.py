@@ -17,10 +17,10 @@ FEED_URL = "https://mikknikk.github.io/aiheseurain/feeds/taylor-swift.xml"
 API_BASE = f"https://api.github.com/repos/{REPO}"
 
 class AuditError(RuntimeError):
-    """Raised when the evidence read is incomplete or invalid."""
+    """Julkaisuhistorian lukeminen tai tulkinta epäonnistui."""
 
 class TextExtractor(HTMLParser):
-    """Extract readable text from an RSS HTML description."""
+    """Poimi RSS-kuvauksesta luettava teksti ilman HTML-merkintöjä."""
     def __init__(self):
         super().__init__()
         self.parts = []
@@ -30,7 +30,7 @@ class TextExtractor(HTMLParser):
         return " ".join(x.strip() for x in self.parts if x.strip())
 
 def parse_time(value: str, field: str) -> datetime:
-    """Require timezone-aware ISO 8601 timestamps and normalize to UTC."""
+    """Vaadi aikavyöhykkeellinen ISO 8601 -aika."""
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except (AttributeError, TypeError, ValueError) as exc:
@@ -40,7 +40,7 @@ def parse_time(value: str, field: str) -> datetime:
     return parsed
 
 def request_bytes(url: str, token: str | None = None) -> bytes:
-    """Read a URL; never send the GitHub token outside api.github.com."""
+    """Lue URL; älä koskaan lähetä GitHub-tunnusta api.github.com-osoitteen ulkopuolelle."""
     headers = {"User-Agent": "aiheseurain-pages-history-audit", "Cache-Control": "no-cache"}
     if token:
         if urllib.parse.urlparse(url).hostname != "api.github.com":
@@ -54,14 +54,14 @@ def request_bytes(url: str, token: str | None = None) -> bytes:
         raise AuditError(f"HTTP read failed for {url}: {exc}") from exc
 
 def api_json(path: str, token: str) -> Any:
-    """Read JSON from the GitHub API."""
+    """Hae JSON-tietoa GitHubin rajapinnasta."""
     try:
         return json.loads(request_bytes(f"{API_BASE}/{path.lstrip('/')}", token))
     except json.JSONDecodeError as exc:
         raise AuditError(f"Invalid GitHub API JSON: {path}") from exc
 
 def paginated(path: str, token: str) -> list[dict]:
-    """Read every API page; fail rather than silently treating partial history as complete."""
+    """Lue kaikki sivut; keskeytä sen sijaan, että osittaista historiaa pidettäisiin täydellisenä."""
     output, page = [], 1
     while True:
         separator = "&" if "?" in path else "?"
@@ -76,7 +76,7 @@ def paginated(path: str, token: str) -> list[dict]:
             raise AuditError("History exceeds 10,000 records; stopping safely")
 
 def deployment_manifest(row: dict) -> dict | None:
-    """Accept only the known RSS publication manifest payload."""
+    """Hyväksy vain tunnetun RSS-julkaisumanifestin sisältö."""
     payload = row.get("payload")
     if isinstance(payload, str):
         try:
@@ -88,7 +88,7 @@ def deployment_manifest(row: dict) -> dict | None:
     return None
 
 def status_for(deployment_id: int, token: str) -> dict:
-    """Read the latest deployment status."""
+    """Lue deploymentin viimeisin tilamerkintä."""
     statuses = paginated(f"deployments/{deployment_id}/statuses", token)
     if not statuses:
         return {"state": "no_status", "description": None, "created_at": None}
@@ -96,7 +96,7 @@ def status_for(deployment_id: int, token: str) -> dict:
     return {k: latest.get(k) for k in ("state", "description", "created_at")}
 
 def report_period_matches(item: ET.Element, start: datetime, end: datetime) -> bool:
-    """Match an RSS item by pubDate or dates in its explicit Seurantajakso text."""
+    """Tunnista RSS-itemin seurantajakso pubDate-arvosta tai kuvauksen jaksomerkinnästä."""
     pub_date = item.findtext("pubDate")
     if pub_date:
         try:
@@ -114,7 +114,7 @@ def report_period_matches(item: ET.Element, start: datetime, end: datetime) -> b
     return bool({start.date().isoformat(), end.date().isoformat()} & dates) and "Seurantajakso" in text
 
 def rss_items_for_commit(sha: str, start: datetime, end: datetime) -> list[dict]:
-    """Read the exact RSS file from a manifest source commit."""
+    """Lue täsmälleen manifestin lähdecommitin RSS-tiedosto."""
     url = f"https://raw.githubusercontent.com/{REPO}/{sha}/{FEED_PATH}"
     try:
         root = ET.fromstring(request_bytes(url))
@@ -131,7 +131,7 @@ def rss_items_for_commit(sha: str, start: datetime, end: datetime) -> list[dict]
     return matches
 
 def audit_deployments(start: datetime, end: datetime, token: str) -> dict:
-    """Inspect every RSS manifest and confirm successful deployments containing this period."""
+    """Tutki RSS-manifestit ja varmista, sisältääkö onnistunut julkaisu tämän jakson."""
     rows = paginated(f"deployments?environment={urllib.parse.quote(ENVIRONMENT)}", token)
     matches, examined = [], 0
     for row in rows:
@@ -172,7 +172,7 @@ def audit_deployments(start: datetime, end: datetime, token: str) -> dict:
     }
 
 def audit_workflow_runs(start: datetime, end: datetime, token: str) -> dict:
-    """List Pages workflow runs and job/step outcomes in the requested interval."""
+    """Listaa Pages-työnkulun ajot sekä niiden job- ja step-tulokset."""
     created = urllib.parse.quote(
         f"{start.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}..{end.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}", safe=":"
     )
@@ -196,7 +196,7 @@ def audit_workflow_runs(start: datetime, end: datetime, token: str) -> dict:
     return {"workflow": ".github/workflows/publish-pages.yml", "runs": output}
 
 def audit_current_pages(start: datetime, end: datetime) -> dict:
-    """Read the current public RSS; explicitly do not treat it as a historical snapshot."""
+    """Lue nykyinen julkinen RSS, mutta älä tulkitse sitä historialliseksi snapshotiksi."""
     raw = request_bytes(FEED_URL)
     try:
         root = ET.fromstring(raw)
@@ -216,7 +216,7 @@ def audit_current_pages(start: datetime, end: datetime) -> dict:
             "historical_limit": "Current RSS content alone does not prove historical publication state."}
 
 def write_outputs(result: dict, path: Path) -> None:
-    """Write the JSON artifact and concise GitHub Actions summary."""
+    """Tallenna JSON-raportti ja tiivis Actions-yhteenveto."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     pages, current = result["pages_deployments"], result["current_pages"]
@@ -237,6 +237,12 @@ def write_outputs(result: dict, path: Path) -> None:
         with open(summary, "a", encoding="utf-8") as stream:
             stream.write("\n".join(lines) + "\n")
 
+def validate_period(start: datetime, end: datetime) -> None:
+    """Varmista, että annettu seurantajakso on aikajärjestyksessä."""
+    if start > end:
+        raise AuditError("Seurantajakson alku on loppua myöhempi")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--period-start", required=True)
@@ -244,8 +250,7 @@ def main() -> int:
     parser.add_argument("--output", default="artifacts/pages-history-audit.json")
     args = parser.parse_args()
     start, end = parse_time(args.period_start, "period-start"), parse_time(args.period_end, "period-end")
-    if start > end:
-        raise AuditError("Period start is after period end")
+    validate_period(start, end)
     token = os.getenv("GITHUB_TOKEN")
     if not token:
         raise AuditError("GITHUB_TOKEN is missing")
