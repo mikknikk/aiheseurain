@@ -26,3 +26,36 @@ test("hylkää puuttuvan tai useamman tilalabelin", () => {
 test("hylkää tuntemattoman tilalabelin", () => {
   assert.throws(() => resolveStatusOption([{ name: "status:blocked" }], options), /Tuntematon tilalabel/);
 });
+
+test("ohittaa issuet, joilla ei ole kehityskomponentin labelia", async () => {
+  const { syncIssueStatus } = await import("../.github/scripts/sync_project_status.mjs");
+  let graphqlCalled = false;
+  const fetchMock = async (url) => {
+    assert.match(String(url), /\/repos\/mikknikk\/aiheseurain\/issues\/42$/);
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        number: 42,
+        node_id: "I_test",
+        labels: [{ name: "question" }]
+      })
+    };
+  };
+  const result = await syncIssueStatus({
+    repository: "mikknikk/aiheseurain",
+    issueNumber: 42,
+    githubToken: "test",
+    projectsToken: "test",
+    config: {
+      repository: "mikknikk/aiheseurain",
+      project: { id: "P_test", status_field_id: "F_test", options }
+    },
+    fetchImpl: async (...args) => {
+      if (String(args[0]).includes("/graphql")) graphqlCalled = true;
+      return fetchMock(...args);
+    }
+  });
+  assert.deepEqual(result, { skipped: "not_a_development_issue" });
+  assert.equal(graphqlCalled, false);
+});
