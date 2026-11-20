@@ -89,10 +89,19 @@ export async function ensureProjectItem({
         item { id }
       }
     }`;
-  const data = await graphql(token, mutation, { projectId, contentId: issueNodeId }, fetchImpl);
-  itemId = data.addProjectV2ItemById?.item?.id;
-  if (!itemId) throw new Error("Issuen lisääminen GitHub Projectiin ei palauttanut kortin tunnistetta.");
-  return itemId;
+  try {
+    const data = await graphql(token, mutation, { projectId, contentId: issueNodeId }, fetchImpl);
+    itemId = data.addProjectV2ItemById?.item?.id;
+    if (itemId) return itemId;
+  } catch (error) {
+    // Projectin oma automaattinen lisäys voi ehtiä lisätä kortin samanaikaisesti.
+    const concurrentlyAdded = await findProjectItem({
+      token, projectId, issueNodeId, fetchImpl
+    });
+    if (concurrentlyAdded) return concurrentlyAdded;
+    throw error;
+  }
+  throw new Error("Issuen lisääminen GitHub Projectiin ei palauttanut kortin tunnistetta.");
 }
 
 export async function updateProjectStatus({
