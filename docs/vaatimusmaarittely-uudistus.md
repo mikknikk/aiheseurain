@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.7.1  
+**Versio:** 0.8.0  
 **Tila:** luonnos – ei hyväksytty eikä toteutuksen lupa  
 **Päiväys:** 20.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -102,6 +102,15 @@ Uuden seurantatyypin lisääminen voi vaatia teknistä toteutusta. Sen pitää k
 
 ### 4.4 Aikataulut ja ajovuoro
 
+Ajokerran käynnistyessä Aiheseurain lukee aktiiviset aihekonfiguraatiot ja ajantasaisen seurantatilan sekä muodostaa niiden perusteella valittavissa olevien aiheiden jonon. Automaation ei pidä sisältää kiinteää aihelistaa tai ennalta määrättyä aiheiden käsittelyjärjestystä, vaan se valitsee seuraavan aiheen konfiguraatioiden ja seurantatilan perusteella.
+
+Valinnassa huomioidaan vähintään aiheen aktiivisuus, erääntyminen, viimeisin onnistunut seuranta, odotusaika, mahdollinen prioriteetti, seurantatyypin rajoitukset sekä aiemmat epäonnistumiset ja uudelleenyritysten rajat. Jonotuksen on oltava reilu: kiireelliset ja pitkään odottaneet aiheet huomioidaan, eikä jokin kelpoinen aihe saa jäädä jatkuvasti muiden ohittamaksi.
+
+Yksi ajokerta voi käsitellä useita aiheita peräkkäin, jos niiden konfiguraatiot sallivat yhteisen ajokerran. Aiheiden yhdistäminen ei yhdistä niiden raportteja, lähteitä, RSS-syötteitä tai seurantatiloja. Aiheiden yhteensopivuus määritellään määrityksissä tai seurantatyyppien yhteisissä säännöissä.
+
+Ajokerran jatkaminen ratkaistaan jokaisen aihekohtaisen käsittelyn jälkeen Aiheseuraimen omien resurssi- ja turvallisuusrajojen perusteella. Rajoja voivat olla esimerkiksi ajokerran enimmäiskesto, käsiteltävien aiheiden enimmäismäärä ja hakukierrosten enimmäismäärä. Jatkamispäätös ei saa perustua oletukseen, että raporttituottaja tai ChatGPT-ajastus pystyisi lukemaan palveluntarjoajan jäljellä olevan käyttökiintiön. Jos todellinen resurssitieto ei ole luotettavasti saatavilla, sitä ei arvioida eikä esitetä tosiasiana.
+
+
 - Ajotiheys määritellään aihekohtaisesti.
 - Yhteinen ajonvalinta käsittelee erääntyvät aiheet niiden määritysten mukaisesti.
 - Päivittäistä seurantaa tarvitseva aihe voidaan ajaa päivittäin; harvemmin seurattava aihe voidaan ajaa harvemmin.
@@ -113,9 +122,22 @@ Näytösseuranta on muiden aiheiden kanssa samanarvoinen seurantakohde yhteisess
 
 Ajon käynnistäminen ja raportin tuottaminen ovat eri vastuita. Käynnistimenä voi toimia ajastin, käyttäjä tai muu järjestelmä. Käynnistystapa ja tuottaja kirjataan ajotietoihin, kun ne ovat tiedossa. Käynnistimen tekninen toteutus ja sen suhde aihekohtaiseen ajotiheyteen ratkaistaan toteutussuunnittelussa. Nykyisten automaatioiden asetuksia ei muuteta tämän määrittelyn perusteella.
 
+### 4.5 Ajokerta ja aihekohtaiset ajot
+
+Ajokerta on yhteinen orkestrointijakso, jonka aikana Aiheseurain valitsee ja käsittelee yhden tai useamman aiheen. Aihekohtainen ajo on yhden aiheen itsenäinen seuranta- ja raportointiyksikkö.
+
+- Jokaisella aihekohtaisella ajolla on oma `run_id`, oma ajotietue ja oma tulos.
+- Samaan ajokertaan kuuluvat aihekohtaiset ajot yhdistetään vastaanottavan järjestelmän luomalla ajokertatunnisteella, esimerkiksi `batch_id`.
+- Ajokertatunniste ei korvaa `run_id`-tunnistetta eikä sitä vaadita raporttituottajan yleisessä tulossopimuksessa.
+- Yhden aiheen valmistuminen, epäonnistuminen tai raportin julkaiseminen ei muuta muiden aiheiden tuloksia.
+- Ajokerran kokonaislopputila kuvaa kaikkien siihen kuuluvien aihekohtaisten ajojen tilannetta eikä saa peittää osittaista onnistumista.
+- Valvomon on voitava tarkastella sekä ajokertaa kokonaisuutena että sen yksittäisiä aihekohtaisia ajoja.
+
 ## 5. Ajon suoritusprosessi
 
-Jokainen ajo noudattaa samaa loogista kulkua:
+Aiheseuraimen ajonhallinta käsittelee ajokerran ja sen sisältämät aihekohtaiset ajot erillisinä mutta toisiinsa liittyvinä tasoina. Ajokerran alussa luetaan yhteiset säännöt, aktiiviset aihekonfiguraatiot, seurantatyyppien säännöt ja ajantasainen seurantatila. Niiden perusteella muodostetaan reilu jono erääntyneistä ja muuten kelpoisista aiheista. Seuraava aihe valitaan dynaamisesti ja varataan ristiriidattomasti. Kyseiselle aiheelle luodaan oma ajotietue ja yksilöllinen run_id ennen raporttituottajan työn aloittamista. Vastaanottava järjestelmä liittää aihekohtaisen ajon ajokertaan omalla batch_id-tunnisteellaan.
+
+Jokainen aihekohtainen ajo noudattaa samaa loogista kulkua:
 
 1. **Valinta:** valitaan aihe, jonka ajo on erääntynyt tai joka on käynnistetty erikseen.
 2. **Määritysten luku:** luetaan yhteiset säännöt ja aiheen oma määritys sekä niiden versiot.
@@ -129,13 +151,17 @@ Jokainen ajo noudattaa samaa loogista kulkua:
 10. **Varmistus:** RSS/XML:n kelvollisuus, GUIDien yksilöllisyys, itemin oikea kohdesyöte ja tallennuksen onnistuminen tarkistetaan.
 11. **Tilapäivitys:** vastaanottavan järjestelmän ajotila, aiheen viimeisin onnistunut ajo, seuraava erääntymisaika ja jonotila päivitetään varmennetun lopputuloksen perusteella.
 
+Jokaisen aihekohtaisen ajon jälkeen ajonhallinta arvioi jäljellä olevat Aiheseuraimen omat resurssirajat, jäljellä olevat kelpoiset aiheet, niiden kiireellisyyden ja odotusajan sekä mahdolliset virheet. Jos jatkamisehdot täyttyvät, valitaan seuraava aihe; muutoin ajokerta päätetään ja sen lopputila sekä käsittelemättä jääneet aiheet tallennetaan.
+
+Yhden aiheen epäonnistuminen ei saa estää muiden aiheiden käsittelyä, ellei kyse ole yhteisestä määritys-, turvallisuus- tai järjestelmävirheestä, joka tekee jatkamisesta vaarallista. Valmistuneiden aihekohtaisten tulosten on säilyttävä, vaikka ajokerta keskeytyisi myöhemmin. Jatkaminen perustuu mitattaviin Aiheseuraimen omiin rajoihin, kuten enimmäiskestoon tai käsiteltävien aiheiden enimmäismäärään. Palveluntarjoajan käyttökiintiötä tai muuta piilotettua resurssitietoa ei oleteta saatavaksi.
+
 Tämä on looginen prosessi. Raportin tuottaminen, tuloksen toimittaminen, vastaanotto, validointi ja julkaiseminen ovat erillisiä vaiheita. Tiedonsiirron tarkka tekninen mekanismi ja vastaanottorajapinnan toteutus valitaan erillisessä toteutussuunnittelussa. Tuottajan ei edellytetä käyttävän tiettyä palvelua tai kirjoittavan suoraan repositorioon.
 
 ## 6. Ajon tulos: raportti ja ajotiedot
 
 ### 6.1 Ajotietue ja tuottajan tulos
 
-Jokaisesta käynnistetystä ajosta ylläpidetään ajotietuetta. Raporttituottajan toimittama tulos on tätä ajotietuetta täydentävä tietue, jossa on seuraavat osat:
+Jokaisesta käynnistetystä aihekohtaisesta ajosta ylläpidetään omaa ajotietuetta. Raporttituottajan toimittama tulos on tätä ajotietuetta täydentävä tietue, jossa on seuraavat osat:
 
 - `schema_version`: pakollinen tietosopimuksen version tunniste;
 - `run_id`: pakollinen, ennen suoritusta muodostettu ajon yksilöllinen tunniste;
@@ -143,7 +169,7 @@ Jokaisesta käynnistetystä ajosta ylläpidetään ajotietuetta. Raporttituottaj
 - `report_item`: valinnainen uusi RSS-item;
 - `producer`: valinnaiset tiedot raporttituottajasta, kuten tyyppi tai tunniste, jos ne ovat saatavilla.
 
-Vastaanottava järjestelmä täydentää ajotietuetta omilla vastaanotto-, validointi-, tallennus- ja julkaisutiloillaan. Näitä käsittelytiloja ei pidä sekoittaa tuottajan ilmoittamaan tutkimustulokseen. Jos tuottaja ei pysty toimittamaan tulosta esimerkiksi kaatumisen vuoksi, vastaanottavan järjestelmän on silti säilytettävä käynnistetyn ajon tiedot ja voitava merkitä ajo aikakatkaisun tai muun todennetun syyn perusteella epäonnistuneeksi.
+Vastaanottava järjestelmä täydentää ajotietuetta omilla vastaanotto-, validointi-, tallennus- ja julkaisutiloillaan. Jos aihekohtainen ajo kuuluu useita aiheita käsittelevään ajokertaan, vastaanottava järjestelmä liittää ajotietueeseen lisäksi oman ajokertatunnisteensa (esimerkiksi `batch_id`). Tätä tunnistetta ei vaadita raporttituottajan yleisessä tietosopimuksessa. Näitä käsittelytiloja ei pidä sekoittaa tuottajan ilmoittamaan tutkimustulokseen. Jos tuottaja ei pysty toimittamaan tulosta esimerkiksi kaatumisen vuoksi, vastaanottavan järjestelmän on silti säilytettävä käynnistetyn ajon tiedot ja voitava merkitä ajo aikakatkaisun tai muun todennetun syyn perusteella epäonnistuneeksi.
 
 Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja. Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
 
@@ -169,7 +195,7 @@ Valvomon myöhempää kehitystä varten ajotiedoissa voidaan lisäksi säilyttä
 
 ### 6.3 Ajon ja vastaanoton tilat
 
-Tuottajan ilmoittama tulos ja Aiheseuraimen käsittelyvaihe ovat eri tilatietoja.
+Tuottajan ilmoittama tulos, aihekohtaisen ajon käsittelyvaihe ja koko ajokerran lopputila ovat eri tilatietoja. Ajokerran lopputila muodostetaan sen sisältämien aihekohtaisten ajojen ja mahdollisen keskeytyssyyn perusteella; se ei korvaa niiden yksittäisiä tiloja.
 
 **Tuottajan tulos:**
 - `success`: tutkimus- ja raportointityö valmistui;
@@ -224,7 +250,7 @@ Valvomon tietomalli suunnitellaan ennen sen seuraavaa laajaa käyttöliittymäuu
 
 Valvomon vähimmäiskokonaisuuteen kuuluvat:
 
-1. **Yleiskuva:** järjestelmän tila, käynnissä olevat ja viimeisimmät ajot, ongelmat ja viimeisin päivitysaika.
+1. **Yleiskuva:** järjestelmän tila, käynnissä olevat ajokerrat ja niiden aihekohtaiset ajot, jonon seuraavat aiheet, ongelmat ja viimeisin päivitysaika.
 2. **Aihekohtainen näkymä:** aiheen määritykset, viimeisimmät ajot, seurannan aikavälit, lähdekattavuus, raporttien määrä ja seuraava erääntymisaika.
 3. **Ajohistoria:** ajon vaiheet, kesto, tulos, varoitukset, virheet ja linkit mahdollisiin julkaistuihin itemeihin.
 4. **Lähdekattavuus:** mitä lähteitä tarkistettiin, mitkä jäivät tarkistamatta ja miksi; kattavuusmittarin nimittäjä ja laskentatapa on määriteltävä.
@@ -274,6 +300,8 @@ Virhetilanteet käsitellään yksinkertaisella, yksiselitteisellä tavalla:
 - **Julkaisuvirhe:** ajoa ei merkitä julkaistuksi ennen kuin tallennus ja julkaisu on varmennettu.
 - **Uudelleenyritys:** käyttää samaa ajon tunnistetta vain silloin, kun se on saman loogisen ajon turvallinen jatko. Uusi erillinen ajo saa uuden tunnisteen.
 - **Jonon päivitys:** epäonnistunut ajo ei saa kadota jonosta eikä siirtää seuraavaa erääntymistä ikään kuin ajo olisi onnistunut.
+- **Ajokerran keskeytys:** jo valmistuneiden aihekohtaisten ajojen tulokset säilytetään. Kesken jääneet aiheet tunnistetaan erikseen, ja seuraava ajokerta voi jatkaa niitä tai asettaa ne hallittuun uudelleenyritykseen ilman jo valmistuneiden aiheiden tarpeetonta toistamista.
+- **Vanhentunut varaus:** keskeytyneen tai kaatuneen suorittajan aihevaraus voidaan vapauttaa vasta määritellyn aikakatkaisun tai muun todennettavan ehdon jälkeen; rinnakkaiset ajot eivät saa käsitellä samaa aihetta ristiriitaisesti.
 
 Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen, onko uudelleenyritys mahdollinen tai jo tehty.
 
@@ -281,7 +309,10 @@ Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen
 
 - Testit eivät saa kirjoittaa tuotannon RSS-syötteisiin tai muuttaa tuotannon seurantatilaa.
 - Määritysten eheys tarkistetaan ennen ajoa: pakollisten määritysten on oltava olemassa, skeemojen mukaisia ja keskenään yhteensopivia. Virheellinen tai ristiriitainen määritys estää ajon.
-- Samalle aiheelle ei saa tehdä samanaikaisia tilapäivityksiä tai julkaisuja, jotka voivat ylikirjoittaa toisensa. Rinnakkaiset eri aiheiden ajot voidaan sallia.
+- Samalle aiheelle ei saa tehdä samanaikaisia tilapäivityksiä tai julkaisuja, jotka voivat ylikirjoittaa toisensa. Rinnakkaiset eri aiheiden ajot voidaan sallia, jos resurssirajat ja seurantatyyppien yhteensopivuussäännöt sen sallivat.
+- Aiheen valinta ja varaus on ristiriidat estävä: samaa erääntynyttä aihetta ei saa varata kahteen samanaikaiseen ajoon.
+- Ajokerran jatkamispäätös perustuu mitattaviin Aiheseuraimen omiin rajoihin ja tallennettuun ajotilaan; piilotettuja tai lukemattomia palveluntarjoajan käyttökiintiöitä ei esitetä tiedettyinä.
+- Ajokerran keskeytys ei saa hävittää jo tallennettuja aihekohtaisia tuloksia. Palautumisen on erotettava valmistuneet, kesken jääneet ja aloittamattomat aiheet.
 - Ajon ja julkaisun käsittely on idempotenttia: sama tulos ei saa synnyttää päällekkäisiä ajotietueita tai RSS-julkaisuja.
 - Määritysten ja julkaisujen palautus tunnettuun kelvolliseen tilaan on voitava tehdä versionhallinnan avulla ilman aiempien julkaistujen itemien muuttamista.
 - Jokaisen ajon yhteydessä tallennetaan käytettyjen yhteisten ja aihekohtaisten määritysten sekä seurantatyypin ja raporttipohjan versiot tai yksilöivät tunnisteet.
@@ -378,6 +409,13 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 22. Saman tuloksen uudelleenlähetys ei luo uutta ajotietuetta tai RSS-julkaisua, eikä rinnakkainen ajo voi ylikirjoittaa saman aiheen tilaa.
 23. Käytetyt määritysversiot voidaan jäljittää myöhemmin myös silloin, kun raporttituottaja ei itse tunne tai ilmoita niitä.
 24. Julkiseen raporttiin, RSS-syötteeseen tai Valvomon julkiseen dataan ei päädy salaisuuksia tai tarpeettomia henkilötietoja.
+25. Seuraava käsiteltävä aihe valitaan aktiivisista konfiguraatioista ja seurantatilasta; aiheiden järjestystä ei ole kovakoodattu automaatioon.
+26. Valinta huomioi erääntymisen ja odotusajan niin, ettei jokin kelpoinen aihe jää jatkuvasti muiden ohittamaksi.
+27. Yksi ajokerta voi käsitellä useita yhteensopivia aiheita, mutta jokaisella aihekohtaisella ajolla on oma run_id, tulos, tila ja mahdollinen RSS-item.
+28. Ajokerran ja aihekohtaisten ajojen välinen yhteys voidaan jäljittää, ja ajokerran kokonaislopputila ei peitä osittaista onnistumista.
+29. Ajokerran jatkaminen tai päättäminen perustuu Aiheseuraimen omiin mitattaviin resurssirajoihin eikä oletettuun näkyvyyteen palveluntarjoajan jäljellä olevasta käyttökiintiöstä.
+30. Keskeytyneen ajokerran jälkeen valmistuneet aihekohtaiset tulokset säilyvät, ja seuraava ajo pystyy erottamaan valmistuneet, kesken jääneet ja aloittamattomat aiheet.
+31. Seurantatyyppien omat aikataulu- ja yhteensopivuusvaatimukset estävät aiheiden sopimattoman niputtamisen samaan ajokertaan.
 
 ## 16. Avoimet suunnittelukysymykset
 
@@ -386,7 +424,7 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Periaatera
 1. **Ajotuloksen täsmällinen skeema:** tarkat kenttätyypit, pakollisuus, formaattirajoitteet ja esimerkkitulokset määritellään versioidussa skeemassa.
 2. **Vastaanottorajapinnan toteutus:** tekninen siirtotapa ja tunnistautuminen valitaan käytettävissä olevien turvallisten vaihtoehtojen perusteella; yleinen tietosopimus ei riipu niistä.
 3. **Ajojen orkestrointi:** käynnistimien, ajastusten ja aihekohtaisten erääntymisten tekninen yhteensovitus ratkaistaan erikseen. Nykyisiä tehtäviä ei muuteta tämän määrittelyn perusteella.
-4. **Jonon tarkka valintasääntö:** erääntyneiden ajojen tasapuolisuus, prioriteetit, aikakatkaisut ja uudelleenyritysten rajat täsmennetään toteutussuunnittelussa.
+4. **Jonon tarkka valintasääntö ja resurssirajat:** periaatteet ovat määrityspohjainen dynaaminen valinta, reiluus, aihekohtaiset varaukset ja Aiheseuraimen omat jatkamisrajat. Tarkat pisteytykset, painotukset, aikakatkaisut, enimmäiskestot ja uudelleenyritysten rajat täsmennetään toteutussuunnittelussa.
 5. **Valvomon toteutusjärjestys:** ensimmäiseen vaiheeseen kuuluvat yleiskuva, aihekohtainen tila, ajohistoria ja poikkeamat; tarkka käyttöliittymärakenne suunnitellaan myöhemmin.
 6. **Historiatietojen säilytys:** ajon perustiedot säilytetään pitkäaikaisesti; suurten lokien ja väliaineistojen säilytysajat sekä arkistointi määritellään tietotarpeen ja tietosuojan perusteella.
 7. **Nykyisen toteutuksen siirtymä:** nykyiset osat inventoidaan ja arvioidaan ennen hyödyntämistä tai poistamista. Mitään ei poisteta ilman erillistä suunnitelmaa.
@@ -416,6 +454,7 @@ Kehotteiden tarkka tiedostorakenne, rekisterin kentät ja päivitysmenettely kuv
 
 ## 18. Muutosloki
 
+- **0.8.0 – 20.11.2026:** lisätty konfiguraatioihin ja seurantatilaan perustuva dynaaminen aihevalinta, usean yhteensopivan aiheen käsittely samassa ajokerrassa, ajokerran ja aihekohtaisten ajojen erottelu, reilu jonotus, Aiheseuraimen omat resurssirajat, jatkamispäätökset sekä keskeytyksestä palautuminen.
 - **0.7.1 – 20.11.2026:** täsmennetty tuottajan tuloksen ja vastaanottavan järjestelmän käsittelytilojen erottelu, ajotietueen muodostuminen myös puuttuvan tuottajavastauksen tilanteessa, tuloksen tilaluokat, tietosopimuksen pakolliset kentät sekä tietojen vastuutahot.
 - **0.7.0 – 20.11.2026:** muutettu vaatimusmäärittely tuottajariippumattomaksi. Raporttituottajaksi hyväksytään myös ihminen; raportin tuottaminen, toimittaminen, validointi ja julkaiseminen erotettu toisistaan. Täsmennetty tietosopimuksen versiointi, valinnaiset tuottajametatiedot, määritysten eheys, rinnakkaisten ajojen hallinta, palautuminen, tietosuoja, käyttöoikeudet, jäljitettävyys ja avoimien teknisten kysymysten rajaus.
 - **0.6.0 – 20.11.2026:** päätetty käyttää kehitystehtävien käyttöliittymänä GitHub Projectsia. Oma Kanban-käyttöliittymä, JSON-välimuisti ja niiden automaatiot rajattu pois; Status- ja Priority-kentät johdetaan issue-labeleista ja riippuvuudet hallitaan GitHubin natiiveina suhteina.
