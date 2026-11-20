@@ -2,7 +2,7 @@
   "contract_version": "1.0.0",
   "module_id": "muumit",
   "module_type": "topic",
-  "definition_version": "1.0.0",
+  "definition_version": "1.0.1",
   "name": "Muumit",
   "description": "Muumien, Tove Janssonin perinnön ja Moomin Charactersin hankkeiden kansainvälinen seuranta.",
   "capabilities": [
@@ -65,6 +65,36 @@
     },
     {
       "source_id": "tiketti-fi-events",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "moomin-jp-official",
+      "role": "primary",
+      "required": true
+    },
+    {
+      "source_id": "espoo-metro-areena",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "fashionpost-jp",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "elle-jp",
+      "role": "secondary",
+      "required": false
+    },
+    {
+      "source_id": "muumi-pomppupuisto",
+      "role": "primary",
+      "required": false
+    },
+    {
+      "source_id": "biletti-fi-events",
       "role": "discovery",
       "required": false
     }
