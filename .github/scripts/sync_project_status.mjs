@@ -145,6 +145,15 @@ export async function syncIssueStatus({
   const issue = await responseJson(issueResponse, "Issuen nykyisten tietojen haku");
   if (issue.pull_request) return { skipped: "pull_request" };
 
+  // Projektiin kuuluvat vain kehityskomponentilla merkityt issuet.
+  const componentLabels = (issue.labels || [])
+    .map((label) => typeof label === "string" ? label : label?.name)
+    .filter((name) => typeof name === "string" && name.startsWith("component:"));
+  if (componentLabels.length === 0) return { skipped: "not_a_development_issue" };
+  if (componentLabels.length !== 1) {
+    throw new Error(`Issuella pitää olla täsmälleen yksi component:-label; löytyi ${componentLabels.length}.`);
+  }
+
   const { label, option } = resolveStatusOption(
     issue.labels || [], config.project.options
   );
