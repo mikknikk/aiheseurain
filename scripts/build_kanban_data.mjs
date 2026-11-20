@@ -22,7 +22,8 @@ const DEFAULT_OUTPUT = "data/kehitysjono.json";
 
 /** Rajaa API:n issue-oliosta julkiseen näkymään vain tarpeelliset kentät. */
 export function publicIssue(issue) {
-  if (!issue || !Number.isSafeInteger(Number(issue.number)) || !issue.title || !issue.html_url) {
+  if (!issue || !Number.isSafeInteger(Number(issue.number)) || Number(issue.number) < 1
+      || !issue.title || !issue.html_url || !["open", "closed"].includes(issue.state)) {
     throw new Error("GitHub palautti issue-tietueen, josta puuttuu pakollisia kenttiä.");
   }
   return {
@@ -165,15 +166,24 @@ export function buildIncrementalDataset({ previous, issue, deleted = false, depe
 /** Tarkistaa rivimäärät ja muodostaa yhden täydellisen julkaisuasiakirjan. */
 export function assembleDataset(issues, dependencies, now = new Date(), fullSyncAt = now) {
   const issueNumbers = new Set(issues.map((issue) => issue.number));
-  if (issueNumbers.size !== issues.length || dependencies.length !== issues.length) {
-    throw new Error("Issue- ja riippuvuustietueiden määrät eivät täsmää.");
+  const relationNumbers = new Set(dependencies.map((item) => item.issueNumber));
+  if (issueNumbers.size !== issues.length || dependencies.length !== issues.length
+      || relationNumbers.size !== dependencies.length
+      || [...issueNumbers].some((number) => !relationNumbers.has(number))) {
+    throw new Error("Issue- ja riippuvuustietueiden määrät tai tunnisteet eivät täsmää.");
   }
   for (const relation of dependencies) {
     if (!issueNumbers.has(relation.issueNumber) || !Array.isArray(relation.blockedBy)) {
       throw new Error("Riippuvuusaineisto on puutteellinen.");
     }
+    const blockerNumbers = new Set();
     for (const blocker of relation.blockedBy) {
-      if (!Number.isSafeInteger(blocker.number)) throw new Error("Riippuvuudessa on virheellinen issue-numero.");
+      if (!Number.isSafeInteger(blocker.number) || blocker.number < 1
+          || !issueNumbers.has(blocker.number) || blocker.number === relation.issueNumber
+          || blockerNumbers.has(blocker.number)) {
+        throw new Error("Riippuvuudessa on puuttuva, toistuva tai virheellinen issue-numero.");
+      }
+      blockerNumbers.add(blocker.number);
     }
   }
   return {
