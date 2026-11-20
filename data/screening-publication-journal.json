@@ -12,7 +12,7 @@
       "prepared_at": "2026-11-20T05:49:29+02:00",
       "source_check_run_id": "intialaiset_elokuvat_naytokset-20261120T054929-0200",
       "source_check_ended_at": "2026-11-20T05:49:29+02:00",
-      "phase": "prepared",
+      "phase": "completed",
       "feed": {
         "path": "feeds/intialaisten-elokuvien-naytokset.xml",
         "sha256": "ebd438e23d2e2c888cc030b3713229402ba5a9ee2cb19c2f6df66fcd449d5fd3",
@@ -42,12 +42,12 @@
         ]
       },
       "publication": {
-        "commit_sha": null,
-        "deployment_id": null,
-        "verified_at": null
+        "commit_sha": "12ef14905b416e16700e9d153819f7b0315f382d",
+        "deployment_id": 7933245173,
+        "verified_at": "2026-11-20T06:22:30+02:00"
       },
       "synchronization": {
-        "commit_sha": null
+        "commit_sha": "aeaa508f7f6d91e73de6c4282891d8c7d5e3f098"
       }
     }
   ]
