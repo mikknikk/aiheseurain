@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.2.1  
+**Versio:** 0.3.0  
 **Päiväys:** 20.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -52,9 +52,72 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 - `data/tehtava.json` sisältää kerrallaan yhden tehtävän. Tehtäväpyyntö pysyy muuttumattomana, kunnes kyseisen tehtävän käsittelyn valmistuminen on vahvistettu; vasta sen jälkeen muodostetaan seuraava tehtäväpyyntö.
 - Tehtävän tarkka tiedostopolku, tietorakenne ja tilapäivitysten toteutus määritellään myöhemmin.
 
+Tehtäväpyynnön aikaväli esitetään alkuperäisissä tehtävätiedoissa alkamis- ja päättymishetkenä. Avoimeksi jätetty päättymishetki (`null`) tarkoittaa, että seuranta ulottuu tehtävän muodostamishetkeen. Tehtävän muodostamishetken tarkka aikaleima tallennetaan erikseen, jotta aikaväli voidaan myöhemmin todentaa. Aikaleimojen ja paikallisten aikavyöhykkeiden tarkka esitystapa määritellään tietomallissa.
+
 Ensimmäisessä vaiheessa ei toteuteta erillistä varausmekanismia, varauksen vanhenemista eikä tehtäväkohtaista lukitusta. Yksi raportintuottaja ja yksi aktiivinen tehtäväpyyntö riittävät. Tehtäväpyynnön yksilöllinen `run_id` ja toimituksen idempotentti käsittely säilytetään.
 
 Useiden samanaikaisten raportintuottajien tai tehtävien tuki voidaan lisätä myöhemmin. Silloin suunnitellaan erikseen atominen varaus, varauksen voimassaolo, vanhentuneen varauksen palautus sekä vanhalla `run_id`:llä saapuvien toimitusten hylkääminen. Ensimmäisen vaiheen ratkaisu ei saa tarpeettomasti estää tätä laajennusta.
+
+### 2.2.2 Tehtävätyypit, määritysprofiilit ja aihekohtaiset asetukset
+
+Määritykset jaetaan kolmeen tasoon, jotta samankaltaiset aiheet voivat käyttää yhteisiä asetuksia ja erilaiset tehtävät voivat silti noudattaa omia toimintamallejaan:
+
+1. **Tehtävätyyppi** määrittelee tehtäväluokan yhteisen toimintamallin ja oletusasetukset. Esimerkkejä ovat uutisraportti ja tapahtumavahti.
+2. **Määritysprofiilit** sisältävät uudelleenkäytettäviä, rajattuja asetuskokonaisuuksia. Yksi tehtävä voi käyttää useita yhteensopivia profiileja.
+3. **Aihekohtainen määritys** valitsee tehtävätyypin ja käytettävät profiilit sekä sisältää vain kyseisen aiheen erityisasetukset ja poikkeukset.
+
+Esimerkkihakemistorakenne:
+
+```text
+config/
+  task-types/
+    news-report.json
+    event-monitor.json
+  profiles/
+    concerts.json
+    film-screenings.json
+    classical-music.json
+    indian-cinema.json
+  topics/
+    tolkien.json
+    concert-topic.json
+    indian-film-screenings.json
+docs/
+  topics/
+    tolkien.md
+    concert-topic.md
+    indian-film-screenings.md
+data/
+  sources/
+    ...
+```
+
+Hakemistonimet ja tiedostopolut ovat suunnitteluesimerkkejä; lopullinen rakenne vahvistetaan skeemojen ja nykyisen tiedostorakenteen katselmoinnin yhteydessä.
+
+Tehtävätyyppi sisältää yleiset, saman tehtäväluokan tehtäville kuuluvat oletukset. Profiilit täydentävät niitä esimerkiksi tapahtumalajin, sisältöalueen, genren tai muun uudelleenkäytettävän ominaisuuden mukaan. Aihekohtainen määritys sisältää yksittäisen seurannan omat hakusanat, rajaukset ja muut erot. Ihmiselle tarkoitetut pitkät toimitukselliset ja menettelyohjeet pidetään Markdown-tiedostoissa; koneellisesti käsiteltävät asetukset ovat JSON-tiedostoissa.
+
+Yksi aihe voi käyttää useita profiileja. Esimerkiksi elokuvanäytösvahti voi yhdistää tapahtumavahdin yleiset oletukset, elokuvanäytösprofiilin ja intialaisen elokuvan profiilin. Konserttivahti voi käyttää tapahtumavahdin ja konserttiprofiilin lisäksi esimerkiksi klassisen musiikin profiilia. Profiilien on ilmoitettava yhteensopiva tehtävätyyppi tai muu sovittu yhteensopivuus, jotta niitä ei voi yhdistää virheellisesti keskenään.
+
+Ensimmäisessä versiossa profiilit ovat itsenäisiä määrityksiä: profiili ei peri toista profiilia eikä muodostu mielivaltaiseksi periytymisketjuksi. Tämä pitää yhdistämisen ennustettavana. Profiilien keskinäinen järjestys ilmoitetaan aihekohtaisessa määrityksessä ja ratkaisee mahdolliset päällekkäiset asetukset.
+
+Asetukset ratkaistaan seuraavassa järjestyksessä:
+
+1. tehtävätyypin oletukset;
+2. aihekohtaisessa määrityksessä ilmoitetut profiilit annetussa järjestyksessä;
+3. aihekohtaiset ylikirjoitukset.
+
+Yhdistämissäännöt:
+
+- Sisäkkäiset JSON-objektit yhdistetään rekursiivisesti.
+- Myöhempi arvo korvaa aiemman saman asetuksen arvon.
+- Taulukot korvataan kokonaan; niitä ei yhdistetä automaattisesti.
+- Puuttuva asetus periytyy aiemmalta tasolta.
+- Tuntemattomat avaimet, väärän tyyppiset arvot ja yhteensopimattomat profiilit hylätään validoinnissa.
+- Ylikirjoituksia saa tehdä vain skeemassa sallituissa asetuskohdissa.
+
+GitHub Actions ratkaisee asetukset ennen tehtävän tarjoamista. Raportintuottajalle annetaan valmis, muuttumaton konfiguraatiokokonaisuus osana tehtäväpyyntöä; raportintuottajan ei tarvitse toteuttaa periytymis- tai yhdistelylogiikkaa. Tehtäväpyyntöön tallennetaan myös käytettyjen määritysten versiot tai Git-commit-viite, jotta ajon asetukset voidaan jäljittää ja tarvittaessa rekonstruoida.
+
+Tehtävätyyppien, profiilien ja aihekohtaisten määritysten JSON Schema -skeemat validoivat rakenteet ja sallitut ylikirjoitukset. Markdown-ohjeet versioidaan Gitissä ja niihin viitataan tehtäväpyynnöstä.
 
 ### 2.3 Toimitustapa: Git push erilliseen vastaanottohaaraan
 
@@ -141,7 +204,7 @@ Nämä ovat tavoitetilan päätöksiä, eivät vielä toteutettuja käytäntöj�
 ## 5. Ehdotettu toteutuksen vaiheistus
 
 1. Nykyisen toteutuksen ja arkiston komponenttikohtainen inventaario.
-2. Yhteisten ja aihekohtaisten määritysten sekä toimitussopimuksen skeemojen määrittely.
+2. Tehtävätyyppien, määritysprofiilien ja aihekohtaisten määritysten sekä toimitussopimuksen skeemojen määrittely.
 3. Ajonhallinta: yhden aiheen valinta, `run_id`, ajotietue ja aihekohtainen päällekkäisyyksien esto.
 4. Vastaanottohaara ja Git push -toimituspaketin käsittely.
 5. Validointi, kanoninen ajohistoria ja idempotentti RSS-julkaisu.
@@ -157,7 +220,7 @@ Vaiheistus on suunnitteluehdotus. Se ei anna lupaa käynnistää tuotantoa tai m
 Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
 - miten tehtäväpyynnön tarkka skeema, aikavälien ja aikavyöhykkeiden esitystapa sekä käsittelyn valmistumisen kirjaaminen määritellään;
-- miten tehtävätyyppien yhteiset asetukset, aihekohtaiset JSON-määritykset ja Markdown-ohjeet jaetaan ja versioidaan;
+- miten tehtävätyyppien, profiilien ja aihekohtaisten määritysten tarkat JSON Schema -skeemat, sallitut ylikirjoitukset ja Markdown-ohjeiden viittaukset määritellään;
 - millä tunnistautumistavalla raportintuottaja saa push-oikeuden vain vastaanottohaaraan;
 - miten vastaanottohaaran toimituspaketin eheys ja täydellisyys varmistetaan;
 - miten `metadata.json)-tiedoston tarkka skeema määritellään;
