@@ -29,10 +29,10 @@ description: Aiheseuraimen GitHub Issues -pohjainen, vain luku -muotoinen kehity
     </select>
   </div>
   <div class="kanban-filter">
-    <label for="kanban-area">Aihealue</label>
-    <select id="kanban-area">
-      <option value="all">Kaikki aihealueet</option>
-      <option value="none">Ei aihealuetta merkitty</option>
+    <label for="kanban-component">Komponentti</label>
+    <select id="kanban-component">
+      <option value="all">Kaikki komponentit</option>
+      <option value="none">Ei komponenttia merkitty</option>
     </select>
   </div>
   <p id="kanban-count" class="kanban-count" role="status" aria-live="polite">Ladataan tikettejä…</p>
@@ -67,7 +67,7 @@ description: Aiheseuraimen GitHub Issues -pohjainen, vain luku -muotoinen kehity
           <th scope="col">Numero</th>
           <th scope="col">Tehtävä</th>
           <th scope="col">Prioriteetti</th>
-          <th scope="col">Aihealue</th>
+          <th scope="col">Komponentti</th>
           <th scope="col">Tila</th>
           <th scope="col">Riippuvuudet</th>
         </tr>
@@ -78,7 +78,7 @@ description: Aiheseuraimen GitHub Issues -pohjainen, vain luku -muotoinen kehity
   <section id="kanban-dependency-details" class="kanban-dependency-details" aria-label="Valitun tiketin riippuvuudet" aria-live="polite" hidden></section>
 </section>
 
-<p class="kanban-help">Riippuvuudet luetaan GitHubin omista issue-riippuvuuksista ja julkaistaan yhdessä tikettiaineiston kanssa. Edeltäjä estää tämän tiketin etenemisen; Estää kertoo, mitä töitä tämän tiketin valmistuminen vapauttaa. Selain ei tee tikettikohtaisia GitHub API -pyyntöjä. Aihealue suodatetaan GitHub-labelien <code>aihe:</code> perusteella. Jos tiketiltä puuttuu tila tai prioriteetti, sitä ei luokitella arvaamalla. Suljetut GitHub-issuet näkyvät Valmis-sarakkeessa.</p>
+<p class="kanban-help">Riippuvuudet luetaan GitHubin omista issue-riippuvuuksista ja julkaistaan yhdessä tikettiaineiston kanssa. Edeltäjä estää tämän tiketin etenemisen; Estää kertoo, mitä töitä tämän tiketin valmistuminen vapauttaa. Selain ei tee tikettikohtaisia GitHub API -pyyntöjä. Komponentti tunnistetaan GitHub-labelista <code>component:</code>, prioriteetti labelista <code>priority:P0</code>–<code>priority:P3</code> ja tila labelista <code>status:</code>. Jos tiketiltä puuttuu tila tai prioriteetti, sitä ei luokitella arvaamalla. Suljetut GitHub-issuet näkyvät Valmis-sarakkeessa.</p>
 
 <noscript>
   <p class="notice notice-error">Kehitysjono tarvitsee JavaScriptin ja julkaistun JSON-aineiston. Voit tarkastella ja ylläpitää tikettejä suoraan <a href="https://github.com/mikknikk/aiheseurain/issues">GitHub Issuesissa</a>.</p>
