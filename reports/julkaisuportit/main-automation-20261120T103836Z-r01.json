@@ -3,7 +3,7 @@
   "run_id": "main-automation-20261120T103836Z-r01",
   "task_id": "muumit",
   "feed_path": "feeds/muumit.xml",
-  "checked_at": "2026-11-20T12:46:52+02:00",
+  "checked_at": "2026-11-20T12:57:49+02:00",
   "checklist": {
     "sources_opened": {
       "status": "pass",
