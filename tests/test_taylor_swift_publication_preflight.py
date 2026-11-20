@@ -1,7 +1,6 @@
 """Taylor Swift -julkaisutilan ennakkotarkistuksen fail-closed-testit."""
 from __future__ import annotations
 
-import copy
 import unittest
 
 from scripts.taylor_swift_publication_preflight import (
