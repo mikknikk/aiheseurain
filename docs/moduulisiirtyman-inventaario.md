@@ -59,7 +59,7 @@ Seuraava yhteenveto on muodostettu kymmenen tehtäväkohtaisen käyttörekisteri
 | Tolkien | 28 | de, en, es, eu, fi, fr, it, pt-BR | BR, DE, ES, FI, FR, GLOBAL, IT, LATAM, NZ, UK, US |
 | Taylor Swift | 10 | en, fi, pt-BR | BR, FI, GLOBAL, US |
 | Gurmeet Ram Rahim Singh | 7 | en, hi, pa | IN-CH, IN-HR, IN-NATIONAL, IN-PB |
-| Muumit | 8 | en, fi, ja, sv | FI, GLOBAL, JP, SE, UK |
+| Muumit | 14 | en, fi, ja, sv | FI, GLOBAL, JP, SE, UK |
 | Wakaliwood | 5 | en | EAST-AFRICA, UG |
 | Euroviisut | 10 | bn, en, fi, ko, ms, ne, sv, th, tl, vi | ASIA, EUROPE, FI, GLOBAL |
 | Sompote Sands | 6 | en, ja, th | JP, TH |
@@ -211,5 +211,6 @@ Tekniset toteutuspäätökset, jotka eivät muuta näitä sisältö- tai käytt�
 
 ## Muutoshistoria
 
+- **1.2.0 – 2026-11-20:** päivitettiin Muumien lähdeviitteiden määrä 14:ään vastaamaan nykyistä tehtäväkohtaista lähderekisteriä; moduulit pysyvät inactive-tilassa.
 - **1.1.0 – 2026-11-18:** päivitettiin inventaario vastaamaan #105:n toteutusta: kymmenen moduulia on rekisteröity inactive-tilassa, moduulihakemiston määritykset on lisätty ja näytösvahtimoduuli käyttää #109:n tapahtumatyyppiviitettä.
 - **1.0.0 – 2026-11-17:** ensimmäinen nykyisten aihe- ja prosessimoduulien inventaario, tiedostojen siirtokartta, omistajuusrajat, päällekkäisyysriskit, riippuvuudet sekä palautettava migraatiosuunnitelma.
