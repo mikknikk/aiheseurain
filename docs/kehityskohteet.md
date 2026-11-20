@@ -431,13 +431,13 @@ Suositeltu toteutusjärjestys:
 
 ### Issue #248 – Taylor Swift -julkaisutilan ennakkotarkistus
 
-**Tila:** fail-closed-ennakkotarkistin valmis PR:ssä #249, yhdistetty `main)-haaraan commitilla `32934e2f48211888cf827a2dae40d3065e5d3e2e`. Kaikki kolme vaadittua CI-työnkulkua läpäisivät. Varsinaista varjoharjoitusta ei ole käynnistetty, koska valitun jakson julkaisutila jäi tuntemattomaksi.
+**Tila:** fail-closed-ennakkotarkistin valmis PR:ssä #249, yhdistetty `main`-haaraan commitilla `32934e2f48211888cf827a2dae40d3065e5d3e2e`. Kaikki kolme vaadittua CI-työnkulkua läpäisivät. Varsinaista varjoharjoitusta ei ole käynnistetty, koska valitun jakson julkaisutila jäi tuntemattomaksi.
 
 - [x] Historiallinen 16.–17.11.2026 repositoriotason julkaisu tunnistettu ja dokumentoitu.
 - [x] Neljän kanavan täsmälliseen seurantajaksoon sidottu luokitus toteutettu: `published`, `unpublished`, `unknown` ja `conflict`.
 - [x] Fail-closed-ennakkotarkistin, skeema, regressiotestit ja ohjeistus toteutettu PR:ssä #249.
 - [x] Harjoitusjakson 18.11.2026 klo 00.00 – 19.11.2026 klo 23.59.59 (+02:00) vanha raportointiloki ja repositorion RSS tarkistettu; niissä ei havaittu kyseisen jakson ajoa tai raporttia.
-- [ ] Runtime-julkaisupäiväkirja: `module-runtime-state)-haara puuttuu, joten tarkistus on tuntematon.
+- [ ] Runtime-julkaisupäiväkirja: `module-runtime-state`-haara puuttuu, joten tarkistus on tuntematon.
 - [ ] Julkisen Pages-RSS:n takaisinluku: ei voitu vahvistaa.
 - [ ] Varjoharjoitus: estetty, koska julkaisutila ei ole kaikissa kanavissa todennetusti `unpublished`.
 
