@@ -9,7 +9,7 @@ Aiheseuraimen toimintamalli määritellään uudelleen yksinkertaiseksi ChatGPT-
 - GitHub Issuesin natiivit riippuvuudet ovat riippuvuuksien ainoa tietolähde. Katso [riippuvuuksien hallintaohje](docs/github-riippuvuuksien-hallinta.md).
 - Project-kenttien automaattinen päivitys on kuvattu [Project-synkronoinnin ohjeessa](docs/github-project-synkronointi.md).
 - Valvomo on tavoiteltu ensisijainen käyttöliittymä. RSS-lukija säilyy erillisenä käyttötarkoituksena.
-- Aiheiden ja seurantotyyppien tulee olla dynaamisia määrityksiä, eivät yleiseen toteutukseen kovakoodattuja.
+- Aiheiden ja seurantatyyppien tulee olla dynaamisia määrityksiä, eivät yleiseen toteutukseen kovakoodattuja.
 - ChatGPT tekee tutkimus- ja raportointityön. GitHub vastaanottaa ja validoi rakenteiset ajotulokset sekä julkaisee hyväksytyt RSS-itemit.
 
 ## Nykyinen julkaistu sisältö
