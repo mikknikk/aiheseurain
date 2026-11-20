@@ -84,8 +84,8 @@ test("hylkää puuttuvan, toistuvan tai itseensä osoittavan riippuvuustietueen"
     { issueNumber: 1, blockedBy: [] }
   ]), /tunnisteet eivät täsmää/);
   assert.throws(() => assembleDataset(issues, [
-    { issueNumber: 1, blockedBy: [issue(2)] },
-    { issueNumber: 2, blockedBy: [issue(1)] }
+    { issueNumber: 1, blockedBy: [issue(3)] },
+    { issueNumber: 2, blockedBy: [] }
   ]), /puuttuva, toistuva tai virheellinen/);
   assert.throws(() => assembleDataset(issues, [
     { issueNumber: 1, blockedBy: [issue(1)] },
