@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from scripts.taylor_swift_shadow import (
     TaylorSwiftShadowError,
     prepare_taylor_swift_shadow,
+    start_fresh_taylor_swift_shadow_run,
     write_shadow_artifact,
 )
 
@@ -138,6 +139,56 @@ class TaylorSwiftShadowPreparationTests(unittest.TestCase):
         artifact["module_id"] = "tolkien"
         with self.assertRaises(TaylorSwiftShadowError):
             write_shadow_artifact(self.root, artifact, kind="prepared")
+
+    def test_fresh_run_gets_new_directory_without_resetting_old_or_production_data(self):
+        checkpoint = self.root / "data/module-state/taylor-swift.json"
+        feed = self.root / "feeds/taylor-swift.xml"
+        checkpoint_before = checkpoint.read_bytes()
+        feed_before = feed.read_bytes()
+
+        old_run = self.root / "data/shadow-exercises/taylor-swift/old-run-20261119"
+        old_run.mkdir(parents=True)
+        old_marker = old_run / "preserved.txt"
+        old_marker.write_text("vanha testinäyttö", encoding="utf-8")
+        other_module = self.root / "data/shadow-exercises/tolkien/keep.txt"
+        other_module.parent.mkdir(parents=True)
+        other_module.write_text("toisen moduulin aineisto", encoding="utf-8")
+
+        preparation, artifact_path = start_fresh_taylor_swift_shadow_run(
+            run_id="swift-shadow-20261121-01",
+            period_start="2026-11-21T00:00:00+02:00",
+            period_end="2026-11-21T23:59:59+02:00",
+            requested_at="2026-11-20T12:00:00+02:00",
+            root=self.root,
+        )
+
+        self.assertEqual(preparation["baseline"]["kind"], "isolated_empty_shadow_baseline")
+        self.assertFalse(preparation["execution_authorized"])
+        self.assertEqual(
+            artifact_path.relative_to(self.root).as_posix(),
+            "data/shadow-exercises/taylor-swift/swift-shadow-20261121-01/prepared.json",
+        )
+        self.assertTrue(old_marker.exists())
+        self.assertEqual(old_marker.read_text(encoding="utf-8"), "vanha testinäyttö")
+        self.assertEqual(other_module.read_text(encoding="utf-8"), "toisen moduulin aineisto")
+        self.assertEqual(checkpoint.read_bytes(), checkpoint_before)
+        self.assertEqual(feed.read_bytes(), feed_before)
+
+    def test_fresh_run_refuses_to_reuse_existing_run_id_directory(self):
+        existing = self.root / "data/shadow-exercises/taylor-swift/swift-shadow-20261121-01"
+        existing.mkdir(parents=True)
+        marker = existing / "keep.txt"
+        marker.write_text("älä poista", encoding="utf-8")
+
+        with self.assertRaises(TaylorSwiftShadowError):
+            start_fresh_taylor_swift_shadow_run(
+                run_id="swift-shadow-20261121-01",
+                period_start="2026-11-21T00:00:00+02:00",
+                period_end="2026-11-21T23:59:59+02:00",
+                requested_at="2026-11-20T12:00:00+02:00",
+                root=self.root,
+            )
+        self.assertEqual(marker.read_text(encoding="utf-8"), "älä poista")
 
     def test_result_artifact_cannot_be_written_as_preparation(self):
         artifact = self.prepare()

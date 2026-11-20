@@ -271,8 +271,16 @@ def prepare_taylor_swift_shadow(
     }
 
 
-def write_shadow_artifact(root: Path, artifact: dict[str, Any], *, kind: str) -> Path:
-    """Tallenna JSON vain moduulin omaan shadow-hakemistoon, luomatta ylikirjoitusta."""
+def write_shadow_artifact(
+    root: Path, artifact: dict[str, Any], *, kind: str,
+    create_run_directory: bool = False,
+) -> Path:
+    """Tallenna JSON vain Taylor Swiftin omaan varjohakemistoon.
+
+    Oletustapa sallii saman ajohakemiston eri artefaktit mutta ei koskaan
+    ylikirjoita tiedostoa. Uuden testikierroksen alustus voi pyytää
+    create_run_directory=True, jolloin myös run_id-hakemiston on oltava uusi.
+    """
     if kind not in {"prepared", "result"}:
         raise TaylorSwiftShadowError("Varjoartefaktin tyyppi ei ole sallittu.")
     if artifact.get("module_id") != MODULE_ID:
@@ -286,7 +294,7 @@ def write_shadow_artifact(root: Path, artifact: dict[str, Any], *, kind: str) ->
         raise TaylorSwiftShadowError("Tuloksen varjoartefaktin tyyppi ei täsmää.")
     root = Path(root).resolve()
     directory = root / "data/shadow-exercises" / MODULE_ID / run_id
-    if directory.resolve().is_relative_to(root) is False:
+    if not directory.resolve().is_relative_to(root):
         raise TaylorSwiftShadowError("Varjoartefaktin polku poistuu repositoriosta.")
     # Estä myös ylempien hakemistojen symboliset linkit, ei vain lopullista kansiota.
     for component in (
@@ -295,7 +303,13 @@ def write_shadow_artifact(root: Path, artifact: dict[str, Any], *, kind: str) ->
     ):
         if component.is_symlink():
             raise TaylorSwiftShadowError("Varjoartefaktin polun osat eivät saa olla symbolisia linkkejä.")
-    directory.mkdir(parents=True, exist_ok=True)
+    try:
+        # Uusi testiajo saa oman uuden hakemiston; vanhaa ajohakemistoa ei tyhjennetä.
+        directory.mkdir(parents=True, exist_ok=not create_run_directory)
+    except FileExistsError as exc:
+        raise TaylorSwiftShadowError(
+            "run_id on jo käytössä; olemassa olevaa testiajoa ei nollata eikä ylikirjoiteta."
+        ) from exc
     destination = directory / f"{kind}.json"
     payload = json.dumps(artifact, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
     try:
@@ -304,3 +318,23 @@ def write_shadow_artifact(root: Path, artifact: dict[str, Any], *, kind: str) ->
     except FileExistsError as exc:
         raise TaylorSwiftShadowError("Varjoartefakti on jo olemassa; sitä ei ylikirjoiteta.") from exc
     return destination
+
+
+def start_fresh_taylor_swift_shadow_run(
+    *, run_id: str, period_start: str, period_end: str, requested_at: str,
+    root: Path = ROOT,
+) -> tuple[dict[str, Any], Path]:
+    """Alusta uusi, tyhjä Taylor Swift -varjoajo poistamatta aiempaa testidataa.
+
+    Ensin kaikki tavalliset valmisteluportit tarkistetaan ilman kirjoituksia.
+    Vasta niiden läpäisyn jälkeen luodaan uusi run_id-hakemisto ja tallennetaan
+    valmisteluasiakirja. Olemassa olevaa hakemistoa ei koskaan tyhjennetä.
+    """
+    preparation = prepare_taylor_swift_shadow(
+        run_id=run_id, period_start=period_start, period_end=period_end,
+        requested_at=requested_at, root=root,
+    )
+    artifact_path = write_shadow_artifact(
+        root, preparation, kind="prepared", create_run_directory=True,
+    )
+    return preparation, artifact_path
