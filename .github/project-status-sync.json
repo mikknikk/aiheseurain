@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "repository": "mikknikk/aiheseurain",
+  "project": {
+    "owner_login": "mikknikk",
+    "number": 3,
+    "id": "PVT_kwHOACf60s4BsfD3",
+    "status_field_id": "PVTSSF_lAHOACf60s4BsfD3zhqtA8g",
+    "options": {
+      "status:backlog": {
+        "name": "Todo",
+        "id": "f75ad846"
+      },
+      "status:ready-for-development": {
+        "name": "Ready for Development",
+        "id": "4a70c3f4"
+      },
+      "status:in-progress": {
+        "name": "In Progress",
+        "id": "47fc9ee4"
+      },
+      "status:done": {
+        "name": "Done",
+        "id": "98236657"
+      }
+    }
+  }
+}
