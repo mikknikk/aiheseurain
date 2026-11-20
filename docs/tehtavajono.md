@@ -16,7 +16,7 @@ Tämä tiedosto on tehtäväjonon ensisijainen totuuslähde: se määrittää yh
 
 ## Seuraava tehtävä
 
-**Vuorossa seuraavaksi: Muumit.**
+**Vuorossa seuraavaksi: Wakaliwood.**
 
 ## Kiertoperiaate
 
