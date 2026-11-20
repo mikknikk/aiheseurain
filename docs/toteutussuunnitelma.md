@@ -1,8 +1,8 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.1.0  
+**Versio:** 0.2.0  
 **Päiväys:** 20.11.2026  
-**Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu, tekniset yksityiskohdat avoinna  
+**Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
@@ -40,6 +40,20 @@ Actionsin tehtäviä ovat esimerkiksi:
 - virhetilanteiden käsittely.
 
 Raportintuottajan tutkimus- ja raportointikyvykkyys on tästä erillinen. Ohjaus- ja julkaisukerroksen toiminta ei saa edellyttää tekoälypalvelua.
+
+### 2.2.1 Tehtävän tarjoaminen raportintuottajalle
+
+Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportintuottaja toimii pull-mallilla: se käynnistyy omalla ajastuksellaan, lukee GitHubista tehtävänanto-ohjeen ja hakee sen osoittaman tehtäväpyynnön.
+
+- GitHub Actions valitsee seuraavan aiheen ja muodostaa yhden tehtäväpyynnön raportintuottajan noudettavaksi.
+- Tehtäväpyyntö sisältää vähintään yksilöllisen `run_id`-tunnisteen, aiheen tunnisteen ja tehtävän suorittamiseen tarvittavat ohje- ja aikavälitiedot.
+- Raportintuottaja ei itse valitse seuraavaa aihetta eikä muuta jonotuksen ohjaustietoja.
+- Tehtäväpyyntö valmistellaan ennakkoon; raportintuottajan ei tarvitse käynnistää GitHub Actions -ajoa eikä odottaa erillistä hyväksyntävastausta tehtävää hakiessaan.
+- Tehtävän tarkka tiedostopolku, tietorakenne ja tilapäivitysten toteutus määritellään myöhemmin.
+
+Ensimmäisessä vaiheessa ei toteuteta erillistä varausmekanismia, varauksen vanhenemista eikä tehtäväkohtaista lukitusta. Yksi raportintuottaja ja yksi aktiivinen tehtäväpyyntö riittävät. Tehtäväpyynnön yksilöllinen `run_id` ja toimituksen idempotentti käsittely säilytetään.
+
+Useiden samanaikaisten raportintuottajien tai tehtävien tuki voidaan lisätä myöhemmin. Silloin suunnitellaan erikseen atominen varaus, varauksen voimassaolo, vanhentuneen varauksen palautus sekä vanhalla `run_id`:llä saapuvien toimitusten hylkääminen. Ensimmäisen vaiheen ratkaisu ei saa tarpeettomasti estää tätä laajennusta.
 
 ### 2.3 Toimitustapa: Git push erilliseen vastaanottohaaraan
 
@@ -141,7 +155,7 @@ Vaiheistus on suunnitteluehdotus. Se ei anna lupaa käynnistää tuotantoa tai m
 
 Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
-- miten ajo käynnistetään ja miten raportintuottaja saa tehtävän sekä `run_id`-tunnisteen;
+- mikä on tehtäväpyynnön tarkka tiedostopolku ja skeema sekä miten tehtäväpyynnön tila ja käsittelyn valmistuminen kirjataan;
 - millä tunnistautumistavalla raportintuottaja saa push-oikeuden vain vastaanottohaaraan;
 - miten vastaanottohaaran toimituspaketin eheys ja täydellisyys varmistetaan;
 - miten `metadata.json)-tiedoston tarkka skeema määritellään;
