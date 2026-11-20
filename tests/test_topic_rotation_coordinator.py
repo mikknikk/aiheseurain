@@ -132,7 +132,7 @@ class TopicRotationCoordinatorTests(unittest.TestCase):
             runner=runner,
         )
         self.assertNotIn(marker, bundle_to_json(runner.calls[0][0]))
-        self.assertEqual(dispatch.selection.module_id, "muumit")
+        self.assertEqual(dispatch.selection.module_id, "wakaliwood")
 
     def test_runtime_rotation_state_selects_next_task_without_editing_bootstrap_docs(self):
         state = json.loads((ROOT / "data/seurantatila.json").read_text(encoding="utf-8"))
