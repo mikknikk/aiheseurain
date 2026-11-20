@@ -12,15 +12,15 @@ Työnkulku tallentaa yhteenvedon Actions-ajon Summary-välilehdelle ja täydelli
 
 1. Kaikki `rss-publication-manifest`-ympäristön GitHub Deployment -tietueet sivutettuna.
 2. Manifestien Taylor Swift -syötteen GUID-luettelon ja manifestin lähdecommitin RSS-tiedoston.
-3. Deploymentin viimeisimmän tilamerkinnän.
+3. Deploymentin koko tilahistorian, viimeisimmän tilan sekä tiedon siitä, onko deployment koskaan saanut `success`-tilaa.
 4. Kohdejakson `.github/workflows/publish-pages.yml`-ajot ja niiden job/step-tulokset.
 5. Tarkistushetken julkisen Taylor Swift -RSS-syötteen sekä sen SHA-256-tiivisteen.
 
-Tarkistin etsii lähdecommitin RSS-itemeistä täsmälleen kohdejakson alku- ja loppupäiviä sisältävän eksplisiittisen Seurantajakso-tekstin. Vain onnistunut Pages-deployment, jonka lähdecommit sisältää kohdejakson raportin, merkitään todisteeksi julkaistusta raportista.
+Tarkistin etsii lähdecommitin RSS-itemeistä täsmälleen kohdejakson alku- ja loppupäiviä sisältävän eksplisiittisen Seurantajakso-tekstin. Vain Pages-deployment, jonka lähdecommit sisältää kohdejakson raportin ja jonka tilahistoriassa on `success`-merkintä, merkitään todisteeksi julkaistusta raportista. Myöhempi `inactive`-tila ei poista historiallista onnistumista: GitHub voi merkitä aiemman ei-tuotantoympäristön deploymentin passiiviseksi uudemman julkaisun jälkeen.
 
 ## Tulkinta ja fail-closed-raja
 
-- **published:** vähintään yksi onnistunut Pages-deploymentin RSS-manifesti sisältää kohdejakson raportin.
+- **published:** vähintään yksi Pages-deploymentin RSS-manifesti sisältää kohdejakson raportin ja deploymentin tilahistoriassa on ollut `success`-tila. Viimeisin tila voi myöhemmin olla `inactive`.
 - **unknown:** tällaista todistetta ei löytynyt tai historia ei sisällä riittäviä tietoja.
 - Tarkistin ei koskaan päättele **unpublished** pelkästään puuttuvista manifesteista. Manifesti luodaan nykyisessä julkaisupolussa vain RSS-tiedostomuutoksia sisältäneille ajoille.
 - Nykyisen Pages-RSS:n sisältö ei ole historiallinen snapshot eikä yksin todista aiempaa julkaisutilaa.

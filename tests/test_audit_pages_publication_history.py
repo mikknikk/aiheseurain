@@ -55,7 +55,29 @@ class PagesHistoryAuditTests(unittest.TestCase):
 
     def test_missing_status_is_not_success(self):
         with patch("scripts.audit_pages_publication_history.paginated", return_value=[]):
-            self.assertEqual(status_for(42, "token")["state"], "no_status")
+            result = status_for(42, "token")
+            self.assertEqual(result["state"], "no_status")
+            self.assertFalse(result["ever_successful"])
+
+    def test_inactive_latest_status_preserves_historical_success(self):
+        rows = [
+            {"state": "success", "created_at": "2026-11-19T10:00:00Z"},
+            {"state": "inactive", "created_at": "2026-11-20T10:00:00Z"},
+        ]
+        with patch("scripts.audit_pages_publication_history.paginated", return_value=rows):
+            result = status_for(42, "token")
+        self.assertEqual(result["state"], "inactive")
+        self.assertTrue(result["ever_successful"])
+        self.assertEqual(result["status_count"], 2)
+
+    def test_failure_without_success_is_not_publication_evidence(self):
+        rows = [
+            {"state": "failure", "created_at": "2026-11-19T10:00:00Z"},
+            {"state": "inactive", "created_at": "2026-11-20T10:00:00Z"},
+        ]
+        with patch("scripts.audit_pages_publication_history.paginated", return_value=rows):
+            result = status_for(42, "token")
+        self.assertFalse(result["ever_successful"])
 
 if __name__ == "__main__":
     unittest.main()

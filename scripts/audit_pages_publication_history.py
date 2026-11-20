@@ -91,9 +91,22 @@ def status_for(deployment_id: int, token: str) -> dict:
     """Lue deploymentin viimeisin tilamerkintä."""
     statuses = paginated(f"deployments/{deployment_id}/statuses", token)
     if not statuses:
-        return {"state": "no_status", "description": None, "created_at": None}
+        # Puuttuva tilahistoria ei ole onnistumistodiste; palauta silti
+        # sama täydellinen tietorakenne kuin muissa tilahistorian tuloksissa.
+        return {
+            "state": "no_status", "description": None, "created_at": None,
+            "ever_successful": False, "status_count": 0,
+        }
     latest = max(statuses, key=lambda x: x.get("created_at", ""))
-    return {k: latest.get(k) for k in ("state", "description", "created_at")}
+    # Deployment voidaan myöhemmin merkitä inactive-tilaan, kun uudempi
+    # julkaisu korvaa sen. Tämä ei peruuta sitä, että aiempi RSS-sisältö
+    # ehti jo onnistuneesti julkiseksi. Siksi säilytämme sekä viimeisimmän
+    # tilan että tiedon siitä, esiintyikö historiassa success-tila.
+    return {
+        **{k: latest.get(k) for k in ("state", "description", "created_at")},
+        "ever_successful": any(row.get("state") == "success" for row in statuses),
+        "status_count": len(statuses),
+    }
 
 def report_period_matches(item: ET.Element, start: datetime, end: datetime) -> bool:
     """Tunnista vain raportin eksplisiittinen seurantajakso; pubDate ei yksin riitä."""
@@ -151,7 +164,8 @@ def audit_deployments(start: datetime, end: datetime, token: str) -> dict:
             "deployment_id": deployment_id, "created_at": row.get("created_at"),
             "source_commit": sha, "workflow_run_id": manifest.get("workflow_run_id"),
             "manifest_guids": feed.get("guids", []), "period_items_in_source_commit": items,
-            "deployment_status": status, "successful_pages_publication": status.get("state") == "success",
+            "deployment_status": status,
+            "successful_pages_publication": status.get("ever_successful") is True,
         })
     proven = any(x["successful_pages_publication"] for x in matches)
     return {
