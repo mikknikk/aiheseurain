@@ -1865,6 +1865,118 @@
         "FI"
       ],
       "reliability_class": "B"
+    },
+    {
+      "id": "moomin-jp-official",
+      "name": "Moomin Official Website (Japan)",
+      "url": "https://www.moomin.co.jp/news",
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "JP"
+      ],
+      "reliability_class": "A",
+      "reliability_note": "Moomin Charactersin virallinen Japanin sivusto; ensisijainen lähde Japanin tapahtuma-, lisensointi- ja myymäläuutisille."
+    },
+    {
+      "id": "bottega-veneta-jp",
+      "name": "Bottega Veneta Japan – Moomin Capsule",
+      "url": "https://www.bottegaveneta.com/ja-jp/moomin-capsule.html",
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "JP"
+      ],
+      "reliability_class": "A",
+      "reliability_note": "Bottega Venetan virallinen Japanin sivu kyseiselle Moomin-yhteistyökokoelmalle."
+    },
+    {
+      "id": "hokkaido-red-brick",
+      "name": "Hokkaido Red Brick Government Building – Event Information",
+      "url": "https://www.hokkaido-redbrick.jp/2026/11/06/760/",
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "JP"
+      ],
+      "reliability_class": "A",
+      "reliability_note": "Sapporon punatiilisen hallintorakennuksen virallinen tapahtumasivu."
+    },
+    {
+      "id": "espoo-metro-areena",
+      "name": "Espoo Metro Areena – Events",
+      "url": "https://www.metroareena.fi/tapahtuma/muumimusiikkia/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "A",
+      "reliability_note": "Tapahtumapaikan virallinen tapahtumasivu; ensisijainen lähde areenan tapahtumatiedoille."
+    },
+    {
+      "id": "fashionpost-jp",
+      "name": "The Fashion Post (Japan)",
+      "url": "https://fashionpost.jp/news/407081",
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "JP"
+      ],
+      "reliability_class": "B",
+      "reliability_note": "Japanilainen muoti- ja kulttuurimedia; hyödyllinen lisensointi- ja muotiyhteistöiden toimitukselliseen seurantaan."
+    },
+    {
+      "id": "elle-jp",
+      "name": "ELLE Japan",
+      "url": "https://www.elle.com/jp/fashion/a74307010/bottega-veneta-moomin-2611/",
+      "language_regions": [
+        "ja"
+      ],
+      "source_type": "editorial",
+      "regions": [
+        "JP"
+      ],
+      "reliability_class": "B",
+      "reliability_note": "Japanilainen muoti- ja kulttuurimedia; hyödyllinen lisensointi- ja muotiyhteistöiden toimitukselliseen seurantaan."
+    },
+    {
+      "id": "muumi-pomppupuisto",
+      "name": "Muumi Pomppupuisto",
+      "url": "https://www.muumipomppupuisto.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "primary",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "A",
+      "reliability_note": "Pomppulaakso Oy:n virallinen sivu kiertävän Muumi Pomppupuiston tapahtumapaikoille ja aikatauluille."
+    },
+    {
+      "id": "biletti-fi-events",
+      "name": "Biletti",
+      "url": "https://biletti.fi/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "C",
+      "reliability_note": "Suomalainen lipunmyyntipalvelu; tapahtumien löytämiseen ja lipputietojen tarkistamiseen, ei yksin järjestäjän vahvistukseksi."
     }
   ]
 }
