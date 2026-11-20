@@ -23,6 +23,7 @@
         "name": "Done",
         "id": "98236657"
       }
-    }
+    },
+    "priority_field_name": "Priority"
   }
 }
