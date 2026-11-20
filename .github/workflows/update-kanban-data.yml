@@ -89,10 +89,11 @@ jobs:
         github.event.action == 'reopened' ||
         (
           (github.event.action == 'labeled' || github.event.action == 'unlabeled') &&
-          (
-            startsWith(github.event.label.name, 'status:') ||
-            startsWith(github.event.label.name, 'priority:')
-          )
+          startsWith(github.event.label.name, 'status:')
+        ) ||
+        (
+          github.event.action == 'labeled' &&
+          startsWith(github.event.label.name, 'priority:')
         )
       )
     runs-on: ubuntu-latest
