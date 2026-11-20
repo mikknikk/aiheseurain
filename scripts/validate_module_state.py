@@ -117,7 +117,11 @@ def validate_state_migration() -> list[str]:
         legacy_checked_at = old_task.get("last_successful_check")
         checkpoint_checked_at = checkpoint["checked_at"]
         latest_task_run = next(
-            (item for item in reversed(source_log["runs"]) if item["task_id"] == task_id),
+            (
+                item for item in source_log["runs"]
+                if item["task_id"] == task_id
+                and item["ended_at"] == source_log["latest_by_task"].get(task_id)
+            ),
             None,
         )
         if (
@@ -146,7 +150,11 @@ def validate_state_migration() -> list[str]:
                 legacy_advanced = False
 
             latest_run = next(
-                (item for item in reversed(source_log["runs"]) if item["task_id"] == task_id),
+                (
+                    item for item in source_log["runs"]
+                    if item["task_id"] == task_id
+                    and item["ended_at"] == source_log["latest_by_task"].get(task_id)
+                ),
                 None,
             )
             # A later partial/failed attempt may follow the last successful run.
@@ -226,7 +234,11 @@ def validate_state_migration() -> list[str]:
             # partial: jäähdytysajalla olevat lähteet eivät yksin estä vuoroa.
             # Moduulin oma checkpoint ei kuitenkaan saa edetä osittaisesta ajosta.
             latest_run = next(
-                (item for item in reversed(source_log["runs"]) if item["task_id"] == task_id),
+                (
+                    item for item in source_log["runs"]
+                    if item["task_id"] == task_id
+                    and item["ended_at"] == source_log["latest_by_task"].get(task_id)
+                ),
                 None,
             )
             expected_period_note = (
