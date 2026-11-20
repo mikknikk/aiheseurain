@@ -10,6 +10,9 @@ on:
       - "tests/kanban.test.mjs"
       - "tests/kanban-data.test.mjs"
       - "tests/issue-dependencies.test.mjs"
+      - ".github/scripts/sync_project_status.mjs"
+      - ".github/project-status-sync.json"
+      - "tests/project-status-sync.test.mjs"
       - ".github/workflows/test-kanban.yml"
   workflow_dispatch:
 
@@ -34,6 +37,7 @@ jobs:
         run: |
           node --check scripts/build_kanban_data.mjs
           node --check .github/scripts/sync_issue_dependencies.mjs
+          node --check .github/scripts/sync_project_status.mjs
           node --check assets/js/kanban.js
       - name: Aja välimuistin ja riippuvuuksien testit
-        run: node --test tests/kanban.test.mjs tests/kanban-data.test.mjs tests/issue-dependencies.test.mjs
+        run: node --test tests/kanban.test.mjs tests/kanban-data.test.mjs tests/issue-dependencies.test.mjs tests/project-status-sync.test.mjs
