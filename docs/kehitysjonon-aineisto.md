@@ -81,7 +81,7 @@ Määritys on tiedostossa `.github/project-status-sync.json`. Se sisältää Pro
 
 Priority-kentän Single select -vaihtoehtojen nimien tulee alkaa vastaavalla tunnuksella (esimerkiksi `P1` tai `P1 – Korkea`). Synkronointi hylkää puuttuvan, moninkertaisen tai tuntemattoman prioriteettilabelin sekä tilanteen, jossa kentästä ei löydy täsmälleen yhtä vastaavaa vaihtoehtoa.
 
-Kun tavalliseen issueen lisätään tai siitä poistetaan `status:`-label tai `priority:`-label, päivitystyönkulku hakee issuen ajantasaiset labelit ja päivittää vastaavat Project-kentät. Uuden issuen avaamisen ja uudelleen avaamisen yhteydessä molemmat kentät synkronoidaan. Jos issue ei vielä ole Projectissa, se lisätään sinne automaattisesti. Prioriteetin vaihdossa uuden labelin lisääminen käynnistää lopullisen synkronoinnin.
+Kun tavalliseen issueen lisätään tai siitä poistetaan `status:`-label tai `priority:`-label, päivitystyönkulku hakee issuen ajantasaiset labelit ja päivittää vastaavat Project-kentät. Uuden issuen avaamisen ja uudelleen avaamisen yhteydessä molemmat kentät synkronoidaan. Jos issue ei vielä ole Projectissa, se lisätään sinne automaattisesti. Prioriteetin vaihdossa uuden labelin lisääminen käynnistää lopullisen synkronoinnin. Yksittäisen vanhan issuen voi täsmäyttää käsin käynnistämällä saman työnkulun GitHub Actionsissa ja antamalla `issue_number`-syötteen.
 
 Synkronointi on tarkoituksella yksisuuntainen: Projectissa tehty Status- tai Priority-muutos ei muuta issue-labelia. Issue-label on kanoninen tieto. Issuella pitää olla täsmälleen yksi tunnettu `status:`- ja yksi `priority:`-label; puuttuva, moninkertainen tai tuntematon label aiheuttaa näkyvän työnkulkuvirheen eikä arvoa arvata.
 
