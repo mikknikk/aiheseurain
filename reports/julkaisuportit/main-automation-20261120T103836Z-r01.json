@@ -1,0 +1,194 @@
+{
+  "schema_version": 2,
+  "run_id": "main-automation-20261120T103836Z-r01",
+  "task_id": "muumit",
+  "feed_path": "feeds/muumit.xml",
+  "checked_at": "2026-11-20T12:46:52+02:00",
+  "checklist": {
+    "sources_opened": {
+      "status": "pass",
+      "note": "Kaikkien viiden RSS-artikkelin olennaiset alkuperäissivut avattiin ja sisältö tarkistettiin; hakutuloskatkelmia ei käytetty yksinään väitteiden vahvistamiseen.",
+      "evidence": [
+        "https://www.metroareena.fi/tapahtuma/muumimusiikkia/",
+        "https://www.ticketmaster.fi/event/moomin-music-from-the-90s-tv-series-lippuja/1779697242",
+        "https://www.moomin.co.jp/news/products/6afc107db8d06",
+        "https://www.bottegaveneta.com/ja-jp/moomin-capsule.html",
+        "https://fashionpost.jp/news/407081",
+        "https://www.elle.com/jp/fashion/a74307010/bottega-veneta-moomin-2611/",
+        "https://www.moomin.co.jp/news/events/6af516a45c0ad",
+        "https://www.hokkaido-redbrick.jp/2026/11/06/760/",
+        "https://www.moomin.co.jp/index.php/news/events/6af43a48ecebc",
+        "https://www.moomin.co.jp/news/products/6afd8d5a943e8"
+      ]
+    },
+    "claim_support": {
+      "status": "pass",
+      "note": "Jokaisen artikkelin päivämäärät, paikka, ohjelma ja yhteistyön laajuus vastaavat avattuja ensisijaisia lähteitä; täydentävät toimitukselliset lähteet on erotettu ensisijaisista.",
+      "evidence": [
+        "Concert: date and programme → https://www.metroareena.fi/tapahtuma/muumimusiikkia/",
+        "Concert: ticket-sale start → https://www.ticketmaster.fi/event/moomin-music-from-the-90s-tv-series-lippuja/1779697242",
+        "Bottega collaboration and current availability → https://www.moomin.co.jp/news/products/6afc107db8d06 ; https://www.bottegaveneta.com/ja-jp/moomin-capsule.html",
+        "Bottega launch dates and retail details → https://fashionpost.jp/news/407081 ; https://www.elle.com/jp/fashion/a74307010/bottega-veneta-moomin-2611/",
+        "Akarenga event dates and Moomin programme → https://www.moomin.co.jp/news/events/6af516a45c0ad ; https://www.hokkaido-redbrick.jp/2026/11/06/760/",
+        "Osaka Moomin Market dates and venue → https://www.moomin.co.jp/index.php/news/events/6af43a48ecebc",
+        "Fukuoka shop opening date and location → https://www.moomin.co.jp/news/products/6afd8d5a943e8"
+      ]
+    },
+    "source_independence": {
+      "status": "pass",
+      "note": "Muumimusiikkia-kohdassa areenan tapahtumasivu on ensisijainen ja Ticketmaster lipunmyyntitiedon lähde; Ticketmasterin kuvausta ei lasketa riippumattomaksi toimitukselliseksi vahvistukseksi. Bottega Veneta -jutun Fashion Post ja ELLE Japan ovat eri julkaisuja mutta näyttävät perustuvan samaan bränditiedotteeseen, joten niitä ei lasketa toisistaan riippumattomiksi vahvistuksiksi. Akarenga-tapahtuman oikeudenhaltijan ja tapahtumapaikan viralliset sivut ovat erilliset osapuolilähteet.",
+      "evidence": [
+        "https://www.metroareena.fi/tapahtuma/muumimusiikkia/",
+        "https://www.ticketmaster.fi/event/moomin-music-from-the-90s-tv-series-lippuja/1779697242",
+        "https://www.moomin.co.jp/news/products/6afc107db8d06",
+        "https://www.bottegaveneta.com/ja-jp/moomin-capsule.html",
+        "https://fashionpost.jp/news/407081",
+        "https://www.elle.com/jp/fashion/a74307010/bottega-veneta-moomin-2611/",
+        "https://www.moomin.co.jp/news/events/6af516a45c0ad",
+        "https://www.hokkaido-redbrick.jp/2026/11/06/760/"
+      ]
+    },
+    "uncertainty": {
+      "status": "pass",
+      "note": "Huhuja tai ratkaisemattomia väitteitä ei julkaistu. Bottega-yhteistyön toimituksellisen uutisoinnin yhteinen tiedotepohja on tuotu näkyviin; konsertille ei annettu epävarmaa alkamiskellonaikaa."
+    },
+    "dates": {
+      "status": "pass",
+      "note": "Lähteiden julkaisupäivät, lipunmyynnin aloitus, kokoelman myyntiin tulo, tapahtumapäivät ja myymälän avauspäivä on erotettu toisistaan."
+    },
+    "tracking_period": {
+      "status": "pass",
+      "note": "Ensimmäinen dokumentoitu aloituspäivä on 16.11.2026; aiempaa kellonaikaa ei tunneta. Seurantajakso päättyy 20.11.2026 klo 12.46 Europe/Helsinki. 19.11.2026 lähdeajo oli partial eikä muodostanut onnistumisen tarkistuspistettä."
+    },
+    "duplicates": {
+      "status": "pass",
+      "note": "Kaikki viisi tapahtumaa vertailtiin nykyiseen Muumit-syötteeseen. Aiempi Saitaman pelijuhla-item säilyy ennallaan eikä sitä toisteta."
+    },
+    "guid_preservation": {
+      "status": "pass",
+      "note": "Vanhan itemin GUID säilytetään muuttumattomana; saman PR:n CI vertaa vanhoja GUIDeja kohdehaaraan."
+    },
+    "xml_html": {
+      "status": "pass",
+      "note": "Saman PR:n CI suorittaa XML- ja kuvaus-HTML-tarkistukset scripts/validate_feeds.py -skriptillä."
+    },
+    "rss_structure": {
+      "status": "pass",
+      "note": "Saman PR:n CI tarkistaa yksilölliset GUIDit, item-tason link-elementin puuttumisen, CDATA-kuvaukset sekä koko artikkelin ja otsikoidun lähdeluettelon."
+    },
+    "report_completeness": {
+      "status": "pass",
+      "note": "Kaikissa viidessä itemissä on otsikko, seurantajakso, tarpeelliset julkaisu- ja tapahtumapäivät, koko artikkeli, väitekohtainen varmennustaso ja kuvaavat lähdelinkit A–D-luokkineen."
+    },
+    "accessibility": {
+      "status": "pass",
+      "note": "HTML käyttää article/header/h2/h3/p/ul/li-rakennetta, lang=fi-määritystä ja kuvaavia linkkitekstejä. Kuvia ei käytetä, joten alt-tekstejä ei tarvita. WCAG 2.2 AAA -vaatimustenmukaisuutta ei väitetä; RSS-lukijan manuaalista testausta ei tehty."
+    }
+  },
+  "claim_assessments": [
+    {
+      "claim_id": "muumit-claim-1",
+      "claim": "MUUMIMUSIIKKIA-konsertti järjestetään Espoo Metro Areenalla 9.10.2027; tapahtumassa on lähes 40-henkinen orkesteri, animaatiomateriaalia ja sarjan ääninäyttelijöitä; lipunmyynti alkoi 18.11.2026.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "espoo-metro-areena",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        },
+        {
+          "source_id": "ticketmaster-fi-events",
+          "source_class": "C",
+          "source_role": "muu",
+          "independence": "sama_alkupera",
+          "note": "Lipunmyyntipalvelu; tapahtumakuvaus perustuu järjestäjän tietoihin."
+        }
+      ]
+    },
+    {
+      "claim_id": "muumit-claim-2",
+      "claim": "Bottega Veneta toi Japanin markkinoille rajatun Muumi-nahkatuotekokoelman; ennakkomyynti alkoi 11.11. ja yleinen myynti 18.11.2026.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "moomin-jp-official",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "sama_alkupera"
+        },
+        {
+          "source_id": "bottega-veneta-jp",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "sama_alkupera"
+        },
+        {
+          "source_id": "fashionpost-jp",
+          "source_class": "B",
+          "source_role": "toimituksellinen",
+          "independence": "sama_alkupera",
+          "note": "Eri julkaisu, mutta tiedot näyttävät perustuvan samaan bränditiedotteeseen."
+        },
+        {
+          "source_id": "elle-jp",
+          "source_class": "B",
+          "source_role": "toimituksellinen",
+          "independence": "sama_alkupera",
+          "note": "Eri julkaisu, mutta tiedot näyttävät perustuvan samaan bränditiedotteeseen."
+        }
+      ]
+    },
+    {
+      "claim_id": "muumit-claim-3",
+      "claim": "AKARENGA YUKIGUNI FANTASY järjestetään Sapporossa 20.11.2026–28.2.2027 ja sisältää Muumi-yhteistyön.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "moomin-jp-official",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "riippumaton"
+        },
+        {
+          "source_id": "hokkaido-red-brick",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "riippumaton"
+        }
+      ]
+    },
+    {
+      "claim_id": "muumit-claim-4",
+      "claim": "Moomin Market 2026 järjestetään Osakan Takashimayassa 25.11.–7.12.2026.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "moomin-jp-official",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        }
+      ]
+    },
+    {
+      "claim_id": "muumit-claim-5",
+      "claim": "Moomin Shop Casual Edition avaa uuden myymälän Fukuokan Tenjin Underground Mallissa 4.12.2026.",
+      "verification_status": "ensisijaislahteella_vahvistettu",
+      "sources": [
+        {
+          "source_id": "moomin-jp-official",
+          "source_class": "A",
+          "source_role": "ensisijainen",
+          "independence": "ei_sovellu"
+        }
+      ]
+    }
+  ],
+  "decision": "approved",
+  "reviewer_notes": [
+    "Viisi uutta itemiä perustuvat avattuihin ensisijaisiin lähteisiin; aiempi GUID säilyy.",
+    "Muumien 19.11.2026 osittainen lähdetarkistus ei siirtänyt onnistumisen tarkistuspistettä; tämän raportin seurantajakso alkaa 16.11.2026, kellonaika tuntematon.",
+    "Kolme rekisterilähdettä on edelleen käyttökatkon jäähdytysajalla. Tutkimus kattoi tehtävän olennaiset kielet ja Suomen tapahtumahaun; osittainen lähdeloki ei estä tehtäväkierron etenemistä käsikirjan kohdan 4.1 perusteella."
+  ]
+}
