@@ -316,13 +316,16 @@ async function main() {
   }
   const event = JSON.parse(await readFile(eventPath, "utf8"));
   const issue = event.issue;
-  if (!issue || issue.pull_request) {
-    console.log("Ohitetaan tapahtuma, joka ei koske tavallista issuea.");
+  // Tavallisen issue-tapahtuman lisäksi yksittäisen issuen voi täsmäyttää
+  // käsin workflow_dispatch-ajolla antamalla issue_number-syötteen.
+  const issueNumber = issue?.number ?? Number(event.inputs?.issue_number);
+  if (!Number.isInteger(issueNumber) || issueNumber < 1 || issue?.pull_request) {
+    console.log("Ohitetaan tapahtuma, josta ei saada kelvollista tavallisen issuen numeroa.");
     return;
   }
   const config = JSON.parse(await readFile(CONFIG_PATH, "utf8"));
   const result = await syncIssueStatus({
-    repository, issueNumber: issue.number,
+    repository, issueNumber,
     githubToken, projectsToken, config
   });
   console.log(JSON.stringify(result));
