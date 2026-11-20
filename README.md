@@ -1,16 +1,16 @@
 # Aiheseurain
 
-Aiheseuraimen toimintamalli määritellään uudelleen yksinkertaiseksi ChatGPT-pohjaiseksi seurantajärjestelmäksi.
+Aiheseurain on raporttituottajariippumaton seuranta-, vastaanotto-, validointi- ja julkaisujärjestelmä. Raportin voi tuottaa ihminen, tekoäly tai ohjelmisto.
 
 ## Tavoitetila
 
-- [Uudistetun vaatimusmäärittelyn luonnos (0.6.0)](docs/vaatimusmaarittely-uudistus.md) kuvaa uuden tavoitetilan. Se on edelleen luonnos, jota tarkennetaan ennen laajempaa aihekohtaista tuotantototeutusta.
+- [Uudistetun vaatimusmäärittelyn luonnos (0.7.0)](docs/vaatimusmaarittely-uudistus.md) kuvaa uuden tavoitetilan. Se on edelleen luonnos, jota tarkennetaan ennen laajempaa aihekohtaista tuotantototeutusta.
 - Kehitystehtäviä hallitaan GitHub Issuesissa ja [Aiheseurain-GitHub Projectissa](https://github.com/users/mikknikk/projects/3). Issue-labelit ovat tilan, prioriteetin ja komponentin ensisijaiset tiedot; Projectin Status- ja Priority-kentät synkronoidaan niistä automaattisesti.
 - GitHub Issuesin natiivit riippuvuudet ovat riippuvuuksien ainoa tietolähde. Katso [riippuvuuksien hallintaohje](docs/github-riippuvuuksien-hallinta.md).
 - Project-kenttien automaattinen päivitys on kuvattu [Project-synkronoinnin ohjeessa](docs/github-project-synkronointi.md).
 - Valvomo on tavoiteltu ensisijainen käyttöliittymä. RSS-lukija säilyy erillisenä käyttötarkoituksena.
 - Aiheiden ja seurantatyyppien tulee olla dynaamisia määrityksiä, eivät yleiseen toteutukseen kovakoodattuja.
-- ChatGPT tekee tutkimus- ja raportointityön. GitHub vastaanottaa ja validoi rakenteiset ajotulokset sekä julkaisee hyväksytyt RSS-itemit.
+- Raporttituottaja tekee tutkimus- ja raportointityön. Aiheseurain vastaanottaa ja validoi rakenteiset ajotulokset sekä julkaisee hyväksytyt RSS-itemit.
 
 ## Nykyinen julkaistu sisältö
 
