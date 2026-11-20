@@ -218,11 +218,12 @@ async function main() {
   }
 
   const event = JSON.parse(await readFile(eventPath, "utf8"));
+  const eventName = process.env.GITHUB_EVENT_NAME || "";
   const previous = await readPreviousDataset(outputPath);
   const fetchImpl = fetch;
   let dataset;
 
-  if (!previous || eventNameIsFullSync(event)) {
+  if (!previous || eventNameIsFullSync(event, eventName)) {
     dataset = await buildFullDataset({ owner, repo, token, fetchImpl });
   } else {
     let issue = event.issue || null;
@@ -244,18 +245,15 @@ async function main() {
 
   await writeDataset(dataset, outputPath);
   process.stdout.write(
-    "Kehitysjonon JSON päivitetty (" + (eventNameIsFullSync(event) ? "täysi täsmäytys" : "muutos") + "): "
+    "Kehitysjonon JSON päivitetty (" + (eventNameIsFullSync(event, eventName) ? "täysi täsmäytys" : "muutos") + "): "
     + dataset.issue_count + " tikettiä, " + dataset.dependency_relation_count + " riippuvuussuhdetta.\n"
   );
 }
 
-function eventNameIsFullSync(event) {
-  return eventNameIsFullSyncName(event?.action, event?.inputs);
-}
-
-/** Täysi muodostus on tarpeen ajastuksessa, manuaalisessa ajossa ja ensikäynnistyksessä. */
-function eventNameIsFullSyncName(action, inputs) {
-  return action === "schedule" || (action === "workflow_dispatch" && !inputs?.issue_number);
+/** Täysi muodostus tehdään ajastuksessa, manuaalisessa ajossa ja ylläpitokoodin muutoksissa. */
+export function eventNameIsFullSync(event, eventName) {
+  return eventName === "schedule" || eventName === "push"
+    || (eventName === "workflow_dispatch" && !event?.inputs?.issue_number);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
