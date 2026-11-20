@@ -6,7 +6,7 @@
       "run_id": "main-automation-20261120T103836Z-r01",
       "task_id": "muumit",
       "started_at": "2026-11-20T12:38:36+02:00",
-      "ended_at": "2026-11-20T12:46:52+02:00",
+      "ended_at": "2026-11-20T12:57:49+02:00",
       "status": "partial",
       "registry_source_ids": [
         "moomin-official",
@@ -658,7 +658,7 @@
     "intialaiset_elokuvat_naytokset": "2026-11-20T05:49:29+02:00",
     "taylor_swift": "2026-11-17T13:03:45+02:00",
     "gurmeet_ram_rahim_singh": "2026-11-18T14:00:19+02:00",
-    "muumit": "2026-11-20T12:46:52+02:00"
+    "muumit": "2026-11-20T12:57:49+02:00"
   },
   "updated_at": "2026-11-20T05:49:29+02:00"
 }
