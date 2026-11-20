@@ -52,6 +52,7 @@ def assess_taylor_swift_publication_state(evidence: dict[str, Any]) -> dict[str,
 
     states: list[str] = []
     missing: list[str] = []
+    checked_channels: list[str] = []
     references: dict[str, str] = {}
     for channel in REQUIRED_CHANNELS:
         item = observations.get(channel)
@@ -71,6 +72,7 @@ def assess_taylor_swift_publication_state(evidence: dict[str, Any]) -> dict[str,
         if status != "checked":
             missing.append(channel)
             continue
+        checked_channels.append(channel)
         if publication_status not in ALLOWED_STATES:
             raise PublicationPreflightError(f"{channel}-havainnon julkaisutila on virheellinen.")
         if publication_status == "unknown":
@@ -97,9 +99,7 @@ def assess_taylor_swift_publication_state(evidence: dict[str, Any]) -> dict[str,
         "period": period,
         "publication_state": result,
         "execution_allowed": result == "unpublished",
-        "checked_channels": [name for name in REQUIRED_CHANNELS
-                             if name in observations
-                             and observations[name].get("check_status") == "checked"],
+        "checked_channels": checked_channels,
         "missing_or_unknown_channels": sorted(set(missing)),
         "references": references,
         "limitations": [
