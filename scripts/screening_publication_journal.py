@@ -193,8 +193,11 @@ def _validate_cross_references(latest: dict[str, Any], state: dict[str, Any],
 
     registry_sources = source_registry.get("sources", [])
     registry_by_id = {item.get("source_id"): item for item in registry_sources}
-    if len(registry_by_id) != len(registry_sources) or set(registry_by_id) != registry_ids:
-        raise ScreeningJournalError("Näytösvahtiajon lähdejoukko ei vastaa aihekohtaista lähderekisteriä.")
+    # Historiallinen source_run säilyttää oman aikansa lähdejoukon. Nykyinen
+    # rekisteri voi sisältää myöhemmin lisättyjä lähteitä; sen vastaavuus
+    # tarkistetaan alempana viimeisimmän tehtäväajon registry_source_ids-arvoon.
+    if len(registry_by_id) != len(registry_sources):
+        raise ScreeningJournalError("Aihekohtaisessa lähderekisterissä on duplikaatti-ID.")
 
     latest_checked = set(latest_task_run.get("checked_source_ids", []))
     latest_unchecked_list = [item.get("source_id") for item in latest_task_run.get("unchecked_sources", [])]
