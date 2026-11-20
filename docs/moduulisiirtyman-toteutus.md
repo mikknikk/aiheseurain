@@ -1,7 +1,7 @@
 # Nykyisten moduulien siirron toteutus
 
-**Versio:** 1.0.0  
-**Päiväys:** 2026-11-18  
+**Versio:** 1.0.1  
+**Päiväys:** 2026-11-20  
 **Liittyvä tiketti:** [#105 – Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärittelyihin](https://github.com/mikknikk/aiheseurain/issues/105)  
 **Lähtöinventaario:** [Nykyisten moduulien inventaario ja siirtymäsuunnitelma](moduulisiirtyman-inventaario.md)
 
@@ -18,7 +18,7 @@ Kaikki kymmenen moduulia on lisätty tiedostoon data/module-registry.json tilass
 | tolkien | topic | modules/topics/tolkien/module.json | 28 |
 | taylor-swift | topic | modules/topics/taylor-swift/module.json | 10 |
 | gurmeet-ram-rahim-singh | topic | modules/topics/gurmeet-ram-rahim-singh/module.json | 7 |
-| muumit | topic | modules/topics/muumit/module.json | 8 |
+| muumit | topic | modules/topics/muumit/module.json | 14 |
 | wakaliwood | topic | modules/topics/wakaliwood/module.json | 5 |
 | euroviisut | topic | modules/topics/euroviisut/module.json | 10 |
 | sompote-sands | topic | modules/topics/sompote-sands/module.json | 6 |
@@ -91,4 +91,5 @@ Jos määritysten vertailussa tai validoinnissa ilmenee virhe, palauta moduulim�
 
 ## Muutoshistoria
 
+- **1.0.1 – 2026-11-20:** päivitettiin Muumit-moduulin lähdeviitteiden määrä 14:ään vastaamaan tehtäväkohtaista lähderekisteriä; kaikki moduulit säilyvät inactive-tilassa.
 - **1.0.0 – 2026-11-18:** ensimmäinen kymmenen moduulin passiivinen migraatio, lähdeviitteiden vastaavuustarkistus, näytösvahtimoduulin tapahtumatyyppimääritys ja CI-validointi.
