@@ -128,14 +128,32 @@ Uusien uutisten lähdeluokka ja väitekohtainen varmennustaso määritellään k
 ### Muumit
 
 - RSS: `feeds/muumit.xml`
-- Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on yksi julkaistu uutinen.
+- Seurantahistoria käynnistyi 2026-11-16; RSS:ssä on nyt kuusi julkaistua uutista.
 - Seuranta: Tove Janssonin teokset ja perintö, Moomin Characters ja oikeudenhaltijat, kirjat, sarjakuvat, animaatiot, elokuvat, televisio, teatteri, pelit, näyttelyt, tapahtumat, lisensointi ja kulttuurihankkeet. Tarkista erikseen Suomessa järjestettävät Muumi-näyttelyt, museo- ja teemapuistotapahtumat, teatteri, konsertit, elokuvanäytökset, festivaalit ja perhetapahtumat.
 - Käytä hakusanoja Muumit, Moomin, Moomins ja ムーミン sekä tarvittaessa paikallisia kielimuotoja.
-- Erota virallinen uutinen fanisisällöstä.
+- Erota virallinen uutinen fanisisällöstä. Moomin Official Website Japan (moomin.co.jp/news) on rekisteröity ensisijaiseksi lähteeksi Japanin tapahtuma-, lisensointi- ja myymäläuutisille.
 - **16.11.2026 – VIRALLISESTI VAHVISTETTU:** Moominin virallinen japanilainen sivusto ilmoitti julkaisujuhlasta pelille *Muumit: Muumilaakson kesäjuhlat*. Maksuton tapahtuma järjestetään Cocoon Cityssä Saitamassa 21.–22.11.2026; ohjelmassa on pelin kokeilua ja muuta teemaan liittyvää toimintaa.
 - Lähde: Moomin Official Website, https://www.moomin.co.jp/news/events/6ae85147d7289 (ensisijainen). Shochikun aiempi tiedote tapahtumasta on saman järjestäjätahon viestintää, ei riippumaton vahvistus.
 - RSS GUID: `urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event`.
-- Seuraava tarkistus: tarkista tapahtuman toteutuminen ja mahdolliset merkittävät jatkouutiset 22.11. jälkeen.
+- **18.11.2026 – VIRALLISESTI VAHVISTETTU (Suomi):** *MUUMIMUSIIKKIA* saa areenatoteutuksen Espoo Metro Areenalla 9.10.2027. Lähes 40-henkinen sinfoninen orkesteri esittää Sumio Shiratorin animaatiosarjasta tuttua musiikkia; mukana ovat alkuperäinen kuvamateriaali ja Nipsun sekä Nuuskamuikkusen ääninäyttelijät. Ticketmasterin yleinen lipunmyynti alkoi 18.11.2026. Tapahtuman kellonaikaa ei kirjattu, koska areenan sivun aikamerkintä oli ristiriitainen.
+- Lähteet: Espoo Metro Areena (A, ensisijainen, https://www.metroareena.fi/tapahtuma/muumimusiikkia/); Ticketmaster Suomi (C, lipunmyyntitieto, https://www.ticketmaster.fi/event/moomin-music-from-the-90s-tv-series-lippuja/1779697242).
+- RSS GUID: `urn:aiheseurain:muumit:2026-11-20:moomin-music-espoo-metro-areena-2027`.
+- **18.11.2026 – VIRALLISESTI VAHVISTETTU:** Moomin Characters ilmoitti *Moomin Market 2026* -tapahtumasta Osakan Takashimayassa 25.11.–7.12.2026. Markkinat järjestetään tavaratalon seitsemännen kerroksen tapahtumahallissa; ohjelmaan kuuluu tapahtumakohtainen taide ja valokuvauspisteitä.
+- Lähde: Moomin Official Website Japan (A, ensisijainen, https://www.moomin.co.jp/index.php/news/events/6af43a48ecebc).
+- RSS GUID: `urn:aiheseurain:muumit:2026-11-20:moomin-market-osaka-takashimaya`.
+- **20.11.2026 – VIRALLISESTI VAHVISTETTU:** Bottega Veneta ja Muumit toteuttivat Japanin markkinoille rajatun nahkatuotekokoelman. Ennakkonäkyvyys alkoi Isetan Shinjukussa 11.11. ja laajempi myynti Bottega Venetan valituissa Japanin myymälöissä sekä verkkokaupassa 18.11.2026. Toimitukselliset muotimediat julkaisevat samaan bränditiedotteeseen perustuvia tietoja; niitä ei käsitellä toisistaan riippumattomina vahvistuksina.
+- Lähteet: Moomin Official Website Japan (A, https://www.moomin.co.jp/news/products/6afc107db8d06); Bottega Veneta Japan (A, https://www.bottegaveneta.com/ja-jp/moomin-capsule.html); The Fashion Post (B, https://fashionpost.jp/news/407081); ELLE Japan (B, https://www.elle.com/jp/fashion/a74307010/bottega-veneta-moomin-2611/).
+- RSS GUID: `urn:aiheseurain:muumit:2026-11-20:bottega-veneta-japan-capsule`.
+- **20.11.2026 – VIRALLISESTI VAHVISTETTU:** Sapporon Hokkaidon punatiilisessä hallintorakennuksessa alkoi *AKARENGA YUKIGUNI FANTASY*, joka jatkuu 28.2.2027 asti. Muumi-hahmot ovat tapahtuman erityisiä yhteistyökumppaneita; yhteistyöhön kuuluu valokuvauspisteitä, muistokortteja, myyntipiste ja ravintolayhteistyö. Järjestäjän ennakkotiedote on päivätty 6.11.2026, ja Moomin Characters nosti yhteistyön esiin avauspäivänä.
+- Lähteet: Moomin Official Website Japan (A, https://www.moomin.co.jp/news/events/6af516a45c0ad); Hokkaido Red Brick Government Building (A, https://www.hokkaido-redbrick.jp/2026/11/06/760/).
+- RSS GUID: `urn:aiheseurain:muumit:2026-11-20:akarenga-yukiguni-fantasy-sapporo`.
+- **20.11.2026 – VIRALLISESTI VAHVISTETTU:** uusi *MOOMIN SHOP CASUAL EDITION* avataan 4.12.2026 Fukuokan Hakatan alueelle Tenjin Underground Mallin länsipuolen neljännelle käytävälle.
+- Lähde: Moomin Official Website Japan (A, ensisijainen, https://www.moomin.co.jp/news/products/6afd8d5a943e8).
+- RSS GUID: `urn:aiheseurain:muumit:2026-11-20:moomin-shop-fukuoka-tenjin`.
+- **6.11.2026 – ENNEN NYKYISTÄ SEURANTAJAKSOA ILMOITETTU:** Muumi Pomppupuisto järjestetään Mikkelissä Saimaa Stadiumilla 27.–29.11.2026. Järjestäjän sivu sisältää sunnuntain päivämäärässä kirjoitusvirheen (25.11.); Bilettin tapahtumasivu vahvistaa oikeaksi päiväksi 29.11.2026 ja ajaksi klo 10–18. Mikkelin kaupungin mainoslupapäätös on päivätty 6.11.2026, joten tapahtumaa ei julkaistu tämän seurantajakson uutisena.
+- Lähteet: Muumi Pomppupuisto (A, järjestäjän sivu, https://www.muumipomppupuisto.fi/); Biletti (C, lipunmyyntitieto, https://biletti.fi/e/muumi-pomppupuisto-mikkeli); Mikkelin kaupungin viranhaltijapäätös (6.11.2026, https://www.viranhaltija.fi/paatos/54421/).
+- Ei RSS GUIDia: tapahtuma oli ilmoitettu ennen tämän seurantajakson alkua.
+- Seuraava tarkistus: tarkista 22.11. jälkeen Saitaman pelijuhlan toteutuminen; tarkista 29.11. jälkeen Mikkelin Muumi Pomppupuiston toteutuminen sekä 4.12. Fukuokan myymälän avautuminen. Seuraa myös Osakan markkinoiden ja Sapporon talvitapahtuman jatkoa.
 
 ### Wakaliwood
 
