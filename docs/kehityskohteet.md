@@ -411,3 +411,19 @@ Suositeltu toteutusjärjestys:
 
 **Rajaus:** synteettinen varjoharjoitus ei tee live-tutkimusta, julkaise RSS:ää, aktivoi moduulia, muuta ChatGPT-automaation asetuksia tai käynnistä tuotantosiirtymää. PR #240 yhdistettiin `main`-haaraan squash-yhdistämisellä; issue #239 suljettiin valmiina. Tuotantosiirtymää ei tehty.
 
+
+
+### Issue #246 – Taylor Swift -moduulin rajattu varjoharjoitus
+
+**Tila:** vaiheen A tekninen toteutus valmis PR:ssä #247; kaikki kolme vaadittua CI-työnkulkua läpäisivät. Varsinaista varjoharjoitusta ei ole käynnistetty.
+
+- [x] Rajattu valmistelu tarkistaa Taylor Swift -moduulin, kohteen, lähdeviitteet, aktivointilipun, julkaisurekisterit ja seurantajakson.
+- [x] Harjoituksen tyhjä lähtötila erotetaan historiallisesta checkpointista; vanhaa migraatiosnapshotia ei korjata eikä käytetä uutena totuutena.
+- [x] ChatGPT-tuloksen adapteri sitoo tuloksen moduuliin, versioon, ajoon, jaksoon ja syötehashiin.
+- [x] Varjoartefaktit tallennetaan vain moduulin omaan harjoitushakemistoon ilman ylikirjoitusta.
+- [x] Valmistelu- ja tulosartefakteille on erilliset JSON Schema -sopimukset.
+- [x] Testit ja dokumentaatio läpäisevät PR-CI:n.
+
+**Seuraava vaihe:** varsinainen harjoitus edellyttää erillistä käyttäjän hyväksyntää. Runtime-haaran ja auktoritatiivisen julkaisupäiväkirjan saman jakson kaksoisjulkaisutarkistus on tehtävä ennen ajoa; niitä ei voitu varmentaa teknisessä valmistelussa.
+
+**Rajaus:** live-tutkimus edellyttää erillistä käyttäjän hyväksyntää. Ei tuotantoaktivointia, RSS-/Pages-julkaisua, tuotannon checkpointin tai julkaisupäiväkirjan muutosta, tehtäväjonon muutosta eikä ChatGPT-automaation asetusten tai ajastusten muuttamista. Näytösvahti ja muut moduulit eivät osallistu.

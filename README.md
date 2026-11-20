@@ -219,3 +219,8 @@ Aiheseurain erottaa seurantamoduulin, seurantakohteen ja julkaisukohteen. Yhden 
 ## Kohdekohtaiset raportit
 
 Moduulisuorittaja voi palauttaa yhden raportin kutakin seurantakohdetta kohti. Raportin tietosopimus on [schemas/target-report.schema.json](schemas/target-report.schema.json), ja sen validointi kuuluu orkestroinnin rakenteelliseen laadunvarmistukseen. Esimerkkisuorittaja kahdelle seurantakohteelle löytyy hakemistosta [examples/target_reports/](examples/target_reports/), mukaan lukien kahden kohteen suorituskehysesimerkki. Yhteensopivuuden vuoksi vanha moduulikohtainen raporttimalli säilyy käytettävissä, kunnes moduuli siirretään kohderaporttimalliin. Tuotantomoduulit ja julkaisureitit pysyvät passiivisina.
+
+
+## Taylor Swift -varjoharjoituksen tekninen valmistelu
+
+Taylor Swift -moduulin rajatun varjoharjoituksen valmistelu, turvallisuusrajaukset ja hyväksyntäportti on kuvattu [erillisessä ohjeessa](docs/taylor-swift-varjoharjoitus.md). Valmistelu ei käynnistä live-tutkimusta eikä muuta tuotantoa tai ChatGPT-automaation asetuksia.
