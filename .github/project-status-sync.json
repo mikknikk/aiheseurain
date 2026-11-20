@@ -24,7 +24,8 @@
       "component:automaatio": { "id": "b27e01e4" },
       "component:valvomo": { "id": "8bf95c0b" },
       "component:lukija": { "id": "31835d81" },
-      "component:etusivu": { "id": "3318d8fa" }
+      "component:etusivu": { "id": "3318d8fa" },
+      "component:kehitysymparisto": { "id": "57875c3b" }
     }
   }
 }
