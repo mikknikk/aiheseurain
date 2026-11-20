@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-20T12:39:13.999Z",
+  "generated_at": "2026-11-20T12:40:33.785Z",
   "full_sync_at": "2026-11-20T12:39:13.999Z",
   "status": "complete",
   "issue_count": 86,
@@ -1003,7 +1003,7 @@
       "state": "open",
       "labels": [
         {
-          "name": "status:backlog"
+          "name": "status:in-progress"
         },
         {
           "name": "priority:P1"
@@ -1012,7 +1012,7 @@
           "name": "component:kehitysjono"
         }
       ],
-      "updated_at": "2026-11-20T12:34:02Z"
+      "updated_at": "2026-11-20T12:40:24Z"
     }
   ],
   "dependencies": [
