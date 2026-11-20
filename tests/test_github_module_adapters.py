@@ -83,7 +83,12 @@ class GitHubAdapterTests(unittest.TestCase):
         self.client.files[("main", "feeds/tolkien.xml")] = GitHubFile(
             old_feed, blob_sha(old_feed)
         )
-        rotation = (ROOT / "data/seurantatila.json").read_bytes()
+        rotation_state = json.loads(
+            (ROOT / "data/seurantatila.json").read_text(encoding="utf-8")
+        )
+        # Testaa Muumi-ajon vuoronvaihtoa ennen kyseisen ajon onnistumiskirjausta.
+        rotation_state["rotation"]["next_task"] = "muumit"
+        rotation = json.dumps(rotation_state, ensure_ascii=False).encode("utf-8")
         self.client.files[("main", "data/seurantatila.json")] = GitHubFile(
             rotation, blob_sha(rotation)
         )
