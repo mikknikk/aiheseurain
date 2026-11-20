@@ -10,7 +10,7 @@ permissions:
   actions: write
 
 concurrency:
-  group: issue-dependencies-${{ github.event.issue.number }}
+  group: issue-dependencies
   cancel-in-progress: false
 
 jobs:
