@@ -124,6 +124,26 @@ export async function updateProjectStatus({
   if (!data.updateProjectV2ItemFieldValue?.projectV2Item?.id) {
     throw new Error("GitHub Projectin Status-kentän päivitys ei palauttanut onnistunutta tulosta.");
   }
+
+  // Lue arvo takaisin: onnistunut mutaatio ei yksin todista oikeaa lopputilaa.
+  const verifyQuery = `
+    query($itemId: ID!) {
+      node(id: $itemId) {
+        ... on ProjectV2Item {
+          fieldValueByName(name: "Status") {
+            ... on ProjectV2ItemFieldSingleSelectValue {
+              name
+              optionId
+            }
+          }
+        }
+      }
+    }`;
+  const verified = await graphql(token, verifyQuery, { itemId }, fetchImpl);
+  const actual = verified.node?.fieldValueByName;
+  if (actual?.optionId !== optionId) {
+    throw new Error(`Projectin Status-varmistus epäonnistui: odotettiin ${optionId}, saatiin ${actual?.optionId ?? "ei arvoa"}.`);
+  }
 }
 
 export async function syncIssueStatus({
