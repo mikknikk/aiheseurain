@@ -76,3 +76,19 @@ Testit kattavat moduuli- ja kohdeomistajuuden, lähdeviitteet, aktivointilipun, 
 ## Mitä tämä toteutus ei osoita
 
 Tekninen valmistelu ei osoita live-tutkimuksen laatua, lähteiden tämänhetkistä saatavuutta, vanhan ja uuden raportin vastaavuutta, runtime-haaran olemassaoloa, julkisen Pages-syötteen takaisinlukua eikä palautuspolun onnistumista. Nämä jäävät erillisen hyväksytyn harjoituksen ja issue #242:n näyttöarvioinnin tehtäväksi.
+
+
+## Julkaisutilan fail-closed-ennakkotarkistus (#248)
+
+Ennen live-varjoharjoitusta saman täsmällisen seurantajakson aiempi julkaisutila tarkistetaan neljästä erillisestä kanavasta: vanha raportointipolku, runtime-julkaisupäiväkirja, repositorion RSS sekä julkinen Pages-RSS. Tarkistin on `scripts/taylor_swift_publication_preflight.py`; sen tulossopimus on `schemas/taylor-swift-publication-preflight.schema.json`.
+
+Jokaisen havainnon on sisällettävä sama aikavyöhykkeellinen alku- ja loppuaika, tarkistuksen tila, julkaisutila sekä lähdeviite. Luokitus on:
+
+- `published`: vähintään yksi tarkistettu kanava osoittaa julkaisun; harjoitus estetään.
+- `unpublished`: kaikki neljä kanavaa on tarkistettu ja jokainen osoittaa saman jakson julkaisemattomaksi; vain tämä tulos avaa varjoharjoituksen julkaisutilaportin.
+- `unknown`: vähintään yksi kanava puuttuu, on saavuttamaton tai jää tuntemattomaksi; harjoitus estetään.
+- `conflict`: tarkistetut kanavat ovat ristiriidassa; harjoitus estetään ja tila selvitetään.
+
+Puuttuvaa runtime-haaraa ei luoda eikä tulkita julkaisemattomuuden todisteeksi. Tyhjä main-haaran julkaisurekisteri ei korvaa runtime-päiväkirjaa. Tarkistin ei tee verkkohakuja tai kirjoita mitään; havaintojen kerääminen ja lähteiden luotettavuus dokumentoidaan erikseen. Tämä ennakkotarkistus ei itsessään käynnistä harjoitusta eikä anna tuotantojulkaisulupaa.
+
+Testit: `python -m unittest tests.test_taylor_swift_publication_preflight -v`.

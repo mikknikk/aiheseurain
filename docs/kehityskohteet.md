@@ -427,3 +427,16 @@ Suositeltu toteutusjärjestys:
 **Seuraava vaihe:** varsinainen harjoitus edellyttää erillistä käyttäjän hyväksyntää. Runtime-haaran ja auktoritatiivisen julkaisupäiväkirjan saman jakson kaksoisjulkaisutarkistus on tehtävä ennen ajoa; niitä ei voitu varmentaa teknisessä valmistelussa.
 
 **Rajaus:** live-tutkimus edellyttää erillistä käyttäjän hyväksyntää. Ei tuotantoaktivointia, RSS-/Pages-julkaisua, tuotannon checkpointin tai julkaisupäiväkirjan muutosta, tehtäväjonon muutosta eikä ChatGPT-automaation asetusten tai ajastusten muuttamista. Näytösvahti ja muut moduulit eivät osallistu.
+
+
+### Issue #248 – Taylor Swift -julkaisutilan ennakkotarkistus
+
+**Tila:** ennakkotarkistuksen toteutus valmistellaan PR:ssä; live-varjoharjoitusta ei ole käynnistetty.
+
+- [x] Historiallinen 16.–17.11.2026 repositoriotason julkaisu tunnistettu ja dokumentoitu.
+- [x] Määritelty neljän kanavan täsmälliseen seurantajaksoon sidottu luokitus: `published`, `unpublished`, `unknown` ja `conflict`.
+- [ ] Toteuta ja testaa fail-closed-ennakkotarkistin.
+- [ ] Varmenna harjoituksen valitun jakson runtime-päiväkirja, vanha raportointipolku, repositorio-RSS ja julkinen Pages-RSS.
+- [ ] Käynnistä rajattu varjoharjoitus vasta, kun kaikki neljä kanavaa osoittavat saman jakson julkaisemattomaksi ja hyväksytyn valmistelun tiivisteet täsmäävät.
+
+**Rajaus:** käyttäjä on hyväksynyt varjoharjoituksen käynnistämisen heti, kun ennakkotarkistus ja muut turvaportit ovat kunnossa. Tämä ei ole tuotantoaktivoinnin tai RSS-julkaisun hyväksyntä. Jos jokin kanava on tuntematon tai ristiriitainen, harjoitusta ei käynnistetä.
