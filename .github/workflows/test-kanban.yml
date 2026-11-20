@@ -1,0 +1,38 @@
+name: Testaa Kehitysjonon aineisto ja riippuvuudet
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build_kanban_data.mjs"
+      - ".github/scripts/sync_issue_dependencies.mjs"
+      - "assets/js/kanban.js"
+      - "tests/kanban-data.test.mjs"
+      - "tests/issue-dependencies.test.mjs"
+      - ".github/workflows/test-kanban.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-kanban
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae repositorio
+        uses: actions/checkout@v4
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Tarkista JavaScriptin syntaksi
+        run: |
+          node --check scripts/build_kanban_data.mjs
+          node --check .github/scripts/sync_issue_dependencies.mjs
+          node --check assets/js/kanban.js
+      - name: Aja välimuistin ja riippuvuuksien testit
+        run: node --test tests/kanban-data.test.mjs tests/issue-dependencies.test.mjs
