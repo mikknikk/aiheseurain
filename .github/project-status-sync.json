@@ -24,6 +24,20 @@
         "id": "98236657"
       }
     },
-    "priority_field_name": "Priority"
+    "priority_field_id": "PVTSSF_lAHOACf60s4BsfD3zhqtqmU",
+    "priority_options": {
+      "priority:P0": {
+        "id": "e8877887"
+      },
+      "priority:P1": {
+        "id": "4eb95e26"
+      },
+      "priority:P2": {
+        "id": "024b8b15"
+      },
+      "priority:P3": {
+        "id": "6c5a768d"
+      }
+    }
   }
 }
