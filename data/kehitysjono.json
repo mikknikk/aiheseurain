@@ -1,0 +1,1579 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-20T12:37:21.915Z",
+  "full_sync_at": "2026-11-20T12:37:21.915Z",
+  "status": "complete",
+  "issue_count": 86,
+  "dependency_relation_count": 14,
+  "issues": [
+    {
+      "number": 24,
+      "title": "Varmista linkkitarkistuksen ensimmäinen ajastettu ajo ja arvioi tulokset",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/24",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:08:04Z"
+    },
+    {
+      "number": 25,
+      "title": "Suorita ja dokumentoi manuaalinen saavutettavuustestaus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/25",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-17T16:19:20Z"
+    },
+    {
+      "number": 26,
+      "title": "Varmenna lähdetarkistuslokin toiminta oikeissa automaatioajoissa",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/26",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:50Z"
+    },
+    {
+      "number": 27,
+      "title": "Täsmennä uutisväitteiden luotettavuusluokat ja varmennuskriteerit",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/27",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T11:47:25Z"
+    },
+    {
+      "number": 28,
+      "title": "Seuraa näytösseurannan muutoshistorian toimintaa käytännön ajoissa",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/28",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:49Z"
+    },
+    {
+      "number": 29,
+      "title": "Kartoita nykyinen GitHub Pages -julkaisu ja hyväksy Valvomon tietomalli",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/29",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:in-progress"
+        },
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-16T22:17:37Z"
+    },
+    {
+      "number": 32,
+      "title": "Laajenna RSS-lukijaa haulla, aikasuodattimilla ja henkilökohtaisella lukutilalla",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/32",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:47Z"
+    },
+    {
+      "number": 33,
+      "title": "Toteuta lähderekisterin selain ja lähdekattavuuden näkymä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/33",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:backlog"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:46Z"
+    },
+    {
+      "number": 34,
+      "title": "Arvioi erillisen raporttiarkiston tarve RSS-lukijan valmistuttua",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/34",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P3"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:45Z"
+    },
+    {
+      "number": 35,
+      "title": "Toteuta GitHub Issues -pohjainen Kehitysjono-kanban Pages-sivustolle",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/35",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-16T22:17:45Z"
+    },
+    {
+      "number": 37,
+      "title": "Tallenna ChatGPT-automaatioiden vaihekohtainen ajohistoria Valvomoa varten",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/37",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T16:26:07Z"
+    },
+    {
+      "number": 38,
+      "title": "Siirrä Valvomo pois Pages-sivuston juuresta omalle sivulleen",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/38",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T16:26:09Z"
+    },
+    {
+      "number": 40,
+      "title": "Viimeistele Aiheseuraimen etusivun sisältö ja käyttökokemus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/40",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:43Z"
+    },
+    {
+      "number": 44,
+      "title": "Näytä Valvomossa aiheen arvioitu seuraava päivityskerta",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/44",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T16:23:32Z"
+    },
+    {
+      "number": 53,
+      "title": "Lisää jokaiselle RSS-raportille julkaisua edeltävä laadunvarmistusportti",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/53",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-17T08:22:06Z"
+    },
+    {
+      "number": 54,
+      "title": "Arvioi aihekohtaisen seurantatiheyden muuttaminen toteutuneen uutisrytmin perusteella",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/54",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:backlog"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:41Z"
+    },
+    {
+      "number": 55,
+      "title": "Täydennä ajolokia löydettyjen uutisten ja julkaistujen GUIDien jäljitettävyydellä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/55",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:backlog"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:40Z"
+    },
+    {
+      "number": 62,
+      "title": "Lisää kehitysjonon auditointi viikoittaiseen laatutarkistukseen",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/62",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:38Z"
+    },
+    {
+      "number": 63,
+      "title": "Korjaa yksiselitteiset issue-tilan ja tilalabelin ristiriidat automaattisesti",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/63",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:backlog"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:21Z"
+    },
+    {
+      "number": 66,
+      "title": "Ilmoita Discordiin ensimmäisestä näytöshavainnosta uudelle elokuvalle",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/66",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-18T07:46:34Z"
+    },
+    {
+      "number": 67,
+      "title": "Laajenna näytösvahti muiden kuin intialaisten elokuvien seurantaan",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/67",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:in-progress"
+        }
+      ],
+      "updated_at": "2026-11-20T12:08:07Z"
+    },
+    {
+      "number": 74,
+      "title": "Lisää Valvomoon lähteiden selaus- ja tutkimisnäkymä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/74",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:11Z"
+    },
+    {
+      "number": 75,
+      "title": "Dokumentoi Aiheseuraimen järjestelmäarkkitehtuuri ja teknologioiden vaihdettavuus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/75",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:in-progress"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T19:40:35Z"
+    },
+    {
+      "number": 76,
+      "title": "Lisää laatutarkistukseen avoimien pull requestien seuranta",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/76",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:04Z"
+    },
+    {
+      "number": 77,
+      "title": "Näytä tikettien väliset riippuvuudet kehitysjonossa",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/77",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T15:08:00Z"
+    },
+    {
+      "number": 79,
+      "title": "Mahdollista GitHub-tikettien riippuvuuksien automaattinen hallinta",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/79",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T13:05:19Z"
+    },
+    {
+      "number": 81,
+      "title": "[E2E-testi] Riippuvuuksien välityksen testitiketti A",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/81",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-17T12:58:18Z"
+    },
+    {
+      "number": 82,
+      "title": "[E2E-testi] Riippuvuuksien välityksen testitiketti B",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/82",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-17T14:20:04Z"
+    },
+    {
+      "number": 83,
+      "title": "Siirrä Kehitysjonon tietojen haku GitHub Actionsin muodostamaan aineistoon",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/83",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T14:00:22Z"
+    },
+    {
+      "number": 85,
+      "title": "Testaa Kehitysjonon ruudunlukijasaavutettavuus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/85",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:03Z"
+    },
+    {
+      "number": 86,
+      "title": "Näytä Valvomossa käynnissä olevat taustatyöt ja automaatioajot",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/86",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:01Z"
+    },
+    {
+      "number": 88,
+      "title": "Testaa julkaistujen Pages-näkymien näppäimistö, suurennus ja responsiivisuus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/88",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:07:00Z"
+    },
+    {
+      "number": 89,
+      "title": "Testaa ruudunlukijalla etusivu, Valvomo, RSS-lukija ja keskeiset dokumentit",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/89",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:ready-for-development"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-20T12:06:58Z"
+    },
+    {
+      "number": 92,
+      "title": "Näytä edeltäjien valmiusaste Kehitysjonon korteissa",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/92",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:in-progress"
+        },
+        {
+          "name": "priority:P2"
+        }
+      ],
+      "updated_at": "2026-11-17T18:56:56Z"
+    },
+    {
+      "number": 95,
+      "title": "Täydennä järjestelmäarkkitehtuurin tavoitetila",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/95",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:in-progress"
+        }
+      ],
+      "updated_at": "2026-11-17T19:59:18Z"
+    },
+    {
+      "number": 100,
+      "title": "Täsmennä tavoitearkkitehtuurin aihemoduulien itsenäisyys ja vaihdettavuus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/100",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T20:55:04Z"
+    },
+    {
+      "number": 102,
+      "title": "Määrittele seurantamoduulien tietosopimus ja määritysskeemat",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/102",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T21:44:42Z"
+    },
+    {
+      "number": 103,
+      "title": "Toteuta seurantamoduulien rekisteri ja määritysten lataus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/103",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T21:57:16Z"
+    },
+    {
+      "number": 104,
+      "title": "Suunnittele nykyisten aiheiden ja prosessien hallittu moduulisiirtymä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/104",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T22:05:50Z"
+    },
+    {
+      "number": 105,
+      "title": "Siirrä nykyiset aiheet ja näytösvahti itsenäisiin moduulimäärityksiin",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/105",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T22:24:03Z"
+    },
+    {
+      "number": 106,
+      "title": "Eriytä seurantamoduulien tila, tarkistuspisteet ja tapahtumahistoria",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/106",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T22:33:29Z"
+    },
+    {
+      "number": 107,
+      "title": "Määrittele ja toteuta tekoäly- ja tutkimuspalvelujen adapterisopimukset",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/107",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T22:41:04Z"
+    },
+    {
+      "number": 108,
+      "title": "Rakenna yhteinen moduulien suoritusorkestrointi ja vaiheittainen käyttöönotto",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/108",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-18T07:27:16Z"
+    },
+    {
+      "number": 109,
+      "title": "Yleistä nykyinen näytösvahti uudelleenkäytettäväksi tapahtumavahdiksi",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/109",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-17T22:15:01Z"
+    },
+    {
+      "number": 120,
+      "title": "Toteuta moduuliorkestroinnin pysyvät tallennus-, julkaisu- ja ajotulosadapterit",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/120",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-18T07:27:18Z"
+    },
+    {
+      "number": 133,
+      "title": "Erota seurantamoduuli, seurantakohde ja julkaisukohde toisistaan",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/133",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-18T08:31:36Z"
+    },
+    {
+      "number": 136,
+      "title": "Kytke julkaisureititys julkaisusovittimeen",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/136",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-18T09:39:10Z"
+    },
+    {
+      "number": 138,
+      "title": "Määritä ja toteuta kohdekohtaisten raporttien muodostussopimus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/138",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-18T09:48:27Z"
+    },
+    {
+      "number": 140,
+      "title": "Toteuta seurantakohteiden yhteinen suorituskehys",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/140",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "status:done"
+        }
+      ],
+      "updated_at": "2026-11-18T09:54:02Z"
+    },
+    {
+      "number": 142,
+      "title": "Rajaa julkaisureititys yhteen RSS-syötteeseen seurantakohdetta kohti",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/142",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-18T10:33:16Z"
+    },
+    {
+      "number": 144,
+      "title": "Erota käyttöliittymätestit seurantajulkaisujen pakollisista tarkistuksista",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/144",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-18T10:39:52Z"
+    },
+    {
+      "number": 148,
+      "title": "Suunnittele erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri ja hallittu siirtymä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/148",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-18T16:28:50Z"
+    },
+    {
+      "number": 151,
+      "title": "Korjaa Gurmeet-seurannan moduulitilan migraation eheysvirheet",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/151",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-18T13:32:44Z"
+    },
+    {
+      "number": 156,
+      "title": "Tee RSS-julkaisusta palautuva tapahtumaketju ja kestävä julkaisumanifesti",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/156",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-18T13:53:13Z"
+    },
+    {
+      "number": 158,
+      "title": "Kytke nykyinen RSS/Pages-tuotantojulkaisu palautuvaan julkaisumanifestiin",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/158",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-18T15:56:10Z"
+    },
+    {
+      "number": 167,
+      "title": "Rakenna Aiheseurannan yleisen vastaanottorajapinnan eristetty prototyyppi",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/167",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:38Z"
+    },
+    {
+      "number": 169,
+      "title": "Määrittele Aiheseurannan yleinen ja versioitu julkaisupakettisopimus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/169",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:36Z"
+    },
+    {
+      "number": 170,
+      "title": "Perusta Aiheseuranta-julkaisurepositorio ja rajatut käyttöoikeudet",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/170",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:34Z"
+    },
+    {
+      "number": 171,
+      "title": "Toteuta Aiheseurannan itsenäinen vastaanotto-, eheys- ja julkaisupalvelu",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/171",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:29Z"
+    },
+    {
+      "number": 172,
+      "title": "Toteuta Aiheseuraimeen validoidun julkaisupaketin lähettäjä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/172",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:23Z"
+    },
+    {
+      "number": 173,
+      "title": "Varmenna Aiheseurannan varjo- ja rinnakkaisjulkaisu kaikilla RSS-syötteillä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/173",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:22Z"
+    },
+    {
+      "number": 174,
+      "title": "Siirrä RSS-lukijan ensisijaiset syöteosoitteet Aiheseurantaan hallitusti",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/174",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:20Z"
+    },
+    {
+      "number": 175,
+      "title": "Ota Aiheseuranta RSS-julkaisujen ensisijaiseksi tuotantokohteeksi",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/175",
+      "state": "closed",
+      "labels": [
+        {
+          "name": "priority:P1"
+        }
+      ],
+      "updated_at": "2026-11-20T12:03:00Z"
+    },
+    {
+      "number": 179,
+      "title": "Tee näytösvahdin RSS-julkaisusta palautuva ja idempotentti",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/179",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T06:23:33Z"
+    },
+    {
+      "number": 182,
+      "title": "Varmista näytösvahtijulkaisun tietojen keskinäinen eheys",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/182",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T06:34:48Z"
+    },
+    {
+      "number": 185,
+      "title": "Testaa näytösvahtijulkaisun keskeytykset jokaisessa vaiheessa",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/185",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T06:40:56Z"
+    },
+    {
+      "number": 188,
+      "title": "Erota ajastusalustan virheet automaation suoritusvirheistä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/188",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T06:51:55Z"
+    },
+    {
+      "number": 191,
+      "title": "Näytä puuttuvat ja vanhentuneet automaatioajot Valvomossa",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/191",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T06:57:50Z"
+    },
+    {
+      "number": 199,
+      "title": "Määrittele aiheajon eristetty syötepaketti ja käyttöoikeussopimus",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/199",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T09:14:29Z"
+    },
+    {
+      "number": 200,
+      "title": "Toteuta aiheajojen eristetty suoritusympäristö ja rajattu tiedostonäkymä",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/200",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T09:36:10Z"
+    },
+    {
+      "number": 201,
+      "title": "Lisää CI:hin aihemoduulien välisten riippuvuuksien ja vuotojen estotestit",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/201",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T09:44:38Z"
+    },
+    {
+      "number": 202,
+      "title": "Siirrä pääautomaation aihekierto moduulikohtaiseen eristettyyn käynnistykseen",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/202",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T11:24:02Z"
+    },
+    {
+      "number": 211,
+      "title": "Määrittele ChatGPT-ajon tuloksen turvallinen palautuskanava Aiheseuraimeen",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/211",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T11:36:34Z"
+    },
+    {
+      "number": 212,
+      "title": "Toteuta moduuliorkestroinnin pysyvät GitHub-tallennus- ja julkaisusovittimet",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/212",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T12:29:16Z"
+    },
+    {
+      "number": 213,
+      "title": "Kytke ChatGPT-tuloksen vastaanotto moduuliorkestroinnin hallittuun elinkaareen",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/213",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T13:11:39Z"
+    },
+    {
+      "number": 214,
+      "title": "Varmenna uuden ChatGPT-moduulipolun varjotila ja vertaa sitä nykyiseen uutisseurantaan",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/214",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T19:03:59Z"
+    },
+    {
+      "number": 215,
+      "title": "Suunnittele ja toteuta aihekohtainen tuotantosiirtymä, palautus ja automaation ohjeiden vaihto",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/215",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-20T12:02:58Z"
+    },
+    {
+      "number": 226,
+      "title": "Toteuta moduulikohtaiset tuotantotilan aktivointi- ja kaksoisjulkaisun estot",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/226",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T19:16:31Z"
+    },
+    {
+      "number": 227,
+      "title": "Testaa moduulisiirtymän palautus ja dokumentoi tuotantoonottopäätökset",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/227",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T19:25:00Z"
+    },
+    {
+      "number": 232,
+      "title": "Tallenna moduulisiirtymän julkaisu- ja palautustodisteet pysyvästi",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/232",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T20:41:35Z"
+    },
+    {
+      "number": 239,
+      "title": "Kytke siirtymätodisteiden keruu testattuun varjosiirtymän elinkaareen",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/239",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-19T22:53:01Z"
+    },
+    {
+      "number": 242,
+      "title": "Valmistele Taylor Swift -pilottiehdokkaan käyttöönoton hyväksyntäaineisto",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/242",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-20T12:02:56Z"
+    },
+    {
+      "number": 246,
+      "title": "Toteuta Taylor Swift -moduulin rajattu varjoharjoitus ilman tuotantojulkaisua",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/246",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-20T12:02:53Z"
+    },
+    {
+      "number": 248,
+      "title": "Selvitä Taylor Swift -varjoharjoituksen auktoritatiivinen julkaisutila",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/248",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-20T12:02:27Z"
+    },
+    {
+      "number": 256,
+      "title": "Valmistele Taylor Swift -moduulille puhdas, eristetty varjotestikierros",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/256",
+      "state": "closed",
+      "labels": [],
+      "updated_at": "2026-11-20T09:32:54Z"
+    },
+    {
+      "number": 261,
+      "title": "Palauta Kehitysjonon JSON-välimuisti ja riippuvuuksien hallinta",
+      "html_url": "https://github.com/mikknikk/aiheseurain/issues/261",
+      "state": "open",
+      "labels": [
+        {
+          "name": "status:backlog"
+        },
+        {
+          "name": "priority:P1"
+        },
+        {
+          "name": "component:kehitysjono"
+        }
+      ],
+      "updated_at": "2026-11-20T12:34:02Z"
+    }
+  ],
+  "dependencies": [
+    {
+      "issueNumber": 24,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 25,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 26,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 27,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 28,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 29,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 32,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 33,
+      "blockedBy": [
+        {
+          "number": 29,
+          "title": "Kartoita nykyinen GitHub Pages -julkaisu ja hyväksy Valvomon tietomalli",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/29",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:in-progress"
+            },
+            {
+              "name": "priority:P1"
+            }
+          ],
+          "updated_at": "2026-11-16T22:17:37Z"
+        },
+        {
+          "number": 26,
+          "title": "Varmenna lähdetarkistuslokin toiminta oikeissa automaatioajoissa",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/26",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:ready-for-development"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-20T12:07:50Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 34,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 35,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 37,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 38,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 40,
+      "blockedBy": [
+        {
+          "number": 38,
+          "title": "Siirrä Valvomo pois Pages-sivuston juuresta omalle sivulleen",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/38",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-17T16:26:09Z"
+        },
+        {
+          "number": 35,
+          "title": "Toteuta GitHub Issues -pohjainen Kehitysjono-kanban Pages-sivustolle",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/35",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-16T22:17:45Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 44,
+      "blockedBy": [
+        {
+          "number": 29,
+          "title": "Kartoita nykyinen GitHub Pages -julkaisu ja hyväksy Valvomon tietomalli",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/29",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:in-progress"
+            },
+            {
+              "name": "priority:P1"
+            }
+          ],
+          "updated_at": "2026-11-16T22:17:37Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 53,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 54,
+      "blockedBy": [
+        {
+          "number": 26,
+          "title": "Varmenna lähdetarkistuslokin toiminta oikeissa automaatioajoissa",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/26",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:ready-for-development"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-20T12:07:50Z"
+        },
+        {
+          "number": 37,
+          "title": "Tallenna ChatGPT-automaatioiden vaihekohtainen ajohistoria Valvomoa varten",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/37",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-17T16:26:07Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 55,
+      "blockedBy": [
+        {
+          "number": 26,
+          "title": "Varmenna lähdetarkistuslokin toiminta oikeissa automaatioajoissa",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/26",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:ready-for-development"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-20T12:07:50Z"
+        },
+        {
+          "number": 37,
+          "title": "Tallenna ChatGPT-automaatioiden vaihekohtainen ajohistoria Valvomoa varten",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/37",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-17T16:26:07Z"
+        },
+        {
+          "number": 53,
+          "title": "Lisää jokaiselle RSS-raportille julkaisua edeltävä laadunvarmistusportti",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/53",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            },
+            {
+              "name": "priority:P1"
+            }
+          ],
+          "updated_at": "2026-11-17T08:22:06Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 62,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 63,
+      "blockedBy": [
+        {
+          "number": 62,
+          "title": "Lisää kehitysjonon auditointi viikoittaiseen laatutarkistukseen",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/62",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:ready-for-development"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-20T12:07:38Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 66,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 67,
+      "blockedBy": [
+        {
+          "number": 66,
+          "title": "Ilmoita Discordiin ensimmäisestä näytöshavainnosta uudelle elokuvalle",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/66",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            }
+          ],
+          "updated_at": "2026-11-18T07:46:34Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 74,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 75,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 76,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 77,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 79,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 81,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 82,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 83,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 85,
+      "blockedBy": [
+        {
+          "number": 77,
+          "title": "Näytä tikettien väliset riippuvuudet kehitysjonossa",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/77",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-17T15:08:00Z"
+        },
+        {
+          "number": 83,
+          "title": "Siirrä Kehitysjonon tietojen haku GitHub Actionsin muodostamaan aineistoon",
+          "html_url": "https://github.com/mikknikk/aiheseurain/issues/83",
+          "state": "closed",
+          "labels": [
+            {
+              "name": "status:done"
+            },
+            {
+              "name": "priority:P2"
+            }
+          ],
+          "updated_at": "2026-11-17T14:00:22Z"
+        }
+      ]
+    },
+    {
+      "issueNumber": 86,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 88,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 89,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 92,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 95,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 100,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 102,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 103,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 104,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 105,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 106,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 107,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 108,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 109,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 120,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 133,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 136,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 138,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 140,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 142,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 144,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 148,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 151,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 156,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 158,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 167,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 169,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 170,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 171,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 172,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 173,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 174,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 175,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 179,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 182,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 185,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 188,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 191,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 199,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 200,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 201,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 202,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 211,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 212,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 213,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 214,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 215,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 226,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 227,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 232,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 239,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 242,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 246,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 248,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 256,
+      "blockedBy": []
+    },
+    {
+      "issueNumber": 261,
+      "blockedBy": []
+    }
+  ]
+}
