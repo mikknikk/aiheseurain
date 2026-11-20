@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "timezone": "Europe/Helsinki",
-  "updated_at": "2026-11-20T12:46:52+02:00",
+  "updated_at": "2026-11-20T12:57:49+02:00",
   "notes": [
     "Aikaleimat alustetaan tyhjiksi, koska aiempien tehtäväkohtaisten onnistuneiden tarkistusten tarkkoja aikoja ei ole varmennettu.",
     "Päivitä tehtävän tiedot vasta, kun tarkistus, mahdollinen julkaisu ja takaisinlukutarkistus ovat onnistuneet.",
@@ -55,9 +55,9 @@
       "muumit": {
         "name": "Muumit",
         "feed": "feeds/muumit.xml",
-        "last_successful_check": "2026-11-20T12:46:52+02:00",
+        "last_successful_check": "2026-11-20T12:57:49+02:00",
         "last_period_start": "2026-11-16T00:00:00+02:00",
-        "last_period_end": "2026-11-20T12:46:52+02:00",
+        "last_period_end": "2026-11-20T12:57:49+02:00",
         "last_result": "published",
         "published_items": 5,
         "sources_checked": 11,
@@ -145,7 +145,7 @@
     "document": "docs/paaautomaation-ohje.md",
     "current_version": "1.5.0",
     "last_successful_run_version": "1.5.0",
-    "last_successful_run_at": "2026-11-20T12:46:52+02:00",
+    "last_successful_run_at": "2026-11-20T12:57:49+02:00",
     "startup_prompt_id": "uutispaakierto-2026-11-17-03"
   },
   "quality_check_instructions": {
