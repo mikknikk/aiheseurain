@@ -23,5 +23,5 @@ Arkisto on palautettavissa. Arkistoidut GitHub Actions -tiedostot eivät enää 
 
 - Noudata [saavutettavuusohjeita](docs/saavutettavuus.md); WCAG 2.2 AAA -tasoa ei väitetä ilman testausta.
 - Noudata [kehityskäytäntöjä](docs/kehityskaytannot.md).
-- Älä muuta ChatGPT-automaatiotehtävien ajastuksia, aikavyöhykkeitä, kehotteita tai kohdekeskusteluja ilman erillistä lupaa.
+- Noudata [automaatioiden hallinnan suojausperiaatteita](docs/automaation-hallintaperiaatteet.md): ChatGPT-tehtävien ajastuksia, asetuksia tai kohdekeskusteluja ei muuteta ilman erillistä lupaa.
 - Älä muuta tai poista julkaistua RSS-historiaa.
