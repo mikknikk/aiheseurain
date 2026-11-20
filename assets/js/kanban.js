@@ -16,6 +16,7 @@ export const STATUS_COLUMNS = [
 export const PRIORITIES = ["P0", "P1", "P2", "P3"];
 const CACHE_KEY = "aiheseurain.kanban.cache.v1";
 const STALE_AFTER_MS = 30 * 60 * 60 * 1000;
+const FULL_SYNC_STALE_AFTER_MS = 36 * 60 * 60 * 1000;
 
 function labelNames(issue) {
   return (Array.isArray(issue?.labels) ? issue.labels : [])
@@ -134,7 +135,8 @@ export async function fetchPublishedDataset(fetchImpl = fetch, url = null) {
       || !Array.isArray(dataset.issues) || !Array.isArray(dataset.dependencies)
       || dataset.issue_count !== dataset.issues.length
       || dataset.dependencies.length !== dataset.issues.length
-      || !Number.isFinite(Date.parse(dataset.generated_at))) {
+      || !Number.isFinite(Date.parse(dataset.generated_at))
+      || !Number.isFinite(Date.parse(dataset.full_sync_at))) {
     throw new Error("Kehitysjonon aineisto on virheellinen tai puutteellinen; sitä ei käytetä.");
   }
   const issueNumbers = new Set(dataset.issues.map((issue) => Number(issue.number)));
@@ -165,9 +167,9 @@ function safeReadCache() {
   }
 }
 
-function safeWriteCache(issues, savedAt, dependencies = dependencyGraph, dependenciesSavedAt = dependencySavedAt) {
+function safeWriteCache(issues, savedAt, dependencies = dependencyGraph, dependenciesSavedAt = dependencySavedAt, fullSyncAt = null) {
   try {
-    globalThis.localStorage?.setItem(CACHE_KEY, JSON.stringify({ issues, savedAt, dependencies, dependenciesSavedAt }));
+    globalThis.localStorage?.setItem(CACHE_KEY, JSON.stringify({ issues, savedAt, dependencies, dependenciesSavedAt, fullSyncAt }));
   } catch {
     // Välimuisti on vain käyttömukavuutta varten; API-haku toimii ilman sitä.
   }
@@ -417,12 +419,15 @@ function showCachedData(cache, isError = false) {
   populateComponentFilter();
   render();
   const age = Number.isFinite(cache.savedAt) ? Date.now() - cache.savedAt : Infinity;
-  const stale = age > STALE_AFTER_MS;
+  const fullSyncAge = Number.isFinite(cache.fullSyncAt) ? Date.now() - cache.fullSyncAt : Infinity;
+  const stale = age > STALE_AFTER_MS || fullSyncAge > FULL_SYNC_STALE_AFTER_MS;
   updateFreshness(
     (isError ? "Julkaistun aineiston haku epäonnistui. " : "")
-      + (stale ? "Vanhentunut paikallinen välimuistitieto. " : "Paikallinen välimuistitieto. ")
-      + "Viimeisin onnistunut aineisto muodostettiin "
-      + formatDate(cache.savedAt) + " (" + formatAge(cache.savedAt) + ").",
+      + (stale ? "Paikallinen välimuistitieto on vanhentunut. " : "Paikallinen välimuistitieto. ")
+      + "Viimeisin päivitys " + formatDate(cache.savedAt) + " (" + formatAge(cache.savedAt) + "). "
+      + (Number.isFinite(cache.fullSyncAt)
+        ? "Täysi täsmäytys " + formatDate(cache.fullSyncAt) + " (" + formatAge(cache.fullSyncAt) + ")."
+        : "Täyden täsmäytyksen ajankohta ei ole paikallisesti tiedossa."),
     "warning"
   );
   updateDependencyStatus(dependencyGraph
@@ -443,21 +448,24 @@ async function refreshIssues() {
     }
     const graph = buildDependencyGraph(issues, dataset.dependencies, true);
     const generatedAt = Date.parse(dataset.generated_at);
+    const fullSyncAt = Date.parse(dataset.full_sync_at);
     allIssues = issues;
     savedAt = generatedAt;
     dependencyGraph = graph;
     dependencySavedAt = generatedAt;
     selectedDependencyIssue = null;
-    safeWriteCache(issues, generatedAt, graph, generatedAt);
+    safeWriteCache(issues, generatedAt, graph, generatedAt, fullSyncAt);
     populateComponentFilter();
     render();
     document.getElementById("kanban-api-error").hidden = true;
     // Riippuvuuksien lataustila näkyy jo yläpuolen aineiston päivitystiedossa.
     updateDependencyStatus("");
-    const stale = Date.now() - generatedAt > STALE_AFTER_MS;
-    updateFreshness((stale ? "Julkaistu aineisto on vanhentunut. " : "Julkaistu aineisto on käytössä. ")
-      + "Aineisto muodostettiin " + formatDate(generatedAt) + " ("
-      + formatAge(generatedAt) + ").", stale ? "warning" : "info");
+    const stale = Date.now() - generatedAt > STALE_AFTER_MS
+      || Date.now() - fullSyncAt > FULL_SYNC_STALE_AFTER_MS;
+    updateFreshness((stale ? "Julkaistu aineisto tai sen täysi täsmäytys on vanhentunut. " : "Julkaistu aineisto on käytössä. ")
+      + "Päivitetty " + formatDate(generatedAt) + " (" + formatAge(generatedAt) + "). "
+      + "Täysi täsmäytys " + formatDate(fullSyncAt) + " (" + formatAge(fullSyncAt) + ").",
+      stale ? "warning" : "info");
   } catch (error) {
     const cache = safeReadCache();
     if (cache) showCachedData(cache, true);
