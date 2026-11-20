@@ -58,7 +58,7 @@
     },
     "tracking_period": {
       "status": "pass",
-      "note": "Ensimmäinen dokumentoitu aloituspäivä on 16.11.2026; aiempaa kellonaikaa ei tunneta. Seurantajakso päättyy 20.11.2026 klo 12.46 Europe/Helsinki. 19.11.2026 lähdeajo oli partial eikä muodostanut onnistumisen tarkistuspistettä."
+      "note": "Ensimmäinen dokumentoitu aloituspäivä on 16.11.2026; tarkkaa aloituskellonaikaa ei tunneta. Koneellisen aikaleiman 00.00 Europe/Helsinki on vain päivämäärän rajamerkintä, ei väite todellisesta aloitusajasta. Seurantajakso päättyy 20.11.2026 klo 12.46 Europe/Helsinki. 19.11.2026 lähdeajo oli partial eikä muodostanut onnistumisen tarkistuspistettä."
     },
     "duplicates": {
       "status": "pass",
