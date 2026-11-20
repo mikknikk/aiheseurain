@@ -24,60 +24,23 @@ export function resolveStatusOption(labels, options) {
  * Muuntaa issue-tiketin yhden priority:-labelin Projectin Priority-vaihtoehdoksi.
  * Sallii vaihtoehdon nimen perässä selitteen, esimerkiksi "P1 – Korkea".
  */
-export function resolvePriorityOption(labels, options) {
+export function resolvePriorityOption(labels, optionsByLabel) {
   const priorityLabels = labels
     .map((label) => typeof label === "string" ? label : label?.name)
     .filter((name) => typeof name === "string" && name.startsWith("priority:"));
   if (priorityLabels.length !== 1) {
     throw new Error(`Issuella pitää olla täsmälleen yksi priority:-label; löytyi ${priorityLabels.length}.`);
   }
-  const match = priorityLabels[0].match(/^priority:(P[0-3])$/);
-  if (!match) throw new Error(`Tuntematon prioriteettilabel: ${priorityLabels[0]}.`);
-  const code = match[1];
-  // Projectin vaihtoehdon nimessä koodi voi olla erotettu selitteestä
-  // välilyönnillä ("P1 Korkea") tai ajatus-/yhdysviivalla.
-  const prefix = new RegExp(`^${code}(?:$|[\\s–—-])`);
-  const candidates = options.filter((option) =>
-    typeof option.name === "string" && prefix.test(option.name.trim())
-  );
-  if (candidates.length !== 1 || !candidates[0].id) {
-    throw new Error(`Projectin Priority-kentästä pitää löytyä täsmälleen yksi vaihtoehto tunnukselle ${code}; löytyi ${candidates.length}.`);
+  const label = priorityLabels[0];
+  const match = label.match(/^priority:(P[0-3])$/);
+  if (!match) throw new Error(`Tuntematon prioriteettilabel: ${label}.`);
+  const option = optionsByLabel[label];
+  if (!option?.id) {
+    throw new Error(`Prioriteettilabelille ${label} ei ole määritetty Project-vaihtoehdon tunnistetta.`);
   }
-  return { label: priorityLabels[0], code, option: candidates[0] };
+  return { label, code: match[1], option };
 }
 
-/**
- * Hakee Priority-kentän tunnisteen ja vaihtoehdot suoraan projektista.
- * Näin kentän luomisen yhteydessä syntyviä GitHub-tunnisteita ei tarvitse arvata
- * tai kopioida käsin repositorion asetuksiin.
- */
-export async function findProjectSingleSelectField({
-  token, projectId, fieldName, fetchImpl = fetch
-}) {
-  const query = `
-    query($projectId: ID!) {
-      node(id: $projectId) {
-        ... on ProjectV2 {
-          fields(first: 100) {
-            nodes {
-              ... on ProjectV2SingleSelectField {
-                id
-                name
-                options { id name }
-              }
-            }
-          }
-        }
-      }
-    }`;
-  const data = await graphql(token, query, { projectId }, fetchImpl);
-  const fields = data.node?.fields?.nodes || [];
-  const matches = fields.filter((field) => field?.name === fieldName && field.id);
-  if (matches.length !== 1) {
-    throw new Error(`Projectista pitää löytyä täsmälleen yksi Single select -kenttä nimeltä "${fieldName}"; löytyi ${matches.length}.`);
-  }
-  return matches[0];
-}
 
 /**
  * Päivittää yhden Projectin Single select -kentän ja lukee arvon takaisin.
@@ -105,22 +68,27 @@ export async function updateProjectSingleSelectField({
     throw new Error(`GitHub Projectin ${fieldName}-kentän päivitys ei palauttanut onnistunutta tulosta.`);
   }
   const verifyQuery = `
-    query($itemId: ID!, $fieldName: String!) {
+    query($itemId: ID!) {
       node(id: $itemId) {
         ... on ProjectV2Item {
-          fieldValueByName(name: $fieldName) {
-            ... on ProjectV2ItemFieldSingleSelectValue {
-              name
-              optionId
+          fieldValues(first: 100) {
+            nodes {
+              ... on ProjectV2ItemFieldSingleSelectValue {
+                field {
+                  ... on ProjectV2SingleSelectField { id }
+                }
+                optionId
+              }
             }
           }
         }
       }
     }`;
-  const verified = await graphql(token, verifyQuery, { itemId, fieldName }, fetchImpl);
-  const actual = verified.node?.fieldValueByName;
+  const verified = await graphql(token, verifyQuery, { itemId }, fetchImpl);
+  const actual = (verified.node?.fieldValues?.nodes || [])
+    .find((value) => value?.field?.id === fieldId);
   if (actual?.optionId !== optionId) {
-    throw new Error(`Projectin ${fieldName}-varmistus epäonnistui: odotettiin ${optionId}, saatiin ${actual?.optionId ?? "ei arvoa"}.`);
+    throw new Error(`Project-kentän ${fieldId}-varmistus epäonnistui: odotettiin vaihtoehtoa ${optionId}, saatiin ${actual?.optionId ?? "ei arvoa"}.`);
   }
 }
 
@@ -282,11 +250,7 @@ export async function syncIssueStatus({
   const { label, option } = resolveStatusOption(
     issue.labels || [], config.project.options
   );
-  const priorityField = await findProjectSingleSelectField({
-    token: projectsToken, projectId: config.project.id,
-    fieldName: config.project.priority_field_name || "Priority", fetchImpl
-  });
-  const priority = resolvePriorityOption(issue.labels || [], priorityField.options);
+  const priority = resolvePriorityOption(issue.labels || [], config.project.priority_options);
   const project = config.project;
   const itemId = await ensureProjectItem({
     token: projectsToken, projectId: project.id,
@@ -299,7 +263,7 @@ export async function syncIssueStatus({
   });
   await updateProjectSingleSelectField({
     token: projectsToken, projectId: project.id,
-    fieldId: priorityField.id, fieldName: priorityField.name,
+    fieldId: config.project.priority_field_id, fieldName: "Priority",
     optionId: priority.option.id, itemId, fetchImpl
   });
   return {
