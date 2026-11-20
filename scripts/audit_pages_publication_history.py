@@ -37,7 +37,7 @@ def parse_time(value: str, field: str) -> datetime:
         raise AuditError(f"{field}: invalid ISO 8601 timestamp") from exc
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         raise AuditError(f"{field}: timezone is required")
-    return parsed.astimezone(timezone.utc)
+    return parsed
 
 def request_bytes(url: str, token: str | None = None) -> bytes:
     """Read a URL; never send the GitHub token outside api.github.com."""
@@ -145,6 +145,8 @@ def audit_deployments(start: datetime, end: datetime, token: str) -> dict:
         if not isinstance(sha, str) or not re.fullmatch(r"[0-9a-f]{40}", sha):
             continue
         items = rss_items_for_commit(sha, start, end)
+        manifest_guids = set(feed.get("guids", []))
+        items = [item for item in items if item["guid"] in manifest_guids]
         if not items:
             continue
         status = status_for(deployment_id, token) if isinstance(deployment_id, int) else {"state": "unknown"}
