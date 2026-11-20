@@ -1,0 +1,57 @@
+name: Päivitä Kehitysjonon JSON-välimuisti
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/update-kanban-data.yml"
+      - "scripts/build_kanban_data.mjs"
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled, deleted]
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Päivitä vain tämän issue-tiketin tiedot ja riippuvuudet (tyhjä = täysi täsmäytys)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: kehitysjono-json
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.event_name != 'issues' || github.event.issue.pull_request == null
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae repositorio ja aiempi välimuisti
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Päivitä vain muuttunut tiketti tai tee täysi täsmäytys
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+        run: node scripts/build_kanban_data.mjs
+      - name: Tallenna uusi kelvollinen välimuisti
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/kehitysjono.json
+          if git diff --cached --quiet; then
+            echo "Kehitysjonon aineistossa ei ole muutoksia."
+          else
+            git commit -m "Päivitä Kehitysjonon JSON-välimuisti"
+            git push origin main
+          fi
