@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.4.0  
+**Versio:** 0.5.0  
 **Tila:** luonnos – ei hyväksytty eikä toteutuksen lupa  
 **Päiväys:** 20.11.2026  
 **Toimintamalli:** ChatGPT  
@@ -257,7 +257,60 @@ Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen
 - Käyttöliittymän saavutettavuus testataan. WCAG 2.2 AAA -vaatimustenmukaisuutta ei väitetä ilman asianmukaisia testejä.
 - Uusien skriptien tulee sisältää ymmärrettävät kommentit myös ylläpitäjälle, joka ei ole ohjelmoinnin asiantuntija.
 
-## 12. Toteutuksen ulkopuolelle rajatut asiat
+## 12. Kehitysjonon JSON-aineisto, välimuisti ja riippuvuudet
+
+Kehitysjono käyttää GitHub Issues -tietoja ja GitHubin natiiveja issue-riippuvuuksia. Selain ei tee suoria GitHub API -kutsuja eikä sisällä käyttöoikeustunnuksia. GitHubissa muodostetaan Kehitysjonon käyttöön yksi julkaistava JSON-aineisto, jota selain käyttää Kanban- ja listanäkymän sekä riippuvuusverkon muodostamiseen.
+
+### 12.1 JSON-aineisto ja välimuisti
+
+- Kehitysjonon JSON on GitHubin kanonisista tiedoista muodostettu johdettu välimuisti, ei itsenäinen tietolähde eikä käsin ylläpidettävä rekisteri.
+- Välimuisti säilyttää käyttöliittymän tarvitsemat issue-tiedot ja riippuvuussuhteet. Siihen ei kopioida tarpeettomasti issue-kuvauksia, kommentteja, raakaa API-vastausta tai salaisuuksia.
+- Aineisto muodostetaan ja päivitetään GitHubin palvelinpuolella. Selain hakee yhden valmiin JSON-tiedoston eikä hae issueita tai riippuvuuksia erikseen.
+- Välimuisti säilytetään päivitysten välillä, jotta jokaista uutta muodostusta ei tarvitse aloittaa tyhjästä.
+- Tavallinen päivitys hakee vain muuttuneet tai muuten vanhentuneet tiedot. Issue-tapahtumia ja GitHubin päivitysaikoja hyödynnetään muutosten rajaamiseen. Riippuvuustietoja päivitetään ensisijaisesti niiltä tiketeiltä, joiden riippuvuuksiin on tullut muutos.
+- Koko aineisto täsmäytetään ajoittain GitHubin kanoniseen tilaan, jotta väliin jääneet tapahtumat tai muutokset havaitaan. Täsmäytyksen aikaväli määritellään toteutussuunnitelmassa.
+- Välimuistin mukana säilytetään vähintään skeemaversio, muodostusaika, viimeisimmän onnistuneen täsmäytyksen ajankohta sekä päivityksen edellyttämät synkronointitiedot.
+- Aineiston päivitys tehdään atomisesti: keskeneräinen tai virheellinen tulos ei korvaa viimeisintä kelvollista välimuistia. Osittaista aineistoa ei merkitä täydelliseksi.
+- Jos GitHub API ei ole käytettävissä tai kutsuraja ylittyy, viimeisin kelvollinen aineisto säilyy käytettävissä ja sen ikä näytetään käyttäjälle. Vanhentunutta aineistoa ei esitetä tuoreena.
+- Selaimen paikallinen välimuisti voi toimia lisävarajärjestelynä, mutta se ei korvaa palvelinpuolen JSON-aineistoa eikä muuta vanhan tiedon tuoreustilaa.
+- Välimuistin pitää olla uudelleen muodostettavissa GitHubin kanonisista tiedoista. Välimuistin katoaminen ei saa johtaa riippuvuuksien tai issue-tietojen menettämiseen.
+- API-kutsujen määrää, rinnakkaisuutta ja sivutusta hallitaan. Täysi kaikkien tikettien riippuvuushaku jokaisella tavallisella päivityksellä ei ole hyväksyttävä oletus.
+
+### 12.2 Riippuvuuksien tietomalli
+
+- GitHub Issues -palvelun natiivit riippuvuussuhteet ovat ainoa pysyvä ja kanoninen riippuvuustietolähde. JSON-aineisto sisältää niistä johdetun välimuistikopion käyttöliittymää varten.
+- Riippuvuuden suunta on yksiselitteinen: jos tiketti A odottaa tiketin B valmistumista, A:n `blocked_by`-suhteessa on B.
+- Käyttöliittymä näyttää molemmat suunnat: tiketin edeltävät työt (mitä sen pitää odottaa) ja työt, joiden etenemistä kyseinen tiketti estää.
+- Riippuvuudet näkyvät sekä Kanban-korteissa että erillisessä tarkastelussa ja taulukkomaisessa näkymässä. Tiedot ovat ymmärrettävissä myös ilman värejä tai visuaalisia yhdysviivoja.
+- Riippuvuuden lisääminen tai poistaminen edellyttää yksiselitteistä, nimenomaista pyyntöä. Tavallinen tekstimaininta toisesta tiketistä ei muuta riippuvuuksia.
+- Riippuvuustoiminto tarkistaa, että molemmat päät ovat saman repositorion olemassa olevia issue-tikettejä, ettei tiketti riipu itsestään ja ettei lisäys muodosta riippuvuussykliä.
+- Muutokset toteutetaan idempotentisti: jo olemassa olevan suhteen lisääminen tai jo puuttuvan suhteen poistaminen ei aiheuta virheellistä kaksoistoimintoa.
+- Riippuvuustiedon muutos käynnistää JSON-aineiston päivityksen tai merkitsee muuttuneet tiedot seuraavaan päivitykseen. Myös suoraan GitHubissa tehdyt muutokset havaitaan viimeistään määräaikaisessa täsmäytyksessä.
+- Puuttuvaa tai epäonnistuneesti haettua riippuvuustietoa ei tulkita tyhjäksi riippuvuuslistaksi. Aineiston täydellisyys ja riippuvuustietojen tuoreus ilmaistaan erikseen.
+
+### 12.3 Rajaus ja toteutuksen hyväksyntä
+
+Tässä määritellään toiminnallinen vaatimus, ei vielä valita välimuistin teknistä säilytyspaikkaa tai tarkkaa synkronointitoteutusta. Toteutussuunnitelmassa verrataan yksinkertaiset vaihtoehdot ja valitaan ratkaisu, joka vähentää API-kutsuja, säilyttää tietojen eheyden ja on helppo ylläpitää. Vanhan järjestelmän toteutustiedostoja ei palauteta sellaisinaan ilman niiden soveltuvuuden tarkistamista.
+
+## 13. Ulkoiset ilmoitukset ja integraatiot
+
+Aiheseurain voi lähettää valikoiduista tapahtumista ilmoituksia ulkoisiin palveluihin. Ilmoitukset ovat raportoinnista ja RSS-julkaisusta erillinen, määrityksillä ohjattu toiminto.
+
+Vaatimukset:
+
+- Ilmoitussäännöt määritellään konfiguraatiossa. Säännössä voidaan rajata ilmoituksen käynnistävä tapahtuma, raporttityyppi, aihe, tapahtuman luokitus tai muu luotettava ajotulos.
+- Ilmoitukset voidaan kohdistaa yhteen tai useampaan vastaanottajaan ja kanavaan. Kanavat toteutetaan laajennettavina liitäntöinä; yksittäistä palvelua ei kovakoodata raportointiprosessiin.
+- Discord-webhook on mahdollinen ensimmäinen kanava. Myöhemmin voidaan lisätä muita kanavia, kuten sähköposti tai muu ilmoituspalvelu, ilman että raportin tuottamisen perusprosessia muutetaan.
+- Ilmoitus lähetetään vasta, kun sille määritelty ehto on todennettu. Esimerkiksi julkaistua raporttia koskeva ilmoitus lähetetään vasta onnistuneen validoinnin ja RSS-julkaisun jälkeen.
+- Epäonnistuneesta ajosta tai julkaisusta voidaan lähettää erillinen operatiivinen hälytys, jos sellainen sääntö on nimenomaisesti määritelty. Julkaisemattoman raportin sisältöä ei lähetetä tavallisen raportti-ilmoituksen varjolla.
+- Ilmoituksen lähetys ei kuulu RSS-julkaisun onnistumisen ehtoon. Ilmoituksen epäonnistuminen ei peruuta tai muuta onnistunutta RSS-julkaisua eikä muuta raportin tai ajon julkaisutilaa.
+- Ilmoituksen tila seurataan erikseen: odottaa, lähetetty, epäonnistunut tai tuntematon. Yritykset, ajankohdat ja turvallinen virheluokka kirjataan Valvomon nähtäville.
+- Uusintayritysten on oltava hallittuja ja idempotentteja, jotta samaa tapahtumaa ei lähetetä tahattomasti useita kertoja. Tarkat yritysrajat ja viiveet määritellään toteutussuunnitelmassa.
+- Webhook-osoitteet, tokenit ja muut salaisuudet säilytetään vain tarkoitukseen soveltuvassa salaisuuksien hallinnassa. Niitä ei tallenneta julkiseen repositorioon, tavalliseen konfiguraatioon, RSS-raporttiin, selaimelle toimitettavaan JSONiin tai lokeihin.
+- ChatGPT tuottaa ilmoitussääntöjen edellyttämät rakenteiset tapahtumatiedot, mutta ulkoisen viestin lähettää GitHubin hallittu palvelinpuolen liitäntä. ChatGPT:n ei tarvitse käsitellä webhook-salaisuuksia.
+- Ilmoituskanavien virheet, rajoitukset ja viiveet eivät saa pysäyttää muita aiheajoja tai muuttaa niiden tuloksia.
+
+## 14. Toteutuksen ulkopuolelle rajatut asiat
 
 Tässä vaiheessa ei:
 - muuteta nykyisiä ChatGPT-automaatiota, niiden ajastuksia, suoritusvälejä, aikavyöhykkeitä, käynnistyskehotteita tai kohdekeskusteluja;
@@ -269,7 +322,7 @@ Tässä vaiheessa ei:
 - muokata tai poistaa vanhoja RSS-itemeitä automaattisesti;
 - tehdä Valvomosta RSS-lukijan tai Kehitysjonon korvaajaa.
 
-## 13. Hyväksymiskriteerit
+## 15. Hyväksymiskriteerit
 
 Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voidaan osoittaa, että:
 
@@ -283,11 +336,15 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 8. Julkaistujen itemien historia säilyy muuttumattomana.
 9. Valvomo pystyy näyttämään ajot, vaiheet, tulokset, lähdekattavuuden, julkaisut ja virheet myös ilman uutta RSS-itemiä.
 10. RSS-lukija ja Kehitysjono säilyvät toimivina erillisinä käyttöliittyminä.
-11. Virheet, uusintayritykset ja jonon eteneminen ovat yksiselitteisiä.
-12. Testaus estää tuotantodatan tahattoman muuttamisen.
-13. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
+11. Kehitysjono käyttää päivittyvää JSON-välimuistia eikä tee selaimesta GitHub API -kutsuja.
+12. Kehitysjonon välimuisti päivittyy ensisijaisesti muuttuneista tiedoista ja täsmäytetään ajoittain kanoniseen GitHub-tilaan.
+13. Kehitysjonon riippuvuudet perustuvat GitHubin natiiveihin riippuvuuksiin ja näkyvät molempiin suuntiin.
+14. Ulkoiset ilmoitukset ovat konfiguroitavia, erillisiä RSS-julkaisusta ja turvallisesti lokitettuja.
+15. Virheet, uusintayritykset ja jonon eteneminen ovat yksiselitteisiä.
+16. Testaus estää tuotantodatan tahattoman muuttamisen.
+17. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
 
-## 14. Avoimet suunnittelukysymykset
+## 16. Avoimet suunnittelukysymykset
 
 Seuraavat asiat ratkaistaan vasta tämän vaatimusmäärittelyn tarkastelun ja hyväksymisen jälkeen:
 
@@ -299,8 +356,10 @@ Seuraavat asiat ratkaistaan vasta tämän vaatimusmäärittelyn tarkastelun ja h
 6. **Valvomon näkymien priorisointi:** mitkä näkymät kuuluvat ensimmäiseen toteutusvaiheeseen.
 7. **Historiatietojen säilytys:** kuinka paljon yksityiskohtaista ajohistoriaa säilytetään ja miten vanha tieto arkistoidaan.
 8. **Nykyisen toteutuksen siirtymä:** mitkä nykyisen repositorion osat voidaan hyödyntää, mitkä ovat tarpeettoman monimutkaisia ja mitkä pitää korvata. Mitään ei poisteta ennen erillistä suunnitelmaa.
+9. **Kehitysjonon välimuistin toteutus:** miten JSON-välimuisti säilytetään ajosta toiseen, miten muutostapahtumat kohdistetaan ja kuinka usein tehdään täysi täsmäytys.
+10. **Ilmoitusten tekniset liitännät:** ensimmäinen ilmoituskanava, sääntöjen tarkka skeema, viestipohjat, uusintayritykset ja kanavakohtaiset rajoitukset.
 
-## 15. Ajastettujen käynnistyskehotteiden versionhallinta
+## 17. Ajastettujen käynnistyskehotteiden versionhallinta
 
 Jokaisella Aiheseuraimen ajastetulla ChatGPT-tehtävällä on yksilöllinen tehtävätunniste ja oma kanoninen käynnistyskehote. Kehotteen sisältöä hallitaan GitHubissa versioituna tekstinä. Tehtävän tunniste ja kehotteen versio ovat eri asioita: tehtävätunniste pysyy samana, kun saman tehtävän kehotetta päivitetään.
 
@@ -319,8 +378,9 @@ Vaatimukset:
 
 Kehotteiden tarkka tiedostorakenne, rekisterin kentät ja päivitysmenettely kuvataan dokumentissa [käynnistyskehotteiden versionhallinta](../prompts/README.md).
 
-## 16. Muutosloki
+## 18. Muutosloki
 
+- **0.5.0 – 20.11.2026:** lisätty Kehitysjonon päivittyvän JSON-välimuistin ja GitHubin natiivien riippuvuuksien vaatimukset sekä konfiguroitavat ulkoiset ilmoitukset ja niiden turvallisuus- ja tilaseuranta.
 - **0.4.0 – 20.11.2026:** palautettu ajastettujen ChatGPT-käynnistyskehotteiden tehtäväkohtainen versionhallinta. Määritelty muuttumattomat versiotiedostot, tehtävärekisteri, ChatGPT:ssä käytössä olevan version erillinen vahvistaminen sekä ajon alun versiotarkistus.
 - **0.3.0 – 20.11.2026:** lisätty ajojen rakenteiset ajotiedot RSS-itemin rinnalle, Valvomo ensisijaiseksi käyttöliittymäksi sekä Valvomon tietotarpeet, näkymät ja historiatiedot. RSS-lukija ja Kehitysjono säilytetty toissijaisina käyttöliittyminä. Täsmennetty yhteinen ajoprosessi, aihekohtaiset ajotiheydet ja näytösseurannan asema samanarvoisena aiheena. Täsmennetty, että siirtomekanismi ja tekninen toteutus ratkaistaan myöhemmin.
 - **0.2.0 – 20.11.2026:** ensimmäinen vaatimusluonnos: ChatGPT-toimintamalli, yksinkertaisuusperiaate, yhteinen ja aihekohtainen konfiguraatio, seurantatyypit ja raporttipohjat, yhden RSS-itemin rajapinta, muuttumaton RSS-historia, GitHubin validointi ja virhetilanteet.
