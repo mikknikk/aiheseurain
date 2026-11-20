@@ -14,7 +14,9 @@ from typing import Any
 
 from scripts.chatgpt_module_result import validate_chatgpt_result
 from scripts.module_orchestrator import ModuleRunRequest
-from scripts.taylor_swift_shadow import MODULE_ID, TaylorSwiftShadowError
+from scripts.taylor_swift_shadow import (
+    MODULE_ID, TaylorSwiftShadowError, prepare_taylor_swift_shadow,
+)
 
 
 def validate_taylor_swift_shadow_result(
@@ -32,6 +34,20 @@ def validate_taylor_swift_shadow_result(
         raise TaylorSwiftShadowError("Varsinaisen harjoituksen erillisen hyväksynnän viite puuttuu.")
 
     root = Path(root).resolve()
+    # Tarkista, etteivät moduulin lähdetiedot muuttuneet valmistelun jälkeen.
+    try:
+        fresh_preparation = prepare_taylor_swift_shadow(
+            run_id=preparation["run_id"],
+            period_start=preparation["period"]["start"],
+            period_end=preparation["period"]["end"],
+            requested_at=preparation["requested_at"],
+            root=root,
+        )
+    except (KeyError, TypeError) as exc:
+        raise TaylorSwiftShadowError("Valmistelun tunnisteet puuttuvat tuloksen uudelleentarkistuksesta.") from exc
+    if (fresh_preparation["input_sha256"] != preparation.get("input_sha256")
+            or fresh_preparation["handoff_input_sha256"] != preparation.get("handoff_input_sha256")):
+        raise TaylorSwiftShadowError("Valmistelun lähdetiedostot ovat muuttuneet; tulosta ei voi liittää tähän lähtötilaan.")
     try:
         registry = json.loads((root / "data/module-registry.json").read_text(encoding="utf-8"))
         entries = [item for item in registry["modules"] if item.get("module_id") == MODULE_ID]

@@ -102,6 +102,16 @@ class TaylorSwiftShadowResultTests(unittest.TestCase):
                 self.preparation, payload, approval_reference="approval-1", root=self.root
             )
 
+    def test_changed_source_snapshot_after_preparation_is_rejected(self):
+        path = self.root / "data/sources/taylor_swift.json"
+        value = json.loads(path.read_text(encoding="utf-8"))
+        value["updated_at"] = "2026-11-20T12:30:00+02:00"
+        path.write_text(json.dumps(value), encoding="utf-8")
+        with self.assertRaises(TaylorSwiftShadowError):
+            validate_taylor_swift_shadow_result(
+                self.preparation, self.payload(), approval_reference="approval-1", root=self.root
+            )
+
     def test_other_target_report_is_rejected(self):
         payload = self.payload()
         payload["status"] = "succeeded"

@@ -28,7 +28,10 @@ class TaylorSwiftShadowError(ValueError):
 
 def _read_json(root: Path, relative: str) -> tuple[dict[str, Any], str]:
     """Lue JSON-tiedosto ja palauta myös alkuperäisen sisällön SHA-256."""
-    path = root / relative
+    root = Path(root).resolve()
+    path = (root / relative).resolve()
+    if not path.is_relative_to(root) or not path.is_file():
+        raise TaylorSwiftShadowError(f"Tiedostoviite poistuu repositoriosta tai puuttuu: {relative}")
     try:
         raw = path.read_bytes()
         value = json.loads(raw.decode("utf-8"))
@@ -110,8 +113,9 @@ def prepare_taylor_swift_shadow(
     if entry.get("module_type") != "topic" or entry.get("status") != "inactive":
         raise TaylorSwiftShadowError("Moduulin pitää olla inactive-tilassa oleva topic-moduuli.")
     module, module_sha = _read_json(root, entry["path"])
-    if any(module.get(key) != entry.get(key)
-           for key in ("module_id", "module_type", "definition_version")):
+    if (any(module.get(key) != entry.get(key)
+            for key in ("module_id", "module_type", "definition_version"))
+            or module.get("contract_version") != registry.get("contract_version")):
         raise TaylorSwiftShadowError("Moduulimäärittelyn omistajuus tai versio ei täsmää.")
 
     targets, target_registry_sha = _read_json(root, "data/target-registry.json")
@@ -122,6 +126,8 @@ def prepare_taylor_swift_shadow(
                       if item.get("target_id") == target_refs[0]]
     if len(target_entries) != 1:
         raise TaylorSwiftShadowError("Taylor Swift -kohde puuttuu tai on rekisterissä kahteen kertaan.")
+    if target_entries[0].get("status") != "inactive":
+        raise TaylorSwiftShadowError("Taylor Swift -kohteen pitää olla inactive-tilassa.")
     target, target_sha = _read_json(root, target_entries[0]["path"])
     owner = target.get("module_ref", {})
     if (target.get("target_id") != target_refs[0] or owner.get("module_id") != MODULE_ID
@@ -132,10 +138,14 @@ def prepare_taylor_swift_shadow(
     if sources.get("task_id") != TASK_ID:
         raise TaylorSwiftShadowError("Taylor Swiftin lähderekisterin task_id ei täsmää.")
     source_catalog, catalog_sha = _read_json(root, "data/source-catalog.json")
-    catalog_ids = {item.get("id") for item in source_catalog.get("sources", [])}
+    catalog_list = [item.get("id") for item in source_catalog.get("sources", [])]
+    catalog_ids = set(catalog_list)
+    if len(catalog_ids) != len(catalog_list):
+        raise TaylorSwiftShadowError("Yhteisessä lähdekatalogissa on duplikaattitunnisteita.")
     source_refs = [item.get("source_id") for item in module.get("source_refs", [])]
     usage_ids = [item.get("source_id") for item in sources.get("sources", [])]
     if (not source_refs or len(source_refs) != len(set(source_refs))
+            or len(usage_ids) != len(set(usage_ids))
             or set(source_refs) != set(usage_ids) or not set(source_refs).issubset(catalog_ids)):
         raise TaylorSwiftShadowError("Moduulin lähdeviitteet eivät vastaa lähderekisteriä ja katalogia.")
 
