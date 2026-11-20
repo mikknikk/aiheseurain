@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.2.0  
+**Versio:** 0.2.1  
 **Päiväys:** 20.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -49,6 +49,7 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 - Tehtäväpyyntö sisältää vähintään yksilöllisen `run_id`-tunnisteen, aiheen tunnisteen ja tehtävän suorittamiseen tarvittavat ohje- ja aikavälitiedot.
 - Raportintuottaja ei itse valitse seuraavaa aihetta eikä muuta jonotuksen ohjaustietoja.
 - Tehtäväpyyntö valmistellaan ennakkoon; raportintuottajan ei tarvitse käynnistää GitHub Actions -ajoa eikä odottaa erillistä hyväksyntävastausta tehtävää hakiessaan.
+- `data/tehtava.json` sisältää kerrallaan yhden tehtävän. Tehtäväpyyntö pysyy muuttumattomana, kunnes kyseisen tehtävän käsittelyn valmistuminen on vahvistettu; vasta sen jälkeen muodostetaan seuraava tehtäväpyyntö.
 - Tehtävän tarkka tiedostopolku, tietorakenne ja tilapäivitysten toteutus määritellään myöhemmin.
 
 Ensimmäisessä vaiheessa ei toteuteta erillistä varausmekanismia, varauksen vanhenemista eikä tehtäväkohtaista lukitusta. Yksi raportintuottaja ja yksi aktiivinen tehtäväpyyntö riittävät. Tehtäväpyynnön yksilöllinen `run_id` ja toimituksen idempotentti käsittely säilytetään.
@@ -155,7 +156,8 @@ Vaiheistus on suunnitteluehdotus. Se ei anna lupaa käynnistää tuotantoa tai m
 
 Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
-- mikä on tehtäväpyynnön tarkka tiedostopolku ja skeema sekä miten tehtäväpyynnön tila ja käsittelyn valmistuminen kirjataan;
+- miten tehtäväpyynnön tarkka skeema, aikavälien ja aikavyöhykkeiden esitystapa sekä käsittelyn valmistumisen kirjaaminen määritellään;
+- miten tehtävätyyppien yhteiset asetukset, aihekohtaiset JSON-määritykset ja Markdown-ohjeet jaetaan ja versioidaan;
 - millä tunnistautumistavalla raportintuottaja saa push-oikeuden vain vastaanottohaaraan;
 - miten vastaanottohaaran toimituspaketin eheys ja täydellisyys varmistetaan;
 - miten `metadata.json)-tiedoston tarkka skeema määritellään;
