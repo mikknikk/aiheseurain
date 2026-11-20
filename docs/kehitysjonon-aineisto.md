@@ -55,11 +55,13 @@ Päivitystyönkulku käyttää `contents: write`-oikeutta vain JSON-välimuistin
 
 Tämä tietoputki ei muuta ChatGPT-automaatiotehtäviä, ajastuksia, käynnistyskehotteita tai kohdekeskusteluja. Se ei käynnistä aihekohtaisia seurantatehtäviä eikä julkaise RSS-raportteja.
 
-## GitHub Projectin tilasynkronointi
+## GitHub Projectin tila- ja prioriteettisynkronointi
 
-GitHub Project **Aiheseurain** toimii Kehitysjonon visuaalisena Kanban-näkymänä. Issue-labelit ovat edelleen tilan ensisijainen tietolähde; Projectin Status-kenttä on niistä johdettu näkymätieto.
+GitHub Project **Aiheseurain** toimii Kehitysjonon visuaalisena Kanban-näkymänä. Issue-labelit ovat tilan ja prioriteetin ensisijaiset tietolähteet; Projectin Status- ja Priority-kentät ovat niistä johdettuja näkymätietoja.
 
-Määritys on tiedostossa `.github/project-status-sync.json`. Se sisältää Projectin, Status-kentän ja vaihtoehtojen tunnisteet, ei salaisuuksia.
+Määritys on tiedostossa `.github/project-status-sync.json`. Se sisältää Projectin ja Status-kentän asetukset sekä Priority-kentän nimen, ei salaisuuksia. Priority-kentän tunniste ja vaihtoehtojen tunnisteet haetaan Projectista kentän nimen perusteella, joten niitä ei tarvitse kopioida asetustiedostoon.
+
+**Status**
 
 | Issue-label | Projectin Status |
 |---|---|
@@ -68,9 +70,20 @@ Määritys on tiedostossa `.github/project-status-sync.json`. Se sisältää Pro
 | `status:in-progress` | In Progress |
 | `status:done` | Done |
 
-Kun tavalliseen issueen lisätään tai siitä poistetaan `status:`-label, päivitystyönkulku hakee issuen ajantasaiset labelit ja päivittää vastaavan Project-kortin. Uuden issuen avaamisen ja uudelleen avaamisen yhteydessä tila synkronoidaan myös. Jos issue ei vielä ole Projectissa, se lisätään sinne automaattisesti.
+**Priority**
 
-Synkronointi on tarkoituksella yksisuuntainen: Projectissa tehty Status-muutos ei muuta issue-labelia. Issue-label on kanoninen tieto. Issuella pitää olla täsmälleen yksi tunnettu `status:`-label; puuttuva, moninkertainen tai tuntematon tilalabel aiheuttaa näkyvän työnkulkuvirheen eikä sitä arvata.
+| Issue-label | Projectin Priority |
+|---|---|
+| `priority:P0` | P0 |
+| `priority:P1` | P1 |
+| `priority:P2` | P2 |
+| `priority:P3` | P3 |
+
+Priority-kentän Single select -vaihtoehtojen nimien tulee alkaa vastaavalla tunnuksella (esimerkiksi `P1` tai `P1 – Korkea`). Synkronointi hylkää puuttuvan, moninkertaisen tai tuntemattoman prioriteettilabelin sekä tilanteen, jossa kentästä ei löydy täsmälleen yhtä vastaavaa vaihtoehtoa.
+
+Kun tavalliseen issueen lisätään tai siitä poistetaan `status:`-label tai `priority:`-label, päivitystyönkulku hakee issuen ajantasaiset labelit ja päivittää vastaavat Project-kentät. Uuden issuen avaamisen ja uudelleen avaamisen yhteydessä molemmat kentät synkronoidaan. Jos issue ei vielä ole Projectissa, se lisätään sinne automaattisesti. Prioriteetin vaihdossa uuden labelin lisääminen käynnistää lopullisen synkronoinnin.
+
+Synkronointi on tarkoituksella yksisuuntainen: Projectissa tehty Status- tai Priority-muutos ei muuta issue-labelia. Issue-label on kanoninen tieto. Issuella pitää olla täsmälleen yksi tunnettu `status:`- ja yksi `priority:`-label; puuttuva, moninkertainen tai tuntematon label aiheuttaa näkyvän työnkulkuvirheen eikä arvoa arvata.
 
 Työnkulku käyttää repositoryn Actions-salaisuutta `PROJECTS_TOKEN`. Sen GitHub-tokenilla pitää olla Projectin luku- ja kirjoitusoikeus (classic PAT: `project`-scope). Tavallinen `GITHUB_TOKEN` hakee issue-tiketin ajantasaiset tiedot. Tunnusta ei tallenneta repositoryn tiedostoihin eikä lokitulosteisiin.
 
@@ -83,5 +96,6 @@ Testit sijaitsevat tiedostoissa:
 - `tests/kanban.test.mjs`: label-luokittelu, suodatus, riippuvuusverkon molemmat suunnat ja aineiston tuoreustiedot.
 - `tests/kanban-data.test.mjs`: täysi muodostus, inkrementaalinen päivitys, poisto, täsmäytyksen valinta ja virheellisten riippuvuustietojen hylkääminen.
 - `tests/issue-dependencies.test.mjs`: riippuvuuspyynnön tulkinta, syklistä kieltäytyminen, idempotentit muutokset ja päivitystyönkulun käynnistys.
+- `tests/project-status-sync.test.mjs`: Projectin tila- ja prioriteettikenttien label-muunnokset sekä kentän dynaaminen haku.
 
 Testit suoritetaan GitHub Actionsin `Testaa Kehitysjonon aineisto ja riippuvuudet)-työnkulussa.
