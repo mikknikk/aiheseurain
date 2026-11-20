@@ -16,7 +16,7 @@ Työnkulku tallentaa yhteenvedon Actions-ajon Summary-välilehdelle ja täydelli
 4. Kohdejakson `.github/workflows/publish-pages.yml`-ajot ja niiden job/step-tulokset.
 5. Tarkistushetken julkisen Taylor Swift -RSS-syötteen sekä sen SHA-256-tiivisteen.
 
-Tarkistin etsii lähdecommitin RSS-itemeistä kohdejaksoon viittaavan Seurantajakso-tekstin tai kohdejakson pubDate-arvon. Vain onnistunut Pages-deployment, jonka lähdecommit sisältää kohdejakson raportin, merkitään todisteeksi julkaistusta raportista.
+Tarkistin etsii lähdecommitin RSS-itemeistä täsmälleen kohdejakson alku- ja loppupäiviä sisältävän eksplisiittisen Seurantajakso-tekstin. Vain onnistunut Pages-deployment, jonka lähdecommit sisältää kohdejakson raportin, merkitään todisteeksi julkaistusta raportista.
 
 ## Tulkinta ja fail-closed-raja
 
