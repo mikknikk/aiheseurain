@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.9.0  
+**Versio:** 0.9.1  
 **Tila:** luonnos – ei hyväksytty eikä toteutuksen lupa  
 **Päiväys:** 20.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -16,7 +16,7 @@ Aiheseurain on useita aiheita ja seurantatyyppejä käsittelevä raporttien vast
 Tämän määrittelyn tavoitteena on kuvata mahdollisimman yksinkertainen toimintamalli, jossa:
 - raporttituottaja tekee sovitun tutkimus- ja raportointityön ja muodostaa rakenteisen ajotuloksen;
 - Aiheseurain vastaanottaa, validoi, tallentaa ja julkaisee hyväksytyt tulokset;
-- GitHub säilyttää seurannan määritykset, validointisäännöt, ajotiedot ja julkaistut RSS-syötteet.
+- GitHub säilyttää seurannan määritykset, validointisäännöt ja julkaistut RSS-syötteet. Ajotietojen säilytyspaikka valitaan toteutussuunnittelussa tietosuoja-, käyttöoikeus- ja historiatarpeiden perusteella.
 - Jokaisesta käynnistetystä aihekohtaisesta ajosta muodostuu vastaanottavan järjestelmän ylläpitämä ajotietue. Raporttituottajan tulos liitetään siihen yhteisellä `run_id`-tunnisteella, jos tuottaja pystyy toimittamaan tuloksen. Useita aihekohtaisia ajoja yhdistävällä ajokerralla on lisäksi vastaanottavan järjestelmän ylläpitämä ajokertatunniste.
 - RSS-item ja Valvomon tarvitsema ajodata ovat erillisiä mutta samaan ajoon sidottuja tietoja.
 - Valvomo on ensisijainen käyttöliittymä järjestelmän toiminnan ymmärtämiseen.
@@ -56,7 +56,7 @@ Valvomo on järjestelmän tärkein käyttöliittymä. Sen tehtävä on vastata k
 
 Valvomon tulee pystyä näyttämään myös ajot, joista ei syntynyt RSS-itemiä. Se ei saa päätellä ajon tilaa pelkästään RSS-syötteistä.
 
-Valvomo käyttää rakenteista ajodataa ja muuta GitHubissa ylläpidettyä tietoa. Sen ei pidä tarvita raakaa tutkimustekstiä tai RSS-itemien läpikäyntiä ajotilanteen päättelemiseksi.
+Valvomo käyttää rakenteista ajodataa ja GitHubissa ylläpidettyjä määrityksiä. Ajodata voidaan säilyttää erillisessä tarkoitukseen sopivassa tietovarastossa. Sen ei pidä tarvita raakaa tutkimustekstiä tai RSS-itemien läpikäyntiä ajotilanteen päättelemiseksi.
 
 ### 3.2 RSS-lukija – säilytettävä toissijainen käyttöliittymä
 
@@ -276,7 +276,7 @@ Ajotiedot säilytetään niin, että Valvomo voi näyttää sekä viimeisimmän 
 
 ## 9. Aiheseuraimen hallinta- ja julkaisukerroksen vastuut
 
-Tavoitetilassa nämä vastuut voidaan toteuttaa GitHubin avulla. Vastuut eivät kuitenkaan edellytä, että raporttituottaja käyttää GitHubia tai että yleinen tietosopimus sidotaan GitHubin rajapintoihin:
+Tavoitetilassa määritysten ja julkaistujen RSS-syötteiden hallinta voidaan toteuttaa GitHubin avulla. Ajotietojen säilytys voidaan toteuttaa erillisessä tietovarastossa. Vastuut eivät edellytä, että raporttituottaja käyttää GitHubia tai että yleinen tietosopimus sidotaan GitHubin rajapintoihin:
 - säilyttää yhteiset ja aihekohtaiset määritykset;
 - säilyttää aihekohtaiset lähderekisterit ja raporttipohjat;
 - määritellä ajotuloksen ja RSS-itemin skeemat;
@@ -440,6 +440,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.9.1 – 20.11.2026:** täsmennetty, ettei GitHub ole vaatimusmäärittelyssä ajotietojen pakollinen tietovarasto. Määritysten ja RSS-julkaisujen hallinta voidaan pitää GitHubissa, mutta ajotietojen säilytysratkaisu jätetään tietosuoja-, käyttöoikeus- ja historiatarpeiden perusteella toteutussuunnitteluun.
 - **0.9.0 – 20.11.2026:** poistettu yleisestä vaatimusmäärittelystä ChatGPT-toteutuksen yksityiskohtaiset ohjeet. Tuottajakohtaiset asetukset, kehotteet ja niiden versionhallinta rajattu kunkin integraation omaan dokumentaatioon. Täsmennetty yhteisen tulossopimuksen ja tuottajakohtaisten ohjeiden vastuunjako.
 
 - **0.8.0 – 20.11.2026:** lisätty konfiguraatioihin ja seurantatilaan perustuva dynaaminen aihevalinta, usean yhteensopivan aiheen käsittely samassa ajokerrassa, ajokerran ja aihekohtaisten ajojen erottelu, reilu jonotus, Aiheseuraimen omat resurssirajat, jatkamispäätökset sekä keskeytyksestä palautuminen.
