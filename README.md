@@ -4,20 +4,21 @@ Aiheseuraimen toimintamalli määritellään uudelleen yksinkertaiseksi ChatGPT-
 
 ## Tavoitetila
 
-- [Uudistetun vaatimusmäärittelyn luonnos (0.3.0)](docs/vaatimusmaarittely-uudistus.md) kuvaa uuden tavoitetilan. Se on luonnos, jota tarkennetaan ennen uuden toteutuksen rakentamista.
+- [Uudistetun vaatimusmäärittelyn luonnos (0.5.0)](docs/vaatimusmaarittely-uudistus.md) kuvaa uuden tavoitetilan. Se on edelleen luonnos, jota tarkennetaan ennen laajempaa aihekohtaista tuotantototeutusta.
+- Kehitysjono käyttää aktiivista [JSON-välimuistia ja päivitystyönkulkua](docs/kehitysjonon-aineisto.md) sekä [GitHubin natiiveihin riippuvuuksiin perustuvaa hallintaa](docs/github-riippuvuuksien-hallinta.md).
 - Valvomo on ensisijainen käyttöliittymä. RSS-lukija ja Kehitysjono säilyvät erillisinä käyttötarkoituksina.
 - Aiheiden ja seurantatyyppien tulee olla dynaamisia määrityksiä, eivät yleiseen toteutukseen kovakoodattuja.
 - ChatGPT tekee tutkimus- ja raportointityön. GitHub vastaanottaa ja validoi rakenteiset ajotulokset sekä julkaisee hyväksytyt RSS-itemit.
 
 ## Nykyinen julkaistu sisältö
 
-Nykyiset [GitHub Pages -sivut](https://mikknikk.github.io/aiheseurain/) ja [RSS-syötteet](feeds/) on säilytetty. Vanhat Pages-julkaisu- ja CI-työnkulut on siirretty arkistoon osana uudelleenkäynnistystä. Siksi sivusto pysyy viimeisimmässä julkaistussa tilassaan, kunnes uusi julkaisupolku rakennetaan.
+Nykyiset [GitHub Pages -sivut](https://mikknikk.github.io/aiheseurain/) säilyvät. Kehitysjonon JSON-aineiston päivitys ja sen testit ovat nyt aktiivisia erillisiä GitHub Actions -työnkulkuja. Vanha yleinen Pages/RSS-julkaisuprosessi on edelleen arkistoitu; Kehitysjonon tietopäivitys ei julkaise RSS-syötteitä eikä käynnistä aihekohtaisia seurantatehtäviä.
 
 ## Historia ja arkisto
 
 Julkaistut RSS-syötteet, raportit sekä seuranta- ja näytöshistoria on säilytetty alkuperäisissä sijainneissaan. Vanha toteutus, sen työnkulut, koodit, testit, skeemat, esimerkit ja vanhentuneet ohjeet on siirretty hakemistoon [archive/legacy-implementation-2026-11-20](archive/legacy-implementation-2026-11-20/).
 
-Ajastettujen ChatGPT-kehotteiden uusi kanoninen versiohallinta sijaitsee aktiivisessa [prompts-hakemistossa](prompts/). Arkisto on palautettavissa. Arkistoidut GitHub Actions -tiedostot eivät enää sijaitse `.github/workflows/`-hakemistossa eivätkä siksi käynnisty.
+Ajastettujen ChatGPT-kehotteiden uusi kanoninen versiohallinta sijaitsee aktiivisessa [prompts-hakemistossa](prompts/). Arkisto on palautettavissa. Vain nykyiset, aktiiviset työnkulut sijaitsevat `.github/workflows/`-hakemistossa; arkistoidut työnkulut eivät käynnisty.
 
 ## Kehittämisen periaatteet
 
