@@ -286,21 +286,26 @@ def validate_state_migration() -> list[str]:
             else:
                 report_valid = False
 
-            valid_partial_legacy_advance = (
-                latest_run is not None
-                and latest_run.get("status") == "partial"
-                and latest_run.get("ended_at") == legacy_checked_at
-                and latest_run_matches_pointer
-                and latest_source_count_matches
-                and checkpoint_is_older
-                and expected_period_note in latest_run.get("coverage_notes", [])
-                and old_task.get("errors", []) == []
-                and report_valid
-            )
-            if not valid_partial_legacy_advance:
+            partial_advance_checks = {
+                "latest_run_found": latest_run is not None,
+                "latest_run_partial": latest_run is not None and latest_run.get("status") == "partial",
+                "latest_run_matches_success": latest_run is not None and latest_run.get("ended_at") == legacy_checked_at,
+                "latest_by_task_matches": latest_run_matches_pointer,
+                "source_count_matches": latest_source_count_matches,
+                "checkpoint_is_older": checkpoint_is_older,
+                "period_in_source_log": latest_run is not None and expected_period_note in latest_run.get("coverage_notes", []),
+                "task_errors_empty": old_task.get("errors", []) == [],
+                "approved_publication_or_no_news": report_valid,
+            }
+            failed_partial_checks = [
+                name for name, passed in partial_advance_checks.items() if not passed
+            ]
+            if failed_partial_checks:
                 errors.append(
                     f"{module_id}: uudempi vanhan automaation seurantatila ei vastaa "
-                    "hyväksyttyä osittaista lähdetarkistusajoa."
+                    "hyväksyttyä osittaista lähdetarkistusajoa; epäonnistuneet ehdot: "
+                    + ", ".join(failed_partial_checks)
+                    + "."
                 )
         else:
             if checkpoint_checked_at != legacy_checked_at:
