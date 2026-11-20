@@ -60,24 +60,36 @@ def api_json(path: str, token: str) -> Any:
     except json.JSONDecodeError as exc:
         raise AuditError(f"GitHub API palautti virheellistä JSONia: {path}") from exc
 
-def paginated(path: str, token: str) -> list[dict]:
-    """Lue kaikki sivut; keskeytä sen sijaan, että osittaista historiaa pidettäisiin täydellisenä."""
+def paginated(path: str, token: str, collection_key: str | None = None) -> list[dict]:
+    """Lue kaikki sivut sekä GitHubin listaus- että nimettyjen kokoelmien vastausmuodoista."""
     output, page = [], 1
     while True:
         separator = "&" if "?" in path else "?"
-        rows = api_json(f"{path}{separator}per_page=100&page={page}", token)
-        if not isinstance(rows, list):
+        response = api_json(f"{path}{separator}per_page=100&page={page}", token)
+        if isinstance(response, list):
+            rows = response
+        elif isinstance(response, dict) and collection_key:
+            # Esimerkiksi Actions workflow-run -listaus palauttaa olion,
+            # jonka workflow_runs-kenttä sisältää varsinaisen taulukon.
+            rows = response.get(collection_key)
+            if not isinstance(rows, list):
+                raise AuditError(
+                    f"GitHub API -vastauksen {collection_key!r}-kenttä ei ole lista: {path}"
+                )
+        elif isinstance(response, dict):
             # GitHub voi palauttaa virhekuvauksen JSON-oliona. Näytetään sen
             # message/status/documentation_url, jotta syy voidaan tunnistaa.
-            if isinstance(rows, dict):
-                message = rows.get("message", "tuntematon API-virhe")
-                documentation = rows.get("documentation_url")
-                status = rows.get("status")
-                details = f"message={message!r}, status={status!r}"
-                if documentation:
-                    details += f", documentation_url={documentation}"
-                raise AuditError(f"GitHub API ei palauttanut listaa: {path} ({details})")
-            raise AuditError(f"GitHub API ei palauttanut listaa: {path} (vastaustyyppi {type(rows).__name__})")
+            message = response.get("message", "tuntematon API-virhe")
+            documentation = response.get("documentation_url")
+            status = response.get("status")
+            details = f"message={message!r}, status={status!r}"
+            if documentation:
+                details += f", documentation_url={documentation}"
+            raise AuditError(f"GitHub API ei palauttanut listaa: {path} ({details})")
+        else:
+            raise AuditError(
+                f"GitHub API ei palauttanut listaa: {path} (vastaustyyppi {type(response).__name__})"
+            )
         output.extend(x for x in rows if isinstance(x, dict))
         if len(rows) < 100:
             return output
@@ -212,7 +224,9 @@ def audit_workflow_runs(start: datetime, end: datetime, token: str) -> dict:
     created = urllib.parse.quote(
         f"{start.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}..{end.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}", safe=":"
     )
-    runs = paginated(f"actions/workflows/{workflow_id}/runs?created={created}", token)
+    runs = paginated(
+        f"actions/workflows/{workflow_id}/runs?created={created}", token, collection_key="workflow_runs"
+    )
     output = []
     for run in runs:
         run_id = run.get("id")
