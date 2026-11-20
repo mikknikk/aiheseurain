@@ -33,7 +33,11 @@ Tämä on vaatimusmäärittely, ei tekninen toteutussuunnitelma. Siinä ei lukit
 5. **Aihekohtainen erillisyys:** yhden aiheen ajo ei saa sekoittaa toisen aiheen lähteitä, havaintoja, raportteja tai tilaa.
 6. **Dynaamiset aiheet:** yleinen vaatimusmäärittely ei sisällä kiinteää aihelistaa. Aiheita hallitaan GitHubin määrityksillä.
 7. **Määrityspohjaisuus:** aiheiden erot, kuten seurantatiheys, sisältö, tapahtumatyypit ja raporttipohja, kuvataan asetuksilla ja seurantatyypillä.
-8. **Muuttumaton julkaisuhistoria:** julkaistuja RSS-itemeitä ei automaattisesti muokata, poisteta eikä korvata. Korjaus julkaistaan uutena iteminä, joka viittaa alkuperäiseen.
+8. **Dynaaminen aihevalinta:** seuraava aihe valitaan aktiivisten konfiguraatioiden ja ajantasaisen seurantatilan perusteella, ei kovakoodatusta aihejärjestyksestä.
+9. **Usean aiheen ajokerta:** yksi ajokerta voi käsitellä useita yhteensopivia aiheita; aihekohtaiset ajot, tulokset ja julkaisut säilyvät itsenäisinä.
+10. **Reilu jonotus:** valinta huomioi erääntymisen ja odotusajan niin, ettei jokin aihe jää jatkuvasti muiden varjoon.
+11. **Seurantatyyppien omat säännöt:** yhteinen ajonhallinta noudattaa kunkin seurantatyypin aikataulu- ja yhteensopivuusrajoituksia.
+12. **Muuttumaton julkaisuhistoria:** julkaistuja RSS-itemeitä ei automaattisesti muokata, poisteta eikä korvata. Korjaus julkaistaan uutena iteminä, joka viittaa alkuperäiseen.
 9. **Ei tarpeetonta rinnakkaisuutta:** samaa tilatietoa ei ylläpidetä useassa toisistaan riippumattomassa tiedostossa tai tietokannassa.
 10. **Turvallinen epäonnistuminen:** epäselvä tai virheellinen tulos ei saa johtaa virheelliseen RSS-julkaisuun tai onnistumisen esittämiseen.
 
