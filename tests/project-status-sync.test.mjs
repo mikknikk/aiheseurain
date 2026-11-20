@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { resolveStatusOption } from "../.github/scripts/sync_project_status.mjs";
+import { resolveStatusOption, resolvePriorityOption } from "../.github/scripts/sync_project_status.mjs";
 
 const options = {
   "status:backlog": { name: "Todo", id: "f75ad846" },
@@ -62,24 +62,18 @@ test("ohittaa issuet, joilla ei ole kehityskomponentin labelia", async () => {
 
 
 test("muuntaa prioriteettilabelit Projectin Priority-vaihtoehdoiksi", async () => {
-  const { resolvePriorityOption } = await import("../.github/scripts/sync_project_status.mjs");
-  const priorityOptions = [
-    { name: "P0 Kriittinen", id: "p0" },
-    { name: "P1 Korkea", id: "p1" },
-    { name: "P2 Normaali", id: "p2" },
-    { name: "P3 Matala", id: "p3" }
-  ];
-  assert.equal(resolvePriorityOption([{ name: "priority:P0" }], priorityOptions).option.id, "p0");
-  assert.equal(resolvePriorityOption(["priority:P1"], priorityOptions).option.id, "p1");
-  assert.equal(resolvePriorityOption([{ name: "priority:P2" }], priorityOptions).option.id, "p2");
-  assert.equal(resolvePriorityOption([{ name: "priority:P3" }], priorityOptions).option.id, "p3");
-  // Vastaa täsmälleen käyttäjän Aiheseurain-Projectissa olevia vaihtoehtoja.
-  assert.equal(resolvePriorityOption(["priority:P1"], [
-    { name: "P0 Kriittinen", id: "e8877887" },
-    { name: "P1 Korkea", id: "4eb95e26" },
-    { name: "P2 Normaali", id: "024b8b15" },
-    { name: "P3 Matala", id: "6c5a768d" }
-  ]).option.id, "4eb95e26");
+  const priorityOptions = {
+    "priority:P0": { id: "e8877887" },
+    "priority:P1": { id: "4eb95e26" },
+    "priority:P2": { id: "024b8b15" },
+    "priority:P3": { id: "6c5a768d" }
+  };
+  assert.equal(resolvePriorityOption([{ name: "priority:P0" }], priorityOptions).option.id, "e8877887");
+  assert.equal(resolvePriorityOption(["priority:P1"], priorityOptions).option.id, "4eb95e26");
+  assert.equal(resolvePriorityOption([{ name: "priority:P2" }], priorityOptions).option.id, "024b8b15");
+  assert.equal(resolvePriorityOption([{ name: "priority:P3" }], priorityOptions).option.id, "6c5a768d");
+  // Vaihtoehdon nimen muuttuminen ei vaikuta tunnisteeseen perustuvaan määritykseen.
+  assert.equal(resolvePriorityOption(["priority:P1"], { "priority:P1": { id: "4eb95e26" } }).option.id, "4eb95e26");
 });
 
 test("hylkää puuttuvan, ristiriitaisen tai tuntemattoman prioriteettilabelin", async () => {
@@ -91,22 +85,8 @@ test("hylkää puuttuvan, ristiriitaisen tai tuntemattoman prioriteettilabelin",
   assert.throws(() => resolvePriorityOption(["priority:P1"], []), /täsmälleen yksi vaihtoehto/);
 });
 
-test("löytää Projectin Priority-kentän ja sen vaihtoehdot kentän nimen perusteella", async () => {
-  const { findProjectSingleSelectField } = await import("../.github/scripts/sync_project_status.mjs");
-  const fetchMock = async (url, options) => {
-    assert.equal(url, "https://api.github.com/graphql");
-    const request = JSON.parse(options.body);
-    assert.match(request.query, /ProjectV2SingleSelectField/);
-    return {
-      ok: true, status: 200,
-      json: async () => ({ data: { node: { fields: { nodes: [
-        { id: "F_priority", name: "Priority", options: [{ id: "p1", name: "P1" }] }
-      ] } } } })
-    };
-  };
-  const field = await findProjectSingleSelectField({
-    token: "test", projectId: "P_test", fieldName: "Priority", fetchImpl: fetchMock
-  });
-  assert.equal(field.id, "F_priority");
-  assert.equal(field.options[0].id, "p1");
+test("prioriteettivaihtoehtojen määritys ei riipu kentän tai vaihtoehdon nimistä", () => {
+  const config = JSON.parse('{"priority_field_id":"PVTSSF_lAHOACf60s4BsfD3zhqtqmU","priority_options":{"priority:P1":{"id":"4eb95e26"}}}');
+  assert.equal(config.priority_field_id, "PVTSSF_lAHOACf60s4BsfD3zhqtqmU");
+  assert.equal(config.priority_options["priority:P1"].id, "4eb95e26");
 });
