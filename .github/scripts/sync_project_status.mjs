@@ -34,9 +34,11 @@ export function resolvePriorityOption(labels, options) {
   const match = priorityLabels[0].match(/^priority:(P[0-3])$/);
   if (!match) throw new Error(`Tuntematon prioriteettilabel: ${priorityLabels[0]}.`);
   const code = match[1];
+  // Projectin vaihtoehdon nimessä koodi voi olla erotettu selitteestä
+  // välilyönnillä ("P1 Korkea") tai ajatus-/yhdysviivalla.
+  const prefix = new RegExp(`^${code}(?:$|[\\s–—-])`);
   const candidates = options.filter((option) =>
-    option.name === code || option.name.startsWith(`${code} –`) ||
-    option.name.startsWith(`${code} -`) || option.name.startsWith(`${code} —`)
+    typeof option.name === "string" && prefix.test(option.name.trim())
   );
   if (candidates.length !== 1 || !candidates[0].id) {
     throw new Error(`Projectin Priority-kentästä pitää löytyä täsmälleen yksi vaihtoehto tunnukselle ${code}; löytyi ${candidates.length}.`);
