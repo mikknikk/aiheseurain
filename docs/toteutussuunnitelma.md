@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.1  
+**Versio:** 0.3.2  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -52,7 +52,7 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 - `data/tehtava.json` sisältää kerrallaan yhden tehtävän. Tehtäväpyyntö pysyy muuttumattomana, kunnes kyseisen tehtävän käsittelyn valmistuminen on vahvistettu; vasta sen jälkeen muodostetaan seuraava tehtäväpyyntö.
 - Tehtävän tarkka tiedostopolku, tietorakenne ja tilapäivitysten toteutus määritellään myöhemmin.
 
-Tehtäväpyynnön aikaväli esitetään alkuperäisissä tehtävätiedoissa alkamis- ja päättymishetkenä. Avoimeksi jätetty päättymishetki (`null`) tarkoittaa, että seuranta ulottuu tehtävän muodostamishetkeen. Tehtävän muodostamishetken tarkka aikaleima tallennetaan erikseen, jotta aikaväli voidaan myöhemmin todentaa. Aikaleimojen ja paikallisten aikavyöhykkeiden tarkka esitystapa määritellään tietomallissa.
+Tehtäväpyynnön aikamallissa kaikki varsinaiset aikaleimat tallennetaan UTC-muodossa. Paikallinen aikavyöhyke ilmoitetaan erikseen IANA-aikavyöhyketunnisteella, esimerkiksi `Europe/Helsinki`. Näin aikaleimat ovat yksiselitteisiä myös kesä- ja talviaikaan siirryttäessä.\n\nSeuranta-aikavälissä erotetaan kolme tietoa:\n\n- `from`: seurannan alkamishetki;\n- `to`: alkuperäinen päättymishetki, joka voi olla `null`, jos aikaväli oli alun perin avoin;\n- `cutoff_at`: tarkka UTC-hetki, johon asti aineisto voidaan ottaa mukaan kyseiseen ajoon.\n\nAvoimen `to`-arvon tapauksessa `cutoff_at` rajaa silti ajon aineiston täsmällisesti. Tehtäväpyyntöön sisällytetään lisäksi paikallinen aikavyöhyketunniste, jotta raportintuottaja voi tulkita ja esittää aikavälin aiheen paikallisen ajan mukaisesti.\n\nGitHub Actions ratkaisee tehtävätyypin oletukset, profiilit ja aihekohtaiset asetukset ennen tehtävän tarjoamista. Tehtäväpyyntö sisältää valmiin `resolved_config`-konfiguraatiosnapshotin. Raportintuottajan ei tarvitse hakea tai yhdistellä määritystiedostoja itse. Snapshotin alkuperä ja käytettyjen määritysten versiot tai Git-commit-viite säilytetään jäljitettävyyttä varten.
 
 Ensimmäisessä vaiheessa ei toteuteta erillistä varausmekanismia, varauksen vanhenemista eikä tehtäväkohtaista lukitusta. Yksi raportintuottaja ja yksi aktiivinen tehtäväpyyntö riittävät. Tehtäväpyynnön yksilöllinen `run_id` ja toimituksen idempotentti käsittely säilytetään.
 
