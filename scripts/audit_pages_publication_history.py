@@ -76,18 +76,21 @@ def paginated(path: str, token: str, collection_key: str | None = None) -> list[
                 raise AuditError(
                     f"GitHub API -vastauksen {collection_key!r}-kenttä ei ole lista: {path}"
                 )
+        elif isinstance(response, dict) and collection_key and "message" not in response:
+            # Onnistuneen vastauksen pitää sisältää täsmälleen odotettu
+            # kokoelmakenttä; väärä avain ei saa näyttää tyhjältä historiana.
+            raise AuditError(
+                f"GitHub API -vastauksen {collection_key!r}-kenttä ei ole lista: {path}"
+            )
         elif isinstance(response, dict):
-            # Myös nimettyä kokoelmaa käyttävä endpoint voi palauttaa
-            # virheolion. Tunnista se ennen puuttuvan kokoelmakentän virhettä,
-            # jotta API:n varsinainen syy säilyy diagnostiikassa.
+            # GitHubin virheolio tunnistetaan message-kentästä, ja sen
+            # diagnostiikka säilytetään myös nimettyjen kokoelmien endpointissa.
             message = response.get("message", "tuntematon API-virhe")
             documentation = response.get("documentation_url")
             status = response.get("status")
             details = f"message={message!r}, status={status!r}"
             if documentation:
                 details += f", documentation_url={documentation}"
-            if collection_key:
-                details += f", odotettu_kokoelma={collection_key!r}"
             raise AuditError(f"GitHub API ei palauttanut listaa: {path} ({details})")
         else:
             raise AuditError(
