@@ -40,12 +40,12 @@ jobs:
       - name: Suorita vain luku -tarkistus
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PERIOD_START: ${{ inputs.period_start }}
-          PERIOD_END: ${{ inputs.period_end }}
+          PERIOD_START: $PERIOD_START
+          PERIOD_END: $PERIOD_END
         run: |
           python scripts/audit_pages_publication_history.py \
-            --period-start "${{ inputs.period_start }}" \
-            --period-end "${{ inputs.period_end }}" \
+            --period-start "$PERIOD_START" \
+            --period-end "$PERIOD_END" \
             --output artifacts/pages-history-audit.json
       - name: Tallenna tarkistusraportti
         uses: actions/upload-artifact@v4
