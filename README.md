@@ -4,6 +4,10 @@ Aiheseurain on henkilökohtainen, moniaiheinen tiedonkeruu- ja seurantapalvelu. 
 
 GitHub Pagesin etusivu on [Aiheseurain](https://mikknikk.github.io/aiheseurain/). [Valvomo](https://mikknikk.github.io/aiheseurain/valvomo/) näyttää automaatioiden viimeisimmät varmennetut tilat, aihekierroksen ja repositorion tekniset työnkulut. [RSS-lukija](https://mikknikk.github.io/aiheseurain/lukija/) kokoaa kaikki kymmenen syötettä yhteen aikajärjestykseen ja mahdollistaa syötekohtaisen suodatuksen. [Kehitysjono](https://mikknikk.github.io/aiheseurain/kehitysjono/) näyttää GitHub Issues -tehtävät tilasarakkeissa, niiden GitHubiin kirjatut riippuvuudet sekä saavutettavan listanäkymän. Valvomo, RSS-lukija ja Kehitysjono ovat vain luku -näkymiä.
 
+## Uudistettu tavoitetila (luonnos)
+
+Aiheseuraimen toimintamallia määritellään uudelleen. Uusi [vaatimusmäärittelyn luonnos, versio 0.3.0](docs/vaatimusmaarittely-uudistus.md) kuvaa tavoitetilan, jossa Valvomo on ensisijainen käyttöliittymä ja RSS-lukija sekä Kehitysjono säilyvät erillisinä käyttötarkoituksinaan. Luonnos ei ole vielä hyväksytty eikä muuta nykyistä toteutusta. Tämä README ja nykytilaa kuvaavat dokumentit kuvaavat toistaiseksi olemassa olevaa järjestelmää.
+
 Dokumentaatioon tutustuvan kannattaa aloittaa [Aiheseuraimen dokumentaation lukupolusta](docs/aloitus-ja-lukujarjestys.md). Järjestelmän kerrokset, itsenäiset aihe- ja prosessimoduulit, tietovirrat ja teknologioiden vaihdettavuus kuvataan [järjestelmäarkkitehtuurissa](docs/jarjestelmaarkkitehtuuri.md). Lukupolku etenee yleiskuvasta käytännön toimintaan, lähteisiin, JSON-tietomalleihin, verkkosivustoon ja ylläpitoon.
 
 ## Hakemistorakenne
