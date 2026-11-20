@@ -33,7 +33,7 @@
     {
       "module_id": "muumit",
       "module_type": "topic",
-      "definition_version": "1.0.0",
+      "definition_version": "1.0.1",
       "path": "modules/topics/muumit/module.json",
       "status": "inactive"
     },
