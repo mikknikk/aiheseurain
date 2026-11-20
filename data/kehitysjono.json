@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-20T14:05:35.200Z",
+  "generated_at": "2026-11-20T14:06:00.417Z",
   "full_sync_at": "2026-11-20T13:42:57.409Z",
   "status": "complete",
   "issue_count": 86,
@@ -1003,13 +1003,16 @@
       "state": "open",
       "labels": [
         {
+          "name": "status:in-progress"
+        },
+        {
           "name": "priority:P1"
         },
         {
           "name": "component:kehitysjono"
         }
       ],
-      "updated_at": "2026-11-20T14:05:25Z"
+      "updated_at": "2026-11-20T14:05:27Z"
     }
   ],
   "dependencies": [
