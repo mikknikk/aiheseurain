@@ -14,6 +14,7 @@ Päivitä tätä tiedostoa aina, kun kehityskohde valmistuu, muuttuu tai sen pri
 - **#83 – Kehitysjonon aineiston muodostus Actionsissa ja Pages-julkaisu:** valmis; toteutus, automaattiset päivityskäynnistimet, validointi ja Pages-julkaisu on yhdistetty. GitHub Actionsin tuotantojulkaisu on varmennettu.
 - **#148 – Erillisen RSS-julkaisurepositorion tavoitearkkitehtuuri:** valmis; suunnitelma PR:ssä #166 yhdistetty, tiketti suljettu.
 - **#167 – Erillisen RSS-julkaisurepositorion prototyyppi:** estynyt käyttäjän erillistä hyväksyntää odotettaessa. Testirepositorion ja GitHub Appin luontia tai salaisuuksien lisäämistä ei ole aloitettu.
+- **#251 – Pages-julkaisuhistorian vain luku -tarkistin:** toteutus yhdistetty PR:ssä #251 (commit `b9e06903e727ed121f184619ba80609ebb6b0f53`); manuaalinen Actions-työnkulku lukee RSS-manifestit, niiden lähdecommitit, Pages-ajot ja nykyisen julkisen RSS:n. Se ei päättele puuttuvista manifesteista julkaisemattomuutta. Varsinainen historiatarkistus odottaa työnkulun manuaalista käynnistämistä; #248 pysyy avoinna siihen asti.
 
 Tarkat tilat ja prioriteetit tarkistetaan aina GitHub Issues -tiketeistä, ei tästä yhteenvedosta.
 
