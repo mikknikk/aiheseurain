@@ -66,6 +66,20 @@ test("riippuvuusverkon käänteinen blocking-suunta johdetaan blocked_by-tiedost
   assert.equal(graph.complete, true);
 });
 
+
+test("riippuvuuslistan tiketti käyttää tuoreinta issue-listan otsikkoa ja tilaa", () => {
+  const currentBlocker = normalizeIssue(makeIssue(10, {
+    title: "Uusi otsikko", state: "closed", labels: []
+  }));
+  const dependent = normalizeIssue(makeIssue(11));
+  const graph = buildDependencyGraph([currentBlocker, dependent], [
+    { issueNumber: 10, blockedBy: [] },
+    { issueNumber: 11, blockedBy: [makeIssue(10, { title: "Vanha otsikko" })] }
+  ]);
+  assert.equal(graph.byIssue[11].blockedBy[0].title, "Uusi otsikko");
+  assert.equal(graph.byIssue[11].blockedBy[0].state, "closed");
+});
+
 test("osittaista riippuvuusaineistoa ei esitetä täydellisenä", () => {
   const graph = buildDependencyGraph([normalizeIssue(makeIssue(10))], [], false);
   assert.equal(graph.complete, false);
