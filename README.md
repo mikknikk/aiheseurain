@@ -15,9 +15,9 @@ Nykyiset [GitHub Pages -sivut](https://mikknikk.github.io/aiheseurain/) ja [RSS-
 
 ## Historia ja arkisto
 
-Julkaistut RSS-syötteet, raportit sekä seuranta- ja näytöshistoria on säilytetty alkuperäisissä sijainneissaan. Vanha toteutus, sen työnkulut, koodit, testit, skeemat, esimerkit, kehotteet ja vanhentuneet ohjeet on siirretty hakemistoon [archive/legacy-implementation-2026-11-20](archive/legacy-implementation-2026-11-20/).
+Julkaistut RSS-syötteet, raportit sekä seuranta- ja näytöshistoria on säilytetty alkuperäisissä sijainneissaan. Vanha toteutus, sen työnkulut, koodit, testit, skeemat, esimerkit ja vanhentuneet ohjeet on siirretty hakemistoon [archive/legacy-implementation-2026-11-20](archive/legacy-implementation-2026-11-20/).
 
-Arkisto on palautettavissa. Arkistoidut GitHub Actions -tiedostot eivät enää sijaitse `.github/workflows/`-hakemistossa eivätkä siksi käynnisty.
+Ajastettujen ChatGPT-kehotteiden uusi kanoninen versiohallinta sijaitsee aktiivisessa [prompts-hakemistossa](prompts/). Arkisto on palautettavissa. Arkistoidut GitHub Actions -tiedostot eivät enää sijaitse `.github/workflows/`-hakemistossa eivätkä siksi käynnisty.
 
 ## Kehittämisen periaatteet
 
