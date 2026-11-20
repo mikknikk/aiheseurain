@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task_id": "muumit",
-  "updated_at": null,
+  "updated_at": "2026-11-20T12:46:52+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Muumit. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima.",
@@ -18,7 +18,7 @@
     {
       "source_id": "moomin-museum",
       "critical": true,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
       "access_limit": null,
       "retry_after": null
     },
@@ -39,29 +39,71 @@
     {
       "source_id": "yle-culture",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
       "access_limit": null,
       "retry_after": null
     },
     {
       "source_id": "lippu-fi-events",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
       "retry_after": null
     },
     {
       "source_id": "ticketmaster-fi-events",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
       "retry_after": null
     },
     {
       "source_id": "tiketti-fi-events",
       "critical": false,
-      "last_checked_at": "2026-11-19T10:10:56+02:00",
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
       "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän viralliselta sivulta.",
+      "retry_after": null
+    },
+    {
+      "source_id": "moomin-jp-official",
+      "critical": true,
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
+      "access_limit": null,
+      "retry_after": null
+    },
+    {
+      "source_id": "espoo-metro-areena",
+      "critical": false,
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
+      "access_limit": null,
+      "retry_after": null
+    },
+    {
+      "source_id": "fashionpost-jp",
+      "critical": false,
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
+      "access_limit": null,
+      "retry_after": null
+    },
+    {
+      "source_id": "elle-jp",
+      "critical": false,
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
+      "access_limit": null,
+      "retry_after": null
+    },
+    {
+      "source_id": "muumi-pomppupuisto",
+      "critical": false,
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
+      "access_limit": null,
+      "retry_after": null
+    },
+    {
+      "source_id": "biletti-fi-events",
+      "critical": false,
+      "last_checked_at": "2026-11-20T12:46:52+02:00",
+      "access_limit": "Suomessa järjestettävien tapahtumien löytämiseen; tarkista tapahtuman tiedot aina järjestäjän tai tapahtumapaikan viralliselta sivulta.",
       "retry_after": null
     }
   ]
