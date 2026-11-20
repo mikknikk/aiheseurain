@@ -109,6 +109,8 @@ def report_period_matches(item: ET.Element, start: datetime, end: datetime) -> b
     extractor.feed(item.findtext("description") or "")
     text = html.unescape(extractor.text())
     dates = set(re.findall(r"\b20\d{2}-\d{2}-\d{2}\b", text))
+    for day, month, year in re.findall(r"\b(\d{1,2})\.(\d{1,2})\.(20\d{2})\b", text):
+        dates.add(f"{int(year):04d}-{int(month):02d}-{int(day):02d}")
     return bool({start.date().isoformat(), end.date().isoformat()} & dates) and "Seurantajakso" in text
 
 def rss_items_for_commit(sha: str, start: datetime, end: datetime) -> list[dict]:
