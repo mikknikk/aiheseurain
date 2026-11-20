@@ -55,6 +55,7 @@ Tämä tietoputki ei muuta ChatGPT-automaatiotehtäviä, ajastuksia, käynnistys
 
 Testit sijaitsevat tiedostoissa:
 
+- `tests/kanban.test.mjs`: label-luokittelu, suodatus, riippuvuusverkon molemmat suunnat ja aineiston tuoreustiedot.
 - `tests/kanban-data.test.mjs`: täysi muodostus, inkrementaalinen päivitys, poisto, täsmäytyksen valinta ja virheellisten riippuvuustietojen hylkääminen.
 - `tests/issue-dependencies.test.mjs`: riippuvuuspyynnön tulkinta, syklistä kieltäytyminen, idempotentit muutokset ja päivitystyönkulun käynnistys.
 
