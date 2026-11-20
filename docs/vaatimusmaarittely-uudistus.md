@@ -133,7 +133,7 @@ Tämä on looginen prosessi. Raportin tuottaminen, tuloksen toimittaminen, vasta
 
 ## 6. Ajon tulos: raportti ja ajotiedot
 
-### 6.1 Yksi rakenteinen ajotulos
+### 6.1 Ajotietue ja tuottajan tulos
 
 Jokaisesta käynnistetystä ajosta ylläpidetään ajotietuetta. Raporttituottajan toimittama tulos on tätä ajotietuetta täydentävä tietue, jossa on seuraavat osat:
 
@@ -149,21 +149,21 @@ Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole y
 
 ### 6.2 Ajotietojen vähimmäissisältö
 
-Ajotuloksen tietosopimus versioidaan. Seuraavat ovat tuottajan tuloksen vähimmäistietoja, jos kyseinen tieto on tuottajan saatavilla; vastaanottava järjestelmä vastaa omista käsittelytiloistaan. Täsmälliset kenttätyypit ja skeemat määritellään erillisessä skeemassa, mutta tietojen pitää mahdollistaa vähintään seuraavien asioiden näyttäminen ja tarkistaminen:
+Ajotuloksen tietosopimus versioidaan. Jokaisessa toimitetussa tuloksessa ovat pakollisia `schema_version`, `run_id`, aiheen tunniste, seurantatyyppi, seurannan aikaväli ja tuottajan tulostila. Käynnistimen tai vastaanottavan järjestelmän luomat tiedot, kuten ajon aloitusaika ja käytetty määritysversio, säilytetään ajotietueessa, vaikka tuottaja ei niitä toimittaisi. Muut alla luetellut tiedot toimitetaan, jos ne ovat tuottajan saatavilla tai kyseinen seurantatyyppi niitä edellyttää. Täsmälliset kenttätyypit ja skeemat määritellään erillisessä skeemassa.
 
-| Tietoryhmä | Tarvittavat tiedot |
-|---|---|
-| Tunnisteet | `run_id`, aihe-/moduulitunniste, seurantatyyppi, käynnistystapa sekä tarvittaessa tuottajan tunniste |
-| Määritykset | käytettyjen yhteisen määrityksen, aiheen määrityksen, seurantatyypin ja raporttipohjan versiot tai yksilöivät sisältötunnisteet |
-| Ajanjakso | seurannan alku ja loppu sekä ajon aloitus- ja lopetusajat |
-| Tuottajan tulos | onnistunut, osittainen, ei raportoitavaa tai epäonnistunut; tila kuvaa tutkimus-/raportointityötä, ei vastaanoton tai julkaisun tilaa |
-| Vaiheet | suoritetut vaiheet ja niiden tulokset; pysähtymisvaihe virhetilanteessa |
-| Havainnot | löydettyjen olennaisten havaintojen määrä ja raportoitavien havaintojen määrä |
-| Lähteet | tarkistetut lähteet, onnistuneet tarkistukset, tarkistamatta jääneet lähteet ja niiden syyt |
-| Laadunvarmistus | validoinnin tulos, virheet, varoitukset ja mahdollinen hylkäyksen syy |
-| Raportti | syntyikö RSS-item, sen GUID/tunniste ja otsikko, jos ne ovat olemassa |
-| Julkaisu | vastaanottavan järjestelmän ylläpitämä kohdesyöte, julkaisun tila ja julkaisuajankohta |
-| Jatko | vastaanottavan järjestelmän ylläpitämä uudelleenyrityksen tarve, seuraava erääntymisaika ja jonon päivityksen tulos |
+| Tietoryhmä | Tarvittavat tiedot | Tiedon lähde |
+|---|---|---|
+| Tunnisteet | `run_id`, aiheen tunniste ja seurantatyyppi | Käynnistin antaa `run_id`-tunnisteen; tuottaja palauttaa sen tuloksessa |
+| Määritykset | käytettyjen yhteisen määrityksen, aiheen määrityksen, seurantatyypin ja raporttipohjan versiot tai yksilöivät sisältötunnisteet | Vastaanottava järjestelmä kirjaa käynnistyksessä käytetyt versiot |
+| Ajanjakso | seurannan alku ja loppu sekä ajon aloitus- ja lopetusajat | Seurannan aikaväli on pakollinen tuloksessa; ajoajat kirjataan käynnistimessä ja vastaanotossa |
+| Tuottajan tulos | `success`, `partial`, `no_report` tai `failed`; tila kuvaa tutkimus-/raportointityötä, ei vastaanoton tai julkaisun tilaa | Tuottaja
+| Vaiheet | suoritetut vaiheet ja niiden tulokset; pysähtymisvaihe virhetilanteessa | Tuottaja, jos saatavilla
+| Havainnot | löydettyjen olennaisten havaintojen määrä ja raportoitavien havaintojen määrä | Tuottaja, jos seurantatyyppi edellyttää
+| Lähteet | tarkistetut lähteet, onnistuneet tarkistukset, tarkistamatta jääneet lähteet ja niiden syyt | Tuottaja
+| Laadunvarmistus | tuottajan tekemän laadunarvioinnin tulos, virheet ja varoitukset; vastaanottavan järjestelmän tekninen validointi kirjataan erikseen | Tuottaja ja vastaanottaja, erillisinä tietoina
+| Raportti | syntyikö RSS-item, sen GUID/tunniste ja otsikko, jos ne ovat olemassa | Tuottaja
+| Julkaisu | vastaanottavan järjestelmän ylläpitämä kohdesyöte, julkaisun tila ja julkaisuajankohta | Vastaanottaja
+| Jatko | vastaanottavan järjestelmän ylläpitämä uudelleenyrityksen tarve, seuraava erääntymisaika ja jonon päivityksen tulos | Vastaanottaja
 
 Valvomon myöhempää kehitystä varten ajotiedoissa voidaan lisäksi säilyttää vertailukelpoisia lukumääriä ja poikkeamatietoja, kuten lähdekattavuuden muutos tai poikkeuksellisen pitkä ajo. Niiden tulee perustua todellisiin havaintoihin eikä arvattuihin mittareihin.
 
@@ -187,7 +187,7 @@ Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Vast
 
 - `schema_version` ja `run_id` ovat pakollisia jokaisessa tuottajan toimittamassa tuloksessa.
 - Aiheen tunniste, seurantatyyppi ja seurannan aikaväli on yksilöitävä; arvot tarkistetaan ajon käynnistyksessä käytettyä määritystä vasten.
-- Tuottajan tulostila on yksi määritellyistä arvoista. `report_item` puuttuu, kun tulos on `no_report` tai `failed`, ellei erikseen määritelty osittaisen raportin julkaisusääntö salli sitä.
+- Tuottajan tulostila on yksi määritellyistä arvoista. `report_item` puuttuu, kun tulos on `no_report` tai `failed`; `partial`-tuloksen raportin voi julkaista vain, jos aiheen määritys sallii sen ja julkaisuehdot täyttyvät.
 - Jos `report_item` on mukana, sen GUID on yksilöllinen ja item täyttää RSS:n sekä aiheen raporttipohjan vaatimukset.
 - Tuottajan valinnaisia tunnistetietoja ei vaadita ihmisen tekemältä raportilta.
 - Vastaanottava järjestelmä kirjaa tuloksen vastaanottoajan ja oman käsittelytilansa riippumatta tuottajan metatiedoista.
@@ -408,7 +408,7 @@ Kehotteiden tarkka tiedostorakenne, rekisterin kentät ja päivitysmenettely kuv
 
 ## 18. Muutosloki
 
-- **0.7.1 – 20.11.2026:** täsmennetty tuottajan tuloksen ja vastaanottavan järjestelmän käsittelytilojen erottelu, ajotietueen muodostuminen myös puuttuvan tuottajavastauksen tilanteessa, tuloksen tilaluokat sekä tietosopimuksen vähimmäistarkistukset.
+- **0.7.1 – 20.11.2026:** täsmennetty tuottajan tuloksen ja vastaanottavan järjestelmän käsittelytilojen erottelu, ajotietueen muodostuminen myös puuttuvan tuottajavastauksen tilanteessa, tuloksen tilaluokat, tietosopimuksen pakolliset kentät sekä tietojen vastuutahot.
 - **0.7.0 – 20.11.2026:** muutettu vaatimusmäärittely tuottajariippumattomaksi. Raporttituottajaksi hyväksytään myös ihminen; raportin tuottaminen, toimittaminen, validointi ja julkaiseminen erotettu toisistaan. Täsmennetty tietosopimuksen versiointi, valinnaiset tuottajametatiedot, määritysten eheys, rinnakkaisten ajojen hallinta, palautuminen, tietosuoja, käyttöoikeudet, jäljitettävyys ja avoimien teknisten kysymysten rajaus.
 - **0.6.0 – 20.11.2026:** päätetty käyttää kehitystehtävien käyttöliittymänä GitHub Projectsia. Oma Kanban-käyttöliittymä, JSON-välimuisti ja niiden automaatiot rajattu pois; Status- ja Priority-kentät johdetaan issue-labeleista ja riippuvuudet hallitaan GitHubin natiiveina suhteina.
 - **0.5.0 – 20.11.2026:** lisätty alun perin Kehitysjonon päivittyvän JSON-välimuistin ja GitHubin natiivien riippuvuuksien vaatimukset sekä konfiguroitavat ulkoiset ilmoitukset ja niiden turvallisuus- ja tilaseuranta.
