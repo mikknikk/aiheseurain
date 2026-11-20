@@ -94,6 +94,106 @@ class ModuleStateMigrationTests(unittest.TestCase):
                 errors = validate_state_migration()
                 self.assertTrue(any("uudempi vanhan automaation seurantatila" in error for error in errors), errors)
 
+    def test_topic_legacy_success_can_advance_after_partial_sources_without_module_checkpoint(self):
+        """Osittainen lähdeloki voi tukea legacy-ajon onnistumista ilman moduulicheckpointin siirtoa."""
+        with tempfile.TemporaryDirectory() as temporary:
+            test_root = Path(temporary)
+            for folder in ("data", "modules", "feeds", "docs", "reports"):
+                shutil.copytree(ROOT / folder, test_root / folder)
+            with patch.object(migration_validator, "ROOT", test_root), patch.object(
+                migration_validator, "REGISTRY_PATH", test_root / "data/module-registry.json"
+            ):
+                state_path = test_root / "data/seurantatila.json"
+                log_path = test_root / "data/lahdetarkistukset.json"
+                module_path = test_root / "data/module-state/muumit.json"
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+                log = json.loads(log_path.read_text(encoding="utf-8"))
+                module_state = json.loads(module_path.read_text(encoding="utf-8"))
+                original_checkpoint = deepcopy(module_state["checkpoint"])
+
+                usage = json.loads((test_root / "data/sources/muumit.json").read_text(encoding="utf-8"))
+                source_ids = [item["source_id"] for item in usage["sources"]]
+                checked_ids = source_ids[:-1]
+                unchecked_id = source_ids[-1]
+                run_id = "muumit-test-partial-20990101"
+                started_at = "2099-01-01T11:00:00+02:00"
+                ended_at = "2099-01-01T12:00:00+02:00"
+                period_start = "2099-01-01T00:00:00+02:00"
+                period_end = "2099-01-01T11:59:59+02:00"
+                period_note = f"Seurantajakso Suomen ajassa: {period_start}–{period_end}."
+
+                log["runs"].append({
+                    "run_id": run_id,
+                    "task_id": "muumit",
+                    "started_at": started_at,
+                    "ended_at": ended_at,
+                    "status": "partial",
+                    "registry_source_ids": source_ids,
+                    "checked_source_ids": checked_ids,
+                    "unchecked_sources": [{
+                        "source_id": unchecked_id,
+                        "reason": "Testissä käytetty lähde oli jäähdytysajalla."
+                    }],
+                    "coverage_notes": [period_note, "Kielet: suomi, englanti ja japani.", "Alueet: Suomi ja Japani."]
+                })
+                log["latest_by_task"]["muumit"] = ended_at
+
+                task = state["rotation"]["tasks"]["muumit"]
+                task.update({
+                    "last_successful_check": ended_at,
+                    "last_period_start": period_start,
+                    "last_period_end": period_end,
+                    "last_result": "published",
+                    "published_items": 1,
+                    "sources_checked": len(checked_ids),
+                    "errors": []
+                })
+
+                module_state["history"]["source_check_run_refs"] = [
+                    item["run_id"] for item in log["runs"] if item["task_id"] == "muumit"
+                ]
+
+                report_path = test_root / "reports/julkaisuportit" / f"{run_id}.json"
+                report = {
+                    "schema_version": 2,
+                    "run_id": run_id,
+                    "task_id": "muumit",
+                    "feed_path": "feeds/muumit.xml",
+                    "checked_at": ended_at,
+                    "checklist": {
+                        "tracking_period": {"status": "pass", "note": period_note}
+                    },
+                    "decision": "approved",
+                    "reviewer_notes": ["Testiraportti osittaisen lähdetarkistusajon hyväksymiselle."],
+                    "claim_assessments": [{
+                        "claim_id": "muumit-test-claim",
+                        "claim": "Testiväite",
+                        "verification_status": "ensisijaislahteella_vahvistettu",
+                        "sources": [{
+                            "source_id": checked_ids[0],
+                            "source_class": "A",
+                            "source_role": "ensisijainen",
+                            "independence": "ei_sovellu"
+                        }]
+                    }]
+                }
+
+                log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                module_path.write_text(json.dumps(module_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+                self.assertEqual(validate_state_migration(), [])
+                self.assertEqual(
+                    json.loads(module_path.read_text(encoding="utf-8"))["checkpoint"],
+                    original_checkpoint
+                )
+
+                report["decision"] = "rejected"
+                report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                errors = validate_state_migration()
+                self.assertTrue(any("hyväksyttyä osittaista lähdetarkistusajoa" in error for error in errors), errors)
+
     def test_unknown_historical_checkpoints_remain_unknown(self):
         """Puuttuvia tarkistusaikoja tai ajotunnisteita ei ole päätelty."""
         registry = json.loads((ROOT / "data/module-registry.json").read_text(encoding="utf-8"))

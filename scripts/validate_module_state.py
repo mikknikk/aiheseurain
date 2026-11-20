@@ -116,6 +116,19 @@ def validate_state_migration() -> list[str]:
         old_period = {"start": old_task.get("last_period_start"), "end": old_task.get("last_period_end")}
         legacy_checked_at = old_task.get("last_successful_check")
         checkpoint_checked_at = checkpoint["checked_at"]
+        latest_task_run = next(
+            (item for item in reversed(source_log["runs"]) if item["task_id"] == task_id),
+            None,
+        )
+        if (
+            not metadata.get("screening")
+            and latest_task_run is not None
+            and latest_task_run.get("status") == "partial"
+            and checkpoint_checked_at == latest_task_run.get("ended_at")
+        ):
+            errors.append(
+                f"{module_id}: osittainen lähdetarkistusajo ei saa edistää moduulin onnistumisen checkpointia."
+            )
 
         # Näytösvahti käyttää edelleen vanhaa automaatiotilaa, vaikka sen
         # moduulikohtainen tila on vasta migraation rinnakkaiskuva. Siksi vanha
@@ -207,6 +220,75 @@ def validate_state_migration() -> list[str]:
                 errors.append(
                     f"{module_id}: uudempi vanhan automaation seurantatila ei vastaa "
                     "täydellistä lähdetarkistusajoa ja hyväksyttyä julkaisuraporttia."
+                )
+        elif not metadata.get("screening") and legacy_checked_at != checkpoint_checked_at:
+            # Pääautomaation aiheajo voi hyväksytysti edetä, vaikka lähdeloki on
+            # partial: jäähdytysajalla olevat lähteet eivät yksin estä vuoroa.
+            # Moduulin oma checkpoint ei kuitenkaan saa edetä osittaisesta ajosta.
+            latest_run = next(
+                (item for item in reversed(source_log["runs"]) if item["task_id"] == task_id),
+                None,
+            )
+            expected_period_note = (
+                f"Seurantajakso Suomen ajassa: {old_period['start']}–{old_period['end']}."
+            )
+            latest_run_matches_pointer = (
+                latest_run is not None
+                and source_log["latest_by_task"].get(task_id) == latest_run["ended_at"]
+            )
+            latest_source_count_matches = (
+                latest_run is not None
+                and len(latest_run.get("checked_source_ids", [])) == old_task.get("sources_checked")
+            )
+            try:
+                checkpoint_is_older = (
+                    legacy_checked_at is not None
+                    and (
+                        checkpoint_checked_at is None
+                        or _parse_datetime(legacy_checked_at) > _parse_datetime(checkpoint_checked_at)
+                    )
+                )
+            except (TypeError, ValueError):
+                checkpoint_is_older = False
+
+            report = None
+            if latest_run is not None:
+                report_path = ROOT / "reports/julkaisuportit" / f"{latest_run['run_id']}.json"
+                if report_path.is_file():
+                    report = _read(report_path)
+
+            if old_task.get("last_result") == "published":
+                claims = report.get("claim_assessments", []) if report is not None else []
+                report_valid = (
+                    report is not None
+                    and report.get("decision") == "approved"
+                    and report.get("feed_path") == metadata["feed"]
+                    and report.get("checked_at") == legacy_checked_at
+                    and expected_period_note in report.get("checklist", {}).get("tracking_period", {}).get("note", "")
+                    and isinstance(claims, list)
+                    and len(claims) == old_task.get("published_items")
+                    and old_task.get("published_items", 0) > 0
+                )
+            elif old_task.get("last_result") == "no_news":
+                report_valid = report is None and old_task.get("published_items") == 0
+            else:
+                report_valid = False
+
+            valid_partial_legacy_advance = (
+                latest_run is not None
+                and latest_run.get("status") == "partial"
+                and latest_run.get("ended_at") == legacy_checked_at
+                and latest_run_matches_pointer
+                and latest_source_count_matches
+                and checkpoint_is_older
+                and expected_period_note in latest_run.get("coverage_notes", [])
+                and old_task.get("errors", []) == []
+                and report_valid
+            )
+            if not valid_partial_legacy_advance:
+                errors.append(
+                    f"{module_id}: uudempi vanhan automaation seurantatila ei vastaa "
+                    "hyväksyttyä osittaista lähdetarkistusajoa."
                 )
         else:
             if checkpoint_checked_at != legacy_checked_at:

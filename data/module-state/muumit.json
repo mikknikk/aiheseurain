@@ -29,13 +29,19 @@
     "event_refs": [],
     "current_record_refs": [],
     "source_check_run_refs": [
+      "main-automation-20261120T103836Z-r01",
       "muumit-20261119T101056-0200"
     ]
   },
   "publication": {
     "feed_path": "feeds/muumit.xml",
     "guid_refs": [
-      "urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event"
+      "urn:aiheseurain:muumit:2026-11-16:cocoon-city-launch-event",
+      "urn:aiheseurain:muumit:2026-11-20:moomin-music-espoo-metro-areena-2027",
+      "urn:aiheseurain:muumit:2026-11-20:bottega-veneta-japan-capsule",
+      "urn:aiheseurain:muumit:2026-11-20:akarenga-yukiguni-fantasy-sapporo",
+      "urn:aiheseurain:muumit:2026-11-20:moomin-market-osaka-takashimaya",
+      "urn:aiheseurain:muumit:2026-11-20:moomin-shop-fukuoka-tenjin"
     ]
   },
   "references": {
