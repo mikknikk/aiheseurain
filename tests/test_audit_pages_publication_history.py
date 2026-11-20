@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 
 from scripts.audit_pages_publication_history import (
     AuditError, deployment_manifest, parse_time, report_period_matches, resolve_workflow_id,
-    status_for, validate_period,
+    paginated, status_for, validate_period,
 )
 
 START = datetime(2026, 11, 18, tzinfo=timezone.utc)
@@ -60,6 +60,23 @@ class PagesHistoryAuditTests(unittest.TestCase):
         }):
             with self.assertRaises(AuditError):
                 resolve_workflow_id("token")
+
+
+    def test_workflow_run_envelope_is_unwrapped_and_paginated(self):
+        first_page = {"total_count": 101, "workflow_runs": [{"id": i} for i in range(100)]}
+        second_page = {"total_count": 101, "workflow_runs": [{"id": 100}]}
+        with patch("scripts.audit_pages_publication_history.api_json", side_effect=[first_page, second_page]) as api:
+            result = paginated("actions/workflows/123/runs", "token", collection_key="workflow_runs")
+        self.assertEqual(len(result), 101)
+        self.assertEqual(result[-1]["id"], 100)
+        self.assertEqual(api.call_count, 2)
+
+    def test_workflow_run_error_object_is_not_treated_as_empty_history(self):
+        with patch("scripts.audit_pages_publication_history.api_json", return_value={
+            "message": "Resource not accessible by integration", "documentation_url": "https://docs.github.com"
+        }):
+            with self.assertRaisesRegex(AuditError, "Resource not accessible"):
+                paginated("actions/workflows/123/runs", "token", collection_key="workflow_runs")
 
     def test_latest_deployment_status_is_selected(self):
         rows = [{"state": "success", "created_at": "2026-11-19T10:00:00Z"},
