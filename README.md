@@ -4,7 +4,7 @@ Aiheseurain on raporttituottajariippumaton seuranta-, vastaanotto-, validointi- 
 
 ## Tavoitetila
 
-- [Uudistetun vaatimusmäärittelyn luonnos (0.7.1)](docs/vaatimusmaarittely-uudistus.md) kuvaa uuden tavoitetilan. Se on edelleen luonnos, jota tarkennetaan ennen laajempaa aihekohtaista tuotantototeutusta.
+- [Uudistetun vaatimusmäärittelyn luonnos (0.8.0)](docs/vaatimusmaarittely-uudistus.md) kuvaa uuden tavoitetilan. Se on edelleen luonnos, jota tarkennetaan ennen laajempaa aihekohtaista tuotantototeutusta.
 - Kehitystehtäviä hallitaan GitHub Issuesissa ja [Aiheseurain-GitHub Projectissa](https://github.com/users/mikknikk/projects/3). Issue-labelit ovat tilan, prioriteetin ja komponentin ensisijaiset tiedot; Projectin Status- ja Priority-kentät synkronoidaan niistä automaattisesti.
 - GitHub Issuesin natiivit riippuvuudet ovat riippuvuuksien ainoa tietolähde. Katso [riippuvuuksien hallintaohje](docs/github-riippuvuuksien-hallinta.md).
 - Project-kenttien automaattinen päivitys on kuvattu [Project-synkronoinnin ohjeessa](docs/github-project-synkronointi.md).
