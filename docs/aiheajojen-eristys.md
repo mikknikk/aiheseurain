@@ -1,6 +1,6 @@
 # Aiheajojen tekninen eristäminen
 
-**Versio:** 2.3.4  
+**Versio:** 2.3.5  
 **Päiväys:** 2026-11-20  
 **Liittyvät tiketit:** [#199 – Eristetyn syötepaketin sopimus](https://github.com/mikknikk/aiheseurain/issues/199), [#200 – Eristetty suoritusympäristö](https://github.com/mikknikk/aiheseurain/issues/200), [#201 – Eristyksen CI-estot](https://github.com/mikknikk/aiheseurain/issues/201), [#202 – Pääautomaation siirto moduulikäynnistykseen](https://github.com/mikknikk/aiheseurain/issues/202), [#211 – ChatGPT-tuloksen palautuskanava](https://github.com/mikknikk/aiheseurain/issues/211), [#232 – Siirtymän julkaisu- ja palautustodisteiden pysyvä loki](https://github.com/mikknikk/aiheseurain/issues/232)
 
@@ -175,7 +175,7 @@ Ehdotettu tekninen järjestys etenee nykyisten moduulimäärittelyjen seurantako
 
 1. **Taylor Swift** – yksi kohde, 10 lähdettä; sopiva ensimmäinen pilotti selkeällä virallisten lähteiden rungolla.
 2. **Sompote Sands** – yksi kohde, 6 lähdettä; rajattu aihe ja arkistolähteisiin nojaava varmennus.
-3. **Muumit** – kaksi kohdetta, 8 lähdettä; virallisten toimijoiden ja tapahtumien reititys.
+3. **Muumit** – kaksi kohdetta, 14 lähdettä; virallisten toimijoiden ja tapahtumien reititys.
 4. **Wakaliwood** – kaksi kohdetta, 5 lähdettä; rajattu kohdejoukko, mutta alueellisten lähteiden saatavuus tarkistetaan.
 5. **Euroviisut** – kaksi kilpailukokonaisuutta ja 10 lähdettä; kansallisten valintojen sekä kansainvälisen kattavuuden reititys.
 6. **Tolkien** – kaksi kohdetta ja 28 lähdettä; laaja kieli- ja aluekattavuus.
@@ -249,6 +249,7 @@ Varjosiirtymän tekninen toteutus ja synteettiset hyväksymistestit valmistuivat
 
 ### Versiohistoria
 
+- **2.3.5 – 2026-11-20:** päivitettiin Muumien moduulilähteiden määrä 14:ään vastaamaan tehtäväkohtaista lähderekisteriä; moduulit pysyvät inactive-tilassa.
 - **2.3.3 – 2026-11-20:** viimeisteltiin #239:n varjosiirtymän toteutuksen dokumentointi PR:n #240 yhdistämisen jälkeen. Tuotantosiirtymää tai moduulien aktivointia ei tehty.
 - **2.3.2 – 2026-11-20 (valmistelu):** sidottiin checkpoint-jälkitodisteen `after_*`-kentät orkestoijan itse lukemaan runtime-haaran jälkitilaan; lisättiin väärän jälkitilan hylkäävä testi.
 - **2.3.1 – 2026-11-20 (valmistelu):** sidottiin checkpoint-jälkitodiste orkestoijan itse lukemaan runtime-haaran lähtötilaan; lisättiin väärän lähtö-SHA:n hylkäävä testi. Ei live-siirtymää eikä moduulien aktivointia.
