@@ -9,7 +9,7 @@ from scripts.audit_pages_publication_history import (
 )
 
 START = datetime(2026, 11, 18, tzinfo=timezone.utc)
-END = datetime(2026, 11, 20, tzinfo=timezone.utc)
+END = datetime(2026, 11, 19, 23, 59, tzinfo=timezone.utc)
 
 class PagesHistoryAuditTests(unittest.TestCase):
     def test_timezone_is_required(self):
