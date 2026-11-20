@@ -39,9 +39,9 @@ class PagesHistoryAuditTests(unittest.TestCase):
         item = ET.fromstring("<item><description><![CDATA[<p>Seurantajakso: 18.11.2026 – 19.11.2026</p>]]></description></item>")
         self.assertTrue(report_period_matches(item, START, END))
 
-    def test_pubdate_inside_period_matches(self):
+    def test_pubdate_without_explicit_period_is_not_evidence(self):
         item = ET.fromstring("<item><pubDate>Wed, 18 Nov 2026 10:00:00 +0000</pubDate></item>")
-        self.assertTrue(report_period_matches(item, START, END))
+        self.assertFalse(report_period_matches(item, START, END))
 
     def test_pubdate_outside_period_does_not_match(self):
         item = ET.fromstring("<item><pubDate>Mon, 16 Nov 2026 10:00:00 +0000</pubDate></item>")
