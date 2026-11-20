@@ -852,6 +852,20 @@
       "reliability_class": "C"
     },
     {
+      "id": "kinoafisha",
+      "name": "Kinoafisha",
+      "url": "https://fi.kinoafisha.info/",
+      "language_regions": [
+        "fi"
+      ],
+      "source_type": "other",
+      "regions": [
+        "FI"
+      ],
+      "reliability_class": "C",
+      "reliability_note": "Kolmannen osapuolen elokuvaohjelmistojen koontipalvelu; ohjelmatieto tarkistetaan mahdollisuuksien mukaan teatterin omasta lähteestä."
+    },
+    {
       "id": "kino-regina",
       "name": "Kino Regina",
       "url": "https://kinoregina.fi/",

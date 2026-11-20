@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task_id": "intialaiset_elokuvat_naytokset",
-  "updated_at": "2026-11-19T09:48:00+02:00",
+  "updated_at": "2026-11-20T05:49:29+02:00",
   "notes": [
     "Aihekohtainen lähderekisteri: Intialaisten elokuvien näytösseuranta. Käyttää yhteistä JSON Schema -skeemaa.",
     "Lähderekisteri on ylläpidon lähtölista, ei tyhjentävä lista eikä luotettavuusleima."
@@ -10,31 +10,31 @@
     {
       "source_id": "finnkino",
       "critical": true,
-      "last_checked_at": "2026-11-19T09:48:00+02:00",
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": null
     },
     {
       "source_id": "biorex",
       "critical": true,
-      "last_checked_at": "2026-11-19T09:48:00+02:00",
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": null
     },
     {
       "source_id": "kino-regina",
       "critical": true,
-      "last_checked_at": "2026-11-19T05:43:38+02:00",
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": null
     },
     {
       "source_id": "cinema-orion",
       "critical": true,
-      "last_checked_at": "2026-11-19T09:48:00+02:00",
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": null
     },
     {
       "source_id": "kino-myyri",
       "critical": false,
-      "last_checked_at": "2026-11-19T09:48:00+02:00",
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": "Kolmannen osapuolen teatterihakemisto; Kino Myyrin oma ohjelmisto tai lipunmyynti tarkistetaan erikseen, jos virallinen osoite löytyy."
     },
     {
@@ -58,7 +58,7 @@
     {
       "source_id": "finnish-film-foundation",
       "critical": false,
-      "last_checked_at": "2026-11-19T09:48:00+02:00",
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": null
     },
     {
@@ -70,8 +70,20 @@
     {
       "source_id": "filmikamari",
       "critical": false,
-      "last_checked_at": "2026-11-19T09:48:00+02:00",
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
       "access_limit": null
+    },
+    {
+      "source_id": "kinoafisha",
+      "critical": false,
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
+      "access_limit": "Kolmannen osapuolen elokuvaohjelmistojen koontipalvelu; teatterin oma ohjelmisto tarkistetaan rinnalla, jos saatavilla."
+    },
+    {
+      "source_id": "lippu-fi-events",
+      "critical": false,
+      "last_checked_at": "2026-11-20T05:49:29+02:00",
+      "access_limit": "Kolmannen osapuolen tapahtuma- ja lipunmyyntisivu; esitystiedot luokitellaan ilmoituksiksi, ellei järjestäjän oma vahvistus ole saatavilla."
     }
   ]
 }

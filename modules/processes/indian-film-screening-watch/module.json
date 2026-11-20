@@ -87,6 +87,16 @@
       "source_id": "filmikamari",
       "role": "discovery",
       "required": false
+    },
+    {
+      "source_id": "kinoafisha",
+      "role": "discovery",
+      "required": false
+    },
+    {
+      "source_id": "lippu-fi-events",
+      "role": "discovery",
+      "required": false
     }
   ],
   "editorial_rules": [
