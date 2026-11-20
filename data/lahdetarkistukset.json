@@ -3,6 +3,64 @@
   "timezone": "Europe/Helsinki",
   "runs": [
     {
+      "run_id": "main-automation-20261120T103836Z-r01",
+      "task_id": "muumit",
+      "started_at": "2026-11-20T12:38:36+02:00",
+      "ended_at": "2026-11-20T12:46:52+02:00",
+      "status": "partial",
+      "registry_source_ids": [
+        "moomin-official",
+        "moomin-museum",
+        "moomin-characters-news",
+        "tove-jansson-society",
+        "yle-culture",
+        "lippu-fi-events",
+        "ticketmaster-fi-events",
+        "tiketti-fi-events",
+        "moomin-jp-official",
+        "espoo-metro-areena",
+        "fashionpost-jp",
+        "elle-jp",
+        "muumi-pomppupuisto",
+        "biletti-fi-events"
+      ],
+      "checked_source_ids": [
+        "moomin-museum",
+        "yle-culture",
+        "lippu-fi-events",
+        "ticketmaster-fi-events",
+        "tiketti-fi-events",
+        "moomin-jp-official",
+        "espoo-metro-areena",
+        "fashionpost-jp",
+        "elle-jp",
+        "muumi-pomppupuisto",
+        "biletti-fi-events"
+      ],
+      "unchecked_sources": [
+        {
+          "source_id": "moomin-official",
+          "reason": "Jäähdytysaika voimassa robots.txt-eston vuoksi; käyttörekisterin retry_after on 2026-12-19T10:10:56+02:00. Lähdettä ei yritetty avata."
+        },
+        {
+          "source_id": "moomin-characters-news",
+          "reason": "Jäähdytysaika voimassa robots.txt-eston vuoksi; käyttörekisterin retry_after on 2026-12-19T10:10:56+02:00. Lähdettä ei yritetty avata."
+        },
+        {
+          "source_id": "tove-jansson-society",
+          "reason": "Jäähdytysaika voimassa toistuvan 403-eston vuoksi; käyttörekisterin retry_after on 2026-12-03T10:10:56+02:00. Lähdettä ei yritetty avata."
+        }
+      ],
+      "coverage_notes": [
+        "Kielet: suomi, englanti ja japani. Ruotsinkielisissä hauissa ei löytynyt olennaista uutta sisältöä; ruotsinkielisen uutisvirran kattavuus jäi rajalliseksi.",
+        "Alueet: Suomi ja Japani; lisäksi englanninkielisiä kansainvälisiä lähteitä tarkistettiin. Suomen tapahtumahaussa avattiin Espoo Metro Areenan ja Muumi Pomppupuiston järjestäjäsivut sekä Ticketmasterin ja Bilettin tapahtumatiedot.",
+        "Kolme aiempaa rekisterilähdettä jäi jäähdytysajalle: kaksi Moomin.com-sivua 19.12.2026 asti ja Tove Jansson Society 3.12.2026 asti. Niitä ei yritetty uudelleen.",
+        "Muumimuseon sivu, Ylen kulttuurisivu ja kolme suomalaista tapahtumahakupalvelua avattiin; Yleltä ei löytynyt tämän jakson Muumi-uutista. Muumimuseon säännöllistä ohjelmaa ei käsitelty uutisena.",
+        "Mikkelin Muumi Pomppupuiston 27.–29.11. tapahtuma tarkistettiin järjestäjän sivulta ja Bilettistä. Mikkelin kaupungin lupa on päivätty 6.11.2026, joten tapahtumaa ei käsitelty tämän seurantajakson uutisena; järjestäjän sivun sunnuntaipäivämäärän kirjoitusvirhe korjattiin Bilettin tiedon perusteella.",
+        "Japanin uutisvirrasta löytyi viisi uutta kehitystä: Muumimusiikkia-konsertti Espoossa, Bottega Veneta -yhteistyö, Sapporon Akarenga-talvitapahtuma, Osakan Moomin Market ja Fukuokan uusi myymälä."
+      ]
+    },
+    {
       "run_id": "tolkien-20261116T175100-0200",
       "task_id": "tolkien",
       "started_at": "2026-11-16T17:51:00+02:00",
@@ -599,7 +657,7 @@
     "intialaiset_elokuvat_naytokset": "2026-11-20T05:49:29+02:00",
     "taylor_swift": "2026-11-17T13:03:45+02:00",
     "gurmeet_ram_rahim_singh": "2026-11-18T14:00:19+02:00",
-    "muumit": "2026-11-19T10:10:56+02:00"
+    "muumit": "2026-11-20T12:46:52+02:00"
   },
   "updated_at": "2026-11-20T05:49:29+02:00"
 }
