@@ -5,7 +5,8 @@ from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 from scripts.audit_pages_publication_history import (
-    AuditError, deployment_manifest, parse_time, report_period_matches, status_for, validate_period,
+    AuditError, deployment_manifest, parse_time, report_period_matches, resolve_workflow_id,
+    status_for, validate_period,
 )
 
 START = datetime(2026, 11, 18, tzinfo=timezone.utc)
@@ -46,6 +47,19 @@ class PagesHistoryAuditTests(unittest.TestCase):
     def test_pubdate_outside_period_does_not_match(self):
         item = ET.fromstring("<item><pubDate>Mon, 16 Nov 2026 10:00:00 +0000</pubDate></item>")
         self.assertFalse(report_period_matches(item, START, END))
+
+    def test_workflow_id_is_resolved_from_exact_workflow_path(self):
+        with patch("scripts.audit_pages_publication_history.api_json", return_value={
+            "id": 12345, "path": ".github/workflows/publish-pages.yml"
+        }):
+            self.assertEqual(resolve_workflow_id("token"), 12345)
+
+    def test_workflow_resolution_rejects_unexpected_path(self):
+        with patch("scripts.audit_pages_publication_history.api_json", return_value={
+            "id": 12345, "path": ".github/workflows/other.yml"
+        }):
+            with self.assertRaises(AuditError):
+                resolve_workflow_id("token")
 
     def test_latest_deployment_status_is_selected(self):
         rows = [{"state": "success", "created_at": "2026-11-19T10:00:00Z"},

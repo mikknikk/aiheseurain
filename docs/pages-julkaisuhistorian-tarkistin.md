@@ -13,7 +13,7 @@ Työnkulku tallentaa yhteenvedon Actions-ajon Summary-välilehdelle ja täydelli
 1. Kaikki `rss-publication-manifest`-ympäristön GitHub Deployment -tietueet sivutettuna.
 2. Manifestien Taylor Swift -syötteen GUID-luettelon ja manifestin lähdecommitin RSS-tiedoston.
 3. Deploymentin koko tilahistorian, viimeisimmän tilan sekä tiedon siitä, onko deployment koskaan saanut `success`-tilaa.
-4. Kohdejakson `.github/workflows/publish-pages.yml`-ajot ja niiden job/step-tulokset.
+4. `.github/workflows/publish-pages.yml`-työnkulun tarkka tietue ja siitä ensin ratkaistu numeerinen workflow-ID; tämän jälkeen kohdejakson ajot ja niiden job/step-tulokset. API:n virhevastausten message/status/documentation_url näytetään virheilmoituksessa.
 5. Tarkistushetken julkisen Taylor Swift -RSS-syötteen sekä sen SHA-256-tiivisteen.
 
 Tarkistin etsii lähdecommitin RSS-itemeistä täsmälleen kohdejakson alku- ja loppupäiviä sisältävän eksplisiittisen Seurantajakso-tekstin. Vain Pages-deployment, jonka lähdecommit sisältää kohdejakson raportin ja jonka tilahistoriassa on `success`-merkintä, merkitään todisteeksi julkaistusta raportista. Myöhempi `inactive`-tila ei poista historiallista onnistumista: GitHub voi merkitä aiemman ei-tuotantoympäristön deploymentin passiiviseksi uudemman julkaisun jälkeen.

@@ -67,7 +67,17 @@ def paginated(path: str, token: str) -> list[dict]:
         separator = "&" if "?" in path else "?"
         rows = api_json(f"{path}{separator}per_page=100&page={page}", token)
         if not isinstance(rows, list):
-            raise AuditError(f"GitHub API ei palauttanut listaa: {path}")
+            # GitHub voi palauttaa virhekuvauksen JSON-oliona. Näytetään sen
+            # message/status/documentation_url, jotta syy voidaan tunnistaa.
+            if isinstance(rows, dict):
+                message = rows.get("message", "tuntematon API-virhe")
+                documentation = rows.get("documentation_url")
+                status = rows.get("status")
+                details = f"message={message!r}, status={status!r}"
+                if documentation:
+                    details += f", documentation_url={documentation}"
+                raise AuditError(f"GitHub API ei palauttanut listaa: {path} ({details})")
+            raise AuditError(f"GitHub API ei palauttanut listaa: {path} (vastaustyyppi {type(rows).__name__})")
         output.extend(x for x in rows if isinstance(x, dict))
         if len(rows) < 100:
             return output
@@ -180,12 +190,29 @@ def audit_deployments(start: datetime, end: datetime, token: str) -> dict:
         ),
     }
 
+def resolve_workflow_id(token: str) -> int:
+    """Hae Pages-julkaisutyönkulun numeerinen ID ennen ajohistorian lukua."""
+    workflow = api_json("actions/workflows/publish-pages.yml", token)
+    if not isinstance(workflow, dict):
+        raise AuditError("GitHub API ei palauttanut Pages-työnkulun tietuetta")
+    workflow_id = workflow.get("id")
+    workflow_path = workflow.get("path")
+    if not isinstance(workflow_id, int) or workflow_path != ".github/workflows/publish-pages.yml":
+        message = workflow.get("message", "workflow-tietueesta puuttuu kelvollinen ID tai polku")
+        raise AuditError(
+            "Pages-työnkulun tunnisteen ratkaisu epäonnistui: "
+            f"message={message!r}, id={workflow_id!r}, path={workflow_path!r}"
+        )
+    return workflow_id
+
+
 def audit_workflow_runs(start: datetime, end: datetime, token: str) -> dict:
-    """Listaa Pages-työnkulun ajot sekä niiden job- ja step-tulokset."""
+    """Listaa Pages-työnkulun ajot ensin ratkaistulla numeerisella ID:llä."""
+    workflow_id = resolve_workflow_id(token)
     created = urllib.parse.quote(
         f"{start.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}..{end.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}", safe=":"
     )
-    runs = paginated(f"actions/workflows/publish-pages.yml/runs?created={created}", token)
+    runs = paginated(f"actions/workflows/{workflow_id}/runs?created={created}", token)
     output = []
     for run in runs:
         run_id = run.get("id")
@@ -202,7 +229,7 @@ def audit_workflow_runs(start: datetime, end: datetime, token: str) -> dict:
                                 for step in (job.get("steps") or [])]}
                      for job in jobs],
         })
-    return {"workflow": ".github/workflows/publish-pages.yml", "runs": output}
+    return {"workflow": ".github/workflows/publish-pages.yml", "workflow_id": workflow_id, "runs": output}
 
 def audit_current_pages(start: datetime, end: datetime) -> dict:
     """Lue nykyinen julkinen RSS, mutta älä tulkitse sitä historialliseksi snapshotiksi."""
