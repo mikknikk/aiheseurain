@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.4  
+**Versio:** 0.3.5  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -76,6 +76,18 @@ Tehtävän käsittelyn jumiutumista vastaan toteutetaan ensimmäiseen versioon r
 - Tehtävän etenemisen erillistä tilatiedostoa ei lisätä. Tehtäväpyynnön korvaaminen seuraavalla ja ajohistoria muodostavat etenemisen lähteen; seuraava tehtävä muodostetaan vasta, kun nykyisen tehtävän käsittely on ratkaistu onnistuneesti tai se on päätetty epäonnistuneeksi palautumissääntöjen perusteella.
 
 Useiden samanaikaisten raportintuottajien tai tehtävien tuki voidaan lisätä myöhemmin. Silloin suunnitellaan erikseen atominen varaus, varauksen voimassaolo, vanhentuneen varauksen palautus sekä vanhalla `run_id`:llä saapuvien toimitusten hylkääminen. Ensimmäisen vaiheen ratkaisu ei saa tarpeettomasti estää tätä laajennusta.
+
+### 2.2.1.1 Tehtäväpyynnön muodostamisen ja määräajanvalvonnan ajastus
+
+Tehtäväpyynnön muodostaminen ja aktiivisen tehtävän määräajan valvonta hoidetaan yhdellä säännöllisesti käynnistyvällä GitHub Actions -työnkululla.
+
+- Työnkulku tarkistaa, onko käsiteltävä tehtäväpyyntö jo olemassa.
+- Jos tehtäväpyyntöä ei ole ja jonossa on käsiteltävä aihe, työnkulku muodostaa seuraavan tehtäväpyynnön.
+- Jos aktiivinen tehtävä on ylittänyt määräaikansa eikä sen tulosta ole saapunut, työnkulku käsittelee tehtävän epäonnistuneena aiemmin sovittujen palautumissääntöjen mukaisesti ja voi sen jälkeen muodostaa seuraavan tehtävän.
+- Jos tehtävä on yhä voimassa, työnkulku jättää sen ennalleen. Se ei luo rinnakkaista tehtävää eikä muuta tehtävän sisältöä.
+- Raportintuottaja hakee tehtävän omalla aikataulullaan. Sen käynnistyminen ei edellytä erillistä GitHub Actions -ilmoitusta.
+
+Tämä pitää tehtävän muodostamisen ja määräaikojen valvonnan yhdessä paikassa eikä sido niitä raportintuottajan käynnistysrytmiin. Työnkulun tarkka suoritusväli ja mahdollinen manuaalinen käynnistys määritellään myöhemmin tehtävätyyppien ja käyttörajoitusten yhteydessä.
 
 ### 2.2.2 Tehtävätyypit, määritysprofiilit ja aihekohtaiset asetukset
 
