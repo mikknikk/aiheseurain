@@ -1,0 +1,41 @@
+name: Tarkista dokumentaation laatu
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - "docs/**/*.md"
+      - ".github/scripts/check_markdown_docs.mjs"
+      - ".github/workflows/check-markdown-docs.yml"
+      - "tests/markdown-docs.test.mjs"
+  pull_request:
+    paths:
+      - "README.md"
+      - "docs/**/*.md"
+      - ".github/scripts/check_markdown_docs.mjs"
+      - ".github/workflows/check-markdown-docs.yml"
+      - "tests/markdown-docs.test.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: markdown-doc-quality
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hae repositorio
+        uses: actions/checkout@v4
+      - name: Aseta Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Tarkista dokumentaation rakenne ja linkit
+        run: node .github/scripts/check_markdown_docs.mjs
+      - name: Aja laaduntarkistuksen yksikkötestit
+        run: node --test tests/markdown-docs.test.mjs
