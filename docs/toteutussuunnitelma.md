@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.18  
+**Versio:** 0.3.19  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -72,6 +72,7 @@ Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
 - `history` on pakollinen ja sisältää `path`- sekä `revision`-kentät. `path` on repositoriojuureen suhteutettu RSS-tiedoston polku, ei URL eikä haaran nimi. `revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA. Se on käsitteellisesti erillinen `source_revision`-kentästä, vaikka molemmat voivat osoittaa samaan committiin.
 - Myös `source_revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA.
 - `profiles` ja `instructions` säilytetään erillisinä taulukoina. Ensimmäinen kuvaa käytetyt koneelliset määritysprofiilit, toinen pakollisesti luettavat Markdown-ohjeet.
+- `profiles` on pakollinen taulukko. Tyhjä taulukko sallitaan, jos tehtävä ei käytä profiileja. Jokaisen alkion on oltava tunnetun profiilin yksilöllinen `id`; sama profiili ei saa esiintyä kahdesti. Taulukon järjestys säilytetään, koska myöhemmin lueteltu profiili voi korvata aiemmin luetellun profiilin asetuksia.
 - `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat `id` ja repositoriojuureen suhteutettu `path`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: tehtävätyypin ohje, profiilien ohjeet profiilien määritysjärjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
 
 ### Ratkaistu määritys (`resolved_config`)
