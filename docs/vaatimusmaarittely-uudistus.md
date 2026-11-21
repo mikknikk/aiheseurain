@@ -384,7 +384,7 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 22. Julkiseen raporttiin, RSS-syötteeseen tai Valvomon julkiseen dataan ei päädy salaisuuksia tai tarpeettomia henkilötietoja.
 23. Testaus estää tuotantodatan tahattoman muuttamisen.
 24. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
-25. Ulkoiset ilmoitukset, batch-ajot ja osittaisten raporttien julkaiseminen eivät ole ensimmäisen version toteutusvaatimuksia.
+25. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.
 
 ## 16. Avoimet suunnittelukysymykset
 
