@@ -39,4 +39,4 @@ GitHub Actions suorittaa molemmat komennot dokumentaatiomuutosten yhteydessä. V
 
 ## Ylläpito
 
-Kun tarkistussääntöä muutetaan, päivitä vastaavat yksikkötestit ja tämä dokumentti samassa muutoksessa. Skriptin tulee pysyä riippumattomana ulkoisista npm-paketeista, jotta tarkistus toimii suoraan GitHub Actionsin Node.js-ympäristössä.
+Kun tarkistussääntöä muutetaan, päivitä vastaavat yksikkötestit ja tämä dokumentti samassa muutoksessa. Skriptin tulee pysyä riippumattomana ulkoisista npm-paketeista, jotta tarkistus toimii suoraan GitHub Actionsin Node.js-ympäristössä. Työnkulun GitHub Actions -toimintojen versiot pidetään ajan tasalla ja niiden tulee käyttää tuettua Node.js-suoritusaikaa.
