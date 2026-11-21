@@ -1,8 +1,8 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.10.0  
+**Versio:** 0.11.0  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
-**Päiväys:** 20.11.2026  
+**Päiväys:** 21.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
 **Suunnitteluperiaate:** mahdollisimman yksinkertainen ja luotettava  
 **Kohderepositorio:** `mikknikk/aiheseurain`
@@ -39,7 +39,7 @@ Tämä on vaatimusmäärittely, ei tekninen toteutussuunnitelma. Se ei lukitse t
 7. **Määrityspohjaisuus:** aiheiden erot, kuten seurantatiheys, sisältö, tapahtumatyypit ja raporttipohja, kuvataan asetuksilla ja seurantatyypillä.
 8. **Dynaaminen ja reilu aihevalinta:** seuraava aihe valitaan aktiivisten määritysten, erääntymisen ja odotusajan perusteella, ei kovakoodatusta aihejärjestyksestä.
 9. **Yksi kanoninen ajohistoria:** samaa ajotietoa ei ylläpidetä tarpeettomasti useissa toisistaan riippumattomissa tietovarastoissa.
-10. **Muuttumaton julkaisuhistoria:** julkaistuja RSS-itemeitä ei automaattisesti muokata, poistaa eikä korvata. Korjaus julkaistaan uutena iteminä, joka viittaa alkuperäiseen.
+10. **Muuttumaton julkaisuhistoria:** julkaistuja RSS-itemeitä ei muokata, poistaa eikä korvata. Myöhempi olennainen täydennys tai korjaus julkaistaan uutena iteminä, joka kertoo avoimesti muutoksen ja viittaa alkuperäiseen.
 11. **Turvallinen epäonnistuminen:** epäselvä tai virheellinen tulos ei johda virheelliseen RSS-julkaisuun eikä onnistumisen esittämiseen.
 12. **Vaiheiden selkeä vastuunjako:** tuottajan tutkimustulos, vastaanoton validointi, tallennus ja julkaisu ovat erillisiä tiloja.
 
@@ -198,7 +198,7 @@ Ajotietojen tarkoitus on kuvata, mitä tapahtui ja millä tuloksella. Niihin ei 
 
 `no_report` on onnistunut seuranta ilman RSS-itemiä, ei virhe.
 
-`partial` kuvaa osittaista seurantaa. Osittainen tulos tallennetaan, mutta osittaisen raportin julkaiseminen ei kuulu ensimmäiseen versioon. Vaikka osittainen tulos sisältäisi raporttisisältöä, sitä ei julkaista RSS-syötteeseen.
+`partial` kuvaa osittaista seurantaa. Jos osittaisesta seurannasta syntyy raportti, se julkaistaan RSS-syötteeseen. Raportissa kerrotaan selvästi, mikä jäi tarkistamatta tai puutteelliseksi, miksi näin tapahtui ja miten se vaikuttaa kattavuuteen. Myöhemmät ajot eivät muokkaa julkaistua itemiä: olennainen täydennys tai korjaus julkaistaan uutena, avoimesti alkuperäiseen raporttiin viittaavana iteminä.
 
 **Vastaanottavan järjestelmän käsittelytila** erottaa vähintään vastaanoton, validoinnin, hyväksynnän, hylkäyksen, julkaisun ja julkaisun epäonnistumisen. Ajon elinkaaren hallinnassa voidaan lisäksi käyttää tiloja jonossa, käynnissä, aikakatkaistu ja peruutettu.
 
@@ -210,7 +210,7 @@ Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Julk
 - Aiheen tunniste, seurantatyyppi ja seurannan aikaväli tarkistetaan käynnistyksessä käytettyä määritystä vasten.
 - Tuottajan tulostilan on oltava yksi määritellyistä arvoista.
 - `report_item` puuttuu, kun tulos on `no_report` tai `failed`.
-- `partial`-tulosta ei julkaista ensimmäisessä versiossa.
+- `partial`-tilassa syntynyt RSS-item julkaistaan, jos se läpäisee samat rakenteelliset ja turvallisuustarkistukset kuin `success`-item.
 - Jos `report_item` on mukana, sen GUID on yksilöllinen ja item täyttää RSS:n sekä aiheen raporttipohjan vaatimukset.
 - Tuottajan valinnaisia tunnistetietoja ei vaadita ihmisen tekemältä raportilta.
 - Vastaanottava järjestelmä kirjaa vastaanottoajan ja oman käsittelytilansa riippumatta tuottajan metatiedoista.
@@ -226,8 +226,10 @@ Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Julk
 - Tuottaja toimittaa enintään yhden uuden itemin yhtä raportoitavaa ajoa kohti.
 - Vastaanottava julkaisukerros validoi itemin ja lisää sen oikean aiheen syötteeseen.
 - Tuottaja ei muodosta eikä palauta koko RSS-syötettä.
-- Aiemmin julkaistujen itemien sisältöä, GUID-tunnisteita tai järjestystä ei muuteta automaattisesti.
-- Korjaus tehdään uutena erillisenä iteminä, joka viittaa korjattavaan julkaisuun.
+- Aiemmin julkaistujen itemien sisältöä, GUID-tunnisteita tai järjestystä ei muuteta.
+- Raporttituottaja lukee aiemmat raportit ennen uuden raportin muodostamista ja välttää saman asian toistamista ilman olennaista uutta tietoa.
+- Olennainen täydennys tai korjaus julkaistaan uutena erillisenä iteminä, jossa kerrotaan avoimesti korjauksen tai täydennyksen luonne ja viitataan alkuperäiseen julkaisuun.
+- Jokaisella korjauspäivityksellä on oma GUID; alkuperäinen item säilyy muuttumattomana.
 - RSS/XML validoidaan jokaisen julkaisun yhteydessä.
 - Julkaisu ja ajotietojen tallennus toteutetaan niin, ettei virheellinen tai puoliksi tallennettu julkaisu näy onnistuneena.
 
@@ -270,7 +272,7 @@ Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään t
 Virhetilanteet käsitellään yksinkertaisella ja yksiselitteisellä tavalla:
 
 - **Tutkimusvirhe:** tulos tallennetaan virheellisenä; raporttia ei julkaista.
-- **Osittainen seuranta:** tulos ja lähdekattavuuden rajoitteet tallennetaan; osittaista raporttia ei julkaista ensimmäisessä versiossa.
+- **Osittainen seuranta:** tulos ja lähdekattavuuden rajoitteet tallennetaan. Syntynyt osittainen raportti julkaistaan, ja sen puutteet kuvataan avoimesti. Myöhemmät täydennykset tai korjaukset julkaistaan uusina itemeinä.
 - **Virheellinen ajotulos:** vastaanottava järjestelmä hylkää tuloksen; RSS-syöte ei muutu.
 - **Väärä aihe tai määritysversio:** tulos hylätään, eikä sitä reititetä toiseen aiheeseen arvaamalla.
 - **Duplikaatti:** samaa `run_id`-tunnistetta tai RSS-GUIDia ei käsitellä uutena julkaisuna.
@@ -334,7 +336,7 @@ Seuraavat ominaisuudet eivät kuulu ensimmäisen version toteutusvaatimuksiin:
 - useiden aiheiden käsittely saman ajokerran tai batchin sisällä;
 - batch-tunnisteet, ajokerran kokonaistilat ja batch-keskeytyksistä palautuminen;
 - monimutkainen jonopisteytys ja useiden prioriteettitekijöiden optimointi;
-- osittaisten raporttien julkaiseminen;
+- osittaisten raporttien myöhempi automaattinen uudelleenjulkaisu tai aiempien itemien muokkaaminen;
 - ulkoiset ilmoitukset ja niiden kanavat, vastaanottajat, salaisuuksien hallinta ja uudelleenyritykset;
 - erilliset lähdekattavuuden ja julkaisuanalytiikan mittaristot;
 - laaja järjestelmän terveysanalyysi.
@@ -369,7 +371,7 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 9. Raporttituottaja toimittaa enintään yhden uuden rakenteisen RSS-itemin yhtä raportoitavaa ajoa kohti, ei kokonaista RSS-syötettä.
 10. Tuottajan tulos, vastaanoton validointi ja RSS-julkaisun tila ovat erillisiä tietoja.
 11. Onnistunut ajo ilman raportoitavaa (`no_report`) tallennetaan onnistuneena ajona ilman RSS-itemiä.
-12. Osittainen seuranta tallennetaan, mutta osittaista raporttia ei julkaista ensimmäisessä versiossa.
+12. Osittainen seuranta tallennetaan, ja syntynyt osittainen raportti julkaistaan selkein puutteita kuvaavin merkinnöin.
 13. Vastaanottava julkaisukerros validoi ja lisää hyväksytyn itemin oikeaan aihekohtaiseen syötteeseen.
 14. Julkaistujen itemien historia säilyy muuttumattomana.
 15. Valvomo näyttää yleiskuvan, aiheiden tilanteen ja ajohistorian myös silloin, kun RSS-itemiä ei synny.
@@ -404,6 +406,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.11.0 – 21.11.2026:** päätetty julkaista myös `partial`-tilassa syntyvät validoidut raportit. Raportissa kuvataan avoimesti seurannan puutteet ja niiden syyt. Julkaistuja RSS-itemeitä ei päivitetä jälkikäteen; olennaiset täydennykset ja korjaukset julkaistaan uusina itemeinä, jotka viittaavat alkuperäiseen raporttiin. Raportintuottaja lukee aiemmat raportit ja välttää toiston ilman olennaista uutta tietoa.
 - **0.10.0 – 20.11.2026:** yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi. Yksi käynnistys käsittelee enintään yhden aiheen; batch-ajot ja niiden tunnisteet sekä keskeytyksistä palautumisen erityislogiikka poistettu ensimmäisen version vaatimuksista. Aihevalinta yksinkertaistettu erääntymiseen ja odotusaikaan perustuvaksi. Ajohistorialle määritelty yksi kanoninen tallennusratkaisu ja erillinen tietovarasto vain perustellusta tarpeesta. Osittaisen seurannan tallennus säilytetty, mutta osittaisten raporttien julkaiseminen sekä ulkoiset ilmoitukset siirretty myöhempään vaiheeseen. Valvomo rajattu kolmeen perusnäkymään ja hyväksymiskriteerit kirjoitettu uudelleen.
 - **0.9.1 – 20.11.2026:** täsmennetty, ettei GitHub ole vaatimusmäärittelyssä ajotietojen pakollinen tietovarasto. Määritysten ja RSS-julkaisujen hallinta voidaan pitää GitHubissa, mutta ajotietojen säilytysratkaisu jätetään tietosuoja-, käyttöoikeus- ja historiatarpeiden perusteella toteutussuunnitteluun.
 - **0.9.0 – 20.11.2026:** poistettu yleisestä vaatimusmäärittelystä ChatGPT-toteutuksen yksityiskohtaiset ohjeet. Tuottajakohtaiset asetukset, kehotteet ja niiden versionhallinta rajattu kunkin integraation omaan dokumentaatioon. Täsmennetty yhteisen tulossopimuksen ja tuottajakohtaisten ohjeiden vastuunjako.
