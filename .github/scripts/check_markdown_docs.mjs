@@ -13,7 +13,7 @@ function collectMarkdown(directory) {
   for (const item of fs.readdirSync(directory, { withFileTypes: true })) {
     const full = path.join(directory, item.name);
     if (item.isDirectory()) collectMarkdown(full);
-    else if (item.isFile() && item.name.toLowerCase().endsWith(".md")) files.push(full);
+    else if (item.isFile() && item.name.toLowerCase().endsWith(".md")) files.push(path.relative(root, full));
   }
 }
 
