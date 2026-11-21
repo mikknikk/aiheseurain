@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.13  
+**Versio:** 0.3.14  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -262,6 +262,17 @@ Julkaistut RSS-itemit ovat muuttumattomia:
 - Jokaisella uudella itemillä on oma yksilöllinen GUID. Alkuperäisen itemin GUID ja sisältö säilyvät ennallaan.
 
 Näin RSS-historia pysyy muuttumattomana eikä lukijan tarvitse luottaa aiemmin luetun itemin jälkikäteiseen muuttumiseen.
+
+### 2.4.1 Aiemman raporttihistorian lukeminen
+
+Raportintuottaja tarvitsee ennen uuden raportin muodostamista koko kyseisen aiheen aiemman RSS-raporttihistorian. Historia luetaan suoraan GitHub-repositoriosta GitHub API:n kautta, ei GitHub Pages -julkaisusta, jotta raportintuottaja ei ole riippuvainen Pages-julkaisun viiveestä.
+
+- Tehtäväpyyntö yksilöi luettavan aiheen RSS-tiedoston.
+- Tehtäväpyyntö sisältää Git-commitin SHA:n, jonka tilasta RSS-historia luetaan. Raportintuottaja hakee tiedoston täsmälleen tästä commitista, ei muuttuvasta `main`-haarasta.
+- Näin raportintuottaja saa koko kyseisen aiheen siihen tehtäväpyyntöön lukitun julkaistun historian, eikä historian sisältö muutu tehtävän käsittelyn aikana.
+- RSS-historiaa ei kopioida tehtäväpyyntöön; tehtäväpyyntö sisältää vain tiedoston yksilöinnin ja historian revision.
+
+Historian revision tarkka kenttänimi ja RSS-tiedoston polun muodostamisen tekniset yksityiskohdat määritellään myöhemmin toimitussopimuksessa.
 
 ### 2.5 Vastaanotto ja julkaisu käsitellään hallitusti
 
