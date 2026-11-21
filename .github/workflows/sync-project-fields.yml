@@ -44,11 +44,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Hae synkronointikoodi
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: main
       - name: Aseta Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
       - name: Päivitä Project-kortin Status, Priority ja Component
