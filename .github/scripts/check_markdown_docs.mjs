@@ -20,21 +20,21 @@ function collectMarkdown(directory) {
 // Koodilohkojen sisältöä ei tulkita otsikoiksi tai Markdown-linkeiksi.
 function visibleLines(markdown) {
   let inFence = false;
-  return markdown.split(/\\r?\\n/).map((line) => {
-    if (/^\\s*(?:`{3,}|~{3,})/.test(line)) { inFence = !inFence; return ""; }
+  return markdown.split(/\r?\n/).map((line) => {
+    if (/^\s*(?:`{3,}|~{3,})/.test(line)) { inFence = !inFence; return ""; }
     return inFence ? "" : line;
   });
 }
 
 function slug(heading) {
   return heading.toLocaleLowerCase("en")
-    .replace(/[\\x60*_~]/g, "")
-    .replace(/[^\\p{L}\\p{N}\\s-]/gu, "")
-    .trim().replace(/\\s+/g, "-");
+    .replace(/[\x60*_~]/g, "")
+    .replace(/[^\p{L}\p{N}\s-]/gu, "")
+    .trim().replace(/\s+/g, "-");
 }
 
 function versionOf(markdown) {
-  const versions = [...markdown.matchAll(/^\\*\\*Versio:\\*\\*\\s*(\\d+\\.\\d+\\.\\d+)\\s*$/gm)];
+  const versions = [...markdown.matchAll(/^\*\*Versio:\*\*\s*(\d+\.\d+\.\d+)\s*$/gm)];
   return { value: versions[0]?.[1] ?? null, count: versions.length };
 }
 
@@ -45,8 +45,8 @@ for (const relative of files) {
   if (!fs.existsSync(absolute)) { errors.push(relative + ": tiedostoa ei löydy."); continue; }
   const markdown = fs.readFileSync(absolute, "utf8");
   const lines = visibleLines(markdown);
-  const headingLines = lines.filter((line) => /^#{1,6}\\s/.test(line));
-  const h1Count = headingLines.filter((line) => /^#\\s/.test(line)).length;
+  const headingLines = lines.filter((line) => /^#{1,6}\s/.test(line));
+  const h1Count = headingLines.filter((line) => /^#\s/.test(line)).length;
   if (h1Count !== 1) errors.push(relative + ": dokumentissa pitää olla täsmälleen yksi H1-pääotsikko (nyt " + h1Count + ").");
 
   let previousLevel = 0;
@@ -64,25 +64,25 @@ for (const relative of files) {
   // Täsmälleen saman otsikon ja sisältöosion toistuminen on todennäköinen kopiointivirhe.
   const seenSections = new Set();
   for (let index = 0; index < lines.length; index++) {
-    const heading = lines[index].match(/^(#{1,6})\\s+(.+?)\\s*#*\\s*$/);
+    const heading = lines[index].match(/^(#{1,6})\s+(.+?)\s*#*\s*$/);
     if (!heading) continue;
     const level = heading[1].length;
     let end = lines.length;
     for (let next = index + 1; next < lines.length; next++) {
-      const nextHeading = lines[next].match(/^(#{1,6})\\s+/);
+      const nextHeading = lines[next].match(/^(#{1,6})\s+/);
       if (nextHeading && nextHeading[1].length <= level) { end = next; break; }
     }
-    const body = lines.slice(index + 1, end).join(" ").replace(/\\s+/g, " ").trim();
+    const body = lines.slice(index + 1, end).join(" ").replace(/\s+/g, " ").trim();
     const signature = level + ":" + heading[2].trim() + ":" + body;
     if (body && seenSections.has(signature)) errors.push(relative + ': otsikko-osio "' + heading[2].trim() + '" ja sisältö toistuvat.');
     seenSections.add(signature);
   }
 
   // Tarkista suhteellisten Markdown-linkkien tiedostot ja Markdown-otsikkoankkurit.
-  const linkPattern = /(?<!!)\\[[^\\]]+\\]\\(([^)\\s]+)(?:\\s+"[^"]*")?\\)/g;
-  for (const match of lines.join("\\n").matchAll(linkPattern)) {
+  const linkPattern = /(?<!!)\[[^\]]+\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
+  for (const match of lines.join("\n").matchAll(linkPattern)) {
     const target = match[1];
-    if (/^(?:[a-z][a-z0-9+.-]*:|\\/\\/)/i.test(target)) continue;
+    if (/^(?:[a-z][a-z0-9+.-]*:|\/\/)/i.test(target)) continue;
     const [filePart, fragment = ""] = decodeURIComponent(target).split("#", 2);
     const cleanFile = (filePart || "").split("?")[0];
     const targetFile = cleanFile
@@ -93,7 +93,7 @@ for (const relative of files) {
     } else if (fragment && path.extname(targetFile).toLowerCase() === ".md") {
       const targetLines = visibleLines(fs.readFileSync(targetFile, "utf8"));
       const targetHeadings = targetLines.flatMap((line) => {
-        const found = line.match(/^#{1,6}\\s+(.+?)\\s*#*\\s*$/);
+        const found = line.match(/^#{1,6}\s+(.+?)\s*#*\s*$/);
         return found ? [slug(found[1])] : [];
       });
       if (!targetHeadings.includes(fragment)) errors.push(relative + ": otsikkoankkuria ei löydy kohteesta " + target + ".");
@@ -103,13 +103,13 @@ for (const relative of files) {
 
 // README:n versionumeron pitää vastata siihen linkitetyn versionhallittavan dokumentin versiota.
 const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
-const readmeLinks = /\\[[^\\]]+\\]\\(([^)]+\\.md)\\)([^\\n]*)/g;
+const readmeLinks = /\[[^\]]+\]\(([^)]+\.md)\)([^\n]*)/g;
 for (const match of readme.matchAll(readmeLinks)) {
   const target = path.resolve(root, match[1].split("#")[0]);
   if (!fs.existsSync(target) || !fs.statSync(target).isFile()) continue;
   const expected = versionOf(fs.readFileSync(target, "utf8")).value;
   if (!expected) continue;
-  const actual = match[2].match(/\\b(\\d+\\.\\d+\\.\\d+)\\b/)?.[1] ?? null;
+  const actual = match[2].match(/\b(\d+\.\d+\.\d+)\b/)?.[1] ?? null;
   if (actual !== expected) errors.push("README.md: linkin " + match[1] + " versionumero (" + (actual ?? "puuttuu") + ") ei vastaa dokumentin versiota (" + expected + ").");
 }
 
