@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.28  
+**Versio:** 0.3.29  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -403,7 +403,7 @@ Pakolliset perustiedot:
 - `run_id`: yksittäisen ajon yksilöllinen tunniste;
 - `topic_id`: seurattavan aiheen tunniste;
 - `task_type`: käytetyn tehtävätyypin tunniste;
-- `source_revision`: Git-commitin SHA, jonka määrityksiä ja ohjeita ajo käytti;
+- `source_revision`: täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`, `A–F`). Tunnisteen on viitattava tässä repositoriossa olemassa olevaan commitiin. Sen osoittaman commitin määrityksiä ja Markdown-ohjeita käytetään tehtävän käsittelyssä; arvoa ei normalisoida eikä korvata haaraviittauksella;
 - `period`: objekti, joka sisältää `from`-, `to`-, `cutoff_at`- ja `timezone`-kentät;
 - `profiles`: käytettyjen määritysprofiilien tunnisteet taulukkona;
 - `sources`: ajossa tarkistettujen lähteiden tiedot taulukkona;
