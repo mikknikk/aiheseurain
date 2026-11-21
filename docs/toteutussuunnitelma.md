@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.19  
+**Versio:** 0.3.20  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -68,7 +68,7 @@ Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
 - Juuritason `schema_version` on pakollinen merkkijono, joka käyttää semanttista versionumerointia (esimerkiksi `1.0.0`). Se kuvaa vain tehtäväpyynnön JSON-rakennetta.
 - `run_id` on pakollinen, ihmisluettava tunniste muodossa `YYYYMMDD-HHMMSS-topicid-tasktype`. Aikaleima muodostetaan UTC-ajassa. Tunniste sisältää aiheen `topic_id`:n ja tehtävätyypin `task_type`:n, mutta ei profiileja. Ensimmäisessä versiossa yksi raportintuottaja käsittelee tehtäviä sarjallisesti, joten satunnaista tai juoksevaa lisäosaa ei tarvita. Tunnistetta käytetään myös toimitushakemiston nimenä.
 - Erillistä `task_id`-kenttää ei lisätä. `run_id`, `topic_id` ja `task_type` yksilöivät ajon ja sen tehtävän.
-- `issued_at` ja `deadline_at` ovat pakollisia UTC-aikaleimoja. `deadline_at` on myöhempi kuin `issued_at`.
+- `issued_at` ja `deadline_at` ovat pakollisia UTC-aikaleimoja. `issued_at` on hetki, jolloin GitHub Actions muodostaa tehtäväpyynnön. `deadline_at` on viimeinen hetki, johon mennessä raportintuottajan on toimitettava tulos. Määräaika lasketaan `issued_at`-hetkestä tehtävätyypin määrityksissä asetetun käsittelyajan perusteella, joten eri tehtävätyypeillä voi olla erilaiset käsittelyajat. `deadline_at` on aina myöhempi kuin `issued_at`.
 - `history` on pakollinen ja sisältää `path`- sekä `revision`-kentät. `path` on repositoriojuureen suhteutettu RSS-tiedoston polku, ei URL eikä haaran nimi. `revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA. Se on käsitteellisesti erillinen `source_revision`-kentästä, vaikka molemmat voivat osoittaa samaan committiin.
 - Myös `source_revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA.
 - `profiles` ja `instructions` säilytetään erillisinä taulukoina. Ensimmäinen kuvaa käytetyt koneelliset määritysprofiilit, toinen pakollisesti luettavat Markdown-ohjeet.
