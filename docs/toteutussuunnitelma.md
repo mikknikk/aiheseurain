@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.21  
+**Versio:** 0.3.22  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -66,7 +66,7 @@ GitHub Actions ratkaisee tehtävätyypin oletukset, profiilit ja aihekohtaiset a
 Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
 
 - Juuritason `schema_version` on pakollinen merkkijono, joka käyttää semanttista versionumerointia (esimerkiksi `1.0.0`). Se kuvaa vain tehtäväpyynnön JSON-rakennetta.
-- `run_id` on pakollinen, ihmisluettava tunniste muodossa `YYYYMMDD-HHMMSS-topicid-tasktype`. Aikaleima muodostetaan UTC-ajassa. Tunniste sisältää aiheen `topic_id`:n ja tehtävätyypin `task_type`:n, mutta ei profiileja. Ensimmäisessä versiossa yksi raportintuottaja käsittelee tehtäviä sarjallisesti, joten satunnaista tai juoksevaa lisäosaa ei tarvita. Tunnistetta käytetään myös toimitushakemiston nimenä.
+- `run_id` on pakollinen, ihmisluettava tunniste muodossa `YYYYMMDD-HHMMSS-topicid-tasktype`. Aikaleima muodostetaan UTC-ajassa. Tunniste sisältää aiheen `topic_id`:n ja tehtävätyypin `task_type`:n, mutta ei profiileja. Ensimmäisessä versiossa yksi raportintuottaja käsittelee tehtäviä sarjallisesti, joten satunnaista tai juoksevaa lisäosaa ei tarvita. Tunnistetta käytetään myös toimitushakemiston nimenä. Jos muodostettu tunniste on jo käytössä, sitä ei saa ylikirjoittaa: uuden tunnisteen aikaleima muodostetaan seuraavalla UTC-sekunnilla. Näin tunniste pysyy hyväksytyssä muodossa ilman satunnaista tai juoksevaa lisäosaa.
 - Erillistä `task_id`-kenttää ei lisätä. `run_id`, `topic_id` ja `task_type` yksilöivät ajon ja sen tehtävän.
 - `issued_at` ja `deadline_at` ovat pakollisia UTC-aikaleimoja. `issued_at` on hetki, jolloin GitHub Actions muodostaa tehtäväpyynnön. `deadline_at` on viimeinen hetki, johon mennessä raportintuottajan on toimitettava tulos. Määräaika lasketaan `issued_at`-hetkestä tehtävätyypin määrityksissä asetetun käsittelyajan perusteella, joten eri tehtävätyypeillä voi olla erilaiset käsittelyajat. `deadline_at` on aina myöhempi kuin `issued_at`.
 - `history` on pakollinen ja sisältää `path`- sekä `revision`-kentät. `path` noudattaa muotoa `rss/{topic_id}/{task_type}.xml`: se on repositoriojuureen suhteutettu suhteellinen polku, ei URL eikä haaran nimi. Polun aihe- ja tehtävätyyppiosien on vastattava täsmälleen tehtäväpyynnön `topic_id`- ja `task_type`-arvoja. Absoluuttiset polut, URL-osoitteet ja repositorion ulkopuolelle johtavat polut hylätään. `revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA. Se on käsitteellisesti erillinen `source_revision`-kentästä, vaikka molemmat voivat osoittaa samaan committiin.
