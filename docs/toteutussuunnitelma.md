@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.8  
+**Versio:** 0.3.9  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -184,6 +184,39 @@ Toimituspaketti sisältää:
 - `item.xml`: pakollinen `success`-tilassa, jossa julkaistava raportti syntyi. `partial`-tilassa raporttisisältö toimitetaan ensimmäisessä versiossa sovitun tallennusmallin mukaisesti mutta sitä ei julkaista. `no_report`- ja `failed`-tiloissa `item.xml`-tiedostoa ei toimiteta.
 
 Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
+
+#### `metadata.json`-tiedoston vähimmäissisältö
+
+Metatietotiedosto kuvaa yksittäisen ajon tunnistetiedot, käytetyn määrityskokonaisuuden, seuranta-aikavälin ja lopputuloksen. Raportin varsinainen sisältö pidetään erillään metatiedoista.
+
+Pakolliset perustiedot:
+
+- `schema_version`: metatietorakenteen versionumero;
+- `run_id`: yksittäisen ajon yksilöllinen tunniste;
+- `topic_id`: seurattavan aiheen tunniste;
+- `task_type`: käytetyn tehtävätyypin tunniste;
+- `source_revision`: Git-commitin SHA, jonka määrityksiä ja ohjeita ajo käytti;
+- `period`: objekti, joka sisältää `from`-, `to`-, `cutoff_at`- ja `timezone`-kentät;
+- `profiles`: käytettyjen määritysprofiilien tunnisteet taulukkona;
+- `sources`: ajossa tarkistettujen lähteiden tiedot taulukkona;
+- `status`: ajon lopputila (`success`, `partial`, `no_report` tai `failed`);
+- `started_at` ja `completed_at`: ajon aloitus- ja valmistumishetki.
+
+Kaikki varsinaiset aikaleimat esitetään UTC-muodossa. `period.from` on seuranta-aikavälin alku, `period.to` alkuperäinen loppu (joka voi olla `null`) ja `period.cutoff_at` tarkka hetki, johon asti aineisto otettiin mukaan. `period.timezone` sisältää paikallisen IANA-aikavyöhyketunnisteen, esimerkiksi `Europe/Helsinki`.
+
+`profiles` sisältää ajossa käytettyjen profiilien tunnisteet samassa järjestyksessä kuin ne yhdistettiin konfiguraatioon. Taulukko voi olla tyhjä, jos aihe ei käytä profiileja. Profiilien sisältöä tai erillisiä versiotunnisteita ei kopioida metatietoihin: `source_revision` yksilöi käytetyn määritysrevision.
+
+`sources` sisältää kaikki lähteet, joiden tarkistamista ajossa yritettiin. Jokaisesta lähteestä tallennetaan lähderekisteriin viittaava `source_id` sekä tarkistuksen `status`:
+
+- `success`: lähde saatiin tarkistettua kokonaan; myös onnistunut tarkistus ilman osumia on `success`;
+- `partial`: lähteestä saatiin tarkistettua vain osa;
+- `failed`: lähteen tarkistaminen epäonnistui.
+
+Lähteitä, joita ei yritetty käyttää, ei luetella. `sources` voi olla tyhjä, jos ajossa ei käytetty lähteitä. Lähteen muut tiedot, kuten nimi, osoite ja luotettavuusluokitus, säilyvät lähderekisterissä ja ovat jäljitettävissä `source_revision`-kentän avulla. Metatietoihin ei kopioida yksittäisten artikkelien URL-osoitteita eikä teknisiä lokitietoja.
+
+`error`-objekti vaaditaan vain `failed`-tilassa. Se sisältää virheen luokan (`category`) ja lyhyen, turvallisen kuvauksen (`description`). `error`-objektia ei sallita muissa tulostiloissa. Kuvaukseen ei sisällytetä salaisuuksia, tunnisteita, raakaa keskustelusisältöä tai tarpeettomia henkilötietoja.
+
+Kaikki edellä luetellut perustiedot, mukaan lukien `profiles` ja `sources`, ovat pakollisia kaikissa tulostiloissa; tyhjä taulukko on sallittu. `run_id` ja `topic_id` tarkistetaan aktiivista tehtäväpyyntöä vasten. `schema_version` kuvaa metatietorakennetta, eikä sitä pidä sekoittaa tehtävän määritysten tai raportin versioon.
 
 #### Toimituspaketin tulostilakohtaiset tiedostovaatimukset
 
