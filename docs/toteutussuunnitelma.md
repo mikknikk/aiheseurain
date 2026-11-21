@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.16  
+**Versio:** 0.3.17  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -153,6 +153,43 @@ Yhdistämissäännöt:
 GitHub Actions ratkaisee asetukset ennen tehtävän tarjoamista. Raportintuottajalle annetaan valmis, muuttumaton konfiguraatiokokonaisuus osana tehtäväpyyntöä; raportintuottajan ei tarvitse toteuttaa periytymis- tai yhdistelylogiikkaa. Tehtäväpyyntöön tallennetaan myös käytettyjen määritysten versiot tai Git-commit-viite, jotta ajon asetukset voidaan jäljittää ja tarvittaessa rekonstruoida.
 
 Tehtävätyyppien, profiilien ja aihekohtaisten määritysten JSON Schema -skeemat validoivat rakenteet ja sallitut ylikirjoitukset. Markdown-ohjeet versioidaan Gitissä ja niihin viitataan tehtäväpyynnöstä.
+
+Tehtäväpyynnön Markdown-ohjeviittaukset kootaan `instructions`-taulukkoon. Taulukko sisältää eksplisiittisen luettelon kaikista kyseisen tehtävän käsittelyssä pakollisesti luettavista ohjeista. Jokaisella käytettävällä profiililla on oma Markdown-ohjetiedostonsa JSON-määrityksen lisäksi. Profiilin Markdown-ohjeen lukeminen on pakollista aina, kun profiilia käytetään.
+
+Ohjeet luetellaan tehtäväpyynnössä tässä järjestyksessä:
+
+1. tehtävätyypin Markdown-ohje;
+2. käytettyjen profiilien Markdown-ohjeet siinä järjestyksessä kuin profiilit on ilmoitettu aihekohtaisessa määrityksessä ja yhdistetty konfiguraatioon;
+3. aihekohtainen Markdown-ohje.
+
+Jokainen `instructions`-taulukon alkio yksilöi ohjeen tunnisteella ja tiedostopolulla. Raportintuottaja lukee kaikki luetellut tiedostot eikä päättele muita ohjeita automaattisesti hakemistorakenteesta tai profiilien tunnisteista. Kaikki ohjeet haetaan tehtäväpyynnön `source_revision`-kentän osoittamasta samasta Git-commitista. Näin myös profiilien ohjeet pysyvät muuttumattomina koko tehtävän käsittelyn ajan.
+
+Esimerkkirakenne:
+
+```json
+{
+  "instructions": [
+    {
+      "id": "news-report",
+      "path": "docs/task-types/news-report.md"
+    },
+    {
+      "id": "film-screenings",
+      "path": "docs/profiles/film-screenings.md"
+    },
+    {
+      "id": "indian-cinema",
+      "path": "docs/profiles/indian-cinema.md"
+    },
+    {
+      "id": "indian-film-screenings",
+      "path": "docs/topics/indian-film-screenings.md"
+    }
+  ]
+}
+```
+
+Esimerkki havainnollistaa viittausten rakennetta ja lukujärjestystä; lopullinen tiedostopolkurakenne vahvistetaan teknisessä määrittelyssä.
 
 ### 2.3 Toimitustapa: Git push erilliseen vastaanottohaaraan
 
