@@ -12,7 +12,7 @@ function runFixture(document, readmeVersion = "1.0.0") {
   // Luo erillisen väliaikaisen repositorion, jotta virheelliset testit eivät koske oikeita tiedostoja.
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "aiheseurain-docs-"));
   fs.mkdirSync(path.join(root, "docs"));
-  fs.writeFileSync(path.join(root, "README.md"), "# Testirepo\n\n[Ohje](docs/guide.md) (" + readmeVersion + ")\n");
+  fs.writeFileSync(path.join(root, "README.md"), "# Testirepo\n\n[Ohje (" + readmeVersion + ")](docs/guide.md)\n");
   fs.writeFileSync(path.join(root, "docs/guide.md"), document);
   const result = spawnSync(process.execPath, [script], { cwd: root, encoding: "utf8" });
   fs.rmSync(root, { recursive: true, force: true });
