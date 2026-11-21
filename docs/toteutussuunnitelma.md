@@ -1,7 +1,7 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.22  
-**Päiväys:** 21.11.2026  
+**Versio:** 0.3.23  
+**Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
 
@@ -68,6 +68,76 @@ Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
 - Juuritason `schema_version` on pakollinen merkkijono, joka käyttää semanttista versionumerointia (esimerkiksi `1.0.0`). Se kuvaa vain tehtäväpyynnön JSON-rakennetta.
 - `run_id` on pakollinen, ihmisluettava tunniste muodossa `YYYYMMDD-HHMMSS-topicid-tasktype`. Aikaleima muodostetaan UTC-ajassa. Tunniste sisältää aiheen `topic_id`:n ja tehtävätyypin `task_type`:n, mutta ei profiileja. Ensimmäisessä versiossa yksi raportintuottaja käsittelee tehtäviä sarjallisesti, joten satunnaista tai juoksevaa lisäosaa ei tarvita. Tunnistetta käytetään myös toimitushakemiston nimenä. Jos muodostettu tunniste on jo käytössä, sitä ei saa ylikirjoittaa: uuden tunnisteen aikaleima muodostetaan seuraavalla UTC-sekunnilla. Näin tunniste pysyy hyväksytyssä muodossa ilman satunnaista tai juoksevaa lisäosaa.
 - Erillistä `task_id`-kenttää ei lisätä. `run_id`, `topic_id` ja `task_type` yksilöivät ajon ja sen tehtävän.
+- `topic_id`- ja `task_type`-tunnisteissa käytetään samaa syntaksia: sallittuja ovat pienet ASCII-kirjaimet `a–z`, numerot `0–9` ja yhdysmerkki (`-`). Tunnisteen on alettava ja päätyttävä kirjaimeen tai numeroon, eikä yhdysmerkkejä saa olla peräkkäin. Välilyönnit, alaviivat, pisteet, kauttaviivat, ääkköset ja muut erikoismerkit eivät ole sallittuja. Tunnisteille ei aseteta erillistä enimmäispituutta tässä vaiheessa. Virheellinen tunniste hylätään; sitä ei normalisoida automaattisesti. Syntaksin tarkistava säännöllinen lauseke on `^[a-z0-9]+(?:-[a-z0-9]+)*# Aiheseuraimen toteutussuunnitelma
+
+**Versio:** 0.3.23  
+**Päiväys:** 22.11.2026  
+**Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
+**Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
+
+> Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
+
+## 1. Tavoite
+
+Toteutussuunnitelma määrittelee, miten vaatimusmäärittelyn mukainen Aiheseurain rakennetaan. Se toimii myöhemmin GitHub-tikettien muodostamisen perustana.
+
+Perusratkaisun tulee olla mahdollisimman yksinkertainen. Raportintuotanto erotetaan deterministisestä ohjaus-, vastaanotto- ja julkaisukerroksesta.
+
+## 2. Hyväksytyt arkkitehtuuriperiaatteet
+
+### 2.1 Raportintuottaja ja GitHub Actions ovat erillisiä
+
+- Raportintuottaja tekee varsinaisen seuranta- ja raportointityön.
+- Raportintuottaja tuottaa julkaisuvalmiin RSS-itemin sekä ajon käsittelyyn tarvittavat metatiedot.
+- GitHub Actions vastaanottaa toimituksen, validoi sen, tallentaa ajotiedot ja julkaisee hyväksytyn RSS-itemin oikeaan syötteeseen.
+- Raportintuottajan ei tarvitse muodostaa tai palauttaa kokonaista RSS-syötettä eikä muokata julkaistuja syötetiedostoja.
+- Raportintuottaja on vaihdettavissa, kunhan se noudattaa yhteistä, versioitua toimitussopimusta.
+
+### 2.2 GitHub Actions ei tarvitse tekoälyä
+
+GitHub Actionsin ohjaus- ja julkaisukerros on tavallista determinististä ohjelmistologiikkaa. Se ei tarvitse omaa kielimallia, tekoälyagenttia tai muuta tekoälypalvelua.
+
+Actionsin tehtäviä ovat esimerkiksi:
+
+- määritysten lukeminen;
+- erääntyneen aiheen valinta sovittujen sääntöjen mukaan;
+- ajo- ja toimitustunnisteiden käsittely;
+- toimituspaketin ja RSS-itemin validointi;
+- väärän aiheen tai virheellisen tietosopimuksen hylkääminen;
+- kaksoiskäsittelyn estäminen;
+- ajotietojen tallentaminen;
+- RSS-julkaisun tekeminen ja tuloksen varmistaminen;
+- virhetilanteiden käsittely.
+
+Raportintuottajan tutkimus- ja raportointikyvykkyys on tästä erillinen. Ohjaus- ja julkaisukerroksen toiminta ei saa edellyttää tekoälypalvelua.
+
+### 2.2.1 Tehtävän tarjoaminen raportintuottajalle
+
+Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportintuottaja toimii pull-mallilla: se käynnistyy omalla ajastuksellaan, lukee GitHubista tehtävänanto-ohjeen ja hakee sen osoittaman tehtäväpyynnön.
+
+- GitHub Actions valitsee seuraavan aiheen ja muodostaa yhden tehtäväpyynnön raportintuottajan noudettavaksi.
+- Tehtäväpyyntö sisältää vähintään yksilöllisen `run_id`-tunnisteen, aiheen tunnisteen ja tehtävän suorittamiseen tarvittavat ohje- ja aikavälitiedot.
+- Raportintuottaja ei itse valitse seuraavaa aihetta eikä muuta jonotuksen ohjaustietoja.
+- Tehtäväpyyntö valmistellaan ennakkoon; raportintuottajan ei tarvitse käynnistää GitHub Actions -ajoa eikä odottaa erillistä hyväksyntävastausta tehtävää hakiessaan.
+- `data/tehtava.json` on ainoa varsinainen tehtäväpyyntö ja sisältää kerrallaan yhden aktiivisen tehtävän. Rinnakkaista tehtäväpyynnön tietolähdettä tai vaihtoehtoista tehtäväpakettia ei oteta käyttöön ensimmäisessä versiossa.
+- Tehtäväpyyntö sisältää rakenteiset tehtävätiedot, valmiin `resolved_config`-snapshotin sekä viittaukset tarvittaviin Markdown-ohjeisiin ja kyseisen aiheen RSS-historiaan. Ohjetekstejä tai RSS-historiaa ei kopioida tehtäväpyyntöön.
+- Raportintuottajan käynnistys-/nouto-ohje on eri asia kuin varsinainen tehtäväpyyntö: se kertoo, miten tehtävä haetaan ja käsitellään, kun taas `data/tehtava.json` sisältää yksittäisen ajon tiedot.
+- Tehtäväpyynnön tarkka JSON-rakenne, viittauskenttien nimet ja tilapäivitysten toteutus määritellään myöhemmin toimitussopimuksessa.
+
+Tehtäväpyynnön aikaleimat esitetään UTC-muodossa. Tehtäväpyynnön `period`-objekti sisältää:
+
+- `from`: pakollinen UTC-aikaleima, josta seuranta alkaa;
+- `to`: UTC-aikaleima tai `null`. Aikaleima rajaa haun ennalta määrättyyn päätepisteeseen. `null` tarkoittaa, ettei tehtäväpyyntö aseta päätepistettä; raportintuottaja määrittää toteutuneen päättymishetken ja kirjaa sen ajon metadataan.
+
+Erillistä `cutoff_at`- tai `timezone`-kenttää ei ole tehtäväpyynnön `period`-objektissa. Näin tehtäväpyyntö voi kuvata sekä avoimen jatkuvan seurannan että ennalta rajatun haun ilman päällekkäisiä aikarajatietoja. Tehtävän toimitusmääräaika `deadline_at` on tästä erillinen.
+
+GitHub Actions ratkaisee tehtävätyypin oletukset, profiilit ja aihekohtaiset asetukset ennen tehtävän tarjoamista. Tehtäväpyyntö sisältää valmiin `resolved_config`-konfiguraatiosnapshotin. Raportintuottajan ei tarvitse hakea tai yhdistellä määritystiedostoja itse. `source_revision` yksilöi täsmälleen sen Git-commitin, jonka määrityksiä ja Markdown-ohjeita tehtävässä käytetään. Raportintuottaja hakee kaikki ohjeet tästä commitista eikä muuttuvasta `main`-haarasta.
+
+Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
+
+- Juuritason `schema_version` on pakollinen merkkijono, joka käyttää semanttista versionumerointia (esimerkiksi `1.0.0`). Se kuvaa vain tehtäväpyynnön JSON-rakennetta.
+- `run_id` on pakollinen, ihmisluettava tunniste muodossa `YYYYMMDD-HHMMSS-topicid-tasktype`. Aikaleima muodostetaan UTC-ajassa. Tunniste sisältää aiheen `topic_id`:n ja tehtävätyypin `task_type`:n, mutta ei profiileja. Ensimmäisessä versiossa yksi raportintuottaja käsittelee tehtäviä sarjallisesti, joten satunnaista tai juoksevaa lisäosaa ei tarvita. Tunnistetta käytetään myös toimitushakemiston nimenä. Jos muodostettu tunniste on jo käytössä, sitä ei saa ylikirjoittaa: uuden tunnisteen aikaleima muodostetaan seuraavalla UTC-sekunnilla. Näin tunniste pysyy hyväksytyssä muodossa ilman satunnaista tai juoksevaa lisäosaa.
+.
 - `issued_at` ja `deadline_at` ovat pakollisia UTC-aikaleimoja. `issued_at` on hetki, jolloin GitHub Actions muodostaa tehtäväpyynnön. `deadline_at` on viimeinen hetki, johon mennessä raportintuottajan on toimitettava tulos. Määräaika lasketaan `issued_at`-hetkestä tehtävätyypin määrityksissä asetetun käsittelyajan perusteella, joten eri tehtävätyypeillä voi olla erilaiset käsittelyajat. `deadline_at` on aina myöhempi kuin `issued_at`.
 - `history` on pakollinen ja sisältää `path`- sekä `revision`-kentät. `path` noudattaa muotoa `rss/{topic_id}/{task_type}.xml`: se on repositoriojuureen suhteutettu suhteellinen polku, ei URL eikä haaran nimi. Polun aihe- ja tehtävätyyppiosien on vastattava täsmälleen tehtäväpyynnön `topic_id`- ja `task_type`-arvoja. Absoluuttiset polut, URL-osoitteet ja repositorion ulkopuolelle johtavat polut hylätään. `revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA. Se on käsitteellisesti erillinen `source_revision`-kentästä, vaikka molemmat voivat osoittaa samaan committiin.
 - Myös `source_revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA.
