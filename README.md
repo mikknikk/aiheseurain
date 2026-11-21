@@ -29,5 +29,6 @@ Ajastettujen ChatGPT-kehotteiden uusi kanoninen versiohallinta sijaitsee aktiivi
 
 - Noudata [saavutettavuusohjeita](docs/saavutettavuus.md); WCAG 2.2 AAA -tasoa ei väitetä ilman testausta.
 - Noudata [kehityskäytäntöjä](docs/kehityskaytannot.md).
+- Noudata [dokumentaation automaattista laaduntarkistusta](docs/dokumentaation-laaduntarkistus.md).
 - Noudata [automaatioiden hallinnan suojausperiaatteita](docs/automaation-hallintaperiaatteet.md): ChatGPT-tehtävien ajastuksia, asetuksia tai kohdekeskusteluja ei muuteta ilman erillistä lupaa.
 - Älä muuta tai poista julkaistua RSS-historiaa.
