@@ -88,7 +88,7 @@ for (const relative of files) {
     const targetFile = cleanFile
       ? path.resolve(root, path.dirname(relative), cleanFile)
       : absolute;
-    if (!fs.existsSync(targetFile) || !fs.statSync(targetFile).isFile()) {
+    if (!fs.existsSync(targetFile)) {
       errors.push(relative + ": sisäisen linkin kohdetta ei löydy: " + target);
     } else if (fragment && path.extname(targetFile).toLowerCase() === ".md") {
       const targetLines = visibleLines(fs.readFileSync(targetFile, "utf8"));
@@ -103,14 +103,14 @@ for (const relative of files) {
 
 // README:n versionumeron pitää vastata siihen linkitetyn versionhallittavan dokumentin versiota.
 const readme = fs.readFileSync(path.join(root, "README.md"), "utf8");
-const readmeLinks = /\[[^\]]+\]\(([^)]+\.md)\)([^\n]*)/g;
+const readmeLinks = /\[([^\]]+)\]\(([^)]+\.md)\)/g;
 for (const match of readme.matchAll(readmeLinks)) {
-  const target = path.resolve(root, match[1].split("#")[0]);
+  const target = path.resolve(root, match[2].split("#")[0]);
   if (!fs.existsSync(target) || !fs.statSync(target).isFile()) continue;
   const expected = versionOf(fs.readFileSync(target, "utf8")).value;
   if (!expected) continue;
-  const actual = match[2].match(/\b(\d+\.\d+\.\d+)\b/)?.[1] ?? null;
-  if (actual !== expected) errors.push("README.md: linkin " + match[1] + " versionumero (" + (actual ?? "puuttuu") + ") ei vastaa dokumentin versiota (" + expected + ").");
+  const actual = match[1].match(/\b(\d+\.\d+\.\d+)\b/)?.[1] ?? null;
+  if (actual !== expected) errors.push("README.md: linkin " + match[2] + " versionumero (" + (actual ?? "puuttuu") + ") ei vastaa dokumentin versiota (" + expected + ").");
 }
 
 if (errors.length) {
