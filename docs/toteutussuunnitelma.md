@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.27  
+**Versio:** 0.3.28  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -57,7 +57,7 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 Tehtäväpyynnön aikaleimat esitetään UTC-muodossa. `period`-objektin aikaleimakentissä käytetään samaa täsmällistä merkkijonomuotoa kuin tehtäväpyynnön muissa aikaleimoissa: `YYYY-MM-DDTHH:mm:ssZ`. Päivämäärän ja kellonajan välissä on iso `T`, ja aikavyöhykkeen ilmaisin on iso `Z`. Sekunnit ovat pakollisia; desimaaliosia, muita aikavyöhykemerkintöjä tai aikavyöhykkeettömiä arvoja ei hyväksytä. Aikaleiman on vastattava todellista kalenteripäivää ja kellonaikaa. Arvoja ei normalisoida eikä muunnetta automaattisesti toiseen muotoon. Tehtäväpyynnön `period`-objekti sisältää:
 
 - `from`: pakollinen UTC-aikaleima, josta seuranta alkaa. Arvon on noudatettava edellä määriteltyä täsmällistä muotoa.
-- `to`: UTC-aikaleima tai `null`. Jos arvo on aikaleima, sen on noudatettava samaa täsmällistä muotoa ja se rajaa haun ennalta määrättyyn päätepisteeseen. `null` tarkoittaa, ettei tehtäväpyyntö aseta päätepistettä; raportintuottaja määrittää toteutuneen päättymishetken ja kirjaa sen ajon metadataan.
+- `to`: UTC-aikaleima tai `null`. Jos arvo on aikaleima, sen on noudatettava samaa täsmällistä muotoa ja sen on oltava ajallisesti myöhempi kuin `from`; yhtä suuri tai aikaisempi arvo hylätään. Aikaleima rajaa haun ennalta määrättyyn päätepisteeseen. `null` tarkoittaa, ettei tehtäväpyyntö aseta päätepistettä; raportintuottaja määrittää toteutuneen päättymishetken ja kirjaa sen ajon metadataan.
 
 Erillistä `cutoff_at`- tai `timezone`-kenttää ei ole tehtäväpyynnön `period`-objektissa. Näin tehtäväpyyntö voi kuvata sekä avoimen jatkuvan seurannan että ennalta rajatun haun ilman päällekkäisiä aikarajatietoja. Tehtävän toimitusmääräaika `deadline_at` on tästä erillinen.
 
