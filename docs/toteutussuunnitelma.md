@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.10  
+**Versio:** 0.3.11  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -181,7 +181,7 @@ raportit-inbox/
 Toimituspaketti sisältää:
 
 - `metadata.json`: pakollinen kaikissa tulostiloissa. Se sisältää vähintään sopimusversion, ajotunnisteen, aiheen tunnisteen, seurantatyypin, seuranta-aikavälin ja tulostilan sekä kyseisen tulostilan edellyttämät lisätiedot;
-- `item.xml`: pakollinen `success`-tilassa, jossa julkaistava raportti syntyi. `partial`-tilassa raporttisisältö toimitetaan ensimmäisessä versiossa sovitun tallennusmallin mukaisesti mutta sitä ei julkaista. `no_report`- ja `failed`-tiloissa `item.xml`-tiedostoa ei toimiteta.
+- `item.xml`: pakollinen sekä `success`- että `partial`-tilassa. `success`-tilassa validoitu raportti julkaistaan. `partial`-tilassa validoitu osittainen raportti julkaistaan, ja itemissä kerrotaan selvästi seurannan puutteellisuudesta sekä sen syistä. `no_report`- ja `failed`-tiloissa `item.xml`-tiedostoa ei toimiteta.
 
 Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
 
@@ -229,7 +229,7 @@ Jokainen toimitus sisältää `metadata.json`-tiedoston. RSS-itemin vaatimus rii
 | Tulostila | `metadata.json` | `item.xml` | Käsittely |
 |---|---|---|---|
 | `success` | pakollinen | pakollinen | Validoitu raportti julkaistaan oikeassa RSS-syötteessä. |
-| `partial` | pakollinen | raporttisisällön toimitus sovitun sopimuksen mukaan | Osittainen tulos tallennetaan, mutta sitä ei julkaista ensimmäisessä versiossa. |
+| `partial` | pakollinen | pakollinen | Validoitu osittainen raportti julkaistaan; puutteet ja niiden syyt kerrotaan avoimesti. |
 | `no_report` | pakollinen | ei toimiteta | Seuranta onnistui, mutta julkaistavaa raporttia ei löytynyt. |
 | `failed` | pakollinen | ei toimiteta | Seuranta epäonnistui; metatietoihin kirjataan virheen luokka ja lyhyt, turvallinen kuvaus. |
 
@@ -240,13 +240,29 @@ Ensimmäisessä versiossa toimituspaketin eheys varmistetaan rakenteellisilla ja
 - `metadata.json` ja mahdollinen `item.xml` toimitetaan saman `run_id`-tunnisteen omaavassa hakemistossa.
 - Vastaanottava GitHub Actions -työnkulku tarkistaa vaadittujen tiedostojen olemassaolon ja toimituksen rakenteen.
 - Työnkulku validoi metatietojen rakenteen ja tarkistaa, että toimituksen `run_id` sekä aiheen tunniste vastaavat aktiivista tehtäväpyyntöä.
-- Jos tulostila edellyttää julkaistavaa raporttia, RSS-itemin on oltava mukana ja sen XML/RSS-rakenne validoidaan ennen julkaisua.
+- `success`- ja `partial`-tiloissa RSS-itemin on oltava mukana ja sen XML/RSS-rakenne validoidaan ennen julkaisua.
+- `partial`-itemissä kuvataan selvästi, mikä seurannassa jäi puutteelliseksi, miksi näin tapahtui ja miten puute vaikuttaa raportin kattavuuteen.
 - `no_report`- ja `failed`-toimituksissa `item.xml`-tiedostoa ei toimiteta; niiden `metadata.json` sisältää tulostilan edellyttämät tiedot.
 - Puutteellinen, virheellinen tai väärään tehtävään kuuluva toimitus hylätään kokonaisuutena. Se ei saa johtaa osittaiseen tallennukseen tai RSS-julkaisuun.
 
 Erilliset kryptografiset allekirjoitukset ja tarkistussummat jätetään ensimmäisen version ulkopuolelle. Niiden tarve arvioidaan myöhemmin, jos uhkamalli tai toimituskanavan luonne sitä edellyttää.
 
-### 2.4 Vastaanotto ja julkaisu käsitellään hallitusti
+### 2.4 RSS-itemien julkaiseminen ja korjauspäivitykset
+
+Sekä `success`- että `partial`-tilassa syntynyt validoitu RSS-item julkaistaan. Osittainen raportti antaa käyttäjälle ajantasaista luettavaa, vaikka kaikkia lähteitä tai aineistoja ei olisi saatu tarkistettua. Puutteellisuus ja sen syyt on ilmaistava itse raportissa selvästi.
+
+Julkaistut RSS-itemit ovat muuttumattomia:
+
+- Aiemmin julkaistua RSS-itemiä ei muokata, korvata eikä poisteta myöhemmän ajon perusteella.
+- Raportintuottaja lukee aiemmat raportit ennen uuden raportin muodostamista ja vertaa uusia havaintoja niihin. Jo raportoitua asiaa ei toisteta ilman olennaista uutta tietoa.
+- Jos myöhempi ajo löytää aiempaan raporttiin olennaisen lisäyksen tai korjauksen, se julkaisee uuden RSS-itemin korjauspäivityksenä.
+- Korjauspäivitys kertoo avoimesti, että se täydentää tai korjaa aiempaa raporttia, kuvaa mitä muuttui ja viittaa alkuperäiseen raporttiin sen pysyvällä tunnisteella tai URL-osoitteella.
+- Uusi, aiemmin raportoimaton asia julkaistaan normaalina uutena iteminä. Korjauspäivitystä ei käytetä pelkkään toiston välttämättömään täydennykseen, jos olennaista uutta tietoa ei ole.
+- Jokaisella uudella itemillä on oma yksilöllinen GUID. Alkuperäisen itemin GUID ja sisältö säilyvät ennallaan.
+
+Näin RSS-historia pysyy muuttumattomana eikä lukijan tarvitse luottaa aiemmin luetun itemin jälkikäteiseen muuttumiseen.
+
+### 2.5 Vastaanotto ja julkaisu käsitellään hallitusti
 
 GitHub Actions vastaa koko vastaanottavan käsittelyn loogisesta ketjusta:
 
@@ -264,7 +280,7 @@ Käsittely suunnitellaan yhdeksi hallituksi työnkuluksi. Julkaisun onnistumista
 
 Julkaisun ja ajotietojen tallennuksen osittaiset epäonnistumiset käsitellään idempotentisti. Ajoa ei merkitä julkaistuksi ennen kuin julkaisu on varmennettu.
 
-### 2.5 Ajotietojen tallennus
+### 2.6 Ajotietojen tallennus
 
 Ajotiedot tallennetaan tässä vaiheessa julkiseen GitHub-repositorioon. Tämä on hyväksytty nykyisen suunnitteluvaiheen ratkaisu.
 
