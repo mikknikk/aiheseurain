@@ -70,6 +70,14 @@ Säännöt:
 
 Tätä label-mallia noudatetaan kaikessa uudessa kehitystyössä, tehtävien luonnissa ja olemassa olevien tehtävien päivityksissä. Vanhoja labeleita ei pidä käyttää uusissa tehtävissä.
 
+## Markdown-dokumentaation automaattinen laaduntarkistus
+
+README.md-tiedoston ja docs/-hakemiston Markdown-dokumentit tarkistetaan GitHub Actionsissa. Tarkistus varmistaa yhden H1-pääotsikon, loogisen otsikkohierarkian, versionumeromerkinnän yksikertaisuuden, saman sisältöosion kopioitumisen, README:n versionumeroviittaukset sekä sisäisten linkkien kohteet ja otsikkoankkurit.
+
+Tarkistuksen toteutus, rajaukset ja paikallinen suorittaminen on kuvattu dokumentissa [dokumentaation automaattinen laaduntarkistus](dokumentaation-laaduntarkistus.md). Tarkistus ei korvaa sisällöllistä katselmointia eikä saavutettavuuden manuaalista arviointia.
+
+Kun tarkistussääntöjä muutetaan, päivitä niiden yksikkötestit ja ohjedokumentti samassa muutoksessa. Virheellisten testitapausten tulee varmistaa, että laaduntarkistus todella epäonnistuu virheellisestä dokumentista.
+
 ## Python-skriptien kommentointi
 
 Jokainen uusi skripti kirjoitetaan alusta lähtien yhtä huolellisesti kommentoiduksi kuin `scripts/validate_feeds.py`.
