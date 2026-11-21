@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.17  
+**Versio:** 0.3.18  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -54,17 +54,41 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 - Raportintuottajan käynnistys-/nouto-ohje on eri asia kuin varsinainen tehtäväpyyntö: se kertoo, miten tehtävä haetaan ja käsitellään, kun taas `data/tehtava.json` sisältää yksittäisen ajon tiedot.
 - Tehtäväpyynnön tarkka JSON-rakenne, viittauskenttien nimet ja tilapäivitysten toteutus määritellään myöhemmin toimitussopimuksessa.
 
-Tehtäväpyynnön aikamallissa kaikki varsinaiset aikaleimat tallennetaan UTC-muodossa. Paikallinen aikavyöhyke ilmoitetaan erikseen IANA-aikavyöhyketunnisteella, esimerkiksi `Europe/Helsinki`. Näin aikaleimat ovat yksiselitteisiä myös kesä- ja talviaikaan siirryttäessä.
+Tehtäväpyynnön aikaleimat esitetään UTC-muodossa. Tehtäväpyynnön `period`-objekti sisältää:
 
-Seuranta-aikavälissä erotetaan kolme tietoa:
+- `from`: pakollinen UTC-aikaleima, josta seuranta alkaa;
+- `to`: UTC-aikaleima tai `null`. Aikaleima rajaa haun ennalta määrättyyn päätepisteeseen. `null` tarkoittaa, ettei tehtäväpyyntö aseta päätepistettä; raportintuottaja määrittää toteutuneen päättymishetken ja kirjaa sen ajon metadataan.
 
-- `from`: seurannan alkamishetki;
-- `to`: alkuperäinen päättymishetki, joka voi olla `null`, jos aikaväli oli alun perin avoin;
-- `cutoff_at`: tarkka UTC-hetki, johon asti aineisto voidaan ottaa mukaan kyseiseen ajoon.
+Erillistä `cutoff_at`- tai `timezone`-kenttää ei ole tehtäväpyynnön `period`-objektissa. Näin tehtäväpyyntö voi kuvata sekä avoimen jatkuvan seurannan että ennalta rajatun haun ilman päällekkäisiä aikarajatietoja. Tehtävän toimitusmääräaika `deadline_at` on tästä erillinen.
 
-Avoimen `to`-arvon tapauksessa `cutoff_at` rajaa silti ajon aineiston täsmällisesti. Tehtäväpyyntöön sisällytetään lisäksi paikallinen aikavyöhyketunniste, jotta raportintuottaja voi tulkita ja esittää aikavälin aiheen paikallisen ajan mukaisesti.
+GitHub Actions ratkaisee tehtävätyypin oletukset, profiilit ja aihekohtaiset asetukset ennen tehtävän tarjoamista. Tehtäväpyyntö sisältää valmiin `resolved_config`-konfiguraatiosnapshotin. Raportintuottajan ei tarvitse hakea tai yhdistellä määritystiedostoja itse. `source_revision` yksilöi täsmälleen sen Git-commitin, jonka määrityksiä ja Markdown-ohjeita tehtävässä käytetään. Raportintuottaja hakee kaikki ohjeet tästä commitista eikä muuttuvasta `main`-haarasta.
 
-GitHub Actions ratkaisee tehtävätyypin oletukset, profiilit ja aihekohtaiset asetukset ennen tehtävän tarjoamista. Tehtäväpyyntö sisältää valmiin `resolved_config`-konfiguraatiosnapshotin. Raportintuottajan ei tarvitse hakea tai yhdistellä määritystiedostoja itse. Snapshotin alkuperä ja käytettyjen määritysten versiot tai Git-commit-viite säilytetään jäljitettävyyttä varten. Tehtäväpyyntöön tallennetaan `source_revision`-kenttään se Git-commitin SHA, jonka sisältöä tehtävän muodostamisessa käytettiin. Raportintuottaja hakee Markdown-ohjeet tästä täsmälleen samasta commitista eikä muuttuvasta `main`-haarasta. Näin ohjeet ja määritykset pysyvät tehtävän koko käsittelyn ajan samoina ja ajo voidaan jälkikäteen rekonstruoida. Erillistä ohjeiden kopiointia tehtäväpyyntöön ei tarvita.
+Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
+
+- Juuritason `schema_version` on pakollinen merkkijono, joka käyttää semanttista versionumerointia (esimerkiksi `1.0.0`). Se kuvaa vain tehtäväpyynnön JSON-rakennetta.
+- `run_id` on pakollinen, ihmisluettava tunniste muodossa `YYYYMMDD-HHMMSS-topicid-tasktype`. Aikaleima muodostetaan UTC-ajassa. Tunniste sisältää aiheen `topic_id`:n ja tehtävätyypin `task_type`:n, mutta ei profiileja. Ensimmäisessä versiossa yksi raportintuottaja käsittelee tehtäviä sarjallisesti, joten satunnaista tai juoksevaa lisäosaa ei tarvita. Tunnistetta käytetään myös toimitushakemiston nimenä.
+- Erillistä `task_id`-kenttää ei lisätä. `run_id`, `topic_id` ja `task_type` yksilöivät ajon ja sen tehtävän.
+- `issued_at` ja `deadline_at` ovat pakollisia UTC-aikaleimoja. `deadline_at` on myöhempi kuin `issued_at`.
+- `history` on pakollinen ja sisältää `path`- sekä `revision`-kentät. `path` on repositoriojuureen suhteutettu RSS-tiedoston polku, ei URL eikä haaran nimi. `revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA. Se on käsitteellisesti erillinen `source_revision`-kentästä, vaikka molemmat voivat osoittaa samaan committiin.
+- Myös `source_revision` on täsmälleen 40 heksadesimaalimerkkiä sisältävä Git-commit-SHA.
+- `profiles` ja `instructions` säilytetään erillisinä taulukoina. Ensimmäinen kuvaa käytetyt koneelliset määritysprofiilit, toinen pakollisesti luettavat Markdown-ohjeet.
+- `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat `id` ja repositoriojuureen suhteutettu `path`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: tehtävätyypin ohje, profiilien ohjeet profiilien määritysjärjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
+
+### Ratkaistu määritys (`resolved_config`)
+
+`resolved_config` on aina pakollinen JSON-objekti; tyhjä objekti `{}` sallitaan, jos tehtävällä ei ole koneellisia lisäasetuksia. Se sisältää vain tehtävän suorituksessa tarvittavat, valmiiksi yhdistetyt asetukset. Alkuperäisiä määrityksiä tai profiilien sisältöjä ei kopioida sinne sellaisinaan.
+
+Asetukset yhdistetään tässä järjestyksessä: tehtävätyypin oletukset, profiilit niiden ilmoitetussa järjestyksessä ja lopuksi aihekohtaiset ylikirjoitukset. Sisäkkäiset objektit yhdistetään rekursiivisesti, myöhempi arvo korvaa aiemman saman asetuksen ja taulukot korvataan kokonaan.
+
+- Pakollisten asetusten on löydyttävä ratkaistusta määrityksestä; muuten tehtäväpyyntöä ei muodosteta.
+- Valinnaiset asetukset voidaan jättää pois, mutta raportintuottaja ei keksi niille omia oletusarvoja.
+- Tuntemattomat asetukset hylätään validoinnissa.
+- Oletusarvot määritellään tehtävätyypin tai profiilien alkuperäisissä määrityksissä.
+- Sisältö käyttää tavallisia JSON-tietotyyppejä. Tietotyypit, pakollisuus ja arvorajat määritellään tehtävätyypin JSON Schemassa.
+- Raportintuottaja ei täydennä puuttuvia asetuksia omilla oletuksillaan.
+- Tehtävätyyppi määrittää käytettävän skeeman. Skeema haetaan samasta `source_revision`-commitista; `resolved_config`-objektiin ei lisätä erillistä skeemaversiota.
+- Ensimmäisessä versiossa järjestelmä ei käsittele salaisia tietoja. Tehtäväpyyntöön ei sisällytetä salasanoja, API-avaimia, käyttöoikeustunnisteita eikä yksityisiä tietoja.
+- `resolved_config`-kentälle ei aseteta erillistä keinotekoista kokorajaa. Siihen ei kuitenkaan kopioida Markdown-ohjeita, lähderekistereitä tai raporttihistoriaa; laajoihin aineistoihin viitataan tarvittaessa tunnisteilla tai poluilla.
 
 Ensimmäisessä vaiheessa ei toteuteta erillistä varausmekanismia, varauksen vanhenemista eikä tehtäväkohtaista lukitusta. Yksi raportintuottaja ja yksi aktiivinen tehtäväpyyntö riittävät. Tehtäväpyynnön yksilöllinen `run_id` ja toimituksen idempotentti käsittely säilytetään.
 
