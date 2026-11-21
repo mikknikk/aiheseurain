@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.6  
+**Versio:** 0.3.7  
 **Päiväys:** 21.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.10.0](vaatimusmaarittely-uudistus.md)
@@ -185,6 +185,19 @@ Toimituspaketti sisältää:
 
 Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
 
+#### Toimituspaketin eheys ja täydellisyys
+
+Ensimmäisessä versiossa toimituspaketin eheys varmistetaan rakenteellisilla ja sisällöllisillä tarkistuksilla ilman erillistä allekirjoitus- tai tarkistussummajärjestelmää.
+
+- `metadata.json` ja mahdollinen `item.xml` toimitetaan saman `run_id`-tunnisteen omaavassa hakemistossa.
+- Vastaanottava GitHub Actions -työnkulku tarkistaa vaadittujen tiedostojen olemassaolon ja toimituksen rakenteen.
+- Työnkulku validoi metatietojen rakenteen ja tarkistaa, että toimituksen `run_id` sekä aiheen tunniste vastaavat aktiivista tehtäväpyyntöä.
+- Jos tulostila edellyttää julkaistavaa raporttia, RSS-itemin on oltava mukana ja sen XML/RSS-rakenne validoidaan ennen julkaisua.
+- `no_report`- ja `failed`-toimituksissa `item.xml` ei ole pakollinen; tiedostojen vaatimukset määräytyvät tulostilan mukaan.
+- Puutteellinen, virheellinen tai väärään tehtävään kuuluva toimitus hylätään kokonaisuutena. Se ei saa johtaa osittaiseen tallennukseen tai RSS-julkaisuun.
+
+Erilliset kryptografiset allekirjoitukset ja tarkistussummat jätetään ensimmäisen version ulkopuolelle. Niiden tarve arvioidaan myöhemmin, jos uhkamalli tai toimituskanavan luonne sitä edellyttää.
+
 ### 2.4 Vastaanotto ja julkaisu käsitellään hallitusti
 
 GitHub Actions vastaa koko vastaanottavan käsittelyn loogisesta ketjusta:
@@ -261,7 +274,7 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - miten tehtäväpyynnön tarkka skeema, aikavälien ja aikavyöhykkeiden esitystapa sekä käsittelyn valmistumisen kirjaaminen määritellään;
 - miten tehtävätyyppien, profiilien ja aihekohtaisten määritysten tarkat JSON Schema -skeemat, sallitut ylikirjoitukset ja Markdown-ohjeiden viittaukset määritellään;
 - miten nykyisen GitHub App -yhteyden tosiasialliset oikeudet ja `main`-haaran suojaus varmistetaan käyttöönotossa; ensimmäisessä versiossa ei edellytetä teknistä, vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta;
-- miten vastaanottohaaran toimituspaketin eheys ja täydellisyys varmistetaan;
+- miten toimituspaketin tarkat tulostilakohtaiset tiedostovaatimukset ja skeemat määritellään; eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3;
 - miten `metadata.json`-tiedoston tarkka skeema määritellään;
 - miten `no_report`- ja `failed`-tulokset toimitetaan ilman RSS-itemiä;
 - miten vastaanottohaaran toimituksia säilytetään ja siivotaan turvallisesti;
