@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.49  
+**Versio:** 0.3.50  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.7](vaatimusmaarittely-uudistus.md)
@@ -401,6 +401,7 @@ Määräajan umpeuduttua vastaanottaja kirjaa ajon epäonnistuneeksi ja voi muod
 - Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistynyt, myöhäistä toimitusta ei julkaista. Se voidaan säilyttää vastaanottoaineistona jäljitettävyyttä varten, mutta sitä ei saa liittää myöhemmän ajon tulokseen.
 - Myöhäinen toimitus ei saa muuttaa myöhemmän ajon tehtäväpyyntöä, tulosta, ajotietuetta, tilaa tai RSS-historiaa. Se ei myöskään poista aiempaa määräajan umpeutumisen tai vastaanottajan epäonnistumisen merkintää.
 - Määräajan umpeutuminen ja myöhäisen toimituksen saapuminen kirjataan vastaanottajan erillisinä tapahtumina. Valvomo voi näyttää alkuperäisen määräajan ylityksen sekä myöhemmän toimituksen vastaanotto- ja julkaisutilan erillisinä tietoina.
+- Jos vastaanottaja on jo muodostanut määräajan umpeutumisen vuoksi epäonnistumistietueen, myöhemmin hyväksytty `metadata.json` täydentää samaa kanonista ajotietuetta erillisenä tuottajan tuloksena. Se ei korvaa eikä kirjoita uudelleen vastaanottajan aiempia tietoja. Määräajan ylitys ja havainto siitä, ettei toimitusta saatu määräajassa, säilyvät muuttumattomina; tuottajan ilmoittama tulostila tallennetaan erikseen vain hyväksytystä toimituksesta.
 - Myöhäisen toimituksen vastaanotto, validointi ja julkaisu koordinoidaan yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta. Käsittely on idempotenttia: samaa toimitusta tai RSS-GUIDia ei käsitellä tai julkaista uudelleen.
 
 Myöhäisen toimituksen jälkikäsittely ei tarkoita yleistä epäonnistuneiden ajojen uudelleenavaamista tai uuden yrityksen käynnistämistä. Se käsittelee vain tuottajan alkuperäiselle ajolle toimittaman valmiin tuloksen. Tarkka tekninen toteutus ja ajotietueen tapahtumien tietomalli täsmennetään myöhemmin.
@@ -556,6 +557,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.50 (22.11.2026):** täsmennettiin myöhäisen hyväksytyn toimituksen suhde jo muodostettuun kanoniseen ajotietueeseen: toimitus täydentää tietuetta erillisenä tuottajan tuloksena eikä korvaa vastaanottajan aiempia määräajan ylityksen ja toimituksen puuttumisen havaintoja.
 
 - **0.3.49 (22.11.2026):** määriteltiin myöhäisen toimituksen rajattu jälkikäsittely alkuperäisen `run_id`-tunnisteen perusteella. Julkaisu sallitaan vain, jos myöhempää saman aiheen ja seurantatyypin ajoa ei ole käynnistetty; myöhäinen toimitus ei muuta myöhempien ajojen tietoja tai tiloja.
 
