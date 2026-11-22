@@ -405,14 +405,14 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 22. Julkiseen raporttiin, RSS-syötteeseen tai Valvomon julkiseen dataan ei päädy salaisuuksia tai tarpeettomia henkilötietoja.
 23. Valvomo ja RSS-lukija käyttävät yhteistä ohjelmistototeutusta mutta näyttävät vain oman instanssinsa tietoja, määrityksiä ja julkaisuja.
 24. Ensimmäisen version Valvomo ja RSS-lukija voivat olla julkisia ilman kirjautumista; julkisiin tietolähteisiin ei sisällytetä salaisuuksia, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
-23. Testaus estää tuotantodatan tahattoman muuttamisen.
-24. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
-25. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.
-26. Yhteinen ohjelmisto voidaan julkaista ja ottaa käyttöön erillään yksittäisen instanssin määrityksistä ja käyttödatan tiedostoista.
-27. Instanssikohtaiset aiheet, asetukset, lähderekisterit, ajohistoria ja RSS-julkaisut eivät ole jaettavan ohjelmistoversion osia.
-28. Ohjelmisto toimii instanssin tietojen kanssa dokumentoidun rajapinnan ja tietosopimusten kautta olettamatta niiden sijaitsevan samassa repositoriossa tai hakemistorakenteessa.
-29. Instanssin käyttämä ohjelmistoversio on yksilöitävissä, eikä uuden version julkaisu päivitä sitä automaattisesti.
-30. Ensimmäinen toteutus voi käyttää yhtä instanssia ilman keskitettyä monen instanssin palvelua.
+25. Testaus estää tuotantodatan tahattoman muuttamisen.
+26. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
+27. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.
+28. Yhteinen ohjelmisto voidaan julkaista ja ottaa käyttöön erillään yksittäisen instanssin määrityksistä ja käyttödatan tiedostoista.
+29. Instanssikohtaiset aiheet, asetukset, lähderekisterit, ajohistoria ja RSS-julkaisut eivät ole jaettavan ohjelmistoversion osia.
+30. Ohjelmisto toimii instanssin tietojen kanssa dokumentoidun rajapinnan ja tietosopimusten kautta olettamatta niiden sijaitsevan samassa repositoriossa tai hakemistorakenteessa.
+31. Instanssin käyttämä ohjelmistoversio on yksilöitävissä, eikä uuden version julkaisu päivitä sitä automaattisesti.
+32. Ensimmäinen toteutus voi käyttää yhtä instanssia ilman keskitettyä monen instanssin palvelua.
 
 ## 16. Avoimet suunnittelukysymykset
 
@@ -426,7 +426,7 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 6. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne suunnitellaan myöhemmin.
 7. **Historiatietojen säilytys:** ajon perustietojen, mahdollisten lokien ja väliaineistojen säilytysajat määritellään tietotarpeen ja tietosuojan perusteella.
 8. **Nykyisen toteutuksen siirtymä:** nykyiset osat inventoidaan ja arvioidaan ennen hyödyntämistä tai poistamista. Mitään ei poisteta ilman erillistä suunnitelmaa.
-9. **Käyttöoikeuksien tekninen toteutus:** julkisen ja ylläpitäjille rajatun tiedon erottelu ratkaistaan ennen niiden käyttöönottoa.
+9. **Mahdollinen myöhempi käyttöoikeuksien tekninen toteutus:** jos instanssin myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, julkisen ja rajatun tiedon erottelu sekä käyttöoikeudet suunnitellaan ennen tällaisen tiedon käyttöönottoa. Tämä ei kuulu ensimmäiseen versioon.
 10. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet, tarkka hakemistorakenne, jakelukanava, version kiinnittämisen mekanismi sekä ohjelmiston ja instanssin välinen tekninen tiedonsiirto määritellään toteutussuunnittelussa.
 
 ## 17. Tuottajakohtaiset toteutusohjeet
