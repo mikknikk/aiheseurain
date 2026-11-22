@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.56  
+**Versio:** 0.3.57  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.13](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.16](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -157,11 +157,12 @@ Tehtäväpyyntö on JSON-objekti, jossa ovat täsmälleen seuraavat juuritason k
 | issued_at | merkkijono | Kyllä | Tehtäväpyynnön muodostamishetki. |
 | deadline_at | merkkijono | Kyllä | Toimituksen määräaika. |
 | history | objekti | Kyllä | RSS-historian repositorio, polku ja lähtörevisio. |
+| inputs | taulukko | Kyllä | Rakenteisten syöteaineistojen viittaukset; tyhjä sallitaan, jos tehtävä ei tarvitse erillisiä aineistoja. |
 | profiles | taulukko | Kyllä | Käytettyjen profiilien järjestetty luettelo; tyhjä sallitaan. |
 | instructions | taulukko | Kyllä | Pakollisesti luettavien ohjeiden järjestetty, ei-tyhjä luettelo. |
 | resolved_config | objekti | Kyllä | Valmiiksi ratkaistu tehtäväkohtainen konfiguraatio. |
 
-Jokainen juuritason kenttä on pakollinen eikä tuntemattomia juuritason kenttiä sallita. Myös sisäkkäisissä objekteissa hylätään määrittelemättömät ylimääräiset kentät. resolved_config-objektin sallitut asetukset määräytyvät tehtävätyypin skeemasta; sen yleiset säännöt on kuvattu edellä.
+Jokainen juuritason kenttä on pakollinen eikä tuntemattomia juuritason kenttiä sallita. `inputs` on aina mukana myös tyhjänä taulukkona, jos tehtävä ei tarvitse erillisiä rakenteisia aineistoja. Myös sisäkkäisissä objekteissa hylätään määrittelemättömät ylimääräiset kentät. resolved_config-objektin sallitut asetukset määräytyvät tehtävätyypin skeemasta; sen yleiset säännöt on kuvattu edellä.
 
 schema_version on täsmälleen kolmen numeerisen osan semanttinen versio muodossa MAJOR.MINOR.PATCH; etuliitteitä, jälkiliitteitä tai build-metatietoja ei käytetä. Se versioi vain tehtäväpyynnön rakennetta ja tulkintasääntöjä, ei ohjelmistoa.
 
@@ -175,7 +176,7 @@ issued_at ja deadline_at noudattavat samaa aikaleimamuotoa ja yleisen resolved_c
 
 history sisältää täsmälleen kentät repository, path ja revision. repository on aina instance. path on täsmälleen rss/{topic_id}/{task_type}.xml, kun paikkamerkit korvataan saman tehtäväpyynnön tunnisteilla. revision on RSS-historian lähtöcommit, ja se voi poiketa instance_revision-arvosta.
 
-profiles- ja instructions-taulukoiden alkioiden kentät ja järjestys on määritelty edellä. Kaikki viitatut tiedostot luetaan niiden repositorioiden muuttumattomista commit-revisioista: software käyttää software_revision-arvoa ja instance käyttää instance_revision-arvoa. Polku on aina repositoriojuureen suhteutettu tiedostopolku, ei URL tai haaraviittaus.
+`inputs`-, `profiles`- ja `instructions`-taulukoiden alkioiden kentät ja järjestys on määritelty edellä. `inputs`-taulukon jokaisessa alkiossa ovat täsmälleen kentät `id`, `kind`, `repository` ja `path`. `id` on yksilöllinen tunniste, `kind` ilmaisee aineiston tyypin (ensimmäisessä versiossa `source_registry`), `repository` on looginen repositoriotunniste ja `path` repositoriojuureen suhteutettu tiedostopolku. Ensimmäisessä versiossa `source_registry`-aineisto luetaan instanssirepositoriosta (`repository: instance`) `instance_revision`-revisiosta. Duplikaatit ja tuntemattomat kentät hylätään. Kaikki viitatut tiedostot luetaan niiden repositorioiden muuttumattomista commit-revisioista: software käyttää software_revision-arvoa ja instance käyttää instance_revision-arvoa. Polku on aina repositoriojuureen suhteutettu tiedostopolku, ei URL tai haaraviittaus.
 
 ### 2.2.1.1 Tehtäväpyynnön muodostamisen ja määräajanvalvonnan ajastus
 
@@ -244,7 +245,7 @@ Tehtävätyyppi sisältää yleiset, saman tehtäväluokan tehtäville kuuluvat 
 
 Yksi aihe voi käyttää useita profiileja. Esimerkiksi elokuvanäytösvahti voi yhdistää tapahtumavahdin yleiset oletukset, elokuvanäytösprofiilin ja intialaisen elokuvan profiilin. Konserttivahti voi käyttää tapahtumavahdin ja konserttiprofiilin lisäksi esimerkiksi klassisen musiikin profiilia. Ensimmäisessä versiossa profiilien välisiä riippuvuuksia, kieltoja tai erillistä yhteensopivuusmatriisia ei mallinneta. Profiileja voidaan yhdistää ilman, että niiden tarvitsee ilmoittaa yhteensopivuuttaan keskenään.
 
-Ensimmäisessä versiossa profiilit ovat itsenäisiä määrityksiä: profiili ei peri toista profiilia eikä muodosta rekursiivista riippuvuusketjua. Tämä pitää yhdistämisen ennustettavana. Profiilien keskinäinen järjestys ilmoitetaan aihekohtaisessa määrityksessä ja ratkaisee mahdolliset päällekkäiset asetukset.
+Ensimmäisessä versiossa profiilit ovat itsenäisiä määrityksiä: profiili ei peri toista profiilia eikä muodosta rekursiivista riippuvuusketjua. Jokainen profiili kuuluu täsmälleen yhdelle tehtävätyypille; sitä voidaan käyttää useassa saman tehtävätyypin aiheessa, mutta ei toisen tehtävätyypin yhteydessä. Tämä pitää yhdistämisen ennustettavana. Profiilien keskinäinen järjestys ilmoitetaan aihekohtaisessa määrityksessä ja ratkaisee mahdolliset päällekkäiset asetukset.
 
 Asetukset ratkaistaan seuraavassa järjestyksessä:
 
@@ -278,6 +279,30 @@ Määritykset luetaan niissä ilmoitetuista muuttumattomista Git-commit-revisioi
 Jos jokin määritys on virheellinen, ristiriitainen tai siitä puuttuu pakollinen arvo, tehtäväpyyntöä ei muodosteta. Virhe kirjataan syineen ja sijaintitietoineen. Aiemmin aktiivista tehtävää ei korvata, jono ei jää epäselvään tilaan eikä järjestelmä tee automaattisia korjauksia, päättele puuttuvia arvoja tai muodosta osittaista `resolved_config`-kokoonpanoa.
 
 Tehtävätyyppien, profiilien ja aihekohtaisten määritysten omat JSON Schema -skeemat validoivat niiden rakenteet. Tehtävätyypin skeema määrittelee lisäksi lopullisen `resolved_config`-rakenteen ja sallitut ylikirjoitukset. Markdown-ohjeet versioidaan Gitissä ja niihin viitataan tehtäväpyynnöstä.
+
+Skeemakokonaisuus toteutetaan JSON Schema Draft 2020-12 -standardilla. Yhteiseen ohjelmistorepoon kuuluvat seuraavat skeemat:
+
+1. tehtävätyypin määrityksen skeema;
+2. tehtävätyyppikohtainen asetusskeema, jota tehtävätyypin määritys viittaa;
+3. määritysprofiilin skeema;
+4. aihekohtaisen määrityksen skeema;
+5. lähderekisterin skeema;
+6. tehtäväpyynnön skeema;
+7. toimitusmetatietojen skeema.
+
+Tehtävätyypin määrityksen rakenne sisältää `schema_version`-, `id`-, `description`-, `config_schema`-, `defaults`-, `overridable_paths`-, `processing`-, `reporting`- ja `instruction`-kentät. `overridable_paths` ilmaisee JSON Pointer -polkuina täsmälleen ne asetuskohdat, joita profiilit ja aihekohtainen määritys saavat ylikirjoittaa. Tehtävätyyppikohtainen asetusskeema määrittelee `resolved_config`-objektin rakenteen, tietotyypit, pakollisuuden, rajat ja tuntemattomien kenttien hylkäämisen.
+
+Määritysprofiilin rakenne sisältää `schema_version`-, `id`-, `task_type`-, `description`-, `settings`- ja `instruction`-kentät. Profiilin `task_type`-arvon on vastattava tehtäväpyynnössä valittua tehtävätyyppiä. Profiili ei peri toista profiilia. Aihekohtainen määritys sisältää `schema_version`-, `topic_id`-, `task_type`-, `enabled`-, `profiles`-, `settings`-, `source_registry`- ja `instruction`-tiedot. Profiiliviittaukset säilyttävät järjestyksen.
+
+Lähderekisterin rakenteinen skeema määrittelee lähteen pysyvän `id`-tunnisteen, nimen, URL-osoitteen, lähdetyypin, kielet, alueet, tärkeysluokan, mahdollisen toimituksellisen luotettavuusluokan, valinnaisen IANA-aikavyöhykkeen ja sen perusteen sekä käytössäolon ja mahdollisen käytöstä poistamisen syyn. `last_checked_at` ja muut ajokohtaiset tarkistushavainnot kuuluvat ajohistoriaan, eivät lähderekisterin pysyvään määritykseen. Lähteen tunniste säilyy, vaikka nimeä tai URL-osoitetta muutetaan. Toimituksellinen luotettavuus ja tekninen saavutettavuus pidetään erillisinä.
+
+Lähdekohtaiset ajohavainnot sisältävät lähteen tunnisteen, tarkistuksen tilan (`attempted` tai `not_attempted`) ja yksittäiset avausyritykset. Yritys sisältää tunnisteen, ajankohdan, pyydetyn URL-osoitteen, avauksen tuloksen (`opened` tai `failed`), epäonnistumisen syyluokan silloin kun avaus epäonnistui sekä sisällön luettavuuden (`readable`, `partial`, `unreadable` tai `not_assessed`). `not_attempted` ei ole epäonnistuminen eikä kuulu avausyritysten onnistumisprosentin nimittäjään. Avaamisen onnistuminen erotetaan sisällön luettavuudesta ja hyödyllisyydestä. Valvomo laskee tilastot alkuperäisistä havainnoista eikä luota tuottajan valmiiksi laskemiin prosentteihin. Sekä yrityskohtainen että ajokohtainen onnistumisaste esitetään otoskoon ja tarkastelujakson yhteydessä.
+
+Lähderekisterin tarkka omistus- ja jakamismalli, erityisesti se, onko rekisteri aina aihekohtainen vai voiko sama rekisteri palvella useita aiheita, jätetään avoimeksi jatkokeskusteluun. Tämä ei muuta periaatetta, että lähderekisterin pysyvät määritystiedot ja ajokohtaiset havainnot pidetään erillään.
+
+Markdown-ohjeille ei tehdä JSON Schemaa. Ohjeiden validointi tarkistaa yksilölliset tunnisteet, tiedoston olemassaolon oikeassa repositoriossa ja kiinnitetyssä commitissa, turvalliset repositoriojuureen suhteutetut polut, ohjeiden järjestyksen ja duplikaattien puuttumisen sekä sen, etteivät ohjeet ole ristiriidassa koneellisten määritysten kanssa. Markdown-etusivua tai muuta rinnakkaista metatietomuotoa ei lisätä.
+
+Kaikki skeemojen `$ref`-viittaukset ratkaistaan samasta kiinnitetystä ohjelmistorevisiosta; ulkoisia tai muuttuvia skeemalähteitä ei käytetä. Määritykset validoidaan yksittäin ja yhdistetty `resolved_config` tehtävätyyppikohtaista asetusskeemaa vasten. Lisäksi ohjelmallisesti tarkistetaan esimerkiksi objektien sisäisten tunnisteiden yksilöllisyys, aikaleimojen offsetien vastaavuus yleiseen IANA-aikavyöhykkeeseen sekä repositorio- ja polkuviittausten eheys. Virhe ilmoittaa tiedoston, kenttäpolun ja syyn ja estää tehtävän muodostamisen.
 
 Tehtäväpyynnön Markdown-ohjeviittaukset kootaan `instructions`-taulukkoon. Jokainen viittaus yksilöi myös repositorion, josta ohje luetaan: ohjelmistorepon yleiset ohjeet sidotaan `software_revision`-tunnisteeseen ja instanssirepon aihe- ja profiilikohtaiset ohjeet `instance_revision`-tunnisteeseen. Taulukko sisältää eksplisiittisen luettelon kaikista kyseisen tehtävän käsittelyssä pakollisesti luettavista ohjeista. Jokaisella käytettävällä profiililla on oma Markdown-ohjetiedostonsa JSON-määrityksen lisäksi. Profiilin Markdown-ohjeen lukeminen on pakollista aina, kun profiilia käytetään.
 
@@ -645,8 +670,8 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 
 Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
-- miten tehtäväpyynnön tarkka skeema ja käsittelyn valmistumisen kirjaaminen määritellään; aikavälien, aikaleimojen ja aikavyöhykkeen yleiset esityssäännöt on päätetty kohdassa 2.2.1;
-- miten tehtävätyyppien, profiilien ja aihekohtaisten määritysten tarkat JSON Schema -skeemat, sallitut ylikirjoitukset ja Markdown-ohjeiden viittaukset määritellään;
+- miten skeemojen tarkat JSON Schema Draft 2020-12 -tiedostot, kenttäkohtaiset rajat ja validointitoteutus määritellään; skeemakokonaisuuden vastuut ja tehtäväpyynnön `inputs`-rakenne on päätetty kohdissa 2.2.1 ja 2.2.2;
+- miten lähderekisterin aihekohtainen rajaus tai uudelleenkäyttö useiden aiheiden välillä ratkaistaan; tämä käsitellään erillisenä suunnittelukysymyksenä;
 - miten nykyisen GitHub App -yhteyden tosiasialliset oikeudet ja `main`-haaran suojaus varmistetaan käyttöönotossa; ensimmäisessä versiossa ei edellytetä teknistä, vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta;
 - miten toimituspaketin tarkat tulostilakohtaiset tiedostovaatimukset ja skeemat määritellään; eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3;
 - miten `metadata.json`-tiedoston tarkka skeema määritellään, mukaan lukien tuottajan tuloksen ja vastaanottajan ajonhallinnan erottelu, tapahtumien rakenne ja lähdekohtaiset avausyritysten havainnot;
@@ -658,6 +683,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.57 (22.11.2026):** määriteltiin JSON Schema Draft 2020-12 -skeemakokonaisuus, tehtävätyyppikohtaiset asetusskeemat, tehtävätyyppiin sidotut profiilit, Markdown-ohjeiden erillinen validointi ja tehtäväpyynnön rakenteisten aineistojen `inputs`-viittaukset. Lähderekisterin aihekohtainen rajaus jätettiin avoimeksi jatkokeskusteluun.
 
 - **0.3.56 (22.11.2026):** yhdenmukaistettiin tehtäväpyynnön ohjejärjestys ja aikavälin puoliksi avoin tulkinta yhteisen peruspromptin sekä raportointijaksojen rajojen osalta.
 
