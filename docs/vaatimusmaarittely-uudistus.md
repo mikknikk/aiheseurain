@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.1  
+**Versio:** 0.12.2  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -278,6 +278,9 @@ Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään t
 - Yhteisen ohjelmiston tulee olla julkaistavissa ja jaettavissa erillään yksittäisen käyttöönoton tiedoista.
 - Yhden instanssin omat aiheet, seurantatehtävät, määritykset, profiilit, lähderekisterit, ajohistoria, RSS-syötteet ja muut käyttöönoton tiedot kuuluvat instanssille. Niitä ei käsitellä jaettavan ohjelmiston lähdekoodina tai ohjelmistoversion sisältönä.
 - Ohjelmiston tulee pystyä lukemaan ja käsittelemään instanssin tietoja määritellyn rajapinnan ja tietosopimusten kautta. Se ei saa olettaa, että ohjelmistokoodi ja instanssin tiedot sijaitsevat samassa Git-repositoriossa tai määrätyissä suhteellisissa tiedostopoluissa.
+- Tehtävän ja sen tuloksen jäljitettävyyden tulee erottaa käytetty ohjelmistorevisio ja instanssidatan revisio toisistaan. Ohjelmistorevisio yksilöi tehtävän käsittelyssä käytetyn ohjelmistokoodin, yhteiset skeemat ja ohjelmiston yleiset ohjeet; instanssidatan revisio yksilöi käytetyt aiheet, tehtävät, profiilit, lähderekisterit, instanssikohtaiset ohjeet sekä RSS-historian lähtötilan.
+- Tiedostoviittauksen tulee yksilöidä myös tietolähteen repositorio tai muu sovittu tietovarasto. Pelkkä repositoriojuureen suhteutettu polku ei riitä, jos tehtävässä käytetään sekä ohjelmisto- että instanssirepon tiedostoja.
+- Ohjelmisto- ja instanssirevision sekä tiedostoviittausten avulla on voitava yksiselitteisesti selvittää, mistä repositoriosta ja mistä muuttumattomasta revisiosta kukin tehtävän käsittelyssä käytetty tiedosto luettiin.
 - Instanssin on voitava käyttää nimenomaisesti valittua ja jäljitettävää ohjelmistoversiota.
 - Ohjelmistoversion julkaisu ei saa itsessään muuttaa instanssin käytössä olevaa versiota. Version päivittäminen edellyttää instanssin ylläpitäjän hallitsemaa muutosta.
 - Ensimmäisen version ei tarvitse tarjota keskitettyä monen instanssin palvelua tai monivuokraaja-arkkitehtuuria. Vaatimukset koskevat ohjelmiston ja yhden instanssin välistä selkeää erottelua.
@@ -435,6 +438,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.12.2 – 22.11.2026:** täsmennetty tehtävän jäljitettävyyttä erillisillä ohjelmisto- ja instanssidatan revisioilla sekä repositoriokohtaisilla tiedostoviittauksilla.
 - **0.12.1 – 22.11.2026:** täsmennetty Valvomon ja RSS-lukijan instanssikohtaisuus: käyttöliittymien yhteinen koodi kuuluu jaettavaan ohjelmistoon, mutta näkymät käyttävät vain oman instanssin tietoja. Hyväksytty molempien käyttöliittymien julkisuus ensimmäisessä versiossa ilman kirjautumista; julkisiin tietolähteisiin ei saa sisällyttää salaisuuksia tai yksityisiä tietoja.
 - **0.12.0 – 22.11.2026:** lisätty vaatimus jaettavan yhteisen ohjelmiston ja erillisten instanssikohtaisten tietojen erottelusta. Määritelty ohjelmiston riippumattomuus instanssin repositoriosta ja tiedostopoluista sekä instanssin ohjelmistoversion kiinnittäminen ja hallittu päivittäminen. Täsmennetty, ettei ohjelmiston julkinen jakelu edellytä instanssidatan julkisuutta eikä ensimmäinen versio vaadi monen instanssin palvelualustaa.
 - **0.11.0 – 21.11.2026:** päätetty julkaista myös `partial`-tilassa syntyvät validoidut raportit. Raportissa kuvataan avoimesti seurannan puutteet ja niiden syyt. Julkaistuja RSS-itemeitä ei päivitetä jälkikäteen; olennaiset täydennykset ja korjaukset julkaistaan uusina itemeinä, jotka viittaavat alkuperäiseen raporttiin. Raportintuottaja lukee aiemmat raportit ja välttää toiston ilman olennaista uutta tietoa.
