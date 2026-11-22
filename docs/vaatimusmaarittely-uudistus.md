@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.4  
+**Versio:** 0.12.5  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -155,7 +155,7 @@ Tämä on looginen prosessi. Tiedonsiirron tarkka tekninen mekanismi ja vastaano
 
 ### 6.1 Ajotietue ja tuottajan tulos
 
-Jokaisesta käynnistetystä ajosta ylläpidetään omaa ajotietuetta. Raporttituottajan toimittama tulos täydentää tätä tietuetta. Tuloksen vähimmäisosat ovat:
+Jokaisesta käynnistetystä ajosta vastaanottava järjestelmä ylläpitää kanonista ajotietuetta. Tuottajan toimittama tulos ja vastaanottajan kirjaamat ajonhallintatiedot ovat siinä käsitteellisesti erillisiä tietokokonaisuuksia. Tuottajan tulos täydentää ajotietuetta vain, jos tuottaja on toimittanut sen. Vastaanottajan on muodostettava ajotietue myös silloin, kun tuottajan toimitusta ei saada määräaikaan mennessä. Tällöin tuottajan tulosmetatietoja ei ole, eikä niitä saa päätellä tai esittää tuottajan ilmoittamina.
 
 - `schema_version`: pakollinen tietosopimuksen version tunniste;
 - `run_id`: pakollinen, ennen suoritusta muodostettu ajon yksilöllinen tunniste;
@@ -163,7 +163,7 @@ Jokaisesta käynnistetystä ajosta ylläpidetään omaa ajotietuetta. Raporttitu
 - `report_item`: valinnainen uusi RSS-item;
 - `producer`: valinnaiset tiedot raporttituottajasta, jos ne ovat saatavilla.
 
-Vastaanottava järjestelmä täydentää ajotietuetta vastaanotto-, validointi-, tallennus- ja julkaisutiloilla. Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja.
+Tuottajan toimittaman tuloksen yhteydessä vastaanottava järjestelmä kirjaa lisäksi omat vastaanotto-, validointi-, tallennus- ja julkaisutilansa. Jos tuottajan tulosta ei saada, vastaanottaja kirjaa vain oman ajonhallinnan tilan ja todennettavissa olevat tapahtumat, kuten määräajan umpeutumisen. Tuottajan tulostila (`success`, `partial`, `no_report` tai tuottajan ilmoittama `failed`) ja vastaanottajan ajon lopputila/käsittelytila eivät ole sama tietokenttä, vaikka ajon lopputila olisi molemmissa tapauksissa `failed`. Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja.
 
 Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
 
@@ -200,7 +200,7 @@ Ajotietojen tarkoitus on kuvata, mitä tapahtui ja millä tuloksella. Niihin ei 
 - `success`: tutkimus- ja raportointityö valmistui;
 - `partial`: työ valmistui osittain, ja rajoitteet on kuvattu;
 - `no_report`: työ valmistui, mutta uutta raportoitavaa ei löytynyt;
-- `failed`: tuottajan suoritus epäonnistui.
+- `failed`: tuottaja ilmoittaa oman suorituksensa epäonnistuneen. Tämä arvo kuvaa vain tuottajan toimittamaa tulosta; vastaanottaja voi kirjata ajon epäonnistuneeksi myös ilman tuottajan tulosta.
 
 `no_report` on onnistunut seuranta ilman RSS-itemiä, ei virhe.
 
@@ -247,6 +247,8 @@ Valvomon ensimmäisen version näkymät on kuvattu luvussa 3. Valvomon tietomall
 
 - Valvomo erottaa ajon onnistumisen, raportin syntymisen ja RSS-julkaisun onnistumisen toisistaan.
 - Puuttuva tieto esitetään tuntemattomana, ei onnistumisena tai epäonnistumisena.
+- Valvomo erottaa tuottajan ilmoittaman tulostilan vastaanottajan muodostamasta ajon lopputilasta ja käsittelytiloista. Näkymä ilmaisee, mistä tiedot ovat peräisin; jos tuottajan toimitusta ei ole, tuottajan tulostila esitetään puuttuvana/tuntemattomana eikä vastaanottajan `failed`-merkintää näytetä tuottajan tuloksena.
+- Vastaanottajan muodostama ajotietue ilman tuottajan toimitusta näkyy ajohistoriassa normaalina ajona, jonka tuottajan tulos puuttuu ja jonka vastaanottajan todentama lopputila ja syy näytetään erikseen.
 - Vanhentunutta tilaa ei esitetä ajantasaisena.
 - Käynnissä-tila näytetään vain, jos ajosta on tuore ja todennettava käynnissä-merkintä.
 - Osittainen lähdetarkistus ei muutu täydelliseksi vain siksi, että ajo tuotti raportin.
@@ -438,6 +440,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.12.5 – 22.11.2026:** erotettu tuottajan toimittama tulos vastaanottajan ylläpitämästä ajotietueesta ja ajonhallintatiedoista. Valvomon on ilmaistava tietojen alkuperä ja näytettävä tuottajan tulos puuttuvana, jos toimitusta ei saatu.
 - **0.12.4 – 22.11.2026:** hyväksytty ensimmäisen version sarjallinen tehtävänkäsittely: kerrallaan on enintään yksi aktiivinen tehtävä, seuraava käynnistyy vasta edellisen ratkettua, eikä eri aiheiden rinnakkaisuutta tai siihen liittyvää varaus-/lukitusmekanismia toteuteta.
 - **0.12.3 – 22.11.2026:** täsmennetty ajotietueen muodostamisen vastuunjakoa: vastaanottava järjestelmä muodostaa jokaisesta käynnistetystä ajosta tietueen myös silloin, kun tuottaja ei toimita tulosta määräaikaan mennessä. Tällöin vastaanottaja merkitsee tietueen `failed`-tilaiseksi ja kirjaa vain todennettavissa olevan epäonnistumisen syyn.
 - **0.12.2 – 22.11.2026:** täsmennetty tehtävän jäljitettävyyttä erillisillä ohjelmisto- ja instanssidatan revisioilla sekä repositoriokohtaisilla tiedostoviittauksilla.
