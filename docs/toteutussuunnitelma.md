@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.52  
+**Versio:** 0.3.53  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.11](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.12](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -110,9 +110,9 @@ Ensimmäisessä vaiheessa ei toteuteta erillistä raportintuottajakohtaista teht
 Tehtävän käsittelyn jumiutumista vastaan toteutetaan ensimmäiseen versioon rajattu palautumismekanismi:
 
 - Tehtäväpyynnöllä on määräaika. Jos raportintuottajan tulosta ei saavu määräaikaan mennessä, ajo käsitellään epäonnistuneena.
-- Toimituksen vastaanotto- tai käsittelyvirheen jälkeen sallitaan enintään kolme automaattista käsittely-yritystä.
+- Toimituksen vastaanotto- tai käsittelyvirheen jälkeen voidaan tehdä konfiguraation sallimia automaattisia käsittely- ja uudelleenyrityksiä. Yritysten määrä ja laskentatapa määritellään tehtävätyypin määrityksissä ja välitetään tehtäväpyynnön `resolved_config`-kentässä; niitä ei kovakoodata yhteiseen toteutukseen.
 - Kun yritykset on käytetty tai tehtävän määräaika umpeutuu, epäonnistuminen kirjataan kanoniseen ajohistoriaan ja jonotus etenee seuraavaan tehtävään. Yksittäinen epäonnistunut tehtävä ei saa estää muiden aiheiden käsittelyä. Määräajan umpeutuminen ei kuitenkaan yksin estä alkuperäisen ajon myöhäisen toimituksen jälkikäsittelyä kohdassa 2.3.2 määritellyin ehdoin.
-- Tehtävän määräajan ja uudelleenyritysten tarkan teknisen toteutuksen asetukset täsmennetään tehtävätyypin määrityksissä.
+- Tehtävän määräaika, uudelleenyritysten määrä ja muut vastaavat käsittelyrajat määritellään konfiguraatiossa. Tehtävätyypin määritys ja tarvittaessa profiilit tarjoavat arvot, jotka ratkaistaan tehtäväpyynnön `resolved_config`-kenttään. Raportintuottaja ja vastaanottava toteutus noudattavat näitä arvoja eivätkä käytä omia piilotettuja oletuksiaan.
 - Ensimmäisessä versiossa epäonnistuneiden tehtävien palautus myöhempään käsittelyyn on rajattu. Älykkäämpi uudelleenkäsittelylogiikka, kuten virheen syyn, aiempien yritysten ja sopivan odotusajan huomioiminen, kuuluu myöhempiin versioihin.
 - Tehtävän etenemisen erillistä tilatiedostoa ei lisätä. Tehtäväpyynnön korvaaminen seuraavalla ja ajohistoria muodostavat etenemisen lähteen; seuraava tehtävä muodostetaan vasta, kun nykyisen tehtävän käsittely on ratkaistu onnistuneesti tai se on päätetty epäonnistuneeksi palautumissääntöjen perusteella.
 - Kaikki samaan instanssiin kuuluvat tehtävänmuodostus-, määräajanvalvonta- ja toimituksen vastaanotto-/käsittelyajot on sarjallistettava yhteisen hallintamekanismin kautta. Mekanismin on estettävä samanaikaiset tai päällekkäiset käsittelyt, jotka voisivat muodostaa uuden tehtävän ennen edellisen tehtävän lopullista ratkaisua tai käsitellä kahta tehtävää aktiivisina. Pelkkä aktiivisen tehtäväpyynnön lukeminen ja tarkistaminen ei riitä, jos tarkistus ja sitä seuraava tilapäivitys eivät ole keskenään suojattuja.
@@ -594,6 +594,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.53 (22.11.2026):** määriteltiin käsittelyn valmistuminen ja aktiivisen tehtävän vapauttaminen. Tuottajan tulos, vastaanottajan käsittely ja ajon lopputila erotettiin. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat määriteltiin konfiguroitaviksi, eikä niitä kovakoodata.
 
 - **0.3.52 (22.11.2026):** hyväksyttiin tehtäväpyynnön täsmällinen ylätason rakenne ja kenttäkohtaiset tietovaatimukset. Täsmennettiin profiiliviittaukset objekteiksi, joissa ovat id, repository ja path, ohjeviittausten sallitut repositoriot, lowercase-commit-SHA-muoto sekä tuntemattomien ylimääräisten kenttien hylkääminen.
 
