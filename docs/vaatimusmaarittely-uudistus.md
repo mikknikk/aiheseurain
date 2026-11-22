@@ -91,7 +91,7 @@ Ensimmäisessä versiossa sekä Valvomo että RSS-lukija voivat olla julkisia. V
 - Aiheita ei luetella kiinteästi tässä yleisessä määrittelyssä.
 - Jokaisella aiheella on oma määritystiedosto.
 - Aihe voidaan ottaa käyttöön, poistaa käytöstä tai muuttaa määrityksellä ilman yleisen toimintamallin muuttamista.
-Aiheiden lähdeaineistojen hallintamalli määritellään erikseen; lähderekisteri pidetään rakenteisesti erillään asetuksista.
+- Aiheiden lähdeaineistojen hallintamalli määritellään erikseen; lähderekisteri pidetään rakenteisesti erillään asetuksista.
 - Uusi aihe ei saa vaatia koodimuutosta, jos sen tarpeet voidaan toteuttaa jo olemassa olevalla seurantatyypillä ja raporttipohjalla.
 
 ### 4.2 Määritysten tasot
