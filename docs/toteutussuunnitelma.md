@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.50  
+**Versio:** 0.3.51  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.7](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.10](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -400,11 +400,12 @@ Määräajan umpeuduttua vastaanottaja kirjaa ajon epäonnistuneeksi ja voi muod
 - Myöhäinen toimitus voidaan hyväksyä ja julkaista alkuperäisen ajon tuloksena vain, jos samaa aihetta ja seurantatyyppiä koskevaa myöhempää ajoa ei ole vielä käynnistetty ja kaikki normaalit hyväksymisehdot täyttyvät.
 - Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistynyt, myöhäistä toimitusta ei julkaista. Se voidaan säilyttää vastaanottoaineistona jäljitettävyyttä varten, mutta sitä ei saa liittää myöhemmän ajon tulokseen.
 - Myöhäinen toimitus ei saa muuttaa myöhemmän ajon tehtäväpyyntöä, tulosta, ajotietuetta, tilaa tai RSS-historiaa. Se ei myöskään poista aiempaa määräajan umpeutumisen tai vastaanottajan epäonnistumisen merkintää.
-- Määräajan umpeutuminen ja myöhäisen toimituksen saapuminen kirjataan vastaanottajan erillisinä tapahtumina. Valvomo voi näyttää alkuperäisen määräajan ylityksen sekä myöhemmän toimituksen vastaanotto- ja julkaisutilan erillisinä tietoina.
+- Määräajan umpeutuminen ja myöhäisen toimituksen saapuminen kirjataan vastaanottajan erillisinä, aikajärjestyksessä säilyvinä tapahtumina. Tapahtumaketjuun kirjataan lisäksi validoinnin aloitus ja tulos, toimituksen hyväksyminen tai hylkääminen sekä mahdollinen RSS-julkaisu tai julkaisun epäonnistuminen. Vain todennettavissa olevat tapahtumat kirjataan.
+- Käsittelyä ei tiivistetä yhdeksi yliajettavaksi `success`- tai `failed`-lopputilaksi, joka hävittäisi tapahtumahistorian. Valvomo näyttää alkuperäisen määräajan ylityksen sekä myöhäisen toimituksen vastaanoton, validoinnin, hyväksynnän/hylkäyksen ja julkaisun erillisinä tapahtumina. Ajantasainen käsittelytilanne voidaan johtaa tapahtumista, mutta aiemmat tapahtumat säilyvät muuttumattomina.
 - Jos vastaanottaja on jo muodostanut määräajan umpeutumisen vuoksi epäonnistumistietueen, myöhemmin hyväksytty `metadata.json` täydentää samaa kanonista ajotietuetta erillisenä tuottajan tuloksena. Se ei korvaa eikä kirjoita uudelleen vastaanottajan aiempia tietoja. Määräajan ylitys ja havainto siitä, ettei toimitusta saatu määräajassa, säilyvät muuttumattomina; tuottajan ilmoittama tulostila tallennetaan erikseen vain hyväksytystä toimituksesta.
 - Myöhäisen toimituksen vastaanotto, validointi ja julkaisu koordinoidaan yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta. Käsittely on idempotenttia: samaa toimitusta tai RSS-GUIDia ei käsitellä tai julkaista uudelleen.
 
-Myöhäisen toimituksen jälkikäsittely ei tarkoita yleistä epäonnistuneiden ajojen uudelleenavaamista tai uuden yrityksen käynnistämistä. Se käsittelee vain tuottajan alkuperäiselle ajolle toimittaman valmiin tuloksen. Tarkka tekninen toteutus ja ajotietueen tapahtumien tietomalli täsmennetään myöhemmin.
+Myöhäisen toimituksen jälkikäsittely ei tarkoita yleistä epäonnistuneiden ajojen uudelleenavaamista tai uuden yrityksen käynnistämistä. Se käsittelee vain tuottajan alkuperäiselle ajolle toimittaman valmiin tuloksen. Vastaanottajan käsittelyhistoria esitetään erillisinä, aikajärjestyksessä säilyvinä tapahtumina eikä yhtenä lopullisena tilana: määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä tai hylkäys sekä mahdollinen julkaisu tai julkaisun epäonnistuminen säilyvät erillisinä. Myöhempi tapahtuma ei ylikirjoita aiempaa tapahtumaa. Tapahtumien tarkka tekninen tietomalli täsmennetään myöhemmin.
 
 ### 2.4 RSS-itemien julkaiseminen ja korjauspäivitykset
 
@@ -557,6 +558,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.51 (22.11.2026):** hyväksyttiin myöhäisen toimituksen vastaanottokäsittelyn esittäminen erillisinä, aikajärjestyksessä säilyvinä tapahtumina. Tapahtumaketju kattaa määräajan ylityksen, myöhäisen vastaanoton, validoinnin, hyväksynnän/hylkäyksen ja mahdollisen julkaisun; aiempia tapahtumia ei ylikirjoiteta.
 
 - **0.3.50 (22.11.2026):** täsmennettiin myöhäisen hyväksytyn toimituksen suhde jo muodostettuun kanoniseen ajotietueeseen: toimitus täydentää tietuetta erillisenä tuottajan tuloksena eikä korvaa vastaanottajan aiempia määräajan ylityksen ja toimituksen puuttumisen havaintoja.
 
