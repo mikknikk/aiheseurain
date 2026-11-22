@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.53  
+**Versio:** 0.3.54  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.12](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.13](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -204,11 +204,13 @@ Sarjallinen käsittely on ensimmäisen version nimenomainen rajaus, ei oletus si
 
 ### 2.2.2 Tehtävätyypit, määritysprofiilit ja aihekohtaiset asetukset
 
-Määritykset jaetaan kolmeen tasoon, jotta samankaltaiset aiheet voivat käyttää yhteisiä asetuksia ja erilaiset tehtävät voivat silti noudattaa omia toimintamallejaan:
+Määritykset jaetaan kolmeen tasoon:
 
-1. **Tehtävätyyppi** määrittelee tehtäväluokan yhteisen toimintamallin ja oletusasetukset. Esimerkkejä ovat uutisraportti ja tapahtumavahti.
-2. **Määritysprofiilit** sisältävät uudelleenkäytettäviä, rajattuja asetuskokonaisuuksia. Yksi tehtävä voi käyttää useita yhteensopivia profiileja.
-3. **Aihekohtainen määritys** valitsee tehtävätyypin ja käytettävät profiilit sekä sisältää vain kyseisen aiheen erityisasetukset ja poikkeukset.
+1. **Tehtävätyypin määritys** sisältää tehtävätyypin tunnisteen ja kuvauksen, skeemaviittauksen, oletusasetukset, sallitut asetukset ja niiden ylikirjoitettavuuden sekä tehtävätyypin käsittely-, raportointi- ja toimitusvaatimukset.
+2. **Määritysprofiilit** ovat uudelleenkäytettäviä, itsenäisiä asetuskokonaisuuksia. Profiililla on tunniste, kuvaus ja asetukset. Yksi tehtävä voi käyttää useita profiileja, ja niiden järjestys on merkityksellinen.
+3. **Aihekohtainen määritys** sisältää aiheen tunnisteen ja kuvauksen, käytettävät tehtävätyypit, profiilit järjestyksessä, aihekohtaiset asetukset ja sallitut ylikirjoitukset sekä aikaväli- ja ajastustiedot. Aihekohtaisen lähderekisterin tiedot säilytetään erillisessä aihekohtaisessa lähderekisterissä eikä niitä yhdistetä tähän asetusten yhdistämismalliin.
+
+Tehtävätyypin määritys määrittelee, mitä asetuksia kyseinen tehtävätyyppi hyväksyy ja mitä niistä voidaan ylikirjoittaa. Profiilit eivät voi muuttaa järjestelmätason asetuksia tai lisätä tehtävätyypin skeemassa tuntemattomia asetuksia.
 
 Esimerkkihakemistorakenne:
 
@@ -242,13 +244,13 @@ Tehtävätyyppi sisältää yleiset, saman tehtäväluokan tehtäville kuuluvat 
 
 Yksi aihe voi käyttää useita profiileja. Esimerkiksi elokuvanäytösvahti voi yhdistää tapahtumavahdin yleiset oletukset, elokuvanäytösprofiilin ja intialaisen elokuvan profiilin. Konserttivahti voi käyttää tapahtumavahdin ja konserttiprofiilin lisäksi esimerkiksi klassisen musiikin profiilia. Ensimmäisessä versiossa profiilien välisiä riippuvuuksia, kieltoja tai erillistä yhteensopivuusmatriisia ei mallinneta. Profiileja voidaan yhdistää ilman, että niiden tarvitsee ilmoittaa yhteensopivuuttaan keskenään.
 
-Ensimmäisessä versiossa profiilit ovat itsenäisiä määrityksiä: profiili ei peri toista profiilia eikä muodostu mielivaltaiseksi periytymisketjuksi. Tämä pitää yhdistämisen ennustettavana. Profiilien keskinäinen järjestys ilmoitetaan aihekohtaisessa määrityksessä ja ratkaisee mahdolliset päällekkäiset asetukset.
+Ensimmäisessä versiossa profiilit ovat itsenäisiä määrityksiä: profiili ei peri toista profiilia eikä muodosta rekursiivista riippuvuusketjua. Tämä pitää yhdistämisen ennustettavana. Profiilien keskinäinen järjestys ilmoitetaan aihekohtaisessa määrityksessä ja ratkaisee mahdolliset päällekkäiset asetukset.
 
 Asetukset ratkaistaan seuraavassa järjestyksessä:
 
-1. tehtävätyypin oletukset;
-2. aihekohtaisessa määrityksessä ilmoitetut profiilit annetussa järjestyksessä;
-3. aihekohtaiset ylikirjoitukset.
+1. tehtävätyypin oletusasetukset;
+2. aihekohtaisessa määrityksessä ilmoitetut profiilit täsmälleen annetussa järjestyksessä;
+3. aihekohtaiset asetukset.
 
 Yhdistämissäännöt:
 
@@ -256,14 +258,26 @@ Yhdistämissäännöt:
 - Myöhempi arvo korvaa aiemman saman asetuksen arvon.
 - Taulukot korvataan kokonaan; niitä ei yhdistetä automaattisesti.
 - Puuttuva asetus periytyy aiemmalta tasolta.
+- `null`-arvolle ei ole yleistä periytymis- tai poistamismerkitystä; merkitys määritellään asetuksen skeemassa.
 - Tuntemattomat avaimet ja väärän tyyppiset arvot hylätään skeemavalidoinnissa.
-- Profiilien omat rakenteet validoidaan niiden skeemoja vasten ja ratkaistu konfiguraatio tehtävätyypin skeemaa vasten. Näin tarkistetaan, että lopullinen asetuskokonaisuus sopii tehtävätyypin määrittelemään rakenteeseen.
-- Ylikirjoituksia saa tehdä vain skeemassa sallituissa asetuskohdissa.
-- Ensimmäisessä versiossa ei toteuteta yleistä semanttisten ristiriitojen tunnistusta profiilien välillä. Tarvittaessa tällaisia tarkistuksia voidaan lisätä myöhemmin konkreettisen käyttötarpeen perusteella.
+- Tehtävätyypin, profiilien ja aihekohtaisten määritysten rakenteet validoidaan kukin omia skeemojaan vasten. Lopullinen yhdistetty `resolved_config` validoidaan tehtävätyypin skeemaa vasten.
+- Ylikirjoituksia saa tehdä vain tehtävätyypin skeemassa erikseen sallituissa asetuskohdissa.
+- Suojattuja asetuksia ei voi ylikirjoittaa. Niihin kuuluvat yleinen `timezone`, tehtävän tunnisteet (`topic_id`, `task_type`, `run_id`), revisiotunnisteet sekä tehtäväpyynnön rakenteelliset ja tietosopimuksen vaatimukset.
+- Ensimmäisessä versiossa tehdään vain määritysten välttämättömät yhteensopivuus- ja ristiriitatarkistukset. Yleistä dynaamista sääntömoottoria tai käyttäjän määrittelemiä yhdistämisfunktioita ei toteuteta.
 
-GitHub Actions ratkaisee asetukset ennen tehtävän tarjoamista. Raportintuottajalle annetaan valmis, muuttumaton konfiguraatiokokonaisuus osana tehtäväpyyntöä; raportintuottajan ei tarvitse toteuttaa periytymis- tai yhdistelylogiikkaa. Tehtäväpyyntöön tallennetaan myös käytettyjen määritysten versiot tai Git-commit-viite, jotta ajon asetukset voidaan jäljittää ja tarvittaessa rekonstruoida.
+Oletusarvot määritellään tehtävätyypin määrityksessä, eivät skeeman automaattisesti soveltamina arvoina. Skeema määrittelee rakenteen, tietotyypit, pakollisuuden, rajat ja sallitut ylikirjoitukset. Jos pakolliselle asetukselle ei ole tehtävätyypin oletusarvoa, se on annettava profiilissa tai aihekohtaisessa määrityksessä. Puuttuva pakollinen arvo estää tehtäväpyynnön muodostamisen. `null` hyväksytään vain, jos kyseisen asetuksen skeema sallii sen ja määrittelee sen merkityksen.
 
-Tehtävätyyppien, profiilien ja aihekohtaisten määritysten JSON Schema -skeemat validoivat rakenteet ja sallitut ylikirjoitukset. Markdown-ohjeet versioidaan Gitissä ja niihin viitataan tehtäväpyynnöstä.
+Määritykset validoidaan sekä yksittäin että yhdistettynä. Tarkistuksiin kuuluvat rakenteen ja tietotyyppien lisäksi tunnisteiden syntaksi, sallitut rajat, ylikirjoitettavuus, tehtävätyypin ja profiilien soveltuvuus sekä pakollisten arvojen läsnäolo. Ensimmäisessä versiossa ei rakenneta yleistä profiilien yhteensopivuusmatriisia tai automaattista ristiriitojen korjausta.
+
+Yleinen aikavyöhyke on järjestelmätason asetus. Se sisältyy aina tehtäväpyynnön `resolved_config.timezone`-kenttään, mutta profiilit tai aihekohtaiset määritykset eivät voi ylikirjoittaa sitä. Samoin tehtävän tunnisteita, revisioita tai tietosopimuksen rakenteellisia vaatimuksia ei voi muuttaa määritystasoilla.
+
+Määritykset luetaan niissä ilmoitetuista muuttumattomista Git-commit-revisioista. Kukin määritys validoidaan erikseen, asetukset yhdistetään sovitussa järjestyksessä ja lopullinen kokonaisuus validoidaan vielä tehtävätyypin skeemaa vasten. Vasta onnistuneen validoinnin jälkeen GitHub Actions tallentaa valmiin konfiguraation tehtäväpyynnön `resolved_config`-kenttään.
+
+`resolved_config` on ajokohtainen, muuttumaton snapshot kaikista suorituksen asetuksista. Se sisältää aina yleisen `timezone`-asetuksen. Raportintuottaja käyttää ainoastaan tätä valmista kokonaisuutta eikä hae määrityksiä uudelleen tai toteuta omaa yhdistämislogiikkaa. Käytettyjen määritysten Git-revisiot säilyttävät jäljitettävyyden ja mahdollistavat konfiguraation rekonstruoinnin.
+
+Jos jokin määritys on virheellinen, ristiriitainen tai siitä puuttuu pakollinen arvo, tehtäväpyyntöä ei muodosteta. Virhe kirjataan syineen ja sijaintitietoineen. Aiemmin aktiivista tehtävää ei korvata, jono ei jää epäselvään tilaan eikä järjestelmä tee automaattisia korjauksia, päättele puuttuvia arvoja tai muodosta osittaista `resolved_config`-kokoonpanoa.
+
+Tehtävätyyppien, profiilien ja aihekohtaisten määritysten omat JSON Schema -skeemat validoivat niiden rakenteet. Tehtävätyypin skeema määrittelee lisäksi lopullisen `resolved_config`-rakenteen ja sallitut ylikirjoitukset. Markdown-ohjeet versioidaan Gitissä ja niihin viitataan tehtäväpyynnöstä.
 
 Tehtäväpyynnön Markdown-ohjeviittaukset kootaan `instructions`-taulukkoon. Jokainen viittaus yksilöi myös repositorion, josta ohje luetaan: ohjelmistorepon yleiset ohjeet sidotaan `software_revision`-tunnisteeseen ja instanssirepon aihe- ja profiilikohtaiset ohjeet `instance_revision`-tunnisteeseen. Taulukko sisältää eksplisiittisen luettelon kaikista kyseisen tehtävän käsittelyssä pakollisesti luettavista ohjeista. Jokaisella käytettävällä profiililla on oma Markdown-ohjetiedostonsa JSON-määrityksen lisäksi. Profiilin Markdown-ohjeen lukeminen on pakollista aina, kun profiilia käytetään.
 
@@ -592,7 +606,7 @@ Tässä osiossa pidetään kirjaa asioista, jotka on tietoisesti rajattu ensimm�
 | RSS-historian lukemisen optimointi, kuten indeksointi, hakupalvelu tai tiivistelmä-/välimuistiratkaisu | Ensimmäisessä versiossa raportintuottaja lukee koko kyseisen aiheen ja tehtävätyypin RSS-historian suoraan GitHubista. Erillistä hakukerrosta ei tarvita ennen kuin historian koko tai lukemisen kustannus aiheuttaa todellisen ongelman. | Kun RSS-historian koko, käsittelyaika tai raportintuottajan käytettävissä oleva konteksti tekee koko historian lukemisesta epäkäytännöllistä. Alkuperäinen RSS-historia säilyy tällöinkin vertailun lähteenä. |
 | Useat samanaikaiset raportintuottajat, tehtävien varaukset ja rinnakkaisuuden hallinta | Ensimmäisessä versiossa on yksi raportintuottaja ja tehtävät käsitellään sarjallisesti. | Kun käyttöön tulee toinen raportintuottaja tai rinnakkaisille ajoille syntyy todellinen tarve. |
 | Erillinen GitHub App tai raportintuottajan teknisesti rajatut kirjoitusoikeudet | Ensimmäinen versio käyttää nykyistä GitHub App -yhteyttä; erillistä käyttöoikeusjärjestelyä ei rakenneta ennakolta. | Kun raportintuottajia tai muita integraatioita tulee lisää tai käyttöoikeuksien eriyttäminen muuttuu tarpeelliseksi. |
-| Älykkäämpi epäonnistuneiden tehtävien palautuslogiikka | Ensimmäisessä versiossa käytetään rajattua automaattisten käsittely-yritysten määrää ja määräaikaa. | Kun käytännön ajohistoria osoittaa, että yksinkertainen palautusmalli ei riitä. |
+| Älykkäämpi epäonnistuneiden tehtävien palautuslogiikka | Ensimmäisessä versiossa käytettävien automaattisten käsittely-yritysten määrät, laskentatavat ja määräajat ovat tehtävätyypin määrityksissä ja tarvittaessa profiileissa määritettäviä konfiguroitavia arvoja; niitä ei kovakoodata. | Kun käytännön ajohistoria osoittaa, että yksinkertainen palautusmalli ei riitä. |
 | Ulkoiset ilmoitukset | Ne eivät ole välttämättömiä ensimmäisen version seuranta-, vastaanotto- ja julkaisuketjulle. | Kun ilmoituksille määritellään konkreettinen käyttäjätarve ja kanava. |
 | Toimitusten kryptografiset allekirjoitukset ja erilliset tarkistussummat | Ensimmäiseen versioon riittävät toimituspaketin tiedostojen, rakenteen, tunnisteiden ja aktiiviseen tehtävään kuulumisen tarkistukset. | Jos uhkamalli tai toimituskanavan luonne osoittaa vahvemman eheyden todentamisen tarpeelliseksi. |
 | Batch-ajot eli usean aiheen käsittely yhdellä käynnistyksellä | Ensimmäisen version yksinkertainen toimintamalli käsittelee enintään yhden aiheen yhdellä käynnistyksellä. | Jos yhden aiheen ajomalli osoittautuu käytännössä rajoittavaksi ja batch-ajolle on selkeä tarve. |
@@ -615,7 +629,7 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
 ### Versiohistoria
 
-- **0.3.53 (22.11.2026):** määriteltiin käsittelyn valmistuminen ja aktiivisen tehtävän vapauttaminen. Tuottajan tulos, vastaanottajan käsittely ja ajon lopputila erotettiin. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat määriteltiin konfiguroitaviksi, eikä niitä kovakoodata.
+- **0.3.54 (22.11.2026):** määriteltiin kolmitasoinen määritysmalli ja sen yhdistämisjärjestys, suojatut asetukset, erillinen skeema- ja oletusarvovastuu, yksittäisten ja yhdistettyjen määritysten validointi sekä muuttumaton `resolved_config`-snapshot. Täsmennettiin virheellisten määritysten käsittely ja rajattiin rekursiiviset profiiliriippuvuudet sekä dynaamiset yhdistämismekanismit pois.\n\n- **0.3.53 (22.11.2026):** määriteltiin käsittelyn valmistuminen ja aktiivisen tehtävän vapauttaminen. Tuottajan tulos, vastaanottajan käsittely ja ajon lopputila erotettiin. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat määriteltiin konfiguroitaviksi, eikä niitä kovakoodata.
 
 - **0.3.52 (22.11.2026):** hyväksyttiin tehtäväpyynnön täsmällinen ylätason rakenne ja kenttäkohtaiset tietovaatimukset. Täsmennettiin profiiliviittaukset objekteiksi, joissa ovat id, repository ja path, ohjeviittausten sallitut repositoriot, lowercase-commit-SHA-muoto sekä tuntemattomien ylimääräisten kenttien hylkääminen.
 
