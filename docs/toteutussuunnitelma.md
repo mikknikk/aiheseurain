@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.44  
+**Versio:** 0.3.45  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.5](vaatimusmaarittely-uudistus.md)
@@ -493,7 +493,7 @@ Nämä ovat tavoitetilan päätöksiä, eivät vielä toteutettuja käytäntöj�
 
 1. Nykyisen toteutuksen ja arkiston komponenttikohtainen inventaario.
 2. Tehtävätyyppien, määritysprofiilien ja aihekohtaisten määritysten sekä toimitussopimuksen skeemojen määrittely.
-3. Ajonhallinta: yhden aiheen valinta, `run_id`, ajotietue ja aihekohtainen päällekkäisyyksien esto.
+3. Ajonhallinta: yhden aiheen valinta, `run_id`, ajotietue ja koko instanssin kattava sarjallisen käsittelyn suoja, joka sallii vain yhden aktiivisen raportointitehtävän kerrallaan.
 4. Vastaanottohaara ja Git push -toimituspaketin käsittely.
 5. Validointi, kanoninen ajohistoria ja idempotentti RSS-julkaisu.
 6. Valvomon kolme näkymää ja niiden tietolähteet.
