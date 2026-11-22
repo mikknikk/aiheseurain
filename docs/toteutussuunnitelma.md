@@ -208,7 +208,7 @@ Määritykset jaetaan kolmeen tasoon:
 
 1. **Tehtävätyypin määritys** sisältää tehtävätyypin tunnisteen ja kuvauksen, skeemaviittauksen, oletusasetukset, sallitut asetukset ja niiden ylikirjoitettavuuden sekä tehtävätyypin käsittely-, raportointi- ja toimitusvaatimukset.
 2. **Määritysprofiilit** ovat uudelleenkäytettäviä, itsenäisiä asetuskokonaisuuksia. Profiililla on tunniste, kuvaus ja asetukset. Yksi tehtävä voi käyttää useita profiileja, ja niiden järjestys on merkityksellinen.
-3. **Aihekohtainen määritys** sisältää aiheen tunnisteen ja kuvauksen, käytettävät tehtävätyypit, profiilit järjestyksessä, aihekohtaiset asetukset ja sallitut ylikirjoitukset sekä aikaväli- ja ajastustiedot. Aihekohtaisen lähderekisterin tiedot säilytetään erillisessä aihekohtaisessa lähderekisterissä eikä niitä yhdistetä tähän asetusten yhdistämismalliin.
+3. **Aihekohtainen määritys** sisältää aiheen tunnisteen ja kuvauksen, käytettävän tehtävätyypin, profiilit järjestyksessä, aihekohtaiset asetukset ja sallitut ylikirjoitukset sekä aikaväli- ja ajastustiedot. Aihekohtaisen lähderekisterin tiedot säilytetään erillisessä aihekohtaisessa lähderekisterissä eikä niitä yhdistetä tähän asetusten yhdistämismalliin.
 
 Tehtävätyypin määritys määrittelee, mitä asetuksia kyseinen tehtävätyyppi hyväksyy ja mitä niistä voidaan ylikirjoittaa. Profiilit eivät voi muuttaa järjestelmätason asetuksia tai lisätä tehtävätyypin skeemassa tuntemattomia asetuksia.
 
