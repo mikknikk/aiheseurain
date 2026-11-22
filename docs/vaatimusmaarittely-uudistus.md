@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.17  
+**Versio:** 0.12.18  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -132,7 +132,7 @@ Määritysten rakenteet validoidaan JSON Schema Draft 2020-12 -standardin mukais
 
 Ensimmäisessä versiossa määritysprofiili sidotaan yhteen tehtävätyyppiin. Profiilia voidaan käyttää useassa saman tehtävätyypin aiheessa, mutta sitä ei voi käyttää toisen tehtävätyypin yhteydessä. Tehtävätyypin määritys yksilöi asetusskeeman, oletukset, sallitut asetukset, ylikirjoitettavat asetuskohdat sekä käsittely-, raportointi- ja ohjevaatimukset.
 
-Tehtäväpyynnön `inputs`-taulukko sisältää rakenteisten syöteaineistojen viittaukset. Jokainen viittaus yksilöi aineiston tunnisteen, tyypin, repositorion ja polun. Ensimmäisessä versiossa yhteinen lähderekisteri on tällainen erillinen aineisto (`kind: source_registry`), joka luetaan instanssirepositoriosta tehtäväpyynnön `instance_revision`-revisiosta. Lähteen pysyvät perustiedot, kuten nimi, URL, julkaisija, lähdetyyppi, kielet, alueet, tekninen saavutettavuus ja toimituksellinen luotettavuus, ylläpidetään rekisterissä vain kerran. Sama lähdetunniste voi esiintyä useiden aiheiden ja tehtävätyyppien lähdemäärityksissä. Lähteen käyttöä koskevat tiedot, kuten käytössäolo, tärkeys ja erityiset seurantahuomiot, määritellään tehtävätyypin oletuslähteissä tai aiheen ja tehtävätyypin yhdistelmäkohtaisessa määrityksessä. Tekninen saavutettavuus ja toimituksellinen luotettavuus ovat yhteisiä lähteen ominaisuuksia; lähteen tärkeys ja käyttötarkoitus voivat vaihdella tehtäväyhdistelmittäin.
+Tehtäväpyynnön `inputs`-taulukko sisältää rakenteisten syöteaineistojen viittaukset. Jokainen viittaus yksilöi aineiston tunnisteen, tyypin, repositorion ja polun. Ensimmäisessä versiossa yhteinen lähderekisteri on tällainen erillinen aineisto (`kind: source_registry`), joka luetaan instanssirepositoriosta tehtäväpyynnön `instance_revision`-revisiosta. Lähteen pysyvät perustiedot, kuten nimi, julkaisija, lähdetyyppi, kielet, alueet, tekninen saavutettavuus ja toimituksellinen luotettavuus, ylläpidetään rekisterissä vain kerran. Lähteellä voi olla useita erillisiä sisältökanavia, joilla kullakin on oma vakaa tunniste ja osoite. Kanavat liittyvät samaan lähteeseen ja julkaisijaan, mutta ne voidaan valita ja arvioida tehtäväkohtaisesti erikseen. Näin esimerkiksi saman uutismedian uutis-, elokuva- ja tapahtumasisällöt voidaan käsitellä erillisinä kanavina ilman, että julkaisijan perustiedot kahdennetaan. Sama lähde ja sen kanavat voivat esiintyä useiden aiheiden ja tehtävätyyppien lähdemäärityksissä. Lähteen tai kanavan käyttöä koskevat tiedot, kuten käytössäolo, tärkeys ja erityiset seurantahuomiot, määritellään tehtävätyypin oletuslähteissä tai aiheen ja tehtävätyypin yhdistelmäkohtaisessa määrityksessä. Tekninen saavutettavuus ja toimituksellinen luotettavuus ovat yhteisiä lähteen ominaisuuksia; kanavan osoite ja sisältöalue yksilöivät tarkemman sisältövirran, ja tärkeys sekä käyttötarkoitus voivat vaihdella tehtäväyhdistelmittäin.
 
 Markdown-ohjeita ei validoida JSON Scheman avulla. Niiden tarkistuksiin kuuluvat yksilöllinen ohjetunniste, tiedoston olemassaolo oikeassa repositoriossa ja kiinnitetyssä commitissa, repositoriojuureen suhteutettu turvallinen polku, ohjeiden oikea järjestys ja duplikaattien puuttuminen. Ohjeiden sisällön tulee olla ristiriidaton koneellisten määritysten kanssa. Ohjeiden metatietoa ei kahdenneta Markdown-etusivulla, vaan se pidetään JSON-määrityksissä ja tehtäväpyynnön viittauksissa.
 
@@ -547,6 +547,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.18 – 22.11.2026:** täsmennettiin, että yhteinen lähderekisteri tukee saman lähteen erillisiä sisältökanavia omine vakaine tunnisteineen ja osoitteineen. Kanavat liittyvät samaan lähteeseen, mutta ne voidaan valita ja arvioida tehtäväkohtaisesti erikseen.
 - **0.12.17 – 22.11.2026:** hyväksyttiin yhteinen lähderekisteri sekä tehtävätyypin oletuslähteiden ja aiheen sekä tehtävätyypin yhdistelmäkohtaisten lähdemääritysten malli. Aihekohtainen määritys voi periä, täydentää tai korvata oletuslähdelistan; tehtävätyypin pakolliset lähteet säilyvät korvaamisesta huolimatta.
 
 - **0.12.16 – 22.11.2026:** hyväksyttiin määritysten ja toimituksen JSON Schema Draft 2020-12 -skeemakokonaisuuden periaatteet, tehtävätyyppikohtaiset asetusskeemat, tehtävätyyppiin sidotut profiilit, Markdown-ohjeiden erillinen validointi sekä tehtäväpyynnön rakenteisten aineistojen `inputs`-viittaukset. Lähderekisterin aihekohtainen rajaus jätettiin erikseen keskusteltavaksi.
