@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.40  
+**Versio:** 0.3.41  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.2](vaatimusmaarittely-uudistus.md)
@@ -59,7 +59,7 @@ Tehtävän jäljitettävyys perustuu kahteen erilliseen revisioon:
 - `software_revision` yksilöi ohjelmistorepon muuttumattoman Git-commitin, jonka ohjelmistokoodia, yhteisiä skeemoja ja ohjelmiston yleisiä ohjeita tehtävän käsittelyssä käytetään.
 - `instance_revision` yksilöi instanssirepon muuttumattoman Git-commitin, jonka aihe-, tehtävä-, profiili-, lähderekisteri- ja instanssikohtaisia ohjemäärityksiä sekä RSS-historian lähtötilaa tehtävässä käytetään.
 
-Näitä tunnisteita ei yhdistetä yhdeksi `source_revision`-kentäksi: ohjelmiston ja instanssin muutokset ovat toisistaan riippumattomia. Tehtäväpyynnön täsmälliset kentät ja niiden validointisäännöt määritellään toimitussopimuksessa. Kaikki tehtävässä luettavat tiedostot yksilöidään repositoriokohtaisesti ja haetaan kyseisen repositorion ilmoitetusta muuttumattomasta revisiosta. Viittauksen polku ei yksin määritä repositoriota.
+Näitä tunnisteita ei yhdistetä yhdeksi `instance_revision`-kentäksi: ohjelmiston ja instanssin muutokset ovat toisistaan riippumattomia. Tehtäväpyynnön täsmälliset kentät ja niiden validointisäännöt määritellään toimitussopimuksessa. Kaikki tehtävässä luettavat tiedostot yksilöidään repositoriokohtaisesti ja haetaan kyseisen repositorion ilmoitetusta muuttumattomasta revisiosta. Viittauksen polku ei yksin määritä repositoriota.
 
 Aiheseuraimelle määritellään yksi yleinen `timezone`-asetus, jonka oletusarvo on `Europe/Helsinki`. Asetuksen arvo on IANA-aikavyöhyketunniste. Sitä käytetään kaikissa Aiheseuraimen muodostamissa aikaleimoissa, seuranta-aikaväleissä ja käyttäjälle näytettävissä ajoissa. Lähteelle mahdollisesti määritelty oma aikavyöhyke vaikuttaa vain ilman aikavyöhyketietoa olevan lähdeaineiston ajan tulkintaan; se ei muuta Aiheseuraimen yleistä aikavyöhykettä eikä sen muodostamien aikaleimojen esitystapaa. Aikaleimat esitetään ISO 8601 -muodossa paikallisena päivänä ja kellonaikana sekä aina mukana olevalla numeerisella UTC-offsetilla: `YYYY-MM-DDTHH:mm:ss±HH:mm` (esimerkiksi `2026-11-22T18:30:00+02:00`). Offsetin on vastattava asetetun IANA-aikavyöhykkeen sääntöjä kyseisenä hetkenä; `Z`-merkintää tai aikavyöhykkeettömiä arvoja ei käytetä. Sekunnit ovat pakollisia, eikä desimaaliosia hyväksytä. Arvon on vastattava todellista kalenteripäivää, kellonaikaa ja aikavyöhykkeen offsetia; virheellisiä arvoja ei normalisoida. Aikaleimoja verrataan ja järjestetään niiden yksiselitteisten ajanhetkien perusteella. Kesä- ja talviajan muutokset määräytyvät IANA-aikavyöhyketietojen mukaan.
 
@@ -100,7 +100,7 @@ Asetukset yhdistetään tässä järjestyksessä: tehtävätyypin oletukset, pro
 - Oletusarvot määritellään tehtävätyypin tai profiilien alkuperäisissä määrityksissä.
 - Sisältö käyttää tavallisia JSON-tietotyyppejä. Tietotyypit, pakollisuus ja arvorajat määritellään tehtävätyypin JSON Schemassa.
 - Raportintuottaja ei täydennä puuttuvia asetuksia omilla oletuksillaan.
-- Tehtävätyyppi määrittää käytettävän skeeman. Skeema haetaan samasta `source_revision`-commitista; `resolved_config`-objektiin ei lisätä erillistä skeemaversiota.
+- Tehtävätyyppi määrittää käytettävän skeeman. Yhteinen skeema haetaan ohjelmistorepon `software_revision`-commitista; `resolved_config`-objektiin ei lisätä erillistä skeemaversiota.
 - Ensimmäisessä versiossa järjestelmä ei käsittele salaisia tietoja. Tehtäväpyyntöön ei sisällytetä salasanoja, API-avaimia, käyttöoikeustunnisteita eikä yksityisiä tietoja.
 - `resolved_config`-kentälle ei aseteta erillistä keinotekoista kokorajaa. Siihen ei kuitenkaan kopioida Markdown-ohjeita, lähderekistereitä tai raporttihistoriaa; laajoihin aineistoihin viitataan tarvittaessa tunnisteilla tai poluilla.
 
@@ -272,7 +272,7 @@ Pakolliset perustiedot:
 - `run_id`: yksittäisen ajon yksilöllinen tunniste;
 - `topic_id`: seurattavan aiheen tunniste;
 - `task_type`: käytetyn tehtävätyypin tunniste;
-- `source_revision`: täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`, `A–F`). Tunnisteen on viitattava tässä repositoriossa olemassa olevaan commitiin. Sen osoittaman commitin määrityksiä ja Markdown-ohjeita käytetään tehtävän käsittelyssä; arvoa ei normalisoida eikä korvata haaraviittauksella;
+- `software_revision` ja `instance_revision`: kumpikin täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`, `A–F`). Ensimmäinen viittaa ohjelmistorepossa ja toinen instanssirepossa olevaan commitiin. Niiden osoittamat sisällöt yksilöivät ajossa käytetyn ohjelmiston ja instanssidatan; arvoja ei normalisoida eikä korvata haaraviittauksilla;
 - `period`: toteutuneen ajon seuranta-aikavälin kuvaava objekti, joka sisältää `from`-, `to`- ja `cutoff_at`-kentät. Tämä on toimituksen metatietorakenne, ei tehtäväpyynnön `period`-objekti: tehtäväpyynnössä `period` sisältää vain `from`- ja `to`-kentät. Aikavyöhyke määräytyy tehtäväpyynnön `resolved_config.timezone`-kentästä, eikä sitä kopioida metatietojen `period`-objektiin;
 - `profiles`: käytettyjen määritysprofiilien tunnisteet taulukkona;
 - `sources`: ajossa tarkistettujen lähteiden tiedot taulukkona;
@@ -288,7 +288,7 @@ Metatietojen aikaleimojen validointisäännöt:
 - Jokaisen aikaleiman numeerisen UTC-offsetin on vastattava tehtäväpyynnön `resolved_config.timezone`-asetuksen IANA-sääntöjä kyseisenä ajanhetkenä. Pelkkä kelvollinen ISO 8601 -muoto ei riitä, jos offset ei vastaa kyseistä aikavyöhykettä.
 - `period.from` ja `period.to` vastaavat tehtäväpyynnön saman nimisiä arvoja täsmälleen; `period.to` säilyy myös `null`-arvona, jos tehtäväpyynnössä se on `null`.
 - `period.cutoff_at` ei saa olla ajallisesti aikaisempi kuin `period.from`.
-- Jokaisen `sources`-taulukon `source_id`-arvon on viitattava lähderekisterissä olevaan lähteeseen siinä määritysversiossa, jonka `source_revision` yksilöi.
+- Jokaisen `sources`-taulukon `source_id`-arvon on viitattava lähderekisterissä olevaan lähteeseen siinä määritysversiossa, jonka `instance_revision` yksilöi.
 
 Aikaleimojen vertailu tehdään niiden yksiselitteisten ajanhetkien perusteella, ei paikallisten kellonaikamerkkijonojen aakkosjärjestyksessä.
 
@@ -299,14 +299,14 @@ Tehtäväpyynnön ja toimitusmetatietojen vastaavuus tarkistetaan seuraavasti:
 | `run_id` | `run_id` | Täsmälleen sama |
 | `topic_id` | `topic_id` | Täsmälleen sama |
 | `task_type` | `task_type` | Täsmälleen sama |
-| `software_revision` | Ei toimitusmetatiedoissa | Tehtäväpyynnön ohjelmistorevisio säilyy ajon jäljitettävyystiedoissa. |
-| `instance_revision` | Ei toimitusmetatiedoissa | Tehtäväpyynnön instanssidatan revisio säilyy ajon jäljitettävyystiedoissa. |
+| `software_revision` | `software_revision` | Täsmälleen sama commit-SHA |
+| `instance_revision` | `instance_revision` | Täsmälleen sama commit-SHA |
 | `profiles` | `profiles` | Samat tunnisteet samassa järjestyksessä |
 | `period.from` | `period.from` | Täsmälleen sama |
 | `period.to` | `period.to` | Täsmälleen sama, myös `null`-arvo |
 | `resolved_config.timezone` | Ei vastaavaa kenttää | Asetusta ei kopioida toimitukseen; sitä käytetään metatietojen aikaleimojen ja offsetien validointiin |
 
-`metadata.period.cutoff_at` on raportintuottajan ilmoittama toteutunut seurannan päättymishetki. Se ei korvaa tehtäväpyynnön `period.to`-arvoa. Tehtäväpyynnön `issued_at`-, `deadline_at`-, `history`-, `instructions`- ja `resolved_config`-kenttiä ei kopioida toimitusmetatietoihin. Tehtäväpyyntö ja toimitusmetatiedot versioidaan erikseen omilla `schema_version`-kentillään. Lähteen alkuperäinen aikaleima, mahdollinen alkuperäinen offset/aikavyöhyke sekä tulkinnassa käytetyn aikavyöhykkeen alkuperä voidaan säilyttää lähdekohtaisessa tiedossa jäljitettävyyttä varten. Lähderekisterin aikavyöhykemääritys on valinnainen; sen puuttuminen ei oikeuta arvaamaan aikavyöhykettä. Lähteiden ajat muunnetaan Aiheseuraimen yleiseen aikavyöhykkeeseen raporteissa ja käyttöliittymässä.
+`metadata.period.cutoff_at` on raportintuottajan ilmoittama toteutunut seurannan päättymishetki. Se ei korvaa tehtäväpyynnön `period.to`-arvoa. Tehtäväpyynnön `issued_at`-, `deadline_at`-, `history`-, `instructions`- ja `resolved_config`-kenttiä ei kopioida toimitusmetatietoihin. Sekä `software_revision` että `instance_revision` tallennetaan toimitusmetatietoihin ajon jäljitettävyyttä varten. Tehtäväpyyntö ja toimitusmetatiedot versioidaan erikseen omilla `schema_version`-kentillään. Lähteen alkuperäinen aikaleima, mahdollinen alkuperäinen offset/aikavyöhyke sekä tulkinnassa käytetyn aikavyöhykkeen alkuperä voidaan säilyttää lähdekohtaisessa tiedossa jäljitettävyyttä varten. Lähderekisterin aikavyöhykemääritys on valinnainen; sen puuttuminen ei oikeuta arvaamaan aikavyöhykettä. Lähteiden ajat muunnetaan Aiheseuraimen yleiseen aikavyöhykkeeseen raporteissa ja käyttöliittymässä.
 
 `profiles` sisältää ajossa käytettyjen profiilien tunnisteet samassa järjestyksessä kuin ne yhdistettiin konfiguraatioon. Taulukko voi olla tyhjä, jos aihe ei käytä profiileja. Profiilien sisältöä tai erillisiä versiotunnisteita ei kopioida metatietoihin: `instance_revision` yksilöi käytetyn instanssidatan revision.
 
