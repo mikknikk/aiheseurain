@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.45  
+**Versio:** 0.3.46  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.5](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.6](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -57,9 +57,9 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 Tehtävän jäljitettävyys perustuu kahteen erilliseen revisioon:
 
 - `software_revision` yksilöi ohjelmistorepon muuttumattoman Git-commitin, jonka ohjelmistokoodia, yhteisiä skeemoja ja ohjelmiston yleisiä ohjeita tehtävän käsittelyssä käytetään.
-- `instance_revision` yksilöi instanssirepon muuttumattoman Git-commitin, jonka aihe-, tehtävä-, profiili-, lähderekisteri- ja instanssikohtaisia ohjemäärityksiä sekä RSS-historian lähtötilaa tehtävässä käytetään.
+- `instance_revision` yksilöi instanssirepon muuttumattoman Git-commitin, jonka aihe-, tehtävä-, profiili-, lähderekisteri- ja instanssikohtaisia ohjemäärityksiä tehtävässä käytetään.
 
-Näitä tunnisteita ei yhdistetä yhdeksi kentäksi: ohjelmiston ja instanssin muutokset ovat toisistaan riippumattomia. Tehtäväpyynnön täsmälliset kentät ja niiden validointisäännöt määritellään toimitussopimuksessa. Kaikki tehtävässä luettavat tiedostot yksilöidään repositoriokohtaisesti ja haetaan kyseisen repositorion ilmoitetusta muuttumattomasta revisiosta. Viittauksen polku ei yksin määritä repositoriota.
+Näitä tunnisteita ei yhdistetä yhdeksi kentäksi: ohjelmiston ja instanssin muutokset ovat toisistaan riippumattomia. Tehtäväpyynnön täsmälliset kentät ja niiden validointisäännöt määritellään toimitussopimuksessa. Kaikki tehtävässä luettavat tiedostot yksilöidään repositoriokohtaisesti ja haetaan kyseisen repositorion ilmoitetusta muuttumattomasta revisiosta. Viittauksen polku ei yksin määritä repositoriota. Tehtäväpyynnön tiedostoviittauksissa käytetään loogista `repository`-tunnistetta: `software` tarkoittaa yhteistä ohjelmistorepositoriota ja `instance` kyseistä instanssirepositoriota. Tunniste ratkaistaan käyttöönoton repositoriomäärityksestä; varsinaisia repositorioiden nimiä ei kovakoodata yhteiseen tietosopimukseen.
 
 Aiheseuraimelle määritellään yksi yleinen `timezone`-asetus, jonka oletusarvo on `Europe/Helsinki`. Asetuksen arvo on IANA-aikavyöhyketunniste. Sitä käytetään kaikissa Aiheseuraimen muodostamissa aikaleimoissa, seuranta-aikaväleissä ja käyttäjälle näytettävissä ajoissa. Lähteelle mahdollisesti määritelty oma aikavyöhyke vaikuttaa vain ilman aikavyöhyketietoa olevan lähdeaineiston ajan tulkintaan; se ei muuta Aiheseuraimen yleistä aikavyöhykettä eikä sen muodostamien aikaleimojen esitystapaa. Aikaleimat esitetään ISO 8601 -muodossa paikallisena päivänä ja kellonaikana sekä aina mukana olevalla numeerisella UTC-offsetilla: `YYYY-MM-DDTHH:mm:ss±HH:mm` (esimerkiksi `2026-11-22T18:30:00+02:00`). Offsetin on vastattava asetetun IANA-aikavyöhykkeen sääntöjä kyseisenä hetkenä; `Z`-merkintää tai aikavyöhykkeettömiä arvoja ei käytetä. Sekunnit ovat pakollisia, eikä desimaaliosia hyväksytä. Arvon on vastattava todellista kalenteripäivää, kellonaikaa ja aikavyöhykkeen offsetia; virheellisiä arvoja ei normalisoida. Aikaleimoja verrataan ja järjestetään niiden yksiselitteisten ajanhetkien perusteella. Kesä- ja talviajan muutokset määräytyvät IANA-aikavyöhyketietojen mukaan.
 
@@ -82,11 +82,11 @@ Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
 - `topic_id`- ja `task_type`-tunnisteissa käytetään samaa syntaksia: sallittuja ovat pienet ASCII-kirjaimet `a–z`, numerot `0–9` ja yhdysmerkki (`-`). Tunnisteen on alettava ja päätyttävä kirjaimeen tai numeroon, eikä yhdysmerkkejä saa olla peräkkäin. Välilyönnit, alaviivat, pisteet, kauttaviivat, ääkköset ja muut erikoismerkit eivät ole sallittuja. Tunnisteille ei aseteta erillistä enimmäispituutta tässä vaiheessa. Virheellinen tunniste hylätään; sitä ei normalisoida automaattisesti. Syntaksin tarkistava säännöllinen lauseke on `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
 
 - `issued_at` ja `deadline_at` ovat pakollisia yleisen `timezone`-asetuksen mukaisia aikaleimoja, joiden täsmällinen merkkijonomuoto on `YYYY-MM-DDTHH:mm:ss±HH:mm`. Sekunnit ovat pakollisia; desimaaliosia tai aikavyöhykkeettömiä arvoja ei hyväksytä. Offsetin on vastattava asetetun IANA-aikavyöhykkeen sääntöjä kyseisenä hetkenä. Arvojen on vastattava todellista kalenteripäivää ja kellonaikaa. Aikaleimoja ei normalisoida eikä muunnetta automaattisesti toiseen muotoon. `issued_at` on hetki, jolloin GitHub Actions muodostaa tehtäväpyynnön. `deadline_at` on viimeinen hetki, johon mennessä raportintuottajan on toimitettava tulos. Määräaika lasketaan `issued_at`-hetkestä tehtävätyypin määrityksissä asetetun käsittelyajan perusteella, joten eri tehtävätyypeillä voi olla erilaiset käsittelyajat. `deadline_at`-arvon on oltava aidosti myöhempi kuin `issued_at`; yhtä suuri tai aikaisempi arvo hylätään.
-- `history` on pakollinen ja sisältää `path`- sekä `revision`-kentät. `path` on oltava täsmälleen merkkijono `rss/{topic_id}/{task_type}.xml`, kun paikkamerkit korvataan saman tehtäväpyynnön `topic_id`- ja `task_type`-arvoilla. Polkua verrataan tähän muodostettuun arvoon sellaisenaan; sitä ei normalisoida eikä korjata automaattisesti. Näin myös väärä aihe tai tehtävätyyppi, absoluuttinen polku, URL-osoite, hakemistohyppy tai muu poikkeava polku hylätään. Polku on repositoriojuureen suhteutettu suhteellinen polku, ei URL eikä haaran nimi. `revision` on täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`, `A–F`). Se viittaa instanssirepositoriossa olevaan commitiin, josta RSS-historia luetaan. Historia luetaan täsmälleen kyseisestä commitista, ei muuttuvasta haaraviittauksesta. Tunniste on käsitteellisesti erillinen `source_revision`-kentästä, vaikka molemmat voivat osoittaa samaan committiin.
+- `history` on pakollinen ja sisältää `repository`-, `path`- ja `revision`-kentät. `path` on oltava täsmälleen merkkijono `rss/{topic_id}/{task_type}.xml`, kun paikkamerkit korvataan saman tehtäväpyynnön `topic_id`- ja `task_type`-arvoilla. Polkua verrataan tähän muodostettuun arvoon sellaisenaan; sitä ei normalisoida eikä korjata automaattisesti. Näin myös väärä aihe tai tehtävätyyppi, absoluuttinen polku, URL-osoite, hakemistohyppy tai muu poikkeava polku hylätään. Polku on repositoriojuureen suhteutettu suhteellinen polku, ei URL eikä haaran nimi. `repository` on pakollinen ja sen arvo on `instance`, koska RSS-historia sijaitsee instanssirepositoriossa. `revision` on pakollinen, täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`, `A–F`). Se yksilöi täsmälleen sen instanssirepositorion commitin, josta RSS-historia luetaan. Historia luetaan tästä commitista, ei muuttuvasta haaraviittauksesta. `history.revision` on käsitteellisesti erillinen `instance_revision`-kentästä: se voi olla sama commit, mutta voi myös osoittaa aiempaan RSS-historian lähtötilaan.
 - Myös `software_revision` ja `instance_revision` ovat kumpikin täsmälleen 40 heksadesimaalimerkkiä sisältäviä Git-commit-SHA-tunnisteita, jotka viittaavat omissa repositorioissaan olemassa oleviin committeihin.
 - `profiles` ja `instructions` säilytetään erillisinä taulukoina. Ensimmäinen kuvaa käytetyt koneelliset määritysprofiilit, toinen pakollisesti luettavat Markdown-ohjeet.
 - `profiles` on pakollinen taulukko. Tyhjä taulukko sallitaan, jos tehtävä ei käytä profiileja. Jokaisen alkion on oltava tunnetun profiilin yksilöllinen `id`; sama profiili ei saa esiintyä kahdesti. Taulukon järjestys säilytetään, koska myöhemmin lueteltu profiili voi korvata aiemmin luetellun profiilin asetuksia.
-- `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat `id` ja repositoriojuureen suhteutettu `path`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: tehtävätyypin ohje, profiilien ohjeet profiilien määritysjärjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
+- `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat `id`, `repository` ja repositoriojuureen suhteutettu `path`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: tehtävätyypin ohje, profiilien ohjeet profiilien määritysjärjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
 
 ### Ratkaistu määritys (`resolved_config`)
 
@@ -213,7 +213,7 @@ Ohjeet luetellaan tehtäväpyynnössä tässä järjestyksessä:
 2. käytettyjen profiilien Markdown-ohjeet siinä järjestyksessä kuin profiilit on ilmoitettu aihekohtaisessa määrityksessä ja yhdistetty konfiguraatioon;
 3. aihekohtainen Markdown-ohje.
 
-Jokainen `instructions`-taulukon alkio yksilöi ohjeen tunnisteella ja tiedostopolulla. Raportintuottaja lukee kaikki luetellut tiedostot eikä päättele muita ohjeita automaattisesti hakemistorakenteesta tai profiilien tunnisteista. Kaikki ohjeet haetaan tehtäväpyynnön `software_revision`- tai `instance_revision`-kentän osoittamasta oikean repositorion Git-commitista. Näin myös profiilien ohjeet pysyvät muuttumattomina koko tehtävän käsittelyn ajan.
+Jokainen `instructions`-taulukon alkio yksilöi ohjeen `id`-, `repository`- ja `path`-kentillä. Raportintuottaja lukee kaikki luetellut tiedostot eikä päättele muita ohjeita automaattisesti hakemistorakenteesta tai profiilien tunnisteista. Kaikki ohjeet haetaan tehtäväpyynnön `software_revision`- tai `instance_revision`-kentän osoittamasta oikean repositorion Git-commitista. Näin myös profiilien ohjeet pysyvät muuttumattomina koko tehtävän käsittelyn ajan.
 
 Esimerkkirakenne:
 
@@ -222,25 +222,29 @@ Esimerkkirakenne:
   "instructions": [
     {
       "id": "news-report",
+      "repository": "software",
       "path": "docs/task-types/news-report.md"
     },
     {
       "id": "film-screenings",
+      "repository": "instance",
       "path": "docs/profiles/film-screenings.md"
     },
     {
       "id": "indian-cinema",
+      "repository": "instance",
       "path": "docs/profiles/indian-cinema.md"
     },
     {
       "id": "indian-film-screenings",
+      "repository": "instance",
       "path": "docs/topics/indian-film-screenings.md"
     }
   ]
 }
 ```
 
-Esimerkki havainnollistaa viittausten rakennetta ja lukujärjestystä; lopullinen tiedostopolkurakenne vahvistetaan teknisessä määrittelyssä.
+Esimerkki havainnollistaa viittausten rakennetta, repositoriovalintaa ja lukujärjestystä; lopulliset repositorioiden nimet ja tiedostopolkurakenne vahvistetaan teknisessä määrittelyssä.
 
 ### 2.3 Toimitustapa: Git push erilliseen vastaanottohaaraan
 
@@ -403,8 +407,8 @@ Näin RSS-historia pysyy muuttumattomana eikä lukijan tarvitse luottaa aiemmin 
 
 Raportintuottaja tarvitsee ennen uuden raportin muodostamista koko kyseisen aiheen ja tehtävätyypin aiemman RSS-raporttihistorian. Historia luetaan suoraan GitHub-repositoriosta GitHub API:n kautta, ei GitHub Pages -julkaisusta, jotta raportintuottaja ei ole riippuvainen Pages-julkaisun viiveestä.
 
-- Tehtäväpyyntö yksilöi luettavan aiheen RSS-tiedoston.
-- Tehtäväpyyntö sisältää Git-commitin SHA:n, jonka tilasta RSS-historia luetaan. Raportintuottaja hakee tiedoston täsmälleen tästä commitista, ei muuttuvasta `main`-haarasta.
+- Tehtäväpyyntö yksilöi RSS-historian instanssirepositorion `repository`-tunnisteella, tiedostopolulla ja commit-SHA:lla.
+- Raportintuottaja hakee tiedoston täsmälleen `history.revision`-kentän osoittamasta commitista, ei muuttuvasta `main`-haarasta.
 - Näin raportintuottaja saa koko kyseisen aiheen siihen tehtäväpyyntöön lukitun julkaistun historian, eikä historian sisältö muutu tehtävän käsittelyn aikana.
 - RSS-historiaa ei kopioida tehtäväpyyntöön; tehtäväpyyntö sisältää vain tiedoston yksilöinnin ja historian revision.
 
