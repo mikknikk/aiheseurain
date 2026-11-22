@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.5  
+**Versio:** 0.12.6  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -314,8 +314,8 @@ Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen
 
 - Testit eivät saa kirjoittaa tuotannon RSS-syötteisiin tai muuttaa tuotannon seurantatilaa.
 - Määritysten eheys tarkistetaan ennen ajoa. Virheellinen tai ristiriitainen määritys estää ajon.
-- Samaa aihetta ei saa käsitellä samanaikaisesti ristiriitaisissa ajoissa tai tilapäivityksissä.
-- Aihekohtainen varaus tai muu yksinkertainen suojaus estää saman aiheen päällekkäiset ajot.
+- Koko instanssissa saa olla ensimmäisessä versiossa kerrallaan enintään yksi aktiivinen raportointitehtävä. Seuraava tehtävä käynnistetään vasta, kun edellinen on ratkaistu onnistuneesti tai kirjattu epäonnistuneeksi.
+- Eri aiheiden rinnakkaista käsittelyä tai tehtävien varaus-, lukitus- tai kilpailutilanteiden hallintaa ei toteuteta ensimmäisessä versiossa.
 - Ajon ja julkaisun käsittely on idempotenttia: sama tulos ei saa synnyttää päällekkäisiä ajotietueita tai RSS-julkaisuja.
 - Määritysten ja julkaisujen palautus tunnettuun kelvolliseen tilaan on voitava tehdä versionhallinnan avulla ilman aiempien julkaistujen itemien muuttamista.
 - Jokaisen ajon yhteydessä tallennetaan käytettyjen yhteisten ja aihekohtaisten määritysten sekä seurantatyypin ja raporttipohjan versiot tai yksilöivät tunnisteet.
@@ -440,6 +440,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.12.6 – 22.11.2026:** yhtenäistetty turvallisuus- ja eheysvaatimukset koko instanssin kattavaan sarjalliseen käsittelyyn sekä täsmennetty kaksoistoimitusten ja -julkaisujen eston periaate.
 - **0.12.5 – 22.11.2026:** erotettu tuottajan toimittama tulos vastaanottajan ylläpitämästä ajotietueesta ja ajonhallintatiedoista. Valvomon on ilmaistava tietojen alkuperä ja näytettävä tuottajan tulos puuttuvana, jos toimitusta ei saatu.
 - **0.12.4 – 22.11.2026:** hyväksytty ensimmäisen version sarjallinen tehtävänkäsittely: kerrallaan on enintään yksi aktiivinen tehtävä, seuraava käynnistyy vasta edellisen ratkettua, eikä eri aiheiden rinnakkaisuutta tai siihen liittyvää varaus-/lukitusmekanismia toteuteta.
 - **0.12.3 – 22.11.2026:** täsmennetty ajotietueen muodostamisen vastuunjakoa: vastaanottava järjestelmä muodostaa jokaisesta käynnistetystä ajosta tietueen myös silloin, kun tuottaja ei toimita tulosta määräaikaan mennessä. Tällöin vastaanottaja merkitsee tietueen `failed`-tilaiseksi ja kirjaa vain todennettavissa olevan epäonnistumisen syyn.
