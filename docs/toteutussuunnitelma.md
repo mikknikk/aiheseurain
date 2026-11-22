@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.37  
+**Versio:** 0.3.38  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -399,6 +399,19 @@ Ajotiedot tallennetaan tässä vaiheessa julkiseen GitHub-repositorioon. Tämä 
 Julkiseen tallennukseen saa sisällyttää vain tarkoitukseen sopivia ajotietoja. Sinne ei tallenneta salaisuuksia, käyttöoikeustunnuksia, tarpeettomia henkilötietoja, raakaa keskustelusisältöä tai tarpeettomasti kopioitua lähdesisältöä.
 
 Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
+
+
+### 2.7 Jaettava ohjelmisto ja erilliset instanssit
+
+Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi, jonka käyttäjäkohtaiset instanssit ovat siitä erillisiä. Ohjelmiston ja instanssin erottaminen on arkkitehtuurin perusratkaisu, ei myöhempään monen käyttäjän palvelualustaan varautuva lisäominaisuus.
+
+- **Ohjelmistorepo** sisältää yhteisen, uudelleenkäytettävän ohjelmiston: yleisen toimintalogiikan, GitHub Actions -työnkulut, yhteiset skeemat ja tietosopimukset, käyttöliittymien yhteisen toteutuksen, testit sekä kehittäjä- ja käyttöönottodokumentaation. Ohjelmistorepon tulee soveltua jaettavan ohjelmistoversion julkaisemiseen.
+- **Instanssirepo** sisältää yhden käyttöönoton omat tiedot ja asetukset: aiheet ja seurantatehtävät, määritysprofiilit, lähderekisterit, instanssin käyttöönottokohtaiset asetukset ja tila sekä kyseisen instanssin RSS-syötteet ja raportti- ja ajohistoria. Instanssirepo ei ole yhteisen ohjelmiston lähdekoodin tai julkaisuversion ensisijainen säilytyspaikka.
+- Ohjelmiston ja instanssin välinen raja määritellään versioitujen, dokumentoitujen rajapintojen ja tietosopimusten avulla. Ohjelmisto ei saa olettaa, että instanssin määritykset, lähderekisterit, ajotiedot tai RSS-tiedostot sijaitsevat samassa repositoriossa tai ohjelmistokoodin suhteellisissa poluissa.
+- Instanssi käyttää nimenomaisesti valittua ohjelmistoversiota. Uuden ohjelmistoversion julkaiseminen ei päivitä instanssia automaattisesti; instanssin ylläpitäjä päättää päivityksestä ja sen ajankohdasta. Käytössä oleva versio on voitava jäljittää.
+- Ensimmäinen toteutus pysyy yksinkertaisena: yksi instanssi, yksi raportintuottaja ja sarjallinen tehtävänkäsittely. Tämä ratkaisu ei edellytä monen instanssin keskitettyä palvelua, monivuokraaja-arkkitehtuuria, käyttäjähallintapalvelua tai rinnakkaisten raportintuottajien varausmekanismia.
+- Nykyinen repositorio sisältää siirtymävaiheessa sekä ohjelmistoon että nykyiseen käyttöönottoon liittyviä osia. Niiden välitöntä siirtämistä tai poistamista ei tehdä tämän päätöksen perusteella. Nykyinen sisältö inventoidaan, ohjelmisto- ja instanssikohtaiset osat luokitellaan ja erottamisen migraatio suunnitellaan erikseen ennen tiedostojen siirtämistä tai repositorioiden perustamista.
+- Repositorioiden nimet, täsmällinen hakemistorakenne, ohjelmiston jakelukanava ja instanssin käyttöönoton tekninen toteutus ratkaistaan myöhemmässä teknisessä suunnittelussa. Niitä ei lukita tällä arkkitehtuuriperiaatteella.
 
 ## 3. Nykyisen toteutuksen hyödyntäminen
 
