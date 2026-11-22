@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.16  
+**Versio:** 0.12.17  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -91,7 +91,7 @@ Ensimmäisessä versiossa sekä Valvomo että RSS-lukija voivat olla julkisia. V
 - Aiheita ei luetella kiinteästi tässä yleisessä määrittelyssä.
 - Jokaisella aiheella on oma määritystiedosto.
 - Aihe voidaan ottaa käyttöön, poistaa käytöstä tai muuttaa määrityksellä ilman yleisen toimintamallin muuttamista.
-- Aiheiden lähdeaineistojen hallintamalli määritellään erikseen; lähderekisteri pidetään rakenteisesti erillään asetuksista.
+- Lähteiden pysyvät perustiedot ylläpidetään yhdessä yhteisessä lähderekisterissä. Samaa lähdettä voidaan käyttää useissa aiheissa ja tehtävätyypeissä. Lähteiden valinta ja käyttöasetukset ratkaistaan tehtävätyypin oletuslähteiden sekä aiheen ja tehtävätyypin yhdistelmäkohtaisen määrityksen perusteella; lähderekisteri pidetään rakenteisesti erillään asetuksista.
 - Uusi aihe ei saa vaatia koodimuutosta, jos sen tarpeet voidaan toteuttaa jo olemassa olevalla seurantatyypillä ja raporttipohjalla.
 
 ### 4.2 Määritysten tasot
@@ -102,7 +102,7 @@ Varsinainen tehtäväkohtainen määritysmalli koostuu kolmesta tasosta:
 2. **Määritysprofiilit** ovat uudelleenkäytettäviä, itsenäisiä asetuskokonaisuuksia. Tehtävään voidaan liittää useita profiileja, joiden järjestys on merkityksellinen.
 3. **Aihekohtainen määritys** yksilöi aiheen, valitsee tehtävätyypin ja käytettävät profiilit sekä sisältää kyseisen aiheen asetukset ja sallitut ylikirjoitukset.
 
-Yleiset järjestelmätason säännöt ja turvallisuusvaatimukset koskevat kaikkia kolmea tasoa. Lähderekisteri on rakenteisesti erillinen aineisto eikä osa asetusten yhdistämismallia. Sen aihekohtainen rajaus tai uudelleenkäyttö useiden aiheiden välillä ratkaistaan erikseen.
+Yleiset järjestelmätason säännöt ja turvallisuusvaatimukset koskevat kaikkia kolmea tasoa. Lähderekisteri on rakenteisesti erillinen aineisto eikä osa asetusten yhdistämismallia. Lähteen perustiedot määritellään yhteisessä rekisterissä kerran; lähteen käyttö määritellään tehtävätyypin oletuslähteissä ja tarvittaessa aiheen ja tehtävätyypin yhdistelmäkohtaisissa lähdemäärityksissä.
 
 ### 4.3 Määritysten yhdistäminen ja validointi
 
@@ -132,7 +132,7 @@ Määritysten rakenteet validoidaan JSON Schema Draft 2020-12 -standardin mukais
 
 Ensimmäisessä versiossa määritysprofiili sidotaan yhteen tehtävätyyppiin. Profiilia voidaan käyttää useassa saman tehtävätyypin aiheessa, mutta sitä ei voi käyttää toisen tehtävätyypin yhteydessä. Tehtävätyypin määritys yksilöi asetusskeeman, oletukset, sallitut asetukset, ylikirjoitettavat asetuskohdat sekä käsittely-, raportointi- ja ohjevaatimukset.
 
-Tehtäväpyynnön `inputs`-taulukko sisältää rakenteisten syöteaineistojen viittaukset. Jokainen viittaus yksilöi aineiston tunnisteen, tyypin, repositorion ja polun. Ensimmäisessä versiossa lähderekisteri on tällainen erillinen aineisto (`kind: source_registry`), joka luetaan instanssirepositoriosta tehtäväpyynnön `instance_revision`-revisiosta. Tarkka lähderekisterin aihekohtainen rajaus ja mahdollinen uudelleenkäyttö useiden aiheiden välillä jätetään erikseen keskusteltavaksi; skeeman määrittely ei yksin ratkaise tätä hallintamallia.
+Tehtäväpyynnön `inputs`-taulukko sisältää rakenteisten syöteaineistojen viittaukset. Jokainen viittaus yksilöi aineiston tunnisteen, tyypin, repositorion ja polun. Ensimmäisessä versiossa yhteinen lähderekisteri on tällainen erillinen aineisto (`kind: source_registry`), joka luetaan instanssirepositoriosta tehtäväpyynnön `instance_revision`-revisiosta. Lähteen pysyvät perustiedot, kuten nimi, URL, julkaisija, lähdetyyppi, kielet, alueet, tekninen saavutettavuus ja toimituksellinen luotettavuus, ylläpidetään rekisterissä vain kerran. Sama lähdetunniste voi esiintyä useiden aiheiden ja tehtävätyyppien lähdemäärityksissä. Lähteen käyttöä koskevat tiedot, kuten käytössäolo, tärkeys ja erityiset seurantahuomiot, määritellään tehtävätyypin oletuslähteissä tai aiheen ja tehtävätyypin yhdistelmäkohtaisessa määrityksessä. Tekninen saavutettavuus ja toimituksellinen luotettavuus ovat yhteisiä lähteen ominaisuuksia; lähteen tärkeys ja käyttötarkoitus voivat vaihdella tehtäväyhdistelmittäin.
 
 Markdown-ohjeita ei validoida JSON Scheman avulla. Niiden tarkistuksiin kuuluvat yksilöllinen ohjetunniste, tiedoston olemassaolo oikeassa repositoriossa ja kiinnitetyssä commitissa, repositoriojuureen suhteutettu turvallinen polku, ohjeiden oikea järjestys ja duplikaattien puuttuminen. Ohjeiden sisällön tulee olla ristiriidaton koneellisten määritysten kanssa. Ohjeiden metatietoa ei kahdenneta Markdown-etusivulla, vaan se pidetään JSON-määrityksissä ja tehtäväpyynnön viittauksissa.
 
@@ -546,6 +546,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.17 – 22.11.2026:** hyväksyttiin yhteinen lähderekisteri sekä tehtävätyypin oletuslähteiden ja aiheen sekä tehtävätyypin yhdistelmäkohtaisten lähdemääritysten malli. Aihekohtainen määritys voi periä, täydentää tai korvata oletuslähdelistan; tehtävätyypin pakolliset lähteet säilyvät korvaamisesta huolimatta.
 
 - **0.12.16 – 22.11.2026:** hyväksyttiin määritysten ja toimituksen JSON Schema Draft 2020-12 -skeemakokonaisuuden periaatteet, tehtävätyyppikohtaiset asetusskeemat, tehtävätyyppiin sidotut profiilit, Markdown-ohjeiden erillinen validointi sekä tehtäväpyynnön rakenteisten aineistojen `inputs`-viittaukset. Lähderekisterin aihekohtainen rajaus jätettiin erikseen keskusteltavaksi.
 
