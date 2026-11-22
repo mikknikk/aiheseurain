@@ -119,6 +119,26 @@ Tehtävän käsittelyn jumiutumista vastaan toteutetaan ensimmäiseen versioon r
 - Seuraava tehtävä voidaan muodostaa vasta, kun edellinen ajo on todettu onnistuneeksi tai sen epäonnistuminen on kirjattu kanoniseen ajohistoriaan ja ajon käsittely on päätetty. Myös vastaanoton uudelleenyritykset ja määräajan umpeutumisen käsittely kuuluvat tähän samaan sarjalliseen elinkaareen. Myöhäisen toimituksen rajattu jälkikäsittely voi jatkua tämän jälkeen alkuperäisen `run_id`-tunnisteen perusteella, mutta se ei avaa alkuperäistä tehtäväpyyntöä uudelleen eikä muuta myöhempää aktiivista tehtävää.
 - Sarjallisuuden tekninen toteutustapa, kuten GitHub Actionsin työnkulkujen koordinointi ja mahdollinen yhteinen concurrency-/lukitusratkaisu, määritellään teknisessä suunnittelussa. Tässä vaiheessa lukitaan vaatimus ja toimintaperiaate, ei tiettyä GitHub Actions -ominaisuutta tai toteutuskoodia.
 
+
+### 2.2.2 Käsittelyn valmistuminen ja aktiivisen tehtävän vapauttaminen
+
+Ajon elinkaari erottaa kolme tietoa: raportintuottajan ilmoittaman **tuottajan tuloksen**, vastaanottajan suorittaman **käsittelyn** sekä vastaanottajan muodostaman **ajon lopputilan**. Tuottajan tulos tallennetaan vain toimitetun tuloksen perusteella. Vastaanottajan aikakatkaisu tai muu käsittelyhavainto ei ole tuottajan ilmoittama epäonnistuminen.
+
+Vastaanottajan näkökulmasta ajo onnistuu vasta, kun toimitus on tunnistettu oikeaan `run_id`-ajoon, pakolliset validoinnit läpäisty, raportti hyväksytty ja mahdollinen RSS-julkaisu varmennettu sekä kirjattu. Osittainen raportti voidaan hyväksyä, jos se täyttää julkaisuehdot ja puutteet kuvataan raportissa. Pelkkä vastaanotto tai validoinnin läpäisy ei riitä onnistumiseen.
+
+Aktiivinen käsittely päättyy ja tehtävä vapautetaan, kun:
+- hyväksytty toimitus on validoitu ja julkaisu onnistunut;
+- toimitus on hylätty eikä konfiguraation sallimia käsittely- tai uudelleenyritysmahdollisuuksia ole jäljellä;
+- vastaanoton, tallennuksen, julkaisun tai muun pakollisen vaiheen virhettä ei saada korjattua konfiguroiduissa rajoissa; tai
+- määräaika umpeutuu ilman hyväksyttävää toimitusta ja vastaanottaja kirjaa aikakatkaisun.
+
+Aktiivinen tehtävä vapautetaan vasta, kun vastaanottajan käsittely on päätetty ja ajon lopputila kirjattu kanoniseen ajohistoriaan. Seuraavaa tehtävää ei muodosteta tai käynnistetä ennen tätä. Yksittäinen epäonnistunut yritys ei vapauta tehtävää, jos käsittelyä voidaan vielä jatkaa. Epäonnistuminen ei automaattisesti käynnistä uutta erillistä tehtävää.
+
+Uudelleenyritysten määrä, yritysten laskentatapa, määräajat ja muut vastaavat käsittelyrajat ovat konfiguroitavia toimintaparametreja. Niitä ei kovakoodata yhteiseen ohjelmistoon kiinteinä lukumäärinä tai aikarajoina. Arvot määritellään tehtävätyypin määrityksissä ja tarvittaessa profiileissa, yhdistetään normaalin määritysjärjestyksen mukaisesti ja välitetään raportintuottajalle `resolved_config`-kentässä. Toteutus noudattaa ratkaistuja arvoja eikä käytä piilotettuja oletuksia. Arvojen tietotyypit, pakollisuus, sallitut rajat ja mahdolliset oletusarvot määritellään tehtävätyypin skeemassa. Puuttuva tai virheellinen pakollinen arvo estää tehtäväpyynnön muodostamisen.
+
+Epäonnistumisesta kirjataan vastaanottajan havaitsema syy ja siihenastiset käsittelytapahtumat. Tuottajan tulosta ei päätellä vastaanottajan havainnoista. Ajohistoriasta on voitava selvittää käynnistys ja määräaika, toimituksen saapuminen, tuottajan tulos jos toimitettu, vastaanottajan käsittelyvaiheet, validointi, julkaisu, ajon lopputila ja aktiivisen käsittelyn vapautushetki. Tapahtumat säilytetään aikajärjestyksessä, eikä myöhempi tapahtuma korvaa aiempaa.
+
+Määräajan jälkeen saapunut toimitus käsitellään alkuperäisellä `run_id`-tunnisteella aiemmin määriteltyjen myöhäisen toimituksen ehtojen mukaisesti. Se voi täydentää samaa ajohistoriatietuetta uusilla tapahtumilla, mutta ei avaa vapautettua tehtävää uudelleen eikä muuta myöhemmän käynnistetyn ajon tietoja. Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistetty, myöhäistä toimitusta ei julkaista.
 Useiden samanaikaisten raportintuottajien tai tehtävien tuki voidaan lisätä myöhemmin. Silloin suunnitellaan erikseen atominen varaus, varauksen voimassaolo, vanhentuneen varauksen palautus sekä vanhalla `run_id`:llä saapuvien toimitusten hylkääminen. Ensimmäisen vaiheen ratkaisu ei saa tarpeettomasti estää tätä laajennusta.
 
 #### Tehtäväpyynnön juuritason rakenne ja yleiset validointisäännöt
