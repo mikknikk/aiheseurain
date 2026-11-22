@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.42  
+**Versio:** 0.3.43  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.3](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.4](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -128,6 +128,19 @@ Tehtäväpyynnön muodostaminen ja aktiivisen tehtävän määräajan valvonta h
 - Raportintuottaja hakee tehtävän omalla aikataulullaan. Sen käynnistyminen ei edellytä erillistä GitHub Actions -ilmoitusta.
 
 Tämä pitää tehtävän muodostamisen ja määräaikojen valvonnan yhdessä paikassa eikä sido niitä raportintuottajan käynnistysrytmiin. Työnkulun tarkka suoritusväli ja mahdollinen manuaalinen käynnistys määritellään myöhemmin tehtävätyyppien ja käyttörajoitusten yhteydessä.
+
+
+#### 2.2.1.2 Sarjallinen tehtävänkäsittely ensimmäisessä versiossa
+
+Ensimmäisessä versiossa GitHub Actions ylläpitää yhtä aktiivista tehtäväpyyntöä ja yksi raportintuottaja käsittelee tehtävät yksi kerrallaan. Sarjallisuus koskee kaikkia aiheita, ei vain saman aiheen ajoja.
+
+- Uusi tehtävä muodostetaan vasta, kun edellinen tehtävä on ratkaistu onnistuneesti tai kirjattu epäonnistuneeksi palautumissääntöjen mukaisesti.
+- Käsittelyssä ei ole kahta samanaikaista aktiivista raportointitehtävää. Eri aiheiden rinnakkaista käsittelyä ei tueta ensimmäisessä versiossa.
+- Erillistä tehtävien varaus-, lukitus- tai kilpailutilanteiden hallintaa ei siksi tarvita ensimmäisessä versiossa.
+- run_id-tunniste, toimituksen idempotentti käsittely ja kaksoisjulkaisujen esto säilyvät tarpeellisina myös sarjallisessa mallissa esimerkiksi saman toimituksen uudelleenyritysten vuoksi.
+- Usean tehtävän tai raportintuottajan rinnakkaisuus voidaan suunnitella myöhemmässä vaiheessa, jos sille syntyy todellinen tarve. Silloin arvioidaan erikseen atominen varaus, lukitukset, vanhentuneiden varausten palautus ja rinnakkaisten tilapäivitysten turvallisuus.
+
+Sarjallinen käsittely on ensimmäisen version nimenomainen rajaus, ei oletus siitä, ettei rinnakkaisuutta voisi koskaan lisätä.
 
 ### 2.2.2 Tehtävätyypit, määritysprofiilit ja aihekohtaiset asetukset
 
