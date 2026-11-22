@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.51  
+**Versio:** 0.3.52  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.10](vaatimusmaarittely-uudistus.md)
@@ -86,8 +86,8 @@ Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
 - `history` on pakollinen ja sisältää `repository`-, `path`- ja `revision`-kentät. `path` on oltava täsmälleen merkkijono `rss/{topic_id}/{task_type}.xml`, kun paikkamerkit korvataan saman tehtäväpyynnön `topic_id`- ja `task_type`-arvoilla. Polkua verrataan tähän muodostettuun arvoon sellaisenaan; sitä ei normalisoida eikä korjata automaattisesti. Näin myös väärä aihe tai tehtävätyyppi, absoluuttinen polku, URL-osoite, hakemistohyppy tai muu poikkeava polku hylätään. Polku on repositoriojuureen suhteutettu suhteellinen polku, ei URL eikä haaran nimi. `repository` on pakollinen ja sen arvo on `instance`, koska RSS-historia sijaitsee instanssirepositoriossa. `revision` on pakollinen, täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`, `A–F`). Se yksilöi täsmälleen sen instanssirepositorion commitin, josta RSS-historia luetaan. Historia luetaan tästä commitista, ei muuttuvasta haaraviittauksesta. `history.revision` on käsitteellisesti erillinen `instance_revision`-kentästä: se voi olla sama commit, mutta voi myös osoittaa aiempaan RSS-historian lähtötilaan.
 - Myös `software_revision` ja `instance_revision` ovat kumpikin täsmälleen 40 heksadesimaalimerkkiä sisältäviä Git-commit-SHA-tunnisteita, jotka viittaavat omissa repositorioissaan olemassa oleviin committeihin.
 - `profiles` ja `instructions` säilytetään erillisinä taulukoina. Ensimmäinen kuvaa käytetyt koneelliset määritysprofiilit, toinen pakollisesti luettavat Markdown-ohjeet.
-- `profiles` on pakollinen taulukko. Tyhjä taulukko sallitaan, jos tehtävä ei käytä profiileja. Jokaisen alkion on oltava tunnetun profiilin yksilöllinen `id`; sama profiili ei saa esiintyä kahdesti. Taulukon järjestys säilytetään, koska myöhemmin lueteltu profiili voi korvata aiemmin luetellun profiilin asetuksia.
-- `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat `id`, `repository` ja repositoriojuureen suhteutettu `path`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: tehtävätyypin ohje, profiilien ohjeet profiilien määritysjärjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
+- `profiles` on pakollinen taulukko. Tyhjä taulukko sallitaan, jos tehtävä ei käytä profiileja. Jokainen alkio on objekti, jossa ovat pakolliset kentät `id`, `repository` ja `path`. `id` yksilöi tunnetun profiilin, `repository` on aina `instance` ja `path` on profiilin määritystiedoston repositoriojuureen suhteutettu polku. Saman profiilin `id` ei saa esiintyä kahdesti. Taulukon järjestys säilytetään, koska myöhemmin lueteltu profiili voi korvata aiemmin luetellun profiilin asetuksia.
+- `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat pakolliset kentät `id`, `repository` ja repositoriojuureen suhteutettu `path`. `repository` on täsmälleen `software` tai `instance`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: tehtävätyypin ohje, profiilien ohjeet profiilien järjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
 
 ### Ratkaistu määritys (`resolved_config`)
 
@@ -120,6 +120,42 @@ Tehtävän käsittelyn jumiutumista vastaan toteutetaan ensimmäiseen versioon r
 - Sarjallisuuden tekninen toteutustapa, kuten GitHub Actionsin työnkulkujen koordinointi ja mahdollinen yhteinen concurrency-/lukitusratkaisu, määritellään teknisessä suunnittelussa. Tässä vaiheessa lukitaan vaatimus ja toimintaperiaate, ei tiettyä GitHub Actions -ominaisuutta tai toteutuskoodia.
 
 Useiden samanaikaisten raportintuottajien tai tehtävien tuki voidaan lisätä myöhemmin. Silloin suunnitellaan erikseen atominen varaus, varauksen voimassaolo, vanhentuneen varauksen palautus sekä vanhalla `run_id`:llä saapuvien toimitusten hylkääminen. Ensimmäisen vaiheen ratkaisu ei saa tarpeettomasti estää tätä laajennusta.
+
+#### Tehtäväpyynnön juuritason rakenne ja yleiset validointisäännöt
+
+Tehtäväpyyntö on JSON-objekti, jossa ovat täsmälleen seuraavat juuritason kentät:
+
+| Kenttä | Tietotyyppi | Pakollinen | Merkitys |
+|---|---|---|---|
+| schema_version | merkkijono | Kyllä | Tehtäväpyynnön rakenteen semanttinen versio muodossa MAJOR.MINOR.PATCH, esimerkiksi 1.0.0. |
+| run_id | merkkijono | Kyllä | Yksilöllinen ajotunniste. |
+| topic_id | merkkijono | Kyllä | Aiheen tunniste. |
+| task_type | merkkijono | Kyllä | Tehtävätyypin tunniste. |
+| software_revision | merkkijono | Kyllä | Ohjelmistorepon commit-SHA. |
+| instance_revision | merkkijono | Kyllä | Instanssirepon commit-SHA. |
+| period | objekti | Kyllä | Seuranta-aikavälin alku ja loppu. |
+| issued_at | merkkijono | Kyllä | Tehtäväpyynnön muodostamishetki. |
+| deadline_at | merkkijono | Kyllä | Toimituksen määräaika. |
+| history | objekti | Kyllä | RSS-historian repositorio, polku ja lähtörevisio. |
+| profiles | taulukko | Kyllä | Käytettyjen profiilien järjestetty luettelo; tyhjä sallitaan. |
+| instructions | taulukko | Kyllä | Pakollisesti luettavien ohjeiden järjestetty, ei-tyhjä luettelo. |
+| resolved_config | objekti | Kyllä | Valmiiksi ratkaistu tehtäväkohtainen konfiguraatio. |
+
+Jokainen juuritason kenttä on pakollinen eikä tuntemattomia juuritason kenttiä sallita. Myös sisäkkäisissä objekteissa hylätään määrittelemättömät ylimääräiset kentät. resolved_config-objektin sallitut asetukset määräytyvät tehtävätyypin skeemasta; sen yleiset säännöt on kuvattu edellä.
+
+schema_version on täsmälleen kolmen numeerisen osan semanttinen versio muodossa MAJOR.MINOR.PATCH; etuliitteitä, jälkiliitteitä tai build-metatietoja ei käytetä. Se versioi vain tehtäväpyynnön rakennetta ja tulkintasääntöjä, ei ohjelmistoa.
+
+Kaikkien kolmen commit-tunnisteen (software_revision, instance_revision ja history.revision) on oltava täsmälleen 40 merkkiä pitkiä ja koostuttava pienistä heksadesimaalimerkeistä 0–9 ja a–f. Suuraakkoset eivät ole sallittuja. Tunnisteiden on viitattava asianomaisessa repositoriossa olemassa oleviin committeihin.
+
+topic_id- ja task_type-kenttien syntaksi on ^[a-z0-9]+(?:-[a-z0-9]+)*$. run_id muodostetaan näiden kenttien, yleisen aikavyöhykkeen paikallisen ajan ja ajanhetken UTC-offsetin perusteella edellä määritellyllä tavalla. Erillistä task_id-kenttää ei ole.
+
+period sisältää täsmälleen pakolliset from- ja to-kentät. from on aikaleima ja to aikaleima tai null. Aikaleimat noudattavat yleistä ISO 8601 -muotoa YYYY-MM-DDTHH:mm:ss±HH:mm; sekunnit ja oikea numeerinen UTC-offset ovat pakollisia, desimaaliosia ei sallita. Jos to ei ole null, sen on oltava ajallisesti myöhempi kuin from. Objektissa ei ole timezone- eikä cutoff_at-kenttää.
+
+issued_at ja deadline_at noudattavat samaa aikaleimamuotoa ja yleisen resolved_config.timezone-asetuksen offset-sääntöjä. deadline_at on ajallisesti myöhempi kuin issued_at; määräaika lasketaan tehtävätyypin käsittelyaika-asetuksen perusteella.
+
+history sisältää täsmälleen kentät repository, path ja revision. repository on aina instance. path on täsmälleen rss/{topic_id}/{task_type}.xml, kun paikkamerkit korvataan saman tehtäväpyynnön tunnisteilla. revision on RSS-historian lähtöcommit, ja se voi poiketa instance_revision-arvosta.
+
+profiles- ja instructions-taulukoiden alkioiden kentät ja järjestys on määritelty edellä. Kaikki viitatut tiedostot luetaan niiden repositorioiden muuttumattomista commit-revisioista: software käyttää software_revision-arvoa ja instance käyttää instance_revision-arvoa. Polku on aina repositoriojuureen suhteutettu tiedostopolku, ei URL tai haaraviittaus.
 
 ### 2.2.1.1 Tehtäväpyynnön muodostamisen ja määräajanvalvonnan ajastus
 
@@ -558,6 +594,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.52 (22.11.2026):** hyväksyttiin tehtäväpyynnön täsmällinen ylätason rakenne ja kenttäkohtaiset tietovaatimukset. Täsmennettiin profiiliviittaukset objekteiksi, joissa ovat id, repository ja path, ohjeviittausten sallitut repositoriot, lowercase-commit-SHA-muoto sekä tuntemattomien ylimääräisten kenttien hylkääminen.
 
 - **0.3.51 (22.11.2026):** hyväksyttiin myöhäisen toimituksen vastaanottokäsittelyn esittäminen erillisinä, aikajärjestyksessä säilyvinä tapahtumina. Tapahtumaketju kattaa määräajan ylityksen, myöhäisen vastaanoton, validoinnin, hyväksynnän/hylkäyksen ja mahdollisen julkaisun; aiempia tapahtumia ei ylikirjoiteta.
 
