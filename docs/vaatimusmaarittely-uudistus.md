@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.2  
+**Versio:** 0.12.3  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -139,7 +139,7 @@ Yksi käynnistys käsittelee enintään yhden aiheen ja noudattaa seuraavaa kulk
 4. **Tutkimus ja raportointi:** raporttituottaja käsittelee määritellyt lähteet ja etsii seurantajakson aikana syntyneitä olennaisia uusia havaintoja.
 5. **Laadun arviointi:** lähteiden luotettavuus, havaintojen uutuus ja raportointikelpoisuus arvioidaan seurantatyypin sääntöjen mukaisesti.
 6. **Tuloksen muodostaminen:** tuottaja muodostaa ajotuloksen ja tarvittaessa yhden rakenteisen RSS-itemin. Jos raportoitavaa ei ole, item jätetään pois.
-7. **Toimittaminen:** tuottaja toimittaa tuloksen yhteisellä `run_id`-tunnisteella. Jos tuottaja kaatuu tai yhteys katkeaa ennen tuloksen toimittamista, vastaanottava järjestelmä säilyttää ajon keskeneräisenä tai merkitsee sen aikakatkaisun jälkeen epäonnistuneeksi.
+7. **Toimittaminen:** tuottaja toimittaa tuloksen yhteisellä `run_id`-tunnisteella. Vastaanottava järjestelmä vastaa siitä, että jokaisesta käynnistetystä ajosta syntyy ajotietue. Jos tuottaja ei toimita tulosta määräaikaan mennessä, vastaanottava järjestelmä muodostaa itse `failed`-tilaisen ajotietueen. Tietueeseen kirjataan vain todennettavissa oleva epäonnistumisen syy; puuttuvia tietoja ei päätellä tai arvata.
 8. **Vastaanotto ja validointi:** Aiheseurain tarkistaa tuloksen rakenteen, tunnisteet, määritysversiot, kohdeaiheen ja julkaisuehdot.
 9. **Tallennus ja julkaisu:** ajotiedot tallennetaan. Hyväksytty RSS-item lisätään oikeaan syötteeseen muuttamatta aiempia itemeitä.
 10. **Varmistus:** RSS/XML:n kelvollisuus, GUIDien yksilöllisyys, oikea kohdesyöte ja tallennuksen onnistuminen tarkistetaan.
@@ -206,7 +206,7 @@ Ajotietojen tarkoitus on kuvata, mitä tapahtui ja millä tuloksella. Niihin ei 
 
 `partial` kuvaa osittaista seurantaa. Jos osittaisesta seurannasta syntyy raportti, se julkaistaan RSS-syötteeseen. Raportissa kerrotaan selvästi, mikä jäi tarkistamatta tai puutteelliseksi, miksi näin tapahtui ja miten se vaikuttaa kattavuuteen. Myöhemmät ajot eivät muokkaa julkaistua itemiä: olennainen täydennys tai korjaus julkaistaan uutena, avoimesti alkuperäiseen raporttiin viittaavana iteminä.
 
-**Vastaanottavan järjestelmän käsittelytila** erottaa vähintään vastaanoton, validoinnin, hyväksynnän, hylkäyksen, julkaisun ja julkaisun epäonnistumisen. Ajon elinkaaren hallinnassa voidaan lisäksi käyttää tiloja jonossa, käynnissä, aikakatkaistu ja peruutettu.
+**Vastaanottavan järjestelmän käsittelytila** erottaa vähintään vastaanoton, validoinnin, hyväksynnän, hylkäyksen, julkaisun ja julkaisun epäonnistumisen. Ajon elinkaaren hallinnassa voidaan lisäksi käyttää tiloja jonossa, käynnissä, aikakatkaistu ja peruutettu. Jos tuottaja ei toimita tulosta määräaikaan mennessä, vastaanottava järjestelmä muodostaa ajotietueen `failed`-tilaisena ilman tuottajan toimitusta. Tämä vastaanottajan muodostama tietue ei väitä sisältävänsä tuottajan ilmoittamaa tulosta tai virhekuvausta: siihen kirjataan vain vastaanottajan todennettavissa oleva tieto, kuten määräajan umpeutuminen tai muu havaittu toimitus-/yhteysvirhe. Tuntemattomia syitä tai puuttuvia tuottajan metatietoja ei täydennetä arvauksilla.
 
 Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Julkaisuvirhe ei muuta onnistunutta tutkimustyötä epäonnistuneeksi.
 
@@ -438,6 +438,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.12.3 – 22.11.2026:** täsmennetty ajotietueen muodostamisen vastuunjakoa: vastaanottava järjestelmä muodostaa jokaisesta käynnistetystä ajosta tietueen myös silloin, kun tuottaja ei toimita tulosta määräaikaan mennessä. Tällöin vastaanottaja merkitsee tietueen `failed`-tilaiseksi ja kirjaa vain todennettavissa olevan epäonnistumisen syyn.
 - **0.12.2 – 22.11.2026:** täsmennetty tehtävän jäljitettävyyttä erillisillä ohjelmisto- ja instanssidatan revisioilla sekä repositoriokohtaisilla tiedostoviittauksilla.
 - **0.12.1 – 22.11.2026:** täsmennetty Valvomon ja RSS-lukijan instanssikohtaisuus: käyttöliittymien yhteinen koodi kuuluu jaettavaan ohjelmistoon, mutta näkymät käyttävät vain oman instanssin tietoja. Hyväksytty molempien käyttöliittymien julkisuus ensimmäisessä versiossa ilman kirjautumista; julkisiin tietolähteisiin ei saa sisällyttää salaisuuksia tai yksityisiä tietoja.
 - **0.12.0 – 22.11.2026:** lisätty vaatimus jaettavan yhteisen ohjelmiston ja erillisten instanssikohtaisten tietojen erottelusta. Määritelty ohjelmiston riippumattomuus instanssin repositoriosta ja tiedostopoluista sekä instanssin ohjelmistoversion kiinnittäminen ja hallittu päivittäminen. Täsmennetty, ettei ohjelmiston julkinen jakelu edellytä instanssidatan julkisuutta eikä ensimmäinen versio vaadi monen instanssin palvelualustaa.
