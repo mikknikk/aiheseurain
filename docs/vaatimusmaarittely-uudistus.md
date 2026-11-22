@@ -43,7 +43,9 @@ Tämä on vaatimusmäärittely, ei tekninen toteutussuunnitelma. Se ei lukitse t
 9. **Yksi kanoninen ajohistoria:** samaa ajotietoa ei ylläpidetä tarpeettomasti useissa toisistaan riippumattomissa tietovarastoissa.
 10. **Muuttumaton julkaisuhistoria:** julkaistuja RSS-itemeitä ei muokata, poistaa eikä korvata. Myöhempi olennainen täydennys tai korjaus julkaistaan uutena iteminä, joka kertoo avoimesti muutoksen ja viittaa alkuperäiseen.
 11. **Turvallinen epäonnistuminen:** epäselvä tai virheellinen tulos ei johda virheelliseen RSS-julkaisuun eikä onnistumisen esittämiseen.
-12. **Vaiheiden selkeä vastuunjako:** tuottajan tutkimustulos, vastaanoton validointi, tallennus ja julkaisu ovat erillisiä tiloja.\n13. **Ohjelmiston ja instanssin erillisyys:** jaettava yhteinen ohjelmisto ei ole sidottu yhden käyttöönoton määrityksiin tai käyttödatan sijaintiin.\n14. **Hallitut ohjelmistopäivitykset:** instanssi käyttää yksilöityä ohjelmistoversiota, ja version vaihtaminen on ylläpitäjän hallitsema toimenpide.
+12. **Vaiheiden selkeä vastuunjako:** tuottajan tutkimustulos, vastaanoton validointi, tallennus ja julkaisu ovat erillisiä tiloja.
+13. **Ohjelmiston ja instanssin erillisyys:** jaettava yhteinen ohjelmisto ei ole sidottu yhden käyttöönoton määrityksiin tai käyttödatan sijaintiin.
+14. **Hallitut ohjelmistopäivitykset:** instanssi käyttää yksilöityä ohjelmistoversiota, ja version vaihtaminen on ylläpitäjän hallitsema toimenpide.
 
 ## 3. Käyttöliittymät ja niiden tärkeysjärjestys
 
@@ -269,6 +271,16 @@ Vastaanottavan järjestelmän tehtävät ovat:
 
 Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään tuottajan sisältöä ei julkaista vain siksi, että se näyttää valmiilta.
 
+### 9.1 Jaettava ohjelmisto ja instanssikohtainen käyttö
+
+- Yhteisen ohjelmiston tulee olla julkaistavissa ja jaettavissa erillään yksittäisen käyttöönoton tiedoista.
+- Yhden instanssin omat aiheet, seurantatehtävät, määritykset, profiilit, lähderekisterit, ajohistoria, RSS-syötteet ja muut käyttöönoton tiedot kuuluvat instanssille. Niitä ei käsitellä jaettavan ohjelmiston lähdekoodina tai ohjelmistoversion sisältönä.
+- Ohjelmiston tulee pystyä lukemaan ja käsittelemään instanssin tietoja määritellyn rajapinnan ja tietosopimusten kautta. Se ei saa olettaa, että ohjelmistokoodi ja instanssin tiedot sijaitsevat samassa Git-repositoriossa tai määrätyissä suhteellisissa tiedostopoluissa.
+- Instanssin on voitava käyttää nimenomaisesti valittua ja jäljitettävää ohjelmistoversiota.
+- Ohjelmistoversion julkaisu ei saa itsessään muuttaa instanssin käytössä olevaa versiota. Version päivittäminen edellyttää instanssin ylläpitäjän hallitsemaa muutosta.
+- Ensimmäisen version ei tarvitse tarjota keskitettyä monen instanssin palvelua tai monivuokraaja-arkkitehtuuria. Vaatimukset koskevat ohjelmiston ja yhden instanssin välistä selkeää erottelua.
+- Julkisen ohjelmiston jakelu ei tarkoita, että jokaisen instanssin tietojen pitäisi olla julkisia. Instanssin tietojen näkyvyys ja käyttöoikeudet ratkaistaan niiden sisältöä ja käyttötarkoitusta vastaavasti.
+
 ## 10. Virhetilanteet ja uudelleenyritykset
 
 Virhetilanteet käsitellään yksinkertaisella ja yksiselitteisellä tavalla:
@@ -386,7 +398,12 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 22. Julkiseen raporttiin, RSS-syötteeseen tai Valvomon julkiseen dataan ei päädy salaisuuksia tai tarpeettomia henkilötietoja.
 23. Testaus estää tuotantodatan tahattoman muuttamisen.
 24. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
-25. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.\n26. Yhteinen ohjelmisto voidaan julkaista ja ottaa käyttöön erillään yksittäisen instanssin määrityksistä ja käyttödatan tiedostoista.\n27. Instanssikohtaiset aiheet, asetukset, lähderekisterit, ajohistoria ja RSS-julkaisut eivät ole jaettavan ohjelmistoversion osia.\n28. Ohjelmisto toimii instanssin tietojen kanssa dokumentoidun rajapinnan ja tietosopimusten kautta olettamatta niiden sijaitsevan samassa repositoriossa tai hakemistorakenteessa.\n29. Instanssin käyttämä ohjelmistoversio on yksilöitävissä, eikä uuden version julkaisu päivitä sitä automaattisesti.\n30. Ensimmäinen toteutus voi käyttää yhtä instanssia ilman keskitettyä monen instanssin palvelua.
+25. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.
+26. Yhteinen ohjelmisto voidaan julkaista ja ottaa käyttöön erillään yksittäisen instanssin määrityksistä ja käyttödatan tiedostoista.
+27. Instanssikohtaiset aiheet, asetukset, lähderekisterit, ajohistoria ja RSS-julkaisut eivät ole jaettavan ohjelmistoversion osia.
+28. Ohjelmisto toimii instanssin tietojen kanssa dokumentoidun rajapinnan ja tietosopimusten kautta olettamatta niiden sijaitsevan samassa repositoriossa tai hakemistorakenteessa.
+29. Instanssin käyttämä ohjelmistoversio on yksilöitävissä, eikä uuden version julkaisu päivitä sitä automaattisesti.
+30. Ensimmäinen toteutus voi käyttää yhtä instanssia ilman keskitettyä monen instanssin palvelua.
 
 ## 16. Avoimet suunnittelukysymykset
 
@@ -400,7 +417,8 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 6. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne suunnitellaan myöhemmin.
 7. **Historiatietojen säilytys:** ajon perustietojen, mahdollisten lokien ja väliaineistojen säilytysajat määritellään tietotarpeen ja tietosuojan perusteella.
 8. **Nykyisen toteutuksen siirtymä:** nykyiset osat inventoidaan ja arvioidaan ennen hyödyntämistä tai poistamista. Mitään ei poisteta ilman erillistä suunnitelmaa.
-9. **Käyttöoikeuksien tekninen toteutus:** julkisen ja ylläpitäjille rajatun tiedon erottelu ratkaistaan ennen niiden käyttöönottoa.\n10. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet, tarkka hakemistorakenne, jakelukanava, version kiinnittämisen mekanismi sekä ohjelmiston ja instanssin välinen tekninen tiedonsiirto määritellään toteutussuunnittelussa.
+9. **Käyttöoikeuksien tekninen toteutus:** julkisen ja ylläpitäjille rajatun tiedon erottelu ratkaistaan ennen niiden käyttöönottoa.
+10. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet, tarkka hakemistorakenne, jakelukanava, version kiinnittämisen mekanismi sekä ohjelmiston ja instanssin välinen tekninen tiedonsiirto määritellään toteutussuunnittelussa.
 
 ## 17. Tuottajakohtaiset toteutusohjeet
 
