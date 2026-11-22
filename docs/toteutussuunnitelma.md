@@ -1,7 +1,7 @@
 # Aiheseuraimen toteutussuunnitelma
 
 **Versio:** 0.3.60  
-**Päiväys:** 22.11.2026  
+**Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.16](vaatimusmaarittely-uudistus.md)
 
