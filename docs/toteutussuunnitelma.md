@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.55  
+**Versio:** 0.3.56  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.13](vaatimusmaarittely-uudistus.md)
@@ -87,7 +87,7 @@ Tehtäväpyynnön rakenteesta on lisäksi hyväksytty seuraavat periaatteet:
 - Myös `software_revision` ja `instance_revision` ovat kumpikin täsmälleen 40 heksadesimaalimerkkiä sisältäviä Git-commit-SHA-tunnisteita, jotka viittaavat omissa repositorioissaan olemassa oleviin committeihin.
 - `profiles` ja `instructions` säilytetään erillisinä taulukoina. Ensimmäinen kuvaa käytetyt koneelliset määritysprofiilit, toinen pakollisesti luettavat Markdown-ohjeet.
 - `profiles` on pakollinen taulukko. Tyhjä taulukko sallitaan, jos tehtävä ei käytä profiileja. Jokainen alkio on objekti, jossa ovat pakolliset kentät `id`, `repository` ja `path`. `id` yksilöi tunnetun profiilin, `repository` on aina `instance` ja `path` on profiilin määritystiedoston repositoriojuureen suhteutettu polku. Saman profiilin `id` ei saa esiintyä kahdesti. Taulukon järjestys säilytetään, koska myöhemmin lueteltu profiili voi korvata aiemmin luetellun profiilin asetuksia.
-- `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat pakolliset kentät `id`, `repository` ja repositoriojuureen suhteutettu `path`. `repository` on täsmälleen `software` tai `instance`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: tehtävätyypin ohje, profiilien ohjeet profiilien järjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
+- `instructions` on pakollinen, ei-tyhjä taulukko. Jokaisessa alkiossa ovat pakolliset kentät `id`, `repository` ja repositoriojuureen suhteutettu `path`. `repository` on täsmälleen `software` tai `instance`. Tunnisteen on vastattava tunnettua ohjetta. Ohjeet luetellaan järjestyksessä: yhteinen raportintekijän perusprompti, tehtävätyypin ohje, profiilien ohjeet profiilien järjestyksessä ja aiheen ohje. Sama ohje ei saa esiintyä useita kertoja.
 
 ### Ratkaistu määritys (`resolved_config`)
 
@@ -169,7 +169,7 @@ Kaikkien kolmen commit-tunnisteen (software_revision, instance_revision ja histo
 
 topic_id- ja task_type-kenttien syntaksi on ^[a-z0-9]+(?:-[a-z0-9]+)*$. run_id muodostetaan näiden kenttien, yleisen aikavyöhykkeen paikallisen ajan ja ajanhetken UTC-offsetin perusteella edellä määritellyllä tavalla. Erillistä task_id-kenttää ei ole.
 
-period sisältää täsmälleen pakolliset from- ja to-kentät. from on aikaleima ja to aikaleima tai null. Aikaleimat noudattavat yleistä ISO 8601 -muotoa YYYY-MM-DDTHH:mm:ss±HH:mm; sekunnit ja oikea numeerinen UTC-offset ovat pakollisia, desimaaliosia ei sallita. Jos to ei ole null, sen on oltava ajallisesti myöhempi kuin from. Objektissa ei ole timezone- eikä cutoff_at-kenttää.
+period sisältää täsmälleen pakolliset from- ja to-kentät. from on aikaleima ja to aikaleima tai null. Aikaleimat noudattavat yleistä ISO 8601 -muotoa YYYY-MM-DDTHH:mm:ss±HH:mm; sekunnit ja oikea numeerinen UTC-offset ovat pakollisia, desimaaliosia ei sallita. Jos to ei ole null, sen on oltava ajallisesti myöhempi kuin from. Seuranta-aikaväli tulkitaan puoliksi avoimena aikavälinä `[from, to)`: alkupiste sisältyy ja loppupiste ei sisälly aikaväliin. Jos `to` on `null`, tunnettu alkupiste sisältyy ja päätepiste on avoin. Objektissa ei ole timezone- eikä cutoff_at-kenttää.
 
 issued_at ja deadline_at noudattavat samaa aikaleimamuotoa ja yleisen resolved_config.timezone-asetuksen offset-sääntöjä. deadline_at on ajallisesti myöhempi kuin issued_at; määräaika lasketaan tehtävätyypin käsittelyaika-asetuksen perusteella.
 
@@ -283,9 +283,10 @@ Tehtäväpyynnön Markdown-ohjeviittaukset kootaan `instructions`-taulukkoon. Jo
 
 Ohjeet luetellaan tehtäväpyynnössä tässä järjestyksessä:
 
-1. tehtävätyypin Markdown-ohje;
-2. käytettyjen profiilien Markdown-ohjeet siinä järjestyksessä kuin profiilit on ilmoitettu aihekohtaisessa määrityksessä ja yhdistetty konfiguraatioon;
-3. aihekohtainen Markdown-ohje.
+1. yhteinen raportintekijän perusprompti ohjelmistoreposta;
+2. tehtävätyypin Markdown-ohje;
+3. käytettyjen profiilien Markdown-ohjeet siinä järjestyksessä kuin profiilit on ilmoitettu aihekohtaisessa määrityksessä ja yhdistetty konfiguraatioon;
+4. aihekohtainen Markdown-ohje.
 
 Jokainen `instructions`-taulukon alkio yksilöi ohjeen `id`-, `repository`- ja `path`-kentillä. Raportintuottaja lukee kaikki luetellut tiedostot eikä päättele muita ohjeita automaattisesti hakemistorakenteesta tai profiilien tunnisteista. Kaikki ohjeet haetaan tehtäväpyynnön `software_revision`- tai `instance_revision`-kentän osoittamasta oikean repositorion Git-commitista. Näin myös profiilien ohjeet pysyvät muuttumattomina koko tehtävän käsittelyn ajan.
 
@@ -657,6 +658,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.56 (22.11.2026):** yhdenmukaistettiin tehtäväpyynnön ohjejärjestys ja aikavälin puoliksi avoin tulkinta yhteisen peruspromptin sekä raportointijaksojen rajojen osalta.
 
 - **0.3.55 (22.11.2026):** lisättiin ohjelmistorepoon kuuluva yhteinen raportintekijän perusprompti ja sen ohjeviittausten järjestys, tehtäväpyynnön aikavälin puoliksi avoin tulkinta, kanonisen ajotietueen säilyvän tapahtumahistorian periaatteet sekä lähdekohtaiset avausyritystilastot ja Valvomon lähdenäkymä. Ajotietueiden hakemistorakenne jätettiin avoimeksi; lähteiden automaattista käytöstä poistamista ei sallita pelkkien tilastojen perusteella.
 
