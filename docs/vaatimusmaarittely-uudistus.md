@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.14  
+**Versio:** 0.12.15  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -535,6 +535,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.15 – 22.11.2026:** täsmennettiin yhteisen peruspromptin paikka tehtäväpyynnön ohjejärjestyksessä ja yhdenmukaistettiin lähdehavaintojen tietosisältö sekä Valvomon lähdetilastojen vaatimukset.
 
 - **0.12.14 – 22.11.2026:** täsmennettiin tehtäväpyynnön yhteisen raportintekijän peruspromptin viittaus ja ohjeiden järjestys, seuranta-aikavälin puoliksi avoin tulkinta, lähdekohtaiset avausyritysten mittarit sekä Valvomon lähdetilastot ja hallittu käytöstä poistamisen arviointi.
 
