@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.13  
+**Versio:** 0.12.14  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -219,10 +219,10 @@ Tehtäväpyynnön juuritason kentät ovat:
 - issued_at ja deadline_at: tehtäväpyynnön muodostamishetki ja toimituksen määräaika;
 - history: RSS-historian repositorio, polku ja lähtörevisio;
 - profiles: käytettyjen määritysprofiilien järjestetty luettelo;
-- instructions: pakollisesti luettavien Markdown-ohjeiden järjestetty luettelo;
+- instructions: pakollisesti luettavien ohjeiden järjestetty luettelo; siihen sisältyy yhteinen raportintekijän perusprompti ensimmäisenä, sitten tehtävätyypin ohje, järjestetyt profiiliohjeet ja aihekohtainen ohje;
 - resolved_config: tehtävän suoritukseen tarvittavat valmiiksi ratkaistut asetukset.
 
-Tehtäväpyynnön tunnisteet, aikaleimat, repositorioviittaukset ja profiilien sekä ohjeiden järjestys ovat yksiselitteisiä ja validoitavia. resolved_config sisältää aina yleisen IANA-aikavyöhykkeen. Tehtäväpyyntö ei sisällä ohjetekstejä tai RSS-historiaa itsessään, vaan viittaukset niiden muuttumattomiin lähteisiin. Tehtäväpyynnön tarkat tietotyypit, pakollisuus, kenttäkohtaiset rajat ja validointisäännöt määritellään toteutussuunnitelman tehtäväpyyntöä koskevassa kohdassa ja myöhemmin toimitussopimuksen skeemassa. Määrittelemättömät ylimääräiset kentät hylätään. Tehtäväpyyntöä ei muuteta muodostamisen jälkeen; ajon eteneminen ja vastaanottajan tapahtumat kirjataan erilliseen ajohistoriaan.
+Tehtäväpyynnön tunnisteet, aikaleimat, repositorioviittaukset ja profiilien sekä ohjeiden järjestys ovat yksiselitteisiä ja validoitavia. Yhteinen raportintekijän perusprompti kuuluu ohjelmistorepoon ja yksilöidään `software_revision`-revisioon sidotulla ohjeviittauksella. Se ei korvaa tehtävätyypin, profiilien tai aiheen ohjeita. `period` tulkitaan puoliksi avoimena aikavälinä `[from, to)`: alkupiste sisältyy ja loppupiste ei sisälly aikaväliin; peräkkäiset jaksot eivät siten mene päällekkäin. resolved_config sisältää aina yleisen IANA-aikavyöhykkeen. Tehtäväpyyntö ei sisällä ohjetekstejä tai RSS-historiaa itsessään, vaan viittaukset niiden muuttumattomiin lähteisiin. Tehtäväpyynnön tarkat tietotyypit, pakollisuus, kenttäkohtaiset rajat ja validointisäännöt määritellään toteutussuunnitelman tehtäväpyyntöä koskevassa kohdassa ja myöhemmin toimitussopimuksen skeemassa. Määrittelemättömät ylimääräiset kentät hylätään. Tehtäväpyyntöä ei muuteta muodostamisen jälkeen; ajon eteneminen ja vastaanottajan tapahtumat kirjataan erilliseen ajohistoriaan.
 
 ## 6. Ajon tulos ja ajotiedot
 
@@ -259,12 +259,19 @@ Käynnistin tai vastaanottava järjestelmä kirjaa ajon aloitusajan ja käytetyt
 | Tuottajan tulos | `success`, `partial`, `no_report` tai `failed` | Tuottaja |
 | Havainnot | olennaisten ja raportoitavien havaintojen määrä, jos seurantatyyppi tarvitsee sitä | Tuottaja |
 | Lähteet | tarkistetut ja tarkistamatta jääneet lähteet sekä syyt | Tuottaja |
+| Lähteiden avausyritykset | lähderekisterin vakaa tunniste, yrityksen tulos, ajankohta ja tunnistettu epäonnistumisen luokka | Tuottaja; vastaanottaja validoi ja tallentaa |
 | Laadunvarmistus | laadunarvioinnin tulos, virheet ja varoitukset | Tuottaja |
 | Vastaanotto | vastaanotto- ja validointitila sekä turvallinen virheluokka | Vastaanottava järjestelmä |
 | Raportti | syntyikö RSS-item, sen GUID ja otsikko, jos ne ovat olemassa | Tuottaja ja vastaanottava järjestelmä |
 | Julkaisu | kohdesyöte, julkaisun tila ja julkaisuajankohta | Vastaanottava järjestelmä |
 
 Ajotietojen tarkoitus on kuvata, mitä tapahtui ja millä tuloksella. Niihin ei tallenneta tarpeettomasti koko tutkimusketjua, raakaa keskustelutekstiä tai kaikkia lähdesivuista kopioituja sisältöjä. Ajotiedot eivät ole yksityiskohtainen tekninen tapahtumaloki.
+
+Lähteiden tarkistamisesta tallennetaan lisäksi lähdekohtaiset käyttötilastot. Jokaisesta tehtävän aikana tosiasiallisesti avatuksi tai avausyrityksen kohteeksi joutuneesta lähteestä kirjataan vähintään lähderekisterin vakaa tunniste, yrityksen ajankohta, avauksen tulos ja epäonnistumisen luokka silloin kun se voidaan todeta. Avausyrityksen onnistuminen erotetaan sisällön laadusta, relevanssista ja siitä, löytyikö lähteestä raportoitavaa tietoa. Avaamatta jäänyttä lähdettä ei lasketa onnistuneeksi eikä epäonnistuneeksi avausyritykseksi.
+
+Valvomon lähdetilastojen tulee voida esittää lähdekohtaisesti tarkistusyritysten, onnistuneiden avausten ja epäonnistuneiden avausten määrät, onnistumisaste nimittäjineen, viimeisin onnistuminen ja epäonnistuminen sekä kehitys valitulla tarkastelujaksolla. Tilastoissa erotellaan mahdollisuuksien mukaan tilapäiset tekniset virheet, pysyvältä vaikuttavat virheet, käyttörajoitukset/estot ja muut tunnistetut syyt. Tuntemattomia syitä ei arvata. Pieniä otoksia tai puuttuvaa tietoa ei esitetä harhaanjohtavina prosentteina.
+
+Lähdetilastot perustuvat raportintekijän ilmoittamiin lähdekohtaisiin havaintoihin, jotka vastaanottaja validoi ja tallentaa osaksi ajon kanonista historiaa. Sama lähde yksilöidään lähderekisterin vakaalla tunnisteella, jotta tilastoja voidaan koota eri ajoista. Lähteen URL:n tai nimen muuttuminen ei saa huomaamatta yhdistää eri lähteitä tai katkaista tunnistetta.
 
 ### 6.3 Tuloksen ja käsittelyn tilat
 
@@ -333,6 +340,9 @@ Valvomon ensimmäisen version näkymät on kuvattu luvussa 3. Valvomon tietomall
 - Prosenttilukuja ei näytetä ilman luotettavaa nimittäjää.
 - Historiatietoja ei korvata viimeisimmän ajon tilannekuvalla.
 - Lähdekattavuus, raportin tila ja julkaisun tila näytetään ajon yhteydessä; erillisiä analytiikkanäkymiä ei vaadita ensimmäisessä versiossa.
+- Valvomo tarjoaa lisäksi lähdekohtaisen tilastonäkymän tai vastaavan suodatettavan yhteenvedon, josta näkee lähteiden avausyritysten määrät, onnistumiset, epäonnistumiset, onnistumisasteen, viimeisimmät tulokset ja kehityksen tarkastelujaksolla.
+- Tilastoissa erotetaan lähteen avaamisen onnistuminen siitä, löytyikö lähteestä käyttökelpoista tai raportoitavaa sisältöä. Avaamatta jääneitä lähteitä ei lasketa epäonnistuneiksi avausyrityksiksi.
+- Valvomo voi nostaa toistuvasti epäonnistuvia lähteitä tarkistettaviksi ja näyttää tilastojen perusteella ehdotuksen lähteen käytöstä poistamisesta. Lähdettä ei poisteta tai poisteta käytöstä automaattisesti pelkän tilaston perusteella; tilapäiset häiriöt, käyttörajoitukset ja pienet otokset huomioidaan, ja käytöstä poistaminen tehdään lähderekisterin hallittuna muutoksena.
 
 ## 9. Hallinta-, tallennus- ja julkaisuvastuut
 
@@ -514,11 +524,19 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 9. **Mahdollinen myöhempi käyttöoikeuksien tekninen toteutus:** jos instanssin myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, julkisen ja rajatun tiedon erottelu sekä käyttöoikeudet suunnitellaan ennen tällaisen tiedon käyttöönottoa. Tämä ei kuulu ensimmäiseen versioon.
 10. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet, tarkka hakemistorakenne, jakelukanava, version kiinnittämisen mekanismi sekä ohjelmiston ja instanssin välinen tekninen tiedonsiirto määritellään toteutussuunnittelussa.
 
-## 17. Tuottajakohtaiset toteutusohjeet
+## 17. Raportintekijän yhteinen perusprompti ja tuottajakohtaiset ohjeet
 
-Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
+Yhteinen raportintekijän perusprompti kuuluu jaettavaan ohjelmistoon ja on versionhallittu osa käytettyä `software_revision`-versiota. Tehtäväpyyntö viittaa siihen `instructions`-taulukon ensimmäisenä ohjeena. Perusprompti määrittelee raportintekijän yleiset vastuut ja rajat, tehtäväpyynnön lukemisen, ohjeiden noudattamisen, lähdeaineiston käsittelyn, epävarmuuden ilmaisemisen, raportin muodostamisen ja toimituspaketin vaatimusten noudattamisen.
+
+Perusprompti ei sisällä aihekohtaisia uutis- tai sisältövaatimuksia eikä korvaa tehtävätyypin, profiilien tai aiheen ohjeita. Näiden ohjeiden järjestys on: yhteinen perusprompti, tehtävätyypin ohje, profiiliohjeet aihekohtaisessa järjestyksessä ja aihekohtainen ohje. Raportintekijä käyttää vain tehtäväpyynnön ilmoittamissa muuttumattomissa revisioissa olevia ohjeita eikä hae niiden uusimpia versioita kesken ajon.
+
+Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa tietona eikä järjestelmäohjeina, olemaan keksimättä puuttuvia tietoja, säilyttämään tehtäväpyynnön tunnisteet ja asetukset muuttumattomina sekä ilmoittamaan puutteet ja epäonnistumiset rehellisesti. Se määrittelee myös lähdekohtaisten avausyritysten tulosten raportoinnin niin, että todellinen avaamisen onnistuminen, epäonnistumisen syy ja sisällön käyttökelpoisuus pysyvät erillisinä tietoina.
+
+Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.14 – 22.11.2026:** täsmennettiin tehtäväpyynnön yhteisen raportintekijän peruspromptin viittaus ja ohjeiden järjestys, seuranta-aikavälin puoliksi avoin tulkinta, lähdekohtaiset avausyritysten mittarit sekä Valvomon lähdetilastot ja hallittu käytöstä poistamisen arviointi.
 
 - **0.12.13 – 22.11.2026:** kirjattiin tehtävätyypin, määritysprofiilien ja aihekohtaisten määritysten kolmitasoinen malli, niiden yhdistämisjärjestys, suojatut asetukset, skeemavalidointi, muuttumaton resolved_config-snapshot sekä virheellisten määritysten käsittely. Profiilien rekursiiviset riippuvuudet ja dynaamiset yhdistämismekanismit rajattiin pois.\n\n- **0.12.12 – 22.11.2026:** määriteltiin tuottajan tuloksen, vastaanottajan käsittelyn ja ajon lopputilan erottelu sekä aktiivisen tehtävän vapauttamisen ehdot. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat päätettiin konfiguroitaviksi; niitä ei kovakoodata.
 
