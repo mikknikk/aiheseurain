@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.15  
+**Versio:** 0.12.16  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -126,6 +126,16 @@ Virheellinen tai ristiriitainen määritys estää uuden tehtäväpyynnön muodo
 
 Ensimmäisessä versiossa käytetään vain näitä kolmea määritystasoa. Profiilit eivät peri toisiaan eikä profiiliriippuvuuksia tai rekursiivisia määritysketjuja toteuteta. Käytössä ei ole dynaamista asetusten hakupalvelua, automaattista optimointia eikä käyttäjän määrittelemiä yhdistämisfunktioita. Kaikki asetukset ratkaistaan ennen tehtäväpyynnön muodostamista.
 
+### 4.3.1 Määritysten ja viitattujen aineistojen skeemat
+
+Määritysten rakenteet validoidaan JSON Schema Draft 2020-12 -standardin mukaisesti. Yhteiseen ohjelmistoon kuuluvat skeemat kattavat tehtävätyypin määrityksen, tehtävätyyppikohtaiset asetukset, määritysprofiilin, aihekohtaisen määrityksen, lähderekisterin, tehtäväpyynnön ja toimitusmetatiedot. Varsinaiset määritystiedostot ja lähderekisteriaineistot kuuluvat instanssille.
+
+Ensimmäisessä versiossa määritysprofiili sidotaan yhteen tehtävätyyppiin. Profiilia voidaan käyttää useassa saman tehtävätyypin aiheessa, mutta sitä ei voi käyttää toisen tehtävätyypin yhteydessä. Tehtävätyypin määritys yksilöi asetusskeeman, oletukset, sallitut asetukset, ylikirjoitettavat asetuskohdat sekä käsittely-, raportointi- ja ohjevaatimukset.
+
+Tehtäväpyynnön `inputs`-taulukko sisältää rakenteisten syöteaineistojen viittaukset. Jokainen viittaus yksilöi aineiston tunnisteen, tyypin, repositorion ja polun. Ensimmäisessä versiossa lähderekisteri on tällainen erillinen aineisto (`kind: source_registry`), joka luetaan instanssirepositoriosta tehtäväpyynnön `instance_revision`-revisiosta. Tarkka lähderekisterin aihekohtainen rajaus ja mahdollinen uudelleenkäyttö useiden aiheiden välillä jätetään erikseen keskusteltavaksi; skeeman määrittely ei yksin ratkaise tätä hallintamallia.
+
+Markdown-ohjeita ei validoida JSON Scheman avulla. Niiden tarkistuksiin kuuluvat yksilöllinen ohjetunniste, tiedoston olemassaolo oikeassa repositoriossa ja kiinnitetyssä commitissa, repositoriojuureen suhteutettu turvallinen polku, ohjeiden oikea järjestys ja duplikaattien puuttuminen. Ohjeiden sisällön tulee olla ristiriidaton koneellisten määritysten kanssa. Ohjeiden metatietoa ei kahdenneta Markdown-etusivulla, vaan se pidetään JSON-määrityksissä ja tehtäväpyynnön viittauksissa.
+
 ### 4.4 Seurantatyypit ja raporttipohjat
 
 Kaikki aiheet käyttävät yhteistä suoritusprosessia. Seurantatyyppi määrittelee, millaisia havaintoja etsitään, mitä luokituksia tarvitaan ja mitä erityisiä tarkistuksia tehdään. Raporttipohja määrittelee RSS-raportin rakenteen.
@@ -219,10 +229,11 @@ Tehtäväpyynnön juuritason kentät ovat:
 - issued_at ja deadline_at: tehtäväpyynnön muodostamishetki ja toimituksen määräaika;
 - history: RSS-historian repositorio, polku ja lähtörevisio;
 - profiles: käytettyjen määritysprofiilien järjestetty luettelo;
+- inputs: tehtävän tarvitsemien rakenteisten syöteaineistojen järjestetty viittausluettelo, esimerkiksi lähderekisteri;
 - instructions: pakollisesti luettavien ohjeiden järjestetty luettelo; siihen sisältyy yhteinen raportintekijän perusprompti ensimmäisenä, sitten tehtävätyypin ohje, järjestetyt profiiliohjeet ja aihekohtainen ohje;
 - resolved_config: tehtävän suoritukseen tarvittavat valmiiksi ratkaistut asetukset.
 
-Tehtäväpyynnön tunnisteet, aikaleimat, repositorioviittaukset ja profiilien sekä ohjeiden järjestys ovat yksiselitteisiä ja validoitavia. Yhteinen raportintekijän perusprompti kuuluu ohjelmistorepoon ja yksilöidään `software_revision`-revisioon sidotulla ohjeviittauksella. Se ei korvaa tehtävätyypin, profiilien tai aiheen ohjeita. `period` tulkitaan puoliksi avoimena aikavälinä `[from, to)`: alkupiste sisältyy ja loppupiste ei sisälly aikaväliin; peräkkäiset jaksot eivät siten mene päällekkäin. resolved_config sisältää aina yleisen IANA-aikavyöhykkeen. Tehtäväpyyntö ei sisällä ohjetekstejä tai RSS-historiaa itsessään, vaan viittaukset niiden muuttumattomiin lähteisiin. Tehtäväpyynnön tarkat tietotyypit, pakollisuus, kenttäkohtaiset rajat ja validointisäännöt määritellään toteutussuunnitelman tehtäväpyyntöä koskevassa kohdassa ja myöhemmin toimitussopimuksen skeemassa. Määrittelemättömät ylimääräiset kentät hylätään. Tehtäväpyyntöä ei muuteta muodostamisen jälkeen; ajon eteneminen ja vastaanottajan tapahtumat kirjataan erilliseen ajohistoriaan.
+Tehtäväpyynnön tunnisteet, aikaleimat, repositorioviittaukset ja profiilien sekä ohjeiden järjestys ovat yksiselitteisiä ja validoitavia. Yhteinen raportintekijän perusprompti kuuluu ohjelmistorepoon ja yksilöidään `software_revision`-revisioon sidotulla ohjeviittauksella. Se ei korvaa tehtävätyypin, profiilien tai aiheen ohjeita. `period` tulkitaan puoliksi avoimena aikavälinä `[from, to)`: alkupiste sisältyy ja loppupiste ei sisälly aikaväliin; peräkkäiset jaksot eivät siten mene päällekkäin. resolved_config sisältää aina yleisen IANA-aikavyöhykkeen. Tehtäväpyyntö ei sisällä ohjetekstejä, rakenteisia syöteaineistoja tai RSS-historiaa itsessään, vaan viittaukset niiden muuttumattomiin lähteisiin. `inputs` erottaa rakenteiset aineistot `instructions`-taulukon Markdown-ohjeista, `profiles`-taulukon määritysprofiileista ja `resolved_config`-objektin asetuksista. Tehtäväpyynnön tarkat tietotyypit, pakollisuus, kenttäkohtaiset rajat ja validointisäännöt määritellään toteutussuunnitelman tehtäväpyyntöä koskevassa kohdassa ja myöhemmin toimitussopimuksen skeemassa. Määrittelemättömät ylimääräiset kentät hylätään. Tehtäväpyyntöä ei muuteta muodostamisen jälkeen; ajon eteneminen ja vastaanottajan tapahtumat kirjataan erilliseen ajohistoriaan.
 
 ## 6. Ajon tulos ja ajotiedot
 
@@ -537,6 +548,8 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 ## 18. Muutosloki
 
 - **0.12.15 – 22.11.2026:** täsmennettiin yhteisen peruspromptin paikka tehtäväpyynnön ohjejärjestyksessä ja yhdenmukaistettiin lähdehavaintojen tietosisältö sekä Valvomon lähdetilastojen vaatimukset.
+
+- **0.12.16 – 22.11.2026:** hyväksyttiin määritysten ja toimituksen JSON Schema Draft 2020-12 -skeemakokonaisuuden periaatteet, tehtävätyyppikohtaiset asetusskeemat, tehtävätyyppiin sidotut profiilit, Markdown-ohjeiden erillinen validointi sekä tehtäväpyynnön rakenteisten aineistojen `inputs`-viittaukset. Lähderekisterin aihekohtainen rajaus jätettiin erikseen keskusteltavaksi.
 
 - **0.12.14 – 22.11.2026:** täsmennettiin tehtäväpyynnön yhteisen raportintekijän peruspromptin viittaus ja ohjeiden järjestys, seuranta-aikavälin puoliksi avoin tulkinta, lähdekohtaiset avausyritysten mittarit sekä Valvomon lähdetilastot ja hallittu käytöstä poistamisen arviointi.
 
