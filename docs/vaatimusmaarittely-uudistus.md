@@ -1,8 +1,8 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.0  
+**Versio:** 0.12.1  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
-**Päiväys:** 21.11.2026  
+**Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
 **Suunnitteluperiaate:** mahdollisimman yksinkertainen ja luotettava  
 **Kohderepositorio:** `mikknikk/aiheseurain`
@@ -80,7 +80,9 @@ Aiheseurainissa ei ylläpidetä erillistä omaa Kanban-käyttöliittymää, JSON
 
 ### 3.4 Yhteinen sivusto
 
-Valvomo ja RSS-lukija voivat olla saman GitHub Pages -sivuston osia. Kehitystehtäviä hallitaan GitHub Projectsissa, joka ei ole osa Pages-sivustoa.
+Valvomo ja RSS-lukija voivat olla saman GitHub Pages -sivuston osia. Ne ovat silti instanssikohtaisia palvelunäkymiä: yhteinen käyttöliittymäkoodi kuuluu jaettavaan ohjelmistoon, mutta kukin instanssi tarjoaa näkymille vain omat määrityksensä, tietonsa ja julkaisunsa. Kehitystehtäviä hallitaan GitHub Projectsissa, joka ei ole osa Pages-sivustoa.
+
+Ensimmäisessä versiossa sekä Valvomo että RSS-lukija voivat olla julkisia. Valvomoon ei siten toteuteta ensimmäisessä versiossa kirjautumista tai käyttöoikeusjärjestelmää. Tämä edellyttää, ettei julkiseen käyttöliittymään tai sen lukemiin tietoihin sisälly salaisuuksia, yksityisiä tietoja tai muuta luottamuksellista sisältöä. Jos tällaiselle tiedolle syntyy myöhemmin tarve, tietojen erottelu ja käyttöoikeudet suunnitellaan erikseen.
 
 ## 4. Aiheiden ja seurantatyyppien hallinta
 
@@ -280,6 +282,10 @@ Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään t
 - Ohjelmistoversion julkaisu ei saa itsessään muuttaa instanssin käytössä olevaa versiota. Version päivittäminen edellyttää instanssin ylläpitäjän hallitsemaa muutosta.
 - Ensimmäisen version ei tarvitse tarjota keskitettyä monen instanssin palvelua tai monivuokraaja-arkkitehtuuria. Vaatimukset koskevat ohjelmiston ja yhden instanssin välistä selkeää erottelua.
 - Julkisen ohjelmiston jakelu ei tarkoita, että jokaisen instanssin tietojen pitäisi olla julkisia. Instanssin tietojen näkyvyys ja käyttöoikeudet ratkaistaan niiden sisältöä ja käyttötarkoitusta vastaavasti.
+- Valvomo ja RSS-lukija ovat instanssikohtaisia palvelunäkymiä. Niiden yhteinen käyttöliittymäkoodi kuuluu jaettavaan ohjelmistoon, mutta käyttöliittymät näyttävät vain kyseisen instanssin tietoja ja asetuksia.
+- Ensimmäisessä versiossa sekä Valvomo että RSS-lukija voivat olla julkisia. Valvomoon ei toteuteta kirjautumista tai käyttöoikeusjärjestelmää.
+- Julkisen Valvomon tietolähteisiin, rajapintoihin ja näkymiin ei saa päätyä salaisuuksia, käyttöoikeustunnuksia, yksityisiä tietoja tai muuta luottamuksellista sisältöä. Julkisuuteen soveltumattomia tietoja ei saa tehdä turvallisiksi pelkästään piilottamalla niitä käyttöliittymässä.
+- Jos myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, tietojen erottelu ja tarvittava käyttöoikeusratkaisu suunnitellaan erikseen; se ei kuulu ensimmäisen version toteutukseen.
 
 ## 10. Virhetilanteet ja uudelleenyritykset
 
@@ -317,6 +323,7 @@ Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen
 - RSS/XML:n, ajotuloksen ja määritysten skeemat validoidaan automaattisesti.
 - Julkaisun epäonnistuminen ei saa jättää syötettä virheelliseen tai osittaiseen tilaan.
 - Valvomo ei saa sisältää GitHub-kirjoitustunnuksia tai muita salaisuuksia.
+- Ensimmäisen version julkinen Valvomo näyttää vain julkisuuteen soveltuvia instanssin tietoja. Salaisuuksia tai yksityisiä tietoja ei saa sisällyttää käyttöliittymän lukemiin julkisiin tiedostoihin tai rajapintoihin, vaikka niitä ei näytettäisi näkymässä.
 - Käyttöliittymän saavutettavuus testataan. WCAG 2.2 AAA -vaatimustenmukaisuutta ei väitetä ilman asianmukaisia testejä.
 - Uusien skriptien tulee sisältää ymmärrettävät kommentit myös ylläpitäjälle, joka ei ole ohjelmoinnin asiantuntija.
 
@@ -396,6 +403,8 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 20. Käytetyt määritysversiot voidaan jäljittää myös silloin, kun raporttituottaja ei itse tunne tai ilmoita niitä.
 21. Virheellinen tai hyväksymisehtoja täyttämätön raportti ei päädy RSS-julkaisuun.
 22. Julkiseen raporttiin, RSS-syötteeseen tai Valvomon julkiseen dataan ei päädy salaisuuksia tai tarpeettomia henkilötietoja.
+23. Valvomo ja RSS-lukija käyttävät yhteistä ohjelmistototeutusta mutta näyttävät vain oman instanssinsa tietoja, määrityksiä ja julkaisuja.
+24. Ensimmäisen version Valvomo ja RSS-lukija voivat olla julkisia ilman kirjautumista; julkisiin tietolähteisiin ei sisällytetä salaisuuksia, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
 23. Testaus estää tuotantodatan tahattoman muuttamisen.
 24. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
 25. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.
@@ -426,6 +435,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.12.1 – 22.11.2026:** täsmennetty Valvomon ja RSS-lukijan instanssikohtaisuus: käyttöliittymien yhteinen koodi kuuluu jaettavaan ohjelmistoon, mutta näkymät käyttävät vain oman instanssin tietoja. Hyväksytty molempien käyttöliittymien julkisuus ensimmäisessä versiossa ilman kirjautumista; julkisiin tietolähteisiin ei saa sisällyttää salaisuuksia tai yksityisiä tietoja.
 - **0.12.0 – 22.11.2026:** lisätty vaatimus jaettavan yhteisen ohjelmiston ja erillisten instanssikohtaisten tietojen erottelusta. Määritelty ohjelmiston riippumattomuus instanssin repositoriosta ja tiedostopoluista sekä instanssin ohjelmistoversion kiinnittäminen ja hallittu päivittäminen. Täsmennetty, ettei ohjelmiston julkinen jakelu edellytä instanssidatan julkisuutta eikä ensimmäinen versio vaadi monen instanssin palvelualustaa.
 - **0.11.0 – 21.11.2026:** päätetty julkaista myös `partial`-tilassa syntyvät validoidut raportit. Raportissa kuvataan avoimesti seurannan puutteet ja niiden syyt. Julkaistuja RSS-itemeitä ei päivitetä jälkikäteen; olennaiset täydennykset ja korjaukset julkaistaan uusina itemeinä, jotka viittaavat alkuperäiseen raporttiin. Raportintuottaja lukee aiemmat raportit ja välttää toiston ilman olennaista uutta tietoa.
 - **0.10.0 – 20.11.2026:** yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi. Yksi käynnistys käsittelee enintään yhden aiheen; batch-ajot ja niiden tunnisteet sekä keskeytyksistä palautumisen erityislogiikka poistettu ensimmäisen version vaatimuksista. Aihevalinta yksinkertaistettu erääntymiseen ja odotusaikaan perustuvaksi. Ajohistorialle määritelty yksi kanoninen tallennusratkaisu ja erillinen tietovarasto vain perustellusta tarpeesta. Osittaisen seurannan tallennus säilytetty, mutta osittaisten raporttien julkaiseminen sekä ulkoiset ilmoitukset siirretty myöhempään vaiheeseen. Valvomo rajattu kolmeen perusnäkymään ja hyväksymiskriteerit kirjoitettu uudelleen.
