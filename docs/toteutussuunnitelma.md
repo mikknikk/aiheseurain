@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.54  
+**Versio:** 0.3.55  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.13](vaatimusmaarittely-uudistus.md)
@@ -320,6 +320,14 @@ Esimerkkirakenne:
 
 Esimerkki havainnollistaa viittausten rakennetta, repositoriovalintaa ja lukujärjestystä; lopulliset repositorioiden nimet ja tiedostopolkurakenne vahvistetaan teknisessä määrittelyssä.
 
+### 2.2.3 Raportintekijän yhteinen perusprompti
+
+Yhteinen raportintekijän perusprompti kuuluu ohjelmistorepoon ja kiinnittyy käytettyyn `software_revision`-revisioon. Tehtäväpyynnön `instructions`-taulukossa se on ensimmäisenä, ennen tehtävätyypin ohjetta, järjestettyjä profiiliohjeita ja aihekohtaista ohjetta. Jokaisella ohjeviittauksella on `repository`- ja `path`-tiedot; ohjelmistorepon ohje luetaan `software_revision`- ja instanssirepon ohjeet `instance_revision`-revisiosta.
+
+Perusprompti määrittelee raportintekijän yleisen toimintamallin: tehtäväpyynnön ja `resolved_config`-määrityksen lukemisen, ohjeiden soveltamisjärjestyksen, lähteiden tarkistamisen, lähdeaineiston käsittelyn epäluotettavana sisältönä, epävarmuuden ja puutteiden ilmoittamisen, raportin muodostamisen sekä toimituspaketin vaatimukset. Se kieltää tehtäväpyynnön tunnisteiden tai asetusten muuttamisen ja puuttuvien tietojen keksimisen. Lähteissä olevia ohjeita käsitellään lähdesisältönä, ei raportintekijän järjestelmäohjeina.
+
+Perusprompti sisältää myös vaatimuksen raportoida lähdekohtaiset avausyritykset ja niiden tulokset erillään sisällön laadusta tai relevanssista. Raportintekijä käyttää vain tehtäväpyynnössä yksilöityjä muuttumattomia ohjeversioita. Promptin tarkka teksti ja mahdollinen tuottajakohtainen sovitus suunnitellaan myöhemmin; tämä arkkitehtuuripäätös ei vielä luo promptitiedostoa eikä muuta nykyisiä automaatioita.
+
 ### 2.3 Toimitustapa: Git push erilliseen vastaanottohaaraan
 
 Raportintuottaja toimittaa tuloksensa Git pushilla erilliseen vastaanottohaaraan. Hyväksytty lähtökohta on esimerkiksi haara `raportit-inbox`.
@@ -528,7 +536,25 @@ Ajotiedot tallennetaan tässä vaiheessa julkiseen GitHub-repositorioon. Tämä 
 
 Julkiseen tallennukseen saa sisällyttää vain tarkoitukseen sopivia ajotietoja. Sinne ei tallenneta salaisuuksia, käyttöoikeustunnuksia, tarpeettomia henkilötietoja, raakaa keskustelusisältöä tai tarpeettomasti kopioitua lähdesisältöä.
 
-Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
+Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. **Ajotietueiden hakemistorakenne jätetään tässä vaiheessa avoimeksi**; sitä ei lukita esimerkinomaisella polulla eikä päivämäärä-, aihe- tai tehtävätyyppiryhmittelyllä. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
+
+#### 2.6.1 Kanoninen ajotietue ja tapahtumahistoria
+
+Jokaisesta käynnistetystä ajosta ylläpidetään yhtä vastaanottavan järjestelmän omistamaa kanonista ajotietuetta. Sen tietosisältö erottaa vähintään tehtävän tiedot, raportintekijän toimittaman tuloksen, vastaanottajan käsittelytiedot, tapahtumahistorian, julkaisun tiedot ja vastaanottajan muodostaman ajon lopputilan. Raportintekijän tulosta ei päätellä vastaanottajan havainnoista eikä vastaanottajan käsittelytilaa raportintekijän ilmoituksesta.
+
+Tapahtumahistoria on loogisesti vain lisäämiseen perustuva ja säilyttää aiemmat tapahtumat muuttumattomina. Jokaisessa tapahtumassa on yksilöivä tunniste tai muu yksiselitteinen järjestysavain, tapahtumatyyppi, tapahtuma-aika, kirjaamis-/havaintoaika tarvittaessa, alkuperä sekä tapahtuman olennaiset tiedot. Tapahtumien järjestystä ei ratkaista pelkästään aikaleimojen perusteella. Tapahtumien alustavia tyyppejä ovat ajon muodostaminen ja käynnistys, tehtävän tarjoaminen, määräajan ylittyminen, toimituksen vastaanotto, validoinnin tulos, tuottajan tuloksen kirjaaminen, hyväksyminen tai hylkääminen, julkaisun aloitus ja tulos, ajon päättäminen sekä tehtävän vapauttaminen. Lopulliset tunnisteet ja JSON-rakenne määritellään skeematyössä.
+
+Ajon lopputilan muodostaa vastaanottava järjestelmä todennettujen käsittelytapahtumien perusteella. Raportintekijän nykyiset tulostilat (`success`, `partial`, `no_report`, `failed`) säilyvät erillisinä tuottajan tietoina. Määräajan ylittyminen on tapahtuma, ei yksinään lopullinen tila. Myöhäinen toimitus täydentää alkuperäistä tietuetta uusilla tapahtumilla eikä poista aiempia havaintoja tai avaa vapautettua tehtävää uudelleen.
+
+#### 2.6.2 Lähdekohtaiset avaus- ja käyttötilastot
+
+Raportintekijä ilmoittaa jokaisesta lähteestä, jonka avaamista se tosiasiallisesti yritti, lähderekisterin vakaan tunnisteen, yrityksen tuloksen ja mahdollisuuksien mukaan epäonnistumisen luokan. Avaamisen onnistuminen erotetaan sisällön saatavuudesta, laadusta, relevanssista ja raportoitavan tiedon löytymisestä. Avaamatta jääneitä lähteitä ei lasketa onnistuneiksi eikä epäonnistuneiksi avausyrityksiksi. Vastaanottaja validoi lähdehavainnot ja tallentaa ne kanoniseen ajohistoriaan siten, että tilastot voidaan yhdistää saman lähdetunnisteen perusteella eri ajoista.
+
+Valvomon tulee esittää lähdekohtaisesti tarkastelujakson avausyritysten määrä, onnistumiset, epäonnistumiset, onnistumisaste nimittäjineen, viimeisin onnistuminen ja epäonnistuminen sekä kehityssuunta. Epäonnistumiset luokitellaan mahdollisuuksien mukaan esimerkiksi tilapäisiin verkkovirheisiin, pysyvältä vaikuttaviin virheisiin, käyttörajoituksiin/estoihin ja muihin tunnistettuihin syihin. Pieni otos, tuntematon syy tai puuttuva havainto ilmaistaan selvästi.
+
+Valvomo voi nostaa toistuvasti epäonnistuvia lähteitä ylläpitäjän tarkistettaviksi ja ehdottaa niiden poistamista käytöstä. Lähdettä ei poisteta eikä poisteta käytöstä automaattisesti pelkkien tilastojen perusteella: tilapäiset häiriöt, käyttörajoitukset, lähteen muuttunut osoite ja havaintojen määrä on arvioitava. Käytöstä poistaminen tehdään lähderekisterin hallittuna muutoksena, ja syy jää dokumentoiduksi.
+
+Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. Lähdehavaintojen täsmällinen tietorakenne ja tilastojen laskentatapa määritellään ajohistorian ja toimitussopimuksen skeematyössä.
 
 
 ### 2.7 Jaettava ohjelmisto ja erilliset instanssit
@@ -586,14 +612,15 @@ Nämä ovat tavoitetilan päätöksiä, eivät vielä toteutettuja käytäntöj�
 ## 5. Ehdotettu toteutuksen vaiheistus
 
 1. Nykyisen toteutuksen ja arkiston komponenttikohtainen inventaario.
-2. Tehtävätyyppien, määritysprofiilien ja aihekohtaisten määritysten sekä toimitussopimuksen skeemojen määrittely.
-3. Ajonhallinta: yhden aiheen valinta, `run_id`, ajotietue ja koko instanssin kattava sarjallisen käsittelyn suoja, joka sallii vain yhden aktiivisen raportointitehtävän kerrallaan.
-4. Vastaanottohaara ja Git push -toimituspaketin käsittely.
-5. Validointi, kanoninen ajohistoria ja idempotentti RSS-julkaisu.
-6. Valvomon kolme näkymää ja niiden tietolähteet.
-7. RSS-lukijan yhteensopivuuden varmistaminen.
-8. Hyväksyttyjen GitHub-käytäntöjen ja laajennettujen laatutarkistusten käyttöönotto.
-9. Nykyisten automaatioiden mahdollisen siirtymän erillinen suunnittelu ja hyväksyntä.
+2. Tehtävätyyppien, määritysprofiilien ja aihekohtaisten määritysten sekä toimitussopimuksen skeemojen määrittely, mukaan lukien tehtäväpyynnön, toimituksen ja kanonisen ajohistorian erilliset tietosopimukset.
+3. Yhteisen raportintekijän peruspromptin ja tehtäväpyynnön ohjeviittausten määrittely ja versionhallinta.
+4. Ajonhallinta: yhden aiheen valinta, `run_id`, ajotietue ja koko instanssin kattava sarjallisen käsittelyn suoja, joka sallii vain yhden aktiivisen raportointitehtävän kerrallaan.
+5. Vastaanottohaara ja Git push -toimituspaketin käsittely.
+6. Validointi, kanoninen ajohistoria, lähdekohtaisten avausyritysten tallennus ja idempotentti RSS-julkaisu.
+7. Valvomon kolme perusnäkymää sekä lähdekohtaiset avaus- ja käyttötilastot.
+8. RSS-lukijan yhteensopivuuden varmistaminen.
+9. Hyväksyttyjen GitHub-käytäntöjen ja laajennettujen laatutarkistusten käyttöönotto.
+10. Nykyisten automaatioiden mahdollisen siirtymän erillinen suunnittelu ja hyväksyntä.
 
 Vaiheistus on suunnitteluehdotus. Se ei anna lupaa käynnistää tuotantoa tai muuttaa nykyisiä automaatioita.
 
@@ -621,13 +648,17 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - miten tehtävätyyppien, profiilien ja aihekohtaisten määritysten tarkat JSON Schema -skeemat, sallitut ylikirjoitukset ja Markdown-ohjeiden viittaukset määritellään;
 - miten nykyisen GitHub App -yhteyden tosiasialliset oikeudet ja `main`-haaran suojaus varmistetaan käyttöönotossa; ensimmäisessä versiossa ei edellytetä teknistä, vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta;
 - miten toimituspaketin tarkat tulostilakohtaiset tiedostovaatimukset ja skeemat määritellään; eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3;
-- miten `metadata.json`-tiedoston tarkka skeema määritellään;
+- miten `metadata.json`-tiedoston tarkka skeema määritellään, mukaan lukien tuottajan tuloksen ja vastaanottajan ajonhallinnan erottelu, tapahtumien rakenne ja lähdekohtaiset avausyritysten havainnot;
+- miten raportintekijän yhteinen perusprompti kirjoitetaan, testataan ja versioidaan ohjelmistorepossa sekä miten se sovitetaan tuottajaintegraation käyttöön;
+- miten lähdekohtaisten avausyritysten onnistumiset, epäonnistumiset, virheluokat ja tarkastelujaksot esitetään tilastoina sekä millä periaatteilla toistuvasti epäonnistuva lähde ehdotetaan poistettavaksi käytöstä;
 - miten vastaanottohaaran toimituksia säilytetään ja siivotaan turvallisesti;
 - miten julkaisun ja ajotietojen tallennuksen virhetilanteista palaudutaan;
 - miten julkisten käyttöliittymien ja niiden lukemien tietolähteiden sisältö tarkistetaan automaattisesti niin, ettei niihin päädy salaisuuksia tai yksityisiä tietoja;
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.55 (22.11.2026):** lisättiin ohjelmistorepoon kuuluva yhteinen raportintekijän perusprompti ja sen ohjeviittausten järjestys, tehtäväpyynnön aikavälin puoliksi avoin tulkinta, kanonisen ajotietueen säilyvän tapahtumahistorian periaatteet sekä lähdekohtaiset avausyritystilastot ja Valvomon lähdenäkymä. Ajotietueiden hakemistorakenne jätettiin avoimeksi; lähteiden automaattista käytöstä poistamista ei sallita pelkkien tilastojen perusteella.
 
 - **0.3.54 (22.11.2026):** määriteltiin kolmitasoinen määritysmalli ja sen yhdistämisjärjestys, suojatut asetukset, erillinen skeema- ja oletusarvovastuu, yksittäisten ja yhdistettyjen määritysten validointi sekä muuttumaton `resolved_config`-snapshot. Täsmennettiin virheellisten määritysten käsittely ja rajattiin rekursiiviset profiiliriippuvuudet sekä dynaamiset yhdistämismekanismit pois.\n\n- **0.3.53 (22.11.2026):** määriteltiin käsittelyn valmistuminen ja aktiivisen tehtävän vapauttaminen. Tuottajan tulos, vastaanottajan käsittely ja ajon lopputila erotettiin. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat määriteltiin konfiguroitaviksi, eikä niitä kovakoodata.
 
