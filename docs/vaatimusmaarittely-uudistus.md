@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.9  
+**Versio:** 0.12.10  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -208,7 +208,11 @@ Ajotietojen tarkoitus on kuvata, mitä tapahtui ja millä tuloksella. Niihin ei 
 
 `partial` kuvaa osittaista seurantaa. Jos osittaisesta seurannasta syntyy raportti, se julkaistaan RSS-syötteeseen. Raportissa kerrotaan selvästi, mikä jäi tarkistamatta tai puutteelliseksi, miksi näin tapahtui ja miten se vaikuttaa kattavuuteen. Myöhemmät ajot eivät muokkaa julkaistua itemiä: olennainen täydennys tai korjaus julkaistaan uutena, avoimesti alkuperäiseen raporttiin viittaavana iteminä.
 
-**Vastaanottavan järjestelmän käsittelytila** erottaa vähintään vastaanoton, validoinnin, hyväksynnän, hylkäyksen, julkaisun ja julkaisun epäonnistumisen. Ajon elinkaaren hallinnassa voidaan lisäksi käyttää tiloja jonossa, käynnissä, aikakatkaistu ja peruutettu. Jos tuottaja ei toimita tulosta määräaikaan mennessä, vastaanottava järjestelmä muodostaa ajotietueen `failed`-tilaisena ilman tuottajan toimitusta. Tämä vastaanottajan muodostama tietue ei väitä sisältävänsä tuottajan ilmoittamaa tulosta tai virhekuvausta: siihen kirjataan vain vastaanottajan todennettavissa oleva tieto, kuten määräajan umpeutuminen tai muu havaittu toimitus-/yhteysvirhe. Tuntemattomia syitä tai puuttuvia tuottajan metatietoja ei täydennetä arvauksilla.
+**Vastaanottavan järjestelmän käsittelyä ei kuvata myöhäisen toimituksen tapauksessa yhdellä yliajettavalla lopputilalla.** Vastaanottaja kirjaa ajon käsittelyn erillisinä, aikajärjestyksessä säilyvinä tapahtumina. Tapahtumia ovat vähintään vastaanoton määräajan umpeutuminen tai muu toimituksen puuttumisen havainto, myöhäisen toimituksen vastaanotto, validoinnin aloitus ja tulos, toimituksen hyväksyminen tai hylkääminen sekä mahdollinen RSS-julkaisu tai julkaisun epäonnistuminen. Tapahtumat kirjataan vain, kun vastaanottaja voi todentaa ne. Aiemmat tapahtumat säilyvät muuttumattomina, eikä myöhempi tapahtuma korvaa niitä.
+
+Valvomo näyttää tapahtumaketjusta sekä alkuperäisen määräajan ylityksen että myöhäisen toimituksen myöhemmät käsittelyvaiheet. Ajon ajantasainen käsittelytilanne voidaan esittää tapahtumien perusteella, mutta sitä ei saa muodostaa siten, että alkuperäinen määräajan ylitys katoaa tai että vastaanottajan tapahtuma esitetään tuottajan tuloksena. Myöhäisen toimituksen hyväksyminen ei jälkikäteen muuta määräaikaan liittynyttä havaintoa onnistumiseksi.
+
+Ajon elinkaaren hallinnassa voidaan lisäksi käyttää tiloja jonossa, käynnissä, aikakatkaistu ja peruutettu. Jos tuottaja ei toimita tulosta määräaikaan mennessä, vastaanottava järjestelmä muodostaa ajotietueen `failed`-tilaisena ilman tuottajan toimitusta. Tämä vastaanottajan muodostama tietue ei väitä sisältävänsä tuottajan ilmoittamaa tulosta tai virhekuvausta: siihen kirjataan vain vastaanottajan todennettavissa oleva tieto, kuten määräajan umpeutuminen tai muu havaittu toimitus-/yhteysvirhe. Tuntemattomia syitä tai puuttuvia tuottajan metatietoja ei täydennetä arvauksilla.
 
 Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Julkaisuvirhe ei muuta onnistunutta tutkimustyötä epäonnistuneeksi.
 
@@ -249,7 +253,8 @@ Valvomon ensimmäisen version näkymät on kuvattu luvussa 3. Valvomon tietomall
 
 - Valvomo erottaa ajon onnistumisen, raportin syntymisen ja RSS-julkaisun onnistumisen toisistaan.
 - Puuttuva tieto esitetään tuntemattomana, ei onnistumisena tai epäonnistumisena.
-- Valvomo erottaa tuottajan ilmoittaman tulostilan vastaanottajan muodostamasta ajon lopputilasta ja käsittelytiloista. Näkymä ilmaisee, mistä tiedot ovat peräisin; jos tuottajan toimitusta ei ole, tuottajan tulostila esitetään puuttuvana/tuntemattomana eikä vastaanottajan `failed`-merkintää näytetä tuottajan tuloksena.
+- Valvomo erottaa tuottajan ilmoittaman tulostilan vastaanottajan muodostamasta ajon lopputilasta ja käsittelytapahtumista. Näkymä ilmaisee, mistä tiedot ovat peräisin; jos tuottajan toimitusta ei ole, tuottajan tulostila esitetään puuttuvana/tuntemattomana eikä vastaanottajan `failed`-merkintää näytetä tuottajan tuloksena.
+- Myöhäisen toimituksen käsittely esitetään aikajärjestyksessä säilyvinä tapahtumina. Valvomo näyttää erikseen määräajan ylityksen, myöhäisen vastaanoton, validoinnin, hyväksynnän tai hylkäyksen sekä mahdollisen julkaisun. Myöhempi tapahtuma ei peitä aiempaa tapahtumaa eikä muuta sen merkitystä.
 - Vastaanottajan muodostama ajotietue ilman tuottajan toimitusta näkyy ajohistoriassa normaalina ajona, jonka tuottajan tulos puuttuu ja jonka vastaanottajan todentama lopputila ja syy näytetään erikseen.
 - Vanhentunutta tilaa ei esitetä ajantasaisena.
 - Käynnissä-tila näytetään vain, jos ajosta on tuore ja todennettava käynnissä-merkintä.
@@ -443,6 +448,8 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
 
 ## 18. Muutosloki
+
+- **0.12.10 – 22.11.2026:** hyväksytty myöhäisen toimituksen käsittelyn esittäminen erillisinä, aikajärjestyksessä säilyvinä vastaanottajan tapahtumina. Määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä/hylkäys ja mahdollinen julkaisu säilyvät erillisinä tietoina; myöhempi tapahtuma ei korvaa aiempaa.
 
 - **0.12.9 – 22.11.2026:** täsmennetty, että myöhäinen hyväksytty tuottajan toimitus täydentää jo muodostettua kanonista ajotietuetta erillisenä tuottajan tuloksena eikä korvaa vastaanottajan aiemmin kirjaamia määräajan ylityksen ja toimituksen puuttumisen havaintoja.
 
