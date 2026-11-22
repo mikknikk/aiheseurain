@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.32  
+**Versio:** 0.3.33  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.11.0](vaatimusmaarittely-uudistus.md)
@@ -266,13 +266,28 @@ Pakolliset perustiedot:
 - `topic_id`: seurattavan aiheen tunniste;
 - `task_type`: käytetyn tehtävätyypin tunniste;
 - `source_revision`: täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`, `A–F`). Tunnisteen on viitattava tässä repositoriossa olemassa olevaan commitiin. Sen osoittaman commitin määrityksiä ja Markdown-ohjeita käytetään tehtävän käsittelyssä; arvoa ei normalisoida eikä korvata haaraviittauksella;
-- `period`: toteutuneen ajon seuranta-aikavälin kuvaava objekti, joka sisältää `from`-, `to`-, `cutoff_at`- ja `timezone`-kentät. Tämä on toimituksen metatietorakenne, ei tehtäväpyynnön `period`-objekti: tehtäväpyynnössä `period` sisältää vain `from`- ja `to`-kentät, ja yleinen aikavyöhyke välitetään `resolved_config.timezone`-kentässä;
+- `period`: toteutuneen ajon seuranta-aikavälin kuvaava objekti, joka sisältää `from`-, `to`- ja `cutoff_at`-kentät. Tämä on toimituksen metatietorakenne, ei tehtäväpyynnön `period`-objekti: tehtäväpyynnössä `period` sisältää vain `from`- ja `to`-kentät. Aikavyöhyke määräytyy tehtäväpyynnön `resolved_config.timezone`-kentästä, eikä sitä kopioida metatietojen `period`-objektiin;
 - `profiles`: käytettyjen määritysprofiilien tunnisteet taulukkona;
 - `sources`: ajossa tarkistettujen lähteiden tiedot taulukkona;
 - `status`: ajon lopputila (`success`, `partial`, `no_report` tai `failed`);
 - `started_at` ja `completed_at`: ajon aloitus- ja valmistumishetki.
 
-Kaikki metatiedoston varsinaiset aikaleimat esitetään yleisen `timezone`-asetuksen paikallisessa ajassa ISO 8601 -muodossa, ja jokaisessa aikaleimassa on mukana kyseisen ajanhetken numeerinen UTC-offset. `period.from` on seuranta-aikavälin alku, `period.to` tehtäväpyynnön alkuperäinen loppu (joka voi olla `null`) ja `period.cutoff_at` tarkka hetki, johon asti aineisto tosiasiassa otettiin mukaan. `started_at` ja `completed_at` esitetään samassa aikavyöhykkeessä. `period.timezone` tallentaa ajossa käytetyn yleisen IANA-aikavyöhyketunnisteen, esimerkiksi `Europe/Helsinki`, metatietojen jäljitettävyyttä varten. Se on metatietojen oma lisätieto eikä tehtäväpyynnön `period`-objektin kenttä; sen arvon on vastattava tehtäväpyynnön `resolved_config.timezone`-arvoa. Lähteen alkuperäinen aikaleima ja lähdekohtainen aikavyöhyketieto voidaan säilyttää lähdekohtaisessa tiedossa jäljitettävyyttä varten. Lähteiden ajat muunnetaan Aiheseuraimen yleiseen aikavyöhykkeeseen raporteissa ja käyttöliittymässä.
+Kaikki metatiedoston varsinaiset aikaleimat esitetään tehtäväpyynnön `resolved_config.timezone`-asetuksen mukaisessa paikallisessa ajassa ISO 8601 -muodossa, ja jokaisessa aikaleimassa on mukana kyseisen ajanhetken numeerinen UTC-offset. `period.from` on seuranta-aikavälin alku, `period.to` tehtäväpyynnön alkuperäinen loppu (joka voi olla `null`) ja `period.cutoff_at` tarkka hetki, johon asti aineisto tosiasiassa otettiin mukaan. `started_at` ja `completed_at` esitetään samassa aikavyöhykkeessä. Metatietoihin ei lisätä erillistä aikavyöhyketunnistekenttää, koska käytetty IANA-aikavyöhyke saadaan tehtäväpyynnön `resolved_config.timezone`-kentästä ja aikaleimojen offsetit voidaan validoida sitä vasten.
+
+Tehtäväpyynnön ja toimitusmetatietojen vastaavuus tarkistetaan seuraavasti:
+
+| Tehtäväpyyntö (`data/tehtava.json`) | Toimitus (`metadata.json`) | Tarkistus |
+|---|---|---|
+| `run_id` | `run_id` | Täsmälleen sama |
+| `topic_id` | `topic_id` | Täsmälleen sama |
+| `task_type` | `task_type` | Täsmälleen sama |
+| `source_revision` | `source_revision` | Täsmälleen sama commit-SHA |
+| `profiles` | `profiles` | Samat tunnisteet samassa järjestyksessä |
+| `period.from` | `period.from` | Täsmälleen sama |
+| `period.to` | `period.to` | Täsmälleen sama, myös `null`-arvo |
+| `resolved_config.timezone` | Ei vastaavaa kenttää | Asetusta ei kopioida toimitukseen; sitä käytetään metatietojen aikaleimojen ja offsetien validointiin |
+
+`metadata.period.cutoff_at` on raportintuottajan ilmoittama toteutunut seurannan päättymishetki. Se ei korvaa tehtäväpyynnön `period.to`-arvoa. Tehtäväpyynnön `issued_at`-, `deadline_at`-, `history`-, `instructions`- ja `resolved_config`-kenttiä ei kopioida toimitusmetatietoihin. Tehtäväpyyntö ja toimitusmetatiedot versioidaan erikseen omilla `schema_version`-kentillään. Lähteen alkuperäinen aikaleima ja lähdekohtainen aikavyöhyketieto voidaan säilyttää lähdekohtaisessa tiedossa jäljitettävyyttä varten. Lähteiden ajat muunnetaan Aiheseuraimen yleiseen aikavyöhykkeeseen raporteissa ja käyttöliittymässä.
 
 `profiles` sisältää ajossa käytettyjen profiilien tunnisteet samassa järjestyksessä kuin ne yhdistettiin konfiguraatioon. Taulukko voi olla tyhjä, jos aihe ei käytä profiileja. Profiilien sisältöä tai erillisiä versiotunnisteita ei kopioida metatietoihin: `source_revision` yksilöi käytetyn määritysrevision.
 
