@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.10  
+**Versio:** 0.12.11  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -152,6 +152,25 @@ Ensimmäisessä versiossa tehtävät käsitellään sarjallisesti: järjestelmä
 Määräajan umpeutuminen ei yksinään tee tuottajan myöhemmin saapuvasta tuloksesta julkaisukelvotonta. Myöhäinen toimitus voidaan käsitellä alkuperäisen `run_id`-tunnisteensa perusteella ja hyväksyä sekä julkaista alkuperäisen ajon tuloksena, jos toimitus läpäisee kaikki normaalit validoinnit eikä samaa aihetta ja seurantatyyppiä koskevaa myöhempää ajoa ole vielä käynnistetty. Myöhäinen toimitus ei saa muuttaa myöhemmän ajon tehtäväpyyntöä, tulosta, ajotietuetta tai tilaa. Määräajan umpeutuminen ja sen jälkeen saapunut toimitus kirjataan erillisinä vastaanottajan todentamina tapahtumina; aiempaa määräajan umpeutumisen merkintää ei poisteta eikä vastaanottajan kirjaamaa epäonnistumista esitetä tuottajan tuloksena. Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistynyt tai jokin muu hyväksymisehto ei täyty, myöhäistä toimitusta ei julkaista. Vastaanotto, validointi ja mahdollinen jälkikäsittely koordinoidaan edelleen yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta.
 
 Tämä on looginen prosessi. Tiedonsiirron tarkka tekninen mekanismi ja vastaanottorajapinnan toteutus valitaan erillisessä toteutussuunnittelussa. Tuottajan ei edellytetä käyttävän tiettyä palvelua tai kirjoittavan suoraan repositorioon.
+
+### 5.1 Tehtäväpyynnön tietosopimus
+
+Raportintuottajalle annetaan yksi muuttumaton, rakenteinen JSON-tehtäväpyyntö kutakin ajoa varten. Tehtäväpyyntö yksilöi ajon, aiheen ja seurantatyypin, käytetyt ohjelmisto- ja instanssirevisiot, seuranta-aikavälin, muodostamishetken ja toimituksen määräajan sekä RSS-historian, käytetyt profiilit, luettavat ohjeet ja valmiiksi ratkaistun suorituskokoonpanon.
+
+Tehtäväpyynnön juuritason kentät ovat:
+
+- schema_version: tehtäväpyynnön rakenteen semanttinen versio;
+- run_id: yksilöllinen ajotunniste;
+- topic_id ja task_type: aiheen ja tehtävätyypin tunnisteet;
+- software_revision ja instance_revision: käytettyjen ohjelmisto- ja instanssirevisioiden commit-tunnisteet;
+- period: seuranta-aikavälin from- ja to-arvot;
+- issued_at ja deadline_at: tehtäväpyynnön muodostamishetki ja toimituksen määräaika;
+- history: RSS-historian repositorio, polku ja lähtörevisio;
+- profiles: käytettyjen määritysprofiilien järjestetty luettelo;
+- instructions: pakollisesti luettavien Markdown-ohjeiden järjestetty luettelo;
+- resolved_config: tehtävän suoritukseen tarvittavat valmiiksi ratkaistut asetukset.
+
+Tehtäväpyynnön tunnisteet, aikaleimat, repositorioviittaukset ja profiilien sekä ohjeiden järjestys ovat yksiselitteisiä ja validoitavia. resolved_config sisältää aina yleisen IANA-aikavyöhykkeen. Tehtäväpyyntö ei sisällä ohjetekstejä tai RSS-historiaa itsessään, vaan viittaukset niiden muuttumattomiin lähteisiin. Tehtäväpyynnön tarkat tietotyypit, pakollisuus, kenttäkohtaiset rajat ja validointisäännöt määritellään toteutussuunnitelman tehtäväpyyntöä koskevassa kohdassa ja myöhemmin toimitussopimuksen skeemassa. Määrittelemättömät ylimääräiset kentät hylätään. Tehtäväpyyntöä ei muuteta muodostamisen jälkeen; ajon eteneminen ja vastaanottajan tapahtumat kirjataan erilliseen ajohistoriaan.
 
 ## 6. Ajon tulos ja ajotiedot
 
@@ -448,6 +467,8 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
 
 ## 18. Muutosloki
+
+- **0.12.11 – 22.11.2026:** hyväksytty tehtäväpyynnön ylätason tietorakenne ja kenttien määrittelyperiaatteet: pakollinen semanttinen schema_version, yksilöllinen run_id, ohjelmisto- ja instanssirevisiot, aikaväli ja määräajat, RSS-historian viittaus, järjestetyt profiili- ja ohjeviittaukset sekä valmiiksi ratkaistu resolved_config. Määrittelemättömät ylimääräiset kentät hylätään.
 
 - **0.12.10 – 22.11.2026:** hyväksytty myöhäisen toimituksen käsittelyn esittäminen erillisinä, aikajärjestyksessä säilyvinä vastaanottajan tapahtumina. Määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä/hylkäys ja mahdollinen julkaisu säilyvät erillisinä tietoina; myöhempi tapahtuma ei korvaa aiempaa.
 
