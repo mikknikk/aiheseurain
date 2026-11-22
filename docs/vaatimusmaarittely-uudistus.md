@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.7  
+**Versio:** 0.12.8  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -148,6 +148,8 @@ Yksi käynnistys käsittelee enintään yhden aiheen ja noudattaa seuraavaa kulk
 Ajon epäonnistuminen tai tuloksen puuttuminen ei saa hävittää käynnistetyn ajon tietuetta. Ajon onnistuminen, raportin syntyminen ja RSS-julkaisun onnistuminen ovat erillisiä asioita.
 
 Ensimmäisessä versiossa tehtävät käsitellään sarjallisesti: järjestelmässä on kerrallaan enintään yksi aktiivinen raportointitehtävä, eikä seuraavaa tehtävää käynnistetä ennen kuin edellinen on todettu onnistuneeksi tai kirjattu epäonnistuneeksi. Tämä koskee myös eri aiheita; eri aiheiden rinnakkaista käsittelyä ei toteuteta ensimmäisessä versiossa. Erillistä rinnakkaisten raportointitehtävien varaus-, lukitus- tai kilpailutilanteiden hallintaa ei tarvita. Sen sijaan tehtävän muodostus, määräajan valvonta ja toimituksen vastaanotto/käsittely on koordinoitava yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta, jotta erilliset automaatioajot eivät voi käsitellä useita tehtäviä samanaikaisesti tai ohittaa edellisen tehtävän päättymistä. Sarjallinen käsittely ei poista tarvetta estää saman ajon kaksoistoimituksia ja kaksoisjulkaisuja: `run_id` ja idempotentti vastaanotto säilyvät.
+
+Määräajan umpeutuminen ei yksinään tee tuottajan myöhemmin saapuvasta tuloksesta julkaisukelvotonta. Myöhäinen toimitus voidaan käsitellä alkuperäisen `run_id`-tunnisteensa perusteella ja hyväksyä sekä julkaista alkuperäisen ajon tuloksena, jos toimitus läpäisee kaikki normaalit validoinnit eikä samaa aihetta ja seurantatyyppiä koskevaa myöhempää ajoa ole vielä käynnistetty. Myöhäinen toimitus ei saa muuttaa myöhemmän ajon tehtäväpyyntöä, tulosta, ajotietuetta tai tilaa. Määräajan umpeutuminen ja sen jälkeen saapunut toimitus kirjataan erillisinä vastaanottajan todentamina tapahtumina; aiempaa määräajan umpeutumisen merkintää ei poisteta eikä vastaanottajan kirjaamaa epäonnistumista esitetä tuottajan tuloksena. Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistynyt tai jokin muu hyväksymisehto ei täyty, myöhäistä toimitusta ei julkaista. Vastaanotto, validointi ja mahdollinen jälkikäsittely koordinoidaan edelleen yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta.
 
 Tämä on looginen prosessi. Tiedonsiirron tarkka tekninen mekanismi ja vastaanottorajapinnan toteutus valitaan erillisessä toteutussuunnittelussa. Tuottajan ei edellytetä käyttävän tiettyä palvelua tai kirjoittavan suoraan repositorioon.
 
@@ -305,6 +307,7 @@ Virhetilanteet käsitellään yksinkertaisella ja yksiselitteisellä tavalla:
 - **Uudelleenyritys:** saman loogisen ajon turvallinen jatko käyttää samaa tunnistetta; uusi erillinen ajo saa uuden tunnisteen.
 - **Aiheen jonotus:** epäonnistunut ajo ei merkitse aihetta onnistuneesti käsitellyksi eikä saa estää muiden erääntyneiden aiheiden etenemistä.
 - **Puuttuva tuottajavastaus:** käynnistetty ajotietue säilytetään ja ajo merkitään aikakatkaisun tai muun todennetun syyn perusteella epäonnistuneeksi.
+- **Myöhäinen tuottajatoimitus:** toimitus tunnistetaan alkuperäisellä `run_id`-tunnisteella. Se voidaan validoida ja julkaista alkuperäisen ajon tuloksena vain, jos samaa aihetta ja seurantatyyppiä koskevaa myöhempää ajoa ei ole käynnistetty ja kaikki normaalit hyväksymisehdot täyttyvät. Myöhäinen toimitus ei muuta myöhempien ajojen tietoja tai tiloja; määräajan umpeutuminen ja myöhäinen vastaanotto säilyvät erillisinä ajotapahtumina.
 
 Ensimmäisessä versiossa ei vaadita monimutkaista uudelleenyritysten orkestrointia. Uudelleenyrityksen ajankohta ja rajat määritellään toteutussuunnittelussa niin, ettei virheellinen aihe jää toistuvasti jonon kärkeen.
 
@@ -418,6 +421,7 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 30. Ohjelmisto toimii instanssin tietojen kanssa dokumentoidun rajapinnan ja tietosopimusten kautta olettamatta niiden sijaitsevan samassa repositoriossa tai hakemistorakenteessa.
 31. Instanssin käyttämä ohjelmistoversio on yksilöitävissä, eikä uuden version julkaisu päivitä sitä automaattisesti.
 32. Ensimmäinen toteutus voi käyttää yhtä instanssia ilman keskitettyä monen instanssin palvelua.
+33. Määräajan jälkeen saapuva tulos voidaan hyväksyä alkuperäiselle ajolle, jos myöhempää saman aiheen ja seurantatyypin ajoa ei ole käynnistetty; se ei saa vaikuttaa myöhempien ajojen tietoihin tai tiloihin.
 
 ## 16. Avoimet suunnittelukysymykset
 
@@ -439,6 +443,8 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
 
 ## 18. Muutosloki
+
+- **0.12.8 – 22.11.2026:** hyväksytty rajattu myöhäisten toimitusten jälkikäsittely: määräajan jälkeen saapunut tulos voidaan validoida ja julkaista alkuperäiselle `run_id`-ajolle, jos myöhempää saman aiheen ja seurantatyypin ajoa ei ole käynnistetty. Myöhäinen toimitus ei muuta myöhempien ajojen tietoja tai tiloja, ja määräajan umpeutuminen sekä myöhäinen vastaanotto kirjataan erillisinä tapahtumina.
 
 - **0.12.7 – 22.11.2026:** täsmennetty, että tehtävän muodostus, määräajan valvonta ja toimituksen vastaanotto/käsittely koordinoidaan yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta, vaikka rinnakkaisten raportointitehtävien varaus- ja lukitusmekanismia ei tarvita.
 
