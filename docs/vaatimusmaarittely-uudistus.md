@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.8  
+**Versio:** 0.12.9  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -165,7 +165,7 @@ Jokaisesta käynnistetystä ajosta vastaanottava järjestelmä ylläpitää kano
 - `report_item`: valinnainen uusi RSS-item;
 - `producer`: valinnaiset tiedot raporttituottajasta, jos ne ovat saatavilla.
 
-Tuottajan toimittaman tuloksen yhteydessä vastaanottava järjestelmä kirjaa lisäksi omat vastaanotto-, validointi-, tallennus- ja julkaisutilansa. Jos tuottajan tulosta ei saada, vastaanottaja kirjaa vain oman ajonhallinnan tilan ja todennettavissa olevat tapahtumat, kuten määräajan umpeutumisen. Tuottajan tulostila (`success`, `partial`, `no_report` tai tuottajan ilmoittama `failed`) ja vastaanottajan ajon lopputila/käsittelytila eivät ole sama tietokenttä, vaikka ajon lopputila olisi molemmissa tapauksissa `failed`. Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja.
+Tuottajan toimittaman tuloksen yhteydessä vastaanottava järjestelmä kirjaa lisäksi omat vastaanotto-, validointi-, tallennus- ja julkaisutilansa. Jos tuottajan tulosta ei saada, vastaanottaja kirjaa vain oman ajonhallinnan tilan ja todennettavissa olevat tapahtumat, kuten määräajan umpeutumisen. Tuottajan tulostila (`success`, `partial`, `no_report` tai tuottajan ilmoittama `failed`) ja vastaanottajan ajon lopputila/käsittelytila eivät ole sama tietokenttä, vaikka ajon lopputila olisi molemmissa tapauksissa `failed`. Jos vastaanottaja on jo muodostanut määräajan umpeutumisen vuoksi epäonnistumistietueen ja alkuperäiselle `run_id`-ajolle saapuu myöhemmin hyväksyttävä toimitus, toimituksen `metadata.json` täydentää samaa kanonista ajotietuetta erillisenä tuottajan tuloksena. Se ei korvaa eikä kirjoita uudelleen vastaanottajan aiemmin kirjaamia havaintoja tai tapahtumia. Määräajan ylitys ja vastaanottajan havainto siitä, ettei toimitusta saatu määräajassa, säilyvät muuttumattomina. Tuottajan tulostila tallennetaan vain toimitetun ja hyväksytyn metatiedon perusteella; sitä ei yhdistetä vastaanottajan aiempaan `failed`-merkintään eikä sen perusteella poisteta tätä merkintää. Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja.
 
 Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
 
@@ -443,6 +443,8 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
 
 ## 18. Muutosloki
+
+- **0.12.9 – 22.11.2026:** täsmennetty, että myöhäinen hyväksytty tuottajan toimitus täydentää jo muodostettua kanonista ajotietuetta erillisenä tuottajan tuloksena eikä korvaa vastaanottajan aiemmin kirjaamia määräajan ylityksen ja toimituksen puuttumisen havaintoja.
 
 - **0.12.8 – 22.11.2026:** hyväksytty rajattu myöhäisten toimitusten jälkikäsittely: määräajan jälkeen saapunut tulos voidaan validoida ja julkaista alkuperäiselle `run_id`-ajolle, jos myöhempää saman aiheen ja seurantatyypin ajoa ei ole käynnistetty. Myöhäinen toimitus ei muuta myöhempien ajojen tietoja tai tiloja, ja määräajan umpeutuminen sekä myöhäinen vastaanotto kirjataan erillisinä tapahtumina.
 
