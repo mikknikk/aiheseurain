@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.6  
+**Versio:** 0.12.7  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -147,7 +147,7 @@ Yksi käynnistys käsittelee enintään yhden aiheen ja noudattaa seuraavaa kulk
 
 Ajon epäonnistuminen tai tuloksen puuttuminen ei saa hävittää käynnistetyn ajon tietuetta. Ajon onnistuminen, raportin syntyminen ja RSS-julkaisun onnistuminen ovat erillisiä asioita.
 
-Ensimmäisessä versiossa tehtävät käsitellään sarjallisesti: järjestelmässä on kerrallaan enintään yksi aktiivinen raportointitehtävä, eikä seuraavaa tehtävää käynnistetä ennen kuin edellinen on todettu onnistuneeksi tai kirjattu epäonnistuneeksi. Tämä koskee myös eri aiheita; eri aiheiden rinnakkaista käsittelyä ei toteuteta ensimmäisessä versiossa. Näin ensimmäinen versio ei tarvitse rinnakkaisten tehtävien varaus-, lukitus- tai kilpailutilanteiden hallintaa. Sarjallinen käsittely ei poista tarvetta estää saman ajon kaksoistoimituksia ja kaksoisjulkaisuja: run_id ja idempotentti vastaanotto säilyvät.
+Ensimmäisessä versiossa tehtävät käsitellään sarjallisesti: järjestelmässä on kerrallaan enintään yksi aktiivinen raportointitehtävä, eikä seuraavaa tehtävää käynnistetä ennen kuin edellinen on todettu onnistuneeksi tai kirjattu epäonnistuneeksi. Tämä koskee myös eri aiheita; eri aiheiden rinnakkaista käsittelyä ei toteuteta ensimmäisessä versiossa. Erillistä rinnakkaisten raportointitehtävien varaus-, lukitus- tai kilpailutilanteiden hallintaa ei tarvita. Sen sijaan tehtävän muodostus, määräajan valvonta ja toimituksen vastaanotto/käsittely on koordinoitava yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta, jotta erilliset automaatioajot eivät voi käsitellä useita tehtäviä samanaikaisesti tai ohittaa edellisen tehtävän päättymistä. Sarjallinen käsittely ei poista tarvetta estää saman ajon kaksoistoimituksia ja kaksoisjulkaisuja: `run_id` ja idempotentti vastaanotto säilyvät.
 
 Tämä on looginen prosessi. Tiedonsiirron tarkka tekninen mekanismi ja vastaanottorajapinnan toteutus valitaan erillisessä toteutussuunnittelussa. Tuottajan ei edellytetä käyttävän tiettyä palvelua tai kirjoittavan suoraan repositorioon.
 
@@ -439,6 +439,8 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
 
 ## 18. Muutosloki
+
+- **0.12.7 – 22.11.2026:** täsmennetty, että tehtävän muodostus, määräajan valvonta ja toimituksen vastaanotto/käsittely koordinoidaan yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta, vaikka rinnakkaisten raportointitehtävien varaus- ja lukitusmekanismia ei tarvita.
 
 - **0.12.6 – 22.11.2026:** yhtenäistetty turvallisuus- ja eheysvaatimukset koko instanssin kattavaan sarjalliseen käsittelyyn sekä täsmennetty kaksoistoimitusten ja -julkaisujen eston periaate.
 - **0.12.5 – 22.11.2026:** erotettu tuottajan toimittama tulos vastaanottajan ylläpitämästä ajotietueesta ja ajonhallintatiedoista. Valvomon on ilmaistava tietojen alkuperä ja näytettävä tuottajan tulos puuttuvana, jos toimitusta ei saatu.
