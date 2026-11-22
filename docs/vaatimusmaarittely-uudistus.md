@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.11.0  
+**Versio:** 0.12.0  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 21.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -12,6 +12,8 @@
 ## 1. Tarkoitus ja rajaus
 
 Aiheseurain on useita aiheita ja seurantatyyppejä käsittelevä raporttien vastaanotto-, validointi-, tallennus- ja julkaisujärjestelmä. Raportin voi tuottaa ihminen, tekoäly, ohjelmisto tai muu soveltuva toimija. Aiheseurain ei edellytä tiettyä tuottajaa, kunhan tulos täyttää yhteisen tietosopimuksen.
+
+Aiheseurainin yhteinen ohjelmisto ja yksittäisen käyttöönoton instanssi ovat erillisiä kokonaisuuksia. Yhteisen ohjelmiston tulee olla jaettavissa ja käyttöönotettavissa ilman, että käyttäjäkohtaiset määritykset tai käyttödatan tiedostot kuuluvat ohjelmiston lähdekoodiin. Instanssi käyttää erikseen valittua ohjelmistoversiota. Tässä määrittelyssä asetetaan näille kokonaisuuksille toiminnalliset vaatimukset; repositorioiden tarkka rakenne ja tekninen toteutus ratkaistaan toteutussuunnittelussa.
 
 Järjestelmän ensimmäisen toteutusvaiheen toimintamalli on seuraava:
 
@@ -41,7 +43,7 @@ Tämä on vaatimusmäärittely, ei tekninen toteutussuunnitelma. Se ei lukitse t
 9. **Yksi kanoninen ajohistoria:** samaa ajotietoa ei ylläpidetä tarpeettomasti useissa toisistaan riippumattomissa tietovarastoissa.
 10. **Muuttumaton julkaisuhistoria:** julkaistuja RSS-itemeitä ei muokata, poistaa eikä korvata. Myöhempi olennainen täydennys tai korjaus julkaistaan uutena iteminä, joka kertoo avoimesti muutoksen ja viittaa alkuperäiseen.
 11. **Turvallinen epäonnistuminen:** epäselvä tai virheellinen tulos ei johda virheelliseen RSS-julkaisuun eikä onnistumisen esittämiseen.
-12. **Vaiheiden selkeä vastuunjako:** tuottajan tutkimustulos, vastaanoton validointi, tallennus ja julkaisu ovat erillisiä tiloja.
+12. **Vaiheiden selkeä vastuunjako:** tuottajan tutkimustulos, vastaanoton validointi, tallennus ja julkaisu ovat erillisiä tiloja.\n13. **Ohjelmiston ja instanssin erillisyys:** jaettava yhteinen ohjelmisto ei ole sidottu yhden käyttöönoton määrityksiin tai käyttödatan sijaintiin.\n14. **Hallitut ohjelmistopäivitykset:** instanssi käyttää yksilöityä ohjelmistoversiota, ja version vaihtaminen on ylläpitäjän hallitsema toimenpide.
 
 ## 3. Käyttöliittymät ja niiden tärkeysjärjestys
 
@@ -384,7 +386,7 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 22. Julkiseen raporttiin, RSS-syötteeseen tai Valvomon julkiseen dataan ei päädy salaisuuksia tai tarpeettomia henkilötietoja.
 23. Testaus estää tuotantodatan tahattoman muuttamisen.
 24. Toteutus ei edellytä tarpeettoman monimutkaista rinnakkaisarkkitehtuuria.
-25. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.
+25. Ulkoiset ilmoitukset ja batch-ajot eivät ole ensimmäisen version toteutusvaatimuksia.\n26. Yhteinen ohjelmisto voidaan julkaista ja ottaa käyttöön erillään yksittäisen instanssin määrityksistä ja käyttödatan tiedostoista.\n27. Instanssikohtaiset aiheet, asetukset, lähderekisterit, ajohistoria ja RSS-julkaisut eivät ole jaettavan ohjelmistoversion osia.\n28. Ohjelmisto toimii instanssin tietojen kanssa dokumentoidun rajapinnan ja tietosopimusten kautta olettamatta niiden sijaitsevan samassa repositoriossa tai hakemistorakenteessa.\n29. Instanssin käyttämä ohjelmistoversio on yksilöitävissä, eikä uuden version julkaisu päivitä sitä automaattisesti.\n30. Ensimmäinen toteutus voi käyttää yhtä instanssia ilman keskitettyä monen instanssin palvelua.
 
 ## 16. Avoimet suunnittelukysymykset
 
@@ -398,7 +400,7 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 6. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne suunnitellaan myöhemmin.
 7. **Historiatietojen säilytys:** ajon perustietojen, mahdollisten lokien ja väliaineistojen säilytysajat määritellään tietotarpeen ja tietosuojan perusteella.
 8. **Nykyisen toteutuksen siirtymä:** nykyiset osat inventoidaan ja arvioidaan ennen hyödyntämistä tai poistamista. Mitään ei poisteta ilman erillistä suunnitelmaa.
-9. **Käyttöoikeuksien tekninen toteutus:** julkisen ja ylläpitäjille rajatun tiedon erottelu ratkaistaan ennen niiden käyttöönottoa.
+9. **Käyttöoikeuksien tekninen toteutus:** julkisen ja ylläpitäjille rajatun tiedon erottelu ratkaistaan ennen niiden käyttöönottoa.\n10. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet, tarkka hakemistorakenne, jakelukanava, version kiinnittämisen mekanismi sekä ohjelmiston ja instanssin välinen tekninen tiedonsiirto määritellään toteutussuunnittelussa.
 
 ## 17. Tuottajakohtaiset toteutusohjeet
 
