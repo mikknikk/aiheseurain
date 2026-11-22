@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.12  
+**Versio:** 0.12.13  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -94,16 +94,39 @@ Ensimmäisessä versiossa sekä Valvomo että RSS-lukija voivat olla julkisia. V
 - Aihekohtainen lähderekisteri ja raporttipohja voidaan ylläpitää erillään muiden aiheiden tiedoista.
 - Uusi aihe ei saa vaatia koodimuutosta, jos sen tarpeet voidaan toteuttaa jo olemassa olevalla seurantatyypillä ja raporttipohjalla.
 
-### 4.2 Yhteinen ja aihekohtainen määritys
+### 4.2 Määritysten tasot
 
-Määritysmalli on kaksitasoinen:
+Varsinainen tehtäväkohtainen määritysmalli koostuu kolmesta tasosta:
 
-- yhteinen määritys sisältää kaikkia aiheita koskevat säännöt, tietosopimukset, julkaisun turvallisuusehdot ja yleiset oletukset;
-- aihekohtainen määritys sisältää aiheen tunnisteen ja nimen, seurantatyypin, ohjeet, lähderekisterin, raporttipohjan, aktiivisuuden ja ajotiheyden.
+1. **Tehtävätyypin määritys** määrittelee tehtäväluokan tunnisteen ja kuvauksen, käytettävän skeeman, oletusasetukset, sallitut asetukset ja niiden ylikirjoitettavuuden sekä tehtävätyypin käsittely- ja raportointivaatimukset.
+2. **Määritysprofiilit** ovat uudelleenkäytettäviä, itsenäisiä asetuskokonaisuuksia. Tehtävään voidaan liittää useita profiileja, joiden järjestys on merkityksellinen.
+3. **Aihekohtainen määritys** yksilöi aiheen, valitsee tehtävätyypin ja käytettävät profiilit sekä sisältää kyseisen aiheen asetukset ja sallitut ylikirjoitukset.
 
-Aihekohtainen määritys ei saa ohittaa yhteisiä turvallisuus-, eheys- tai julkaisusääntöjä.
+Yleiset järjestelmätason säännöt ja turvallisuusvaatimukset koskevat kaikkia kolmea tasoa. Aihekohtaiset lähderekisterit säilyvät erillisinä aihekohtaisina tietoina; tämä määritysmalli ei yhdistä niitä yhteiseksi lähderekisteriksi.
 
-### 4.3 Seurantatyypit ja raporttipohjat
+### 4.3 Määritysten yhdistäminen ja validointi
+
+Asetukset ratkaistaan aina seuraavassa järjestyksessä:
+
+1. tehtävätyypin oletusasetukset;
+2. aihekohtaisessa määrityksessä ilmoitetut profiilit täsmälleen ilmoitetussa järjestyksessä;
+3. aihekohtaiset asetukset.
+
+Sisäkkäiset objektit yhdistetään rekursiivisesti. Myöhempi arvo korvaa aiemman saman asetuksen arvon. Taulukot korvataan kokonaan, eikä niitä yhdistetä automaattisesti. Puuttuva asetus periytyy aiemmalta tasolta. `null`-arvolle ei anneta yleistä periytymis- tai poistamismerkitystä, vaan sen sallittu merkitys määritellään kyseisen asetuksen skeemassa.
+
+Ylikirjoitus on sallittu vain tehtävätyypin skeemassa erikseen ylikirjoitettaviksi määritellyissä asetuskohdissa. Profiili tai aihekohtainen määritys ei saa lisätä tuntemattomia asetuksia eikä muuttaa järjestelmätason tai tehtäväpyynnön rakenteellisia arvoja. Suojattuja arvoja ovat vähintään yleinen aikavyöhyke sekä tehtävän tunnisteet, revisiotunnisteet ja tietosopimuksen rakenteelliset vaatimukset. Yleinen aikavyöhyke välitetään tehtäväpyynnön `resolved_config.timezone`-kentässä, mutta profiilit ja aihekohtaiset asetukset eivät voi ylikirjoittaa sitä.
+
+Määritykset validoidaan sekä yksittäin että yhdistettynä kokonaisuutena. Validointi kattaa rakenteen, pakolliset ja sallitut kentät, tietotyypit, tunnisteiden syntaksin, rajat ja ylikirjoitettavuuden. Lisäksi tarkistetaan määritysten väliset välttämättömät yhteensopivuudet ja ristiriidat, kuten tehtävätyypin ja profiilien soveltuvuus sekä pakollisten arvojen löytyminen. Ensimmäisessä versiossa ei toteuteta yleistä dynaamista sääntömoottoria tai käyttäjän määrittelemiä yhdistämisfunktioita.
+
+Oletusarvot määritellään tehtävätyypin määrityksessä. Skeema määrittelee asetusten rakenteen, tyypit, pakollisuuden ja sallitut rajat; skeeman kuvaileva oletusarvotieto ei itsessään lisää arvoa suorituksen konfiguraatioon. Jos pakolliselle asetukselle ei ole tehtävätyypin oletusarvoa, se on annettava profiilissa tai aihekohtaisessa määrityksessä. Puuttuva pakollinen arvo estää tehtävän muodostamisen. Raportintuottaja ei päättele eikä keksi puuttuvia arvoja.
+
+Kun määritykset on luettu niiden ilmoitetuista muuttumattomista Git-revisioista, ne validoidaan, yhdistetään edellä kuvatussa järjestyksessä ja lopullinen kokonaisuus validoidaan tehtävätyypin skeemaa vasten. Vasta tämän jälkeen valmis konfiguraatio tallennetaan tehtäväpyynnön `resolved_config`-kenttään. Se on kyseisen ajon muuttumaton asetussnapshot; raportintuottaja ei hae eikä yhdistä määrityksiä uudelleen suorituksen aikana.
+
+Virheellinen tai ristiriitainen määritys estää uuden tehtäväpyynnön muodostamisen. Virhe kirjataan ajonhallinnan tietoihin syineen ja sijaintitietoineen. Aiemmin aktiivista tehtävää ei korvata virheellisellä pyynnöllä, jono ei saa jäädä epäselvään tilaan eikä järjestelmä tee automaattisia korjauksia, arvaa puuttuvia arvoja tai muodosta osittaista `resolved_config`-kokoonpanoa.
+
+Ensimmäisessä versiossa käytetään vain näitä kolmea määritystasoa. Profiilit eivät peri toisiaan eikä profiiliriippuvuuksia tai rekursiivisia määritysketjuja toteuteta. Käytössä ei ole dynaamista asetusten hakupalvelua, automaattista optimointia eikä käyttäjän määrittelemiä yhdistämisfunktioita. Kaikki asetukset ratkaistaan ennen tehtäväpyynnön muodostamista.
+
+### 4.4 Seurantatyypit ja raporttipohjat
 
 Kaikki aiheet käyttävät yhteistä suoritusprosessia. Seurantatyyppi määrittelee, millaisia havaintoja etsitään, mitä luokituksia tarvitaan ja mitä erityisiä tarkistuksia tehdään. Raporttipohja määrittelee RSS-raportin rakenteen.
 
@@ -111,7 +134,7 @@ Esimerkiksi tapahtuma- tai näytösseuranta voi käyttää samaa ajomallia kuin 
 
 Uuden seurantatyypin lisääminen voi vaatia teknistä toteutusta. Sen tulee olla rajattu laajennus yhteiseen järjestelmään, ei kokonaan erillinen automaatioarkkitehtuuri.
 
-### 4.4 Aikataulut ja aiheen valinta
+### 4.5 Aikataulut ja aiheen valinta
 
 Jokainen käynnistys valitsee enintään yhden aiheen. Ajonhallinta lukee aktiiviset aihekonfiguraatiot ja ajantasaisen seurantatilan sekä valitsee seuraavan kelpoisen aiheen.
 
@@ -497,7 +520,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
-- **0.12.12 – 22.11.2026:** määriteltiin tuottajan tuloksen, vastaanottajan käsittelyn ja ajon lopputilan erottelu sekä aktiivisen tehtävän vapauttamisen ehdot. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat päätettiin konfiguroitaviksi; niitä ei kovakoodata.
+- **0.12.13 – 22.11.2026:** kirjattiin tehtävätyypin, määritysprofiilien ja aihekohtaisten määritysten kolmitasoinen malli, niiden yhdistämisjärjestys, suojatut asetukset, skeemavalidointi, muuttumaton resolved_config-snapshot sekä virheellisten määritysten käsittely. Profiilien rekursiiviset riippuvuudet ja dynaamiset yhdistämismekanismit rajattiin pois.\n\n- **0.12.12 – 22.11.2026:** määriteltiin tuottajan tuloksen, vastaanottajan käsittelyn ja ajon lopputilan erottelu sekä aktiivisen tehtävän vapauttamisen ehdot. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat päätettiin konfiguroitaviksi; niitä ei kovakoodata.
 
 - **0.12.11 – 22.11.2026:** hyväksytty tehtäväpyynnön ylätason tietorakenne ja kenttien määrittelyperiaatteet: pakollinen semanttinen schema_version, yksilöllinen run_id, ohjelmisto- ja instanssirevisiot, aikaväli ja määräajat, RSS-historian viittaus, järjestetyt profiili- ja ohjeviittaukset sekä valmiiksi ratkaistu resolved_config. Määrittelemättömät ylimääräiset kentät hylätään.
 
