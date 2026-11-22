@@ -2,7 +2,7 @@
 
 **Versio:** 0.12.19  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
-**Päiväys:** 22.11.2026  
+**Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
 **Suunnitteluperiaate:** mahdollisimman yksinkertainen ja luotettava  
 **Kohderepositorio:** `mikknikk/aiheseurain`
