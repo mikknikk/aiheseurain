@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.3  
+**Versio:** 0.12.4  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -147,7 +147,7 @@ Yksi käynnistys käsittelee enintään yhden aiheen ja noudattaa seuraavaa kulk
 
 Ajon epäonnistuminen tai tuloksen puuttuminen ei saa hävittää käynnistetyn ajon tietuetta. Ajon onnistuminen, raportin syntyminen ja RSS-julkaisun onnistuminen ovat erillisiä asioita.
 
-Samaa aihetta ei saa käsitellä samanaikaisesti kahdessa ristiriitaisessa ajossa. Aihekohtainen varaus tai muu yksinkertainen suojaus estää päällekkäiset tilapäivitykset ja kaksoisjulkaisut. Eri aiheiden rinnakkaisuus voidaan ratkaista toteutussuunnittelussa, jos sille on todellinen tarve.
+Ensimmäisessä versiossa tehtävät käsitellään sarjallisesti: järjestelmässä on kerrallaan enintään yksi aktiivinen raportointitehtävä, eikä seuraavaa tehtävää käynnistetä ennen kuin edellinen on todettu onnistuneeksi tai kirjattu epäonnistuneeksi. Tämä koskee myös eri aiheita; eri aiheiden rinnakkaista käsittelyä ei toteuteta ensimmäisessä versiossa. Näin ensimmäinen versio ei tarvitse rinnakkaisten tehtävien varaus-, lukitus- tai kilpailutilanteiden hallintaa. Sarjallinen käsittely ei poista tarvetta estää saman ajon kaksoistoimituksia ja kaksoisjulkaisuja: run_id ja idempotentti vastaanotto säilyvät.
 
 Tämä on looginen prosessi. Tiedonsiirron tarkka tekninen mekanismi ja vastaanottorajapinnan toteutus valitaan erillisessä toteutussuunnittelussa. Tuottajan ei edellytetä käyttävän tiettyä palvelua tai kirjoittavan suoraan repositorioon.
 
@@ -438,6 +438,7 @@ Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopim
 
 ## 18. Muutosloki
 
+- **0.12.4 – 22.11.2026:** hyväksytty ensimmäisen version sarjallinen tehtävänkäsittely: kerrallaan on enintään yksi aktiivinen tehtävä, seuraava käynnistyy vasta edellisen ratkettua, eikä eri aiheiden rinnakkaisuutta tai siihen liittyvää varaus-/lukitusmekanismia toteuteta.
 - **0.12.3 – 22.11.2026:** täsmennetty ajotietueen muodostamisen vastuunjakoa: vastaanottava järjestelmä muodostaa jokaisesta käynnistetystä ajosta tietueen myös silloin, kun tuottaja ei toimita tulosta määräaikaan mennessä. Tällöin vastaanottaja merkitsee tietueen `failed`-tilaiseksi ja kirjaa vain todennettavissa olevan epäonnistumisen syyn.
 - **0.12.2 – 22.11.2026:** täsmennetty tehtävän jäljitettävyyttä erillisillä ohjelmisto- ja instanssidatan revisioilla sekä repositoriokohtaisilla tiedostoviittauksilla.
 - **0.12.1 – 22.11.2026:** täsmennetty Valvomon ja RSS-lukijan instanssikohtaisuus: käyttöliittymien yhteinen koodi kuuluu jaettavaan ohjelmistoon, mutta näkymät käyttävät vain oman instanssin tietoja. Hyväksytty molempien käyttöliittymien julkisuus ensimmäisessä versiossa ilman kirjautumista; julkisiin tietolähteisiin ei saa sisällyttää salaisuuksia tai yksityisiä tietoja.
