@@ -91,7 +91,7 @@ Ensimmäisessä versiossa sekä Valvomo että RSS-lukija voivat olla julkisia. V
 - Aiheita ei luetella kiinteästi tässä yleisessä määrittelyssä.
 - Jokaisella aiheella on oma määritystiedosto.
 - Aihe voidaan ottaa käyttöön, poistaa käytöstä tai muuttaa määrityksellä ilman yleisen toimintamallin muuttamista.
-- Aihekohtainen lähderekisteri ja raporttipohja voidaan ylläpitää erillään muiden aiheiden tiedoista.
+Aiheiden lähdeaineistojen hallintamalli määritellään erikseen; lähderekisteri pidetään rakenteisesti erillään asetuksista.
 - Uusi aihe ei saa vaatia koodimuutosta, jos sen tarpeet voidaan toteuttaa jo olemassa olevalla seurantatyypillä ja raporttipohjalla.
 
 ### 4.2 Määritysten tasot
@@ -102,7 +102,7 @@ Varsinainen tehtäväkohtainen määritysmalli koostuu kolmesta tasosta:
 2. **Määritysprofiilit** ovat uudelleenkäytettäviä, itsenäisiä asetuskokonaisuuksia. Tehtävään voidaan liittää useita profiileja, joiden järjestys on merkityksellinen.
 3. **Aihekohtainen määritys** yksilöi aiheen, valitsee tehtävätyypin ja käytettävät profiilit sekä sisältää kyseisen aiheen asetukset ja sallitut ylikirjoitukset.
 
-Yleiset järjestelmätason säännöt ja turvallisuusvaatimukset koskevat kaikkia kolmea tasoa. Aihekohtaiset lähderekisterit säilyvät erillisinä aihekohtaisina tietoina; tämä määritysmalli ei yhdistä niitä yhteiseksi lähderekisteriksi.
+Yleiset järjestelmätason säännöt ja turvallisuusvaatimukset koskevat kaikkia kolmea tasoa. Lähderekisteri on rakenteisesti erillinen aineisto eikä osa asetusten yhdistämismallia. Sen aihekohtainen rajaus tai uudelleenkäyttö useiden aiheiden välillä ratkaistaan erikseen.
 
 ### 4.3 Määritysten yhdistäminen ja validointi
 
@@ -547,9 +547,9 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
-- **0.12.15 – 22.11.2026:** täsmennettiin yhteisen peruspromptin paikka tehtäväpyynnön ohjejärjestyksessä ja yhdenmukaistettiin lähdehavaintojen tietosisältö sekä Valvomon lähdetilastojen vaatimukset.
-
 - **0.12.16 – 22.11.2026:** hyväksyttiin määritysten ja toimituksen JSON Schema Draft 2020-12 -skeemakokonaisuuden periaatteet, tehtävätyyppikohtaiset asetusskeemat, tehtävätyyppiin sidotut profiilit, Markdown-ohjeiden erillinen validointi sekä tehtäväpyynnön rakenteisten aineistojen `inputs`-viittaukset. Lähderekisterin aihekohtainen rajaus jätettiin erikseen keskusteltavaksi.
+
+- **0.12.15 – 22.11.2026:** täsmennettiin yhteisen peruspromptin paikka tehtäväpyynnön ohjejärjestyksessä ja yhdenmukaistettiin lähdehavaintojen tietosisältö sekä Valvomon lähdetilastojen vaatimukset.
 
 - **0.12.14 – 22.11.2026:** täsmennettiin tehtäväpyynnön yhteisen raportintekijän peruspromptin viittaus ja ohjeiden järjestys, seuranta-aikavälin puoliksi avoin tulkinta, lähdekohtaiset avausyritysten mittarit sekä Valvomon lähdetilastot ja hallittu käytöstä poistamisen arviointi.
 
