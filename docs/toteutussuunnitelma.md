@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.48  
+**Versio:** 0.3.49  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.7](vaatimusmaarittely-uudistus.md)
@@ -111,12 +111,12 @@ Tehtävän käsittelyn jumiutumista vastaan toteutetaan ensimmäiseen versioon r
 
 - Tehtäväpyynnöllä on määräaika. Jos raportintuottajan tulosta ei saavu määräaikaan mennessä, ajo käsitellään epäonnistuneena.
 - Toimituksen vastaanotto- tai käsittelyvirheen jälkeen sallitaan enintään kolme automaattista käsittely-yritystä.
-- Kun yritykset on käytetty tai tehtävän määräaika umpeutuu, epäonnistuminen kirjataan kanoniseen ajohistoriaan ja jonotus etenee seuraavaan tehtävään. Yksittäinen epäonnistunut tehtävä ei saa estää muiden aiheiden käsittelyä.
+- Kun yritykset on käytetty tai tehtävän määräaika umpeutuu, epäonnistuminen kirjataan kanoniseen ajohistoriaan ja jonotus etenee seuraavaan tehtävään. Yksittäinen epäonnistunut tehtävä ei saa estää muiden aiheiden käsittelyä. Määräajan umpeutuminen ei kuitenkaan yksin estä alkuperäisen ajon myöhäisen toimituksen jälkikäsittelyä kohdassa 2.3.2 määritellyin ehdoin.
 - Tehtävän määräajan ja uudelleenyritysten tarkan teknisen toteutuksen asetukset täsmennetään tehtävätyypin määrityksissä.
 - Ensimmäisessä versiossa epäonnistuneiden tehtävien palautus myöhempään käsittelyyn on rajattu. Älykkäämpi uudelleenkäsittelylogiikka, kuten virheen syyn, aiempien yritysten ja sopivan odotusajan huomioiminen, kuuluu myöhempiin versioihin.
 - Tehtävän etenemisen erillistä tilatiedostoa ei lisätä. Tehtäväpyynnön korvaaminen seuraavalla ja ajohistoria muodostavat etenemisen lähteen; seuraava tehtävä muodostetaan vasta, kun nykyisen tehtävän käsittely on ratkaistu onnistuneesti tai se on päätetty epäonnistuneeksi palautumissääntöjen perusteella.
 - Kaikki samaan instanssiin kuuluvat tehtävänmuodostus-, määräajanvalvonta- ja toimituksen vastaanotto-/käsittelyajot on sarjallistettava yhteisen hallintamekanismin kautta. Mekanismin on estettävä samanaikaiset tai päällekkäiset käsittelyt, jotka voisivat muodostaa uuden tehtävän ennen edellisen tehtävän lopullista ratkaisua tai käsitellä kahta tehtävää aktiivisina. Pelkkä aktiivisen tehtäväpyynnön lukeminen ja tarkistaminen ei riitä, jos tarkistus ja sitä seuraava tilapäivitys eivät ole keskenään suojattuja.
-- Seuraava tehtävä voidaan muodostaa vasta, kun edellinen ajo on todettu onnistuneeksi tai sen epäonnistuminen on kirjattu kanoniseen ajohistoriaan ja ajon käsittely on päätetty. Myös vastaanoton uudelleenyritykset ja määräajan umpeutumisen käsittely kuuluvat tähän samaan sarjalliseen elinkaareen.
+- Seuraava tehtävä voidaan muodostaa vasta, kun edellinen ajo on todettu onnistuneeksi tai sen epäonnistuminen on kirjattu kanoniseen ajohistoriaan ja ajon käsittely on päätetty. Myös vastaanoton uudelleenyritykset ja määräajan umpeutumisen käsittely kuuluvat tähän samaan sarjalliseen elinkaareen. Myöhäisen toimituksen rajattu jälkikäsittely voi jatkua tämän jälkeen alkuperäisen `run_id`-tunnisteen perusteella, mutta se ei avaa alkuperäistä tehtäväpyyntöä uudelleen eikä muuta myöhempää aktiivista tehtävää.
 - Sarjallisuuden tekninen toteutustapa, kuten GitHub Actionsin työnkulkujen koordinointi ja mahdollinen yhteinen concurrency-/lukitusratkaisu, määritellään teknisessä suunnittelussa. Tässä vaiheessa lukitaan vaatimus ja toimintaperiaate, ei tiettyä GitHub Actions -ominaisuutta tai toteutuskoodia.
 
 Useiden samanaikaisten raportintuottajien tai tehtävien tuki voidaan lisätä myöhemmin. Silloin suunnitellaan erikseen atominen varaus, varauksen voimassaolo, vanhentuneen varauksen palautus sekä vanhalla `run_id`:llä saapuvien toimitusten hylkääminen. Ensimmäisen vaiheen ratkaisu ei saa tarpeettomasti estää tätä laajennusta.
@@ -349,7 +349,7 @@ Esimerkiksi yhden lähteen epäonnistuminen ei estä `success`-tilaa, jos muut l
 
 Koko ajon tason `error`-objekti vaaditaan vain silloin, kun ajon `status` on `failed`. Se sisältää koko ajon epäonnistumisen virheluokan (`category`) ja lyhyen, turvallisen kuvauksen (`description`); objektia ei sallita muissa ajon tulostiloissa. Tämä koko ajon tason objekti on eri asia kuin edellä kuvattu lähdekohtainen `sources[].error`, jota käytetään yksittäisen lähteen `partial`- tai `failed`-tilan selittämiseen. Kummankaan tason kuvaukseen ei sisällytetä salaisuuksia, käyttöoikeustunnisteita, raakaa keskustelusisältöä tai tarpeettomia henkilötietoja.
 
-Kaikki edellä luetellut perustiedot, mukaan lukien `profiles` ja `sources`, ovat pakollisia kaikissa tulostiloissa; tyhjä taulukko on sallittu. `run_id` ja `topic_id` tarkistetaan aktiivista tehtäväpyyntöä vasten. `schema_version` kuvaa metatietorakennetta, eikä sitä pidä sekoittaa tehtävän määritysten tai raportin versioon.
+Kaikki edellä luetellut perustiedot, mukaan lukien `profiles` ja `sources`, ovat pakollisia kaikissa tulostiloissa; tyhjä taulukko on sallittu. Normaalissa vastaanotossa `run_id` ja `topic_id` tarkistetaan aktiivista tehtäväpyyntöä vasten. Myöhäisen toimituksen jälkikäsittelyssä tunnisteet tarkistetaan alkuperäisen `run_id`-ajon tallennettuja tietoja vasten. `schema_version` kuvaa metatietorakennetta, eikä sitä pidä sekoittaa tehtävän määritysten tai raportin versioon.
 
 #### Toimituspaketin tulostilakohtaiset tiedostovaatimukset
 
@@ -368,7 +368,7 @@ Ensimmäisessä versiossa toimituspaketin eheys varmistetaan rakenteellisilla ja
 
 - `metadata.json` ja mahdollinen `item.xml` toimitetaan saman `run_id`-tunnisteen omaavassa hakemistossa.
 - Vastaanottava GitHub Actions -työnkulku tarkistaa vaadittujen tiedostojen olemassaolon ja toimituksen rakenteen.
-- Työnkulku validoi metatietojen rakenteen ja tarkistaa, että toimituksen `run_id` sekä aiheen tunniste vastaavat aktiivista tehtäväpyyntöä.
+- Työnkulku validoi metatietojen rakenteen ja tarkistaa normaalissa vastaanotossa, että toimituksen `run_id` sekä aiheen tunniste vastaavat aktiivista tehtäväpyyntöä. Myöhäisen toimituksen jälkikäsittelyssä vastaavuus tarkistetaan alkuperäisen ajon tallennettuja tietoja vasten.
 - `success`- ja `partial`-tiloissa RSS-itemin on oltava mukana ja sen XML/RSS-rakenne validoidaan ennen julkaisua.
 - `partial`-itemissä kuvataan selvästi, mikä seurannassa jäi puutteelliseksi, miksi näin tapahtui ja miten puute vaikuttaa raportin kattavuuteen.
 - `no_report`- ja `failed`-toimituksissa `item.xml`-tiedostoa ei toimiteta; niiden `metadata.json` sisältää tulostilan edellyttämät tiedot.
@@ -390,6 +390,20 @@ Ajotietueen muodostamisen ja ylläpidon vastuu kuuluu vastaanottavalle järjeste
 - RSS-lukija ei käytä ajonhallinnan tiloja eikä päättele niiden perusteella julkaisujen tai seurannan tilaa. Se näyttää vain hyväksytyt RSS-julkaisut RSS-syötteestä.
 
 Tämä täydentää toimitussopimuksen normaalia `failed`-toimitusta: jos tuottaja itse ilmoittaa epäonnistumisesta, se toimittaa tavanomaisen `metadata.json`-tiedoston. Jos mitään toimitusta ei saada määräaikaan mennessä, vastaanottaja muodostaa ajotietueen itsenäisesti. Molemmissa tapauksissa ajon lopputila on `failed`, mutta tietueen tietolähde ja saatavilla oleva virheselitys ovat erilaiset.
+
+#### 2.3.2 Myöhäisen toimituksen jälkikäsittely
+
+Määräajan umpeuduttua vastaanottaja kirjaa ajon epäonnistuneeksi ja voi muodostaa seuraavan tehtävän. Myöhemmin saapuvaa toimitusta ei kuitenkaan hylätä automaattisesti pelkän myöhästymisen vuoksi.
+
+- Vastaanottaja tunnistaa toimituksen aina sen alkuperäisestä `run_id`-tunnisteesta. Myöhäistä toimitusta ei käsitellä sillä hetkellä aktiivisen tehtävän toimituksena.
+- Toimituksen `run_id`, aihe, seurantatyyppi ja muut tehtäväkohtaiset tiedot tarkistetaan alkuperäisen ajon tallennettuja tietoja vasten. Toimitus käy läpi samat rakenteelliset, sisällölliset ja RSS-validoinnit kuin määräajassa saapunut toimitus.
+- Myöhäinen toimitus voidaan hyväksyä ja julkaista alkuperäisen ajon tuloksena vain, jos samaa aihetta ja seurantatyyppiä koskevaa myöhempää ajoa ei ole vielä käynnistetty ja kaikki normaalit hyväksymisehdot täyttyvät.
+- Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistynyt, myöhäistä toimitusta ei julkaista. Se voidaan säilyttää vastaanottoaineistona jäljitettävyyttä varten, mutta sitä ei saa liittää myöhemmän ajon tulokseen.
+- Myöhäinen toimitus ei saa muuttaa myöhemmän ajon tehtäväpyyntöä, tulosta, ajotietuetta, tilaa tai RSS-historiaa. Se ei myöskään poista aiempaa määräajan umpeutumisen tai vastaanottajan epäonnistumisen merkintää.
+- Määräajan umpeutuminen ja myöhäisen toimituksen saapuminen kirjataan vastaanottajan erillisinä tapahtumina. Valvomo voi näyttää alkuperäisen määräajan ylityksen sekä myöhemmän toimituksen vastaanotto- ja julkaisutilan erillisinä tietoina.
+- Myöhäisen toimituksen vastaanotto, validointi ja julkaisu koordinoidaan yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta. Käsittely on idempotenttia: samaa toimitusta tai RSS-GUIDia ei käsitellä tai julkaista uudelleen.
+
+Myöhäisen toimituksen jälkikäsittely ei tarkoita yleistä epäonnistuneiden ajojen uudelleenavaamista tai uuden yrityksen käynnistämistä. Se käsittelee vain tuottajan alkuperäiselle ajolle toimittaman valmiin tuloksen. Tarkka tekninen toteutus ja ajotietueen tapahtumien tietomalli täsmennetään myöhemmin.
 
 ### 2.4 RSS-itemien julkaiseminen ja korjauspäivitykset
 
@@ -542,6 +556,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.49 (22.11.2026):** määriteltiin myöhäisen toimituksen rajattu jälkikäsittely alkuperäisen `run_id`-tunnisteen perusteella. Julkaisu sallitaan vain, jos myöhempää saman aiheen ja seurantatyypin ajoa ei ole käynnistetty; myöhäinen toimitus ei muuta myöhempien ajojen tietoja tai tiloja.
 
 - **0.3.48 (22.11.2026):** yhtenäistettiin vaatimusmäärittelyn kanssa tehtävän muodostuksen, määräajan valvonnan ja toimituksen vastaanoton yhteinen sarjallisuusvaatimus.
 
