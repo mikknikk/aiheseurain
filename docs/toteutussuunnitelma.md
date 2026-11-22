@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.43  
+**Versio:** 0.3.44  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.4](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.5](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -371,13 +371,15 @@ Erilliset kryptografiset allekirjoitukset ja tarkistussummat jätetään ensimm�
 
 #### 2.3.1 Ajotietue myös ilman tuottajan toimitusta
 
-Ajotietueen muodostamisen vastuu kuuluu vastaanottavalle järjestelmälle, ei raportintuottajalle. Ajon alussa luotu tietue on olemassa riippumatta siitä, saadaanko tuottajalta toimitus.
+Ajotietueen muodostamisen ja ylläpidon vastuu kuuluu vastaanottavalle järjestelmälle, ei raportintuottajalle. Ajon alussa luotu kanoninen tietue on olemassa riippumatta siitä, saadaanko tuottajalta toimitus. Tietueessa pidetään käsitteellisesti erillään tuottajan toimittama tulos ja vastaanottajan kirjaamat ajonhallintatiedot. Tuottajan tulososa syntyy vain tuottajan toimituksesta; vastaanottajan oma tietue ja käsittelytilat syntyvät myös ilman toimitusta.
 
 - Raportintuottaja vastaa onnistuneiden tulosten ja omien ilmoittamiensa virheiden toimittamisesta yhteisellä `run_id`-tunnisteella.
 - Vastaanottava järjestelmä vastaa siitä, että jokaisesta käynnistetystä ajosta syntyy kanoniseen ajohistoriaan ajotietue.
 - Jos toimitusta ei saada tehtäväpyynnön määräaikaan mennessä, määräajan valvonta muodostaa ajolle vastaanottajan kirjaaman `failed`-tilaisen ajotietueen. Tuottajan toimitusta tai `metadata.json`-tiedostoa ei edellytetä tämän tietueen muodostamiseen.
 - Tietueeseen kirjataan vain vastaanottavan järjestelmän todentama tieto. Esimerkiksi määräajan umpeutuminen voidaan kirjata, jos se on havaittu; tarkempaa teknistä syytä ei päätellä ilman näyttöä.
 - Vastaanottajan muodostamaa epäonnistumistietuetta ei esitetä tuottajan toimittamana tuloksena. Tuottajan tulosmetatiedot ja vastaanottajan kirjaamat ajonhallintatiedot pidetään käsitteellisesti erillään.
+- Valvomossa tuottajan tulostila ja vastaanottajan ajon lopputila/käsittelytilat esitetään erillisinä tietoina ja niiden alkuperä ilmaistaan. Jos toimitusta ei ole saatu, tuottajan tulos näytetään puuttuvana/tuntemattomana; vastaanottajan `failed`-merkintä ei täytä tätä kenttää.
+- RSS-lukija ei käytä ajonhallinnan tiloja eikä päättele niiden perusteella julkaisujen tai seurannan tilaa. Se näyttää vain hyväksytyt RSS-julkaisut RSS-syötteestä.
 
 Tämä täydentää toimitussopimuksen normaalia `failed`-toimitusta: jos tuottaja itse ilmoittaa epäonnistumisesta, se toimittaa tavanomaisen `metadata.json`-tiedoston. Jos mitään toimitusta ei saada määräaikaan mennessä, vastaanottaja muodostaa ajotietueen itsenäisesti. Molemmissa tapauksissa ajon lopputila on `failed`, mutta tietueen tietolähde ja saatavilla oleva virheselitys ovat erilaiset.
 
