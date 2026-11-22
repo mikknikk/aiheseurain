@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.57  
+**Versio:** 0.3.58  
 **Päiväys:** 22.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.16](vaatimusmaarittely-uudistus.md)
@@ -209,7 +209,7 @@ Määritykset jaetaan kolmeen tasoon:
 
 1. **Tehtävätyypin määritys** sisältää tehtävätyypin tunnisteen ja kuvauksen, skeemaviittauksen, oletusasetukset, sallitut asetukset ja niiden ylikirjoitettavuuden sekä tehtävätyypin käsittely-, raportointi- ja toimitusvaatimukset.
 2. **Määritysprofiilit** ovat uudelleenkäytettäviä, itsenäisiä asetuskokonaisuuksia. Profiililla on tunniste, kuvaus ja asetukset. Yksi tehtävä voi käyttää useita profiileja, ja niiden järjestys on merkityksellinen.
-3. **Aihekohtainen määritys** sisältää aiheen tunnisteen ja kuvauksen, käytettävän tehtävätyypin, profiilit järjestyksessä, aihekohtaiset asetukset ja sallitut ylikirjoitukset sekä aikaväli- ja ajastustiedot. Aihekohtaisen lähderekisterin tiedot säilytetään erillisessä aihekohtaisessa lähderekisterissä eikä niitä yhdistetä tähän asetusten yhdistämismalliin.
+3. **Aihekohtainen määritys** sisältää aiheen tunnisteen ja kuvauksen, käytettävän tehtävätyypin, profiilit järjestyksessä, aihekohtaiset asetukset ja sallitut ylikirjoitukset sekä aikaväli- ja ajastustiedot. Lisäksi se voi määritellä kyseisen aiheen ja tehtävätyypin yhdistelmän lähdevalinnan ja lähteiden käyttöasetukset. Lähteiden pysyvät perustiedot eivät kuulu aihekohtaiseen määritykseen, vaan yhteiseen lähderekisteriin.
 
 Tehtävätyypin määritys määrittelee, mitä asetuksia kyseinen tehtävätyyppi hyväksyy ja mitä niistä voidaan ylikirjoittaa. Profiilit eivät voi muuttaa järjestelmätason asetuksia tai lisätä tehtävätyypin skeemassa tuntemattomia asetuksia.
 
@@ -241,7 +241,7 @@ data/
 
 Hakemistonimet ja tiedostopolut ovat suunnitteluesimerkkejä; lopullinen rakenne vahvistetaan skeemojen ja nykyisen tiedostorakenteen katselmoinnin yhteydessä.
 
-Tehtävätyyppi sisältää yleiset, saman tehtäväluokan tehtäville kuuluvat oletukset. Profiilit täydentävät niitä esimerkiksi tapahtumalajin, sisältöalueen, genren tai muun uudelleenkäytettävän ominaisuuden mukaan. Aihekohtainen määritys sisältää yksittäisen seurannan omat hakusanat, rajaukset ja muut erot. Ihmiselle tarkoitetut pitkät toimitukselliset ja menettelyohjeet pidetään Markdown-tiedostoissa; koneellisesti käsiteltävät asetukset ovat JSON-tiedostoissa.
+Tehtävätyyppi sisältää yleiset, saman tehtäväluokan tehtäville kuuluvat oletukset sekä tehtävätyypin oletuslähteet ja mahdolliset pakolliset lähteet. Profiilit täydentävät tehtävätyypin asetuksia esimerkiksi tapahtumalajin, sisältöalueen, genren tai muun uudelleenkäytettävän ominaisuuden mukaan. Aihekohtainen määritys sisältää yksittäisen seurannan omat hakusanat, rajaukset ja muut erot sekä lähdevalinnan kyseisen aiheen ja tehtävätyypin yhdistelmälle. Ihmiselle tarkoitetut pitkät toimitukselliset ja menettelyohjeet pidetään Markdown-tiedostoissa; koneellisesti käsiteltävät asetukset ovat JSON-tiedostoissa.
 
 Yksi aihe voi käyttää useita profiileja. Esimerkiksi elokuvanäytösvahti voi yhdistää tapahtumavahdin yleiset oletukset, elokuvanäytösprofiilin ja intialaisen elokuvan profiilin. Konserttivahti voi käyttää tapahtumavahdin ja konserttiprofiilin lisäksi esimerkiksi klassisen musiikin profiilia. Ensimmäisessä versiossa profiilien välisiä riippuvuuksia, kieltoja tai erillistä yhteensopivuusmatriisia ei mallinneta. Profiileja voidaan yhdistää ilman, että niiden tarvitsee ilmoittaa yhteensopivuuttaan keskenään.
 
@@ -294,11 +294,11 @@ Tehtävätyypin määrityksen rakenne sisältää `schema_version`-, `id`-, `des
 
 Määritysprofiilin rakenne sisältää `schema_version`-, `id`-, `task_type`-, `description`-, `settings`- ja `instruction`-kentät. Profiilin `task_type`-arvon on vastattava tehtäväpyynnössä valittua tehtävätyyppiä. Profiili ei peri toista profiilia. Aihekohtainen määritys sisältää `schema_version`-, `topic_id`-, `task_type`-, `enabled`-, `profiles`-, `settings`-, `source_registry`- ja `instruction`-tiedot. Profiiliviittaukset säilyttävät järjestyksen.
 
-Lähderekisterin rakenteinen skeema määrittelee lähteen pysyvän `id`-tunnisteen, nimen, URL-osoitteen, lähdetyypin, kielet, alueet, tärkeysluokan, mahdollisen toimituksellisen luotettavuusluokan, valinnaisen IANA-aikavyöhykkeen ja sen perusteen sekä käytössäolon ja mahdollisen käytöstä poistamisen syyn. `last_checked_at` ja muut ajokohtaiset tarkistushavainnot kuuluvat ajohistoriaan, eivät lähderekisterin pysyvään määritykseen. Lähteen tunniste säilyy, vaikka nimeä tai URL-osoitetta muutetaan. Toimituksellinen luotettavuus ja tekninen saavutettavuus pidetään erillisinä.
+Yhteinen lähderekisteri sisältää lähteen pysyvät perustiedot: vakaan `id`-tunnisteen, nimen, URL-osoitteen, julkaisijan, lähdetyypin, kielet, alueet, mahdollisen IANA-aikavyöhykkeen ja sen perusteen sekä lähteen yhteiset teknistä saavutettavuutta ja toimituksellista luotettavuutta kuvaavat tiedot. `last_checked_at` ja muut ajokohtaiset tarkistushavainnot kuuluvat ajohistoriaan, eivät lähderekisterin pysyvään määritykseen. Lähteen tunniste säilyy, vaikka nimeä tai URL-osoitetta muutetaan. Tekninen saavutettavuus ja toimituksellinen luotettavuus pidetään erillisinä. Lähteen tärkeys, käyttö kyseisessä tehtävässä ja erityiset seurantahuomiot eivät ole yhteisen perustietueen ominaisuuksia, vaan ne määritellään tehtävätyypin oletuslähteissä tai aiheen ja tehtävätyypin yhdistelmäkohtaisessa lähdemäärityksessä.
 
 Lähdekohtaiset ajohavainnot sisältävät lähteen tunnisteen, tarkistuksen tilan (`attempted` tai `not_attempted`) ja yksittäiset avausyritykset. Yritys sisältää tunnisteen, ajankohdan, pyydetyn URL-osoitteen, avauksen tuloksen (`opened` tai `failed`), epäonnistumisen syyluokan silloin kun avaus epäonnistui sekä sisällön luettavuuden (`readable`, `partial`, `unreadable` tai `not_assessed`). `not_attempted` ei ole epäonnistuminen eikä kuulu avausyritysten onnistumisprosentin nimittäjään. Avaamisen onnistuminen erotetaan sisällön luettavuudesta ja hyödyllisyydestä. Valvomo laskee tilastot alkuperäisistä havainnoista eikä luota tuottajan valmiiksi laskemiin prosentteihin. Sekä yrityskohtainen että ajokohtainen onnistumisaste esitetään otoskoon ja tarkastelujakson yhteydessä.
 
-Lähderekisterin tarkka omistus- ja jakamismalli, erityisesti se, onko rekisteri aina aihekohtainen vai voiko sama rekisteri palvella useita aiheita, jätetään avoimeksi jatkokeskusteluun. Tämä ei muuta periaatetta, että lähderekisterin pysyvät määritystiedot ja ajokohtaiset havainnot pidetään erillään.
+Lähteiden käyttö ratkaistaan kahdessa tasossa. Tehtävätyypin määritys voi sisältää tehtävätyypin yleiset oletuslähteet sekä erikseen nimetyt pakolliset lähteet. Aihekohtainen määritys koskee aina valittua aiheen ja tehtävätyypin yhdistelmää ja valitsee oletuslähteiden käsittelytavan yhdellä kolmesta arvosta: `inherit`, `extend` tai `replace`. `inherit` käyttää tehtävätyypin oletuslähteitä sellaisinaan. `extend` säilyttää oletuslähteet ja sallii aihekohtaisten lähteiden lisäämisen sekä lähteiden yhdistelmäkohtaisten käyttöasetusten muuttamisen. `replace` korvaa tehtävätyypin oletuslähdelistan kokonaan kyseisen yhdistelmän omalla lähdelistalla. `extend` on oletustoimintatapa, jos muuta ei ole nimenomaisesti määritelty. Tehtävätyypin pakolliset lähteet eivät kuulu korvattavaan oletuslähdelistaan, vaan ne säilyvät käytössä myös `replace`-toimintatavassa. Jokainen lopullinen lähdeviittaus yksilöidään yhteisen lähderekisterin vakaalla tunnisteella, eikä sama lähde esiinny lopullisessa lähdelistassa useammin kuin kerran. Käyttöasetukset, kuten käytössäolo, tärkeys ja erityiset seurantahuomiot, voivat vaihdella aiheen ja tehtävätyypin yhdistelmän mukaan. Yhteiset lähteen perustiedot ja ajokohtaiset havainnot pidetään erillään.
 
 Markdown-ohjeille ei tehdä JSON Schemaa. Ohjeiden validointi tarkistaa yksilölliset tunnisteet, tiedoston olemassaolon oikeassa repositoriossa ja kiinnitetyssä commitissa, turvalliset repositoriojuureen suhteutetut polut, ohjeiden järjestyksen ja duplikaattien puuttumisen sekä sen, etteivät ohjeet ole ristiriidassa koneellisten määritysten kanssa. Markdown-etusivua tai muuta rinnakkaista metatietomuotoa ei lisätä.
 
@@ -671,7 +671,7 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
 - miten skeemojen tarkat JSON Schema Draft 2020-12 -tiedostot, kenttäkohtaiset rajat ja validointitoteutus määritellään; skeemakokonaisuuden vastuut ja tehtäväpyynnön `inputs`-rakenne on päätetty kohdissa 2.2.1 ja 2.2.2;
-- miten lähderekisterin aihekohtainen rajaus tai uudelleenkäyttö useiden aiheiden välillä ratkaistaan; tämä käsitellään erillisenä suunnittelukysymyksenä;
+- miten yhteisen lähderekisterin ja tehtävätyypin oletuslähteiden tarkka tiedostorakenne, lähdeviittausten skeema sekä `inherit`-, `extend`- ja `replace`-toimintatapojen kentät ja validointisäännöt määritellään;
 - miten nykyisen GitHub App -yhteyden tosiasialliset oikeudet ja `main`-haaran suojaus varmistetaan käyttöönotossa; ensimmäisessä versiossa ei edellytetä teknistä, vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta;
 - miten toimituspaketin tarkat tulostilakohtaiset tiedostovaatimukset ja skeemat määritellään; eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3;
 - miten `metadata.json`-tiedoston tarkka skeema määritellään, mukaan lukien tuottajan tuloksen ja vastaanottajan ajonhallinnan erottelu, tapahtumien rakenne ja lähdekohtaiset avausyritysten havainnot;
@@ -683,6 +683,8 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 - mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
 
 ### Versiohistoria
+
+- **0.3.58 (22.11.2026):** hyväksyttiin yhteinen lähderekisteri, tehtävätyypin oletuslähteet ja mahdolliset pakolliset lähteet sekä aiheen ja tehtävätyypin yhdistelmäkohtaiset lähdemääritykset. Määriteltiin `inherit`-, `extend`- ja `replace`-toimintatavat ja pakollisten lähteiden säilyminen myös oletuslistan korvaamisessa.
 
 - **0.3.57 (22.11.2026):** määriteltiin JSON Schema Draft 2020-12 -skeemakokonaisuus, tehtävätyyppikohtaiset asetusskeemat, tehtävätyyppiin sidotut profiilit, Markdown-ohjeiden erillinen validointi ja tehtäväpyynnön rakenteisten aineistojen `inputs`-viittaukset. Lähderekisterin aihekohtainen rajaus jätettiin avoimeksi jatkokeskusteluun.
 
