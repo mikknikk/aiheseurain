@@ -362,7 +362,7 @@ Virhetilanteet käsitellään yksinkertaisella ja yksiselitteisellä tavalla:
 - **Puuttuva tuottajavastaus:** käynnistetty ajotietue säilytetään ja ajo merkitään aikakatkaisun tai muun todennetun syyn perusteella epäonnistuneeksi.
 - **Myöhäinen tuottajatoimitus:** toimitus tunnistetaan alkuperäisellä `run_id`-tunnisteella. Se voidaan validoida ja julkaista alkuperäisen ajon tuloksena vain, jos samaa aihetta ja seurantatyyppiä koskevaa myöhempää ajoa ei ole käynnistetty ja kaikki normaalit hyväksymisehdot täyttyvät. Myöhäinen toimitus ei muuta myöhempien ajojen tietoja tai tiloja; määräajan umpeutuminen ja myöhäinen vastaanotto säilyvät erillisinä ajotapahtumina.
 
-Ensimmäisessä versiossa ei vaadita monimutkaista uudelleenyritysten orkestrointia. Uudelleenyrityksen ajankohta ja rajat määritellään toteutussuunnittelussa niin, ettei virheellinen aihe jää toistuvasti jonon kärkeen.
+Ensimmäisessä versiossa ei vaadita monimutkaista uudelleenyritysten orkestrointia. Uudelleenyritysten määrä, laskentatapa, ajankohta ja muut käsittelyrajat määritellään konfiguraatiossa ja välitetään tehtävän `resolved_config`-kokoonpanossa; niitä ei kovakoodata. Toimintamalli ei saa jättää virheellistä aihetta toistuvasti jonon kärkeen.
 
 Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen, onko uusi yritys mahdollinen tai jo tehty.
 
