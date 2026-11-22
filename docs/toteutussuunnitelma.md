@@ -54,10 +54,11 @@ Ensimmäisessä toteutusvaiheessa käytetään yhtä raportintuottajaa. Raportin
 - Raportintuottajan käynnistys-/nouto-ohje on eri asia kuin varsinainen tehtäväpyyntö: se kertoo, miten tehtävä haetaan ja käsitellään, kun taas `data/tehtava.json` sisältää yksittäisen ajon tiedot.
 - Tehtäväpyynnön tarkka JSON-rakenne, viittauskenttien nimet ja tilapäivitysten toteutus määritellään myöhemmin toimitussopimuksessa.
 
-Tehtävän jäljitettävyys perustuu kahteen erilliseen revisioon:
+Tehtävän jäljitettävyys perustuu kahteen päärevisioon sekä erilliseen RSS-historian lähtörevisioon:
 
 - `software_revision` yksilöi ohjelmistorepon muuttumattoman Git-commitin, jonka ohjelmistokoodia, yhteisiä skeemoja ja ohjelmiston yleisiä ohjeita tehtävän käsittelyssä käytetään.
 - `instance_revision` yksilöi instanssirepon muuttumattoman Git-commitin, jonka aihe-, tehtävä-, profiili-, lähderekisteri- ja instanssikohtaisia ohjemäärityksiä tehtävässä käytetään.
+- `history.revision` yksilöi RSS-historian tarkan lähtöcommitin instanssirepositoriossa. Se voi olla sama kuin `instance_revision`, mutta voi myös osoittaa aiempaan historian lähtötilaan.
 
 Näitä tunnisteita ei yhdistetä yhdeksi kentäksi: ohjelmiston ja instanssin muutokset ovat toisistaan riippumattomia. Tehtäväpyynnön täsmälliset kentät ja niiden validointisäännöt määritellään toimitussopimuksessa. Kaikki tehtävässä luettavat tiedostot yksilöidään repositoriokohtaisesti ja haetaan kyseisen repositorion ilmoitetusta muuttumattomasta revisiosta. Viittauksen polku ei yksin määritä repositoriota. Tehtäväpyynnön tiedostoviittauksissa käytetään loogista `repository`-tunnistetta: `software` tarkoittaa yhteistä ohjelmistorepositoriota ja `instance` kyseistä instanssirepositoriota. Tunniste ratkaistaan käyttöönoton repositoriomäärityksestä; varsinaisia repositorioiden nimiä ei kovakoodata yhteiseen tietosopimukseen.
 
