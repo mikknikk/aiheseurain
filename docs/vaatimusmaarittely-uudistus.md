@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.11  
+**Versio:** 0.12.12  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 22.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -150,6 +150,35 @@ Ajon epäonnistuminen tai tuloksen puuttuminen ei saa hävittää käynnistetyn 
 Ensimmäisessä versiossa tehtävät käsitellään sarjallisesti: järjestelmässä on kerrallaan enintään yksi aktiivinen raportointitehtävä, eikä seuraavaa tehtävää käynnistetä ennen kuin edellinen on todettu onnistuneeksi tai kirjattu epäonnistuneeksi. Tämä koskee myös eri aiheita; eri aiheiden rinnakkaista käsittelyä ei toteuteta ensimmäisessä versiossa. Erillistä rinnakkaisten raportointitehtävien varaus-, lukitus- tai kilpailutilanteiden hallintaa ei tarvita. Sen sijaan tehtävän muodostus, määräajan valvonta ja toimituksen vastaanotto/käsittely on koordinoitava yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta, jotta erilliset automaatioajot eivät voi käsitellä useita tehtäviä samanaikaisesti tai ohittaa edellisen tehtävän päättymistä. Sarjallinen käsittely ei poista tarvetta estää saman ajon kaksoistoimituksia ja kaksoisjulkaisuja: `run_id` ja idempotentti vastaanotto säilyvät.
 
 Määräajan umpeutuminen ei yksinään tee tuottajan myöhemmin saapuvasta tuloksesta julkaisukelvotonta. Myöhäinen toimitus voidaan käsitellä alkuperäisen `run_id`-tunnisteensa perusteella ja hyväksyä sekä julkaista alkuperäisen ajon tuloksena, jos toimitus läpäisee kaikki normaalit validoinnit eikä samaa aihetta ja seurantatyyppiä koskevaa myöhempää ajoa ole vielä käynnistetty. Myöhäinen toimitus ei saa muuttaa myöhemmän ajon tehtäväpyyntöä, tulosta, ajotietuetta tai tilaa. Määräajan umpeutuminen ja sen jälkeen saapunut toimitus kirjataan erillisinä vastaanottajan todentamina tapahtumina; aiempaa määräajan umpeutumisen merkintää ei poisteta eikä vastaanottajan kirjaamaa epäonnistumista esitetä tuottajan tuloksena. Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistynyt tai jokin muu hyväksymisehto ei täyty, myöhäistä toimitusta ei julkaista. Vastaanotto, validointi ja mahdollinen jälkikäsittely koordinoidaan edelleen yhteisen instanssikohtaisen sarjallisuuden hallinnan kautta.
+
+
+
+### 5.2 Käsittelyn valmistuminen ja tehtävän vapauttaminen
+
+Ajon elinkaaressa erotetaan kolme asiaa:
+
+- **Tuottajan tulos** kuvaa raportintuottajan itsensä ilmoittamaa tutkimus- ja raportointitulosta. Se tallennetaan vain, jos tuottaja toimittaa tuloksen.
+- **Vastaanottajan käsittely** kuvaa toimituksen vastaanottoa, validointia, hyväksymistä tai hylkäämistä sekä julkaisua.
+- **Ajon lopputila** kuvaa vastaanottajan muodostamaa kokonaisarviota siitä, päättyikö ajo onnistuneesti vai epäonnistuneesti.
+
+Tuottajan tulos ei yksin ratkaise vastaanottajan käsittelyn onnistumista. Vastaavasti vastaanottajan aikakatkaisu tai muu havainto ei osoita, että raportintuottaja olisi itse ilmoittanut epäonnistumisesta.
+
+Ajo onnistuu vastaanottajan näkökulmasta vain, kun toimitus on yhdistetty oikeaan `run_id`-ajoon, kaikki pakolliset validoinnit läpäistään, raportti hyväksytään käsiteltäväksi ja mahdollinen RSS-julkaisu onnistuu sekä julkaisutulos kirjataan ajohistoriaan. Pelkkä toimituksen vastaanotto tai validoinnin läpäisy ei vielä merkitse onnistumista. Julkaistavissa oleva osittainen tulos voidaan hyväksyä, kun se täyttää julkaisuehdot ja raportin puutteet kuvataan avoimesti.
+
+Ajo päättyy vastaanottajan aktiivisen käsittelyn kannalta, kun jokin seuraavista toteutuu:
+
+1. toimitus on validoitu ja hyväksytty, julkaisu on onnistunut ja lopputila kirjattu;
+2. toimitus hylätään pakollisessa tarkistuksessa eikä sallittuja käsittely- tai uudelleenyritysmahdollisuuksia ole jäljellä;
+3. vastaanotto, tallennus, julkaisu tai muu pakollinen käsittelyvaihe epäonnistuu pysyvästi eikä käsittelyä saada jatkettua konfiguroiduissa rajoissa; tai
+4. tehtävän määräaika umpeutuu ilman hyväksyttävää toimitusta, jolloin vastaanottaja kirjaa aikakatkaisun ja oman epäonnistumishavaintonsa.
+
+Aktiivinen tehtävä vapautetaan vasta, kun vastaanottajan käsittely on päätetty ja ajon lopputila on kirjattu kanoniseen ajohistoriaan. Seuraavaa tehtävää ei käynnistetä ennen tätä. Yksittäinen epäonnistunut käsittely-yritys ei vapauta tehtävää, jos käsittelyä voidaan vielä jatkaa. Kun käsittely on päätetty, jono voi edetä myös epäonnistumisen jälkeen. Epäonnistuminen ei itsessään käynnistä uutta tehtävää.
+
+Uudelleenyritysten määrä, yritysten laskentatapa, määräajat ja muut vastaavat käsittelyrajat ovat konfiguroitavia toimintaparametreja. Niitä ei kovakoodata kiinteiksi lukumääriksi tai aikarajoiksi. Soveltuva tehtävätyypin määritys ja tarvittaessa profiili määrittävät arvot; asetusten yhdistämisen jälkeen käytetyt arvot sisältyvät tehtäväpyynnön `resolved_config`-kokoonpanoon. Yhteinen toteutus noudattaa ratkaistuja arvoja eikä keksi niille omia oletuksia. Konfiguraation sallitut tyypit, rajat ja oletusarvot määritellään tehtävätyypin skeemassa ja määrityksissä. Jos pakollinen arvo puuttuu tai on virheellinen, tehtävää ei muodosteta.
+
+Kun käsittely päättyy epäonnistuneena, vastaanottaja kirjaa havaitun syyn ja siihenastiset tapahtumat. Tuottajan tulosta ei päätellä vastaanottajan havainnoista. Ajohistoriasta on voitava erottaa tehtävän käynnistys ja määräaika, toimituksen saapuminen, tuottajan ilmoittama tulos, vastaanottajan käsittelyvaiheet, validointi, julkaisu, ajon lopputila sekä aktiivisen käsittelyn vapautushetki. Tapahtumat säilytetään aikajärjestyksessä; myöhemmät tapahtumat eivät korvaa aiempia.
+
+Aikakatkaisun jälkeen saapuva toimitus käsitellään alkuperäisen `run_id`-tunnisteen perusteella aiemmin määritellyin myöhäisen toimituksen ehdoin. Myöhäinen toimitus voi täydentää samaa ajohistoriatietuetta uusilla tapahtumilla, mutta se ei avaa jo vapautettua tehtävää uudelleen, muuta jo käynnistetyn myöhemmän ajon tietoja eikä siirrä aktiivista tehtävää taaksepäin. Jos myöhempi saman aiheen ja seurantatyypin ajo on jo käynnistetty, myöhäistä toimitusta ei julkaista.
 
 Tämä on looginen prosessi. Tiedonsiirron tarkka tekninen mekanismi ja vastaanottorajapinnan toteutus valitaan erillisessä toteutussuunnittelussa. Tuottajan ei edellytetä käyttävän tiettyä palvelua tai kirjoittavan suoraan repositorioon.
 
@@ -467,6 +496,8 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 Tämä vaatimusmäärittely määrittelee raporttituottajien yhteisen tulossopimuksen ja Aiheseuraimen vastaanottavan järjestelmän vaatimukset. Se ei määrittele yksittäisen tuottajan sisäisiä ohjeita, kehotteita, ohjelmistoversioita, ajastuksia tai niiden versionhallintaa. Kukin tuottajaintegraatio dokumentoi ja hallitsee nämä asiat omassa toteutusohjeessaan. Tuottajakohtainen ohje ei saa muuttaa tässä määriteltyä yhteistä tietosopimusta tai vastaanottavan järjestelmän julkaisuehtoja.
 
 ## 18. Muutosloki
+
+- **0.12.12 – 22.11.2026:** määriteltiin tuottajan tuloksen, vastaanottajan käsittelyn ja ajon lopputilan erottelu sekä aktiivisen tehtävän vapauttamisen ehdot. Uudelleenyritysten määrät ja muut vastaavat käsittelyrajat päätettiin konfiguroitaviksi; niitä ei kovakoodata.
 
 - **0.12.11 – 22.11.2026:** hyväksytty tehtäväpyynnön ylätason tietorakenne ja kenttien määrittelyperiaatteet: pakollinen semanttinen schema_version, yksilöllinen run_id, ohjelmisto- ja instanssirevisiot, aikaväli ja määräajat, RSS-historian viittaus, järjestetyt profiili- ja ohjeviittaukset sekä valmiiksi ratkaistu resolved_config. Määrittelemättömät ylimääräiset kentät hylätään.
 
