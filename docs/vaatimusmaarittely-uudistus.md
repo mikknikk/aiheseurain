@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.33  
+**Versio:** 0.12.34  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -355,6 +355,8 @@ Tuottajan toimitusmetatietojen sisältö jäsennetään seuraaviin tietoryhmiin:
 - **Lähdetarkistukset:** käytetyt lähteet ja sisältökanavat, tarkistusyritykset sekä niiden tulokset.
 
 Lähdetarkistusten tietoryhmä jäsentyy kolmeen osaan: (1) ajossa käytetyt lähteet, (2) niistä eksplisiittisesti valitut ja käytetyt sisältökanavat sekä (3) kanavakohtaiset tarkistusyritykset tuloksineen. Myös rekisterin ulkopuoliset lähteet voidaan kuvata tässä ryhmässä erillisinä toimituskohtaisina lähteinä; niitä ei esitetä rekisteriin kuuluvina. Tarkat kentät, tarkistusyrityksen tulosluokat ja yksityiskohtainen tietosisältö täsmennetään erikseen. Ryhmittely ei muuta lähderekisterin pysyvien perustietojen ja ajohistorian toteutuneiden tarkistustulosten vastuunjakoa.
+
+Tarkistusyrityksestä tallennetaan vähintään tarkistusajankohta, tarkistuksen tulos, tieto siitä löytyikö uutta tai tehtävän kannalta relevanttia sisältöä, saatavilla oleva tekninen tulos (esimerkiksi HTTP-tilakoodi) sekä mahdolliset virhe- ja huomiotiedot. Teknisen tarkistuksen onnistuminen erotetaan sisällöllisestä tuloksesta: onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tietoryhmän tarkka kenttärakenne ja sallitut tulosarvot täsmennetään myöhemmin.
 - **Havainnot ja laadunvarmistus:** raportoitavien havaintojen yhteenveto ja laaduntarkistuksen tulokset.
 - **Tuottajan tiedot:** valinnaiset tiedot käytetystä raportintuottajasta.
 
@@ -718,6 +720,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.34 – 23.11.2026:** hyväksyttiin kanavakohtaisen tarkistusyrityksen vähimmäistiedoiksi ajankohta, tulos, tieto uuden tai tehtävän kannalta relevantin sisällön löytymisestä, saatavilla oleva tekninen tulos sekä virhe- ja huomiotiedot. Erotettiin teknisen tarkistuksen onnistuminen sisällöllisestä tuloksesta; onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tarkka kenttärakenne ja sallitut tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.33 – 23.11.2026:** hyväksyttiin Lähdetarkistukset-ryhmän alustava kolmen osan rakenne: käytetyt lähteet, käytetyt sisältökanavat sekä kanavakohtaiset tarkistusyritykset tuloksineen. Rekisterin ulkopuoliset lähteet kuvataan erillisinä toimituskohtaisina lähteinä. Yksittäisten kenttien ja tarkkojen tulosluokkien määrittely jätettiin jatkokeskusteluun. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.32 – 23.11.2026:** hyväksyttiin Tuottajan tulos -ryhmän kentiksi `status`, `started_at` ja `completed_at`. Määriteltiin tuottajan tulostilan sallitut arvot, aikaleimojen esitystapa ja se, ettei vastaanottaja päättele puuttuvasta toimituksesta tuottajan tulosta.\n- **0.12.31 – 23.11.2026:** hyväksyttiin toimitusmetatietojen Tehtävän kuvaus -ryhmän ainoaksi omaksi kentäksi `period`, jonka rakenne vastaa tehtäväpyynnön `from`- ja `to`-arvoja. `topic_id` ja `task_type` säilyvät vain Tunnisteet ja versiot -ryhmässä, eikä niitä kopioida toiseen ryhmään.\n- **0.12.30 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen tunnisteet ja versiot -ryhmän kentät: `schema_version`, `run_id`, `delivery_id`, `topic_id`, `task_type`, `software_revision` ja `instance_revision`. Täsmennettiin tunnisteiden omistajuus sekä se, ettei vastaanottajan `attempt_id` kuulu tuottajan metatietoihin. Muut tietoryhmät ja niiden kentät jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.\n- **0.12.29 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei vielä lukitse yksittäisiä kenttiä tai niiden pakollisuutta. Vastaanottajan käsittelytilat rajattiin edelleen tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.28 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja vastaanottajan append-only-tapahtumahistorian erottaminen kolmeksi toisiinsa viitatuksi tietokokonaisuudeksi. Täsmennettiin, että tarkat kentät, tapahtumatyypit ja viittaukset ratkaistaan myöhemmässä teknisessä suunnittelussa. Toteutusta, skeemoja tai automaatioita ei muutettu.
