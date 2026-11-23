@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.74  
+**Versio:** 0.3.75  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.32](vaatimusmaarittely-uudistus.md)
@@ -663,6 +663,8 @@ Tuottajan metadata.json-sisältö jäsennetään kuuteen tietoryhmään:
 - **Tehtävän kuvaus:** aihe, tehtävätyyppi ja seuranta-aikaväli.
 - **Tuottajan tulos:** tuottajan ilmoittama tulostila ja raportin tuottamiseen liittyvät tiedot.
 - **Lähdetarkistukset:** käytetyt lähteet ja sisältökanavat, tarkistusyritykset ja niiden tulokset.
+
+Lähdetarkistusten tietoryhmän alustava rakenne koostuu kolmesta osasta: ajossa käytetyistä lähteistä, eksplisiittisesti valituista sisältökanavista sekä kanavakohtaisista tarkistusyrityksistä tuloksineen. Rekisterin ulkopuoliset lähteet kuvataan toimitusmetatiedoissa erillisinä toimituskohtaisina lähteinä, eikä niitä merkitä rekisteriin kuuluviksi. Tarkat kentät ja tarkistusyritysten tulosluokat täsmennetään erikseen. Tämä ei muuta lähderekisterin pysyvien tietojen ja ajohistorian toteutuneiden tarkistustulosten erottelua.
 - **Havainnot ja laadunvarmistus:** raportoitavien havaintojen yhteenveto ja laaduntarkistuksen tulokset.
 - **Tuottajan tiedot:** valinnaiset tiedot käytetystä raportintuottajasta.
 
@@ -861,6 +863,7 @@ Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ol
 
 ### Versiohistoria
 
+- **0.3.75 (23.11.2026):** hyväksyttiin Lähdetarkistukset-ryhmän alustava kolmen osan rakenne: käytetyt lähteet, käytetyt sisältökanavat sekä kanavakohtaiset tarkistusyritykset tuloksineen. Rekisterin ulkopuoliset lähteet kuvataan erillisinä toimituskohtaisina lähteinä; tarkat kentät ja tulosluokat jätettiin jatkokeskusteluun. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.74 (23.11.2026):** hyväksyttiin Tuottajan tulos -ryhmän kentiksi `status`, `started_at` ja `completed_at`. Määriteltiin tuottajan tulostilan sallitut arvot, aikaleimojen esitystapa ja tuottajan tuloksen erottaminen vastaanottajan ajonhallintatiedoista.\n- **0.3.73 (23.11.2026):** hyväksyttiin toimitusmetatietojen Tehtävän kuvaus -ryhmän ainoaksi omaksi kentäksi `period`, joka sisältää seurannan alku- ja loppuarvot tehtäväpyynnön rakennetta vastaavasti. `topic_id` ja `task_type` säilyvät vain Tunnisteet ja versiot -ryhmässä.\n- **0.3.72 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen tunnisteet ja versiot -ryhmän kentät: `schema_version`, `run_id`, `delivery_id`, `topic_id`, `task_type`, `software_revision` ja `instance_revision`. Täsmennettiin tunnisteiden omistajuus sekä rajattiin vastaanottajan `attempt_id` tuottajan metatietojen ulkopuolelle. Muiden tietoryhmien kentät jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.\n- **0.3.71 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei lukitse vielä yksittäisiä kenttiä, niiden nimiä, tyyppejä tai pakollisuutta; aiemmin hyväksytyt vähimmäistiedot säilyvät lähtökohtana. Vastaanottajan käsittelytilat rajattiin tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.70 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja vastaanottajan append-only-tapahtumahistorian erottaminen kolmeksi toisiinsa viitatuksi tietokokonaisuudeksi sekä ehdotettu `runs/{run_id}/`-hakemistorakenne (`run.json`, `events.jsonl` ja toimituskohtainen `metadata.json`). Tarkat kentät, tapahtumatyypit ja viittaukset jätettiin avoimeksi tekniseen suunnitteluun. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.69 (23.11.2026):** päivitettiin avoimien teknisten yksityiskohtien luettelo vastaamaan hyväksyttyjä ratkaisuja. Poistettiin vanhentunut tallennuksen palautumista koskeva avoin kohta ja täsmennettiin, että palautumisen periaatteet sekä toimitusten tunnistemalli on jo hyväksytty. Ryhmiteltiin jäljellä olevat kymmenen kokonaisuutta selkeämmin. Korjattiin vaatimusmäärittelyn perustaksi versio 0.12.27. Toteutusta, skeemoja tai automaatioita ei muutettu.
