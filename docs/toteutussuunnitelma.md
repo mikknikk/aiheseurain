@@ -375,7 +375,7 @@ schemas/
   examples/
 ```
 
-Tiedostonimet ovat englanninkielisiä, pienaakkosin ja yhdysmerkein. Skeemojen `$id)-tunnisteet ovat vakaita eivätkä riipu repositorion nimestä tai polusta. Skeemojen väliset skeemojen `$ref`-viittaukset ratkaistaan paikallisesti ohjelmistorevision sisältämästä skeemakokonaisuudesta; ajonaikaisia ulkoisia skeemahakuja ei tehdä. Hakemistorakenne ja yksittäisten skeematiedostojen tarkka sisältö toteutetaan myöhemmässä toteutusvaiheessa tämän hyväksytyn mallin mukaisesti.
+Tiedostonimet ovat englanninkielisiä, pienaakkosin ja yhdysmerkein. Skeemojen `$id`-tunnisteet ovat vakaita eivätkä riipu repositorion nimestä tai polusta. Skeemojen väliset skeemojen `$ref`-viittaukset ratkaistaan paikallisesti ohjelmistorevision sisältämästä skeemakokonaisuudesta; ajonaikaisia ulkoisia skeemahakuja ei tehdä. Hakemistorakenne ja yksittäisten skeematiedostojen tarkka sisältö toteutetaan myöhemmässä toteutusvaiheessa tämän hyväksytyn mallin mukaisesti.
 
 Skeemakokonaisuuden päävastuut ovat:
 
@@ -389,7 +389,7 @@ Skeemakokonaisuuden päävastuut ovat:
 
 Tehtävätyypin asetusskeema määrittelee myös lopullisen `resolved_config`-rakenteen. Profiilin oma rakenne validoidaan profiilin skeemalla ja sen asetukset lisäksi valitun tehtävätyypin asetusskeemalla. Tuottajan toimittamat tulosmetatiedot ja vastaanottajan kirjaama ajonhallinta pysyvät erillisinä tietosopimuksina: toimitusmetatietojen skeema ei korvaa eikä määrittele vastaanottajan kanonista ajotietuetta.
 
-Kaikilla skeematasoilla hylätään tuntemattomat kentät. Sulkevuus toteutetaan Draft 2020-12 -standardin mukaisesti esimerkiksi `additionalProperties: false`- tai tarvittaessa `unevaluatedProperties: false` -määrityksillä. `$ref)- ja `allOf)-rakenteiden yhteydessä varmistetaan erikseen, ettei skeemojen yhdistäminen avaa tuntemattomille kentille pääsyä.
+Kaikilla skeematasoilla hylätään tuntemattomat kentät. Sulkevuus toteutetaan Draft 2020-12 -standardin mukaisesti esimerkiksi `additionalProperties: false`- tai tarvittaessa `unevaluatedProperties: false` -määrityksillä. `$ref`- ja `allOf`-rakenteiden yhteydessä varmistetaan erikseen, ettei skeemojen yhdistäminen avaa tuntemattomille kentille pääsyä.
 
 Skeemat versioidaan semanttisesti. Yhteensopiva korjaus kasvattaa PATCH-osaa, uusi taaksepäin yhteensopiva ominaisuus MINOR-osaa ja yhteensopimaton rakenteellinen muutos MAJOR-osaa. Julkaistua skeemaversiota ei muuteta hiljaisesti yhteensopimattomaksi. Tehtäväpyynnön ja toimitusmetatietojen `schema_version)-kentät säilyvät, ja käytetty skeemakokonaisuus yksilöityy lisäksi tehtävän `software_revision)-kentän kautta.
 
@@ -401,7 +401,7 @@ Virheilmoituksissa yksilöidään tiedosto, kenttäpolku, virhetyyppi ja selkoki
 
 Markdown-ohjeiden tarkistukset pidetään erillään JSON Schema -validoinnista. Niihin kuuluvat tiedoston olemassaolo oikeassa repositoriossa ja commitissa, Markdownin jäsennettävyys, otsikkohierarkia, paikallisten linkkien toimivuus sekä ohjetunnisteiden ja versioiden johdonmukaisuus.
 
-Testaus kattaa jokaisen pääskeeman kelvollisen esimerkin sekä virheelliset tapaukset: puuttuvat kentät, väärät tyypit, tuntemattomat kentät, virheelliset tunnisteet/revisiot/aikaleimat/viittaukset, virheelliset asetukset ja kielletyt ylikirjoitukset. Lisäksi testataan koko skeemakokonaisuuden lataus, `$ref)-riippuvuuksien ratkaisu, määritysten yhdistämislogiikka ja lopullinen `resolved_config). GitHub Actions suorittaa skeema- ja validointitestit, kun niitä koskevia tiedostoja muutetaan.
+Testaus kattaa jokaisen pääskeeman kelvollisen esimerkin sekä virheelliset tapaukset: puuttuvat kentät, väärät tyypit, tuntemattomat kentät, virheelliset tunnisteet/revisiot/aikaleimat/viittaukset, virheelliset asetukset ja kielletyt ylikirjoitukset. Lisäksi testataan koko skeemakokonaisuuden lataus, `$ref`-riippuvuuksien ratkaisu, määritysten yhdistämislogiikka ja lopullinen `resolved_config`. GitHub Actions suorittaa skeema- ja validointitestit, kun niitä koskevia tiedostoja muutetaan.
 
 Markdown-ohjeiden tarkistukset eivät ole JSON Schema -skeemoja. Niiden erillinen tarkistus kattaa tiedoston olemassaolon oikeassa repositoriossa ja commitissa, Markdownin jäsennettävyyden, otsikkohierarkian, paikalliset linkit sekä ohjetunnisteiden ja versioiden johdonmukaisuuden.
 
