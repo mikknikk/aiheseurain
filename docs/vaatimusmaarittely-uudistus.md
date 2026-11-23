@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.34  
+**Versio:** 0.12.35  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -382,6 +382,13 @@ Kolmanteen tietoryhmään, **Tuottajan tulos**, kuuluvat seuraavat kentät:
 
 Aikaleimat ilmoitetaan ISO 8601 -muodossa tehtäväpyynnön `resolved_config.timezone`-asetuksen mukaisessa paikallisessa ajassa ja kyseisen ajanhetken numeerisella UTC-offsetilla. Tuottajan `status` kuvaa vain tuottajan omaa tulosta. Jos toimitusta ei saada, tuottajan tulos jää puuttuvaksi; vastaanottaja kirjaa oman epäonnistumishavaintonsa erilliseen ajotietueeseen eikä päättele siitä tuottajan `status`-arvoa. Vastaanottajan vastaanotto-, validointi- ja julkaisutilat eivät kuulu tähän ryhmään.
 
+Viidenteen tietoryhmään, **Havainnot ja laadunvarmistus**, kuuluu kaksi osaa:
+
+1. **Raportoitavat havainnot:** raportin sisältämien havaintojen yhteenveto. Siihen voi kuulua havaintojen lukumäärä ja tehtävätyypin kannalta tarpeellinen luokittelu tai ryhmittely sekä olennaisten rajausten, epävarmuuksien ja kattavuuspuutteiden kuvaus. Jos raportoitavia havaintoja ei löytynyt, tämä voidaan ilmaista yhteenvetona. Varsinaista raporttitekstiä tai lähdetarkistusten tietoja ei kopioida metatietoihin.
+2. **Laadunvarmistus:** raportintuottajan tekemien laaduntarkistusten tulokset. Tarkistukset voivat koskea esimerkiksi lähdeviitteiden ja väitteiden vastaavuutta, havaintojen jäljitettävyyttä, ristiriitaisten tietojen käsittelyä, epävarmuuden ilmaisemista, duplikaattien hallintaa, seuranta-aikavälin noudattamista sekä raportin rakennetta ja luettavuutta. Metatiedoissa kuvataan tehdyt tarkistukset ja niiden tulokset sekä mahdolliset havaitut puutteet tai tekemättä jääneet pakolliset tarkistukset.
+
+Tehtävätyypin määritys määrittelee, mitä laaduntarkistuksia kyseisessä tehtävässä edellytetään. Tehtävätyypistä riippumattomia pakollisia tarkistuksia ei oleteta. Tuottajan tulostila (status) kuuluu kolmanteen tietoryhmään eikä sitä toisteta tässä ryhmässä. Laadunvarmistuksen tulos on siitä erillinen: onnistuneesti tuotetussa raportissa voi olla laaduntarkistuksessa havaittuja puutteita, ja osittainen raportti voi läpäistä kaikki sille soveltuvat tarkistukset.
+
 Tämä ryhmittely määrittelee toimitusmetatietojen sisällölliset vastuualueet, ei vielä kaikkia yksittäisiä kenttiä, niiden tarkkoja nimiä tai pakollisuutta. Jo aiemmin määritellyt metatietojen vähimmäistiedot säilyvät voimassa. Vastaanottajan vastaanotto-, validointi-, julkaisu- ja käsittelytilat eivät kuulu tuottajan metatietoihin vaan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
 Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
@@ -720,6 +727,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.35 – 23.11.2026:** hyväksyttiin Havainnot ja laadunvarmistus -tietoryhmän kahden osan rakenne: raportoitavien havaintojen yhteenveto sekä raportintuottajan tekemien laaduntarkistusten tulokset. Rajattiin tuottajan tulostila kolmanteen tietoryhmään ja vastaanottajan validointi-, hyväksyntä- ja julkaisutilat tämän ryhmän ulkopuolelle. Tehtävätyypin määritys määrittelee vaadittavat laaduntarkistukset; tarkat kentät ja tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.34 – 23.11.2026:** hyväksyttiin kanavakohtaisen tarkistusyrityksen vähimmäistiedoiksi ajankohta, tulos, tieto uuden tai tehtävän kannalta relevantin sisällön löytymisestä, saatavilla oleva tekninen tulos sekä virhe- ja huomiotiedot. Erotettiin teknisen tarkistuksen onnistuminen sisällöllisestä tuloksesta; onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tarkka kenttärakenne ja sallitut tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.33 – 23.11.2026:** hyväksyttiin Lähdetarkistukset-ryhmän alustava kolmen osan rakenne: käytetyt lähteet, käytetyt sisältökanavat sekä kanavakohtaiset tarkistusyritykset tuloksineen. Rekisterin ulkopuoliset lähteet kuvataan erillisinä toimituskohtaisina lähteinä. Yksittäisten kenttien ja tarkkojen tulosluokkien määrittely jätettiin jatkokeskusteluun. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.32 – 23.11.2026:** hyväksyttiin Tuottajan tulos -ryhmän kentiksi `status`, `started_at` ja `completed_at`. Määriteltiin tuottajan tulostilan sallitut arvot, aikaleimojen esitystapa ja se, ettei vastaanottaja päättele puuttuvasta toimituksesta tuottajan tulosta.\n- **0.12.31 – 23.11.2026:** hyväksyttiin toimitusmetatietojen Tehtävän kuvaus -ryhmän ainoaksi omaksi kentäksi `period`, jonka rakenne vastaa tehtäväpyynnön `from`- ja `to`-arvoja. `topic_id` ja `task_type` säilyvät vain Tunnisteet ja versiot -ryhmässä, eikä niitä kopioida toiseen ryhmään.\n- **0.12.30 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen tunnisteet ja versiot -ryhmän kentät: `schema_version`, `run_id`, `delivery_id`, `topic_id`, `task_type`, `software_revision` ja `instance_revision`. Täsmennettiin tunnisteiden omistajuus sekä se, ettei vastaanottajan `attempt_id` kuulu tuottajan metatietoihin. Muut tietoryhmät ja niiden kentät jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.\n- **0.12.29 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei vielä lukitse yksittäisiä kenttiä tai niiden pakollisuutta. Vastaanottajan käsittelytilat rajattiin edelleen tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
