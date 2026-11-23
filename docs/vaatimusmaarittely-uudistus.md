@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.23  
+**Versio:** 0.12.24  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -251,6 +251,10 @@ Valinta noudattaa seuraavia yksinkertaisia sääntöjä:
 5. Jos sopivaa aihetta ei ole, käynnistys päättyy ilman aiheajoa.
 
 Aihekohtainen ajotiheys määritellään määrityksessä. Eri seurantatyypeillä voi olla omat aikataulu- ja sisältösääntönsä, mutta ne eivät muuta yhden aiheen ajomallia.
+
+Tehtävien ajastuksessa erotetaan kaksi asiaa: järjestelmän yhteinen tarkistusväli sekä aiheen ja tehtävätyypin yhdistelmäkohtainen suoritusväli. Yksi yhteinen ajastettu työnkulku tarkistaa säännöllisesti tehtäväjonon ja aktiivisen tehtävän määräajan. Yksittäisen aiheen tehtävä käynnistetään vasta, kun sen oma suoritusväli on erääntynyt ja muut käsittelyehdot sallivat sen. Yhteisen tarkistusvälin tarkka pituus ratkaistaan teknisessä toteutussuunnittelussa.
+
+Yhteisen tarkistustyönkulun voi käynnistää myös manuaalisesti esimerkiksi ylläpitoa tai tilanteen selvittämistä varten. Manuaalinen käynnistys käyttää samoja jono-, määräaika-, validointi- ja sarjallisuussääntöjä kuin ajastettu käynnistys. Se ei ohita aktiivista tehtävää, käynnistä rinnakkaista tehtävää eikä pakota tiettyä aihetta ajoon näiden sääntöjen vastaisesti.
 
 Ajon epäonnistuminen ei saa merkitä aihetta onnistuneesti käsitellyksi eikä antaa sille perusteetonta etua jonossa. Epäonnistunut ajo tallennetaan, ja uuden yrityksen ajankohta ratkaistaan yksinkertaisella, hallitulla säännöllä. Yhden ongelmallisen aiheen toistuvat yritykset eivät saa estää muiden erääntyneiden aiheiden etenemistä.
 
