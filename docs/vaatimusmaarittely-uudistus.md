@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.37  
+**Versio:** 0.12.38  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -754,7 +754,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
-- **0.12.37 – 24.11.2026:** hyväksyttiin yksittäisen laaduntarkistuksen ajokohtaisen tietueen kentät (`check_id`, `result`, `checked_at`, `findings`, `notes`, `reason`), viisi tulosluokkaa, havaintojen vakavuusluokat ja kirjaamissäännöt. Täsmennettiin vaadittujen tarkistusten kattavuus sekä tehtävätyypin määrityksen, raportintuottajan ja vastaanottajan vastuut. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
+- **0.12.38 – 24.11.2026:** yhdenmukaistettiin avoimien suunnittelukysymysten luettelo hyväksyttyjen päätösten kanssa. Poistettiin jo ratkaistu lähderekisterin ulkopuolinen lähdehaku avoimista kysymyksistä ja täsmennettiin, mitkä laaduntarkistusten tietomallin osat on päätetty ja mitkä skeema- ja määritysrakenteet ovat yhä avoinna. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.\n- **0.12.37 – 24.11.2026:** hyväksyttiin yksittäisen laaduntarkistuksen ajokohtaisen tietueen kentät (`check_id`, `result`, `checked_at`, `findings`, `notes`, `reason`), viisi tulosluokkaa, havaintojen vakavuusluokat ja kirjaamissäännöt. Täsmennettiin vaadittujen tarkistusten kattavuus sekä tehtävätyypin määrityksen, raportintuottajan ja vastaanottajan vastuut. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.36 – 24.11.2026:** hyväksyttiin, että yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä ja niiden ajokohtaiset tulokset tallennetaan tuottajan toimitusmetatietoihin. Tarkistusten määrittely erotetaan siten toteutuneiden tulosten kirjaamisesta; tarkat kentät ja tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.35 – 23.11.2026:** hyväksyttiin Havainnot ja laadunvarmistus -tietoryhmän kahden osan rakenne: raportoitavien havaintojen yhteenveto sekä raportintuottajan tekemien laaduntarkistusten tulokset. Rajattiin tuottajan tulostila kolmanteen tietoryhmään ja vastaanottajan validointi-, hyväksyntä- ja julkaisutilat tämän ryhmän ulkopuolelle. Tehtävätyypin määritys määrittelee vaadittavat laaduntarkistukset; tarkat kentät ja tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.34 – 23.11.2026:** hyväksyttiin kanavakohtaisen tarkistusyrityksen vähimmäistiedoiksi ajankohta, tulos, tieto uuden tai tehtävän kannalta relevantin sisällön löytymisestä, saatavilla oleva tekninen tulos sekä virhe- ja huomiotiedot. Erotettiin teknisen tarkistuksen onnistuminen sisällöllisestä tuloksesta; onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tarkka kenttärakenne ja sallitut tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
