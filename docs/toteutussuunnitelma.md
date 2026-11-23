@@ -645,7 +645,7 @@ Ajotiedot tallennetaan tässä vaiheessa julkiseen GitHub-repositorioon. Tämä 
 
 Julkiseen tallennukseen saa sisällyttää vain tarkoitukseen sopivia ajotietoja. Sinne ei tallenneta salaisuuksia, käyttöoikeustunnuksia, tarpeettomia henkilötietoja, raakaa keskustelusisältöä tai tarpeettomasti kopioitua lähdesisältöä.
 
-Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. **Ajotietueiden hakemistorakenne jätetään tässä vaiheessa avoimeksi**; sitä ei lukita esimerkinomaisella polulla eikä päivämäärä-, aihe- tai tehtävätyyppiryhmittelyllä. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
+Tallennusmuoto ja hakemistorakenne noudattavat kohdassa 2.6.1 hyväksyttyä periaateratkaisua: ajon tiedot jaetaan tuottajan toimitusmetatietoihin, vastaanottajan kanoniseen ajotietueeseen ja vastaanottajan append-only-tapahtumahistoriaan. Ehdotettu hakemistorakenne on `runs/{run_id}/`; tarkat tietosisällöt ja viittaukset täsmennetään myöhemmin. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
 
 #### 2.6.1 Kanoninen ajotietue, toimitusmetatiedot ja tapahtumahistoria
 
@@ -686,7 +686,7 @@ Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. 
 
 #### 2.6.3 Julkaisun ja ajotietojen tallennuksen palautuminen
 
-RSS-syötteet ja vastaanottajan kanoniset ajotietueet sijaitsevat samassa instanssirepositoriossa. Ne ovat erillisiä tiedostoja ja tietokokonaisuuksia: RSS sisältää julkaistut raportit, ajotietue vastaanottajan hallitsemat ajon tiedot ja tapahtumahistorian. Yhteinen ohjelmistorepositorio säilyy erillisenä. Sijoittelu mahdollistaa RSS-syötteen ja sitä vastaavan ajotietueen päivittämisen samalla Git-commitilla.
+RSS-syötteet, vastaanottajan kanoniset ajotietueet ja tapahtumahistoriat sekä tuottajan toimitusmetatiedot sijaitsevat erillisinä tiedostoina samassa instanssirepositoriossa. Yhteinen ohjelmistorepositorio säilyy erillisenä. Sijoittelu mahdollistaa RSS-syötteen ja sitä vastaavan ajotietueen päivittämisen samalla Git-commitilla.
 
 **Julkaisun tallennus muodostaa yhden atomisen repositoriomuutoksen.** Kun hyväksytty toimitus julkaistaan, samaan commitiin sisällytetään:
 - oikean aiheen RSS-syötteeseen lisättävä uusi item;
