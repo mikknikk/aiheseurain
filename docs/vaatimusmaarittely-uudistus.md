@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.35  
+**Versio:** 0.12.36  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -387,7 +387,7 @@ Viidenteen tietoryhmään, **Havainnot ja laadunvarmistus**, kuuluu kaksi osaa:
 1. **Raportoitavat havainnot:** raportin sisältämien havaintojen yhteenveto. Siihen voi kuulua havaintojen lukumäärä ja tehtävätyypin kannalta tarpeellinen luokittelu tai ryhmittely sekä olennaisten rajausten, epävarmuuksien ja kattavuuspuutteiden kuvaus. Jos raportoitavia havaintoja ei löytynyt, tämä voidaan ilmaista yhteenvetona. Varsinaista raporttitekstiä tai lähdetarkistusten tietoja ei kopioida metatietoihin.
 2. **Laadunvarmistus:** raportintuottajan tekemien laaduntarkistusten tulokset. Tarkistukset voivat koskea esimerkiksi lähdeviitteiden ja väitteiden vastaavuutta, havaintojen jäljitettävyyttä, ristiriitaisten tietojen käsittelyä, epävarmuuden ilmaisemista, duplikaattien hallintaa, seuranta-aikavälin noudattamista sekä raportin rakennetta ja luettavuutta. Metatiedoissa kuvataan tehdyt tarkistukset ja niiden tulokset sekä mahdolliset havaitut puutteet tai tekemättä jääneet pakolliset tarkistukset.
 
-Tehtävätyypin määritys määrittelee, mitä laaduntarkistuksia kyseisessä tehtävässä edellytetään. Tehtävätyypistä riippumattomia pakollisia tarkistuksia ei oleteta. Tuottajan tulostila (status) kuuluu kolmanteen tietoryhmään eikä sitä toisteta tässä ryhmässä. Laadunvarmistuksen tulos on siitä erillinen: onnistuneesti tuotetussa raportissa voi olla laaduntarkistuksessa havaittuja puutteita, ja osittainen raportti voi läpäistä kaikki sille soveltuvat tarkistukset.
+Tehtävätyypin määritys määrittelee, mitä laaduntarkistuksia kyseisessä tehtävässä edellytetään. Tehtävätyypistä riippumattomia pakollisia tarkistuksia ei oleteta. Yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä, ja toimitusmetatietoihin tallennetaan niiden ajokohtaiset tulokset. Näin tarkistusten määrittely ja niiden toteutuneiden tulosten kirjaaminen pysyvät erillään. Tarkistustietueiden tarkat kentät, tulosarvot ja pakollisuus määritellään jatkosuunnittelussa. Tuottajan tulostila (status) kuuluu kolmanteen tietoryhmään eikä sitä toisteta tässä ryhmässä. Laadunvarmistuksen tulos on siitä erillinen: onnistuneesti tuotetussa raportissa voi olla laaduntarkistuksessa havaittuja puutteita, ja osittainen raportti voi läpäistä kaikki sille soveltuvat tarkistukset.
 
 Tämä ryhmittely määrittelee toimitusmetatietojen sisällölliset vastuualueet, ei vielä kaikkia yksittäisiä kenttiä, niiden tarkkoja nimiä tai pakollisuutta. Jo aiemmin määritellyt metatietojen vähimmäistiedot säilyvät voimassa. Vastaanottajan vastaanotto-, validointi-, julkaisu- ja käsittelytilat eivät kuulu tuottajan metatietoihin vaan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
@@ -727,6 +727,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.36 – 24.11.2026:** hyväksyttiin, että yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä ja niiden ajokohtaiset tulokset tallennetaan tuottajan toimitusmetatietoihin. Tarkistusten määrittely erotetaan siten toteutuneiden tulosten kirjaamisesta; tarkat kentät ja tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.35 – 23.11.2026:** hyväksyttiin Havainnot ja laadunvarmistus -tietoryhmän kahden osan rakenne: raportoitavien havaintojen yhteenveto sekä raportintuottajan tekemien laaduntarkistusten tulokset. Rajattiin tuottajan tulostila kolmanteen tietoryhmään ja vastaanottajan validointi-, hyväksyntä- ja julkaisutilat tämän ryhmän ulkopuolelle. Tehtävätyypin määritys määrittelee vaadittavat laaduntarkistukset; tarkat kentät ja tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.34 – 23.11.2026:** hyväksyttiin kanavakohtaisen tarkistusyrityksen vähimmäistiedoiksi ajankohta, tulos, tieto uuden tai tehtävän kannalta relevantin sisällön löytymisestä, saatavilla oleva tekninen tulos sekä virhe- ja huomiotiedot. Erotettiin teknisen tarkistuksen onnistuminen sisällöllisestä tuloksesta; onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tarkka kenttärakenne ja sallitut tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.33 – 23.11.2026:** hyväksyttiin Lähdetarkistukset-ryhmän alustava kolmen osan rakenne: käytetyt lähteet, käytetyt sisältökanavat sekä kanavakohtaiset tarkistusyritykset tuloksineen. Rekisterin ulkopuoliset lähteet kuvataan erillisinä toimituskohtaisina lähteinä. Yksittäisten kenttien ja tarkkojen tulosluokkien määrittely jätettiin jatkokeskusteluun. Toteutusta, skeemoja tai automaatioita ei muutettu.
