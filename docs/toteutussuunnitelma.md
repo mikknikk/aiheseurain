@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.70  
+**Versio:** 0.3.71  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.28](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.29](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -468,7 +468,7 @@ Toimituspaketti sisältää:
 - `metadata.json`: pakollinen kaikissa tulostiloissa. Se sisältää vähintään sopimusversion, ajotunnisteen, aiheen tunnisteen, seurantatyypin, seuranta-aikavälin ja tulostilan sekä kyseisen tulostilan edellyttämät lisätiedot;
 - `item.xml`: pakollinen sekä `success`- että `partial`-tilassa. `success`-tilassa validoitu raportti julkaistaan. `partial`-tilassa validoitu osittainen raportti julkaistaan, ja itemissä kerrotaan selvästi seurannan puutteellisuudesta sekä sen syistä. `no_report`- ja `failed`-tiloissa `item.xml`-tiedostoa ei toimiteta.
 
-Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
+Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. Metatietojen sisällölliset tietoryhmät on määritelty kohdassa 2.6.1; kenttäkohtainen rakenne täsmennetään erillisessä tietomallityössä. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
 
 #### `metadata.json`-tiedoston vähimmäissisältö
 
@@ -657,6 +657,17 @@ Ajon tiedot jaetaan kolmeen erilliseen, toisiinsa viitattuun tietokokonaisuuteen
 
 Tietokokonaisuudet liittyvät samaan ajoon `run_id`-tunnisteella. Toimitus- ja käsittely-yritystunnisteita käytetään niiden aiemmin hyväksyttyjen vastuiden mukaisesti. Tuottajan ilmoittama tulostila ja vastaanottajan muodostama ajon lopputila pysyvät erillisinä tietoina, eikä vastaanottaja täydennä puuttuvaa tuottajan tulosta omilla havainnoillaan.
 
+Tuottajan metadata.json-sisältö jäsennetään kuuteen tietoryhmään:
+
+- **Tunnisteet ja versiot:** ajon ja toimituksen tunnisteet, tietosopimuksen versio sekä ohjelmisto- ja instanssirevisiot.
+- **Tehtävän kuvaus:** aihe, tehtävätyyppi ja seuranta-aikaväli.
+- **Tuottajan tulos:** tuottajan ilmoittama tulostila ja raportin tuottamiseen liittyvät tiedot.
+- **Lähdetarkistukset:** käytetyt lähteet ja sisältökanavat, tarkistusyritykset ja niiden tulokset.
+- **Havainnot ja laadunvarmistus:** raportoitavien havaintojen yhteenveto ja laaduntarkistuksen tulokset.
+- **Tuottajan tiedot:** valinnaiset tiedot käytetystä raportintuottajasta.
+
+Ryhmittely kuvaa metatietojen sisällölliset vastuualueet. Se ei vielä määritä kaikkia yksittäisiä kenttiä, niiden nimiä, tyyppejä tai pakollisuutta. Kohdassa 2.3 kuvatut jo hyväksytyt metatietojen vähimmäistiedot säilyvät lähtökohtana, ja niiden suhde ryhmiin täsmennetään kenttätason suunnittelussa. Vastaanottajan vastaanotto-, validointi-, julkaisu- ja käsittelytilat eivät kuulu tuottajan metatietoihin.
+
 Ehdotettu tiedostorakenne instanssirepositoriossa:
 
 ```text
@@ -828,6 +839,7 @@ Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ol
 
 ### Versiohistoria
 
+- **0.3.71 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei lukitse vielä yksittäisiä kenttiä, niiden nimiä, tyyppejä tai pakollisuutta; aiemmin hyväksytyt vähimmäistiedot säilyvät lähtökohtana. Vastaanottajan käsittelytilat rajattiin tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.70 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja vastaanottajan append-only-tapahtumahistorian erottaminen kolmeksi toisiinsa viitatuksi tietokokonaisuudeksi sekä ehdotettu `runs/{run_id}/`-hakemistorakenne (`run.json`, `events.jsonl` ja toimituskohtainen `metadata.json`). Tarkat kentät, tapahtumatyypit ja viittaukset jätettiin avoimeksi tekniseen suunnitteluun. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.69 (23.11.2026):** päivitettiin avoimien teknisten yksityiskohtien luettelo vastaamaan hyväksyttyjä ratkaisuja. Poistettiin vanhentunut tallennuksen palautumista koskeva avoin kohta ja täsmennettiin, että palautumisen periaatteet sekä toimitusten tunnistemalli on jo hyväksytty. Ryhmiteltiin jäljellä olevat kymmenen kokonaisuutta selkeämmin. Korjattiin vaatimusmäärittelyn perustaksi versio 0.12.27. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.68 (23.11.2026):** hyväksyttiin erilliset `run_id`-, `delivery_id`- ja `attempt_id`-tunnisteet, deterministinen RSS-GUIDin muodostaminen `run_id`-tunnisteesta, vastaanottajan laskema SHA-256-tiiviste kanonisoidusta toimitussisällöstä sekä kaksois- ja ristiriitaisten toimitusten käsittelysäännöt. Täsmennettiin vaihtoehtoisen toimituksen hyväksymisen rajat ennen ajon päättämistä. Toteutusta, skeemoja tai automaatioita ei muutettu.
