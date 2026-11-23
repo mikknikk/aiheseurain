@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.26  
+**Versio:** 0.12.27  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -524,6 +524,27 @@ Jos ajotietue on jo kirjattu epäonnistuneeksi ja tehtävä vapautettu, myöhemm
 
 Julkaistua RSS-itemiä ei koskaan muokata tai korvata palautumisen yhteydessä. Sisällöllinen korjaus tai täydennys julkaistaan uutena iteminä omalla GUIDilla ja viittauksella alkuperäiseen julkaisuun.
 
+### 10.2 Toimitusten tunnistaminen ja ristiriitojen käsittely
+
+Ajon, tuottajan toimituksen ja vastaanottajan yksittäisen käsittely-yrityksen tunnisteet ovat erillisiä, koska ne kuvaavat eri asioita ja niiden elinkaaret poikkeavat toisistaan.
+
+- **`run_id`** yksilöi tehtäväpyynnön ja loogisen ajon. Vastaanottaja luo sen tehtäväpyyntöä muodostettaessa. Tunniste säilyy kaikissa saman ajon toimitus- ja käsittely-yrityksissä. Yhdellä `run_id`-tunnisteella on yksi kanoninen ajotietue ja enintään yksi hyväksytty varsinaisen raportin toimitus.
+- **`delivery_id`** yksilöi raportintuottajan muodostaman toimituspaketin. Raportintuottaja luo tunnisteen ensimmäisen toimituksen yhteydessä. Saman toimituksen uudelleenlähetyksissä tunniste säilyy; uusi tunniste luodaan vain aidosti uudelle toimitukselle. Vastaanottaja käsittelee toimitusta `run_id`- ja `delivery_id`-tunnisteiden yhdistelmän perusteella.
+- **`attempt_id`** yksilöi vastaanottajan käsittely-yrityksen. Vastaanottaja luo uuden UUID-tunnisteen jokaiselle uudelle käsittely- tai uudelleenyritysyritykselle. Tunniste yhdistetään kyseisen yrityksen `run_id`- ja `delivery_id`-tunnisteisiin. Raportintuottaja ei luo eikä määrää `attempt_id`-tunnistetta.
+- **RSS `guid`** yksilöi julkaistun raportti-itemin. Alkuperäisen raportin GUID muodostetaan deterministisesti `run_id`-tunnisteesta, esimerkiksi muodossa `urn:aiheseurain:run:{run_id}`. Saman ajon uudelleenyritykset käyttävät samaa GUIDia. Myöhempi sisällöllinen korjaus tai täydennys julkaistaan uutena iteminä omalla GUIDilla ja viittauksella alkuperäiseen itemiin.
+
+Vastaanottaja laskee toimituksen sisällöstä SHA-256-tiivisteen. Tiiviste lasketaan yhdenmukaisesti kanonisoidusta toimitussisällöstä, jotta sisällöltään saman toimituksen uudelleenlähetys voidaan erottaa saman tunnisteen yhteydessä muuttuneesta sisällöstä. Tiivisteen laskenta ja vertailu kuuluvat vastaanottajalle; tuottajan ilmoittamaa tiivistettä ei käytetä vastaanottajan varmennuksen korvikkeena.
+
+Toimitusten käsittelyssä noudatetaan seuraavia sääntöjä:
+
+1. Sama `delivery_id` ja sama kanonisoitu sisältö tarkoittavat saman toimituksen kaksoisvastaanottoa. Se käsitellään idempotentisti eikä synnytä uutta hyväksyttyä toimitusta tai RSS-itemiä.
+2. Sama `delivery_id` mutta eri sisältö on tunnisteristiriita. Uusi sisältö hylätään ja ristiriita kirjataan; aiempaa toimitusta tai julkaisua ei korvata.
+3. Eri `delivery_id` samalla `run_id`-tunnisteella ja sama sisältö tarkoittavat vaihtoehtoista toimitusta samalle tulokselle. Se voidaan kirjata kaksois-/vaihtoehtoisena toimituksena, mutta siitä ei synny toista julkaisua.
+4. Eri `delivery_id` samalla `run_id`-tunnisteella mutta eri sisältö on ristiriita, jos kyseiselle ajolle on jo hyväksytty toimitus. Myöhempi eri sisältö hylätään eikä hyväksyttyä tulosta korvata.
+5. Jos aiempi toimitus on hylätty validoinnissa eikä ajon käsittelyä ole vielä päätetty, toinen eri tunnisteella saapuva toimitus voidaan hyväksyä, jos se läpäisee kaikki normaalit hyväksymisehdot. Ajon päättämisen jälkeen uutta vaihtoehtoista varsinaista raporttitoimitusta ei hyväksytä.
+
+Tunnisteiden vastuut pidetään erillään: `run_id` seuraa ajoa, `delivery_id` tuottajan toimitusta ja `attempt_id` vastaanottajan käsittely-yritystä. Tämä malli ei muuta ensimmäisen version sarjallista käsittelyä eikä edellytä rinnakkaisten tuottajien varaus- tai lukitusmekanismia.
+
 ## 11. Turvallisuus, eheys ja testaus
 
 - Testit eivät saa kirjoittaa tuotannon RSS-syötteisiin tai muuttaa tuotannon seurantatilaa.
@@ -662,6 +683,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.27 – 23.11.2026:** hyväksyttiin ajon, tuottajan toimituksen ja vastaanottajan käsittely-yrityksen erilliset tunnisteet (`run_id`, `delivery_id`, `attempt_id`), alkuperäisen RSS-GUIDin deterministinen muodostaminen `run_id`-tunnisteesta, vastaanottajan laskema SHA-256-tiiviste kanonisoidusta toimitussisällöstä sekä kaksois- ja ristiriitaisten toimitusten käsittelysäännöt. Määriteltiin myös, milloin validoinnissa hylätyn toimituksen voi korvata toisella toimituksella. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.26 – 23.11.2026:** hyväksyttiin RSS-julkaisun ja kanonisen ajotietueen tallentaminen samaan instanssirepositorioon ja niiden atominen päivitys yhdellä Git-commitilla. Määriteltiin varmennukseen perustuva palautuminen keskeytyneistä ja osittain onnistuneista tallennuksista, saman toimituksen idempotentti uudelleenkäsittely, yrityskohtaisten tapahtumien säilyttäminen, ristiriitaisten tunnisteiden hylkääminen sekä myöhäisen toimituksen rajattu jälkikäsittely. RSS-itemit ja ajotietueet pysyvät erillisinä tietokokonaisuuksina; toteutusta tai automaatioita ei muutettu.
 - **0.12.25 – 23.11.2026:** hyväksyttiin yhteisen tarkistustyönkulun kiinteäksi tarkistusväliksi 15 minuuttia. Täsmennettiin, että väli koskee tehtäväjonon ja aktiivisen tehtävän määräajan tarkistamista eikä muuta aihe- ja tehtävätyyppikohtaisia suoritusvälejä. Kirjattiin GitHub Actionsin ajastusviiveitä ja mahdollisia käynnistymättä jäämisiä koskeva rajoitus. Nykyisiä automaatioita tai niiden ajastuksia ei muutettu.
 - **0.12.23 – 23.11.2026:** hyväksyttiin rekisterin ulkopuolisten lähteiden käytön ja rekisteröinnin erilliset asetukset (`source_discovery` ja `source_registry_addition`), niiden yhdistäminen tehtävätyypin oletuksista profiilien kautta aihekohtaisiin asetuksiin, muuttumattoman `instance_revision`-snapshotin säilyttäminen, ajon jälkeinen ehdotusten käsittely, automaattisen rekisteröinnin validointi ja duplikaattien esto sekä uusien lähteiden `unassessed`-luotettavuusluokitus ja alkuperä-/löytämistietojen säilyttäminen. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
