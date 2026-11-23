@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.72  
+**Versio:** 0.3.73  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.30](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.31](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -678,6 +678,8 @@ Ensimmäiseen tietoryhmään kuuluvat seuraavat kentät:
 
 Tuottaja ei muodosta uutta `run_id`-tunnistetta eikä muuta tehtäväpyynnön tunnisteita tai revisioita. Vastaanottajan käsittely-yrityksen `attempt_id` ei kuulu tuottajan toimitusmetatietoihin: sen muodostaa ja kirjaa vastaanottaja omaan ajonhallintaansa.
 
+Toiseen tietoryhmään, **Tehtävän kuvaus**, kuuluu kenttä `period`, joka kuvaa seurannan aikaväliä. Se sisältää tehtäväpyynnön mukaiset `from`- ja `to`-arvot; `to` voi olla `null`, jos seurannan päätepiste ei ole ennalta tiedossa. `topic_id` ja `task_type` kuvaavat tehtävän tunnistetta ja kuuluvat vain ensimmäiseen tietoryhmään, joten niitä ei toisteta metatiedoissa.
+
 Ryhmittely kuvaa metatietojen sisällölliset vastuualueet. Se ei vielä määritä kaikkia yksittäisiä kenttiä, niiden nimiä, tyyppejä tai pakollisuutta. Kohdassa 2.3 kuvatut jo hyväksytyt metatietojen vähimmäistiedot säilyvät lähtökohtana, ja niiden suhde ryhmiin täsmennetään kenttätason suunnittelussa. Vastaanottajan vastaanotto-, validointi-, julkaisu- ja käsittelytilat eivät kuulu tuottajan metatietoihin.
 
 Ehdotettu tiedostorakenne instanssirepositoriossa:
@@ -851,7 +853,7 @@ Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ol
 
 ### Versiohistoria
 
-- **0.3.72 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen tunnisteet ja versiot -ryhmän kentät: `schema_version`, `run_id`, `delivery_id`, `topic_id`, `task_type`, `software_revision` ja `instance_revision`. Täsmennettiin tunnisteiden omistajuus sekä rajattiin vastaanottajan `attempt_id` tuottajan metatietojen ulkopuolelle. Muiden tietoryhmien kentät jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.\n- **0.3.71 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei lukitse vielä yksittäisiä kenttiä, niiden nimiä, tyyppejä tai pakollisuutta; aiemmin hyväksytyt vähimmäistiedot säilyvät lähtökohtana. Vastaanottajan käsittelytilat rajattiin tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
+- **0.3.73 (23.11.2026):** hyväksyttiin toimitusmetatietojen Tehtävän kuvaus -ryhmän ainoaksi omaksi kentäksi `period`, joka sisältää seurannan alku- ja loppuarvot tehtäväpyynnön rakennetta vastaavasti. `topic_id` ja `task_type` säilyvät vain Tunnisteet ja versiot -ryhmässä.\n- **0.3.72 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen tunnisteet ja versiot -ryhmän kentät: `schema_version`, `run_id`, `delivery_id`, `topic_id`, `task_type`, `software_revision` ja `instance_revision`. Täsmennettiin tunnisteiden omistajuus sekä rajattiin vastaanottajan `attempt_id` tuottajan metatietojen ulkopuolelle. Muiden tietoryhmien kentät jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.\n- **0.3.71 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei lukitse vielä yksittäisiä kenttiä, niiden nimiä, tyyppejä tai pakollisuutta; aiemmin hyväksytyt vähimmäistiedot säilyvät lähtökohtana. Vastaanottajan käsittelytilat rajattiin tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.70 (23.11.2026):** hyväksyttiin tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja vastaanottajan append-only-tapahtumahistorian erottaminen kolmeksi toisiinsa viitatuksi tietokokonaisuudeksi sekä ehdotettu `runs/{run_id}/`-hakemistorakenne (`run.json`, `events.jsonl` ja toimituskohtainen `metadata.json`). Tarkat kentät, tapahtumatyypit ja viittaukset jätettiin avoimeksi tekniseen suunnitteluun. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.69 (23.11.2026):** päivitettiin avoimien teknisten yksityiskohtien luettelo vastaamaan hyväksyttyjä ratkaisuja. Poistettiin vanhentunut tallennuksen palautumista koskeva avoin kohta ja täsmennettiin, että palautumisen periaatteet sekä toimitusten tunnistemalli on jo hyväksytty. Ryhmiteltiin jäljellä olevat kymmenen kokonaisuutta selkeämmin. Korjattiin vaatimusmäärittelyn perustaksi versio 0.12.27. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.68 (23.11.2026):** hyväksyttiin erilliset `run_id`-, `delivery_id`- ja `attempt_id`-tunnisteet, deterministinen RSS-GUIDin muodostaminen `run_id`-tunnisteesta, vastaanottajan laskema SHA-256-tiiviste kanonisoidusta toimitussisällöstä sekä kaksois- ja ristiriitaisten toimitusten käsittelysäännöt. Täsmennettiin vaihtoehtoisen toimituksen hyväksymisen rajat ennen ajon päättämistä. Toteutusta, skeemoja tai automaatioita ei muutettu.
