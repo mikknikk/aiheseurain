@@ -728,19 +728,18 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 
 ## 16. Avoimet suunnittelukysymykset
 
-Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät muuta tässä määriteltyä yksinkertaista toimintamallia.
+Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Luettelo sisältää vain aidosti avoimet asiat; hyväksyttyjä periaatteita tai jo määriteltyjä tietoja ei käsitellä uudelleen avoimina kysymyksinä.
 
-1. **Ajotuloksen täsmällinen skeema:** kenttätyypit, pakollisuus, formaattirajoitteet ja esimerkkitulokset määritellään versioidussa skeemassa.
-2. **Vastaanottorajapinnan toteutus:** tekninen siirtotapa ja tunnistautuminen valitaan turvallisten vaihtoehtojen perusteella.
-3. **Ajojen käynnistäminen:** käynnistimien, ajastusten ja aihekohtaisten erääntymisten tekninen yhteensovitus ratkaistaan erikseen. Nykyisiä tehtäviä ei muuteta tämän määrittelyn perusteella.
-4. **Jonon ja uudelleenyritysten tarkat rajat:** valinnan periaate on erääntyminen ja odotusaika. Aikakatkaisut ja uudelleenyritysten rajat täsmennetään toteutussuunnittelussa.
-5. **Ajotietojen tietomallit:** tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja append-only-tapahtumahistorian tarkat kentät, tapahtumatyypit ja keskinäiset viittaukset täsmennetään teknisessä suunnittelussa.
-6. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne suunnitellaan myöhemmin.
-7. **Historiatietojen säilytys:** ajon perustietojen, mahdollisten lokien ja väliaineistojen säilytysajat määritellään tietotarpeen ja tietosuojan perusteella.
+1. **Ajotuloksen ja tehtävätyyppien skeemat:** JSON Schema -tiedostojen tarkat rakenteet, pakolliset ja valinnaiset kentät, kenttäkohtaiset rajat, yhteiset osaskeemat sekä skeemojen väliset viittaukset viimeistellään. Laaduntarkistuksen ajokohtaisen tulostietueen kentät ja tulosluokat on päätetty. Avoinna ovat erityisesti tehtävätyypin määritykseen tallennettavien tarkistusten määrittelyrakenne, tarkistustunnisteiden muodostaminen ja pysyvyys sekä näiden rakenteiden validointisäännöt.
+2. **Vastaanottorajapinnan toteutus:** tekninen siirtotapa, tuottajan tunnistaminen ja mahdollinen tunnistautuminen valitaan turvallisten vaihtoehtojen perusteella.
+3. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus ratkaistaan. Nykyisiä automaatioita tai niiden ajastuksia ei muuteta tämän määrittelyn perusteella.
+4. **Jonon ja uudelleenyritysten tarkat rajat:** valinnan periaate on erääntyminen ja odotusaika. Aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat täsmennetään.
+5. **Ajotietojen tietomallit:** tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja append-only-tapahtumahistorian tarkat kokonaisrakenteet, tapahtumatyypit ja keskinäiset viittaukset täsmennetään. Tuottajan metatietojen kuusi tietoryhmää sekä laaduntarkistustietueen kentät, tulosluokat ja vastuut on jo määritelty; muiden ryhmien ja vastaanottajan tietueiden tarkat kentät ovat osin avoinna.
+6. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne, tietojen esitystapa ja navigointi suunnitellaan myöhemmin.
+7. **Historiatietojen säilytys:** ajon perustietojen, tapahtumien, mahdollisten lokien ja väliaineistojen säilytysajat määritellään tietotarpeen ja tietosuojan perusteella.
 8. **Nykyisen toteutuksen siirtymä:** nykyiset osat inventoidaan ja arvioidaan ennen hyödyntämistä tai poistamista. Mitään ei poisteta ilman erillistä suunnitelmaa.
 9. **Mahdollinen myöhempi käyttöoikeuksien tekninen toteutus:** jos instanssin myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, julkisen ja rajatun tiedon erottelu sekä käyttöoikeudet suunnitellaan ennen tällaisen tiedon käyttöönottoa. Tämä ei kuulu ensimmäiseen versioon.
 10. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet, tarkka hakemistorakenne, jakelukanava, version kiinnittämisen mekanismi sekä ohjelmiston ja instanssin välinen tekninen tiedonsiirto määritellään toteutussuunnittelussa.
-11. **Lähderekisterin ulkopuolinen lähdehaku:** saako raportintuottaja etsiä uutisoitavaa myös tehtäväpyynnössä ilmoittamattomista lähteistä, millä rajauksilla tällaisia lähteitä voi käyttää ja miten löydetyt lähteet dokumentoidaan? Erityisesti ratkaistaan, lisätäänkö uudet lähteet lähderekisteriin automaattisesti vai vasta tarkistuksen ja ylläpitäjän hyväksynnän jälkeen. Ennen päätöstä ajonaikainen rekisterin muuttaminen ja automaattinen lisäys eivät ole sallittuja.
 
 ## 17. Raportintekijän yhteinen perusprompti ja tuottajakohtaiset ohjeet
 
