@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.64  
+**Versio:** 0.3.65  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.23](vaatimusmaarittely-uudistus.md)
@@ -188,7 +188,9 @@ Tehtäväpyynnön muodostaminen ja aktiivisen tehtävän määräajan valvonta h
 - Jos tehtävä on yhä voimassa, työnkulku jättää sen ennalleen. Se ei luo rinnakkaista tehtävää eikä muuta tehtävän sisältöä.
 - Raportintuottaja hakee tehtävän omalla aikataulullaan. Sen käynnistyminen ei edellytä erillistä GitHub Actions -ilmoitusta.
 
-Tämä pitää tehtävän muodostamisen ja määräaikojen valvonnan yhdessä paikassa eikä sido niitä raportintuottajan käynnistysrytmiin. Työnkulun tarkka suoritusväli ja mahdollinen manuaalinen käynnistys määritellään myöhemmin tehtävätyyppien ja käyttörajoitusten yhteydessä.
+Järjestelmän tarkistusväli on yksi yhteinen ja kiinteä ajastus tälle työnkululle. Se on eri asia kuin yksittäisen aiheen ja tehtävätyypin suoritusväli: jälkimmäinen määritellään kyseisen yhdistelmän määrityksessä, ja työnkulku käynnistää tehtävän vasta sen eräännyttyä sekä muiden käsittelyehtojen täyttyessä. Näin yhteinen työnkulku voi tarkistaa jonon ja määräajat säännöllisesti ilman, että kaikkia aiheita käsitellään jokaisella tarkistuskerralla. Tarkistusvälin tarkka pituus jätetään tekniseen suunnitteluun.
+
+Työnkulku voidaan käynnistää myös manuaalisesti esimerkiksi ylläpitoa, testausta tai poikkeustilanteen selvittämistä varten. Manuaalinen käynnistys suorittaa täsmälleen saman tarkistus- ja käsittelylogiikan kuin ajastettu käynnistys: se tarkistaa aktiivisen tehtävän, määräajan ja jonon sekä noudattaa tehtävän muodostamisen ehtoja. Manuaalinen käynnistys ei ohita aktiivista tehtävää, määräaikoja, tehtävien sarjallisuutta tai aihekohtaisia suoritusvälejä eikä tarjoa erillistä pakotettua aiheen käynnistämistä. Näin myös manuaalinen käynnistys säilyttää yhden aktiivisen tehtävän mallin.
 
 
 #### 2.2.1.2 Sarjallinen tehtävänkäsittely ensimmäisessä versiossa
