@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.61  
+**Versio:** 0.3.62  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.20](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.21](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -346,6 +346,65 @@ Esimerkkirakenne:
 
 Esimerkki havainnollistaa viittausten rakennetta, repositoriovalintaa ja lukujärjestystä; lopulliset repositorioiden nimet ja tiedostopolkurakenne vahvistetaan teknisessä määrittelyssä.
 
+#### Skeemojen tiedostokokonaisuus ja validoinnin toteutusperiaatteet
+
+Skeemojen ja validoinnin suunnitteluratkaisut on hyväksytty. Toteutus käyttää JSON Schema Draft 2020-12 -standardia. Skeemat sijoitetaan yhteiseen ohjelmistorepoon, kun taas instanssin varsinaiset määritykset ja aineistot pysyvät instanssirepositoriossa. Jokaisella itsenäisellä tietotyypillä on oma pääskeemansa, ja toistuvia rakenteita varten tehdään yhteisiä osaskeemoja.
+
+Skeemojen alustava hakemistorakenne:
+
+```text
+schemas/
+  common/
+    identifier.schema.json
+    revision.schema.json
+    timestamp.schema.json
+    file-reference.schema.json
+    source-reference.schema.json
+    error.schema.json
+  definitions/
+    task-type.schema.json
+    task-config.schema.json
+    profile.schema.json
+    topic.schema.json
+    source-registry.schema.json
+  contracts/
+    task-request.schema.json
+    delivery-metadata.schema.json
+    delivery-package.schema.json
+    run-record.schema.json
+  examples/
+```
+
+Tiedostonimet ovat englanninkielisiä, pienaakkosin ja yhdysmerkein. Skeemojen `$id)-tunnisteet ovat vakaita eivätkä riipu repositorion nimestä tai polusta. Skeemojen väliset viittaukset ratkaistaan paikallisesti ohjelmistorevision sisältämästä skeemakokonaisuudesta; ajonaikaisia ulkoisia skeemahakuja ei tehdä. Hakemistorakenne ja yksittäisten skeematiedostojen tarkka sisältö toteutetaan myöhemmässä toteutusvaiheessa tämän hyväksytyn mallin mukaisesti.
+
+Skeemakokonaisuuden päävastuut ovat:
+
+- tehtävätyypin määrityksen skeema ja sen viittaama tehtävätyyppikohtainen asetusskeema;
+- määritysprofiilin ja aihekohtaisen määrityksen skeemat;
+- yhteisen lähderekisterin skeema;
+- tehtäväpyynnön skeema;
+- tuottajan toimitusmetatietojen skeema;
+- toimituspaketin tulostilakohtaiset skeemat ja vastaanottajan kanonisen ajotietueen skeema;
+- uudelleenkäytettävät osaskeemat tunnisteille, Git-revisioille, aikaleimoille, tiedostoviittauksille, lähde- ja kanavaviittauksille sekä virhekuvauksille.
+
+Tehtävätyypin asetusskeema määrittelee myös lopullisen `resolved_config`-rakenteen. Profiilin oma rakenne validoidaan profiilin skeemalla ja sen asetukset lisäksi valitun tehtävätyypin asetusskeemalla. Tuottajan toimittamat tulosmetatiedot ja vastaanottajan kirjaama ajonhallinta pysyvät erillisinä tietosopimuksina: toimitusmetatietojen skeema ei korvaa eikä määrittele vastaanottajan kanonista ajotietuetta.
+
+Kaikilla skeematasoilla hylätään tuntemattomat kentät. Sulkevuus toteutetaan Draft 2020-12 -standardin mukaisesti esimerkiksi `additionalProperties: false`- tai tarvittaessa `unevaluatedProperties: false` -määrityksillä. `$ref)- ja `allOf)-rakenteiden yhteydessä varmistetaan erikseen, ettei skeemojen yhdistäminen avaa tuntemattomille kentille pääsyä.
+
+Skeemat versioidaan semanttisesti. Yhteensopiva korjaus kasvattaa PATCH-osaa, uusi taaksepäin yhteensopiva ominaisuus MINOR-osaa ja yhteensopimaton rakenteellinen muutos MAJOR-osaa. Julkaistua skeemaversiota ei muuteta hiljaisesti yhteensopimattomaksi. Tehtäväpyynnön ja toimitusmetatietojen `schema_version)-kentät säilyvät, ja käytetty skeemakokonaisuus yksilöityy lisäksi tehtävän `software_revision)-kentän kautta.
+
+Validointi etenee jäsennyksestä yksittäisten aineistojen skeemavalidointiin, viittausten ja revisioiden tarkistukseen, määritysten yhteensopivuuden tarkistukseen, asetusten yhdistämiseen ja lopullisen `resolved_config)-kokonaisuuden skeemavalidointiin. Tehtäväpyyntö muodostetaan vasta, kun kaikki vaaditut vaiheet onnistuvat. JSON Schema vastaa rakenteellisesta validoinnista; erillinen toiminnallinen validointi tarkistaa muun muassa viitattujen tiedostojen olemassaolon, aikaleimojen offsetien vastaavuuden IANA-aikavyöhykkeeseen, aikavälien järjestyksen ja määritysten väliset ehdot.
+
+Validointikirjastossa otetaan `format)-tarkistukset eksplisiittisesti käyttöön. Käytetään yhtä vakiintunutta Draft 2020-12 -yhteensopivaa kirjastoa, jonka versio ja riippuvuudet kiinnitetään; omaa JSON Schema -tulkkia ei rakenneta. Skeemat eivät hae ulkoisia viittauksia verkosta.
+
+Virheilmoituksissa yksilöidään tiedosto, kenttäpolku, virhetyyppi ja selkokielinen kuvaus. Odotettu ja havaittu arvo näytetään, kun se on mielekästä. Toisistaan riippumattomat virheet kerätään, mutta virheestä riippuvat jatkotarkistukset ohitetaan. Virhe estää tehtäväpyynnön muodostamisen; automaattisia arvauksia, korjauksia tai osittaisia määrityksiä ei tehdä.
+
+Markdown-ohjeiden tarkistukset pidetään erillään JSON Schema -validoinnista. Niihin kuuluvat tiedoston olemassaolo oikeassa repositoriossa ja commitissa, Markdownin jäsennettävyys, otsikkohierarkia, paikallisten linkkien toimivuus sekä ohjetunnisteiden ja versioiden johdonmukaisuus.
+
+Testaus kattaa jokaisen pääskeeman kelvollisen esimerkin sekä virheelliset tapaukset: puuttuvat kentät, väärät tyypit, tuntemattomat kentät, virheelliset tunnisteet/revisiot/aikaleimat/viittaukset, virheelliset asetukset ja kielletyt ylikirjoitukset. Lisäksi testataan koko skeemakokonaisuuden lataus, `$ref)-riippuvuuksien ratkaisu, määritysten yhdistämislogiikka ja lopullinen `resolved_config). GitHub Actions suorittaa skeema- ja validointitestit, kun niitä koskevia tiedostoja muutetaan.
+
+Markdown-ohjeiden tarkistukset eivät ole JSON Schema -skeemoja. Niiden erillinen tarkistus kattaa tiedoston olemassaolon oikeassa repositoriossa ja commitissa, Markdownin jäsennettävyyden, otsikkohierarkian, paikalliset linkit sekä ohjetunnisteiden ja versioiden johdonmukaisuuden.
+
 ### 2.2.3 Raportintekijän yhteinen perusprompti
 
 Yhteinen raportintekijän perusprompti kuuluu ohjelmistorepoon ja kiinnittyy käytettyyn `software_revision`-revisioon. Tehtäväpyynnön `instructions`-taulukossa se on ensimmäisenä, ennen tehtävätyypin ohjetta, järjestettyjä profiiliohjeita ja aihekohtaista ohjetta. Jokaisella ohjeviittauksella on `repository`- ja `path`-tiedot; ohjelmistorepon ohje luetaan `software_revision`- ja instanssirepon ohjeet `instance_revision`-revisiosta.
@@ -670,11 +729,11 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 
 Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
-- miten skeemojen tarkat JSON Schema Draft 2020-12 -tiedostot, kenttäkohtaiset rajat ja validointitoteutus määritellään; skeemakokonaisuuden vastuut ja tehtäväpyynnön `inputs`-rakenne on päätetty kohdissa 2.2.1 ja 2.2.2;
+- skeemien yksittäisten tiedostojen, kenttäkohtaisten rajojen ja validointikoodin toteutus tehdään hyväksytyn skeema- ja validointimallin mukaisesti vaiheessa 2;
 - miten yhteisen lähderekisterin ja tehtävätyypin oletuslähteiden tarkka tiedostorakenne, lähdeviittausten skeema sekä `inherit`-, `extend`- ja `replace`-toimintatapojen kentät ja validointisäännöt määritellään;
 - miten nykyisen GitHub App -yhteyden tosiasialliset oikeudet ja `main`-haaran suojaus varmistetaan käyttöönotossa; ensimmäisessä versiossa ei edellytetä teknistä, vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta;
-- miten toimituspaketin tarkat tulostilakohtaiset tiedostovaatimukset ja skeemat määritellään; eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3;
-- miten `metadata.json`-tiedoston tarkka skeema määritellään, mukaan lukien tuottajan tuloksen ja vastaanottajan ajonhallinnan erottelu, tapahtumien rakenne ja lähdekohtaiset avausyritysten havainnot;
+- miten toimituspaketin tulostilakohtaiset tiedostovaatimukset ja niiden tarkat kenttäsisällöt toteutetaan hyväksytyn toimituspaketin ja ajotietueen skeemajaon mukaisesti; eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3;
+- miten `metadata.json`-tiedoston tarkat kentät ja tapahtumarakenteet toteutetaan hyväksytyn tuottajan toimitusmetatietojen ja vastaanottajan kanonisen ajotietueen erottelun mukaisesti;
 - miten raportintekijän yhteinen perusprompti kirjoitetaan, testataan ja versioidaan ohjelmistorepossa sekä miten se sovitetaan tuottajaintegraation käyttöön;
 - miten lähdekohtaisten avausyritysten onnistumiset, epäonnistumiset, virheluokat ja tarkastelujaksot esitetään tilastoina sekä millä periaatteilla toistuvasti epäonnistuva lähde ehdotetaan poistettavaksi käytöstä;
 - miten vastaanottohaaran toimituksia säilytetään ja siivotaan turvallisesti;
@@ -684,7 +743,7 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
 ### Versiohistoria
 
-- **0.3.61 (23.11.2026):** hyväksyttiin teknisen saavutettavuuden tietojen jako lähde-, kanava- ja ajohistoriatasolle. Lähdetaso kuvaa julkaisijan tai verkkopalvelun yleisiä teknisiä ominaisuuksia ja rajoitteita, kanavataso yksittäisen sisältövirran ominaisuuksia, ja ajohistoria toteutuneita tarkistustuloksia. Pysyvää, nopeasti vanhenevaa saavutettavuusarvosanaa ei ylläpidetä.
+- **0.3.62 (23.11.2026):** hyväksyttiin JSON Schema Draft 2020-12 -skeemakokonaisuuden hakemistorakenne ja vastuut, yhteiset osaskeemat, skeemojen paikallinen viittausmalli ja semanttinen versiointi, tuntemattomien kenttien hylkääminen, rakenteellisen ja toiminnallisen validoinnin vaiheistus, virheiden raportointi, Markdown-ohjeiden erilliset tarkistukset, kiinnitetty validointikirjasto sekä skeemojen ja määritysten kattavat testausperiaatteet. Skeematiedostoja tai validointitoteutusta ei luotu tässä suunnittelumuutoksessa.\n- **0.3.61 (23.11.2026):** hyväksyttiin teknisen saavutettavuuden tietojen jako lähde-, kanava- ja ajohistoriatasolle. Lähdetaso kuvaa julkaisijan tai verkkopalvelun yleisiä teknisiä ominaisuuksia ja rajoitteita, kanavataso yksittäisen sisältövirran ominaisuuksia, ja ajohistoria toteutuneita tarkistustuloksia. Pysyvää, nopeasti vanhenevaa saavutettavuusarvosanaa ei ylläpidetä.
 - **0.3.60 (23.11.2026):** hyväksyttiin lähteen valinnainen oletusaikavyöhyke ja sen määrityksen peruste sekä sisältökanavan tarkempi aikavyöhykemääritys. Sisällön oma aikaleima tai tapahtumapaikan aikavyöhyke on ensisijainen, kun se on luotettavasti tiedossa.
 - **0.3.59 (22.11.2026):** täsmennettiin yhteisen lähderekisterin tukevan saman lähteen erillisiä sisältökanavia omine vakaine tunnisteineen ja osoitteineen. Kanavat voidaan valita ja arvioida tehtäväkohtaisesti erikseen; tarkka skeemarakenne jätettiin skeemasuunnitteluun.
 - **0.3.58 (22.11.2026):** hyväksyttiin yhteinen lähderekisteri, tehtävätyypin oletuslähteet ja mahdolliset pakolliset lähteet sekä aiheen ja tehtävätyypin yhdistelmäkohtaiset lähdemääritykset. Määriteltiin `inherit`-, `extend`- ja `replace`-toimintatavat ja pakollisten lähteiden säilyminen myös oletuslistan korvaamisessa.
