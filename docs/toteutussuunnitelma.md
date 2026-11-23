@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.69  
+**Versio:** 0.3.70  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.27](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.28](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -647,13 +647,31 @@ Julkiseen tallennukseen saa sisällyttää vain tarkoitukseen sopivia ajotietoja
 
 Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. **Ajotietueiden hakemistorakenne jätetään tässä vaiheessa avoimeksi**; sitä ei lukita esimerkinomaisella polulla eikä päivämäärä-, aihe- tai tehtävätyyppiryhmittelyllä. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
 
-#### 2.6.1 Kanoninen ajotietue ja tapahtumahistoria
+#### 2.6.1 Kanoninen ajotietue, toimitusmetatiedot ja tapahtumahistoria
 
-Jokaisesta käynnistetystä ajosta ylläpidetään yhtä vastaanottavan järjestelmän omistamaa kanonista ajotietuetta. Sen tietosisältö erottaa vähintään tehtävän tiedot, raportintekijän toimittaman tuloksen, vastaanottajan käsittelytiedot, tapahtumahistorian, julkaisun tiedot ja vastaanottajan muodostaman ajon lopputilan. Raportintekijän tulosta ei päätellä vastaanottajan havainnoista eikä vastaanottajan käsittelytilaa raportintekijän ilmoituksesta.
+Ajon tiedot jaetaan kolmeen erilliseen, toisiinsa viitattuun tietokokonaisuuteen:
 
-Tapahtumahistoria on loogisesti vain lisäämiseen perustuva ja säilyttää aiemmat tapahtumat muuttumattomina. Jokaisessa tapahtumassa on yksilöivä tunniste tai muu yksiselitteinen järjestysavain, tapahtumatyyppi, tapahtuma-aika, kirjaamis-/havaintoaika tarvittaessa, alkuperä sekä tapahtuman olennaiset tiedot. Tapahtumien järjestystä ei ratkaista pelkästään aikaleimojen perusteella. Tapahtumien alustavia tyyppejä ovat ajon muodostaminen ja käynnistys, tehtävän tarjoaminen, määräajan ylittyminen, toimituksen vastaanotto, validoinnin tulos, tuottajan tuloksen kirjaaminen, hyväksyminen tai hylkääminen, julkaisun aloitus ja tulos, ajon päättäminen sekä tehtävän vapauttaminen. Lopulliset tunnisteet ja JSON-rakenne määritellään skeematyössä.
+1. **Tuottajan toimitusmetatiedot:** raportintuottajan omistama `metadata.json` toimituspaketissa. Se sisältää tuottajan ilmoittaman tuloksen ja siihen liittyvät tiedot.
+2. **Kanoninen ajotietue:** vastaanottajan omistama ajon nykytilan ja käsittelyn yhteenveto. Se viittaa hyväksyttyyn toimitukseen ja julkaisuun eikä tarpeettomasti kopioi kaikkia tuottajan toimitusmetatietojen kenttiä.
+3. **Ajon tapahtumahistoria:** vastaanottajan omistama, loogisesti append-only-tietokokonaisuus, johon käsittelyvaiheet ja havainnot lisätään aikajärjestyksessä. Aiemmat tapahtumat säilyvät muuttumattomina.
 
-Ajon lopputilan muodostaa vastaanottava järjestelmä todennettujen käsittelytapahtumien perusteella. Raportintekijän nykyiset tulostilat (`success`, `partial`, `no_report`, `failed`) säilyvät erillisinä tuottajan tietoina. Määräajan ylittyminen on tapahtuma, ei yksinään lopullinen tila. Myöhäinen toimitus täydentää alkuperäistä tietuetta uusilla tapahtumilla eikä poista aiempia havaintoja tai avaa vapautettua tehtävää uudelleen.
+Tietokokonaisuudet liittyvät samaan ajoon `run_id`-tunnisteella. Toimitus- ja käsittely-yritystunnisteita käytetään niiden aiemmin hyväksyttyjen vastuiden mukaisesti. Tuottajan ilmoittama tulostila ja vastaanottajan muodostama ajon lopputila pysyvät erillisinä tietoina, eikä vastaanottaja täydennä puuttuvaa tuottajan tulosta omilla havainnoillaan.
+
+Ehdotettu tiedostorakenne instanssirepositoriossa:
+
+```text
+runs/
+  {run_id}/
+    run.json
+    events.jsonl
+    deliveries/
+      {delivery_id}/
+        metadata.json
+```
+
+`run.json` sisältää kanonisen ajotietueen, `events.jsonl` tapahtumahistorian ja toimituskohtainen `metadata.json` tuottajan toimittamat metatiedot. RSS-item säilyy omassa RSS-syötetiedostossaan. Rakenne on hyväksytty tallennuksen periaatetasolla; tiedostojen tarkat kentät, tapahtumatyypit, viittausmuodot ja tekniset validointisäännöt täsmennetään myöhemmin ennen skeemojen viimeistelyä.
+
+RSS-julkaisu, kanonisen ajotietueen päivitys ja tarvittavat uudet tapahtumat tallennetaan samaan atomiseen Git-commitiin. Toimitusmetatiedot säilyvät erillisenä tuottajan toimittamana aineistona, ja niiden vastaanotto/hyväksyntä kirjataan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
 #### 2.6.2 Lähdekohtaiset avaus- ja käyttötilastot
 
@@ -799,14 +817,14 @@ Seuraavat kymmenen kokonaisuutta täsmennetään ennen tikettien muodostamista:
 2. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen tarkka tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
 3. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien ja `main`-haaran suojauksen varmistaminen käyttöönotossa. Ensimmäisessä versiossa ei edellytetä teknisesti vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta.
 4. **Toimituspaketin tarkat vaatimukset:** tulostilakohtaisten tiedostovaatimusten ja kenttäsisältöjen tekninen toteutus hyväksytyn toimituspaketin ja ajotietueen skeemajaon mukaisesti. Eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3.
-5. **Toimitusmetatietojen ja ajotietueen tietomallit:** `metadata.json`-tiedoston tarkat kentät sekä vastaanottajan kanonisen ajotietueen ja tapahtumahistorian rakenteet. Näiden vastuut ja keskinäiset viittaukset täsmennetään ennen skeemojen viimeistelyä.
+5. **Toimitusmetatietojen ja ajotietueen tietomallit:** tuottajan `metadata.json`-tiedoston, vastaanottajan kanonisen ajotietueen (`run.json`) ja append-only-tapahtumahistorian (`events.jsonl`) tarkat kentät, tapahtumatyypit, viittaukset ja validointisäännöt täsmennetään ennen skeemojen viimeistelyä.
 6. **Yhteinen raportintekijän perusprompti:** promptin tarkka sisältö, testaus ja versionhallinta ohjelmistorepossa sekä sovittaminen raportintuottajan integraation käyttöön.
 7. **Lähdekohtaisten tilastojen tarkka malli:** avausyritysten onnistumisten ja epäonnistumisten tilastointi, virheluokkien luettelo, tarkastelujaksot sekä periaatteet, joilla toistuvasti epäonnistuva lähde nostetaan ylläpitäjän arvioitavaksi.
 8. **Vastaanottohaaran toimitusten säilytys:** toimituspakettien säilytysajat ja siivouksen ehdot sekä varmistukset siitä, ettei keskeneräisen tai palautettavan ajon tarvitsemaa aineistoa poisteta.
 9. **Julkisten käyttöliittymien tietoturvatarkistukset:** Valvomoon ja RSS-lukijaan päätyvän sisällön sekä niiden lukemien tietolähteiden automaattinen tarkistaminen niin, ettei julkisiin tiedostoihin tai rajapintoihin päädy salaisuuksia, käyttöoikeustunnuksia tai yksityisiä tietoja.
 10. **Vanhan toteutuksen komponenttien säilyttäminen:** komponenttikohtaisen inventaarion perusteella tehtävät päätökset siitä, mitkä osat säilytetään, yksinkertaistetaan tai toteutetaan uudelleen.
 
-Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ole avoin suunnittelukohta: palautumisen periaatteet on hyväksytty ja kirjattu kohtaan 2.6.3. Myös ajon, toimituksen ja käsittely-yrityksen tunnistemalli sekä kaksois- ja ristiriitaisten toimitusten säännöt on hyväksytty. Näitä ei pidä palauttaa avoimien yksityiskohtien luetteloon, ellei myöhemmin ilmene uutta, erikseen ratkaistavaa teknistä kysymystä.
+Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ole avoin suunnittelukohta: palautumisen periaatteet on hyväksytty ja kirjattu kohtaan 2.6.3. Myös ajon, toimituksen ja käsittely-yrityksen tunnistemalli sekä kaksois- ja ristiriitaisten toimitusten säännöt on hyväksytty. Lisäksi on hyväksytty kolmen erillisen tietokokonaisuuden malli ja ehdotettu `runs/{run_id}/`-hakemistorakenne; niiden tarkat tietomallit ovat edelleen avoinna. Näitä ei pidä palauttaa avoimien yksityiskohtien luetteloon, ellei myöhemmin ilmene uutta, erikseen ratkaistavaa teknistä kysymystä.
 
 ### Versiohistoria
 
