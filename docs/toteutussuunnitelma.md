@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.68  
+**Versio:** 0.3.69  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.25](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.27](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -793,22 +793,24 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 
 ## 7. Avoimet tekniset yksityiskohdat
 
-Seuraavat asiat täsmennetään ennen tikettien muodostamista:
+Seuraavat kymmenen kokonaisuutta täsmennetään ennen tikettien muodostamista:
 
-- skeemien yksittäisten tiedostojen, kenttäkohtaisten rajojen ja validointikoodin toteutus tehdään hyväksytyn skeema- ja validointimallin mukaisesti vaiheessa 2;
-- rekisterin ulkopuolisten lähteiden tarkat ehdotusrakenteet, niiden tekninen tallennuspaikka, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän ehdotusten tarkistus- ja hyväksyntäkäyttöliittymä;
-- miten nykyisen GitHub App -yhteyden tosiasialliset oikeudet ja `main`-haaran suojaus varmistetaan käyttöönotossa; ensimmäisessä versiossa ei edellytetä teknistä, vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta;
-- miten toimituspaketin tulostilakohtaiset tiedostovaatimukset ja niiden tarkat kenttäsisällöt toteutetaan hyväksytyn toimituspaketin ja ajotietueen skeemajaon mukaisesti; eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3;
-- miten `metadata.json`-tiedoston tarkat kentät ja tapahtumarakenteet toteutetaan hyväksytyn tuottajan toimitusmetatietojen ja vastaanottajan kanonisen ajotietueen erottelun mukaisesti;
-- miten raportintekijän yhteinen perusprompti kirjoitetaan, testataan ja versioidaan ohjelmistorepossa sekä miten se sovitetaan tuottajaintegraation käyttöön;
-- miten lähdekohtaisten avausyritysten onnistumiset, epäonnistumiset, virheluokat ja tarkastelujaksot esitetään tilastoina sekä millä periaatteilla toistuvasti epäonnistuva lähde ehdotetaan poistettavaksi käytöstä;
-- miten vastaanottohaaran toimituksia säilytetään ja siivotaan turvallisesti;
-- miten julkaisun ja ajotietojen tallennuksen virhetilanteista palaudutaan;
-- miten julkisten käyttöliittymien ja niiden lukemien tietolähteiden sisältö tarkistetaan automaattisesti niin, ettei niihin päädy salaisuuksia tai yksityisiä tietoja;
-- mitkä vanhan toteutuksen komponentit kannattaa säilyttää.
+1. **Skeemat ja validoinnin toteutus:** yksittäisten JSON Schema -tiedostojen tarkka sisältö, kenttäkohtaiset rajat ja ehdot sekä validointikoodin toteutustapa ja virheraportointi. Työ tehdään hyväksytyn skeema- ja validointimallin mukaisesti vaiheessa 2.
+2. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen tarkka tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
+3. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien ja `main`-haaran suojauksen varmistaminen käyttöönotossa. Ensimmäisessä versiossa ei edellytetä teknisesti vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta.
+4. **Toimituspaketin tarkat vaatimukset:** tulostilakohtaisten tiedostovaatimusten ja kenttäsisältöjen tekninen toteutus hyväksytyn toimituspaketin ja ajotietueen skeemajaon mukaisesti. Eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3.
+5. **Toimitusmetatietojen ja ajotietueen tietomallit:** `metadata.json`-tiedoston tarkat kentät sekä vastaanottajan kanonisen ajotietueen ja tapahtumahistorian rakenteet. Näiden vastuut ja keskinäiset viittaukset täsmennetään ennen skeemojen viimeistelyä.
+6. **Yhteinen raportintekijän perusprompti:** promptin tarkka sisältö, testaus ja versionhallinta ohjelmistorepossa sekä sovittaminen raportintuottajan integraation käyttöön.
+7. **Lähdekohtaisten tilastojen tarkka malli:** avausyritysten onnistumisten ja epäonnistumisten tilastointi, virheluokkien luettelo, tarkastelujaksot sekä periaatteet, joilla toistuvasti epäonnistuva lähde nostetaan ylläpitäjän arvioitavaksi.
+8. **Vastaanottohaaran toimitusten säilytys:** toimituspakettien säilytysajat ja siivouksen ehdot sekä varmistukset siitä, ettei keskeneräisen tai palautettavan ajon tarvitsemaa aineistoa poisteta.
+9. **Julkisten käyttöliittymien tietoturvatarkistukset:** Valvomoon ja RSS-lukijaan päätyvän sisällön sekä niiden lukemien tietolähteiden automaattinen tarkistaminen niin, ettei julkisiin tiedostoihin tai rajapintoihin päädy salaisuuksia, käyttöoikeustunnuksia tai yksityisiä tietoja.
+10. **Vanhan toteutuksen komponenttien säilyttäminen:** komponenttikohtaisen inventaarion perusteella tehtävät päätökset siitä, mitkä osat säilytetään, yksinkertaistetaan tai toteutetaan uudelleen.
+
+Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ole avoin suunnittelukohta: palautumisen periaatteet on hyväksytty ja kirjattu kohtaan 2.6.3. Myös ajon, toimituksen ja käsittely-yrityksen tunnistemalli sekä kaksois- ja ristiriitaisten toimitusten säännöt on hyväksytty. Näitä ei pidä palauttaa avoimien yksityiskohtien luetteloon, ellei myöhemmin ilmene uutta, erikseen ratkaistavaa teknistä kysymystä.
 
 ### Versiohistoria
 
+- **0.3.69 (23.11.2026):** päivitettiin avoimien teknisten yksityiskohtien luettelo vastaamaan hyväksyttyjä ratkaisuja. Poistettiin vanhentunut tallennuksen palautumista koskeva avoin kohta ja täsmennettiin, että palautumisen periaatteet sekä toimitusten tunnistemalli on jo hyväksytty. Ryhmiteltiin jäljellä olevat kymmenen kokonaisuutta selkeämmin. Korjattiin vaatimusmäärittelyn perustaksi versio 0.12.27. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.68 (23.11.2026):** hyväksyttiin erilliset `run_id`-, `delivery_id`- ja `attempt_id`-tunnisteet, deterministinen RSS-GUIDin muodostaminen `run_id`-tunnisteesta, vastaanottajan laskema SHA-256-tiiviste kanonisoidusta toimitussisällöstä sekä kaksois- ja ristiriitaisten toimitusten käsittelysäännöt. Täsmennettiin vaihtoehtoisen toimituksen hyväksymisen rajat ennen ajon päättämistä. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.67 (23.11.2026): hyväksyttiin RSS-julkaisujen ja kanonisten ajotietueiden sijoittaminen samaan instanssirepositorioon ja niiden päivittäminen yhdellä atomisella Git-commitilla. Määriteltiin palautuminen tilanteista, joissa tallennus epäonnistuu tai työnkulku keskeytyy commitin jälkeen, samaan `run_id`- ja toimitustunnisteeseen perustuva idempotentti uudelleenyritys, yrityskohtaisten tapahtumien append-only-säilytys, ristiriitaisten tunnisteiden käsittely sekä myöhäisen toimituksen rajattu jälkikäsittely. RSS ja ajotietue säilyvät erillisinä tiedostoina ja tietokokonaisuuksina; toteutusta tai automaatioita ei muutettu.
 - **0.3.66 (23.11.2026):** hyväksyttiin yhteisen tarkistustyönkulun kiinteäksi tarkistusväliksi 15 minuuttia. Erotettiin se edelleen aihe- ja tehtävätyyppikohtaisista suoritusväleistä ja kirjattiin GitHub Actionsin ajastusviiveiden sekä yksittäisten käynnistymättä jäämisten mahdollisuus. Nykyisiä automaatioita tai niiden ajastuksia ei muutettu.
