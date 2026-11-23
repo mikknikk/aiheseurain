@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.36  
+**Versio:** 0.12.37  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -387,7 +387,34 @@ Viidenteen tietoryhmään, **Havainnot ja laadunvarmistus**, kuuluu kaksi osaa:
 1. **Raportoitavat havainnot:** raportin sisältämien havaintojen yhteenveto. Siihen voi kuulua havaintojen lukumäärä ja tehtävätyypin kannalta tarpeellinen luokittelu tai ryhmittely sekä olennaisten rajausten, epävarmuuksien ja kattavuuspuutteiden kuvaus. Jos raportoitavia havaintoja ei löytynyt, tämä voidaan ilmaista yhteenvetona. Varsinaista raporttitekstiä tai lähdetarkistusten tietoja ei kopioida metatietoihin.
 2. **Laadunvarmistus:** raportintuottajan tekemien laaduntarkistusten tulokset. Tarkistukset voivat koskea esimerkiksi lähdeviitteiden ja väitteiden vastaavuutta, havaintojen jäljitettävyyttä, ristiriitaisten tietojen käsittelyä, epävarmuuden ilmaisemista, duplikaattien hallintaa, seuranta-aikavälin noudattamista sekä raportin rakennetta ja luettavuutta. Metatiedoissa kuvataan tehdyt tarkistukset ja niiden tulokset sekä mahdolliset havaitut puutteet tai tekemättä jääneet pakolliset tarkistukset.
 
-Tehtävätyypin määritys määrittelee, mitä laaduntarkistuksia kyseisessä tehtävässä edellytetään. Tehtävätyypistä riippumattomia pakollisia tarkistuksia ei oleteta. Yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä, ja toimitusmetatietoihin tallennetaan niiden ajokohtaiset tulokset. Näin tarkistusten määrittely ja niiden toteutuneiden tulosten kirjaaminen pysyvät erillään. Tarkistustietueiden tarkat kentät, tulosarvot ja pakollisuus määritellään jatkosuunnittelussa. Tuottajan tulostila (status) kuuluu kolmanteen tietoryhmään eikä sitä toisteta tässä ryhmässä. Laadunvarmistuksen tulos on siitä erillinen: onnistuneesti tuotetussa raportissa voi olla laaduntarkistuksessa havaittuja puutteita, ja osittainen raportti voi läpäistä kaikki sille soveltuvat tarkistukset.
+Tehtävätyypin määritys määrittelee, mitä laaduntarkistuksia kyseisessä tehtävässä edellytetään. Tehtävätyypistä riippumattomia pakollisia tarkistuksia ei oleteta. Jokaisesta määritellystä tarkistuksesta tallennetaan toimitusmetatietoihin oma ajokohtainen tietue. Tarkistuksen nimi ja kuvaus säilyvät tehtävätyypin määrityksessä; toimitustietue viittaa siihen pysyvällä `check_id`-tunnisteella eikä kopioi nimeä tai kuvausta.
+
+Yksittäisen tarkistustietueen kentät ovat:
+
+- `check_id`: tehtävätyypin määrityksessä määritellyn tarkistuksen pysyvä tunniste.
+- `result`: tarkistuksen ajokohtainen tulos.
+- `checked_at`: ajankohta, jolloin tarkistus suoritettiin tai sen suorittamatta jättäminen todettiin.
+- `findings`: tarkistuksessa havaitut yksittäiset ongelmat tai puutteet taulukkona. Onnistuneessa tarkistuksessa taulukko on tyhjä.
+- `notes`: valinnaiset muut olennaiset huomiot.
+- `reason`: perustelu tilanteessa, jossa tarkistusta ei suoritettu, se ei soveltunut tai sen suoritus epäonnistui.
+
+Sallitut `result`-arvot ovat:
+
+- `passed`: tarkistus suoritettiin eikä ongelmia havaittu.
+- `issues_found`: tarkistus suoritettiin ja siinä havaittiin ongelmia tai puutteita.
+- `not_run`: tarkistusta ei suoritettu.
+- `not_applicable`: tarkistus ei soveltunut kyseiseen raporttiin tai ajoon.
+- `execution_error`: tarkistuksen suoritus aloitettiin mutta se ei valmistunut teknisen tai muun suoritusvirheen vuoksi.
+
+`not_run` ja `not_applicable` ilmaisevat eri tilanteita. `execution_error` kuvaa tarkistuksen suoritusongelmaa eikä itsessään raportin laatupuutetta. Tulosarvo `passed` edellyttää tyhjää `findings`-taulukkoa; `issues_found` edellyttää vähintään yhtä havaintoa. `not_run`-, `not_applicable`- ja `execution_error`-tilanteissa `reason` kertoo tilanteen perustelun. `checked_at` kirjataan aina, myös silloin kun todetaan, ettei tarkistusta suoritettu tai ettei se soveltunut.
+
+Jokainen `findings`-taulukon havainto sisältää kentät `description` ja `severity` sekä valinnaisen `location`-kentän. Kuvaus kertoo, mitä havaittiin ja miksi se on ongelma. Vakavuusluokat ovat `critical` (keskeistä luotettavuutta tai käyttökelpoisuutta vaarantava), `major` (merkittävästi sisältöön tai oikeellisuuteen vaikuttava), `minor` (rajallinen ja vähäinen vaikutus) ja `info` (hyödyllinen huomio, joka ei ole varsinainen virhe). Sijainti voi yksilöidä esimerkiksi raportin otsikon, kappaleen tai lähdeviitteen.
+
+Tarkistustietue kuvaa vain ajon lopullisen tuloksen. Jos tarkistusta yritetään useita kertoja, toimitusmetatietoihin tallennetaan lopullinen ajokohtainen tulos eikä kaikkia sisäisiä yrityksiä; olennaiset uusintayritykset voidaan kuvata `notes)-kentässä. Jokaisesta tehtävätyypin määrityksessä vaaditusta tarkistuksesta on toimituksessa oma tietue. Tekemättä jäänyt tarkistus kirjataan arvolla `not_run` perusteluineen ja soveltumaton tarkistus arvolla `not_applicable` perusteluineen. Puuttuvaa tietuetta ei tulkita onnistumiseksi.
+
+Vastuut jakautuvat seuraavasti: tehtävätyypin määritys määrittelee vaaditut tarkistukset ja niiden merkityksen; raportintuottaja suorittaa tarkistukset ja ilmoittaa tulokset; toimitusmetatiedot sisältävät ajokohtaiset tulokset ja havainnot; vastaanottaja tarkistaa, että kaikki vaaditut tarkistustietueet on toimitettu ja että niiden rakenne on kelvollinen. Vastaanottaja voi verrata toimitettuja tietueita tehtävätyypin määrityksen vaadittuihin tarkistuksiin, havaita puuttuvat tietueet ja hylätä rakenteellisesti virheellisen toimituksen, mutta se ei muuta tuottajan ilmoittamia tuloksia eikä päättele puuttuvasta tuloksesta onnistumista. Tuottajan laadunvarmistus ei korvaa vastaanottajan toimituspaketin validointia.
+
+Tuottajan tulostila (`status`) kuuluu kolmanteen tietoryhmään eikä sitä toisteta tässä ryhmässä. Laadunvarmistuksen tulos on siitä erillinen: onnistuneesti tuotetussa raportissa voi olla laaduntarkistuksessa havaittuja puutteita, ja osittainen raportti voi läpäistä kaikki sille soveltuvat tarkistukset.
 
 Tämä ryhmittely määrittelee toimitusmetatietojen sisällölliset vastuualueet, ei vielä kaikkia yksittäisiä kenttiä, niiden tarkkoja nimiä tai pakollisuutta. Jo aiemmin määritellyt metatietojen vähimmäistiedot säilyvät voimassa. Vastaanottajan vastaanotto-, validointi-, julkaisu- ja käsittelytilat eivät kuulu tuottajan metatietoihin vaan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
@@ -727,6 +754,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.37 – 24.11.2026:** hyväksyttiin yksittäisen laaduntarkistuksen ajokohtaisen tietueen kentät (`check_id`, `result`, `checked_at`, `findings`, `notes`, `reason`), viisi tulosluokkaa, havaintojen vakavuusluokat ja kirjaamissäännöt. Täsmennettiin vaadittujen tarkistusten kattavuus sekä tehtävätyypin määrityksen, raportintuottajan ja vastaanottajan vastuut. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.36 – 24.11.2026:** hyväksyttiin, että yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä ja niiden ajokohtaiset tulokset tallennetaan tuottajan toimitusmetatietoihin. Tarkistusten määrittely erotetaan siten toteutuneiden tulosten kirjaamisesta; tarkat kentät ja tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.35 – 23.11.2026:** hyväksyttiin Havainnot ja laadunvarmistus -tietoryhmän kahden osan rakenne: raportoitavien havaintojen yhteenveto sekä raportintuottajan tekemien laaduntarkistusten tulokset. Rajattiin tuottajan tulostila kolmanteen tietoryhmään ja vastaanottajan validointi-, hyväksyntä- ja julkaisutilat tämän ryhmän ulkopuolelle. Tehtävätyypin määritys määrittelee vaadittavat laaduntarkistukset; tarkat kentät ja tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.34 – 23.11.2026:** hyväksyttiin kanavakohtaisen tarkistusyrityksen vähimmäistiedoiksi ajankohta, tulos, tieto uuden tai tehtävän kannalta relevantin sisällön löytymisestä, saatavilla oleva tekninen tulos sekä virhe- ja huomiotiedot. Erotettiin teknisen tarkistuksen onnistuminen sisällöllisestä tuloksesta; onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tarkka kenttärakenne ja sallitut tulosarvot jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
