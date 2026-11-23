@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.29  
+**Versio:** 0.12.30  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -356,6 +356,18 @@ Tuottajan toimitusmetatietojen sisältö jäsennetään seuraaviin tietoryhmiin:
 - **Havainnot ja laadunvarmistus:** raportoitavien havaintojen yhteenveto ja laaduntarkistuksen tulokset.
 - **Tuottajan tiedot:** valinnaiset tiedot käytetystä raportintuottajasta.
 
+Ensimmäiseen tietoryhmään kuuluvat seuraavat kentät:
+
+- `schema_version`: toimitusmetatietojen tietosopimuksen versio.
+- `run_id`: ajon tunniste, jonka vastaanottaja on muodostanut tehtäväpyyntöä varten; tuottaja säilyttää sen muuttumattomana toimituksessa.
+- `delivery_id`: tuottajan toimituspaketin tunniste. Tuottaja muodostaa sen ensimmäiselle toimitukselle ja säilyttää saman tunnisteen saman toimituksen uudelleenlähetyksissä.
+- `topic_id`: seurattavan aiheen tunniste.
+- `task_type`: suoritetun tehtävätyypin tunniste.
+- `software_revision`: tehtäväpyynnössä ilmoitettu käytetyn yhteisen ohjelmiston muuttumaton Git-commit.
+- `instance_revision`: tehtäväpyynnössä ilmoitettu käytetyn instanssin muuttumaton Git-commit.
+
+Tuottaja ei muodosta uutta `run_id)-tunnistetta eikä muuta tehtäväpyynnön tunnisteita tai revisioita. Vastaanottajan käsittely-yrityksen `attempt_id` ei kuulu tuottajan toimitusmetatietoihin: sen muodostaa ja kirjaa vastaanottaja omaan ajonhallintaansa.
+
 Tämä ryhmittely määrittelee toimitusmetatietojen sisällölliset vastuualueet, ei vielä kaikkia yksittäisiä kenttiä, niiden tarkkoja nimiä tai pakollisuutta. Jo aiemmin määritellyt metatietojen vähimmäistiedot säilyvät voimassa. Vastaanottajan vastaanotto-, validointi-, julkaisu- ja käsittelytilat eivät kuulu tuottajan metatietoihin vaan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
 Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
@@ -694,7 +706,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
-- **0.12.29 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei vielä lukitse yksittäisiä kenttiä tai niiden pakollisuutta. Vastaanottajan käsittelytilat rajattiin edelleen tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
+- **0.12.30 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen tunnisteet ja versiot -ryhmän kentät: `schema_version`, `run_id`, `delivery_id`, `topic_id`, `task_type`, `software_revision` ja `instance_revision`. Täsmennettiin tunnisteiden omistajuus sekä se, ettei vastaanottajan `attempt_id` kuulu tuottajan metatietoihin. Muut tietoryhmät ja niiden kentät jäivät avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.\n- **0.12.29 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen kuusi sisällöllistä tietoryhmää: tunnisteet ja versiot, tehtävän kuvaus, tuottajan tulos, lähdetarkistukset, havainnot ja laadunvarmistus sekä valinnaiset tuottajan tiedot. Ryhmittely ei vielä lukitse yksittäisiä kenttiä tai niiden pakollisuutta. Vastaanottajan käsittelytilat rajattiin edelleen tuottajan metatietojen ulkopuolelle. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.28 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja vastaanottajan append-only-tapahtumahistorian erottaminen kolmeksi toisiinsa viitatuksi tietokokonaisuudeksi. Täsmennettiin, että tarkat kentät, tapahtumatyypit ja viittaukset ratkaistaan myöhemmässä teknisessä suunnittelussa. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.27 – 23.11.2026:** hyväksyttiin ajon, tuottajan toimituksen ja vastaanottajan käsittely-yrityksen erilliset tunnisteet (`run_id`, `delivery_id`, `attempt_id`), alkuperäisen RSS-GUIDin deterministinen muodostaminen `run_id`-tunnisteesta, vastaanottajan laskema SHA-256-tiiviste kanonisoidusta toimitussisällöstä sekä kaksois- ja ristiriitaisten toimitusten käsittelysäännöt. Määriteltiin myös, milloin validoinnissa hylätyn toimituksen voi korvata toisella toimituksella. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.26 – 23.11.2026:** hyväksyttiin RSS-julkaisun ja kanonisen ajotietueen tallentaminen samaan instanssirepositorioon ja niiden atominen päivitys yhdellä Git-commitilla. Määriteltiin varmennukseen perustuva palautuminen keskeytyneistä ja osittain onnistuneista tallennuksista, saman toimituksen idempotentti uudelleenkäsittely, yrityskohtaisten tapahtumien säilyttäminen, ristiriitaisten tunnisteiden hylkääminen sekä myöhäisen toimituksen rajattu jälkikäsittely. RSS-itemit ja ajotietueet pysyvät erillisinä tietokokonaisuuksina; toteutusta tai automaatioita ei muutettu.
