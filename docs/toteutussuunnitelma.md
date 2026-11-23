@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.65  
+**Versio:** 0.3.66  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.23](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.25](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -188,7 +188,7 @@ Tehtäväpyynnön muodostaminen ja aktiivisen tehtävän määräajan valvonta h
 - Jos tehtävä on yhä voimassa, työnkulku jättää sen ennalleen. Se ei luo rinnakkaista tehtävää eikä muuta tehtävän sisältöä.
 - Raportintuottaja hakee tehtävän omalla aikataulullaan. Sen käynnistyminen ei edellytä erillistä GitHub Actions -ilmoitusta.
 
-Järjestelmän tarkistusväli on yksi yhteinen ja kiinteä ajastus tälle työnkululle. Se on eri asia kuin yksittäisen aiheen ja tehtävätyypin suoritusväli: jälkimmäinen määritellään kyseisen yhdistelmän määrityksessä, ja työnkulku käynnistää tehtävän vasta sen eräännyttyä sekä muiden käsittelyehtojen täyttyessä. Näin yhteinen työnkulku voi tarkistaa jonon ja määräajat säännöllisesti ilman, että kaikkia aiheita käsitellään jokaisella tarkistuskerralla. Tarkistusvälin tarkka pituus jätetään tekniseen suunnitteluun.
+Järjestelmän tarkistusväli on yksi yhteinen ja kiinteä ajastus tälle työnkululle. Se on eri asia kuin yksittäisen aiheen ja tehtävätyypin suoritusväli: jälkimmäinen määritellään kyseisen yhdistelmän määrityksessä, ja työnkulku käynnistää tehtävän vasta sen eräännyttyä sekä muiden käsittelyehtojen täyttyessä. Näin yhteinen työnkulku voi tarkistaa jonon ja määräajat säännöllisesti ilman, että kaikkia aiheita käsitellään jokaisella tarkistuskerralla. Yhteisen työnkulun kiinteä tarkistusväli on **15 minuuttia**. Väli koskee jonon ja aktiivisen tehtävän määräajan tarkistamista; aihekohtainen suoritusväli säilyy erillisenä. GitHub Actionsin ajastus ei takaa täsmällistä käynnistymistä: ruuhkat voivat viivästyttää ajoa tai estää yksittäisen ajastetun käynnistyksen kokonaan. Siksi 15 minuuttia on tavoiteltu tarkistusväli, ei täsmällinen palvelutasolupaus.
 
 Työnkulku voidaan käynnistää myös manuaalisesti esimerkiksi ylläpitoa, testausta tai poikkeustilanteen selvittämistä varten. Manuaalinen käynnistys suorittaa täsmälleen saman tarkistus- ja käsittelylogiikan kuin ajastettu käynnistys: se tarkistaa aktiivisen tehtävän, määräajan ja jonon sekä noudattaa tehtävän muodostamisen ehtoja. Manuaalinen käynnistys ei ohita aktiivista tehtävää, määräaikoja, tehtävien sarjallisuutta tai aihekohtaisia suoritusvälejä eikä tarjoa erillistä pakotettua aiheen käynnistämistä. Näin myös manuaalinen käynnistys säilyttää yhden aktiivisen tehtävän mallin.
 
@@ -767,6 +767,7 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
 ### Versiohistoria
 
+- **0.3.66 (23.11.2026):** hyväksyttiin yhteisen tarkistustyönkulun kiinteäksi tarkistusväliksi 15 minuuttia. Erotettiin se edelleen aihe- ja tehtävätyyppikohtaisista suoritusväleistä ja kirjattiin GitHub Actionsin ajastusviiveiden sekä yksittäisten käynnistymättä jäämisten mahdollisuus. Nykyisiä automaatioita tai niiden ajastuksia ei muutettu.
 - **0.3.64 (23.11.2026):** hyväksyttiin rekisterin ulkopuolisten lähteiden haun ja rekisteröinnin erilliset asetukset, niiden periytyminen ja ylikirjoitus, muuttumaton `instance_revision`-snapshot, ajon jälkeinen ehdotusten käsittely, automaattisen rekisteröinnin validointi ja duplikaattien esto sekä `unassessed`-luokitus ja lähteen alkuperä-/löytämistietojen säilyttäminen. Skeemoja, toteutusta tai tikettejä ei luotu.
 - **0.3.63 (23.11.2026):** hyväksyttiin yhteisen lähderekisterin ja sisältökanavien tarkempi rakenne, lähde- ja kanavatunnisteiden yksilöllisyys, lähde- ja kanavatason tekniset tiedot, tehtävätyypin oletus- ja pakolliset lähde–kanava-parit sekä aihekohtaiset `inherit`-, `extend`- ja `replace`-toimintatavat, niiden järjestys- ja yhdistämissäännöt ja validointiperiaatteet. Raportintuottajan lähderekisterin ulkopuolinen lähdehaku ja uusien lähteiden rekisteröinti jätettiin avoimeksi. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
 - **0.3.62 (23.11.2026):** hyväksyttiin JSON Schema Draft 2020-12 -skeemakokonaisuuden hakemistorakenne ja vastuut, yhteiset osaskeemat, skeemojen paikallinen viittausmalli ja semanttinen versiointi, tuntemattomien kenttien hylkääminen, rakenteellisen ja toiminnallisen validoinnin vaiheistus, virheiden raportointi, Markdown-ohjeiden erilliset tarkistukset, kiinnitetty validointikirjasto sekä skeemojen ja määritysten kattavat testausperiaatteet. Skeematiedostoja tai validointitoteutusta ei luotu tässä suunnittelumuutoksessa.
