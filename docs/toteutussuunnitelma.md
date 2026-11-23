@@ -676,7 +676,7 @@ Ensimmäiseen tietoryhmään kuuluvat seuraavat kentät:
 - `software_revision`: tehtäväpyynnössä ilmoitettu käytetyn yhteisen ohjelmiston muuttumaton Git-commit.
 - `instance_revision`: tehtäväpyynnössä ilmoitettu käytetyn instanssin muuttumaton Git-commit.
 
-Tuottaja ei muodosta uutta `run_id)-tunnistetta eikä muuta tehtäväpyynnön tunnisteita tai revisioita. Vastaanottajan käsittely-yrityksen `attempt_id` ei kuulu tuottajan toimitusmetatietoihin: sen muodostaa ja kirjaa vastaanottaja omaan ajonhallintaansa.
+Tuottaja ei muodosta uutta `run_id`-tunnistetta eikä muuta tehtäväpyynnön tunnisteita tai revisioita. Vastaanottajan käsittely-yrityksen `attempt_id` ei kuulu tuottajan toimitusmetatietoihin: sen muodostaa ja kirjaa vastaanottaja omaan ajonhallintaansa.
 
 Ryhmittely kuvaa metatietojen sisällölliset vastuualueet. Se ei vielä määritä kaikkia yksittäisiä kenttiä, niiden nimiä, tyyppejä tai pakollisuutta. Kohdassa 2.3 kuvatut jo hyväksytyt metatietojen vähimmäistiedot säilyvät lähtökohtana, ja niiden suhde ryhmiin täsmennetään kenttätason suunnittelussa. Vastaanottajan vastaanotto-, validointi-, julkaisu- ja käsittelytilat eivät kuulu tuottajan metatietoihin.
 
