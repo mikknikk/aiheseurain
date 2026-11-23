@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.25  
+**Versio:** 0.12.26  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -508,6 +508,22 @@ Ensimmäisessä versiossa ei vaadita monimutkaista uudelleenyritysten orkestroin
 
 Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen, onko uusi yritys mahdollinen tai jo tehty.
 
+### 10.1 Tallennuksen eheys ja palautuminen
+
+RSS-julkaisut ja vastaanottajan kanoniset ajotietueet tallennetaan samaan instanssirepositorioon. Ne säilyvät erillisinä tiedostoina ja tietokokonaisuuksina: RSS-syöte sisältää julkaistut raportit, kun taas ajotietue sisältää ajon tuloksen, vastaanottajan käsittelytiedot ja tapahtumahistorian. Yhteinen ohjelmistorepositorio pysyy tästä erillisenä.
+
+Kun ajo julkaistaan, RSS-syötteen muutos ja vastaava kanonisen ajotietueen päivitys sekä uudet käsittelytapahtumat sisällytetään samaan Git-commitiin. Näin ne tulevat näkyviin yhtenä atomisena repositoriomuutoksena: commit joko sisältää molemmat päivitykset tai ei kumpaakaan. Ajoa ei merkitä julkaistuksi ennen kuin commitin onnistuminen ja sen sisältö on varmennettu.
+
+Jos tallennusyritys epäonnistuu ennen commitin syntymistä, kumpaakaan muutosta ei katsota julkaistuksi. Jos commit on syntynyt mutta työnkulku ei saanut onnistumisesta vahvistusta tai keskeytyi, seuraava käsittely tarkistaa instanssirepositorion todellisen tilan. Se etsii alkuperäisen `run_id`-ajon, toimitustunnisteen ja RSS-itemin GUIDin perusteella, vastaavatko ajotietue ja RSS-item samaa toimitusta. Varmennettu commit käsitellään onnistuneena, vaikka alkuperäinen työnkulku ei ehtinyt vahvistaa sitä. Uutta julkaisua ei tehdä vain siksi, että aiempi työnkulku keskeytyi.
+
+Uudelleenyritys jatkaa samaa loogista ajoa samalla `run_id`- ja toimitustunnisteella. Yrityskohtainen tunniste ja yritystapahtumat erottavat käsittely-yritykset toisistaan, mutta uusi yritys ei muodosta uutta ajoa tai uutta GUIDia. Ennen jokaista kirjoitusta vastaanottaja tarkistaa, onko sama toimitus jo käsitelty ja onko sen RSS-item jo julkaistu. Täsmälleen saman toimituksen toistuva vastaanotto käsitellään idempotentisti ilman uutta ajotietuetta tai RSS-itemiä. Jos sama tunniste tai GUID liittyy ristiriitaiseen sisältöön, toimitus hylätään ja ristiriita kirjataan; aiempaa julkaistua itemiä ei korvata.
+
+Tapahtumahistoria säilyy loogisesti vain lisäämiseen perustuvana. Uudelleenyritykset, tallennusyritykset, niiden varmennukset ja epäonnistumiset lisätään uusina tapahtumina. Aiemman yrityksen tapahtumia tai vastaanottajan havaintoja ei poisteta eikä ylikirjoiteta. Ajantasainen käsittelytila voidaan muodostaa tapahtumista, mutta se ei saa hävittää niiden alkuperäistä aikajärjestystä tai alkuperätietoa.
+
+Jos ajotietue on jo kirjattu epäonnistuneeksi ja tehtävä vapautettu, myöhemmin saapuva toimitus käsitellään alkuperäisen `run_id`-tunnisteen perusteella rajattuna jälkikäsittelynä. Se voidaan validoida ja julkaista alkuperäisen ajon tuloksena vain, jos samaa aihetta ja tehtävätyyppiä koskevaa myöhempää ajoa ei ole käynnistetty ja kaikki normaalit hyväksymisehdot täyttyvät. Myöhäinen toimitus täydentää alkuperäistä ajotietuetta uusilla tapahtumilla; se ei poista aikakatkaisua tai muuta aiempaa havaintoa, avaa vapautettua tehtävää uudelleen eikä muuta myöhempien ajojen tietoja tai tiloja. Jos myöhempi ajo on jo käynnistetty, myöhäinen toimitus hylätään julkaisemisen osalta ja sen käsittely kirjataan.
+
+Julkaistua RSS-itemiä ei koskaan muokata tai korvata palautumisen yhteydessä. Sisällöllinen korjaus tai täydennys julkaistaan uutena iteminä omalla GUIDilla ja viittauksella alkuperäiseen julkaisuun.
+
 ## 11. Turvallisuus, eheys ja testaus
 
 - Testit eivät saa kirjoittaa tuotannon RSS-syötteisiin tai muuttaa tuotannon seurantatilaa.
@@ -646,6 +662,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.26 – 23.11.2026:** hyväksyttiin RSS-julkaisun ja kanonisen ajotietueen tallentaminen samaan instanssirepositorioon ja niiden atominen päivitys yhdellä Git-commitilla. Määriteltiin varmennukseen perustuva palautuminen keskeytyneistä ja osittain onnistuneista tallennuksista, saman toimituksen idempotentti uudelleenkäsittely, yrityskohtaisten tapahtumien säilyttäminen, ristiriitaisten tunnisteiden hylkääminen sekä myöhäisen toimituksen rajattu jälkikäsittely. RSS-itemit ja ajotietueet pysyvät erillisinä tietokokonaisuuksina; toteutusta tai automaatioita ei muutettu.
 - **0.12.25 – 23.11.2026:** hyväksyttiin yhteisen tarkistustyönkulun kiinteäksi tarkistusväliksi 15 minuuttia. Täsmennettiin, että väli koskee tehtäväjonon ja aktiivisen tehtävän määräajan tarkistamista eikä muuta aihe- ja tehtävätyyppikohtaisia suoritusvälejä. Kirjattiin GitHub Actionsin ajastusviiveitä ja mahdollisia käynnistymättä jäämisiä koskeva rajoitus. Nykyisiä automaatioita tai niiden ajastuksia ei muutettu.
 - **0.12.23 – 23.11.2026:** hyväksyttiin rekisterin ulkopuolisten lähteiden käytön ja rekisteröinnin erilliset asetukset (`source_discovery` ja `source_registry_addition`), niiden yhdistäminen tehtävätyypin oletuksista profiilien kautta aihekohtaisiin asetuksiin, muuttumattoman `instance_revision`-snapshotin säilyttäminen, ajon jälkeinen ehdotusten käsittely, automaattisen rekisteröinnin validointi ja duplikaattien esto sekä uusien lähteiden `unassessed`-luotettavuusluokitus ja alkuperä-/löytämistietojen säilyttäminen. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
 - **0.12.22 – 23.11.2026:** hyväksyttiin yhteisen lähderekisterin ja sisältökanavien tarkempi tietosisältö, yksilölliset tunnisteet, teknisten saavutettavuustietojen lähde- ja kanavatasot, tehtävätyypin oletus- ja pakolliset lähde–kanava-parit sekä aihekohtaiset `inherit`-, `extend`- ja `replace`-toimintatavat, niiden järjestys- ja yhdistämissäännöt sekä validointiperiaatteet. Raportintuottajan mahdollisuus käyttää rekisterin ulkopuolisia lähteitä ja niiden automaattinen rekisteröinti jätettiin erikseen ratkaistavaksi. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
