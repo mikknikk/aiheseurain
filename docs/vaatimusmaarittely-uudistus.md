@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.24  
+**Versio:** 0.12.25  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -252,7 +252,7 @@ Valinta noudattaa seuraavia yksinkertaisia sääntöjä:
 
 Aihekohtainen ajotiheys määritellään määrityksessä. Eri seurantatyypeillä voi olla omat aikataulu- ja sisältösääntönsä, mutta ne eivät muuta yhden aiheen ajomallia.
 
-Tehtävien ajastuksessa erotetaan kaksi asiaa: järjestelmän yhteinen tarkistusväli sekä aiheen ja tehtävätyypin yhdistelmäkohtainen suoritusväli. Yksi yhteinen ajastettu työnkulku tarkistaa säännöllisesti tehtäväjonon ja aktiivisen tehtävän määräajan. Yksittäisen aiheen tehtävä käynnistetään vasta, kun sen oma suoritusväli on erääntynyt ja muut käsittelyehdot sallivat sen. Yhteisen tarkistusvälin tarkka pituus ratkaistaan teknisessä toteutussuunnittelussa.
+Tehtävien ajastuksessa erotetaan kaksi asiaa: järjestelmän yhteinen tarkistusväli sekä aiheen ja tehtävätyypin yhdistelmäkohtainen suoritusväli. Yksi yhteinen ajastettu työnkulku tarkistaa säännöllisesti tehtäväjonon ja aktiivisen tehtävän määräajan. Yksittäisen aiheen tehtävä käynnistetään vasta, kun sen oma suoritusväli on erääntynyt ja muut käsittelyehdot sallivat sen. Yhteisen tarkistustyönkulun kiinteä tarkistusväli on **15 minuuttia**. Tämä väli koskee tehtäväjonon ja aktiivisen tehtävän määräajan tarkistamista, ei yksittäisen aiheen suoritusväliä. GitHub Actionsin ajastettu työnkulku voi ruuhkatilanteissa käynnistyä myöhässä tai jäädä käynnistymättä; 15 minuuttia on ajastuksen tavoiteltu väli, ei takuu täsmällisestä käynnistys- tai reagointiajasta.
 
 Yhteisen tarkistustyönkulun voi käynnistää myös manuaalisesti esimerkiksi ylläpitoa tai tilanteen selvittämistä varten. Manuaalinen käynnistys käyttää samoja jono-, määräaika-, validointi- ja sarjallisuussääntöjä kuin ajastettu käynnistys. Se ei ohita aktiivista tehtävää, käynnistä rinnakkaista tehtävää eikä pakota tiettyä aihetta ajoon näiden sääntöjen vastaisesti.
 
@@ -646,6 +646,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.25 – 23.11.2026:** hyväksyttiin yhteisen tarkistustyönkulun kiinteäksi tarkistusväliksi 15 minuuttia. Täsmennettiin, että väli koskee tehtäväjonon ja aktiivisen tehtävän määräajan tarkistamista eikä muuta aihe- ja tehtävätyyppikohtaisia suoritusvälejä. Kirjattiin GitHub Actionsin ajastusviiveitä ja mahdollisia käynnistymättä jäämisiä koskeva rajoitus. Nykyisiä automaatioita tai niiden ajastuksia ei muutettu.
 - **0.12.23 – 23.11.2026:** hyväksyttiin rekisterin ulkopuolisten lähteiden käytön ja rekisteröinnin erilliset asetukset (`source_discovery` ja `source_registry_addition`), niiden yhdistäminen tehtävätyypin oletuksista profiilien kautta aihekohtaisiin asetuksiin, muuttumattoman `instance_revision`-snapshotin säilyttäminen, ajon jälkeinen ehdotusten käsittely, automaattisen rekisteröinnin validointi ja duplikaattien esto sekä uusien lähteiden `unassessed`-luotettavuusluokitus ja alkuperä-/löytämistietojen säilyttäminen. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
 - **0.12.22 – 23.11.2026:** hyväksyttiin yhteisen lähderekisterin ja sisältökanavien tarkempi tietosisältö, yksilölliset tunnisteet, teknisten saavutettavuustietojen lähde- ja kanavatasot, tehtävätyypin oletus- ja pakolliset lähde–kanava-parit sekä aihekohtaiset `inherit`-, `extend`- ja `replace`-toimintatavat, niiden järjestys- ja yhdistämissäännöt sekä validointiperiaatteet. Raportintuottajan mahdollisuus käyttää rekisterin ulkopuolisia lähteitä ja niiden automaattinen rekisteröinti jätettiin erikseen ratkaistavaksi. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
 - **0.12.21 – 23.11.2026:** hyväksyttiin JSON Schema Draft 2020-12 -skeemojen vastuut ja hakemistorakenteen periaatteet, yhteisten osaskeemojen käyttö, skeemojen ja toimitus-/ajotietosopimusten erottelu, skeemojen semanttinen versiointi, tuntemattomien kenttien hylkääminen, vaiheittainen rakenteellinen ja toiminnallinen validointi, virheiden raportointi, Markdown-ohjeiden erilliset tarkistukset sekä kiinnitetyn validointikirjaston ja kattavan skeematestauksen periaatteet. Skeematiedostoja tai validointitoteutusta ei vielä luotu.
