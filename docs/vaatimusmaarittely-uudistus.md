@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.27  
+**Versio:** 0.12.28  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 23.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -335,17 +335,17 @@ Tehtäväpyynnön tunnisteet, aikaleimat, repositorioviittaukset ja profiilien s
 
 ## 6. Ajon tulos ja ajotiedot
 
-### 6.1 Ajotietue ja tuottajan tulos
+### 6.1 Ajotietue, toimitusmetatiedot ja tapahtumahistoria
 
-Jokaisesta käynnistetystä ajosta vastaanottava järjestelmä ylläpitää kanonista ajotietuetta. Tuottajan toimittama tulos ja vastaanottajan kirjaamat ajonhallintatiedot ovat siinä käsitteellisesti erillisiä tietokokonaisuuksia. Tuottajan tulos täydentää ajotietuetta vain, jos tuottaja on toimittanut sen. Vastaanottajan on muodostettava ajotietue myös silloin, kun tuottajan toimitusta ei saada määräaikaan mennessä. Tällöin tuottajan tulosmetatietoja ei ole, eikä niitä saa päätellä tai esittää tuottajan ilmoittamina.
+Ajon tiedot jaetaan kolmeen erilliseen, toisiinsa viitattuun tietokokonaisuuteen, joiden omistajuus ja tehtävät pidetään erillään:
 
-- `schema_version`: pakollinen tietosopimuksen version tunniste;
-- `run_id`: pakollinen, ennen suoritusta muodostettu ajon yksilöllinen tunniste;
-- `run_metadata`: aiheen ja seurannan sisältöä kuvaavat metatiedot;
-- `report_item`: valinnainen uusi RSS-item;
-- `producer`: valinnaiset tiedot raporttituottajasta, jos ne ovat saatavilla.
+1. **Tuottajan toimitusmetatiedot** ovat raportintuottajan vastuulla ja kuvaavat sen toimittamaa tulosta. Ne toimitetaan osana toimituspakettia erillisessä `metadata.json`-tiedostossa. Jos tuottaja ei toimita tulosta, toimitusmetatietoja ei ole eikä vastaanottaja saa päätellä tai esittää niitä tuottajan ilmoittamina.
+2. **Kanoninen ajotietue** on vastaanottavan järjestelmän vastuulla. Se yksilöi ajon ja kokoaa vastaanottajan tarvitseman ajon nykytilan, käsittelytiedot sekä viittaukset hyväksyttyyn toimitukseen ja julkaisuun. Siihen ei kopioida tarpeettomasti kaikkia toimitusmetatietojen kenttiä, vaan tuottajan tiedot säilyvät erillisinä ja niihin viitataan.
+3. **Ajon tapahtumahistoria** on vastaanottavan järjestelmän vastuulla. Se tallentaa ajon käsittelyvaiheet ja havainnot aikajärjestyksessä. Historia on loogisesti vain lisäämiseen perustuva: aiempia tapahtumia ei poisteta eikä ylikirjoiteta, vaan myöhemmät tapahtumat täydentävät kokonaisuutta.
 
-Tuottajan toimittaman tuloksen yhteydessä vastaanottava järjestelmä kirjaa lisäksi omat vastaanotto-, validointi-, tallennus- ja julkaisutilansa. Jos tuottajan tulosta ei saada, vastaanottaja kirjaa vain oman ajonhallinnan tilan ja todennettavissa olevat tapahtumat, kuten määräajan umpeutumisen. Tuottajan tulostila (`success`, `partial`, `no_report` tai tuottajan ilmoittama `failed`) ja vastaanottajan ajon lopputila/käsittelytila eivät ole sama tietokenttä, vaikka ajon lopputila olisi molemmissa tapauksissa `failed`. Jos vastaanottaja on jo muodostanut määräajan umpeutumisen vuoksi epäonnistumistietueen ja alkuperäiselle `run_id`-ajolle saapuu myöhemmin hyväksyttävä toimitus, toimituksen `metadata.json` täydentää samaa kanonista ajotietuetta erillisenä tuottajan tuloksena. Se ei korvaa eikä kirjoita uudelleen vastaanottajan aiemmin kirjaamia havaintoja tai tapahtumia. Määräajan ylitys ja vastaanottajan havainto siitä, ettei toimitusta saatu määräajassa, säilyvät muuttumattomina. Tuottajan tulostila tallennetaan vain toimitetun ja hyväksytyn metatiedon perusteella; sitä ei yhdistetä vastaanottajan aiempaan `failed`-merkintään eikä sen perusteella poisteta tätä merkintää. Tuottajan tunniste, nimi, ohjelmistoversio tai ohjeversion tunniste eivät ole yleisiä pakollisia kenttiä. Ihmisen tekemä raportti voidaan toimittaa samalla tietosopimuksella ilman ohjelmistokohtaisia metatietoja.
+Tietokokonaisuudet liittyvät samaan ajoon `run_id`-tunnisteen avulla ja niissä käytetään toimituksen sekä käsittely-yrityksen tunnisteita silloin, kun ne ovat kyseisessä kokonaisuudessa tarpeen. Tuottajan tulostila (`success`, `partial`, `no_report` tai tuottajan ilmoittama `failed`) ja vastaanottajan ajon lopputila/käsittelytila ovat eri tietoja ja niiden alkuperä säilytetään.
+
+Tapahtumahistoria sisältää esimerkiksi ajon käynnistymisen, määräajan ylittymisen, toimituksen vastaanoton, validoinnin, hyväksynnän tai hylkäyksen, julkaisun sekä uudelleenyritysten ja myöhäisten toimitusten käsittelyn. Tapahtumien tarkat tyypit, kentät, järjestämisen tekniset säännöt ja tietokokonaisuuksien väliset tarkat viittaukset määritellään myöhemmässä teknisessä suunnittelussa.
 
 Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
 
@@ -510,9 +510,9 @@ Valvomo näyttää virheluokan, lyhyen selitteen, epäonnistuneen vaiheen ja sen
 
 ### 10.1 Tallennuksen eheys ja palautuminen
 
-RSS-julkaisut ja vastaanottajan kanoniset ajotietueet tallennetaan samaan instanssirepositorioon. Ne säilyvät erillisinä tiedostoina ja tietokokonaisuuksina: RSS-syöte sisältää julkaistut raportit, kun taas ajotietue sisältää ajon tuloksen, vastaanottajan käsittelytiedot ja tapahtumahistorian. Yhteinen ohjelmistorepositorio pysyy tästä erillisenä.
+RSS-julkaisut sekä vastaanottajan kanoniset ajotietueet ja ajon tapahtumahistoriat tallennetaan samaan instanssirepositorioon. Ne säilyvät erillisinä tiedostoina ja tietokokonaisuuksina: RSS-syöte sisältää julkaistut raportit, ajotietue ajon nykytilan ja käsittelyn yhteenvedon sekä tapahtumahistoria aikajärjestyksessä säilyvät käsittelytapahtumat. Tuottajan toimitusmetatiedot säilyvät omassa toimituspaketissaan. Yhteinen ohjelmistorepositorio pysyy tästä erillisenä.
 
-Kun ajo julkaistaan, RSS-syötteen muutos ja vastaava kanonisen ajotietueen päivitys sekä uudet käsittelytapahtumat sisällytetään samaan Git-commitiin. Näin ne tulevat näkyviin yhtenä atomisena repositoriomuutoksena: commit joko sisältää molemmat päivitykset tai ei kumpaakaan. Ajoa ei merkitä julkaistuksi ennen kuin commitin onnistuminen ja sen sisältö on varmennettu.
+Kun ajo julkaistaan, RSS-syötteen muutos, vastaavan kanonisen ajotietueen päivitys ja siihen liittyvät uudet tapahtumat sisällytetään samaan Git-commitiin. Näin ne tulevat näkyviin yhtenä atomisena repositoriomuutoksena: commit joko sisältää molemmat päivitykset tai ei kumpaakaan. Ajoa ei merkitä julkaistuksi ennen kuin commitin onnistuminen ja sen sisältö on varmennettu.
 
 Jos tallennusyritys epäonnistuu ennen commitin syntymistä, kumpaakaan muutosta ei katsota julkaistuksi. Jos commit on syntynyt mutta työnkulku ei saanut onnistumisesta vahvistusta tai keskeytyi, seuraava käsittely tarkistaa instanssirepositorion todellisen tilan. Se etsii alkuperäisen `run_id`-ajon, toimitustunnisteen ja RSS-itemin GUIDin perusteella, vastaavatko ajotietue ja RSS-item samaa toimitusta. Varmennettu commit käsitellään onnistuneena, vaikka alkuperäinen työnkulku ei ehtinyt vahvistaa sitä. Uutta julkaisua ei tehdä vain siksi, että aiempi työnkulku keskeytyi.
 
@@ -663,7 +663,7 @@ Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Ne eivät 
 2. **Vastaanottorajapinnan toteutus:** tekninen siirtotapa ja tunnistautuminen valitaan turvallisten vaihtoehtojen perusteella.
 3. **Ajojen käynnistäminen:** käynnistimien, ajastusten ja aihekohtaisten erääntymisten tekninen yhteensovitus ratkaistaan erikseen. Nykyisiä tehtäviä ei muuteta tämän määrittelyn perusteella.
 4. **Jonon ja uudelleenyritysten tarkat rajat:** valinnan periaate on erääntyminen ja odotusaika. Aikakatkaisut ja uudelleenyritysten rajat täsmennetään toteutussuunnittelussa.
-5. **Ajotietojen tallennus:** valitaan yksi yksinkertaisin turvallinen kanoninen tallennusratkaisu. Erillisen tietovaraston tarve osoitetaan ennen sen käyttöönottoa.
+5. **Ajotietojen tietomallit:** tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja append-only-tapahtumahistorian tarkat kentät, tapahtumatyypit ja keskinäiset viittaukset täsmennetään teknisessä suunnittelussa.
 6. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne suunnitellaan myöhemmin.
 7. **Historiatietojen säilytys:** ajon perustietojen, mahdollisten lokien ja väliaineistojen säilytysajat määritellään tietotarpeen ja tietosuojan perusteella.
 8. **Nykyisen toteutuksen siirtymä:** nykyiset osat inventoidaan ja arvioidaan ennen hyödyntämistä tai poistamista. Mitään ei poisteta ilman erillistä suunnitelmaa.
@@ -683,7 +683,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
-- **0.12.27 – 23.11.2026:** hyväksyttiin ajon, tuottajan toimituksen ja vastaanottajan käsittely-yrityksen erilliset tunnisteet (`run_id`, `delivery_id`, `attempt_id`), alkuperäisen RSS-GUIDin deterministinen muodostaminen `run_id`-tunnisteesta, vastaanottajan laskema SHA-256-tiiviste kanonisoidusta toimitussisällöstä sekä kaksois- ja ristiriitaisten toimitusten käsittelysäännöt. Määriteltiin myös, milloin validoinnissa hylätyn toimituksen voi korvata toisella toimituksella. Toteutusta, skeemoja tai automaatioita ei muutettu.
+- **0.12.28 – 23.11.2026:** hyväksyttiin tuottajan toimitusmetatietojen, vastaanottajan kanonisen ajotietueen ja vastaanottajan append-only-tapahtumahistorian erottaminen kolmeksi toisiinsa viitatuksi tietokokonaisuudeksi. Täsmennettiin, että tarkat kentät, tapahtumatyypit ja viittaukset ratkaistaan myöhemmässä teknisessä suunnittelussa. Toteutusta, skeemoja tai automaatioita ei muutettu.\n- **0.12.27 – 23.11.2026:** hyväksyttiin ajon, tuottajan toimituksen ja vastaanottajan käsittely-yrityksen erilliset tunnisteet (`run_id`, `delivery_id`, `attempt_id`), alkuperäisen RSS-GUIDin deterministinen muodostaminen `run_id`-tunnisteesta, vastaanottajan laskema SHA-256-tiiviste kanonisoidusta toimitussisällöstä sekä kaksois- ja ristiriitaisten toimitusten käsittelysäännöt. Määriteltiin myös, milloin validoinnissa hylätyn toimituksen voi korvata toisella toimituksella. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.12.26 – 23.11.2026:** hyväksyttiin RSS-julkaisun ja kanonisen ajotietueen tallentaminen samaan instanssirepositorioon ja niiden atominen päivitys yhdellä Git-commitilla. Määriteltiin varmennukseen perustuva palautuminen keskeytyneistä ja osittain onnistuneista tallennuksista, saman toimituksen idempotentti uudelleenkäsittely, yrityskohtaisten tapahtumien säilyttäminen, ristiriitaisten tunnisteiden hylkääminen sekä myöhäisen toimituksen rajattu jälkikäsittely. RSS-itemit ja ajotietueet pysyvät erillisinä tietokokonaisuuksina; toteutusta tai automaatioita ei muutettu.
 - **0.12.25 – 23.11.2026:** hyväksyttiin yhteisen tarkistustyönkulun kiinteäksi tarkistusväliksi 15 minuuttia. Täsmennettiin, että väli koskee tehtäväjonon ja aktiivisen tehtävän määräajan tarkistamista eikä muuta aihe- ja tehtävätyyppikohtaisia suoritusvälejä. Kirjattiin GitHub Actionsin ajastusviiveitä ja mahdollisia käynnistymättä jäämisiä koskeva rajoitus. Nykyisiä automaatioita tai niiden ajastuksia ei muutettu.
 - **0.12.23 – 23.11.2026:** hyväksyttiin rekisterin ulkopuolisten lähteiden käytön ja rekisteröinnin erilliset asetukset (`source_discovery` ja `source_registry_addition`), niiden yhdistäminen tehtävätyypin oletuksista profiilien kautta aihekohtaisiin asetuksiin, muuttumattoman `instance_revision`-snapshotin säilyttäminen, ajon jälkeinen ehdotusten käsittely, automaattisen rekisteröinnin validointi ja duplikaattien esto sekä uusien lähteiden `unassessed`-luotettavuusluokitus ja alkuperä-/löytämistietojen säilyttäminen. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
