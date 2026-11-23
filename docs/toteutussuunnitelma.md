@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.66  
+**Versio:** 0.3.67  
 **Päiväys:** 23.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.25](vaatimusmaarittely-uudistus.md)
@@ -666,6 +666,27 @@ Valvomo voi nostaa toistuvasti epäonnistuvia lähteitä ylläpitäjän tarkiste
 Tallennusmuoto ja hakemistorakenne määritellään teknisessä suunnittelussa. Lähdehavaintojen täsmällinen tietorakenne ja tilastojen laskentatapa määritellään ajohistorian ja toimitussopimuksen skeematyössä.
 
 
+#### 2.6.3 Julkaisun ja ajotietojen tallennuksen palautuminen
+
+RSS-syötteet ja vastaanottajan kanoniset ajotietueet sijaitsevat samassa instanssirepositoriossa. Ne ovat erillisiä tiedostoja ja tietokokonaisuuksia: RSS sisältää julkaistut raportit, ajotietue vastaanottajan hallitsemat ajon tiedot ja tapahtumahistorian. Yhteinen ohjelmistorepositorio säilyy erillisenä. Sijoittelu mahdollistaa RSS-syötteen ja sitä vastaavan ajotietueen päivittämisen samalla Git-commitilla.
+
+**Julkaisun tallennus muodostaa yhden atomisen repositoriomuutoksen.** Kun hyväksytty toimitus julkaistaan, samaan commitiin sisällytetään:
+- oikean aiheen RSS-syötteeseen lisättävä uusi item;
+- alkuperäisen ajon kanonisen ajotietueen päivitys;
+- julkaisuun ja käsittelyyn liittyvät uudet tapahtumat.
+
+Commit joko sisältää kaikki nämä muutokset tai ei yhtäkään niistä. RSS-itemiä ei katsota julkaistuksi eikä ajoa onnistuneeksi ennen kuin commitin syntyminen ja sen sisältö on varmennettu. Jos tallennus epäonnistuu ennen commitin syntymistä, kumpaakaan muutosta ei käsitellä onnistuneena. Näin samaan instanssirepositorioon sijoittaminen poistaa tarpeen yrittää sovittaa kahta erillistä repositoriocommittia yhteen transaktioon.
+
+**Keskeytyneen työnkulun palautuminen perustuu repositorion todelliseen tilaan.** Jos commit on syntynyt mutta GitHub Actions -ajo keskeytyy tai ei saa onnistumisvastauksesta tietoa, seuraava käsittely ei luota pelkkään edellisen työnkulun tulokseen. Se tarkistaa instanssirepositorion nykyisen sisällön ja etsii alkuperäisen `run_id`-ajon, toimitustunnisteen sekä RSS-itemin GUIDin. Jos ajotietue ja RSS-item vastaavat samaa toimitusta ja commit voidaan todentaa, julkaisu katsotaan onnistuneeksi eikä sitä tehdä uudelleen. Jos commitia ei ole syntynyt, tallennusvaihe voidaan uusia.
+
+**Uudelleenyritys jatkaa samaa loogista ajoa.** Kaikissa saman ajon yrityksissä säilyvät alkuperäinen `run_id` ja toimitustunniste. Yrityskohtainen tunniste yksilöi yksittäisen käsittely-yrityksen ja sen tapahtumat, mutta yritys ei luo uutta ajoa tai uutta RSS-GUIDia. Ennen kirjoittamista vastaanottaja tarkistaa nykyisestä instanssirevisiosta, onko toimitus jo vastaanotettu, käsitelty tai julkaistu. Täsmälleen saman toimituksen toistuva vastaanotto on idempotentti: se ei luo toista ajotietuetta tai RSS-itemiä. Jos sama toimitus- tai GUID-tunniste esiintyy ristiriitaisella sisällöllä, uusi toimitus hylätään ja ristiriita kirjataan; aiempaa julkaistua sisältöä ei korvata.
+
+**Tapahtumahistoria on vain lisäämiseen perustuva.** Kunkin yrityksen aloitus, vaiheet, virheet, tallennusyritykset ja varmennukset kirjataan uusina tapahtumina. Aiemman yrityksen tapahtumia tai vastaanottajan havaintoja ei poisteta eikä ylikirjoiteta. Ajantasainen käsittelytila muodostetaan tapahtumien perusteella, mutta tapahtumien alkuperä ja järjestys säilyvät tarkasteltavina.
+
+**Myöhäinen toimitus käsitellään rajattuna jälkikäsittelynä.** Jos ajo on jo kirjattu epäonnistuneeksi ja tehtävä vapautettu, myöhemmin saapuva toimitus yhdistetään alkuperäiseen `run_id`-ajoon. Se voidaan validoida ja julkaista vain, jos samaa aihetta ja tehtävätyyppiä koskevaa myöhempää ajoa ei ole käynnistetty ja normaalit hyväksymisehdot täyttyvät. Myöhäinen toimitus täydentää alkuperäistä ajotietuetta uusilla tapahtumilla; se ei poista määräajan ylityksen tai epäonnistumisen havaintoa, avaa vapautettua tehtävää uudelleen eikä muuta myöhempien ajojen tietoja tai tiloja. Jos myöhempi ajo on jo käynnistetty, toimitusta ei julkaista ja hylkäys kirjataan.
+
+Julkaistua RSS-itemiä ei muokata tai korvata palautumisen yhteydessä. Sisällöllinen korjaus tai täydennys julkaistaan uutena iteminä omalla GUIDilla ja viittauksella alkuperäiseen julkaisuun.
+
 ### 2.7 Jaettava ohjelmisto ja erilliset instanssit
 
 Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi, jonka käyttäjäkohtaiset instanssit ovat siitä erillisiä. Ohjelmiston ja instanssin erottaminen on arkkitehtuurin perusratkaisu, ei myöhempään monen käyttäjän palvelualustaan varautuva lisäominaisuus.
@@ -767,6 +788,7 @@ Seuraavat asiat täsmennetään ennen tikettien muodostamista:
 
 ### Versiohistoria
 
+- **0.3.67 (23.11.2026):** hyväksyttiin RSS-julkaisujen ja kanonisten ajotietueiden sijoittaminen samaan instanssirepositorioon ja niiden päivittäminen yhdellä atomisella Git-commitilla. Määriteltiin palautuminen tilanteista, joissa tallennus epäonnistuu tai työnkulku keskeytyy commitin jälkeen, samaan `run_id`- ja toimitustunnisteeseen perustuva idempotentti uudelleenyritys, yrityskohtaisten tapahtumien append-only-säilytys, ristiriitaisten tunnisteiden käsittely sekä myöhäisen toimituksen rajattu jälkikäsittely. RSS ja ajotietue säilyvät erillisinä tiedostoina ja tietokokonaisuuksina; toteutusta tai automaatioita ei muutettu.
 - **0.3.66 (23.11.2026):** hyväksyttiin yhteisen tarkistustyönkulun kiinteäksi tarkistusväliksi 15 minuuttia. Erotettiin se edelleen aihe- ja tehtävätyyppikohtaisista suoritusväleistä ja kirjattiin GitHub Actionsin ajastusviiveiden sekä yksittäisten käynnistymättä jäämisten mahdollisuus. Nykyisiä automaatioita tai niiden ajastuksia ei muutettu.
 - **0.3.64 (23.11.2026):** hyväksyttiin rekisterin ulkopuolisten lähteiden haun ja rekisteröinnin erilliset asetukset, niiden periytyminen ja ylikirjoitus, muuttumaton `instance_revision`-snapshot, ajon jälkeinen ehdotusten käsittely, automaattisen rekisteröinnin validointi ja duplikaattien esto sekä `unassessed`-luokitus ja lähteen alkuperä-/löytämistietojen säilyttäminen. Skeemoja, toteutusta tai tikettejä ei luotu.
 - **0.3.63 (23.11.2026):** hyväksyttiin yhteisen lähderekisterin ja sisältökanavien tarkempi rakenne, lähde- ja kanavatunnisteiden yksilöllisyys, lähde- ja kanavatason tekniset tiedot, tehtävätyypin oletus- ja pakolliset lähde–kanava-parit sekä aihekohtaiset `inherit`-, `extend`- ja `replace`-toimintatavat, niiden järjestys- ja yhdistämissäännöt ja validointiperiaatteet. Raportintuottajan lähderekisterin ulkopuolinen lähdehaku ja uusien lähteiden rekisteröinti jätettiin avoimeksi. Skeemoja tai toteutusta ei luotu tässä suunnittelumuutoksessa.
