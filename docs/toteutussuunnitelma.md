@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.79  
+**Versio:** 0.3.80  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.37](vaatimusmaarittely-uudistus.md)
@@ -863,13 +863,13 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 
 ## 7. Avoimet tekniset yksityiskohdat
 
-Seuraavat kymmenen kokonaisuutta täsmennetään ennen tikettien muodostamista:
+Seuraavat kymmenen kokonaisuutta täsmennetään ennen tikettien muodostamista. Luettelo kuvaa vain ratkaisemattomia teknisiä yksityiskohtia; hyväksytyt periaatteet ja tietomallin jo päätetyt osat on erotettu avoimesta työstä:
 
-1. **Skeemat ja validoinnin toteutus:** yksittäisten JSON Schema -tiedostojen tarkka sisältö, kenttäkohtaiset rajat ja ehdot sekä validointikoodin toteutustapa ja virheraportointi. Työ tehdään hyväksytyn skeema- ja validointimallin mukaisesti vaiheessa 2.
-2. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen tarkka tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
+1. **Skeemat ja validoinnin toteutus:** yksittäisten JSON Schema -tiedostojen tarkka sisältö, kenttäkohtaiset rajat ja ehdot sekä validointikoodin toteutustapa ja virheraportointi. Laaduntarkistuksen ajokohtaisen tulostietueen kentät ja tulosluokat on päätetty; avoinna ovat tehtävätyypin määrityksen tarkistusmäärittelyn rakenne, tunnisteiden muodostaminen ja validointi. Työ tehdään hyväksytyn skeema- ja validointimallin mukaisesti vaiheessa 2.
+2. **Rekisterin ulkopuolisten lähteiden ehdotukset:** lähdehaun ja rekisteröinnin erillisyys, sallitut toimintatilat, ajon muuttumaton lähderekisterisnapshot sekä ehdotusten käsittely vasta ajon päätyttyä on päätetty. Avoinna ovat ehdotuksen tarkka tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
 3. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien ja `main`-haaran suojauksen varmistaminen käyttöönotossa. Ensimmäisessä versiossa ei edellytetä teknisesti vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta.
 4. **Toimituspaketin tarkat vaatimukset:** tulostilakohtaisten tiedostovaatimusten ja kenttäsisältöjen tekninen toteutus hyväksytyn toimituspaketin ja ajotietueen skeemajaon mukaisesti. Eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3.
-5. **Toimitusmetatietojen ja ajotietueen tietomallit:** tuottajan `metadata.json`-tiedoston, vastaanottajan kanonisen ajotietueen (`run.json`) ja append-only-tapahtumahistorian (`events.jsonl`) tarkat kentät, tapahtumatyypit, viittaukset ja validointisäännöt täsmennetään ennen skeemojen viimeistelyä.
+5. **Toimitusmetatietojen ja ajotietueen tietomallit:** tuottajan `metadata.json`-tiedoston kuuden tietoryhmän jako ja laaduntarkistusten ajokohtainen tietuekentistö, tulosluokat, havaintojen vakavuusluokat sekä kirjaamis- ja vastuusäännöt on päätetty. Avoinna ovat muiden metatietoryhmien tarkat kentät ja rakenteet, vastaanottajan kanonisen ajotietueen (`run.json`) kentät, append-only-tapahtumahistorian (`events.jsonl`) tapahtumatyypit sekä kaikkien kolmen tietokokonaisuuden tarkat viittaukset ja validointisäännöt.
 6. **Yhteinen raportintekijän perusprompti:** promptin tarkka sisältö, testaus ja versionhallinta ohjelmistorepossa sekä sovittaminen raportintuottajan integraation käyttöön.
 7. **Lähdekohtaisten tilastojen tarkka malli:** avausyritysten onnistumisten ja epäonnistumisten tilastointi, virheluokkien luettelo, tarkastelujaksot sekä periaatteet, joilla toistuvasti epäonnistuva lähde nostetaan ylläpitäjän arvioitavaksi.
 8. **Vastaanottohaaran toimitusten säilytys:** toimituspakettien säilytysajat ja siivouksen ehdot sekä varmistukset siitä, ettei keskeneräisen tai palautettavan ajon tarvitsemaa aineistoa poisteta.
@@ -880,7 +880,7 @@ Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ol
 
 ### Versiohistoria
 
-- **0.3.79 (24.11.2026):** hyväksyttiin laaduntarkistusten ajokohtaisten tietueiden kentät, tulosluokat, havaintojen vakavuusluokat, kirjaamissäännöt, vaadittujen tarkistusten kattavuus ja tuottajan sekä vastaanottajan vastuunjako. Yleistä automaattista hyväksymisrajaa vakavuusluokille ei asetettu. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
+- **0.3.80 (24.11.2026):** yhdenmukaistettiin avoimien teknisten yksityiskohtien luettelo hyväksyttyjen päätösten kanssa. Täsmennettiin lähderekisterin ulkopuolisten lähteiden ehdotuksia koskevan avoimen työn rajaus sekä laaduntarkistusten määrittelyn ja ajokohtaisten tulosten jo päätetyt osat. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.\n- **0.3.79 (24.11.2026):** hyväksyttiin laaduntarkistusten ajokohtaisten tietueiden kentät, tulosluokat, havaintojen vakavuusluokat, kirjaamissäännöt, vaadittujen tarkistusten kattavuus ja tuottajan sekä vastaanottajan vastuunjako. Yleistä automaattista hyväksymisrajaa vakavuusluokille ei asetettu. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.3.78 (24.11.2026):** hyväksyttiin, että yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä ja niiden ajokohtaiset tulokset tallennetaan tuottajan toimitusmetatietoihin. Tarkistusten määrittely erotetaan toteutuneiden tulosten kirjaamisesta; tarkat kentät ja tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.3.77 (23.11.2026):** hyväksyttiin Havainnot ja laadunvarmistus -tietoryhmän kahden osan rakenne: raportoitavien havaintojen yhteenveto sekä raportintuottajan tekemien laaduntarkistusten tulokset. Täsmennettiin, että tehtävätyypin määritys määrittelee vaadittavat tarkistukset, tuottajan tulostila kuuluu kolmanteen ryhmään ja vastaanottajan käsittelytilat jäävät tuottajan metatietojen ulkopuolelle. Tarkat kentät ja tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
 - **0.3.76 (23.11.2026):** hyväksyttiin kanavakohtaisen tarkistusyrityksen vähimmäistiedoiksi ajankohta, tulos, tieto uuden tai tehtävän kannalta relevantin sisällön löytymisestä, saatavilla oleva tekninen tulos sekä virhe- ja huomiotiedot. Erotettiin teknisen tarkistuksen onnistuminen sisällöllisestä tuloksesta. Tarkka kenttärakenne ja sallitut tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja tai automaatioita ei muutettu.
