@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.85  
+**Versio:** 0.3.86  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.43](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.44](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -322,7 +322,13 @@ Raportintuottaja ei koskaan muuta ajossa käytettävää lähderekisteriä. Teht
 
 Rekisteröinti edellyttää lähteen perustietojen ja vähintään yhden sisältökanavan validointia sekä duplikaattitarkistusta. Tarkistus vertaa vähintään julkaisijaa ja lähde-/kanavaosoitteita sekä muita käytettävissä olevia tunnistetietoja; olemassa olevaan lähteeseen kuuluva uusi kanava liitetään olemassa olevaan lähteeseen eikä samaa lähdettä luoda uudelleen. Automaattisesti lisätyn lähteen luotettavuusluokitus on `unassessed`, kunnes se on erikseen arvioitu. Alkuperä ja löytämisajankohta säilytetään. `propose`-tilassa ylläpitäjän hyväksyntä vaaditaan ennen rekisteriin lisäämistä; `automatic` ei tarkoita toimituksellisen luotettavuuden automaattista hyväksymistä. Käytettyjen rekisterin ulkopuolisten lähteiden alkuperä ja tila on erotettava ajon tiedoissa rekisteriin kuuluvista lähteistä.
 
+Lähde-ehdotus on lähdekohtainen tietue, jossa ovat pysyvä `proposal_id`, lähteen perustiedot, vähintään yksi sisältökanava, mahdolliset kieli- ja aluetiedot, alustava luotettavuusluokitus, löytämisajankohta ja -alkuperä, perustelu sekä ehdotuksen tuottaneen `run_id`-ajon viite. Ehdotuksen tiedot noudattavat lähderekisterin vastaavia tietomalliperiaatteita, eikä puuttuvia tietoja arvata. Ehdotukset tallennetaan erillisinä tiedostoina polkuun `data/source-proposals/{proposal_id}.json`. Ehdotuksen tilat ovat `pending`, `approved`, `rejected` ja `merged`; vastaanottaja validoi ehdotuksen ja duplikaatit ennen ylläpitäjän käsittelyä. Ylläpitäjän ratkaisu, ajankohta ja perustelu säilytetään. Ensimmäisessä versiossa ehdotukset käsitellään GitHubissa tiedostoina, eikä erillistä käyttöliittymää toteuteta. `propose` on suositeltu oletus; `automatic` on mahdollinen vain asetuksella ja suorittaa silti kaikki validointi- ja duplikaattitarkistukset. Hyväksytty rekisterimuutos vaikuttaa vasta myöhempiin tehtäväpyyntöihin.
+
 Lähdekohtaiset ajohavainnot sisältävät lähteen tunnisteen, tarkistuksen tilan (`attempted` tai `not_attempted`) ja yksittäiset avausyritykset. Yritys sisältää tunnisteen, ajankohdan, pyydetyn URL-osoitteen, avauksen tuloksen (`opened` tai `failed`), epäonnistumisen syyluokan silloin kun avaus epäonnistui sekä sisällön luettavuuden (`readable`, `partial`, `unreadable` tai `not_assessed`). `not_attempted` ei ole epäonnistuminen eikä kuulu avausyritysten onnistumisprosentin nimittäjään. Avaamisen onnistuminen erotetaan sisällön luettavuudesta ja hyödyllisyydestä. Valvomo laskee tilastot alkuperäisistä havainnoista eikä luota tuottajan valmiiksi laskemiin prosentteihin. Sekä yrityskohtainen että ajokohtainen onnistumisaste esitetään otoskoon ja tarkastelujakson yhteydessä.
+
+Tilastoinnin yksikkö on sisältökanavan avausyritys. Yleiset epäonnistumisen syyluokat ovat `timeout`, `connection_error`, `dns_error`, `tls_error`, `http_client_error`, `http_server_error`, `rate_limited`, `access_restricted`, `content_error` ja `unknown`. Tuntematonta syytä ei arvata, ja tarkempi tekninen tulos säilytetään mahdollisuuksien mukaan. Valvomon oletustarkastelujaksot ovat 30 päivää, 90 päivää ja koko tallennettu historia; tilastoja voidaan suodattaa aiheen, tehtävätyypin, lähteen ja kanavan mukaan. Näytettäviin tunnuslukuihin kuuluvat yritysten, onnistumisten ja epäonnistumisten määrät, onnistumisaste osoittajineen ja nimittäjineen, viimeisimmät onnistumiset ja epäonnistumiset, virheluokkien jakauma ja kehitys tarkastelujaksolla. Prosenttia ei näytetä ilman luotettavaa nimittäjää, ja otoskoko esitetään aina.
+
+Toistuvan epäonnistumisen alustava nostokriteeri on vähintään viisi avausyritystä vähintään kolmessa eri ajossa ja alle 50 prosentin onnistumisaste viimeisten 30 päivän aikana. Viimeisimmät peräkkäiset epäonnistumiset voidaan näyttää erillisenä huomiona. Kriteerit ovat ylläpitäjän arviointipyynnön muodostamista varten, eivät automaattisia käyttörajoituksia tai rekisterimuutoksia. Lähdettä ei poisteta tai poisteta käytöstä tilastojen perusteella.
 
 Lähdevalinnan tasot ovat tehtävätyypin `default_sources` ja `required_sources` sekä aiheen ja tehtävätyypin yhdistelmän `source_selection`. Pakolliset lähteet yksilöidään täsmällisinä lähde–kanava-pareina, ja niiden on löydyttävä oletuslähteistä. Aihekohtainen valinta käyttää `inherit`-, `extend`- tai `replace`-toimintatapaa. `inherit` säilyttää oletukset sellaisinaan; `extend` (oletus) säilyttää oletukset ja sallii lisäykset sekä käyttöasetusten tarkentamisen; `replace` korvaa valinnaiset oletukset aihekohtaisella listalla, mutta pakolliset lähde–kanava-parit säilyvät aina. Puuttuvat pakolliset parit lisätään `replace`-tilassa alkuperäisine oletusasetuksineen. Listajärjestys määräytyy toimintatavan mukaan ja on erillinen tärkeysarvosta. Sama lähde–kanava-pari esiintyy lopullisessa listassa vain kerran. Lähteen perustiedot, tehtäväkohtaiset käyttöasetukset ja ajokohtaiset havainnot pidetään erillään.
 
@@ -961,8 +967,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 2. Lähderekisteri ja lähdetilastot
 
-7. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
-8. **Lähdekohtaiset tilastot:** avausyritysten onnistumisten ja epäonnistumisten tilastointimalli, virheluokkien tarkka luettelo, tarkastelujaksot sekä toistuvasti epäonnistuvien lähteiden nostaminen ylläpitäjän arvioitavaksi.
+7. **Rekisterin ulkopuolisten lähteiden ehdotukset:** perusrakenne, tallennuspolku, elinkaaren tilat, validointi ja ensimmäisen version GitHub-pohjainen käsittely on päätetty. Täsmälliset skeemakentät ja mahdollinen myöhempi käyttöliittymä ovat avoinna.
+8. **Lähdekohtaiset tilastot:** avausyritysten tietosisältö, virheluokat, tarkastelujaksot, Valvomon tunnusluvut ja toistuvien epäonnistumisten alustavat nostokriteerit on päätetty. Täsmälliset skeemakentät ja näkymän toteutus ovat avoinna.
 
 ### 3. Integraatiot ja ajonhallinta
 
@@ -986,6 +992,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria### Versiohistoria
+
+- **0.3.86 (24.11.2026):** hyväksyttiin rekisterin ulkopuolisten lähteiden ehdotusten tietoryhmät, erillinen `data/source-proposals/`-tallennus, ehdotusten elinkaaren tilat ja ensimmäisen version GitHub-pohjainen käsittely. Täsmennettiin kanavakohtaisten avausyritysten tilastointi, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot, Valvomon tunnusluvut sekä toistuvien epäonnistumisten alustava nostokriteeri. Lähteiden automaattista poistamista tai käytöstä poistamista tilastojen perusteella ei sallita. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.3.85 (24.11.2026):** kirjattiin hyväksytty tietomalli- ja skeematyön ehdotuspaketti: skeemahakemiston vastuualuejako, tietomallikohtaiset skeemat ja validointiperiaatteet, tehtävätyyppikohtaiset raportoitavien havaintojen kategoriat, tiedostoroolien `parameters`-objektin säännöt, `producer`-ryhmän perusrakenne sekä vastaanottajan `run.json`- ja `events.jsonl`-mallien tietoryhmät, tapahtumien yhteiset kentät, tunnistevastuut ja append-only-kirjaamissäännöt. Avoimet kohdat rajattiin jäljellä oleviin kenttä- ja skeemakohtaisiin yksityiskohtiin. Skeemoja, toteutusta, testejä tai automaatioita ei luotu tai muutettu.
 
