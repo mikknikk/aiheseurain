@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.86  
+**Versio:** 0.3.87  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.44](vaatimusmaarittely-uudistus.md)
@@ -479,13 +479,17 @@ Ensimmäisessä versiossa hyödynnetään ChatGPT-ympäristössä jo käytössä
 - Raportintuottajan toimintamalli ohjaa toimitukset `raportit-inbox`-haaraan; se ei puske suoraan `main`-haaraan eikä julkaistavien RSS-syötteiden hakemistoon.
 - Nykyisen GitHub App -yhteyden tekninen kirjoitusoikeus voi olla tätä toimintamallia laajempi. Ensimmäisessä versiossa ei väitetä, että käyttöoikeus olisi teknisesti rajattu vain vastaanottohaaraan.
 - `main`-haaran suojaus säilytetään, ja kaikki vastaanottohaaran toimitukset validoidaan ennen käsittelyä tai julkaisua.
-- Tunnistetietoja ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin; tunnistautuminen tapahtuu olemassa olevan integraation kautta.
-- Erillisen GitHub Appin ja tarkemman käyttöoikeuksien eriyttämisen tarve arvioidaan uudelleen, jos raportintuottajia tai integraatioita tulee lisää tai käyttöoikeusrajausta tarvitaan muuten.
+- GitHub App -integraatio tunnistaa teknisen sovellusyhteyden ja valtuuttaa toimituksen. Ensimmäisessä versiossa ei tunnisteta erikseen toimituksen käynnistänyttä käyttäjää eikä toteuteta käyttäjäkohtaista tunnistautumista; toimitusketju luotetaan rajatuksi kokonaisuudeksi, koska Appin käyttö on annettu vain luotetuille tahoille.
+- Appin käyttöoikeuksien tosiasiallinen laajuus tarkistetaan. Toimintamallissa toimitukset ohjataan vastaanottohaaraan, mutta dokumentaatiossa ei väitetä Appin teknisten kirjoitusoikeuksien rajoittuvan vain tähän haaraan, ellei rajausta ole erikseen toteutettu ja varmennettu.
+- Tunnistetietoja tai Appin käyttöön tarvittavia salaisuuksia ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin. Erillistä käyttäjätunnistautumista, HTTPS-vastaanottopalvelua tai erillistä Appia ei rakenneta ensimmäisessä versiossa.
+- Erillisen GitHub Appin, tarkempien käyttöoikeusrajojen ja käyttäjä-/tuottajakohtaisen tunnistamisen tarve arvioidaan uudelleen, jos raportintuottajia tai integraatioita tulee lisää tai uhkamalli muuttuu.
 - Toimitus sijoitetaan omaan hakemistoonsa ajo- tai toimitustunnisteen perusteella.
 - GitHub Actions käynnistää toimituksen käsittelyn vastaanottohaaraan tehdyn pushin perusteella.
 - Actions tarkistaa paketin ennen kuin mitään julkaistaan tai tallennetaan tuotannon tietoihin.
 - Virheellinen toimitus ei saa muuttaa julkaistuja RSS-syötteitä.
 - Gitin historia antaa toimituksille jäljitettävyyden.
+- Git pushin onnistuminen vahvistaa vain toimituksen siirtymisen vastaanottohaaraan; se ei merkitse toimituksen hyväksymistä tai julkaisua. Vastaanoton ja validoinnin tulokset kirjataan GitHub Actions -työnkulun sekä vastaanottajan ajotietueen ja tapahtumahistorian avulla. Erillistä HTTP-kuittausrajapintaa ei tarvita ensimmäisessä versiossa.
+- Vastaanottaja tarkistaa toimituksen kuulumisen olemassa olevaan ajoon, tunnisteiden johdonmukaisuuden, toimituspaketin rakenteen ja sisällön sekä eheyden. Vastaanottaja muodostaa `attempt_id`-tunnisteen, laskee SHA-256-tiivisteen ja säilyttää alkuperäisen toimituspaketin. Aiemmin hyväksytyt kaksois- ja ristiriitasäännöt koskevat myös GitHubin kautta tehtyjä uudelleenlähetyksiä.
 
 Esimerkkirakenne:
 
@@ -945,6 +949,7 @@ Tässä osiossa pidetään kirjaa asioista, jotka on tietoisesti rajattu ensimm�
 | RSS-historian lukemisen optimointi, kuten indeksointi, hakupalvelu tai tiivistelmä-/välimuistiratkaisu | Ensimmäisessä versiossa raportintuottaja lukee koko kyseisen aiheen ja tehtävätyypin RSS-historian suoraan GitHubista. Erillistä hakukerrosta ei tarvita ennen kuin historian koko tai lukemisen kustannus aiheuttaa todellisen ongelman. | Kun RSS-historian koko, käsittelyaika tai raportintuottajan käytettävissä oleva konteksti tekee koko historian lukemisesta epäkäytännöllistä. Alkuperäinen RSS-historia säilyy tällöinkin vertailun lähteenä. |
 | Useat samanaikaiset raportintuottajat, tehtävien varaukset ja rinnakkaisuuden hallinta | Ensimmäisessä versiossa on yksi raportintuottaja ja tehtävät käsitellään sarjallisesti. | Kun käyttöön tulee toinen raportintuottaja tai rinnakkaisille ajoille syntyy todellinen tarve. |
 | Erillinen GitHub App tai raportintuottajan teknisesti rajatut kirjoitusoikeudet | Ensimmäinen versio käyttää nykyistä GitHub App -yhteyttä; erillistä käyttöoikeusjärjestelyä ei rakenneta ennakolta. | Kun raportintuottajia tai muita integraatioita tulee lisää tai käyttöoikeuksien eriyttäminen muuttuu tarpeelliseksi. |
+| Käyttäjäkohtainen tunnistaminen ja erillinen HTTPS-vastaanottopalvelu | Ensimmäisessä versiossa luotetaan GitHub App -pohjaiseen toimitusketjuun; erillistä käyttäjätunnistautumista tai vastaanottopalvelua ei rakenneta. | Kun tuottajia tulee useita, toimituskanava laajenee GitHubin ulkopuolelle tai uhkamalli edellyttää lähettäjäkohtaista tunnistamista. |
 | Älykkäämpi epäonnistuneiden tehtävien palautuslogiikka | Ensimmäisessä versiossa käytettävien automaattisten käsittely-yritysten määrät, laskentatavat ja määräajat ovat tehtävätyypin määrityksissä ja tarvittaessa profiileissa määritettäviä konfiguroitavia arvoja; niitä ei kovakoodata. | Kun käytännön ajohistoria osoittaa, että yksinkertainen palautusmalli ei riitä. |
 | Ulkoiset ilmoitukset | Ne eivät ole välttämättömiä ensimmäisen version seuranta-, vastaanotto- ja julkaisuketjulle. | Kun ilmoituksille määritellään konkreettinen käyttäjätarve ja kanava. |
 | Toimitusten kryptografiset allekirjoitukset ja erilliset tarkistussummat | Ensimmäiseen versioon riittävät toimituspaketin tiedostojen, rakenteen, tunnisteiden ja aktiiviseen tehtävään kuulumisen tarkistukset. | Jos uhkamalli tai toimituskanavan luonne osoittaa vahvemman eheyden todentamisen tarpeelliseksi. |
@@ -972,7 +977,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottorajapinta:** tuottajan ja vastaanottajan välinen tekninen siirtotapa, tuottajan tunnistaminen ja mahdollinen tunnistautuminen.
+9. **Vastaanottorajapinta:** GitHub App -pohjaisen Git push -toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistys, Appin tosiasiallisten käyttöoikeuksien tarkistaminen ja vastaanoton kirjaamisen yksityiskohdat.
 10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main)-haaran suojauksen ja käyttöönoton yhteensovittaminen.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
@@ -993,6 +998,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### Versiohistoria### Versiohistoria
 
+- **0.3.87 (24.11.2026):** hyväksyttiin ensimmäisen version toimituskanavaksi nykyisen GitHub App -yhteyden kautta tehtävä Git push erilliseen vastaanottohaaraan. Täsmennettiin, ettei käyttäjäkohtaista tunnistamista tai erillistä HTTPS-vastaanottopalvelua toteuteta ensimmäisessä versiossa, että Appin tosiasialliset oikeudet tarkistetaan ja että pushin onnistuminen ei tarkoita toimituksen hyväksymistä tai julkaisua. Vastaanoton ja validoinnin tulokset kirjataan GitHub Actionsin ja vastaanottajan ajotietojen kautta. Laajemmat tunnistus- ja käyttöoikeusmallit jätettiin myöhempiin versioihin. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 - **0.3.86 (24.11.2026):** hyväksyttiin rekisterin ulkopuolisten lähteiden ehdotusten tietoryhmät, erillinen `data/source-proposals/`-tallennus, ehdotusten elinkaaren tilat ja ensimmäisen version GitHub-pohjainen käsittely. Täsmennettiin kanavakohtaisten avausyritysten tilastointi, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot, Valvomon tunnusluvut sekä toistuvien epäonnistumisten alustava nostokriteeri. Lähteiden automaattista poistamista tai käytöstä poistamista tilastojen perusteella ei sallita. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.3.85 (24.11.2026):** kirjattiin hyväksytty tietomalli- ja skeematyön ehdotuspaketti: skeemahakemiston vastuualuejako, tietomallikohtaiset skeemat ja validointiperiaatteet, tehtävätyyppikohtaiset raportoitavien havaintojen kategoriat, tiedostoroolien `parameters`-objektin säännöt, `producer`-ryhmän perusrakenne sekä vastaanottajan `run.json`- ja `events.jsonl`-mallien tietoryhmät, tapahtumien yhteiset kentät, tunnistevastuut ja append-only-kirjaamissäännöt. Avoimet kohdat rajattiin jäljellä oleviin kenttä- ja skeemakohtaisiin yksityiskohtiin. Skeemoja, toteutusta, testejä tai automaatioita ei luotu tai muutettu.
