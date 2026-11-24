@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.95  
+**Versio:** 0.3.96  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.52](vaatimusmaarittely-uudistus.md)
@@ -492,7 +492,7 @@ Codex Connectorin GitHub-oikeus ei rajaudu automaattisesti yksittäiseen haaraan
 - Vastaanottaja tarkistaa toimituksen kuulumisen olemassa olevaan ajoon, tunnisteiden johdonmukaisuuden, toimituspaketin rakenteen ja sisällön sekä eheyden. Vastaanottaja muodostaa `attempt_id`-tunnisteen, laskee SHA-256-tiivisteen ja säilyttää alkuperäisen toimituspaketin. Aiemmin hyväksytyt kaksois- ja ristiriitasäännöt koskevat myös GitHubin kautta tehtyjä uudelleenlähetyksiä.
 - Codex Connectorin käyttöoikeuksia tai tunnistetietoja ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin.
 
-##### Vastaanottoprosessin hyväksytyt toimintaperiaatteet
+#### Vastaanottoprosessin hyväksytyt toimintaperiaatteet
 
 Vastaanottoprosessin toiminnalliset periaatteet on hyväksytty. Vastaanotto käsittelee vain `raportit-inbox`-haaran toimituksia polussa `deliveries/{run_id}/{delivery_id}/`. Jokainen toimitus käsitellään itsenäisesti, alkuperäistä pakettia muuttamatta. Vastaanotto, hyväksyntä ja julkaisu ovat erillisiä tapahtumia, eikä vastaanottovirhe estä muiden toimitusten käsittelyä.
 
@@ -911,7 +911,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### Versiohistoria
 
-- **0.3.95 (24.11.2026):** kirjattiin vaatimusmäärittelyn kanssa yhdenmukaisesti vastaanottoprosessin 12 hyväksyttyä kokonaisuutta. RSS-itemin tarkka sisältösopimus jätettiin avoimeksi; vastaanoton ja julkaisun työnkulkujen tekninen toteutus, uudelleenyritysrajat ja käyttöönoton varmennukset säilyvät suunnittelutehtävinä. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
+- **0.3.96 (24.11.2026):** korjattiin vastaanottoprosessin uuden alaotsikon hierarkiataso dokumentaation laaduntarkistuksen havainnon perusteella. **0.3.95 (24.11.2026):** kirjattiin vaatimusmäärittelyn kanssa yhdenmukaisesti vastaanottoprosessin 12 hyväksyttyä kokonaisuutta. RSS-itemin tarkka sisältösopimus jätettiin avoimeksi; vastaanoton ja julkaisun työnkulkujen tekninen toteutus, uudelleenyritysrajat ja käyttöönoton varmennukset säilyvät suunnittelutehtävinä. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.3.94 (24.11.2026):** synkronoitiin toteutussuunnitelman perustaviittaus vaatimusmäärittelyn uusimpaan versioon 0.12.51. Avoimien suunnittelukysymysten luettelo vastaa nyt täsmälleen vaatimusmäärittelyä.
 
