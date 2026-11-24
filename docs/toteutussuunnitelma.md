@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.91  
+**Versio:** 0.3.92  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.48](vaatimusmaarittely-uudistus.md)
@@ -472,11 +472,13 @@ Perusprompti sisältää myös vaatimuksen raportoida lähdekohtaiset avausyrity
 
 ### 2.3 Toimitustapa: ChatGPT:n ajastettu tehtävä ja Codex Connector
 
+Hakemistojen nimet kirjoitetaan dokumentoiduissa repositorio- ja polkuesimerkeissä englanniksi. Sama kieli koskee sekä ohjelmistorepositoriota että instanssirepositoriota; suomenkieliset selitteet ja tiedostojen sisältö eivät vaikuta hakemistojen nimeämiseen. Esimerkiksi `docs/`, `scripts/`, `schemas/`, `data/`, `runs/`, `deliveries/`, `prompts/` ja `archive/` noudattavat tätä käytäntöä. Uusia hakemistoja ei nimetä suomeksi samaan rakenteeseen.
+
 Ensimmäisen vaiheen instanssirepositorio on julkinen. RSS-syötteet julkaistaan GitHub Pagesin kautta. Koko instanssirepositorio, sen haarat ja Git-historia ovat julkisia, joten kaikki sinne toimitettava aineisto käsitellään julkisena. Repositorioon tai toimituksiin ei saa sisällyttää salasanoja, API-avaimia, käyttöoikeustunnisteita, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
 
 Ensimmäisen version ainoa raportintuottaja on ChatGPT:n ajastettu tehtävä. Se toimittaa kokonaisen toimituspaketin Git pushina GitHubiin Codex Connector -yhteyden kautta. Käytännön testissä ajastettu tehtävä loi testitiedoston instanssirepositorion erilliseen haaraan; testissä `main`-haara ei muuttunut. Testi osoittaa, että toimitus toimii tässä käyttöympäristössä. Tuotantokäyttöönotossa on silti varmennettava yhteyden oikeudet, vastaanoton työnkulku ja julkaisuhaaran suojaus.
 
-Toimitukset tehdään erilliseen vastaanottohaaraan `raportit-inbox`. Toimituspaketin polku on `toimitukset/{run_id}/{delivery_id}/`, ja paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot, kuten `item.xml`. Julkaisu tapahtuu erikseen `main`-haaraan. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
+Toimitukset tehdään erilliseen vastaanottohaaraan `raportit-inbox`. Toimituspaketin polku on `deliveries/{run_id}/{delivery_id}/`, ja paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot, kuten `item.xml`. Julkaisu tapahtuu erikseen `main`-haaraan. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
 
 Codex Connector on ChatGPT:n ja GitHubin välinen yhteys, ei instanssirepoon asennettava GitHub App. Ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia. Aiempi vastaanotto-App on poistettu; sen luomista uudelleen voidaan harkita myöhemmin, jos käyttöoikeuksien eriyttämiseen syntyy tarve.
 
@@ -496,7 +498,7 @@ Esimerkkirakenne vastaanottohaarassa:
 
 ```text
 raportit-inbox/
-  toimitukset/
+  deliveries/
     <run_id>/
       <delivery_id>/
         metadata.json
@@ -886,7 +888,9 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### Versiohistoria
 
-- **0.3.91 (24.11.2026):** hyväksyttiin ensimmäisen vaiheen raportintuottajaksi ChatGPT:n ajastettu tehtävä ja toimituskanavaksi Codex Connector. Käytännön testi vahvisti toimituksen erilliseen vastaanottohaaraan muuttamatta `main`-haaraa. Määriteltiin vastaanottohaaraksi `raportit-inbox`, toimituspaketin hakemistorakenteeksi `toimitukset/{run_id}/{delivery_id}/` sekä vastaanoton ja julkaisun erottelu. Täsmennettiin Codex Connectorin repositoriotasoisen käyttöoikeuden vuoksi `main`-haaran erillinen suojaustarve. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa; aiempi App on poistettu. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
+- **0.3.92 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+
+- **0.3.92 (24.11.2026):** hyväksyttiin ensimmäisen vaiheen raportintuottajaksi ChatGPT:n ajastettu tehtävä ja toimituskanavaksi Codex Connector. Käytännön testi vahvisti toimituksen erilliseen vastaanottohaaraan muuttamatta `main`-haaraa. Määriteltiin vastaanottohaaraksi `raportit-inbox`, toimituspaketin hakemistorakenteeksi `deliveries/{run_id}/{delivery_id}/` sekä vastaanoton ja julkaisun erottelu. Täsmennettiin Codex Connectorin repositoriotasoisen käyttöoikeuden vuoksi `main`-haaran erillinen suojaustarve. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa; aiempi App on poistettu. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.3.90 (24.11.2026):** hyväksyttiin julkinen instanssirepositorio ja GitHub Pages -julkaisu, erilliset vastaanotto- ja julkaisuhaarat sekä instanssirepoon rajattu GitHub App, jolla on vain Metadata read- ja Contents read/write -oikeudet. Täsmennettiin, että koko repositorio ja sen historia ovat julkisia sekä että Contents-kirjoitusoikeus on repositoriotasoinen ja julkaisuhaaran suojaus on toteutettava erikseen. Toteutusta, repositoriota, Appia tai automaatioita ei luotu tai muutettu.
 
