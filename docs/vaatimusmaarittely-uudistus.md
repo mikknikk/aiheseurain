@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.49  
+**Versio:** 0.12.50  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -781,7 +781,7 @@ Tässä vaiheessa ei:
 - aktivoida seurantamoduuleja tai käynnistetä tuotantojulkaisuja;
 - toteuteta uutta teknistä arkkitehtuuria ennen vaatimusmäärittelyn ja toteutussuunnitelman hyväksyntää;
 - luoda tarpeettomia rinnakkaisia agentteja, tietokantoja tai julkaisupolkuja;
-- rakentaa ensimmäiseen versioon erillistä HTTPS-vastaanottopalvelua tai käyttäjäkohtaista tunnistautumista; GitHub App -pohjainen toimituskanava on ensimmäisen version hyväksytty lähtökohta;
+- rakentaa ensimmäiseen versioon erillistä HTTPS-vastaanottopalvelua tai käyttäjäkohtaista tunnistautumista; ChatGPT:n ajastettu tehtävä toimittaa raportit Codex Connectorin kautta; erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa;
 - kopioida koko RSS-syötettä raporttituottajan käsiteltäväksi ja palautettavaksi;
 - muokata tai poistaa vanhoja RSS-itemeitä automaattisesti;
 - tehdä Valvomosta RSS-lukijan tai GitHub Projectsin korvaajaa.
@@ -844,8 +844,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottorajapinta:** ensimmäisen version GitHub App -pohjaisen toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistyminen, Appin tosiasiallisten käyttöoikeuksien tarkistaminen sekä vastaanoton kirjaamisen yksityiskohdat.
-10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main`-haaran suojauksen ja käyttöönoton yhteensovittaminen.
+9. **Vastaanottorajapinta:** Codex Connectorin kautta toimitetun paketin vastaanottohaaran käsittely, toimitushakemiston rakenteen validointi, työnkulun käynnistyminen sekä vastaanoton kirjaamisen yksityiskohdat.
+10. **Codex Connectorin käyttöoikeudet ja julkaisusuojaus:** käytössä olevan yhteyden repositoriotasoisten kirjoitusoikeuksien varmentaminen sekä `main`-haaran suojauksen ja käyttöönoton yhteensovittaminen. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
 13. **Toimituspakettien säilytys:** vastaanottohaaran toimituspakettien säilytysajat, siivouksen ehdot sekä keskeneräisten ja palautettavien ajojen aineiston säilyttäminen.
@@ -875,7 +875,9 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
-- **0.12.49 – 24.11.2026:** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien poluksi määriteltiin `deliveries/{run_id}/{delivery_id}/`; samaa nimeämiskäytäntöä sovelletaan ohjelmisto- ja instanssirepositorion hakemistoihin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+- **0.12.50 – 24.11.2026:** synkronoitiin avoimet vastaanottoa ja käyttöoikeuksia koskevat suunnittelukysymykset Codex Connector -toimitusmalliin. Poistettiin vanhentunut GitHub App -pohjaisen ensimmäisen version toimituskanavan kuvaus myös toteutuksen ulkopuolelle rajatuista asioista.
+
+- **0.12.50 – 24.11.2026:** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien poluksi määriteltiin `deliveries/{run_id}/{delivery_id}/`; samaa nimeämiskäytäntöä sovelletaan ohjelmisto- ja instanssirepositorion hakemistoihin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
 
 - **0.12.48 – 24.11.2026:** hyväksyttiin ensimmäisen version toimituskanavaksi ChatGPT:n ajastettu tehtävä ja Codex Connector. Käytännön testi vahvisti toimituksen erilliseen vastaanottohaaraan muuttamatta `main`-haaraa. Määriteltiin vastaanottohaaraksi `raportit-inbox` ja toimituspaketin polku; vastaanotto ja julkaisu erotettiin. Täsmennettiin, että Codex Connectorin oikeudet eivät rajaudu haaraan ja `main` on suojattava erikseen. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa; käyttäjä on poistanut aiemman Appin. Toteutusta tai automaatioita ei muutettu.
 
