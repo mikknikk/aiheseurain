@@ -588,9 +588,11 @@ Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Julk
 ## 7. RSS-julkaiseminen
 
 - Jokainen aihe julkaisee omaan RSS-syötteeseensä; aiheita ei sekoiteta samaan syötteeseen.
+- RSS-itemin toimitustiedosto sisältää vain yhden `<item>`-elementin; tuottaja ei muodosta eikä palauta kokonaista RSS-syötettä.
 - RSS-item sisältää koko raportin.
-- RSS-itemissä ei käytetä erillistä `<link>`-elementtiä. Lähdelinkit esitetään raportin lopun lähdeluettelossa.
-- Itemillä on yksilöllinen GUID.
+- Itemissä ei käytetä `<link>`-elementtiä eikä tätä sääntöä voi muuttaa aihe- tai tehtäväkohtaisella asetuksella.
+- Lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa.
+- Itemillä on yksilöllinen `<guid>`, joka toimii tunnisteena eikä raporttisivun linkkinä.
 - Raportti on suomenkielinen ja sisältää aina seurannan aikavälin.
 - Lähteiden luotettavuus ja olennaiset epävarmuudet ilmaistaan aihekohtaisen raporttipohjan mukaisesti.
 - Tuottaja toimittaa enintään yhden uuden itemin yhtä raportoitavaa ajoa kohti.
@@ -871,7 +873,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottoprosessin viimeistely ja käyttöönotto:** hyväksytyt toimituksen tunnistamisen, pakettirakenteen, metatieto-, sisältö- ja eheysvalidoinnin, kaksoistoimitusten, käsittelytilojen, kirjanpidon, työnkulkuvastuiden ja turvallisuuden periaatteet on kirjattu. Avoinna ovat erityisesti RSS-itemin tarkka sisältösopimus sekä vastaanoton ja julkaisun työnkulkujen tekninen toteutus ja käyttöönoton varmennukset.
+9. **Vastaanottoprosessin viimeistely ja käyttöönotto:** hyväksytyt toimituksen tunnistamisen, pakettirakenteen, metatieto-, sisältö- ja eheysvalidoinnin, kaksoistoimitusten, käsittelytilojen, kirjanpidon, työnkulkuvastuiden ja turvallisuuden periaatteet on kirjattu. RSS-itemin toimitusmuoto ja linkityksen periaatteet on päätetty; avoinna ovat muiden elementtien pakollisuus, GUIDin tarkka muodostus ja raportin HTML-rakenne sekä vastaanotto- ja julkaisutyönkulkujen tekninen toteutus ja käyttöönoton varmennukset.
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto:** julkisen instanssirepositorion Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä `main`-haaran suojauksen tekninen toteutus ja varmennus Codex Connectorin repositoriotasoisen käyttöoikeuden näkökulmasta. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
