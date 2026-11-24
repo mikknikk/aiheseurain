@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.98  
+**Versio:** 0.3.99  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.54](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.55](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -500,7 +500,7 @@ Vastaanottaja varmistaa, että toimituksen `run_id` ja `delivery_id` vastaavat p
 
 Paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot. `item.xml` vaaditaan vain tehtävätyypin ja tuottajan tulostilan niin edellyttäessä. Tiedostoroolit ja tulostilakohtaiset vaatimukset tulevat tehtävätyypin määrityksestä. Odottamattomat tiedostot hylätään. Polut ovat paketin sisäisiä: absoluuttiset polut, `..`-siirtymät, symboliset linkit ja paketin ulkopuolelle osoittavat viittaukset eivät ole sallittuja. Ensimmäiseen versioon ei rakenneta yleistä liite- tai kuvakäsittelyä.
 
-Metatiedot validoidaan skeemaa vasten. Tarkistukset kattavat pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion ja tunnisteiden vastaavuuden. Tuntematonta skeemaversiota ei tulkita arvaamalla. Jo hyväksyttyä kuuden tietoryhmän toimitusmetatietomallia ei muuteta tällä päätöksellä. Sisältötiedostot validoidaan erillään metatiedoista niiden luettavuuden, koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakollisten elementtien ja keskinäisten viittausten osalta. RSS-itemin toimitustiedosto sisältää täsmälleen yhden `<item>`-elementin eikä kokonaista RSS-syötettä. Itemissä ei käytetä `<link>`-elementtiä; lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa. `<guid>` yksilöi itemin eikä toimi linkkinä raporttisivulle. Muiden elementtien pakollisuus, GUIDin tarkka muodostus ja raporttisisällön tarkempi HTML-rakenne täsmennetään erikseen.
+Metatiedot validoidaan skeemaa vasten. Tarkistukset kattavat pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion ja tunnisteiden vastaavuuden. Tuntematonta skeemaversiota ei tulkita arvaamalla. Jo hyväksyttyä kuuden tietoryhmän toimitusmetatietomallia ei muuteta tällä päätöksellä. Sisältötiedostot validoidaan erillään metatiedoista niiden luettavuuden, koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakollisten elementtien ja keskinäisten viittausten osalta. RSS-itemin toimitustiedosto sisältää täsmälleen yhden `<item>`-elementin eikä kokonaista RSS-syötettä. Itemissä ei käytetä `<link>`-elementtiä; lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa. `<title>`, `<guid>` ja `<pubDate>` ovat pakollisia. `<guid>` yksilöi itemin eikä toimi linkkinä raporttisivulle. Raportin HTML-sisällöllä on yhteinen perusrakenne, mutta varsinainen sisältö ja sen jäsentely voivat vaihdella aiheen ja tehtävätyypin mukaan. Vielä avoinna ovat koko raportin sisältökenttä (`description` tai `content:encoded`), `pubDate`-aikaleiman aikavyöhykekäytäntö, GUIDin tarkka muodostus sekä HTML-rakenteen yksityiskohtaiset vaatimukset.
 
 Vastaanottaja laskee jokaisen toimitetun sisältötiedoston koon ja SHA-256-tiivisteen ja vertaa niitä metatietoihin. Puuttuva tiedosto, väärä koko tai tiiviste sekä määriteltyjen koko- tai määrärajojen ylitys estävät hyväksymisen. Tiiviste todentaa eheyden, ei lähettäjän henkilöllisyyttä. Vastaanottaja ei suorita toimituspaketin koodia.
 
