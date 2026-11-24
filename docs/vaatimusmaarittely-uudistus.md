@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.57  
+**Versio:** 0.12.58  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -730,7 +730,7 @@ Ajon, tuottajan toimituksen ja vastaanottajan yksittäisen käsittely-yrityksen 
 - **`run_id`** yksilöi tehtäväpyynnön ja loogisen ajon. Vastaanottaja luo sen tehtäväpyyntöä muodostettaessa. Tunniste säilyy kaikissa saman ajon toimitus- ja käsittely-yrityksissä. Yhdellä `run_id`-tunnisteella on yksi kanoninen ajotietue ja enintään yksi hyväksytty varsinaisen raportin toimitus.
 - **`delivery_id`** yksilöi raportintuottajan muodostaman toimituspaketin. Raportintuottaja luo tunnisteen ensimmäisen toimituksen yhteydessä. Saman toimituksen uudelleenlähetyksissä tunniste säilyy; uusi tunniste luodaan vain aidosti uudelle toimitukselle. Vastaanottaja käsittelee toimitusta `run_id`- ja `delivery_id`-tunnisteiden yhdistelmän perusteella.
 - **`attempt_id`** yksilöi vastaanottajan käsittely-yrityksen. Vastaanottaja luo uuden UUID-tunnisteen jokaiselle uudelle käsittely- tai uudelleenyritysyritykselle. Tunniste yhdistetään kyseisen yrityksen `run_id`- ja `delivery_id`-tunnisteisiin. Raportintuottaja ei luo eikä määrää `attempt_id`-tunnistetta.
-- **RSS `guid`** yksilöi julkaistun raportti-itemin. Alkuperäisen raportin GUID muodostetaan deterministisesti `run_id`-tunnisteesta, esimerkiksi muodossa `urn:aiheseurain:run:{run_id}`. Saman ajon uudelleenyritykset käyttävät samaa GUIDia. Myöhempi sisällöllinen korjaus tai täydennys julkaistaan uutena iteminä omalla GUIDilla ja viittauksella alkuperäiseen itemiin.
+- **RSS `guid`** yksilöi julkaistun raportti-itemin. Vastaanottaja luo RSS-itemin GUIDin satunnaisena UUIDv4-tunnisteena. GUID ei johdu `run_id`-, `task_id`-, `delivery_id`- tai muista tehtävän, ajon tai raportin tiedoista eikä sisällä niistä johdettavaa tietoa. Vastaanottaja tallentaa GUIDin kanoniseen ajotietueeseen samassa atomisessa julkaisutoimessa RSS-itemin kanssa. Saman ajon uudelleenyritykset käyttävät ajotietueeseen tallennettua GUIDia; ne eivät luo uutta tunnistetta. Jokainen erillinen korjaus- tai täydennysitem saa vastaanottajan luoman uuden UUIDv4-GUIDin ja viittaa alkuperäiseen itemiin.
 
 Vastaanottaja laskee toimituksen sisällöstä SHA-256-tiivisteen. Tiiviste lasketaan yhdenmukaisesti kanonisoidusta toimitussisällöstä, jotta sisällöltään saman toimituksen uudelleenlähetys voidaan erottaa saman tunnisteen yhteydessä muuttuneesta sisällöstä. Tiivisteen laskenta ja vertailu kuuluvat vastaanottajalle; tuottajan ilmoittamaa tiivistettä ei käytetä vastaanottajan varmennuksen korvikkeena.
 
