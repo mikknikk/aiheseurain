@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.44  
+**Versio:** 0.12.45  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -633,6 +633,18 @@ Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään t
 - Julkisen Valvomon tietolähteisiin, rajapintoihin ja näkymiin ei saa päätyä salaisuuksia, käyttöoikeustunnuksia, yksityisiä tietoja tai muuta luottamuksellista sisältöä. Julkisuuteen soveltumattomia tietoja ei saa tehdä turvallisiksi pelkästään piilottamalla niitä käyttöliittymässä.
 - Jos myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, tietojen erottelu ja tarvittava käyttöoikeusratkaisu suunnitellaan erikseen; se ei kuulu ensimmäisen version toteutukseen.
 
+### 9.2 Ensimmäisen version toimituskanava ja luottamusraja
+
+Ensimmäisessä versiossa raportintuottaja toimittaa kokonaisen toimituspaketin Git pushilla GitHub App -integraation kautta erilliseen vastaanottohaaraan, esimerkiksi `raportit-inbox`. Vastaanottohaaran tarkka nimi ja hakemistorakenne täsmennetään toteutussuunnittelussa. Tuottaja ei kirjoita suoraan `main`-haaraan eikä julkaistaviin RSS-tiedostoihin.
+
+GitHub App -integraatio on ensimmäisen version tekninen toimituskanava ja käyttöoikeusraja. Erillistä HTTPS-vastaanottopalvelua, käyttäjäkohtaista tunnistamista tai käyttäjän erillistä tunnistautumista ei toteuteta. Toimitusketju luotetaan rajatuksi kokonaisuudeksi, koska GitHub Appin käyttö on annettu vain luotetuille tahoille ja toimitus tapahtuu tämän integraation kautta. GitHub Appin tekniset oikeudet ja niiden tosiasiallinen laajuus on silti tarkistettava. Appin käyttöoikeus ei yksin todista, kuka ihminen käynnisti toimituksen; tällaista käyttäjäkohtaista alkuperätietoa ei vaadita ensimmäisessä versiossa.
+
+Git pushin onnistuminen tarkoittaa vain toimituksen siirtymistä GitHubin vastaanottohaaraan. Se ei tarkoita toimituksen validointia, hyväksymistä tai julkaisemista. Vastaanottohaaraan tehty push käynnistää GitHub Actions -käsittelyn, joka kirjaa vastaanoton, validoi toimituspaketin ja kirjaa käsittelyn tuloksen vastaanottajan ajotietoihin ja työnkulun tulokseen. Virheellinen toimitus ei muuta julkaistuja RSS-syötteitä.
+
+Vastaanottaja tarkistaa vähintään, että toimitus kuuluu olemassa olevaan tehtävään, sen `run_id`- ja `delivery_id`-tunnisteet ovat johdonmukaiset, toimituspaketin rakenne ja sisältö täyttävät tehtävätyypin vaatimukset ja toimitus on eheä. Vastaanottaja muodostaa oman käsittely-yrityksen `attempt_id`-tunnisteen, laskee toimitussisällön SHA-256-tiivisteen ja säilyttää vastaanotetun alkuperäisen paketin. Kaksois- ja ristiriitatilanteissa noudatetaan kohdassa 10.2 määriteltyjä sääntöjä.
+
+Erillinen lähettävän käyttäjän tunnistaminen, HTTPS-vastaanottopalvelu, useiden tuottajien erilliset tunnistus- ja käyttöoikeusrajat sekä vahvemmat toimitusten allekirjoitusmekanismit voidaan arvioida myöhemmissä versioissa. Niitä ei rakenneta ensimmäiseen versioon ennakolta.
+
 ## 10. Virhetilanteet ja uudelleenyritykset
 
 Virhetilanteet käsitellään yksinkertaisella ja yksiselitteisellä tavalla:
@@ -742,7 +754,7 @@ Seuraavat ominaisuudet eivät kuulu ensimmäisen version toteutusvaatimuksiin:
 - batch-tunnisteet, ajokerran kokonaistilat ja batch-keskeytyksistä palautuminen;
 - monimutkainen jonopisteytys ja useiden prioriteettitekijöiden optimointi;
 - osittaisten raporttien myöhempi automaattinen uudelleenjulkaisu tai aiempien itemien muokkaaminen;
-- ulkoiset ilmoitukset ja niiden kanavat, vastaanottajat, salaisuuksien hallinta ja uudelleenyritykset;
+- ulkoiset ilmoitukset ja niiden kanavat, vastaanottajat, salaisuuksien hallinta ja uudelleenyritykset;\n- erillinen käyttäjäkohtainen tunnistaminen, HTTPS-vastaanottopalvelu ja useiden raportintuottajien erilliset tunnistus- ja käyttöoikeusrajat;
 - erilliset lähdekattavuuden ja julkaisuanalytiikan mittaristot;
 - laaja järjestelmän terveysanalyysi.
 
@@ -756,7 +768,7 @@ Tässä vaiheessa ei:
 - aktivoida seurantamoduuleja tai käynnistetä tuotantojulkaisuja;
 - toteuteta uutta teknistä arkkitehtuuria ennen vaatimusmäärittelyn ja toteutussuunnitelman hyväksyntää;
 - luoda tarpeettomia rinnakkaisia agentteja, tietokantoja tai julkaisupolkuja;
-- lukita tiedonsiirtomekanismia ennen sen teknisen toteutettavuuden selvittämistä;
+- rakentaa ensimmäiseen versioon erillistä HTTPS-vastaanottopalvelua tai käyttäjäkohtaista tunnistautumista; GitHub App -pohjainen toimituskanava on ensimmäisen version hyväksytty lähtökohta;
 - kopioida koko RSS-syötettä raporttituottajan käsiteltäväksi ja palautettavaksi;
 - muokata tai poistaa vanhoja RSS-itemeitä automaattisesti;
 - tehdä Valvomosta RSS-lukijan tai GitHub Projectsin korvaajaa.
@@ -819,7 +831,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottorajapinta:** tuottajan ja vastaanottajan välinen tekninen siirtotapa, tuottajan tunnistaminen ja mahdollinen tunnistautuminen.
+9. **Vastaanottorajapinta:** ensimmäisen version GitHub App -pohjaisen toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistyminen, Appin tosiasiallisten käyttöoikeuksien tarkistaminen sekä vastaanoton kirjaamisen yksityiskohdat.
 10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main)-haaran suojauksen ja käyttöönoton yhteensovittaminen.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
