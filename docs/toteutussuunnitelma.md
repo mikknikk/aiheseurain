@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.107  
+**Versio:** 0.3.108  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.62](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.64](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -502,6 +502,12 @@ Vastaanottaja varmistaa, että toimituksen `run_id` ja `delivery_id` vastaavat p
 
 Paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot. `item.xml` vaaditaan vain tehtävätyypin ja tuottajan tulostilan niin edellyttäessä. Tiedostoroolit ja tulostilakohtaiset vaatimukset tulevat tehtävätyypin määrityksestä. Odottamattomat tiedostot hylätään. Polut ovat paketin sisäisiä: absoluuttiset polut, `..`-siirtymät, symboliset linkit ja paketin ulkopuolelle osoittavat viittaukset eivät ole sallittuja. Ensimmäiseen versioon ei rakenneta yleistä liite- tai kuvakäsittelyä.
 
+Toimituspaketin tiedostot yksilöidään toimituspaketin sisäisillä poluilla ja `metadata.json`-tiedoston tiedostoluettelolla. Jokaisella tiedostolla on yksi tiedostoluettelon tietue ja yksi tehtävätyypin mukainen rooli; samaa polkua ei saa ilmoittaa ristiriitaisilla rooleilla. Vastaanottaja tarkistaa tiedostojen roolit ja polut sekä ilmoitetun koon ja SHA-256-tiivisteen. Paketin ulkopuolelle osoittavia viittauksia ei sallita.
+
+Kun tehtävätyyppi tuottaa julkaistavan raportin, raportti toimitetaan `item.xml`-tiedostossa. Se sisältää yhden RSS-itemin, jonka `<content:encoded>`-elementissä on koko raportin HTML-sisältö. Erillistä HTML-raporttitiedostoa ei toimiteta ensimmäisessä versiossa. `item.xml` vaaditaan vain tehtävätyypin ja tuottajan tulostilan sitä edellyttäessä. Muut sisältötiedostot sallitaan vain tehtävätyypin määrittelemien tiedostoroolien perusteella.
+
+Korjaus tai olennainen täydennys toimitetaan uutena RSS-iteminä, jolla on oma vastaanottajan luoma UUIDv4-GUID. Uuden itemin toimitusmetatiedot yksilöivät alkuperäisen itemin GUIDin ja suhteen tyypin (korjaus tai täydennys); raporttisisältö kertoo yhteyden lukijalle tarpeellisessa määrin. Alkuperäistä itemiä, raporttia tai toimituspakettia ei muuteta. Metatietojen täsmälliset kenttänimet ratkaistaan skeematyössä.
+
 Metatiedot validoidaan skeemaa vasten. Tarkistukset kattavat pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion ja tunnisteiden vastaavuuden. Tuntematonta skeemaversiota ei tulkita arvaamalla. Jo hyväksyttyä kuuden tietoryhmän toimitusmetatietomallia ei muuteta tällä päätöksellä. Sisältötiedostot validoidaan erillään metatiedoista niiden luettavuuden, koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakollisten elementtien ja keskinäisten viittausten osalta. RSS-itemin toimitustiedosto sisältää täsmälleen yhden `<item>`-elementin eikä kokonaista RSS-syötettä. Itemissä ei käytetä `<link>`-elementtiä; lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa. RSS-itemin elementit ovat täsmälleen seuraavat tässä järjestyksessä: pakollinen `<title>`, pakollinen `<guid isPermaLink="false">`, pakollinen UTC-aikainen `<pubDate>`, valinnainen lyhyt `<description>` ja pakollinen `<content:encoded>`. Muita RSS-elementtejä, kuten `<author>`, `<category>`, `<comments>`, `<enclosure>` tai `<source>`, ei käytetä. GUIDin ainoa sallittu attribuutti on `isPermaLink="false"`; muille elementeille ei lisätä attribuutteja. `content`-nimiavaruus määritellään item-elementissä muodossa `xmlns:content="http://purl.org/rss/1.0/modules/content/"`, koska tiedosto ei sisällä RSS-kanavan ympäröivää elementtiä. `<guid>` yksilöi itemin eikä toimi linkkinä raporttisivulle. Koko raportti toimitetaan RSS Content -laajennuksen `<content:encoded>`-elementissä HTML-muodossa. `<description>` on vapaaehtoinen lyhyt tiivistelmä eikä siihen kopioida koko raporttia. Raportin HTML-sisällöllä on yhteinen perusrakenne, mutta varsinainen sisältö ja sen jäsentely voivat vaihdella aiheen ja tehtävätyypin mukaan. `<pubDate>` esitetään UTC-ajassa RSS:n päivämäärämuodon mukaisesti; käyttöliittymä voi muuntaa ajan paikalliseen aikavyöhykkeeseen. GUIDin muodostustapa ja säilytys on päätetty: vastaanottaja luo satunnaisen UUIDv4-tunnisteen ja tallentaa sen kanoniseen ajotietueeseen atomisesti RSS-itemin kanssa. HTML:n sallittu tekninen sisältö ja validointikäytäntö on määritelty tässä kohdassa; raportin yhteinen rakenne ja otsikkohierarkian käyttö täsmennetään kohdassa 9.3.
 
 XML ja HTML muodostetaan turvallisesti erillisinä rakenteina. XML tuotetaan XML-kirjastolla; XML-tekstisolmujen sisältö escapetaan kirjaston normaalilla tavalla. `<content:encoded>`-elementin HTML-sisältö sarjoitetaan CDATA-osioon. Jos HTML sisältää merkkijonon `]]>`, CDATA-osio jaetaan XML:n mukaisesti turvallisesti niin, että alkuperäinen sisältö säilyy muuttumattomana.
@@ -539,7 +545,7 @@ raportit-inbox/
 Toimituspaketti sisältää:
 
 - `metadata.json`: pakollinen kaikissa tulostiloissa. Se sisältää vähintään sopimusversion, ajotunnisteen, aiheen tunnisteen, seurantatyypin, seuranta-aikavälin ja tulostilan sekä kyseisen tulostilan edellyttämät lisätiedot;
-- `item.xml`: pakollinen sekä `success`- että `partial`-tilassa. `success`-tilassa validoitu raportti julkaistaan. `partial`-tilassa validoitu osittainen raportti julkaistaan, ja itemissä kerrotaan selvästi seurannan puutteellisuudesta sekä sen syistä. `no_report`- ja `failed`-tiloissa `item.xml`-tiedostoa ei toimiteta.
+- `item.xml`: toimitetaan, kun tehtävätyyppi ja tuottajan tulostila edellyttävät julkaistavaa raporttia. `success`-tilassa validoitu raportti julkaistaan; `partial`-tilassa validoitu osittainen raportti julkaistaan, ja itemissä kerrotaan selvästi seurannan puutteellisuudesta sekä sen syistä. `no_report`- ja `failed`-tiloissa raporttia ei toimiteta.
 
 Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. Metatietojen sisällölliset tietoryhmät on määritelty kohdassa 2.6.1; kenttäkohtainen rakenne täsmennetään erillisessä tietomallityössä. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
 
@@ -958,13 +964,12 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
    - 9.3 **Raportin HTML-perusrakenne:** määritellään yhteiset rakenneosat, otsikkohierarkia, metatietojen ja lähdeviitteiden esitys, saavutettavuus sekä aihekohtaisen vaihtelun rajat.
-   - 9.4 **Toimituspaketin rajapinta:** määritellään itemin, raporttitiedoston ja toimitusmetatietojen yhteys, tiedostojen yksilöinti sekä korjaus- ja täydennysitemin viittaus alkuperäiseen.
    - 9.5 **Vastaanoton validointi:** täsmennetään tarkistusjärjestys ja hyväksymisehdot tunnisteille, revisioille, metatiedoille, tiedostoille, viittauksille, XML:lle, HTML:lle ja RSS-sopimukselle.
    - 9.6 **Vastaanoton ja julkaisun työnkulku:** määritellään tilasiirtymät, vaiheiden vastuut, atomisen tallennuksen rajat, julkaisemisen järjestys ja odotustilat.
    - 9.7 **Idempotenssi ja virhetilanteet:** määritellään uudelleenyrityksen tunnistaminen, jo käsitellyn toimituksen vaste, ristiriitaisten toimitusten käsittely sekä pysyvien ja tilapäisten virheiden luokittelu.
    - 9.8 **Julkaisun varmennus:** määritellään itemin tallentumisen, GUIDin ja ajotietueen yhtäpitävyyden, RSS-luettavuuden ja Pages-julkaisun valmistumisen tarkistukset.
    - 9.9 **Käyttöönoton hyväksymiskriteerit:** määritellään päästä päähän -skenaariot, palautumis- ja virhetestit, havaittavuus sekä käyttöönottovalmiuden ehdot.
-   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
+   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3) ja toimituspaketin rajapinta (9.4) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - 10.1 Määritellään instanssirepositorion lopullinen hakemistorakenne ja Pages-julkaisun lähdepolut.
@@ -1056,6 +1061,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.108 (24.11.2026):** hyväksyttiin toimituspaketin rajapinta: `metadata.json` kuvaa toimituksen ja tiedostoluettelon, `item.xml` sisältää koko raportin `<content:encoded>`-elementissä eikä erillistä HTML-raporttitiedostoa toimiteta. Täsmennettiin tiedostojen rooli- ja polkuyksilöinti sekä korjaus- ja täydennysitemien viittaus alkuperäiseen UUIDv4-GUIDiin; alkuperäinen julkaisu säilyy muuttumattomana. Kohta 9.4 poistettiin avoimien kohtien luettelosta. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.107 (24.11.2026):** hyväksyttiin raportin HTML-perusrakenne, otsikkohierarkia, seuranta-aikavälin ja lähdeviitteiden esittäminen, saavutettavuuden periaatteet sekä aihekohtainen sisältövaihtelu. Sallittiin erilliset, selvästi ajoitetut täydennykset merkittäville aikavälin ulkopuolisille uutisille ja aiemmasta raportista puuttuneille havainnoille. Kohta 9.3 poistettiin avoimien kohtien luettelosta. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
