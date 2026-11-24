@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.41  
+**Versio:** 0.12.42  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -764,18 +764,42 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 
 ## 16. Avoimet suunnittelukysymykset
 
-Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Luettelo sisältää vain aidosti avoimet asiat; hyväksyttyjä periaatteita tai jo määriteltyjä tietoja ei käsitellä uudelleen avoimina kysymyksinä.
+Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sama vaatimusmäärittelyssä ja toteutussuunnitelmassa, jotta suunnittelun tilanne pysyy yhdenmukaisena.
 
-1. **Ajotuloksen ja tehtävätyyppien skeemat:** JSON Schema -tiedostojen täydelliset rakenteet, kenttäkohtaiset rajat, yhteisten osaskeemojen tarkka jako ja nimeäminen sekä validointikoodin toteutustapa ja virheraportoinnin yksityiskohdat. Avoinna ovat yksittäisten skeematiedostojen täydelliset kenttärakenteet, yksittäisten laaduntarkistusten konkreettiset parametrikentät ja niiden tarkistuskohtaiset skeemat, raportoitavien havaintojen tehtävätyyppikohtaiset kategoriat ja tarkemmat ehdot, tiedostoroolien `parameters`-kenttien sisältö sekä skeemojen kenttäkohtaiset ehdot.
-2. **Vastaanottorajapinnan toteutus:** tekninen siirtotapa, tuottajan tunnistaminen ja mahdollinen tunnistautuminen valitaan turvallisten vaihtoehtojen perusteella.
-3. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus ratkaistaan. Nykyisiä automaatioita tai niiden ajastuksia ei muuteta tämän määrittelyn perusteella.
-4. **Jonon ja uudelleenyritysten tarkat rajat:** valinnan periaate on erääntyminen ja odotusaika. Aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat täsmennetään.
-5. **Ajotietojen tietomallit:** muiden toimitusmetatietoryhmien ja tuottajan tietojen tarkat kentät, vastaanottajan kanonisen ajotietueen (`run.json`) kentät, append-only-tapahtumahistorian (`events.jsonl`) tapahtumatyypit sekä tietokokonaisuuksien tarkat viittaukset ja validointisäännöt. Raportoitavien havaintojen yleinen tietomalli, tiedostoluettelon tietuekentät, tilakohtaiset tiedostovaatimukset ja vastaanottajan validoinnin perusvaiheet on päätetty; niiden tarkat skeemaehdot ja viittausten tekninen esitysmuoto ovat avoinna.
-6. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne, tietojen esitystapa ja navigointi suunnitellaan myöhemmin.
-7. **Historiatietojen säilytys:** ajon perustietojen, tapahtumien, mahdollisten lokien ja väliaineistojen säilytysajat määritellään tietotarpeen ja tietosuojan perusteella.
-8. **Nykyisen toteutuksen siirtymä:** nykyiset osat inventoidaan ja arvioidaan ennen hyödyntämistä tai poistamista. Mitään ei poisteta ilman erillistä suunnitelmaa.
-9. **Mahdollinen myöhempi käyttöoikeuksien tekninen toteutus:** jos instanssin myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, julkisen ja rajatun tiedon erottelu sekä käyttöoikeudet suunnitellaan ennen tällaisen tiedon käyttöönottoa. Tämä ei kuulu ensimmäiseen versioon.
-10. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet, tarkka hakemistorakenne, jakelukanava, version kiinnittämisen mekanismi sekä ohjelmiston ja instanssin välinen tekninen tiedonsiirto määritellään toteutussuunnittelussa.
+### 1. Tietomallit ja skeemat
+
+1. **Skeemojen tarkat rakenteet:** JSON Schema -tiedostojen täydelliset kenttärakenteet, pakollisuus- ja rajaehdot, yhteisten osaskeemojen tarkka jako ja nimeäminen sekä skeemojen välisten viittausten ja validointikoodin toteutus.
+2. **Laaduntarkistusten parametrit:** yksittäisten tarkistusten konkreettiset parametrit, tarkistuskohtaiset parametriskeemat ja niiden validointiehdot.
+3. **Raportoitavien havaintojen kategoriat:** tehtävätyyppikohtaiset luokittelut, sallitut arvot ja kategorioiden tarkemmat ehdot.
+4. **Tiedostoroolien parametrit:** roolikohtaisten `parameters`-kenttien sisältö, tiedostoroolien tarkat skeemat ja mahdolliset lisäehdot.
+5. **Toimitusmetatietojen täydentäminen:** vielä määrittelemättömien metatietoryhmien tarkat kentät ja valinnaisten tuottajan tietojen rakenne.
+6. **Vastaanottajan ajotietomallit:** kanonisen `run.json)-tietueen tarkat kentät, `events.jsonl)-tapahtumatyypit sekä tuottajan metatietojen, vastaanottajan ajotietueen ja tapahtumahistorian tarkat keskinäiset viittaukset ja validointisäännöt.
+
+### 2. Lähderekisteri ja lähdetilastot
+
+7. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
+8. **Lähdekohtaiset tilastot:** avausyritysten onnistumisten ja epäonnistumisten tilastointimalli, virheluokkien tarkka luettelo, tarkastelujaksot sekä toistuvasti epäonnistuvien lähteiden nostaminen ylläpitäjän arvioitavaksi.
+
+### 3. Integraatiot ja ajonhallinta
+
+9. **Vastaanottorajapinta:** tuottajan ja vastaanottajan välinen tekninen siirtotapa, tuottajan tunnistaminen ja mahdollinen tunnistautuminen.
+10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main)-haaran suojauksen ja käyttöönoton yhteensovittaminen.
+11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
+12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
+13. **Toimituspakettien säilytys:** vastaanottohaaran toimituspakettien säilytysajat, siivouksen ehdot sekä keskeneräisten ja palautettavien ajojen aineiston säilyttäminen.
+
+### 4. Raportintekijä ja käyttöliittymät
+
+14. **Yhteinen raportintekijän perusprompti:** promptin tarkka sisältö, testaus, versionhallinta ohjelmistorepositoriossa ja sovittaminen raportintuottajan integraatioon.
+15. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne, tietojen esitystapa ja navigointi.
+16. **Julkisten käyttöliittymien tietoturvatarkistukset:** Valvomoon ja RSS-lukijaan päätyvän sisällön sekä niiden lukemien tietolähteiden automaattiset tarkistukset, joilla estetään salaisuuksien, käyttöoikeustunnusten ja yksityisten tietojen päätyminen julkisiin tiedostoihin tai rajapintoihin.
+
+### 5. Siirtymä ja käyttöönotto
+
+17. **Nykyisen toteutuksen inventaario ja siirtymä:** nykyisten komponenttien arviointi, säilytettävien, yksinkertaistettavien ja uudelleenrakennettavien osien valinta sekä siirtymän vaiheistus ja mahdolliset migraatiot.
+18. **Historiatietojen säilytys:** ajotietojen, tapahtumien, lokien ja väliaineistojen säilytysajat sekä säilytyksen ja siivouksen tekniset käytännöt.
+19. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet ja hakemistorakenne, jakelukanava, ohjelmistoversion kiinnittäminen sekä ohjelmiston ja instanssin välisen tiedonsiirron tekniset yksityiskohdat.
+20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ## 17. Raportintekijän yhteinen perusprompti ja tuottajakohtaiset ohjeet
 
@@ -788,6 +812,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.42 – 24.11.2026:** synkronoitiin avoimien suunnittelukohtien luettelo toteutussuunnitelman kanssa. Yhdistetty luettelo kattaa tietomallit ja skeemat, lähderekisterin, lähdetilastot, integraatiot, ajonhallinnan, raportintekijän, käyttöliittymät, siirtymän ja käyttöönoton. Aiemmin eri dokumenteissa erillisinä esitetyt aiheet yhdenmukaistettiin.
 
 - **0.12.41 – 24.11.2026:** hyväksyttiin raportoitavien havaintojen erillinen tietomalli ja erottaminen laaduntarkistusten havainnoista, toimituskohtaiset tunnisteet, tehtävätyyppikohtaiset kategoriat, lähde- ja kanavaviittaukset sekä valinnainen `findings.json`. Hyväksyttiin tiedostoroolien pysyvät tunnisteet, tulostilakohtainen `required` / `optional` / `forbidden`-malli, toimitettujen tiedostojen luettelo, pakolliset tiedostokoot ja SHA-256-tiivisteet, polkujen turvallisuussäännöt, tulostilojen toimitusvaatimukset sekä vastaanottajan validointivaiheet ja virheluokat. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
