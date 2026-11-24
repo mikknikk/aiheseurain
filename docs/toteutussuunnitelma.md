@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.97  
+**Versio:** 0.3.98  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.53](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.54](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -892,6 +892,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 19. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.98 (24.11.2026):** synkronoitiin RSS-itemin toimitusmuodon ja linkityksen kiinteät säännöt sekä rajattiin avoimeksi jäävät RSS-yksityiskohdat vastaamaan vaatimusmäärittelyä.
 
 - **0.3.97 (24.11.2026):** täsmennettiin RSS-itemin toimitusmuoto yhdeksi `<item>`-elementiksi ilman `<link>`-elementtiä ja määriteltiin lähteiden linkitys raporttisisällössä. Päätettiin aloittaa toteutus puhtaalta pöydältä käyttämättä vanhaa arkistoitua toteutusta; poistettiin vanhan toteutuksen inventaario-, hyödyntämis- ja siirtymävaiheet suunnitelmasta sekä avoimista tehtävistä.
 
