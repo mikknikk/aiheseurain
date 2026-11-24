@@ -754,7 +754,8 @@ Seuraavat ominaisuudet eivät kuulu ensimmäisen version toteutusvaatimuksiin:
 - batch-tunnisteet, ajokerran kokonaistilat ja batch-keskeytyksistä palautuminen;
 - monimutkainen jonopisteytys ja useiden prioriteettitekijöiden optimointi;
 - osittaisten raporttien myöhempi automaattinen uudelleenjulkaisu tai aiempien itemien muokkaaminen;
-- ulkoiset ilmoitukset ja niiden kanavat, vastaanottajat, salaisuuksien hallinta ja uudelleenyritykset;\n- erillinen käyttäjäkohtainen tunnistaminen, HTTPS-vastaanottopalvelu ja useiden raportintuottajien erilliset tunnistus- ja käyttöoikeusrajat;
+- ulkoiset ilmoitukset ja niiden kanavat, vastaanottajat, salaisuuksien hallinta ja uudelleenyritykset;
+- erillinen käyttäjäkohtainen tunnistaminen, HTTPS-vastaanottopalvelu ja useiden raportintuottajien erilliset tunnistus- ja käyttöoikeusrajat;
 - erilliset lähdekattavuuden ja julkaisuanalytiikan mittaristot;
 - laaja järjestelmän terveysanalyysi.
 
@@ -861,6 +862,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.45 – 24.11.2026:** hyväksyttiin ensimmäisen version toimituskanavaksi GitHub Appin kautta tehtävä Git push erilliseen vastaanottohaaraan. Rajattiin erillinen HTTPS-vastaanottopalvelu ja käyttäjäkohtainen tunnistaminen ensimmäisen version ulkopuolelle. Täsmennettiin GitHub Appin teknisten oikeuksien tarkistaminen, vastaanoton ja hyväksymisen erottaminen, GitHub Actions -käsittely sekä myöhempiin versioihin jätettävät laajemmat tunnistus- ja integraatiomallit. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.12.44 – 24.11.2026:** hyväksyttiin rekisterin ulkopuolisten lähteiden ehdotusten lähdekohtainen rakenne, erillinen tallennuspolku, elinkaaren tilat, validointi ja ensimmäisen version GitHub-pohjainen ylläpitäjäkäsittely. Täsmennettiin lähdekanavakohtaisten avausyritysten tilastotietue, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot, Valvomon tunnusluvut sekä toistuvien epäonnistumisten alustava nostokriteeri. Lähteiden automaattinen poistaminen tai käytöstä poistaminen tilastojen perusteella kiellettiin edelleen. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
