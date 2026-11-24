@@ -505,11 +505,11 @@ Vastaanottaja validoi toimituspaketin eheyden ennen sen hyväksymistä: tunniste
 
 #### Raportoitavien havaintojen malli
 
-Raportoitavat havainnot erotetaan laaduntarkistusten havainnoista. Tietueen kentät ovat `finding_id`, `title`, `description`, `category`, `source_refs`, `occurred_at` ja `notes`; kolme ensimmäistä ovat yleisesti pakollisia. `finding_id` on toimituksen sisällä yksilöllinen. Kategoriat määritellään tehtävätyypeittäin, eikä yhteistä yleisluetteloa ole. `source_refs` viittaa toimituksen lähdetarkistuksissa kuvattuihin lähteisiin ja tarvittaessa sisältökanaviin, ei yksittäisiin tarkistusyrityksiin. Yleistä vakavuusluokkaa ei ole. Rakenteinen `findings.json` toimitetaan vain tehtävätyypin niin edellyttäessä; sen juurena ovat `schema_version` ja aina taulukkona oleva `findings`. Tyhjä taulukko ei tarkoita automaattisesti `no_report`-tilaa. Metatietoihin tallennetaan havaintojen yhteenveto, määrä, luokkamäärät sekä rajaukset, epävarmuudet ja kattavuuspuutteet, ei yksittäisiä havaintotietueita.
+Raportoitavat havainnot erotetaan laaduntarkistusten havainnoista. Tietueen kentät ovat `finding_id`, `title`, `description`, `category`, `source_refs`, `occurred_at` ja `notes`; kolme ensimmäistä ovat yleisesti pakollisia. `finding_id` on toimituksen sisällä yksilöllinen. Kategoriat määritellään tehtävätyypeittäin, eikä yhteistä yleisluetteloa ole. Tehtävätyypin määritys sisältää sallitut kategoriatunnisteet, nimet ja kuvaukset. Tunnisteet ovat pienaakkosilla kirjoitettuja ja tarvittaessa yhdysmerkillisiä; havaintotietueeseen tallennetaan tunniste. Vastaanottaja tarkistaa tunnisteen kuulumisen tehtävätyypin sallittuihin kategorioihin. Esimerkkejä uutisseurannan mahdollisista tunnisteista ovat `announcement`, `release`, `event`, `personnel_change`, `controversy` ja `other`; ne eivät ole yleinen pakollinen luettelo. `source_refs` viittaa toimituksen lähdetarkistuksissa kuvattuihin lähteisiin ja tarvittaessa sisältökanaviin, ei yksittäisiin tarkistusyrityksiin. Yleistä vakavuusluokkaa ei ole. Rakenteinen `findings.json` toimitetaan vain tehtävätyypin niin edellyttäessä; sen juurena ovat `schema_version` ja aina taulukkona oleva `findings`. Tyhjä taulukko ei tarkoita automaattisesti `no_report`-tilaa. Metatietoihin tallennetaan havaintojen yhteenveto, määrä, luokkamäärät sekä rajaukset, epävarmuudet ja kattavuuspuutteet, ei yksittäisiä havaintotietueita.
 
 #### Tiedostoroolit ja tiedostoluettelo
 
-Tehtävätyypin määritys määrittelee sallitut tiedostoroolit. Rooli kuvaa tarkoitusta ja polku sijaintia; `file_id` on tehtävätyypin sisällä pysyvä. Roolimäärityksen kentät ovat `file_id`, `name`, `description`, `media_type`, `status_requirements` ja `parameters`. `status_requirements` määrittelee kullekin tuottajan tulostilalle arvon `required`, `optional` tai `forbidden`, jolloin erillisiä päällekkäisiä `required`- ja `allowed_statuses`-kenttiä ei tarvita.
+Tehtävätyypin määritys määrittelee sallitut tiedostoroolit. Rooli kuvaa tarkoitusta ja polku sijaintia; `file_id` on tehtävätyypin sisällä pysyvä. Roolimäärityksen kentät ovat `file_id`, `name`, `description`, `media_type`, `status_requirements` ja `parameters`. `parameters` on aina objekti; asetuksettomassa roolissa se on `{}`. Roolikohtainen skeema määrittelee sallitut parametrit, niiden tyypit ja rajat; tuntemattomat parametrit hylätään. Parametreilla voidaan kuvata esimerkiksi sisältömuotoa, kieltä tai roolikohtaisia sisältörajoituksia, mutta niillä ei määritellä uudelleen tiedoston tunnistetta, polkua, kokoa, tiivistettä tai tulostilakohtaisia vaatimuksia. `status_requirements` määrittelee kullekin tuottajan tulostilalle arvon `required`, `optional` tai `forbidden`, jolloin erillisiä päällekkäisiä `required`- ja `allowed_statuses`-kenttiä ei tarvita.
 
 `metadata.json` sisältää kaikkien toimitettujen sisältötiedostojen luettelon. Tietueessa ovat `file_id`, `path`, `media_type`, `size_bytes` ja `sha256`; koko ja SHA-256-tiiviste ovat pakollisia. Metatietotiedosto ei sisälly omaan luetteloonsa. Polut ovat suhteellisia, käyttävät `/`-erotinta, eivätkä sisällä absoluuttisia polkuja, `..`-siirtymiä tai symbolisia linkkejä. Tyhjät hakemistot eivät kuulu pakettiin. Roolin sallittu tiedostomäärä määritellään tehtävätyypissä; oletuksena yksi tiedosto roolia kohti.
 
@@ -716,6 +716,21 @@ Tuottajan metadata.json-sisältö jäsennetään kuuteen tietoryhmään:
 Lähdetarkistusten tietoryhmän alustava rakenne koostuu kolmesta osasta: ajossa käytetyistä lähteistä, eksplisiittisesti valituista sisältökanavista sekä kanavakohtaisista tarkistusyrityksistä tuloksineen. Rekisterin ulkopuoliset lähteet kuvataan toimitusmetatiedoissa erillisinä toimituskohtaisina lähteinä, eikä niitä merkitä rekisteriin kuuluviksi. Tarkistusyrityksestä tallennetaan vähintään ajankohta, tulos, tieto uuden tai tehtävän kannalta relevantin sisällön löytymisestä, saatavilla oleva tekninen tulos (esimerkiksi HTTP-tilakoodi) sekä virhe- ja huomiotiedot. Teknisen tarkistuksen onnistuminen erotetaan sisällöllisestä tuloksesta: onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tarkka kenttärakenne ja sallitut tulosarvot täsmennetään erikseen. Tämä ei muuta lähderekisterin pysyvien tietojen ja ajohistorian toteutuneiden tarkistustulosten erottelua.
 - **Havainnot ja laadunvarmistus:** raportoitavien havaintojen yhteenveto ja laaduntarkistuksen tulokset.
 - **Tuottajan tiedot:** valinnaiset tiedot käytetystä raportintuottajasta.
+
+Tuottajan tietojen perusrakenne on valinnainen `producer`-objekti. Jos objekti toimitetaan, `producer_type` on pakollinen ja sen arvot ovat `human`, `ai`, `software` tai `other`. Valinnaiset kentät ovat `producer_id` (pysyvä tuottajatunniste), `name` (ihmiselle luettava nimi) ja `version` (käytetyn ohjelmiston tai mallin versio). Esimerkkirakenne:
+
+```json
+{
+  "producer": {
+    "producer_id": "example-producer",
+    "producer_type": "ai",
+    "name": "Esimerkkituottaja",
+    "version": "1.2.0"
+  }
+}
+```
+
+Ryhmään ei tallenneta salasanoja, käyttöoikeustunnuksia, henkilötietoja tai muita salaisuuksia.
 
 Ensimmäiseen tietoryhmään kuuluvat seuraavat kentät:
 
