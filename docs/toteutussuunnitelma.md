@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.80  
+**Versio:** 0.3.81  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.37](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.39](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -290,7 +290,9 @@ Skeemakokonaisuus toteutetaan JSON Schema Draft 2020-12 -standardilla. Yhteiseen
 4. aihekohtaisen määrityksen skeema;
 5. lähderekisterin skeema;
 6. tehtäväpyynnön skeema;
-7. toimitusmetatietojen skeema.
+7. toimitusmetatietojen skeema;
+8. toimituspaketin tulostilakohtaiset skeemat;
+9. vastaanottajan kanonisen ajotietueen ja tapahtumahistorian skeemat.
 
 Tehtävätyypin määrityksen rakenne sisältää `schema_version`-, `id`-, `description`-, `config_schema`-, `defaults`-, `overridable_paths`-, `processing`-, `reporting`- ja `instruction`-kentät. `overridable_paths` ilmaisee JSON Pointer -polkuina täsmälleen ne asetuskohdat, joita profiilit ja aihekohtainen määritys saavat ylikirjoittaa. Tehtävätyyppikohtainen asetusskeema määrittelee `resolved_config`-objektin rakenteen, tietotyypit, pakollisuuden, rajat ja tuntemattomien kenttien hylkäämisen.
 
@@ -400,6 +402,25 @@ schemas/
 ```
 
 Tiedostonimet ovat englanninkielisiä, pienaakkosin ja yhdysmerkein. Skeemojen `$id`-tunnisteet ovat vakaita eivätkä riipu repositorion nimestä tai polusta. Skeemojen väliset skeemojen `$ref`-viittaukset ratkaistaan paikallisesti ohjelmistorevision sisältämästä skeemakokonaisuudesta; ajonaikaisia ulkoisia skeemahakuja ei tehdä. Hakemistorakenne ja yksittäisten skeematiedostojen tarkka sisältö toteutetaan myöhemmässä toteutusvaiheessa tämän hyväksytyn mallin mukaisesti.
+
+Skeemakokonaisuus jaetaan neljään vastuualueeseen: (1) määritykset, (2) tehtävän käynnistys, (3) tuottajan toimitus ja (4) vastaanottajan ajohallinta. Tämä jako ohjaa skeemojen ryhmittelyä, eikä se tarkoita yhtä skeematiedostoa kutakin kokonaisuutta kohti. Jokaisella itsenäisellä tietotyypillä on oma pääskeemansa.
+
+Yhteisiä osaskeemoja käytetään toistuville rakenteille. Niihin kuuluvat vähintään tunnisteet, Git-revisiot, aikaleimat, aikavälit, tiedosto- ja repositorioviittaukset, lähde- ja sisältökanavaviittaukset, URL-osoitteet, virhekuvaukset sekä laaduntarkistusten havaintotietueet. Osaskeemojen tarkka tiedostojako ja nimeäminen viimeistellään skeemojen toteutussuunnittelussa.
+
+Kaikilla skeemoilla on vakaa `$id`, joka ei riipu repositorion nimestä tai tiedostopolusta, ja `$schema` ilmoittaa käytetyn JSON Schema -version. Tietoaineiston `schema_version` yksilöi sen käyttämän tietosopimuksen version. `format`-tarkistukset otetaan validointikirjastossa eksplisiittisesti käyttöön.
+
+Tehtävätyypin määrityksen laaduntarkistukset määritellään tietueina, joissa ovat:
+- `check_id`: pysyvä, tehtävätyypin sisällä yksilöllinen tunniste;
+- `name`: tarkistuksen nimi;
+- `description`: tarkistuksen tarkoitus ja sisältö;
+- `required`: tieto siitä, kuuluuko tarkistus tehtävätyypin vaadittuun tarkistuskattavuuteen;
+- `parameters`: tarkistuksen mahdolliset tehtävätyyppikohtaiset asetukset.
+
+Tarkistuksen tunniste ei riipu sen nimestä tai kuvauksesta. Tunnistetta ei muuteta kuvauksen täsmentyessä, eikä poistettua tunnistetta oteta uudelleen käyttöön. Toimituksen `check_id` viittaa tehtävätyypin määrityksessä määriteltyyn tarkistukseen. Tarkistuksen nimi ja kuvaus säilyvät määrityksessä, eikä niitä kopioida ajokohtaiseen tulostietueeseen.
+
+Laaduntarkistuksen ajokohtaisen tulostietueen rakenteellinen skeemavalidointi ja tietueiden väliset toiminnalliset tarkistukset ovat erillisiä vaiheita. Rakenteellinen validointi tarkistaa tietueiden kentät, tyypit ja sallitut arvot. Toiminnallinen validointi tarkistaa muun muassa, että jokaisesta vaaditusta tarkistuksesta on ajokohtainen tietue, `passed`-tuloksen `findings` on tyhjä, `issues_found` sisältää vähintään yhden havainnon ja `not_run`-, `not_applicable`- sekä `execution_error`-tuloksilla on perustelu. Puuttuvaa tietuetta ei tulkita onnistumiseksi. Vastaanottaja tarkistaa kattavuuden ja rakenteen muuttamatta tuottajan ilmoittamia tuloksia.
+
+Toimitusmetatietojen, kanonisen ajotietueen ja tapahtumahistorian skeemat ovat erilliset. Samoin toimituspaketin tulostilakohtaiset vaatimukset tarkistetaan toimituspaketin omilla rakenteellisilla ja toiminnallisilla tarkistuksilla. Skeemojen testaus kattaa jokaisen pääskeeman kelvolliset esimerkit sekä virheelliset tapaukset, skeemojen `$ref`-riippuvuuksien latautumisen, tuntemattomien kenttien hylkäämisen, laaduntarkistusten kirjaamissäännöt ja toimituspaketin puutteellisuuden. GitHub Actions suorittaa skeema- ja validointitestit, kun niitä koskevia tiedostoja muutetaan. Testien epäonnistuminen estää muutoksen hyväksymisen normaalissa CI-prosessissa.
 
 Skeemakokonaisuuden päävastuut ovat:
 
@@ -865,7 +886,7 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 
 Seuraavat kymmenen kokonaisuutta täsmennetään ennen tikettien muodostamista. Luettelo kuvaa vain ratkaisemattomia teknisiä yksityiskohtia; hyväksytyt periaatteet ja tietomallin jo päätetyt osat on erotettu avoimesta työstä:
 
-1. **Skeemat ja validoinnin toteutus:** yksittäisten JSON Schema -tiedostojen tarkka sisältö, kenttäkohtaiset rajat ja ehdot sekä validointikoodin toteutustapa ja virheraportointi. Laaduntarkistuksen ajokohtaisen tulostietueen kentät ja tulosluokat on päätetty; avoinna ovat tehtävätyypin määrityksen tarkistusmäärittelyn rakenne, tunnisteiden muodostaminen ja validointi. Työ tehdään hyväksytyn skeema- ja validointimallin mukaisesti vaiheessa 2.
+1. **Skeemat ja validoinnin toteutus:** yksittäisten JSON Schema -tiedostojen täydelliset rakenteet, kenttäkohtaiset rajat, yhteisten osaskeemojen tarkka jako ja nimeäminen sekä validointikoodin toteutustapa ja virheraportoinnin yksityiskohdat. Tehtävätyypin laaduntarkistusten määritystietueen kentät (`check_id`, `name`, `description`, `required`, `parameters`) sekä tunnisteiden pysyvyys- ja uudelleenkäyttösäännöt on päätetty. Myös laaduntarkistusten rakenteellisen ja toiminnallisen validoinnin vastuuraja sekä CI-testauksen periaate on päätetty. Avoinna ovat tarkistusten mahdollisten parametrien tarkat rakenteet ja skeematiedostojen kenttäkohtaiset ehdot. Työ tehdään hyväksytyn skeema- ja validointimallin mukaisesti vaiheessa 2.
 2. **Rekisterin ulkopuolisten lähteiden ehdotukset:** lähdehaun ja rekisteröinnin erillisyys, sallitut toimintatilat, ajon muuttumaton lähderekisterisnapshot sekä ehdotusten käsittely vasta ajon päätyttyä on päätetty. Avoinna ovat ehdotuksen tarkka tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
 3. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien ja `main`-haaran suojauksen varmistaminen käyttöönotossa. Ensimmäisessä versiossa ei edellytetä teknisesti vain `raportit-inbox`-haaraan rajattua kirjoitusoikeutta.
 4. **Toimituspaketin tarkat vaatimukset:** tulostilakohtaisten tiedostovaatimusten ja kenttäsisältöjen tekninen toteutus hyväksytyn toimituspaketin ja ajotietueen skeemajaon mukaisesti. Eheys- ja täydellisyysperiaatteet on päätetty kohdassa 2.3.
@@ -880,6 +901,7 @@ Julkaisun ja ajotietojen tallennuksen virhetilanteista palautuminen ei enää ol
 
 ### Versiohistoria
 
+- **0.3.81 (24.11.2026):** hyväksyttiin tietomalli- ja skeematyön nelijako, yhteisten osaskeemojen vähimmäisalueet, tehtävätyypin laaduntarkistusten määritystietueen kentät (`check_id`, `name`, `description`, `required`, `parameters`), tunnisteiden pysyvyys- ja uudelleenkäyttösäännöt sekä laaduntarkistusten rakenteellisen ja toiminnallisen validoinnin erottaminen. Täsmennettiin skeemojen `$id`- ja `$schema`-vaatimukset, `format`-tarkistukset ja CI-testauksen kattavuus. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.3.80 (24.11.2026):** yhdenmukaistettiin avoimien teknisten yksityiskohtien luettelo hyväksyttyjen päätösten kanssa. Täsmennettiin lähderekisterin ulkopuolisten lähteiden ehdotuksia koskevan avoimen työn rajaus sekä laaduntarkistusten määrittelyn ja ajokohtaisten tulosten jo päätetyt osat. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.3.79 (24.11.2026):** hyväksyttiin laaduntarkistusten ajokohtaisten tietueiden kentät, tulosluokat, havaintojen vakavuusluokat, kirjaamissäännöt, vaadittujen tarkistusten kattavuus ja tuottajan sekä vastaanottajan vastuunjako. Yleistä automaattista hyväksymisrajaa vakavuusluokille ei asetettu. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.3.78 (24.11.2026):** hyväksyttiin, että yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä ja niiden ajokohtaiset tulokset tallennetaan tuottajan toimitusmetatietoihin. Tarkistusten määrittely erotetaan toteutuneiden tulosten kirjaamisesta; tarkat kentät ja tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
