@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.96  
+**Versio:** 0.3.97  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.52](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.53](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -298,7 +298,7 @@ Tehtävätyypin määrityksen rakenne sisältää `schema_version`-, `id`-, `des
 
 Määritysprofiilin rakenne sisältää `schema_version`-, `id`-, `task_type`-, `description`-, `settings`- ja `instruction`-kentät. Profiilin `task_type`-arvon on vastattava tehtäväpyynnössä valittua tehtävätyyppiä. Profiili ei peri toista profiilia. Aihekohtainen määritys sisältää `schema_version`-, `topic_id`-, `task_type`-, `enabled`-, `profiles`-, `settings`-, `source_registry`- ja `instruction`-tiedot. Profiiliviittaukset säilyttävät järjestyksen.
 
-Yhteinen lähderekisteri tallennetaan ensimmäisessä versiossa yhteen tiedostoon `data/sources/registry.json`, jonka juurikentät ovat `schema_version` ja `sources`. Keskitetty tiedosto helpottaa koko rekisterin tunnisteiden yksilöllisyyden ja viittausten validointia. Lopullinen polku vahvistetaan vielä nykyisen tiedostorakenteen inventaarion yhteydessä.
+Yhteinen lähderekisteri tallennetaan ensimmäisessä versiossa yhteen tiedostoon `data/sources/registry.json`, jonka juurikentät ovat `schema_version` ja `sources`. Keskitetty tiedosto helpottaa koko rekisterin tunnisteiden yksilöllisyyden ja viittausten validointia. Hakemistorakenne ja tiedostopolut määritellään tavoitetilan mukaisesti puhtaalta pöydältä; vanhan toteutuksen tiedostorakennetta ei käytetä lähtökohtana.
 
 Lähteen tietue sisältää kentät `id`, `name`, `publisher`, `source_type`, `description`, `homepage_url`, `languages`, `regions`, `reliability`, `reliability_notes`, valinnaiset `timezone` ja `timezone_basis`, `technical_access` sekä `channels`. Lähdetyypit ovat `news_media`, `official_source`, `social_media`, `forum`, `blog`, `database`, `video_platform`, `event_listing` ja `other`. Luotettavuusluokitus on `high`, `medium`, `low` tai `unassessed`; se on lähteen toimituksellinen arvio, ei tae yksittäisen sisällön oikeellisuudesta. Kielet ilmaistaan BCP 47 -tunnisteilla ja alueet ISO 3166-1 alpha-2 -koodeilla tai arvolla `global`. Tyhjä lista tarkoittaa määrittelemätöntä tietoa.
 
@@ -500,7 +500,7 @@ Vastaanottaja varmistaa, että toimituksen `run_id` ja `delivery_id` vastaavat p
 
 Paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot. `item.xml` vaaditaan vain tehtävätyypin ja tuottajan tulostilan niin edellyttäessä. Tiedostoroolit ja tulostilakohtaiset vaatimukset tulevat tehtävätyypin määrityksestä. Odottamattomat tiedostot hylätään. Polut ovat paketin sisäisiä: absoluuttiset polut, `..`-siirtymät, symboliset linkit ja paketin ulkopuolelle osoittavat viittaukset eivät ole sallittuja. Ensimmäiseen versioon ei rakenneta yleistä liite- tai kuvakäsittelyä.
 
-Metatiedot validoidaan skeemaa vasten. Tarkistukset kattavat pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion ja tunnisteiden vastaavuuden. Tuntematonta skeemaversiota ei tulkita arvaamalla. Jo hyväksyttyä kuuden tietoryhmän toimitusmetatietomallia ei muuteta tällä päätöksellä. Sisältötiedostot validoidaan erillään metatiedoista niiden luettavuuden, koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakollisten elementtien ja keskinäisten viittausten osalta. RSS-itemin tarkka sisältösopimus, elementtien pakollisuus, GUIDin muodostus ja raporttisisällön esitystapa jäävät avoimiksi.
+Metatiedot validoidaan skeemaa vasten. Tarkistukset kattavat pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion ja tunnisteiden vastaavuuden. Tuntematonta skeemaversiota ei tulkita arvaamalla. Jo hyväksyttyä kuuden tietoryhmän toimitusmetatietomallia ei muuteta tällä päätöksellä. Sisältötiedostot validoidaan erillään metatiedoista niiden luettavuuden, koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakollisten elementtien ja keskinäisten viittausten osalta. RSS-itemin toimitustiedosto sisältää täsmälleen yhden `<item>`-elementin eikä kokonaista RSS-syötettä. Itemissä ei käytetä `<link>`-elementtiä; lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa. `<guid>` yksilöi itemin eikä toimi linkkinä raporttisivulle. Muiden elementtien pakollisuus, GUIDin tarkka muodostus ja raporttisisällön tarkempi HTML-rakenne täsmennetään erikseen.
 
 Vastaanottaja laskee jokaisen toimitetun sisältötiedoston koon ja SHA-256-tiivisteen ja vertaa niitä metatietoihin. Puuttuva tiedosto, väärä koko tai tiiviste sekä määriteltyjen koko- tai määrärajojen ylitys estävät hyväksymisen. Tiiviste todentaa eheyden, ei lähettäjän henkilöllisyyttä. Vastaanottaja ei suorita toimituspaketin koodia.
 
@@ -795,7 +795,6 @@ Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi,
 - Ohjelmiston ja instanssin välinen raja määritellään versioitujen, dokumentoitujen rajapintojen ja tietosopimusten avulla. Ohjelmisto ei saa olettaa, että instanssin määritykset, lähderekisterit, ajotiedot tai RSS-tiedostot sijaitsevat samassa repositoriossa tai ohjelmistokoodin suhteellisissa poluissa.
 - Instanssi käyttää nimenomaisesti valittua ohjelmistoversiota. Uuden ohjelmistoversion julkaiseminen ei päivitä instanssia automaattisesti; instanssin ylläpitäjä päättää päivityksestä ja sen ajankohdasta. Käytössä oleva versio on voitava jäljittää.
 - Ensimmäinen toteutus pysyy yksinkertaisena: yksi instanssi, yksi raportintuottaja ja sarjallinen tehtävänkäsittely. Tämä ratkaisu ei edellytä monen instanssin keskitettyä palvelua, monivuokraaja-arkkitehtuuria, käyttäjähallintapalvelua tai rinnakkaisten raportintuottajien varausmekanismia.
-- Nykyinen repositorio sisältää siirtymävaiheessa sekä ohjelmistoon että nykyiseen käyttöönottoon liittyviä osia. Niiden välitöntä siirtämistä tai poistamista ei tehdä tämän päätöksen perusteella. Nykyinen sisältö inventoidaan, ohjelmisto- ja instanssikohtaiset osat luokitellaan ja erottamisen migraatio suunnitellaan erikseen ennen tiedostojen siirtämistä tai repositorioiden perustamista.
 - **Valvomo ja RSS-lukija** ovat instanssikohtaisia palvelunäkymiä. Niiden yhteinen lähdekoodi, käyttöliittymäkomponentit ja yleinen toiminnallisuus kuuluvat ohjelmistorepoon. Instanssikohtaiset aiheet, asetukset, raportit, RSS-syötteet, ajotiedot ja muut näytettävät tiedot kuuluvat instanssirepoon.
 - Käyttöliittymien on saatava instanssin tiedot määritellyn rajapinnan tai tietosopimuksen kautta. Yhteinen käyttöliittymäkoodi ei saa sisältää yhden instanssin aiheita, syötteitä, raportteja tai muita instanssikohtaisia arvoja kovakoodattuina.
 - Ensimmäisessä versiossa sekä Valvomo että RSS-lukija julkaistaan julkisina ilman kirjautumista tai käyttöoikeusjärjestelmää. Tämä on mahdollista, koska ensimmäisen version käyttötarkoitukseen ei kuulu salaisten tai yksityisten tietojen käsittely.
@@ -803,23 +802,7 @@ Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi,
 - Jos myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, tietojen erottelu ja käyttöoikeuksien tekninen toteutus suunnitellaan erikseen ennen tällaisen tiedon käyttöönottoa.
 - Repositorioiden nimet, täsmällinen hakemistorakenne, ohjelmiston jakelukanava ja instanssin käyttöönoton tekninen toteutus ratkaistaan myöhemmässä teknisessä suunnittelussa. Niitä ei lukita tällä arkkitehtuuriperiaatteella.
 
-## 3. Nykyisen toteutuksen hyödyntäminen
-
-Aiemman toteutuksen osia ei palauteta kokonaisuutena sellaisenaan. Ennen toteutuspäätöksiä tehdään komponenttikohtainen katselmointi.
-
-Katselmoinnissa arvioidaan erikseen ainakin:
-
-- aihe- ja seurantatyyppimääritykset;
-- raportin ja ajotuloksen tietosopimukset;
-- RSS-julkaisun validointi ja idempotenssi;
-- ajohistorian tietomalli;
-- Valvomon tietolähteet ja näkymät;
-- RSS-lukijan nykyinen toteutus;
-- testit ja GitHub Actions -työnkulut.
-
-Osa voidaan säilyttää, osa yksinkertaistaa ja osa toteuttaa uudelleen. Uudelleenkäyttö ei saa tuoda takaisin tarpeettomia riippuvuuksia tai monimutkaisuutta.
-
-## 4. Kehitysympäristön hyväksytty tavoitetila
+## 3. Kehitysympäristön hyväksytty tavoitetila
 
 Toteutussuunnitelmaan sisältyvät seuraavat käyttäjän hyväksymät GitHub-käytännöt:
 
@@ -838,9 +821,9 @@ Toteutussuunnitelmaan sisältyvät seuraavat käyttäjän hyväksymät GitHub-k�
 
 Nämä ovat tavoitetilan päätöksiä, eivät vielä toteutettuja käytäntöjä. Niiden käyttöönotto suunnitellaan vaiheittain. PR-pakkoa tai automaattisia riippuvuuspäivityksiä tuotantoon ei oteta käyttöön ilman erillistä hyväksyntää.
 
-## 5. Ehdotettu toteutuksen vaiheistus
+## 4. Ehdotettu toteutuksen vaiheistus
 
-1. Nykyisen toteutuksen ja arkiston komponenttikohtainen inventaario.
+1. Uuden toteutuksen perustaminen puhtaalta pöydältä hyväksytyn tavoitetilan ja tietosopimusten mukaisesti. Vanhan arkistoidun toteutuksen koodia, skeemoja, määrityksiä, testejä, työnkulkuja tai tietorakenteita ei siirretä eikä käytetä uuden toteutuksen lähtökohtana.
 2. Tehtävätyyppien, määritysprofiilien ja aihekohtaisten määritysten sekä toimitussopimuksen skeemojen määrittely, mukaan lukien tehtäväpyynnön, toimituksen ja kanonisen ajohistorian erilliset tietosopimukset.
 3. Yhteisen raportintekijän peruspromptin ja tehtäväpyynnön ohjeviittausten määrittely ja versionhallinta.
 4. Ajonhallinta: yhden aiheen valinta, `run_id`, ajotietue ja koko instanssin kattava sarjallisen käsittelyn suoja, joka sallii vain yhden aktiivisen raportointitehtävän kerrallaan.
@@ -853,7 +836,7 @@ Nämä ovat tavoitetilan päätöksiä, eivät vielä toteutettuja käytäntöj�
 
 Vaiheistus on suunnitteluehdotus. Se ei anna lupaa käynnistää tuotantoa tai muuttaa nykyisiä automaatioita.
 
-## 6. Myöhempiin versioihin jätetyt kehitystehtävät
+## 5. Myöhempiin versioihin jätetyt kehitystehtävät
 
 Tässä osiossa pidetään kirjaa asioista, jotka on tietoisesti rajattu ensimmäisen version ulkopuolelle tai joiden toteutusta on päätetty lykätä. Ne eivät ole ensimmäisen version avoimia hyväksymiskriteerejä. Asia siirretään toteutussuunnitelman varsinaiseen työvaiheeseen vasta, kun sen toteutusajankohta ja laajuus päätetään.
 
@@ -870,7 +853,7 @@ Tässä osiossa pidetään kirjaa asioista, jotka on tietoisesti rajattu ensimm�
 
 Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asia otetaan työn alle, se siirretään tästä osiosta asianomaiseen toteutusvaiheeseen ja tarvittaessa avoimiin teknisiin yksityiskohtiin. Näin samaa asiaa ei ylläpidetä kahdessa paikassa ristiriitaisin tilatiedoin.
 
-## 7. Avoimet tekniset yksityiskohdat
+## 6. Avoimet tekniset yksityiskohdat
 
 Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sama vaatimusmäärittelyssä ja toteutussuunnitelmassa, jotta suunnittelun tilanne pysyy yhdenmukaisena.
 
@@ -902,14 +885,15 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 15. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne, tietojen esitystapa ja navigointi.
 16. **Julkisten käyttöliittymien tietoturvatarkistukset:** Valvomoon ja RSS-lukijaan päätyvän sisällön sekä niiden lukemien tietolähteiden automaattiset tarkistukset, joilla estetään salaisuuksien, käyttöoikeustunnusten ja yksityisten tietojen päätyminen julkisiin tiedostoihin tai rajapintoihin.
 
-### 5. Siirtymä ja käyttöönotto
+### 5. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
-17. **Nykyisen toteutuksen inventaario ja siirtymä:** nykyisten komponenttien arviointi, säilytettävien, yksinkertaistettavien ja uudelleenrakennettavien osien valinta sekä siirtymän vaiheistus ja mahdolliset migraatiot.
-18. **Historiatietojen säilytys:** ajotietojen, tapahtumien, lokien ja väliaineistojen säilytysajat sekä säilytyksen ja siivouksen tekniset käytännöt.
-19. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet ja hakemistorakenne, jakelukanava, ohjelmistoversion kiinnittäminen sekä ohjelmiston ja instanssin välisen tiedonsiirron tekniset yksityiskohdat.
-20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
+17. **Historiatietojen säilytys:** ajotietojen, tapahtumien, lokien ja väliaineistojen säilytysajat sekä säilytyksen ja siivouksen tekniset käytännöt.
+18. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet ja hakemistorakenne, jakelukanava, ohjelmistoversion kiinnittäminen sekä ohjelmiston ja instanssin välisen tiedonsiirron tekniset yksityiskohdat.
+19. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.97 (24.11.2026):** täsmennettiin RSS-itemin toimitusmuoto yhdeksi `<item>`-elementiksi ilman `<link>`-elementtiä ja määriteltiin lähteiden linkitys raporttisisällössä. Päätettiin aloittaa toteutus puhtaalta pöydältä käyttämättä vanhaa arkistoitua toteutusta; poistettiin vanhan toteutuksen inventaario-, hyödyntämis- ja siirtymävaiheet suunnitelmasta sekä avoimista tehtävistä.
 
 - **0.3.96 (24.11.2026):** korjattiin vastaanottoprosessin uuden alaotsikon hierarkiataso dokumentaation laaduntarkistuksen havainnon perusteella. **0.3.95 (24.11.2026):** kirjattiin vaatimusmäärittelyn kanssa yhdenmukaisesti vastaanottoprosessin 12 hyväksyttyä kokonaisuutta. RSS-itemin tarkka sisältösopimus jätettiin avoimeksi; vastaanoton ja julkaisun työnkulkujen tekninen toteutus, uudelleenyritysrajat ja käyttöönoton varmennukset säilyvät suunnittelutehtävinä. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
@@ -985,8 +969,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 - **0.3.47 (22.11.2026):** täsmennettiin, että tehtävän muodostus, määräajan valvonta ja toimituksen vastaanotto/käsittely kuuluvat yhteisen instanssikohtaisen sarjallisuuden hallinnan piiriin. Tekninen koordinointitapa jätettiin myöhempään suunnitteluun.
 
-## 8. Hyväksymismenettely
+## 7. Hyväksymismenettely
 
-Tämä dokumentti täydentyy teknisten yksityiskohtien ratkaisun ja nykyisen toteutuksen katselmoinnin perusteella. Käyttäjä tarkistaa ja hyväksyy toteutussuunnitelman kokonaisuutena ennen tikettien luomista.
+Tämä dokumentti täydentyy teknisten yksityiskohtien ratkaisun perusteella. Uusi toteutus suunnitellaan ja rakennetaan puhtaalta pöydältä; vanhaa arkistoitua toteutusta ei käytetä lähtökohtana. Käyttäjä tarkistaa ja hyväksyy toteutussuunnitelman kokonaisuutena ennen tikettien luomista.
 
 Toteutussuunnitelman hyväksyminen, tikettien luominen, toteutuksen aloittaminen ja tuotantoon siirtyminen ovat erillisiä vaiheita. Nykyisten automaatioiden ajastuksia, ohjeita, kehotteita tai kohdekeskusteluja ei muuteta ilman erillistä lupaa.
