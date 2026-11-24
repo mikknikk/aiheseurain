@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.87  
+**Versio:** 0.3.88  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.45](vaatimusmaarittely-uudistus.md)
@@ -977,8 +977,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottorajapinta:** GitHub App -pohjaisen Git push -toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistys, Appin tosiasiallisten käyttöoikeuksien tarkistaminen ja vastaanoton kirjaamisen yksityiskohdat.
-10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main)-haaran suojauksen ja käyttöönoton yhteensovittaminen.
+9. **Vastaanottorajapinta:** ensimmäisen version GitHub App -pohjaisen toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistyminen, Appin tosiasiallisten käyttöoikeuksien tarkistaminen sekä vastaanoton kirjaamisen yksityiskohdat.
+10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main`-haaran suojauksen ja käyttöönoton yhteensovittaminen.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
 13. **Toimituspakettien säilytys:** vastaanottohaaran toimituspakettien säilytysajat, siivouksen ehdot sekä keskeneräisten ja palautettavien ajojen aineiston säilyttäminen.
@@ -997,6 +997,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.88 (24.11.2026):** yhdenmukaistettiin vastaanottorajapinnan avoimen suunnittelukohdan sanamuoto vaatimusmäärittelyn kanssa ja korjattiin `main`-haaran nimen kirjoitusasu. Aiemmin hyväksyttyjä teknisiä ratkaisuja ei muutettu.
 
 - **0.3.87 (24.11.2026):** hyväksyttiin ensimmäisen version toimituskanavaksi nykyisen GitHub App -yhteyden kautta tehtävä Git push erilliseen vastaanottohaaraan. Täsmennettiin, ettei käyttäjäkohtaista tunnistamista tai erillistä HTTPS-vastaanottopalvelua toteuteta ensimmäisessä versiossa, että Appin tosiasialliset oikeudet tarkistetaan ja että pushin onnistuminen ei tarkoita toimituksen hyväksymistä tai julkaisua. Vastaanoton ja validoinnin tulokset kirjataan GitHub Actionsin ja vastaanottajan ajotietojen kautta. Laajemmat tunnistus- ja käyttöoikeusmallit jätettiin myöhempiin versioihin. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 - **0.3.86 (24.11.2026):** hyväksyttiin rekisterin ulkopuolisten lähteiden ehdotusten tietoryhmät, erillinen `data/source-proposals/`-tallennus, ehdotusten elinkaaren tilat ja ensimmäisen version GitHub-pohjainen käsittely. Täsmennettiin kanavakohtaisten avausyritysten tilastointi, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot, Valvomon tunnusluvut sekä toistuvien epäonnistumisten alustava nostokriteeri. Lähteiden automaattista poistamista tai käytöstä poistamista tilastojen perusteella ei sallita. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
