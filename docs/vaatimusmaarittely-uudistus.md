@@ -814,8 +814,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 2. Lähderekisteri ja lähdetilastot
 
-7. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen perusrakenne, erillinen tallennuspolku, elinkaaren tilat ja ensimmäisen version GitHub-pohjainen käsittely on päätetty. Avoimeksi jäävät täsmälliset skeemakentät ja myöhemmän käyttöliittymän toteutus.
-8. **Lähdekohtaiset tilastot:** avausyrityksen perusrakenne, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot sekä Valvomon esitettävät tunnusluvut on päätetty. Toistuvien epäonnistumisten alustavat nostokriteerit on päätetty; tarkat skeemakentät ja näkymän toteutus jäävät myöhempään suunnitteluun.
+7. **Rekisterin ulkopuolisten lähteiden ehdotukset:** perusrakenne, tallennuspolku, elinkaaren tilat, validointi ja ensimmäisen version GitHub-pohjainen käsittely on päätetty. Täsmälliset skeemakentät ja mahdollinen myöhempi käyttöliittymä ovat avoinna.
+8. **Lähdekohtaiset tilastot:** avausyritysten tietosisältö, virheluokat, tarkastelujaksot, Valvomon tunnusluvut ja toistuvien epäonnistumisten alustavat nostokriteerit on päätetty. Täsmälliset skeemakentät ja näkymän toteutus ovat avoinna.
 
 ### 3. Integraatiot ja ajonhallinta
 
