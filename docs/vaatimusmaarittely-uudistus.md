@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.62  
+**Versio:** 0.12.63  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -601,7 +601,7 @@ Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Julk
 - Itemissä ei käytetä `<link>`-elementtiä eikä tätä sääntöä voi muuttaa aihe- tai tehtäväkohtaisella asetuksella.
 - Lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa.
 - Itemillä on yksilöllinen `<guid>`, joka toimii tunnisteena eikä raporttisivun linkkinä.
-- Raportti on suomenkielinen ja sisältää aina seurannan aikavälin.
+- Raportti on suomenkielinen ja sisältää aina seurannan aikavälin. Merkittävät aikavälin ulkopuoliset täydennykset esitetään erillään varsinaisesta seurannasta ja niiden todellinen ajankohta ilmoitetaan.
 - Lähteiden luotettavuus ja olennaiset epävarmuudet ilmaistaan aihekohtaisen raporttipohjan mukaisesti.
 - Tuottaja toimittaa enintään yhden uuden itemin yhtä raportoitavaa ajoa kohti.
 - Vastaanottava julkaisukerros validoi itemin ja lisää sen oikean aiheen syötteeseen.
@@ -614,6 +614,29 @@ Tuottajan `success` ei tarkoita, että tulos olisi validoitu tai julkaistu. Julk
 - Julkaisu ja ajotietojen tallennus toteutetaan niin, ettei virheellinen tai puoliksi tallennettu julkaisu näy onnistuneena.
 
 Jos ajo onnistuu mutta uutta raportoitavaa ei löydy, ajotiedot tallennetaan ja Valvomo näyttää onnistuneen ajon ilman uutta RSS-julkaisua. Keinotekoisia ”ei uutisia” -RSS-itemeitä ei luoda.
+
+### 7.1 Raportin HTML-perusrakenne
+
+Jokainen raportti esitetään yhden `<article>`-elementin sisällä. Raportin yhteinen perusrakenne sisältää:
+
+- yhden `<h1>`-elementin raportin otsikolle;
+- raportin seuranta-aikavälin selkokielisen esityksen raportin alussa;
+- raportin varsinaisen sisällön loogisesti jäsenneltyinä `<section>`-osioina;
+- lähteiden esittämisen joko havaintojen yhteydessä, erillisessä lähdeosiossa tai näiden yhdistelmänä.
+
+Rakenne on yhteinen looginen malli, ei vaatimus täsmälleen tietystä määrästä `<section>`-elementtejä tai kaikille aiheille samasta osiojaosta. Erillinen raportin lopun lähdeluettelo ei ole pakollinen, mutta jokaisen raportoitavan väitteen lähteet on esitettävä niin, että niiden yhteys havaintoon on tunnistettavissa.
+
+Otsikkohierarkiassa käytetään yhtä `<h1>`-otsikkoa. Pääosiot merkitään `<h2>`-otsikoilla ja niiden alaosiot tarvittaessa tasoilla `<h3>`–`<h6>`. Otsikkotasoja ei hypitä ilman rakenteellista perustetta, eikä tasoa valita visuaalisen ulkoasun perusteella. RSS-itemin `<title>` ja HTML-raportin `<h1>` saavat olla samat, mutta niiden ei tarvitse olla teknisesti identtiset: RSS-otsikko voi olla lyhyempi ja HTML-otsikko kuvailevampi.
+
+Seurannan aikaväli ilmoitetaan jokaisessa raportissa yksiselitteisesti raportin alussa. Päivämäärät esitetään lukijalle ymmärrettävästi. Aikavälin alku- ja loppuhetki voidaan merkitä koneellisesti luettavilla `<time datetime="...">`-elementeillä silloin, kun tarkat ajanhetket ovat tiedossa. Raporttiin ei lisätä sisäisiä tunnisteita tai ajotietoja, elleivät ne ole lukijan kannalta tarpeellisia.
+
+Raportin varsinainen seuranta käsittelee tehtäväpyynnön mukaista aikaväliä. Raporttiin saa lisäksi sisällyttää erillisenä, selvästi nimettynä täydennysosiona merkittäviä uutisia tai havaintoja tämän aikavälin ulkopuolelta, myös edelliseltä seurantajaksolta, jos ne ovat aiemmasta raportista jääneet olennaisesti puuttumaan. Täydennyksiä ei käytetä tavalliseen uutisten jälkikäteiseen kierrättämiseen tai raportin täyttämiseen, vaan niiden on oltava aiheen kannalta merkittäviä ja lukijalle aidosti hyödyllisiä. Täydennysosiossa ilmoitetaan uutisen tai tapahtuman todellinen ajankohta tai ajanjakso, ja tehdään selväksi, että kyse on aiemman tai muuten seurantajakson ulkopuolisen tiedon täydentämisestä. Jos täydennys liittyy aiempaan raporttiin, siihen viitataan mahdollisuuksien mukaan. Täydennys ei muuta raportin varsinaista seuranta-aikaväliä eikä anna ymmärtää, että uutinen olisi tapahtunut nykyisellä seurantajaksolla. Aiemmin julkaistua raporttia ei muuteta; olennainen täydennys julkaistaan uuden raportin osana tai erillisenä korjaus-/täydennysiteminä julkaisusääntöjen mukaisesti.
+
+Lähdelinkkien tekstin tulee kuvata ymmärrettävästi linkin kohdetta myös asiayhteydestä erotettuna. Lähteen ja sitä tukevan havainnon välinen yhteys on voitava tunnistaa. Samaa lähdettä ei tarvitse linkittää kahteen kertaan, jos yhteys on muuten yksiselitteinen.
+
+Raportin saavutettavuuden perustana ovat johdonmukainen otsikkohierarkia, ymmärrettävät kappaleet ja osiot, oikeat listaelementit, kuvaavat linkkitekstit sekä sisältörakenteen ymmärrettävyys ilman visuaalista muotoilua. Päivämäärien koneellista luettavuutta tuetaan `<time>`-elementillä silloin, kun se on käytössä. WCAG 2.2 AAA on tavoitetaso, mutta vaatimustenmukaisuutta ei väitetä ilman asianmukaista testausta.
+
+Yhteinen perusrakenne ei pakota eri seurantatyyppejä samanlaiseen sisältöön. Uutisseuranta voi ryhmitellä havainnot aiheittain, tapahtumaseuranta tuleviin ja menneisiin tapahtumiin, elokuvaseuranta elokuvittain ja henkilöseuranta henkilöittäin tai tapahtumatyypeittäin. Sisältöosioiden nimet, määrä ja järjestys voivat vaihdella; yhteisiä ovat raportin perusrakenne, seuranta-aikavälin ilmoittaminen, otsikkohierarkia, lähteiden jäljitettävä esittäminen sekä mahdollisten aikavälin ulkopuolisten täydennysten selkeä erottaminen varsinaisesta seurannasta.
 
 ## 8. Valvomon tietotarpeet
 
@@ -948,7 +971,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 9.7 **Idempotenssi ja virhetilanteet:** määritellään uudelleenyrityksen tunnistaminen, jo käsitellyn toimituksen vaste, ristiriitaisten toimitusten käsittely sekä pysyvien ja tilapäisten virheiden luokittelu.
    - 9.8 **Julkaisun varmennus:** määritellään itemin tallentumisen, GUIDin ja ajotietueen yhtäpitävyyden, RSS-luettavuuden ja Pages-julkaisun valmistumisen tarkistukset.
    - 9.9 **Käyttöönoton hyväksymiskriteerit:** määritellään päästä päähän -skenaariot, palautumis- ja virhetestit, havaittavuus sekä käyttöönottovalmiuden ehdot.
-   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
+   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - 10.1 Määritellään instanssirepositorion lopullinen hakemistorakenne ja Pages-julkaisun lähdepolut.
@@ -1050,6 +1073,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.63 – 24.11.2026:** hyväksyttiin raportin yhteinen HTML-perusrakenne, otsikkohierarkia, seuranta-aikavälin ja lähdeviitteiden esittäminen, saavutettavuuden periaatteet sekä aihekohtaisen sisältövaihtelun rajat. Sallittiin lisäksi merkittävien aikavälin ulkopuolisten uutisten ja aiemmasta raportista puuttuneiden olennaisten havaintojen erillinen, selvästi ajoitettu täydennysosio muuttamatta varsinaista seuranta-aikaväliä. Kohta 9.3 poistettiin avoimien kohtien luettelosta. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.62 – 24.11.2026:** hyväksyttiin kohdan 9.2 XML- ja HTML-yhteensopivuus: XML-kirjastolla muodostaminen, CDATA-käytäntö ja turvallinen osiointi, sallittujen HTML-elementtien ja attribuuttien lista, HTML:n hylkääminen ilman automaattista korjausta sekä kuvien rajaaminen jatkokehitykseen. Kohta 9.2 poistettiin avoimien kohtien luettelosta. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
