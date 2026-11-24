@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.58  
+**Versio:** 0.12.59  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -875,7 +875,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottoprosessin viimeistely ja käyttöönotto:** hyväksytyt toimituksen tunnistamisen, pakettirakenteen, metatieto-, sisältö- ja eheysvalidoinnin, kaksoistoimitusten, käsittelytilojen, kirjanpidon, työnkulkuvastuiden ja turvallisuuden periaatteet on kirjattu. RSS-itemin toimitusmuoto ja linkityksen periaatteet on päätetty; avoinna ovat muiden elementtien pakollisuus, GUIDin tarkka muodostus ja raportin HTML-rakenne sekä vastaanotto- ja julkaisutyönkulkujen tekninen toteutus ja käyttöönoton varmennukset.
+9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto:** RSS-itemin toimitusmuoto on päätetty: yksi `<item>` ilman `<link>`-elementtiä, pakolliset `<title>`, `<guid>` ja UTC-muotoinen `<pubDate>`, koko raportti HTML-muodossa `<content:encoded>`-elementissä sekä valinnainen lyhyt `<description>`. `content`-nimiavaruus määritellään toimitettavassa itemissä. GUIDin UUIDv4-muodostus, atominen tallennus ja uudelleenyritysten idempotentti käyttö on päätetty. Avoinna ovat muiden RSS-elementtien pakollisuus, raportin HTML-rakenteen tarkempi yhteinen perusmuoto sekä vastaanotto- ja julkaisutyönkulkujen tekninen toteutus, konkreettiset uudelleenyritysrajat ja käyttöönoton varmennukset.
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto:** julkisen instanssirepositorion Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä `main`-haaran suojauksen tekninen toteutus ja varmennus Codex Connectorin repositoriotasoisen käyttöoikeuden näkökulmasta. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
@@ -904,6 +904,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.59 – 24.11.2026:** päivitettiin avoimien teknisten asioiden luettelo vastaamaan 24.11. hyväksyttyjä RSS-itemin sisältösopimuksen ja UUIDv4-GUIDin ratkaisuja. Poistettiin GUIDin muodostus avoimista asioista ja rajattiin jäljellä oleva työ RSS-elementtien pakollisuuteen, HTML-rakenteen tarkempaan perusmuotoon, työnkulkujen toteutukseen, uudelleenyritysrajoihin ja käyttöönoton varmennuksiin. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.54 – 24.11.2026:** täsmennettiin RSS-julkaisemisen sääntöjä: toimitustiedosto sisältää yhden `<item>`-elementin, `<link>`-elementin puuttuminen on kiinteä sääntö ja lähteet linkitetään raportin sisällössä. Rajattiin vastaanottoprosessin avoin RSS-kohta jäljellä oleviin HTML-, GUID- ja elementtikohtaisiin yksityiskohtiin.
 
