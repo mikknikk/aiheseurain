@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.63  
+**Versio:** 0.12.64  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -474,6 +474,12 @@ Rakenteiset havainnot toimitetaan `findings.json`-tiedostossa vain, jos tehtäv�
 Tehtävätyypin määritys määrittelee sallitut ja vaaditut tiedostoroolit. Rooli kuvaa tiedoston tarkoitusta ja polku sen sijaintia. Jokaisella roolilla on tehtävätyypin sisällä pysyvä ja yksilöllinen `file_id`. Roolimäärityksen kentät ovat `file_id`, `name`, `description`, `media_type`, `status_requirements` ja `parameters`. `parameters` on aina objekti; jos rooli ei tarvitse lisäasetuksia, arvo on `{}`. Roolikohtainen skeema määrittelee sallitut parametrit ja niiden tyypit sekä mahdolliset rajat. Tuntemattomat parametrit hylätään. Parametreilla voidaan kuvata esimerkiksi sisältömuotoa, kieltä tai roolikohtaisia sisältörajoituksia, mutta niillä ei määritellä uudelleen tiedoston tunnistetta, polkua, kokoa, tiivistettä tai tulostilakohtaisia vaatimuksia. `status_requirements` määrittelee kullekin tuottajan tulostilalle arvon `required`, `optional` tai `forbidden`. Tämä korvaa erilliset yleisen pakollisuuden ja sallittujen tilojen kentät, jotta päällekkäisiä tai ristiriitaisia sääntöjä ei synny.
 
 `metadata.json` sisältää kaikkien toimitettujen sisältötiedostojen luettelon. Tietue sisältää kentät `file_id`, `path`, `media_type`, `size_bytes` ja `sha256`. Koko tavuina ja SHA-256-tiiviste ovat pakollisia jokaiselle luetteloidulle sisältötiedostolle. `metadata.json` ei sisälly omaan luetteloonsa. Polut ovat toimituspaketin juureen suhteutettuja, käyttävät `/`-erotinta eivätkä saa olla absoluuttisia tai sisältää `..`-siirtymiä tai symbolisia linkkejä. Tyhjät hakemistot eivät kuulu paketin tietosisältöön. Roolin sallittu tiedostomäärä määritellään tehtävätyypissä; oletusarvo on yksi tiedosto roolia kohti.
+
+Toimituspaketin tiedostot yksilöidään toimituspaketin sisäisillä poluilla ja metatietojen tiedostoluettelon avulla. Jokaisella tiedostolla on yksi tiedostoluettelon tietue ja yksi tehtävätyypin mukainen rooli; samaa polkua ei saa ilmoittaa ristiriitaisilla rooleilla. Tiedostopolut ovat yksilöllisiä, ja vastaanottaja tarkistaa roolin, polun, tiedoston olemassaolon, koon ja SHA-256-tiivisteen vastaavuuden. Paketin ulkopuolelle osoittavia viittauksia ei sallita.
+
+Kun tehtävätyyppi tuottaa julkaistavan raportin, raportti toimitetaan `item.xml`-tiedostossa. Tiedosto sisältää yhden RSS-itemin, ja koko raportin HTML-sisältö on itemin `<content:encoded>`-elementissä. Erillistä HTML-raporttitiedostoa ei toimiteta ensimmäisessä versiossa. `item.xml` vaaditaan vain tehtävätyypin ja tuottajan tulostilan sitä edellyttäessä; muut sisältötiedostot sallitaan vain tehtävätyypin määrittelemien tiedostoroolien perusteella.
+
+Korjaus tai olennainen täydennys julkaistaan uutena RSS-iteminä, jolla on oma vastaanottajan luoma UUIDv4-GUID. Uuden itemin toimitusmetatiedoissa yksilöidään alkuperäisen itemin GUID ja ilmoitetaan uuden itemin suhteen tyyppi (korjaus tai täydennys). Raporttisisällössä suhde alkuperäiseen julkaisuun ilmaistaan lukijalle tarpeellisessa määrin. Alkuperäistä itemiä, raporttia tai toimituspakettia ei muuteta. Metatietojen täsmälliset kenttänimet määritellään skeematyössä.
 
 #### Tulostilakohtaiset toimitusvaatimukset
 
@@ -965,13 +971,12 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
    - 9.3 **Raportin HTML-perusrakenne:** määritellään yhteiset rakenneosat, otsikkohierarkia, metatietojen ja lähdeviitteiden esitys, saavutettavuus sekä aihekohtaisen vaihtelun rajat.
-   - 9.4 **Toimituspaketin rajapinta:** määritellään itemin, raporttitiedoston ja toimitusmetatietojen yhteys, tiedostojen yksilöinti sekä korjaus- ja täydennysitemin viittaus alkuperäiseen.
    - 9.5 **Vastaanoton validointi:** täsmennetään tarkistusjärjestys ja hyväksymisehdot tunnisteille, revisioille, metatiedoille, tiedostoille, viittauksille, XML:lle, HTML:lle ja RSS-sopimukselle.
    - 9.6 **Vastaanoton ja julkaisun työnkulku:** määritellään tilasiirtymät, vaiheiden vastuut, atomisen tallennuksen rajat, julkaisemisen järjestys ja odotustilat.
    - 9.7 **Idempotenssi ja virhetilanteet:** määritellään uudelleenyrityksen tunnistaminen, jo käsitellyn toimituksen vaste, ristiriitaisten toimitusten käsittely sekä pysyvien ja tilapäisten virheiden luokittelu.
    - 9.8 **Julkaisun varmennus:** määritellään itemin tallentumisen, GUIDin ja ajotietueen yhtäpitävyyden, RSS-luettavuuden ja Pages-julkaisun valmistumisen tarkistukset.
    - 9.9 **Käyttöönoton hyväksymiskriteerit:** määritellään päästä päähän -skenaariot, palautumis- ja virhetestit, havaittavuus sekä käyttöönottovalmiuden ehdot.
-   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
+   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3) ja toimituspaketin rajapinta (9.4) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - 10.1 Määritellään instanssirepositorion lopullinen hakemistorakenne ja Pages-julkaisun lähdepolut.
@@ -1073,6 +1078,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.64 – 24.11.2026:** hyväksyttiin toimituspaketin rajapinta: `metadata.json` kuvaa toimituksen ja sen tiedostot, `item.xml` sisältää koko raportin RSS-itemin `<content:encoded>`-elementissä eikä erillistä HTML-raporttitiedostoa toimiteta. Täsmennettiin tiedostojen rooli- ja polkuyksilöinti sekä korjaus- ja täydennysitemien suhde alkuperäiseen UUIDv4-GUIDiin; alkuperäistä julkaisua ei muuteta. Kohta 9.4 poistettiin avoimien kohtien luettelosta. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.63 – 24.11.2026:** hyväksyttiin raportin yhteinen HTML-perusrakenne, otsikkohierarkia, seuranta-aikavälin ja lähdeviitteiden esittäminen, saavutettavuuden periaatteet sekä aihekohtaisen sisältövaihtelun rajat. Sallittiin lisäksi merkittävien aikavälin ulkopuolisten uutisten ja aiemmasta raportista puuttuneiden olennaisten havaintojen erillinen, selvästi ajoitettu täydennysosio muuttamatta varsinaista seuranta-aikaväliä. Kohta 9.3 poistettiin avoimien kohtien luettelosta. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
