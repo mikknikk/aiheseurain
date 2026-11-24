@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.100  
+**Versio:** 0.3.101  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.56](vaatimusmaarittely-uudistus.md)
@@ -12,6 +12,8 @@
 Toteutussuunnitelma määrittelee, miten vaatimusmäärittelyn mukainen Aiheseurain rakennetaan. Se toimii myöhemmin GitHub-tikettien muodostamisen perustana.
 
 Perusratkaisun tulee olla mahdollisimman yksinkertainen. Raportintuotanto erotetaan deterministisestä ohjaus-, vastaanotto- ja julkaisukerroksesta.
+
+Instanssin yleinen aikavyöhyke määritetään instanssin asetuksissa IANA-aikavyöhyketunnisteena, esimerkiksi `Europe/Helsinki`. Se välitetään tehtäväpyynnön `resolved_config.timezone`-kentässä eikä sitä voi ylikirjoittaa tehtävätyypin asetuksilla, profiileilla tai aihekohtaisilla määrityksillä. Asetusta käytetään paikallisen ajan tulkintaan ja raportointijaksojen sekä aikataulujen rajoihin. Aikaleimat säilytetään yksiselitteisinä UTC-aikoina tai ISO 8601 -aikoina asianmukaisine UTC-offseteineen; RSS-itemin `<pubDate>` tuotetaan UTC-ajassa. Suoritusympäristön tai käyttäjän sijaintia ei käytetä aikavyöhykkeen päättelemiseen.
 
 ## 2. Hyväksytyt arkkitehtuuriperiaatteet
 
