@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.38  
+**Versio:** 0.12.39  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -730,7 +730,7 @@ Vaatimusmäärittely täyttää tavoitteensa, kun toteutuksen suunnittelussa voi
 
 Seuraavat tekniset yksityiskohdat ratkaistaan toteutussuunnittelussa. Luettelo sisältää vain aidosti avoimet asiat; hyväksyttyjä periaatteita tai jo määriteltyjä tietoja ei käsitellä uudelleen avoimina kysymyksinä.
 
-1. **Ajotuloksen ja tehtävätyyppien skeemat:** JSON Schema -tiedostojen tarkat rakenteet, pakolliset ja valinnaiset kentät, kenttäkohtaiset rajat, yhteiset osaskeemat sekä skeemojen väliset viittaukset viimeistellään. Laaduntarkistuksen ajokohtaisen tulostietueen kentät ja tulosluokat on päätetty. Avoinna ovat erityisesti tehtävätyypin määritykseen tallennettavien tarkistusten määrittelyrakenne, tarkistustunnisteiden muodostaminen ja pysyvyys sekä näiden rakenteiden validointisäännöt.
+1. **Ajotuloksen ja tehtävätyyppien skeemat:** JSON Schema -tiedostojen tarkat rakenteet, pakolliset ja valinnaiset kentät, kenttäkohtaiset rajat, yhteiset osaskeemat sekä skeemojen väliset viittaukset viimeistellään hyväksytyn yhteisen skeemamallin mukaisesti. Draft 2020-12, paikalliset `$ref`-viittaukset, vakaat `$id`-tunnisteet, semanttinen versiointi, tuntemattomien kenttien hylkääminen sekä rakenteellisen ja toiminnallisen validoinnin erottaminen on päätetty. Yhteisten osaskeemojen periaate ja skeemakokonaisuuden neljä vastuualuekokonaisuutta on päätetty. Tehtävätyypin laaduntarkistusten määritysrakenne (`check_id`, `name`, `description`, `required`, `parameters`) sekä tunnisteiden pysyvyys- ja uudelleenkäyttösäännöt on päätetty. Avoinna ovat yksittäisten skeematiedostojen täydelliset kenttärakenteet ja rajat, osaskeemojen tarkka jako ja nimeäminen, tehtävätyyppikohtaisten tarkistusten mahdollisten parametrien rakenteet sekä validointikoodin toteutustapa ja virheraportoinnin yksityiskohdat.
 2. **Vastaanottorajapinnan toteutus:** tekninen siirtotapa, tuottajan tunnistaminen ja mahdollinen tunnistautuminen valitaan turvallisten vaihtoehtojen perusteella.
 3. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus ratkaistaan. Nykyisiä automaatioita tai niiden ajastuksia ei muuteta tämän määrittelyn perusteella.
 4. **Jonon ja uudelleenyritysten tarkat rajat:** valinnan periaate on erääntyminen ja odotusaika. Aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat täsmennetään.
@@ -753,6 +753,7 @@ Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täyd
 
 ## 18. Muutosloki
 
+- **0.12.39 – 24.11.2026:** hyväksyttiin tietomalli- ja skeematyön yhteiset ratkaisut: skeemojen nelijako, yhteisten osaskeemojen periaate, laaduntarkistusten määritystietueen kentät (`check_id`, `name`, `description`, `required`, `parameters`), tarkistustunnisteiden pysyvyys- ja uudelleenkäyttösäännöt sekä laaduntarkistusten toiminnallisen validoinnin erottaminen rakenteellisesta skeemavalidoinnista. Täsmennettiin, että skeemojen automaattiset testit kuuluvat CI-tarkistuksiin. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.38 – 24.11.2026:** yhdenmukaistettiin avoimien suunnittelukysymysten luettelo hyväksyttyjen päätösten kanssa. Poistettiin jo ratkaistu lähderekisterin ulkopuolinen lähdehaku avoimista kysymyksistä ja täsmennettiin, mitkä laaduntarkistusten tietomallin osat on päätetty ja mitkä skeema- ja määritysrakenteet ovat yhä avoinna. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.37 – 24.11.2026:** hyväksyttiin yksittäisen laaduntarkistuksen ajokohtaisen tietueen kentät (`check_id`, `result`, `checked_at`, `findings`, `notes`, `reason`), viisi tulosluokkaa, havaintojen vakavuusluokat ja kirjaamissäännöt. Täsmennettiin vaadittujen tarkistusten kattavuus sekä tehtävätyypin määrityksen, raportintuottajan ja vastaanottajan vastuut. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.12.36 – 24.11.2026:** hyväksyttiin, että yksittäiset laaduntarkistukset määritellään tehtävätyypin määrityksessä ja niiden ajokohtaiset tulokset tallennetaan tuottajan toimitusmetatietoihin. Tarkistusten määrittely erotetaan siten toteutuneiden tulosten kirjaamisesta; tarkat kentät ja tulosarvot jätettiin avoimiksi. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
