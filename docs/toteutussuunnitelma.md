@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.92  
+**Versio:** 0.3.93  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.48](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.50](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -838,8 +838,8 @@ Tässä osiossa pidetään kirjaa asioista, jotka on tietoisesti rajattu ensimm�
 |---|---|---|
 | RSS-historian lukemisen optimointi, kuten indeksointi, hakupalvelu tai tiivistelmä-/välimuistiratkaisu | Ensimmäisessä versiossa raportintuottaja lukee koko kyseisen aiheen ja tehtävätyypin RSS-historian suoraan GitHubista. Erillistä hakukerrosta ei tarvita ennen kuin historian koko tai lukemisen kustannus aiheuttaa todellisen ongelman. | Kun RSS-historian koko, käsittelyaika tai raportintuottajan käytettävissä oleva konteksti tekee koko historian lukemisesta epäkäytännöllistä. Alkuperäinen RSS-historia säilyy tällöinkin vertailun lähteenä. |
 | Useat samanaikaiset raportintuottajat, tehtävien varaukset ja rinnakkaisuuden hallinta | Ensimmäisessä versiossa on yksi raportintuottaja ja tehtävät käsitellään sarjallisesti. | Kun käyttöön tulee toinen raportintuottaja tai rinnakkaisille ajoille syntyy todellinen tarve. |
-| Erillinen GitHub App tai raportintuottajan teknisesti rajatut kirjoitusoikeudet | Ensimmäinen versio käyttää nykyistä GitHub App -yhteyttä; erillistä käyttöoikeusjärjestelyä ei rakenneta ennakolta. | Kun raportintuottajia tai muita integraatioita tulee lisää tai käyttöoikeuksien eriyttäminen muuttuu tarpeelliseksi. |
-| Käyttäjäkohtainen tunnistaminen ja erillinen HTTPS-vastaanottopalvelu | Ensimmäisessä versiossa luotetaan GitHub App -pohjaiseen toimitusketjuun; erillistä käyttäjätunnistautumista tai vastaanottopalvelua ei rakenneta. | Kun tuottajia tulee useita, toimituskanava laajenee GitHubin ulkopuolelle tai uhkamalli edellyttää lähettäjäkohtaista tunnistamista. |
+| Erillinen GitHub App tai raportintuottajan teknisesti rajatut kirjoitusoikeudet | Ensimmäinen versio käyttää ChatGPT:n ajastetun tehtävän Codex Connector -yhteyttä. Erillistä vastaanotto-GitHub Appia ei käytetä; se voidaan luoda myöhemmin uudelleen, jos käyttöoikeuksien eriyttämiseen syntyy tarve. | Kun raportintuottajia tai muita integraatioita tulee lisää tai käyttöoikeuksien eriyttäminen muuttuu tarpeelliseksi. |
+| Käyttäjäkohtainen tunnistaminen ja erillinen HTTPS-vastaanottopalvelu | Ensimmäisessä versiossa luotetaan Codex Connectorin kautta tehtävään GitHub-toimitukseen; erillistä käyttäjätunnistautumista tai HTTPS-vastaanottopalvelua ei rakenneta. | Kun tuottajia tulee useita, toimituskanava laajenee GitHubin ulkopuolelle tai uhkamalli edellyttää lähettäjäkohtaista tunnistamista. |
 | Älykkäämpi epäonnistuneiden tehtävien palautuslogiikka | Ensimmäisessä versiossa käytettävien automaattisten käsittely-yritysten määrät, laskentatavat ja määräajat ovat tehtävätyypin määrityksissä ja tarvittaessa profiileissa määritettäviä konfiguroitavia arvoja; niitä ei kovakoodata. | Kun käytännön ajohistoria osoittaa, että yksinkertainen palautusmalli ei riitä. |
 | Ulkoiset ilmoitukset | Ne eivät ole välttämättömiä ensimmäisen version seuranta-, vastaanotto- ja julkaisuketjulle. | Kun ilmoituksille määritellään konkreettinen käyttäjätarve ja kanava. |
 | Toimitusten kryptografiset allekirjoitukset ja erilliset tarkistussummat | Ensimmäiseen versioon riittävät toimituspaketin tiedostojen, rakenteen, tunnisteiden ja aktiiviseen tehtävään kuulumisen tarkistukset. | Jos uhkamalli tai toimituskanavan luonne osoittaa vahvemman eheyden todentamisen tarpeelliseksi. |
@@ -888,9 +888,11 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### Versiohistoria
 
-- **0.3.92 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+- **0.3.93 (24.11.2026):** synkronoitiin vaatimusmäärittelyn avoimet vastaanottoa ja käyttöoikeuksia koskevat suunnittelukysymykset Codex Connector -toimitusmalliin. Korjattiin myöhempiin versioihin jätettyjen GitHub App - ja tunnistautumiskuvausten ristiriidat. Toteutusta ei aloitettu.
 
-- **0.3.92 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+- **0.3.93 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+
+- **0.3.93 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
 
 - **0.3.91 (24.11.2026):** hyväksyttiin ensimmäisen vaiheen raportintuottajaksi ChatGPT:n ajastettu tehtävä ja toimituskanavaksi Codex Connector. Käytännön testi vahvisti toimituksen erilliseen vastaanottohaaraan muuttamatta `main`-haaraa. Määriteltiin vastaanottohaaraksi `raportit-inbox`, toimituspaketin hakemistorakenne sekä vastaanoton ja julkaisun erottelu. Täsmennettiin Codex Connectorin repositoriotasoisen käyttöoikeuden vuoksi `main`-haaran erillinen suojaustarve. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa; aiempi App on poistettu. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
