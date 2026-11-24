@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.43  
+**Versio:** 0.12.44  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -161,6 +161,10 @@ Raportintuottaja voi etsiä uutisoitavaa myös tehtäväpyynnön lähderekisteri
 Tehtäväpyynnön `instance_revision` yksilöi ajossa käytettävän muuttumattoman lähderekisterin. Raportintuottaja ei saa muuttaa tätä rekisteriä eikä ajon syötteitä kesken suorituksen. Rekisterin ulkopuolinen lähde voidaan käyttää kyseisessä ajossa, jos lähdehaku on sallittu; sen tiedot ja rekisteröintiehdotus toimitetaan erillään käytetyn rekisterin snapshotista. Ehdotukset käsitellään vasta ajon päätyttyä. `disabled`-tilassa ehdotusta ei tallenneta pysyvästi, `propose`-tilassa se asetetaan ylläpitäjän hyväksyttäväksi ja `automatic`-tilassa se lisätään rekisteriin vasta validoinnin jälkeen hallitussa rekisteripäivityksessä. Uusi rekisteriversio vaikuttaa vasta seuraaviin tehtäväpyyntöihin, ei jo käynnissä olevaan ajoon.
 
 Ennen rekisteriin lisäämistä uuden lähteen perustiedot ja vähintään yksi sisältökanava validoidaan. Lisäksi tarkistetaan, ettei lähde tai kanava ole jo rekisterissä: vertailussa hyödynnetään vähintään julkaisijaa, kanavan ja kotisivun URL-osoitteita sekä muita käytettävissä olevia lähdetietoja, jotta samaa lähdettä ei lisätä rinnakkaisina tietueina. Jos vastaava lähde tai kanava löytyy, ehdotus yhdistetään olemassa olevaan tietueeseen hallitusti eikä luoda duplikaattia. Automaattisesti lisätyn lähteen `reliability` on `unassessed`, ellei sen toimituksellista luotettavuutta ole erikseen arvioitu. Lähteen alkuperä ja löytämisajankohta säilytetään jäljitettävyyttä varten. Rekisteröinti ei itsessään tarkoita lähteen luotettavaksi hyväksymistä. Rekisterin ulkopuoliset lähteet ja niiden käytön perusteet on voitava erottaa rekisteriin kuuluvista lähteistä ajon raportoinnissa ja jälkikäteisessä tarkastelussa.
+
+Rekisterin ulkopuolisesta lähteestä muodostettava ehdotus on lähdekohtainen kokonaisuus, joka sisältää pysyvän `proposal_id`, lähteen perustiedot, vähintään yhden sisältökanavan, mahdolliset kieli- ja aluetiedot, alustavan luotettavuusluokituksen, löytämisajankohdan ja -alkuperän, ehdotuksen perustelun sekä viittauksen sitä tuottaneeseen `run_id`-ajoon. Ehdotuksen lähde- ja kanavatiedot noudattavat lähderekisterin vastaavia tietomalliperiaatteita. Puuttuvia tai varmentamattomia tietoja ei täydennetä arvauksilla; arvioimattoman lähteen luokitus on `unassessed`.
+
+Ehdotukset tallennetaan erillisinä tiedostoina hakemistoon `data/source-proposals/{proposal_id}.json`, eivätkä ne kuulu lähderekisteriin ennen hyväksyntää. Ehdotuksen tilat ovat `pending`, `approved`, `rejected` ja `merged`. Vastaanottaja validoi ehdotuksen rakenteen, lähde- ja kanavatiedot sekä duplikaatit ennen ylläpitäjän käsittelyä. Ylläpitäjä voi hyväksyä ehdotuksen, hylätä sen tai yhdistää sen olemassa olevaan lähteeseen. Käsittelyajankohta ja perustelu säilytetään. Hyväksytty lähde lisätään rekisteriin hallitulla muutoksella; muutos vaikuttaa vain myöhemmin muodostettaviin tehtäväpyyntöihin. Ensimmäisessä versiossa ehdotukset tarkistetaan ja käsitellään GitHubissa tiedostoina; erillistä käyttöliittymää ei edellytetä. `propose` on ensimmäisen version suositeltu oletustila. `automatic`-tila säilyy mahdollisena erikseen määritettynä toimintatapana, mutta se ei ohita validointia tai duplikaattitarkistusta.
 
 Markdown-ohjeita ei validoida JSON Scheman avulla. Niiden tarkistuksiin kuuluvat yksilöllinen ohjetunniste, tiedoston olemassaolo oikeassa repositoriossa ja kiinnitetyssä commitissa, repositoriojuureen suhteutettu turvallinen polku, ohjeiden oikea järjestys ja duplikaattien puuttuminen. Ohjeiden sisällön tulee olla ristiriidaton koneellisten määritysten kanssa. Ohjeiden metatietoa ei kahdenneta Markdown-etusivulla, vaan se pidetään JSON-määrityksissä ja tehtäväpyynnön viittauksissa.
 
@@ -516,6 +520,12 @@ Valvomon lähdetilastojen tulee voida esittää lähdekohtaisesti tarkistusyrity
 
 Lähdetilastot perustuvat raportintekijän ilmoittamiin lähdekohtaisiin havaintoihin, jotka vastaanottaja validoi ja tallentaa osaksi ajon kanonista historiaa. Sama lähde yksilöidään lähderekisterin vakaalla tunnisteella, jotta tilastoja voidaan koota eri ajoista. Lähteen URL:n tai nimen muuttuminen ei saa huomaamatta yhdistää eri lähteitä tai katkaista tunnistetta.
 
+Tilastoinnin yksikkö on sisältökanavan yksittäinen avausyritys. Yrityksestä tallennetaan vähintään lähde- ja kanavatunnisteet, `run_id`, ajankohta, pyydetty osoite, avauksen tulos (`opened` tai `failed`), epäonnistumisen luokka silloin kun se voidaan tunnistaa sekä sisällön luettavuus (`readable`, `partial`, `unreadable` tai `not_assessed`). `not_attempted` kuvaa avaamatta jäänyttä kanavaa eikä ole avausyritys tai epäonnistuminen. Sama yritys lasketaan tilastoihin vain kerran. Avaamisen tekninen onnistuminen, sisällön luettavuus ja sisällön hyödyllisyys tai relevanssi ovat erillisiä tuloksia.
+
+Yleiset epäonnistumisen luokat ovat `timeout`, `connection_error`, `dns_error`, `tls_error`, `http_client_error`, `http_server_error`, `rate_limited`, `access_restricted`, `content_error` ja `unknown`. Tarkempi tekninen tulos, kuten HTTP-status, säilytetään mahdollisuuksien mukaan. Luokkaa ei päätellä, jos syy ei ole tiedossa.
+
+Valvomo johtaa tilastot kanoniseen ajohistoriaan tallennetuista alkuperäisistä yrityksistä; tuottajan valmiiksi laskemia prosentteja ei käytetä lähdetietona. Tarkastelujaksot ovat oletusarvoisesti viimeiset 30 päivää, viimeiset 90 päivää ja koko tallennettu historia. Tilastoja voidaan suodattaa aiheen, tehtävätyypin, lähteen ja sisältökanavan mukaan. Näytettäviä tietoja ovat yritysten määrä, onnistuneet ja epäonnistuneet avaukset, onnistumisaste osoittajineen ja nimittäjineen, viimeisin onnistuminen ja epäonnistuminen, virheluokkien jakauma sekä kehitys tarkastelujaksolla. Prosenttia ei esitetä ilman luotettavaa nimittäjää, ja otoskoko näytetään aina prosenttiluvun yhteydessä.
+
 ### 6.3 Tuloksen ja käsittelyn tilat
 
 **Tuottajan tulos:**
@@ -585,7 +595,7 @@ Valvomon ensimmäisen version näkymät on kuvattu luvussa 3. Valvomon tietomall
 - Lähdekattavuus, raportin tila ja julkaisun tila näytetään ajon yhteydessä; erillisiä analytiikkanäkymiä ei vaadita ensimmäisessä versiossa.
 - Valvomo tarjoaa lisäksi lähdekohtaisen tilastonäkymän tai vastaavan suodatettavan yhteenvedon, josta näkee lähteiden avausyritysten määrät, onnistumiset, epäonnistumiset, onnistumisasteen, viimeisimmät tulokset ja kehityksen tarkastelujaksolla.
 - Tilastoissa erotetaan lähteen avaamisen onnistuminen siitä, löytyikö lähteestä käyttökelpoista tai raportoitavaa sisältöä. Avaamatta jääneitä lähteitä ei lasketa epäonnistuneiksi avausyrityksiksi.
-- Valvomo voi nostaa toistuvasti epäonnistuvia lähteitä tarkistettaviksi ja näyttää tilastojen perusteella ehdotuksen lähteen käytöstä poistamisesta. Lähdettä ei poisteta tai poisteta käytöstä automaattisesti pelkän tilaston perusteella; tilapäiset häiriöt, käyttörajoitukset ja pienet otokset huomioidaan, ja käytöstä poistaminen tehdään lähderekisterin hallittuna muutoksena.
+- Valvomo voi nostaa toistuvasti epäonnistuvia lähteitä tarkistettaviksi ja näyttää tilastojen perusteella ehdotuksen lähteen käytöstä poistamisesta. Lähdettä ei poisteta tai poisteta käytöstä automaattisesti pelkän tilaston perusteella; tilapäiset häiriöt, käyttörajoitukset ja pienet otokset huomioidaan, ja käytöstä poistaminen tehdään lähderekisterin hallittuna muutoksena. Toistuvan epäonnistumisen alustava nostokriteeri on vähintään viisi avausyritystä vähintään kolmessa eri ajossa ja alle 50 prosentin onnistumisaste viimeisten 30 päivän aikana. Viimeisimmät peräkkäiset epäonnistumiset voidaan näyttää erillisenä huomiona. Raja-arvot ovat määrityksiä, eivät kovakoodattuja päätöksiä; nostaminen tarkoittaa vain ylläpitäjän arviointipyyntöä.
 
 ## 9. Hallinta-, tallennus- ja julkaisuvastuut
 
@@ -804,8 +814,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 2. Lähderekisteri ja lähdetilastot
 
-7. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen tietorakenne, tekninen tallennuspaikka ja elinkaari, lähde- ja kanavatietojen täydentämismenettely sekä ylläpitäjän tarkistus- ja hyväksyntäkäyttöliittymä.
-8. **Lähdekohtaiset tilastot:** avausyritysten onnistumisten ja epäonnistumisten tilastointimalli, virheluokkien tarkka luettelo, tarkastelujaksot sekä toistuvasti epäonnistuvien lähteiden nostaminen ylläpitäjän arvioitavaksi.
+7. **Rekisterin ulkopuolisten lähteiden ehdotukset:** ehdotuksen perusrakenne, erillinen tallennuspolku, elinkaaren tilat ja ensimmäisen version GitHub-pohjainen käsittely on päätetty. Avoimeksi jäävät täsmälliset skeemakentät ja myöhemmän käyttöliittymän toteutus.
+8. **Lähdekohtaiset tilastot:** avausyrityksen perusrakenne, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot sekä Valvomon esitettävät tunnusluvut on päätetty. Toistuvien epäonnistumisten alustavat nostokriteerit on päätetty; tarkat skeemakentät ja näkymän toteutus jäävät myöhempään suunnitteluun.
 
 ### 3. Integraatiot ja ajonhallinta
 
@@ -839,6 +849,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.44 – 24.11.2026:** hyväksyttiin rekisterin ulkopuolisten lähteiden ehdotusten lähdekohtainen rakenne, erillinen tallennuspolku, elinkaaren tilat, validointi ja ensimmäisen version GitHub-pohjainen ylläpitäjäkäsittely. Täsmennettiin lähdekanavakohtaisten avausyritysten tilastotietue, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot, Valvomon tunnusluvut sekä toistuvien epäonnistumisten alustava nostokriteeri. Lähteiden automaattinen poistaminen tai käytöstä poistaminen tilastojen perusteella kiellettiin edelleen. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.12.43 – 24.11.2026:** hyväksyttiin tietomalli- ja skeematyön kuuden avoimen kohdan ehdotuspaketti: skeemahakemiston nelijako (`common`, `configuration`, `task`, `delivery`, `receiver`), tietomallikohtaiset pääskeemat ja tarkemmat validointiperiaatteet; raportoitavien havaintojen tehtävätyyppikohtaiset kategoriat; tiedostoroolien `parameters`-objektin yleissäännöt; valinnaisen `producer`-ryhmän rakenne; sekä vastaanottajan `run.json`- ja `events.jsonl`-tietomallien perusrakenne, tunnisteiden vastuut ja append-only-tapahtumahistorian säännöt. Aiemmin hyväksyttyjä laaduntarkistusten parametriperiaatteita täsmennettiin avoimien kohtien kuvauksessa. Skeemoja, toteutusta, testejä tai automaatioita ei luotu tai muutettu.
 
