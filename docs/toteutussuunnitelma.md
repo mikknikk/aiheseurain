@@ -873,7 +873,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottoprosessin tekninen viimeistely:** vastaanoton toiminnalliset periaatteet on hyväksytty ja kirjattu. Avoinna ovat RSS-itemin tarkka sisältösopimus sekä vastaanotto- ja julkaisutyönkulkujen tekninen toteutus, virhetilanteiden konkreettiset uudelleenyritysrajat ja käyttöönoton varmennukset.
+9. **Vastaanottoprosessin tekninen viimeistely:** vastaanoton toiminnalliset periaatteet ja RSS-itemin perusmuoto on hyväksytty. Avoinna ovat RSS-itemin muiden elementtien pakollisuus, GUIDin tarkka muodostus ja raportin HTML-rakenne sekä vastaanotto- ja julkaisutyönkulkujen tekninen toteutus, konkreettiset uudelleenyritysrajat ja käyttöönoton varmennukset.
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto:** julkisen instanssirepositorion Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä `main`-haaran suojauksen tekninen toteutus ja varmennus Codex Connectorin repositoriotasoisen käyttöoikeuden näkökulmasta. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
