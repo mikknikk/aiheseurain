@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.56  
+**Versio:** 0.12.57  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -46,6 +46,8 @@ Tämä on vaatimusmäärittely, ei tekninen toteutussuunnitelma. Se ei lukitse t
 12. **Vaiheiden selkeä vastuunjako:** tuottajan tutkimustulos, vastaanoton validointi, tallennus ja julkaisu ovat erillisiä tiloja.
 13. **Ohjelmiston ja instanssin erillisyys:** jaettava yhteinen ohjelmisto ei ole sidottu yhden käyttöönoton määrityksiin tai käyttödatan sijaintiin.
 14. **Hallitut ohjelmistopäivitykset:** instanssi käyttää yksilöityä ohjelmistoversiota, ja version vaihtaminen on ylläpitäjän hallitsema toimenpide.
+
+Instanssin yleinen aikavyöhyke määritetään instanssin asetuksissa IANA-aikavyöhyketunnisteena (esimerkiksi `Europe/Helsinki`). Asetus välitetään tehtäväpyynnön `resolved_config.timezone`-kentässä, eikä tehtävätyyppikohtainen määritys, profiili tai aihekohtainen määritys voi ylikirjoittaa sitä. Asetusta käytetään paikallisen ajan tulkintaan, kuten raportointijaksojen ja aikataulujen rajoihin. Aikaleimat säilytetään yksiselitteisinä UTC-aikoina tai ISO 8601 -aikoina asianmukaisine UTC-offseteineen; RSS-itemin `<pubDate>` ilmoitetaan UTC-ajassa. Aikavyöhykettä ei päätellä suoritusympäristöstä tai käyttäjän sijainnista.
 
 ## 3. Käyttöliittymät ja niiden tärkeysjärjestys
 
