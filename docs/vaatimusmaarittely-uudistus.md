@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.51  
+**Versio:** 0.12.52  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -481,6 +481,33 @@ Tehtävätyypin määritys määrittelee sallitut ja vaaditut tiedostoroolit. Ro
 
 Vastaanottajan validointi etenee seitsemässä vaiheessa: (1) pakettirakenne, (2) metatiedot, (3) tiedostoluettelo, (4) eheys, (5) sisältö, (6) keskinäiset viittaukset ja (7) vastaanoton tulos. Virheluokat ovat `package_structure`, `metadata_invalid`, `file_missing`, `file_unexpected`, `file_reference_invalid`, `file_integrity_failed`, `content_invalid`, `cross_reference_invalid` ja `required_check_missing`. Luetteloa voidaan laajentaa. Koneellinen virheluokka ja ihmiselle luettava kuvaus tallennetaan erikseen. Yleistä virheiden vakavuusluokitusta tai automaattisia hyväksymisrajoja ei tässä vaiheessa määritellä. Vastaanottaja ei muuta tuottajan aineistoa; validoinnin tulos ja virheet tallennetaan vastaanottajan ajohallintaan. Tuottajan `failed`-tulos ja vastaanottajan validointivirhe ovat eri asioita.
 
+#### Vastaanottoprosessin hyväksytyt toimintaperiaatteet
+
+Vastaanottoprosessi käsittelee vain vastaanottohaaraan `raportit-inbox` toimitettuja paketteja. Yksittäinen toimitus sijaitsee polussa `deliveries/{run_id}/{delivery_id}/` ja käsitellään itsenäisenä kokonaisuutena. Vastaanottaja ei muuta alkuperäisen toimituspaketin tiedostoja eikä julkaise sisältöä suoraan `main`-haaraan. Vastaanotto, toimituksen hyväksyminen ja julkaiseminen ovat erillisiä tapahtumia. Yhden toimituksen virhe ei estä muiden toimitusten käsittelyä.
+
+Vastaanottaja tunnistaa toimituksen sen hakemistopolun ja toimitusmetatietojen perusteella. Se tarkistaa, että `run_id` ja `delivery_id` ovat johdonmukaisia, että ajo on olemassa ja että ajo kuuluu tunnetulle tehtävälle. Tehtävän ja ajon välisten tunnisteiden sekä aikaleimojen on oltava keskenään johdonmukaisia. Tuntemattomaan ajoon tai tehtävään viittaava toimitus hylätään; vastaanottaja ei luo puuttuvia ajoja tai tehtäviä toimituksen perusteella.
+
+Toimituspaketin vähimmäissisältö on `metadata.json` sekä tehtävätyypin edellyttämät sisältötiedostot. `item.xml` on pakollinen vain silloin, kun tehtävätyyppi ja tuottajan tulostila sitä edellyttävät. Sallitut tiedostoroolit ja niiden tilakohtaiset vaatimukset määräytyvät tehtävätyypin määrityksestä. Odottamattomat tiedostot hylätään. Polkujen on pysyttävä toimituspaketin sisällä; absoluuttisia polkuja, `..`-siirtymiä, symbolisia linkkejä tai muita paketin ulkopuolelle osoittavia viittauksia ei hyväksytä. Ensimmäisen version pakettimalli pidetään suppeana eikä siihen sisälly yleistä liite- tai kuvakäsittelyä.
+
+Toimitusmetatiedot validoidaan niitä vastaavaa skeemaa vasten. Vastaanottaja tarkistaa pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion sekä tunnisteiden vastaavuuden toimituspolkuun ja alkuperäiseen ajoon. Tuntematonta skeemaversiota ei tulkita arvaamalla. Metatietojen tarkka kenttärakenne määräytyy erillisessä toimitusmetatietojen tietomallissa; tässä hyväksytty prosessi ei korvaa eikä muuta jo päätettyä kuuden tietoryhmän rakennetta.
+
+Sisältötiedostot validoidaan erillään metatiedoista. Yleinen sisältövalidointi kattaa tiedoston luettavuuden ja koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakolliset sisältöelementit sekä tiedostojen väliset viittaukset. RSS-itemin tarkka sisältösopimus, elementtien pakollisuus, GUIDin muodostus ja raporttisisällön esitystapa jätetään erikseen jatkosuunnitteluun.
+
+Eheystarkistuksessa vastaanottaja laskee jokaiselle toimitetulle sisältötiedostolle koon ja SHA-256-tiivisteen ja vertaa niitä metatiedoissa ilmoitettuihin arvoihin. Puuttuva tiedosto, väärä koko tai tiiviste, tai tiedostokohtaisen ja toimituskohtaisen kokorajan ylitys estää hyväksymisen. Tiiviste todentaa sisällön eheyden, ei lähettäjän henkilöllisyyttä. Vastaanottaja ei suorita toimituspaketin sisältämää koodia.
+
+Kaksoistoimitusten käsittely on idempotentti. Saman `delivery_id`-tunnisteen ja saman sisällön uudelleen vastaanottaminen tunnistetaan saman toimituksen uusinnaksi eikä siitä synny uutta julkaisua tai päällekkäisiä sivuvaikutuksia. Saman tunnisteen yhteydessä havaittu eri sisältö on ristiriita ja hylätään. Uusi toimitustunniste voi kuulua samaan ajoon vain toimitussopimuksen sallimissa rajoissa. RSS-itemin GUIDin mahdollinen toistuminen tarkistetaan erikseen julkaisu- ja historiatiedoista. Aiemmin hylätyn toimituksen uusi yritys on erotettava alkuperäisestä käsittely-yrityksestä.
+
+Vastaanoton käsittelyssä erotetaan vähintään vastaanotettu, tarkistuksessa, hyväksytty, julkaisukelpoinen ja julkaistu -tilat sekä hylätty ja tilapäistä uudelleenyritystä odottava tila. Pysyvä rakenteellinen, metatieto-, eheys- tai sisältövirhe johtaa hylkäykseen. Tilapäinen tekninen virhe voi johtaa rajattuun uudelleenyritykseen. Uudelleenyritysten määrä ja viive rajataan; käsittelyn tarkat tekniset parametrit määritellään myöhemmin. Virheestä kirjataan koneellinen virheluokka ja ihmiselle luettava kuvaus. Hylättyä tai keskeneräistä toimitusta ei julkaista.
+
+Vastaanoton kirjanpito tallentaa vähintään ajon ja toimituksen tunnisteet, tehtävän tunnisteen, vastaanottoajan, toimitettujen tiedostojen luettelon ja tiivisteet, käytetyn skeemaversion, validointitulokset, käsittelyn lopputilan sekä mahdolliset virhekoodit ja kuvaukset. Julkaisun yhteydessä tallennetaan myös julkaisuun yhdistävä tunniste ja varmennettu julkaisutila. Kirjanpito säilyttää käsittelyn jäljitettävyyden eikä muuta alkuperäistä toimituspakettia.
+
+Vastaanotto ja julkaisu toteutetaan erillisinä GitHub Actions -työnkulkuvastuina. Vastaanottotyönkulku käynnistyy vastaanottohaaran toimitusmuutoksista, validoi toimituksen ja kirjaa tuloksen. Julkaisutyönkulku voi käsitellä vain hyväksytyn toimituksen, varmistaa hyväksynnän vastaanottajan tallentamista tiedoista ja siirtää sisällön erikseen `main`-haaraan. Julkaisun jälkeen tarkistetaan julkaistun sisällön ja RSS/XML:n kelvollisuus. Vastaanoton onnistuminen ei itsessään käynnistä tai todista julkaisun onnistumista.
+
+Turvallisuusvaatimuksena vastaanottaja käsittelee pakettia epäluotettavana datana, ei ohjeina tai suoritettavana koodina. Tiedostopolut rajataan toimituspaketin sisälle, tiedostokoot ja määrät rajoitetaan ja vastaanottoprosessille annetaan vain välttämättömät oikeudet. `main`-haaran suojaus ja sen kyky estää Codex Connectorin suora ohitus on varmennettava ennen tuotantokäyttöä.
+
+Ensimmäiseen versioon eivät kuulu erillinen HTTPS-vastaanottopalvelu, erillinen vastaanotto-GitHub App, lähettäjän erillinen käyttäjätunnistus, useiden raportintuottajien samanaikainen käsittely, yleinen manuaalinen hyväksymisjärjestelmä, automaattinen toimitusten korjaaminen tai yleinen liitetiedostojen ja kuvien vastaanottomalli.
+
+
 Toimituspaketti sisältää aina tuottajan toimitusmetatiedot (`metadata.json`) sekä tehtävätyypin määrityksessä edellytetyt sisältötiedostot. Sisältötiedostot voivat olla esimerkiksi julkaistava RSS-item tai rakenteinen havaintoaineisto; niiden tarkat tiedostotyypit ja pakollisuus määräytyvät tehtävätyypin mukaan. Metatiedot kuvaavat toimitusta ja sen sisältöä, mutta varsinainen raporttiteksti ja muu sisältöaineisto pidetään erillisissä tiedostoissa. Metatietoihin sisältyvät tiedostoviittaukset osoittavat toimituspaketin juureen suhteutettuihin polkuihin. Viittaus ei saa osoittaa toimituspaketin ulkopuolelle, ja viitatun tiedoston on oltava toimituksessa mukana.
 
 Vastaanottaja tarkistaa toimituspaketin eheyden: vaaditut tiedostot ovat mukana, viittaukset ovat kelvollisia, viitatut tiedostot löytyvät ja toimitus ei sisällä tehtävätyypin sääntöjen vastaisia ylimääräisiä tiedostoja. Toimitus hyväksytään vastaanotetuksi vasta, kun sen rakenteelliset ja sisällölliset vaatimukset on validoitu. Vastaanottaja ei korjaa eikä muuta tuottajan alkuperäisiä metatietoja tai sisältötiedostoja. Puutteellinen tai virheellinen toimitus hylätään tai kirjataan virheelliseksi vastaanottajan omiin ajotietoihin; virheen syy ei muuta tuottajan ilmoittamaa tulosta. Tarkat tiedostoluettelot ja metatietojen tiedostoviittauskenttien nimet määritellään myöhemmässä skeemasuunnittelussa.
@@ -844,7 +871,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottorajapinta:** Codex Connectorin kautta toimitetun paketin vastaanottohaaran käsittely, toimitushakemiston rakenteen validointi, työnkulun käynnistyminen sekä vastaanoton kirjaamisen yksityiskohdat.
+9. **Vastaanottoprosessin viimeistely ja käyttöönotto:** hyväksytyt toimituksen tunnistamisen, pakettirakenteen, metatieto-, sisältö- ja eheysvalidoinnin, kaksoistoimitusten, käsittelytilojen, kirjanpidon, työnkulkuvastuiden ja turvallisuuden periaatteet on kirjattu. Avoinna ovat erityisesti RSS-itemin tarkka sisältösopimus sekä vastaanoton ja julkaisun työnkulkujen tekninen toteutus ja käyttöönoton varmennukset.
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto:** julkisen instanssirepositorion Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä `main`-haaran suojauksen tekninen toteutus ja varmennus Codex Connectorin repositoriotasoisen käyttöoikeuden näkökulmasta. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
