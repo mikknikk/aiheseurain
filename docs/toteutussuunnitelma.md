@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.90  
+**Versio:** 0.3.91  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.47](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.48](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -470,19 +470,17 @@ Perusprompti määrittelee raportintekijän yleisen toimintamallin: tehtäväpyy
 
 Perusprompti sisältää myös vaatimuksen raportoida lähdekohtaiset avausyritykset ja niiden tulokset erillään sisällön laadusta tai relevanssista. Raportintekijä käyttää vain tehtäväpyynnössä yksilöityjä muuttumattomia ohjeversioita. Promptin tarkka teksti ja mahdollinen tuottajakohtainen sovitus suunnitellaan myöhemmin; tämä arkkitehtuuripäätös ei vielä luo promptitiedostoa eikä muuta nykyisiä automaatioita.
 
-### 2.3 Toimitustapa: Git push julkisen instanssirepositorion vastaanottohaaraan
+### 2.3 Toimitustapa: ChatGPT:n ajastettu tehtävä ja Codex Connector
 
-Ensimmäisen vaiheen instanssirepositorio luodaan julkiseksi. RSS-syötteet julkaistaan GitHub Pagesin kautta. Koko instanssirepositorio, sen haarat ja Git-historia ovat julkisia, joten kaikki sinne toimitettava aineisto käsitellään julkisena. Repositorioon tai toimituksiin ei saa sisällyttää salasanoja, API-avaimia, käyttöoikeustunnisteita, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
+Ensimmäisen vaiheen instanssirepositorio on julkinen. RSS-syötteet julkaistaan GitHub Pagesin kautta. Koko instanssirepositorio, sen haarat ja Git-historia ovat julkisia, joten kaikki sinne toimitettava aineisto käsitellään julkisena. Repositorioon tai toimituksiin ei saa sisällyttää salasanoja, API-avaimia, käyttöoikeustunnisteita, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
 
-Raportintuottaja toimittaa kokonaisen toimituspaketin Git pushilla erilliseen vastaanottohaaraan, esimerkiksi `raportit-inbox`. Julkaisu tapahtuu erikseen `main`-haaraan. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
+Ensimmäisen version ainoa raportintuottaja on ChatGPT:n ajastettu tehtävä. Se toimittaa kokonaisen toimituspaketin Git pushina GitHubiin Codex Connector -yhteyden kautta. Käytännön testissä ajastettu tehtävä loi testitiedoston instanssirepositorion erilliseen haaraan; testissä `main`-haara ei muuttunut. Testi osoittaa, että toimitus toimii tässä käyttöympäristössä. Tuotantokäyttöönotossa on silti varmennettava yhteyden oikeudet, vastaanoton työnkulku ja julkaisuhaaran suojaus.
 
-Vastaanottoon käytetään erillistä GitHub Appia, joka asennetaan vain kyseiseen instanssirepositorioon. Appille annetaan vain seuraavat oikeudet:
-- **Metadata: Read-only**
-- **Contents: Read and write**
+Toimitukset tehdään erilliseen vastaanottohaaraan `raportit-inbox`. Toimituspaketin polku on `toimitukset/{run_id}/{delivery_id}/`, ja paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot, kuten `item.xml`. Julkaisu tapahtuu erikseen `main`-haaraan. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
 
-Appille ei anneta Actions-, Workflows-, Issues-, Pull requests-, Checks- tai Commit statuses -oikeuksia. Näin vastaanoton kirjoitusoikeus erotetaan yhteisen ohjelmistorepositorion kehitysoikeuksista ja muista GitHub-toiminnoista.
+Codex Connector on ChatGPT:n ja GitHubin välinen yhteys, ei instanssirepoon asennettava GitHub App. Ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia. Aiempi vastaanotto-App on poistettu; sen luomista uudelleen voidaan harkita myöhemmin, jos käyttöoikeuksien eriyttämiseen syntyy tarve.
 
-Contents-kirjoitusoikeus on repositoriokohtainen eikä rajaudu itsessään vain vastaanottohaaraan. Siksi `main`-julkaisuhaaran suojaus ja vastaanottohaaran käsittelyn rajat on toteutettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Käyttöönotossa on varmennettava, ettei vastaanotto-App voi ohittaa julkaisuhaaran suojauksia. Dokumentaatio ei oleta suojauksen olevan käytössä ennen kuin se on teknisesti asetettu ja tarkistettu.
+Codex Connectorin GitHub-oikeus ei rajaudu automaattisesti yksittäiseen haaraan. Vastaanottohaara on toimitusten käsittelyraja, ei käyttöoikeusraja. Siksi `main`-julkaisuhaaran suojaus on toteutettava ja varmennettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Käyttöönotossa on varmistettava, ettei raportintuottajan käyttämä yhteys voi ohittaa julkaisuhaaran suojauksia. Dokumentaatio ei oleta suojauksen olevan käytössä ennen kuin se on teknisesti asetettu ja tarkistettu.
 
 - GitHub Actions käynnistää toimituksen käsittelyn vastaanottohaaraan tehdyn pushin perusteella.
 - Actions tarkistaa paketin ennen kuin mitään julkaistaan tai tallennetaan hyväksyttyihin tuotantotietoihin.
@@ -490,16 +488,19 @@ Contents-kirjoitusoikeus on repositoriokohtainen eikä rajaudu itsessään vain 
 - Git pushin onnistuminen vahvistaa vain toimituksen siirtymisen vastaanottohaaraan; se ei merkitse toimituksen hyväksymistä tai julkaisua.
 - Vastaanoton ja validoinnin tulokset kirjataan GitHub Actions -työnkulun sekä vastaanottajan ajotietueen ja tapahtumahistorian avulla. Erillistä HTTP-kuittausrajapintaa ei tarvita ensimmäisessä versiossa.
 - Vastaanottaja tarkistaa toimituksen kuulumisen olemassa olevaan ajoon, tunnisteiden johdonmukaisuuden, toimituspaketin rakenteen ja sisällön sekä eheyden. Vastaanottaja muodostaa `attempt_id`-tunnisteen, laskee SHA-256-tiivisteen ja säilyttää alkuperäisen toimituspaketin. Aiemmin hyväksytyt kaksois- ja ristiriitasäännöt koskevat myös GitHubin kautta tehtyjä uudelleenlähetyksiä.
-- Appin käyttöoikeuksia tai tunnistetietoja ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin.
+- Codex Connectorin käyttöoikeuksia tai tunnistetietoja ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin.
 
 Erillistä HTTPS-vastaanottopalvelua tai käyttäjäkohtaista tunnistamista ei toteuteta ensimmäisessä versiossa. Laajemmat tunnistus- ja integraatiomallit voidaan arvioida myöhemmissä versioissa.
-Esimerkkirakenne:
+
+Esimerkkirakenne vastaanottohaarassa:
 
 ```text
 raportit-inbox/
-  <run_id>/
-    metadata.json
-    item.xml
+  toimitukset/
+    <run_id>/
+      <delivery_id>/
+        metadata.json
+        item.xml
 ```
 
 Toimituspaketti sisältää:
@@ -508,121 +509,6 @@ Toimituspaketti sisältää:
 - `item.xml`: pakollinen sekä `success`- että `partial`-tilassa. `success`-tilassa validoitu raportti julkaistaan. `partial`-tilassa validoitu osittainen raportti julkaistaan, ja itemissä kerrotaan selvästi seurannan puutteellisuudesta sekä sen syistä. `no_report`- ja `failed`-tiloissa `item.xml`-tiedostoa ei toimiteta.
 
 Tarkka skeema, tiedostonimien säännöt ja toimituksen täydellisyyskriteerit määritellään erikseen. Metatietojen sisällölliset tietoryhmät on määritelty kohdassa 2.6.1; kenttäkohtainen rakenne täsmennetään erillisessä tietomallityössä. `no_report`- ja `failed`-tulosten toimitus ei saa edellyttää olematonta RSS-item-tiedostoa.
-
-Toimituspaketti sisältää aina `metadata.json`-tiedoston sekä tehtävätyypin määrityksessä vaaditut sisältötiedostot. Nykyisessä RSS-raportin toimitusmallissa `item.xml`-tiedosto on pakollinen `success`- ja `partial`-tiloissa ja puuttuu `no_report`- ja `failed`-tiloissa. Tehtävätyyppi voi määritellä lisäksi muita sisältötiedostoja, kuten rakenteisen havaintoaineiston tai liitteitä; niiden nimet, muodot ja pakollisuus määritellään tehtävätyypin toimitusvaatimuksissa. Metatiedot ja varsinainen raportti- tai havaintosisältö pidetään erillisinä.
-
-Metatietojen tiedostoviittaukset ovat polkuja suhteessa toimituspaketin juureen. Absoluuttiset polut tai polut, joiden normalisointi johtaisi toimituspaketin ulkopuolelle, hylätään. Jokaisen viitatun tiedoston on oltava mukana toimituksessa. Tehtävätyypin toimitusvaatimukset määrittelevät sallitut ja vaaditut tiedostot; vastaanottaja hylkää myös sääntöjen vastaiset ylimääräiset tiedostot. Tiedostoviittausten täsmälliset metatietokentät ja tiedostoluettelon skeema määritellään myöhemmin.
-
-Vastaanottaja validoi toimituspaketin eheyden ennen sen hyväksymistä: tunnisteiden ja revisioiden vastaavuus, vaadittujen tiedostojen olemassaolo, viittausten turvallisuus ja toimivuus, tiedostojen sisältömuoto sekä tehtävätyypin tiedostoluettelo tarkistetaan. Vastaanottaja ei muuta tuottajan metatietoja eikä sisältötiedostoja. Virheellinen paketti hylätään tai merkitään virheelliseksi vastaanottajan ajotietoihin; alkuperäiset tuottajatiedot säilyvät muuttumattomina.
-
-#### Raportoitavien havaintojen malli
-
-Raportoitavat havainnot erotetaan laaduntarkistusten havainnoista. Tietueen kentät ovat `finding_id`, `title`, `description`, `category`, `source_refs`, `occurred_at` ja `notes`; kolme ensimmäistä ovat yleisesti pakollisia. `finding_id` on toimituksen sisällä yksilöllinen. Kategoriat määritellään tehtävätyypeittäin, eikä yhteistä yleisluetteloa ole. Tehtävätyypin määritys sisältää sallitut kategoriatunnisteet, nimet ja kuvaukset. Tunnisteet ovat pienaakkosilla kirjoitettuja ja tarvittaessa yhdysmerkillisiä; havaintotietueeseen tallennetaan tunniste. Vastaanottaja tarkistaa tunnisteen kuulumisen tehtävätyypin sallittuihin kategorioihin. Esimerkkejä uutisseurannan mahdollisista tunnisteista ovat `announcement`, `release`, `event`, `personnel_change`, `controversy` ja `other`; ne eivät ole yleinen pakollinen luettelo. `source_refs` viittaa toimituksen lähdetarkistuksissa kuvattuihin lähteisiin ja tarvittaessa sisältökanaviin, ei yksittäisiin tarkistusyrityksiin. Yleistä vakavuusluokkaa ei ole. Rakenteinen `findings.json` toimitetaan vain tehtävätyypin niin edellyttäessä; sen juurena ovat `schema_version` ja aina taulukkona oleva `findings`. Tyhjä taulukko ei tarkoita automaattisesti `no_report`-tilaa. Metatietoihin tallennetaan havaintojen yhteenveto, määrä, luokkamäärät sekä rajaukset, epävarmuudet ja kattavuuspuutteet, ei yksittäisiä havaintotietueita.
-
-#### Tiedostoroolit ja tiedostoluettelo
-
-Tehtävätyypin määritys määrittelee sallitut tiedostoroolit. Rooli kuvaa tarkoitusta ja polku sijaintia; `file_id` on tehtävätyypin sisällä pysyvä. Roolimäärityksen kentät ovat `file_id`, `name`, `description`, `media_type`, `status_requirements` ja `parameters`. `parameters` on aina objekti; asetuksettomassa roolissa se on `{}`. Roolikohtainen skeema määrittelee sallitut parametrit, niiden tyypit ja rajat; tuntemattomat parametrit hylätään. Parametreilla voidaan kuvata esimerkiksi sisältömuotoa, kieltä tai roolikohtaisia sisältörajoituksia, mutta niillä ei määritellä uudelleen tiedoston tunnistetta, polkua, kokoa, tiivistettä tai tulostilakohtaisia vaatimuksia. `status_requirements` määrittelee kullekin tuottajan tulostilalle arvon `required`, `optional` tai `forbidden`, jolloin erillisiä päällekkäisiä `required`- ja `allowed_statuses`-kenttiä ei tarvita.
-
-`metadata.json` sisältää kaikkien toimitettujen sisältötiedostojen luettelon. Tietueessa ovat `file_id`, `path`, `media_type`, `size_bytes` ja `sha256`; koko ja SHA-256-tiiviste ovat pakollisia. Metatietotiedosto ei sisälly omaan luetteloonsa. Polut ovat suhteellisia, käyttävät `/`-erotinta, eivätkä sisällä absoluuttisia polkuja, `..`-siirtymiä tai symbolisia linkkejä. Tyhjät hakemistot eivät kuulu pakettiin. Roolin sallittu tiedostomäärä määritellään tehtävätyypissä; oletuksena yksi tiedosto roolia kohti.
-
-#### Tulostilakohtaiset toimitusvaatimukset ja vastaanoton validointi
-
-`metadata.json` toimitetaan, jos tuottaja pystyy muodostamaan toimituksen. Jos metatietoja ei voida muodostaa, vastaanottaja kirjaa toimituksen puuttumisen omaan ajohallintaansa eikä päättele tuottajan tilaa. `success`- ja `partial`-tilojen tiedostot määräytyvät tehtävätyypin mukaan; raporttia tuottavassa tehtävässä `partial` edellyttää raporttitiedostoa. `no_report`-tilassa ei toimiteta raporttia eikä havaintoja, mutta lähde- ja laaduntarkistusten tulokset voivat olla metatiedoissa. `failed`-tilassa ei toimiteta raporttia eikä havaintoja, mutta virhetiedot ja sallitut diagnostiikkatiedostot ovat mahdollisia. Roolien vaatimukset ilmaistaan `status_requirements`-kentässä.
-
-Vastaanottajan validointi etenee seitsemässä vaiheessa: pakettirakenne, metatiedot, tiedostoluettelo, eheys, sisältö, keskinäiset viittaukset ja vastaanoton tulos. Virheluokat ovat `package_structure`, `metadata_invalid`, `file_missing`, `file_unexpected`, `file_reference_invalid`, `file_integrity_failed`, `content_invalid`, `cross_reference_invalid` ja `required_check_missing`. Luetteloa voidaan laajentaa. Koneellinen virheluokka ja ihmiselle luettava kuvaus tallennetaan erikseen; yleistä vakavuusluokitusta tai hyväksymisrajoja ei määritellä. Vastaanottaja ei muuta tuottajan aineistoa. Tuottajan `failed`-tila ja vastaanottajan validointivirhe ovat eri asioita.
-
-#### `metadata.json`-tiedoston vähimmäissisältö
-
-Metatietotiedosto kuvaa yksittäisen ajon tunnistetiedot, käytetyn määrityskokonaisuuden, seuranta-aikavälin ja lopputuloksen. Raportin varsinainen sisältö pidetään erillään metatiedoista.
-
-Pakolliset perustiedot:
-
-- `schema_version`: metatietorakenteen versionumero;
-- `run_id`: yksittäisen ajon yksilöllinen tunniste;
-- `topic_id`: seurattavan aiheen tunniste;
-- `task_type`: käytetyn tehtävätyypin tunniste;
-- `software_revision` ja `instance_revision`: kumpikin täsmälleen 40 merkkiä pitkä Git-commit-SHA, joka sisältää vain heksadesimaalimerkkejä (`0–9`, `a–f`). Ensimmäinen viittaa ohjelmistorepossa ja toinen instanssirepossa olevaan commitiin. Niiden osoittamat sisällöt yksilöivät ajossa käytetyn ohjelmiston ja instanssidatan; arvoja ei normalisoida eikä korvata haaraviittauksilla;
-- `period`: toteutuneen ajon seuranta-aikavälin kuvaava objekti, joka sisältää `from`-, `to`- ja `cutoff_at`-kentät. Tämä on toimituksen metatietorakenne, ei tehtäväpyynnön `period`-objekti: tehtäväpyynnössä `period` sisältää vain `from`- ja `to`-kentät. Aikavyöhyke määräytyy tehtäväpyynnön `resolved_config.timezone`-kentästä, eikä sitä kopioida metatietojen `period`-objektiin;
-- `profiles`: käytettyjen määritysprofiilien tunnisteet taulukkona;
-- `sources`: ajossa tarkistettujen lähteiden tiedot taulukkona;
-- `status`: ajon lopputila (`success`, `partial`, `no_report` tai `failed`);
-- `started_at` ja `completed_at`: ajon aloitus- ja valmistumishetki.
-
-Kaikki metatiedoston varsinaiset aikaleimat esitetään tehtäväpyynnön `resolved_config.timezone`-asetuksen mukaisessa paikallisessa ajassa ISO 8601 -muodossa, ja jokaisessa aikaleimassa on mukana kyseisen ajanhetken numeerinen UTC-offset. `period.from` on seuranta-aikavälin alku, `period.to` tehtäväpyynnön alkuperäinen loppu (joka voi olla `null`) ja `period.cutoff_at` tarkka hetki, johon asti aineisto tosiasiassa otettiin mukaan. `started_at` ja `completed_at` esitetään samassa aikavyöhykkeessä. Metatietoihin ei lisätä erillistä aikavyöhyketunnistekenttää, koska käytetty IANA-aikavyöhyke saadaan tehtäväpyynnön `resolved_config.timezone`-kentästä ja aikaleimojen offsetit voidaan validoida sitä vasten.
-
-Metatietojen aikaleimojen validointisäännöt:
-
-- `started_at` ja `completed_at` ovat pakollisia kaikissa toimitetuissa tulostiloissa (`success`, `partial`, `no_report` ja `failed`).
-- `completed_at` ei saa olla ajallisesti aikaisempi kuin `started_at`.
-- Jokaisen aikaleiman numeerisen UTC-offsetin on vastattava tehtäväpyynnön `resolved_config.timezone`-asetuksen IANA-sääntöjä kyseisenä ajanhetkenä. Pelkkä kelvollinen ISO 8601 -muoto ei riitä, jos offset ei vastaa kyseistä aikavyöhykettä.
-- `period.from` ja `period.to` vastaavat tehtäväpyynnön saman nimisiä arvoja täsmälleen; `period.to` säilyy myös `null`-arvona, jos tehtäväpyynnössä se on `null`.
-- `period.cutoff_at` ei saa olla ajallisesti aikaisempi kuin `period.from`.
-- Jokaisen `sources`-taulukon `source_id`-arvon on viitattava lähderekisterissä olevaan lähteeseen siinä määritysversiossa, jonka `instance_revision` yksilöi.
-
-Aikaleimojen vertailu tehdään niiden yksiselitteisten ajanhetkien perusteella, ei paikallisten kellonaikamerkkijonojen aakkosjärjestyksessä.
-
-Tehtäväpyynnön ja toimitusmetatietojen vastaavuus tarkistetaan seuraavasti:
-
-| Tehtäväpyyntö (`data/tehtava.json`) | Toimitus (`metadata.json`) | Tarkistus |
-|---|---|---|
-| `run_id` | `run_id` | Täsmälleen sama |
-| `topic_id` | `topic_id` | Täsmälleen sama |
-| `task_type` | `task_type` | Täsmälleen sama |
-| `software_revision` | `software_revision` | Täsmälleen sama commit-SHA |
-| `instance_revision` | `instance_revision` | Täsmälleen sama commit-SHA |
-| `profiles` | `profiles` | Samat tunnisteet samassa järjestyksessä |
-| `period.from` | `period.from` | Täsmälleen sama |
-| `period.to` | `period.to` | Täsmälleen sama, myös `null`-arvo |
-| `resolved_config.timezone` | Ei vastaavaa kenttää | Asetusta ei kopioida toimitukseen; sitä käytetään metatietojen aikaleimojen ja offsetien validointiin |
-
-`metadata.period.cutoff_at` on raportintuottajan ilmoittama toteutunut seurannan päättymishetki. Se ei korvaa tehtäväpyynnön `period.to`-arvoa. Tehtäväpyynnön `issued_at`-, `deadline_at`-, `history`-, `instructions`- ja `resolved_config`-kenttiä ei kopioida toimitusmetatietoihin. Sekä `software_revision` että `instance_revision` tallennetaan toimitusmetatietoihin ajon jäljitettävyyttä varten. Tehtäväpyyntö ja toimitusmetatiedot versioidaan erikseen omilla `schema_version`-kentillään. Lähteen alkuperäinen aikaleima, mahdollinen alkuperäinen offset/aikavyöhyke sekä tulkinnassa käytetyn aikavyöhykkeen alkuperä voidaan säilyttää lähdekohtaisessa tiedossa jäljitettävyyttä varten. Lähderekisterin aikavyöhykemääritys on valinnainen; sen puuttuminen ei oikeuta arvaamaan aikavyöhykettä. Lähteiden ajat muunnetaan Aiheseuraimen yleiseen aikavyöhykkeeseen raporteissa ja käyttöliittymässä.
-
-`profiles` sisältää ajossa käytettyjen profiilien tunnisteet samassa järjestyksessä kuin ne yhdistettiin konfiguraatioon. Taulukko voi olla tyhjä, jos aihe ei käytä profiileja. Profiilien sisältöä tai erillisiä versiotunnisteita ei kopioida metatietoihin: `instance_revision` yksilöi käytetyn instanssidatan revision.
-
-`sources` sisältää kaikki lähteet, joiden tarkistamista ajossa yritettiin. Jokaisesta lähteestä tallennetaan lähderekisteriin viittaava `source_id`, tarkistuksen `status` sekä tarvittaessa lähdekohtainen `error`-objekti:
-
-- `success`: lähde saatiin tarkistettua kokonaan; myös onnistunut tarkistus ilman osumia on `success`. Lähdekohtainen `error`-objekti jätetään pois;
-- `partial`: lähteestä saatiin tarkistettua vain osa. Lähdekohtainen `error`-objekti on pakollinen ja kuvaa osittaisuuden teknisen syyn tai muun tunnistetun rajoitteen;
-- `failed`: lähteen tarkistaminen epäonnistui. Lähdekohtainen `error`-objekti on pakollinen ja kuvaa epäonnistumisen syyn.
-
-Lähdekohtainen `error`-objekti sisältää virheen tai rajoitteen ennalta määritellyn luokan (`category`) ja lyhyen, turvallisen teknisen selityksen (`description`). Luokkien tulee olla rajattu, dokumentoitu joukko, jotta virheitä voidaan tilastoida ja hyödyntää Valvomossa. Luokkien tarkka luettelo määritellään skeemojen ja teknisen suunnittelun yhteydessä. Selityksestä poistetaan salaisuudet, käyttöoikeustunnisteet, raakasisältö ja tarpeettomat henkilötiedot.
-
-Lähdekohtainen `error`-objekti kuuluu vain metatietoihin. Sitä ei näytetä sellaisenaan lukijalle. Jos lähdevirhe tai rajoite vaikuttaa raportin kattavuuteen, raportissa kuvataan erikseen lukijalle ymmärrettävästi, mitä jäi tarkistamatta ja miten se vaikuttaa tuloksen kattavuuteen.
-
-Lähteitä, joita ei yritetty käyttää, ei luetella. `sources` voi olla tyhjä, jos ajossa ei käytetty lähteitä. Lähteen muut tiedot, kuten nimi, osoite ja luotettavuusluokitus, säilyvät lähderekisterissä ja ovat jäljitettävissä `instance_revision`-kentän avulla. Metatietoihin ei kopioida yksittäisten artikkelien URL-osoitteita eikä teknisiä lokitietoja.
-
-Lähteen tarkistustila ja koko ajon lopputila kuvaavat eri asioita. Lähteen `status` kertoo vain kyseisen lähteen tarkistamisen onnistumisesta; ajon `status` kuvaa koko seurantatehtävän onnistumista ja tuloksen käyttökelpoisuutta. Raportintuottaja arvioi kokonaisuuden, eikä yksittäinen lähdevirhe automaattisesti muuta koko ajoa osittaiseksi tai epäonnistuneeksi.
-
-Esimerkiksi yhden lähteen epäonnistuminen ei estä `success`-tilaa, jos muut lähteet tarjoavat seurannan kannalta riittävän kattavan aineiston. Jos tärkeiden lähteiden puuttuminen heikentää seurannan kattavuutta, ajon tila voi olla `partial`. Jos koko seuranta epäonnistuu, tila on `failed`. Jos seuranta onnistuu kattavasti mutta julkaistavaa raportoitavaa ei löydy, tila on `no_report`. Raportintuottaja tekee arvion tehtävän määritysten ja seurannan tavoitellun kattavuuden perusteella.
-
-Koko ajon tason `error`-objekti vaaditaan vain silloin, kun ajon `status` on `failed`. Se sisältää koko ajon epäonnistumisen virheluokan (`category`) ja lyhyen, turvallisen kuvauksen (`description`); objektia ei sallita muissa ajon tulostiloissa. Tämä koko ajon tason objekti on eri asia kuin edellä kuvattu lähdekohtainen `sources[].error`, jota käytetään yksittäisen lähteen `partial`- tai `failed`-tilan selittämiseen. Kummankaan tason kuvaukseen ei sisällytetä salaisuuksia, käyttöoikeustunnisteita, raakaa keskustelusisältöä tai tarpeettomia henkilötietoja.
-
-Kaikki edellä luetellut perustiedot, mukaan lukien `profiles` ja `sources`, ovat pakollisia kaikissa tulostiloissa; tyhjä taulukko on sallittu. Normaalissa vastaanotossa `run_id` ja `topic_id` tarkistetaan aktiivista tehtäväpyyntöä vasten. Myöhäisen toimituksen jälkikäsittelyssä tunnisteet tarkistetaan alkuperäisen `run_id`-ajon tallennettuja tietoja vasten. `schema_version` kuvaa metatietorakennetta, eikä sitä pidä sekoittaa tehtävän määritysten tai raportin versioon.
-
-#### Toimituspaketin tulostilakohtaiset tiedostovaatimukset
-
-Toimitus sisältää `metadata.json`-tiedoston, jos tuottaja pystyy muodostamaan toimituksen. Jos edes metatietoja ei voida muodostaa, vastaanottaja kirjaa toimituksen puuttumisen omaan ajohallintaansa eikä päättele tuottajan tulostilaa. RSS-itemin vaatimus riippuu metatietoihin merkitystä tulostilasta:
-
-| Tulostila | `metadata.json` | `item.xml` | Käsittely |
-|---|---|---|---|
-| `success` | pakollinen | pakollinen | Validoitu raportti julkaistaan oikeassa RSS-syötteessä. |
-| `partial` | pakollinen | pakollinen | Validoitu osittainen raportti julkaistaan; puutteet ja niiden syyt kerrotaan avoimesti. |
-| `no_report` | pakollinen, jos toimitus muodostuu | ei toimiteta | Seuranta onnistui, mutta julkaistavaa raporttia ei löytynyt. |
-| `failed` | pakollinen, jos toimitus muodostuu | ei toimiteta | Seuranta epäonnistui; metatietoihin kirjataan virheen luokka ja lyhyt, turvallinen kuvaus. |
-
-`no_report` ja `failed` ovat eksplisiittisiä tuottajan tulostiloja silloin, kun tuottaja pystyy muodostamaan toimituksen; niitä ei päätellä pelkästään toimituksen puuttumisesta. Jos metatietoja ei saada muodostettua, vastaanottajan ajohallinta kirjaa toimituksen puuttumisen erillisenä vastaanottajan havaintona. `failed`-tilan virhekuvaukseen ei saa sisällyttää salaisuuksia, tunnisteita, raakaa keskustelusisältöä tai tarpeettomia henkilötietoja.
-
-Ensimmäisessä versiossa toimituspaketin eheys varmistetaan rakenteellisilla ja sisällöllisillä tarkistuksilla ilman erillistä allekirjoitus- tai tarkistussummajärjestelmää.
-
-- `metadata.json` ja mahdollinen `item.xml` toimitetaan saman `run_id`-tunnisteen omaavassa hakemistossa.
-- Vastaanottava GitHub Actions -työnkulku tarkistaa vaadittujen tiedostojen olemassaolon ja toimituksen rakenteen.
-- Työnkulku validoi metatietojen rakenteen ja tarkistaa normaalissa vastaanotossa, että toimituksen `run_id` sekä aiheen tunniste vastaavat aktiivista tehtäväpyyntöä. Myöhäisen toimituksen jälkikäsittelyssä vastaavuus tarkistetaan alkuperäisen ajon tallennettuja tietoja vasten.
-- `success`- ja `partial`-tiloissa RSS-itemin on oltava mukana ja sen XML/RSS-rakenne validoidaan ennen julkaisua.
-- `partial`-itemissä kuvataan selvästi, mikä seurannassa jäi puutteelliseksi, miksi näin tapahtui ja miten puute vaikuttaa raportin kattavuuteen.
-- `no_report`- ja `failed`-toimituksissa `item.xml`-tiedostoa ei toimiteta; niiden `metadata.json` sisältää tulostilan edellyttämät tiedot.
-- Puutteellinen, virheellinen tai väärään tehtävään kuuluva toimitus hylätään kokonaisuutena. Se ei saa johtaa osittaiseen tallennukseen tai RSS-julkaisuun.
-
-Erilliset kryptografiset allekirjoitukset ja tarkistussummat jätetään ensimmäisen version ulkopuolelle. Niiden tarve arvioidaan myöhemmin, jos uhkamalli tai toimituskanavan luonne sitä edellyttää.
 
 
 #### 2.3.1 Ajotietue myös ilman tuottajan toimitusta
@@ -979,8 +865,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottorajapinta:** ensimmäisen version GitHub App -pohjaisen toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistyminen, Appin tosiasiallisten käyttöoikeuksien tarkistaminen sekä vastaanoton kirjaamisen yksityiskohdat.
-10. **Instanssirepositorion ja GitHub Appin käyttöönotto:** julkisen instanssirepositorion luominen, Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen, vähimmäisoikeuksin rajatun Appin asentaminen vain instanssirepoon sekä julkaisuhaaran suojauksen tekninen toteutus ja varmennus.
+9. **Vastaanottorajapinta:** Codex Connectorin kautta toimitetun paketin vastaanottohaaran käsittely, toimitushakemiston rakenteen validointi, työnkulun käynnistyminen sekä vastaanoton kirjaamisen yksityiskohdat.
+10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto:** julkisen instanssirepositorion Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä `main`-haaran suojauksen tekninen toteutus ja varmennus Codex Connectorin repositoriotasoisen käyttöoikeuden näkökulmasta. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
 13. **Toimituspakettien säilytys:** vastaanottohaaran toimituspakettien säilytysajat, siivouksen ehdot sekä keskeneräisten ja palautettavien ajojen aineiston säilyttäminen.
@@ -999,6 +885,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.91 (24.11.2026):** hyväksyttiin ensimmäisen vaiheen raportintuottajaksi ChatGPT:n ajastettu tehtävä ja toimituskanavaksi Codex Connector. Käytännön testi vahvisti toimituksen erilliseen vastaanottohaaraan muuttamatta `main`-haaraa. Määriteltiin vastaanottohaaraksi `raportit-inbox`, toimituspaketin hakemistorakenteeksi `toimitukset/{run_id}/{delivery_id}/` sekä vastaanoton ja julkaisun erottelu. Täsmennettiin Codex Connectorin repositoriotasoisen käyttöoikeuden vuoksi `main`-haaran erillinen suojaustarve. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa; aiempi App on poistettu. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.3.90 (24.11.2026):** hyväksyttiin julkinen instanssirepositorio ja GitHub Pages -julkaisu, erilliset vastaanotto- ja julkaisuhaarat sekä instanssirepoon rajattu GitHub App, jolla on vain Metadata read- ja Contents read/write -oikeudet. Täsmennettiin, että koko repositorio ja sen historia ovat julkisia sekä että Contents-kirjoitusoikeus on repositoriotasoinen ja julkaisuhaaran suojaus on toteutettava erikseen. Toteutusta, repositoriota, Appia tai automaatioita ei luotu tai muutettu.
 
