@@ -3,7 +3,7 @@
 **Versio:** 0.3.87  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.44](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.45](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -996,7 +996,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 19. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet ja hakemistorakenne, jakelukanava, ohjelmistoversion kiinnittäminen sekä ohjelmiston ja instanssin välisen tiedonsiirron tekniset yksityiskohdat.
 20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
-### Versiohistoria### Versiohistoria
+### Versiohistoria
 
 - **0.3.87 (24.11.2026):** hyväksyttiin ensimmäisen version toimituskanavaksi nykyisen GitHub App -yhteyden kautta tehtävä Git push erilliseen vastaanottohaaraan. Täsmennettiin, ettei käyttäjäkohtaista tunnistamista tai erillistä HTTPS-vastaanottopalvelua toteuteta ensimmäisessä versiossa, että Appin tosiasialliset oikeudet tarkistetaan ja että pushin onnistuminen ei tarkoita toimituksen hyväksymistä tai julkaisua. Vastaanoton ja validoinnin tulokset kirjataan GitHub Actionsin ja vastaanottajan ajotietojen kautta. Laajemmat tunnistus- ja käyttöoikeusmallit jätettiin myöhempiin versioihin. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 - **0.3.86 (24.11.2026):** hyväksyttiin rekisterin ulkopuolisten lähteiden ehdotusten tietoryhmät, erillinen `data/source-proposals/`-tallennus, ehdotusten elinkaaren tilat ja ensimmäisen version GitHub-pohjainen käsittely. Täsmennettiin kanavakohtaisten avausyritysten tilastointi, virheluokat, 30/90 päivän ja koko historian tarkastelujaksot, Valvomon tunnusluvut sekä toistuvien epäonnistumisten alustava nostokriteeri. Lähteiden automaattista poistamista tai käytöstä poistamista tilastojen perusteella ei sallita. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
