@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.94  
+**Versio:** 0.3.95  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.51](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.52](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -492,6 +492,29 @@ Codex Connectorin GitHub-oikeus ei rajaudu automaattisesti yksittäiseen haaraan
 - Vastaanottaja tarkistaa toimituksen kuulumisen olemassa olevaan ajoon, tunnisteiden johdonmukaisuuden, toimituspaketin rakenteen ja sisällön sekä eheyden. Vastaanottaja muodostaa `attempt_id`-tunnisteen, laskee SHA-256-tiivisteen ja säilyttää alkuperäisen toimituspaketin. Aiemmin hyväksytyt kaksois- ja ristiriitasäännöt koskevat myös GitHubin kautta tehtyjä uudelleenlähetyksiä.
 - Codex Connectorin käyttöoikeuksia tai tunnistetietoja ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin.
 
+##### Vastaanottoprosessin hyväksytyt toimintaperiaatteet
+
+Vastaanottoprosessin toiminnalliset periaatteet on hyväksytty. Vastaanotto käsittelee vain `raportit-inbox`-haaran toimituksia polussa `deliveries/{run_id}/{delivery_id}/`. Jokainen toimitus käsitellään itsenäisesti, alkuperäistä pakettia muuttamatta. Vastaanotto, hyväksyntä ja julkaisu ovat erillisiä tapahtumia, eikä vastaanottovirhe estä muiden toimitusten käsittelyä.
+
+Vastaanottaja varmistaa, että toimituksen `run_id` ja `delivery_id` vastaavat polkua ja metatietoja, ajo on olemassa ja ajo liittyy tunnettuun tehtävään. Tehtävän, ajon ja toimituksen tunnisteiden sekä aikaleimojen on oltava johdonmukaisia. Tuntemattomaan ajoon tai tehtävään viittaava toimitus hylätään; puuttuvaa ajoa ei luoda toimituksen perusteella.
+
+Paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot. `item.xml` vaaditaan vain tehtävätyypin ja tuottajan tulostilan niin edellyttäessä. Tiedostoroolit ja tulostilakohtaiset vaatimukset tulevat tehtävätyypin määrityksestä. Odottamattomat tiedostot hylätään. Polut ovat paketin sisäisiä: absoluuttiset polut, `..`-siirtymät, symboliset linkit ja paketin ulkopuolelle osoittavat viittaukset eivät ole sallittuja. Ensimmäiseen versioon ei rakenneta yleistä liite- tai kuvakäsittelyä.
+
+Metatiedot validoidaan skeemaa vasten. Tarkistukset kattavat pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion ja tunnisteiden vastaavuuden. Tuntematonta skeemaversiota ei tulkita arvaamalla. Jo hyväksyttyä kuuden tietoryhmän toimitusmetatietomallia ei muuteta tällä päätöksellä. Sisältötiedostot validoidaan erillään metatiedoista niiden luettavuuden, koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakollisten elementtien ja keskinäisten viittausten osalta. RSS-itemin tarkka sisältösopimus, elementtien pakollisuus, GUIDin muodostus ja raporttisisällön esitystapa jäävät avoimiksi.
+
+Vastaanottaja laskee jokaisen toimitetun sisältötiedoston koon ja SHA-256-tiivisteen ja vertaa niitä metatietoihin. Puuttuva tiedosto, väärä koko tai tiiviste sekä määriteltyjen koko- tai määrärajojen ylitys estävät hyväksymisen. Tiiviste todentaa eheyden, ei lähettäjän henkilöllisyyttä. Vastaanottaja ei suorita toimituspaketin koodia.
+
+Saman `delivery_id`-tunnisteen ja saman sisällön uusintatoimitus käsitellään idempotentisti ilman uutta julkaisua tai päällekkäisiä sivuvaikutuksia. Saman tunnisteen eri sisältö hylätään ristiriitaisena. Useat toimitukset samasta ajosta sallitaan vain toimitussopimuksen rajoissa. RSS-itemin GUIDin toistuminen tarkistetaan julkaisu- ja historiatiedoista. Uudelleenyritykset yksilöidään käsittely-yrityksinä.
+
+Vastaanoton tiloissa erotetaan vastaanotettu, tarkistuksessa, hyväksytty, julkaisukelpoinen ja julkaistu sekä hylätty ja tilapäistä uudelleenyritystä odottava. Pysyvä rakenteellinen tai sisältövirhe hylätään; tilapäinen tekninen virhe voi johtaa rajattuun uudelleenyritykseen. Uudelleenyritysten tarkat määrät ja viiveet määritellään teknisessä toteutuksessa. Virheestä tallennetaan koneellinen virheluokka ja ihmiselle luettava kuvaus.
+
+Kirjanpito sisältää vähintään ajo-, toimitus- ja tehtävätunnisteet, vastaanottoajan, tiedostoluettelon ja tiivisteet, käytetyn skeemaversion, validointitulokset, lopputilan sekä virhekoodit ja kuvaukset. Julkaisun yhteydessä kirjataan varmennettu julkaisutulos. Alkuperäinen toimituspaketti säilytetään muuttumattomana.
+
+Vastaanoton validointi ja julkaisu toteutetaan erillisinä GitHub Actions -työnkulkuvastuina. Vastaanotto käynnistyy vastaanottohaaran toimitusmuutoksista, validoi ja kirjaa tuloksen. Julkaisu käsittelee vain vastaanottajan hyväksymän toimituksen, tarkistaa hyväksynnän ja siirtää sisällön erikseen `main`-haaraan. Julkaisun jälkeen varmennetaan julkaistun sisällön ja RSS/XML:n kelvollisuus. `main`-haaran suojaus on varmennettava niin, ettei Codex Connector voi ohittaa sitä.
+
+Turvallisuusperiaatteet edellyttävät, että toimituspakettia käsitellään epäluotettavana datana, polut rajataan paketin sisälle, tiedostojen määrää ja kokoa rajoitetaan, koodia ei suoriteta ja vastaanottoprosessille annetaan vain välttämättömät oikeudet. Ensimmäiseen versioon eivät kuulu erillinen HTTPS-vastaanottopalvelu, vastaanotto-GitHub App, lähettäjän erillinen tunnistaminen, useiden raportintuottajien samanaikainen käsittely, yleinen manuaalinen hyväksymisjärjestelmä, automaattinen korjaaminen tai yleinen liitetiedostojen käsittely.
+
+
 Erillistä HTTPS-vastaanottopalvelua tai käyttäjäkohtaista tunnistamista ei toteuteta ensimmäisessä versiossa. Laajemmat tunnistus- ja integraatiomallit voidaan arvioida myöhemmissä versioissa.
 
 Esimerkkirakenne vastaanottohaarassa:
@@ -867,7 +890,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottorajapinta:** Codex Connectorin kautta toimitetun paketin vastaanottohaaran käsittely, toimitushakemiston rakenteen validointi, työnkulun käynnistyminen sekä vastaanoton kirjaamisen yksityiskohdat.
+9. **Vastaanottoprosessin tekninen viimeistely:** vastaanoton toiminnalliset periaatteet on hyväksytty ja kirjattu. Avoinna ovat RSS-itemin tarkka sisältösopimus sekä vastaanotto- ja julkaisutyönkulkujen tekninen toteutus, virhetilanteiden konkreettiset uudelleenyritysrajat ja käyttöönoton varmennukset.
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto:** julkisen instanssirepositorion Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä `main`-haaran suojauksen tekninen toteutus ja varmennus Codex Connectorin repositoriotasoisen käyttöoikeuden näkökulmasta. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
@@ -887,6 +910,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.95 (24.11.2026):** kirjattiin vaatimusmäärittelyn kanssa yhdenmukaisesti vastaanottoprosessin 12 hyväksyttyä kokonaisuutta. RSS-itemin tarkka sisältösopimus jätettiin avoimeksi; vastaanoton ja julkaisun työnkulkujen tekninen toteutus, uudelleenyritysrajat ja käyttöönoton varmennukset säilyvät suunnittelutehtävinä. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.3.94 (24.11.2026):** synkronoitiin toteutussuunnitelman perustaviittaus vaatimusmäärittelyn uusimpaan versioon 0.12.51. Avoimien suunnittelukysymysten luettelo vastaa nyt täsmälleen vaatimusmäärittelyä.
 
