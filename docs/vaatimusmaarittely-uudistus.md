@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.52  
+**Versio:** 0.12.53  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -136,7 +136,7 @@ Tehtäväpyynnön `inputs`-taulukko sisältää rakenteisten syöteaineistojen v
 
 #### Lähderekisterin ja lähdevalinnan rakenne
 
-Ensimmäisessä versiossa instanssilla on yksi yhteinen lähderekisteri tiedostossa `data/sources/registry.json`. Rekisterin juurirakenne sisältää `schema_version`- ja `sources`-kentät. Yksi keskitetty rekisteritiedosto helpottaa lähde- ja kanavatunnisteiden yksilöllisyyden sekä viittausten eheyden tarkistamista. Tarkka sijoittelu voidaan vielä vahvistaa nykyisen tiedostorakenteen inventaarion yhteydessä, mutta useita rinnakkaisia lähderekistereitä ei oteta ensimmäiseen versioon.
+Ensimmäisessä versiossa instanssilla on yksi yhteinen lähderekisteri tiedostossa `data/sources/registry.json`. Rekisterin juurirakenne sisältää `schema_version`- ja `sources`-kentät. Yksi keskitetty rekisteritiedosto helpottaa lähde- ja kanavatunnisteiden yksilöllisyyden sekä viittausten eheyden tarkistamista. Hakemistorakenne ja tiedostopolut määritellään tavoitetilaa varten puhtaalta pöydältä; vanhan toteutuksen tiedostorakennetta ei käytetä lähtökohtana.
 
 Lähdetietue sisältää vähintään kentät `id`, `name`, `publisher`, `source_type`, `description`, `homepage_url`, `languages`, `regions`, `reliability`, `reliability_notes`, valinnaiset `timezone` ja `timezone_basis`, `technical_access` sekä `channels`. Lähdetyypin sallitut arvot ovat `news_media`, `official_source`, `social_media`, `forum`, `blog`, `database`, `video_platform`, `event_listing` ja `other`. Toimituksellisen luotettavuuden arvot ovat `high`, `medium`, `low` ja `unassessed`; luokitus kuvaa lähteen arvioitua käyttökelpoisuutta eikä takaa yksittäisen julkaisun oikeellisuutta. Kielet ilmaistaan BCP 47 -tunnisteilla ja alueet ISO 3166-1 alpha-2 -maatunnisteilla tai arvolla `global`. Tyhjä kieli- tai aluelista tarkoittaa, ettei tietoa ole määritelty, ei sitä, että lähde kattaisi kaikki kielet tai alueet.
 
@@ -491,7 +491,7 @@ Toimituspaketin vähimmäissisältö on `metadata.json` sekä tehtävätyypin ed
 
 Toimitusmetatiedot validoidaan niitä vastaavaa skeemaa vasten. Vastaanottaja tarkistaa pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion sekä tunnisteiden vastaavuuden toimituspolkuun ja alkuperäiseen ajoon. Tuntematonta skeemaversiota ei tulkita arvaamalla. Metatietojen tarkka kenttärakenne määräytyy erillisessä toimitusmetatietojen tietomallissa; tässä hyväksytty prosessi ei korvaa eikä muuta jo päätettyä kuuden tietoryhmän rakennetta.
 
-Sisältötiedostot validoidaan erillään metatiedoista. Yleinen sisältövalidointi kattaa tiedoston luettavuuden ja koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakolliset sisältöelementit sekä tiedostojen väliset viittaukset. RSS-itemin tarkka sisältösopimus, elementtien pakollisuus, GUIDin muodostus ja raporttisisällön esitystapa jätetään erikseen jatkosuunnitteluun.
+Sisältötiedostot validoidaan erillään metatiedoista. Yleinen sisältövalidointi kattaa tiedoston luettavuuden ja koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakolliset sisältöelementit sekä tiedostojen väliset viittaukset. RSS-itemin toimitustiedosto sisältää täsmälleen yhden `<item>`-elementin eikä kokonaista RSS-syötettä. Itemissä ei käytetä `<link>`-elementtiä; lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa. `<guid>` yksilöi itemin eikä toimi linkkinä raporttisivulle. Muiden elementtien pakollisuus, GUIDin tarkka muodostus ja raporttisisällön tarkempi HTML-rakenne täsmennetään erikseen.
 
 Eheystarkistuksessa vastaanottaja laskee jokaiselle toimitetulle sisältötiedostolle koon ja SHA-256-tiivisteen ja vertaa niitä metatiedoissa ilmoitettuihin arvoihin. Puuttuva tiedosto, väärä koko tai tiiviste, tai tiedostokohtaisen ja toimituskohtaisen kokorajan ylitys estää hyväksymisen. Tiiviste todentaa sisällön eheyden, ei lähettäjän henkilöllisyyttä. Vastaanottaja ei suorita toimituspaketin sisältämää koodia.
 
@@ -883,12 +883,11 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 15. **Valvomon toteutus:** kolmen perusnäkymän tarkka käyttöliittymärakenne, tietojen esitystapa ja navigointi.
 16. **Julkisten käyttöliittymien tietoturvatarkistukset:** Valvomoon ja RSS-lukijaan päätyvän sisällön sekä niiden lukemien tietolähteiden automaattiset tarkistukset, joilla estetään salaisuuksien, käyttöoikeustunnusten ja yksityisten tietojen päätyminen julkisiin tiedostoihin tai rajapintoihin.
 
-### 5. Siirtymä ja käyttöönotto
+### 5. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
-17. **Nykyisen toteutuksen inventaario ja siirtymä:** nykyisten komponenttien arviointi, säilytettävien, yksinkertaistettavien ja uudelleenrakennettavien osien valinta sekä siirtymän vaiheistus ja mahdolliset migraatiot.
-18. **Historiatietojen säilytys:** ajotietojen, tapahtumien, lokien ja väliaineistojen säilytysajat sekä säilytyksen ja siivouksen tekniset käytännöt.
-19. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet ja hakemistorakenne, jakelukanava, ohjelmistoversion kiinnittäminen sekä ohjelmiston ja instanssin välisen tiedonsiirron tekniset yksityiskohdat.
-20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
+17. **Historiatietojen säilytys:** ajotietojen, tapahtumien, lokien ja väliaineistojen säilytysajat sekä säilytyksen ja siivouksen tekniset käytännöt.
+18. **Ohjelmiston ja instanssin toimitusmalli:** repositorioiden nimet ja hakemistorakenne, jakelukanava, ohjelmistoversion kiinnittäminen sekä ohjelmiston ja instanssin välisen tiedonsiirron tekniset yksityiskohdat.
+19. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ## 17. Raportintekijän yhteinen perusprompti ja tuottajakohtaiset ohjeet
 
@@ -901,6 +900,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.53 – 24.11.2026:** täsmennettiin RSS-itemin toimitusmuoto yhdeksi `<item>`-elementiksi ilman `<link>`-elementtiä ja määriteltiin lähteiden linkitys raporttisisällössä. Päätettiin aloittaa toteutus puhtaalta pöydältä käyttämättä vanhaa arkistoitua toteutusta; poistettiin vanhaan toteutukseen liittyvä inventaario- ja siirtymäkysymys avoimista suunnittelutehtävistä.
 
 - **0.12.51 – 24.11.2026:** yhdenmukaistettiin avoimien suunnittelukysymysten koko luettelo täsmälleen toteutussuunnitelman kanssa. Päivitettiin erityisesti julkaisusuojauksen avoin kohta vastaamaan Codex Connector -mallia.
 
