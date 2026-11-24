@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.60  
+**Versio:** 0.12.61  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -493,7 +493,7 @@ Toimituspaketin vähimmäissisältö on `metadata.json` sekä tehtävätyypin ed
 
 Toimitusmetatiedot validoidaan niitä vastaavaa skeemaa vasten. Vastaanottaja tarkistaa pakolliset tiedot, tietotyypit, sallitut arvot, skeemaversion sekä tunnisteiden vastaavuuden toimituspolkuun ja alkuperäiseen ajoon. Tuntematonta skeemaversiota ei tulkita arvaamalla. Metatietojen tarkka kenttärakenne määräytyy erillisessä toimitusmetatietojen tietomallissa; tässä hyväksytty prosessi ei korvaa eikä muuta jo päätettyä kuuden tietoryhmän rakennetta.
 
-Sisältötiedostot validoidaan erillään metatiedoista. Yleinen sisältövalidointi kattaa tiedoston luettavuuden ja koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakolliset sisältöelementit sekä tiedostojen väliset viittaukset. RSS-itemin toimitustiedosto sisältää täsmälleen yhden `<item>`-elementin eikä kokonaista RSS-syötettä. Itemissä ei käytetä `<link>`-elementtiä; lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa. `<title>`, `<guid>` ja `<pubDate>` ovat pakollisia. `<guid>` yksilöi itemin eikä toimi linkkinä raporttisivulle. Raportin HTML-sisällöllä on yhteinen perusrakenne, mutta varsinainen sisältö ja sen jäsentely voivat vaihdella aiheen ja tehtävätyypin mukaan. Koko raportti toimitetaan RSS Content -laajennuksen `<content:encoded>`-elementissä HTML-muodossa. `<description>` on vapaaehtoinen lyhyt tiivistelmä eikä siihen kopioida koko raporttia. `content`-nimiavaruus määritellään toimitettavassa `<item>`-elementissä, koska tiedosto ei sisällä RSS-kanavan ympäröivää elementtiä. `<pubDate>` esitetään UTC-ajassa RSS:n päivämäärämuodon mukaisesti; käyttöliittymä voi muuntaa ajan paikalliseen aikavyöhykkeeseen. Vielä avoinna ovat GUIDin tarkka muodostus sekä HTML-rakenteen yksityiskohtaiset vaatimukset.
+Sisältötiedostot validoidaan erillään metatiedoista. Yleinen sisältövalidointi kattaa tiedoston luettavuuden ja koodauksen, syntaksin, tehtävätyypin mukaisen rakenteen, pakolliset sisältöelementit sekä tiedostojen väliset viittaukset. RSS-itemin toimitustiedosto sisältää täsmälleen yhden `<item>`-elementin eikä kokonaista RSS-syötettä. Itemissä ei käytetä `<link>`-elementtiä; lähteet linkitetään raportin HTML-sisällössä lähteistettävän tiedon yhteydessä ja/tai raportin lopun lähdeluettelossa. RSS-itemin elementit ovat täsmälleen seuraavat tässä järjestyksessä: pakollinen `<title>`, pakollinen `<guid isPermaLink="false">`, pakollinen UTC-aikainen `<pubDate>`, valinnainen lyhyt `<description>` ja pakollinen `<content:encoded>`. Muita RSS-elementtejä, kuten `<author>`, `<category>`, `<comments>`, `<enclosure>` tai `<source>`, ei käytetä. GUIDin ainoa sallittu attribuutti on `isPermaLink="false"`; muille elementeille ei lisätä attribuutteja. `content`-nimiavaruus määritellään item-elementissä muodossa `xmlns:content="http://purl.org/rss/1.0/modules/content/"`, koska tiedosto ei sisällä RSS-kanavan ympäröivää elementtiä. `<guid>` yksilöi itemin eikä toimi linkkinä raporttisivulle. Koko raportti toimitetaan RSS Content -laajennuksen `<content:encoded>`-elementissä HTML-muodossa. `<description>` on vapaaehtoinen lyhyt tiivistelmä eikä siihen kopioida koko raporttia. Raportin HTML-sisällöllä on yhteinen perusrakenne, mutta varsinainen sisältö ja sen jäsentely voivat vaihdella aiheen ja tehtävätyypin mukaan. `<pubDate>` esitetään UTC-ajassa RSS:n päivämäärämuodon mukaisesti; käyttöliittymä voi muuntaa ajan paikalliseen aikavyöhykkeeseen. GUIDin muodostus ja säilytys on määritelty erikseen; HTML-rakenteen yksityiskohtaiset vaatimukset jäävät kohtaan 9.3.
 
 Eheystarkistuksessa vastaanottaja laskee jokaiselle toimitetulle sisältötiedostolle koon ja SHA-256-tiivisteen ja vertaa niitä metatiedoissa ilmoitettuihin arvoihin. Puuttuva tiedosto, väärä koko tai tiiviste, tai tiedostokohtaisen ja toimituskohtaisen kokorajan ylitys estää hyväksymisen. Tiiviste todentaa sisällön eheyden, ei lähettäjän henkilöllisyyttä. Vastaanottaja ei suorita toimituspaketin sisältämää koodia.
 
@@ -935,7 +935,6 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 ### 3. Integraatiot ja ajonhallinta
 
 9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
-   - 9.1 **RSS-itemin täydellinen rakenne:** päätetään muiden elementtien pakollisuus, mahdolliset author-, category- ja source-elementit, GUIDin isPermaLink-attribuutti sekä elementtien vakiojärjestys.
    - 9.2 **XML- ja HTML-yhteensopivuus:** määritellään escaping- tai CDATA-käytäntö, content:encoded-arvon muodostus, sallitut HTML-elementit ja attribuutit sekä virheellisen HTML:n käsittely.
    - 9.3 **Raportin HTML-perusrakenne:** määritellään yhteiset rakenneosat, otsikkohierarkia, metatietojen ja lähdeviitteiden esitys, saavutettavuus sekä aihekohtaisen vaihtelun rajat.
    - 9.4 **Toimituspaketin rajapinta:** määritellään itemin, raporttitiedoston ja toimitusmetatietojen yhteys, tiedostojen yksilöinti sekä korjaus- ja täydennysitemin viittaus alkuperäiseen.
@@ -944,7 +943,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 9.7 **Idempotenssi ja virhetilanteet:** määritellään uudelleenyrityksen tunnistaminen, jo käsitellyn toimituksen vaste, ristiriitaisten toimitusten käsittely sekä pysyvien ja tilapäisten virheiden luokittelu.
    - 9.8 **Julkaisun varmennus:** määritellään itemin tallentumisen, GUIDin ja ajotietueen yhtäpitävyyden, RSS-luettavuuden ja Pages-julkaisun valmistumisen tarkistukset.
    - 9.9 **Käyttöönoton hyväksymiskriteerit:** määritellään päästä päähän -skenaariot, palautumis- ja virhetestit, havaittavuus sekä käyttöönottovalmiuden ehdot.
-   - *Rajaus:* yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
+   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - 10.1 Määritellään instanssirepositorion lopullinen hakemistorakenne ja Pages-julkaisun lähdepolut.
@@ -1046,6 +1045,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.61 – 24.11.2026:** hyväksyttiin RSS-itemin täydellinen elementtirakenne ja vakiojärjestys: `<title>`, `<guid isPermaLink="false">`, `<pubDate>`, valinnainen `<description>` ja `<content:encoded>`. Rajattiin muut RSS-elementit ja ylimääräiset attribuutit pois sekä määriteltiin `content`-nimiavaruuden ilmoittaminen item-elementissä. Kohta 9.1 poistettiin avoimien kohtien luettelosta; HTML:n yksityiskohtainen rakenne jäi kohtaan 9.3. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.59 – 24.11.2026:** päivitettiin avoimien teknisten asioiden luettelo vastaamaan 24.11. hyväksyttyjä RSS-itemin sisältösopimuksen ja UUIDv4-GUIDin ratkaisuja. Poistettiin GUIDin muodostus avoimista asioista ja rajattiin jäljellä oleva työ RSS-elementtien pakollisuuteen, HTML-rakenteen tarkempaan perusmuotoon, työnkulkujen toteutukseen, uudelleenyritysrajoihin ja käyttöönoton varmennuksiin. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
