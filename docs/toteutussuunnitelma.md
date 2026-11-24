@@ -429,7 +429,7 @@ Skeemakokonaisuuden päävastuut ovat:
 - yhteisen lähderekisterin skeema;
 - tehtäväpyynnön skeema;
 - tuottajan toimitusmetatietojen skeema;
-- toimituspaketin tulostilakohtaiset skeemat ja vastaanottajan kanonisen ajotietueen skeema;
+- toimituspaketin tulostilakohtaiset skeemat, vastaanottajan kanonisen ajotietueen skeema sekä append-only-tapahtumahistorian tietuetyypin skeema;
 - uudelleenkäytettävät osaskeemat tunnisteille, Git-revisioille, aikaleimoille, tiedostoviittauksille, lähde- ja kanavaviittauksille sekä virhekuvauksille.
 
 Tehtävätyypin asetusskeema määrittelee myös lopullisen `resolved_config`-rakenteen. Profiilin oma rakenne validoidaan profiilin skeemalla ja sen asetukset lisäksi valitun tehtävätyypin asetusskeemalla. Tuottajan toimittamat tulosmetatiedot ja vastaanottajan kirjaama ajonhallinta pysyvät erillisinä tietosopimuksina: toimitusmetatietojen skeema ei korvaa eikä määrittele vastaanottajan kanonista ajotietuetta.
