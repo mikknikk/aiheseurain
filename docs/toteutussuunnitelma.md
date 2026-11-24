@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.89  
+**Versio:** 0.3.90  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.46](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.47](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -470,27 +470,29 @@ Perusprompti määrittelee raportintekijän yleisen toimintamallin: tehtäväpyy
 
 Perusprompti sisältää myös vaatimuksen raportoida lähdekohtaiset avausyritykset ja niiden tulokset erillään sisällön laadusta tai relevanssista. Raportintekijä käyttää vain tehtäväpyynnössä yksilöityjä muuttumattomia ohjeversioita. Promptin tarkka teksti ja mahdollinen tuottajakohtainen sovitus suunnitellaan myöhemmin; tämä arkkitehtuuripäätös ei vielä luo promptitiedostoa eikä muuta nykyisiä automaatioita.
 
-### 2.3 Toimitustapa: Git push erilliseen vastaanottohaaraan
+### 2.3 Toimitustapa: Git push julkisen instanssirepositorion vastaanottohaaraan
 
-Raportintuottaja toimittaa tuloksensa Git pushilla erilliseen vastaanottohaaraan. Hyväksytty lähtökohta on esimerkiksi haara `raportit-inbox`.
+Ensimmäisen vaiheen instanssirepositorio luodaan julkiseksi. RSS-syötteet julkaistaan GitHub Pagesin kautta. Koko instanssirepositorio, sen haarat ja Git-historia ovat julkisia, joten kaikki sinne toimitettava aineisto käsitellään julkisena. Repositorioon tai toimituksiin ei saa sisällyttää salasanoja, API-avaimia, käyttöoikeustunnisteita, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
 
-Ensimmäisessä versiossa hyödynnetään ChatGPT-ympäristössä jo käytössä olevaa GitHub App -yhteyttä. Erillistä GitHub Appia, vastaanottopalvelua tai uutta käyttöoikeusjärjestelyä ei rakenneta tässä vaiheessa. Ratkaisu pidetään tarkoituksella yksinkertaisena, koska samaa ChatGPT-käyttäjäympäristöä käytetään sekä Aiheseuraimen kehittämiseen että raportintuottajan ensimmäiseen versioon.
+Raportintuottaja toimittaa kokonaisen toimituspaketin Git pushilla erilliseen vastaanottohaaraan, esimerkiksi `raportit-inbox`. Julkaisu tapahtuu erikseen `main`-haaraan. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
 
-- Raportintuottajan toimintamalli ohjaa toimitukset `raportit-inbox`-haaraan; se ei puske suoraan `main`-haaraan eikä julkaistavien RSS-syötteiden hakemistoon.
-- Nykyisen GitHub App -yhteyden tekninen kirjoitusoikeus voi olla tätä toimintamallia laajempi. Ensimmäisessä versiossa ei väitetä, että käyttöoikeus olisi teknisesti rajattu vain vastaanottohaaraan.
-- `main`-haaran suojaus säilytetään, ja kaikki vastaanottohaaran toimitukset validoidaan ennen käsittelyä tai julkaisua.
-- GitHub App -integraatio tunnistaa teknisen sovellusyhteyden ja valtuuttaa toimituksen. Ensimmäisessä versiossa ei tunnisteta erikseen toimituksen käynnistänyttä käyttäjää eikä toteuteta käyttäjäkohtaista tunnistautumista; toimitusketju luotetaan rajatuksi kokonaisuudeksi, koska Appin käyttö on annettu vain luotetuille tahoille.
-- Appin käyttöoikeuksien tosiasiallinen laajuus tarkistetaan. Toimintamallissa toimitukset ohjataan vastaanottohaaraan, mutta dokumentaatiossa ei väitetä Appin teknisten kirjoitusoikeuksien rajoittuvan vain tähän haaraan, ellei rajausta ole erikseen toteutettu ja varmennettu.
-- Tunnistetietoja tai Appin käyttöön tarvittavia salaisuuksia ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin. Erillistä käyttäjätunnistautumista, HTTPS-vastaanottopalvelua tai erillistä Appia ei rakenneta ensimmäisessä versiossa.
-- Erillisen GitHub Appin, tarkempien käyttöoikeusrajojen ja käyttäjä-/tuottajakohtaisen tunnistamisen tarve arvioidaan uudelleen, jos raportintuottajia tai integraatioita tulee lisää tai uhkamalli muuttuu.
-- Toimitus sijoitetaan omaan hakemistoonsa ajo- tai toimitustunnisteen perusteella.
+Vastaanottoon käytetään erillistä GitHub Appia, joka asennetaan vain kyseiseen instanssirepositorioon. Appille annetaan vain seuraavat oikeudet:
+- **Metadata: Read-only**
+- **Contents: Read and write**
+
+Appille ei anneta Actions-, Workflows-, Issues-, Pull requests-, Checks- tai Commit statuses -oikeuksia. Näin vastaanoton kirjoitusoikeus erotetaan yhteisen ohjelmistorepositorion kehitysoikeuksista ja muista GitHub-toiminnoista.
+
+Contents-kirjoitusoikeus on repositoriokohtainen eikä rajaudu itsessään vain vastaanottohaaraan. Siksi `main`-julkaisuhaaran suojaus ja vastaanottohaaran käsittelyn rajat on toteutettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Käyttöönotossa on varmennettava, ettei vastaanotto-App voi ohittaa julkaisuhaaran suojauksia. Dokumentaatio ei oleta suojauksen olevan käytössä ennen kuin se on teknisesti asetettu ja tarkistettu.
+
 - GitHub Actions käynnistää toimituksen käsittelyn vastaanottohaaraan tehdyn pushin perusteella.
-- Actions tarkistaa paketin ennen kuin mitään julkaistaan tai tallennetaan tuotannon tietoihin.
-- Virheellinen toimitus ei saa muuttaa julkaistuja RSS-syötteitä.
-- Gitin historia antaa toimituksille jäljitettävyyden.
-- Git pushin onnistuminen vahvistaa vain toimituksen siirtymisen vastaanottohaaraan; se ei merkitse toimituksen hyväksymistä tai julkaisua. Vastaanoton ja validoinnin tulokset kirjataan GitHub Actions -työnkulun sekä vastaanottajan ajotietueen ja tapahtumahistorian avulla. Erillistä HTTP-kuittausrajapintaa ei tarvita ensimmäisessä versiossa.
+- Actions tarkistaa paketin ennen kuin mitään julkaistaan tai tallennetaan hyväksyttyihin tuotantotietoihin.
+- Vain validoitu ja hyväksytty sisältö siirretään julkaisuhaaraan; virheellinen toimitus ei muuta julkaistuja RSS-syötteitä.
+- Git pushin onnistuminen vahvistaa vain toimituksen siirtymisen vastaanottohaaraan; se ei merkitse toimituksen hyväksymistä tai julkaisua.
+- Vastaanoton ja validoinnin tulokset kirjataan GitHub Actions -työnkulun sekä vastaanottajan ajotietueen ja tapahtumahistorian avulla. Erillistä HTTP-kuittausrajapintaa ei tarvita ensimmäisessä versiossa.
 - Vastaanottaja tarkistaa toimituksen kuulumisen olemassa olevaan ajoon, tunnisteiden johdonmukaisuuden, toimituspaketin rakenteen ja sisällön sekä eheyden. Vastaanottaja muodostaa `attempt_id`-tunnisteen, laskee SHA-256-tiivisteen ja säilyttää alkuperäisen toimituspaketin. Aiemmin hyväksytyt kaksois- ja ristiriitasäännöt koskevat myös GitHubin kautta tehtyjä uudelleenlähetyksiä.
+- Appin käyttöoikeuksia tai tunnistetietoja ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin.
 
+Erillistä HTTPS-vastaanottopalvelua tai käyttäjäkohtaista tunnistamista ei toteuteta ensimmäisessä versiossa. Laajemmat tunnistus- ja integraatiomallit voidaan arvioida myöhemmissä versioissa.
 Esimerkkirakenne:
 
 ```text
@@ -978,7 +980,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 ### 3. Integraatiot ja ajonhallinta
 
 9. **Vastaanottorajapinta:** ensimmäisen version GitHub App -pohjaisen toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistyminen, Appin tosiasiallisten käyttöoikeuksien tarkistaminen sekä vastaanoton kirjaamisen yksityiskohdat.
-10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main`-haaran suojauksen ja käyttöönoton yhteensovittaminen.
+10. **Instanssirepositorion ja GitHub Appin käyttöönotto:** julkisen instanssirepositorion luominen, Pages-julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen, vähimmäisoikeuksin rajatun Appin asentaminen vain instanssirepoon sekä julkaisuhaaran suojauksen tekninen toteutus ja varmennus.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
 13. **Toimituspakettien säilytys:** vastaanottohaaran toimituspakettien säilytysajat, siivouksen ehdot sekä keskeneräisten ja palautettavien ajojen aineiston säilyttäminen.
@@ -997,6 +999,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.90 (24.11.2026):** hyväksyttiin julkinen instanssirepositorio ja GitHub Pages -julkaisu, erilliset vastaanotto- ja julkaisuhaarat sekä instanssirepoon rajattu GitHub App, jolla on vain Metadata read- ja Contents read/write -oikeudet. Täsmennettiin, että koko repositorio ja sen historia ovat julkisia sekä että Contents-kirjoitusoikeus on repositoriotasoinen ja julkaisuhaaran suojaus on toteutettava erikseen. Toteutusta, repositoriota, Appia tai automaatioita ei luotu tai muutettu.
 
 - **0.3.89 (24.11.2026):** päivitettiin vaatimusmäärittelyn perustaviittaus versioon 0.12.46 ja synkronoitiin toteutussuunnitelman versiotieto. Muita suunnitteluratkaisuja ei muutettu.
 
