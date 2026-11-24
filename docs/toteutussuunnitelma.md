@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.84  
+**Versio:** 0.3.85  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.42](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.43](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -774,6 +774,27 @@ runs/
 
 RSS-julkaisu, kanonisen ajotietueen päivitys ja tarvittavat uudet tapahtumat tallennetaan samaan atomiseen Git-commitiin. Toimitusmetatiedot säilyvät erillisenä tuottajan toimittamana aineistona, ja niiden vastaanotto/hyväksyntä kirjataan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
+#### 2.6.1.1 Vastaanottajan ajotietueen ja tapahtumahistorian tietomalli
+
+`run.json` on vastaanottajan ylläpitämä ajon nykytilan yhteenveto. Sen tietoryhmät ovat:
+
+- ajon tunnisteet: `run_id`, `topic_id` ja `task_type`;
+- ohjelmisto- ja instanssirevisiot;
+- tehtävän ajankohdat ja `period`;
+- vastaanottajan nykyinen käsittely- ja lopputila;
+- hyväksyttyyn toimitukseen ja sen metadataan viittaaminen;
+- viimeisin validointitulos ja mahdolliset virheet;
+- julkaisun tila ja RSS-itemin viittaus;
+- tietueen luonti- ja viimeisin varmennettu päivitysaikaleima.
+
+Tuottajan metatietoja ei kopioida `run.json`-tiedostoon. Tuottajan `status` ja vastaanottajan ajon tila ovat eri tietoja: tuottajan `success` ei yksin merkitse vastaanoton tai julkaisun onnistumista. Jos toimitusta ei saada, tuottajan tilaa ei päätellä.
+
+`events.jsonl` sisältää yhden JSON-tapahtuman kullakin rivillä. Yhteiset kentät ovat `event_id`, `run_id`, `sequence`, `event_type`, `occurred_at`, `actor` ja `details`. Esimerkkitapahtumia ovat `run_created`, `task_issued`, `deadline_exceeded`, `delivery_received`, `delivery_validation_started`, `delivery_accepted`, `delivery_rejected`, `publication_started`, `publication_completed`, `run_completed` ja `run_failed`. Kunkin tapahtumatyypin `details`-kentän sallittu sisältö määritellään erikseen.
+
+Tapahtumahistoriaan lisätään vain uusia rivejä. Aiemmat tapahtumat eivät muutu eivätkä katoa. `sequence` on yhden ajon sisällä yksilöllinen ja kasvava; `event_id` on yksilöllinen. Aikaleimat noudattavat yhteistä ISO 8601 -muotoa numeerisine UTC-offsetteineen. Tapahtuma kuvaa todennettua tapahtumaa, ei oletusta. `run.json` muodostetaan tapahtumahistorian ja hyväksyttyjen toimitustietojen perusteella.
+
+Tunnisteiden vastuut ovat erilliset: `run_id` yksilöi loogisen ajon, `delivery_id` tuottajan toimituksen, `attempt_id` vastaanottajan käsittely-yrityksen ja `event_id` yksittäisen tapahtuman. Jokainen tapahtuma viittaa `run_id`-tunnisteeseen; toimitukseen liittyvä tapahtuma voi viitata lisäksi `delivery_id`-tunnisteeseen ja käsittely-yritykseen liittyvä tapahtuma `attempt_id`-tunnisteeseen. Tunnisteita ei käytetä ristiin eikä muodosteta uudelleen saman kohteen uudelleenyrityksissä.
+
 #### 2.6.2 Lähdekohtaiset avaus- ja käyttötilastot
 
 Raportintekijä ilmoittaa jokaisesta lähteestä, jonka avaamista se tosiasiallisesti yritti, lähderekisterin vakaan tunnisteen, yrityksen tuloksen ja mahdollisuuksien mukaan epäonnistumisen luokan. Avaamisen onnistuminen erotetaan sisällön saatavuudesta, laadusta, relevanssista ja raportoitavan tiedon löytymisestä. Avaamatta jääneitä lähteitä ei lasketa onnistuneiksi eikä epäonnistuneiksi avausyrityksiksi. Vastaanottaja validoi lähdehavainnot ja tallentaa ne kanoniseen ajohistoriaan siten, että tilastot voidaan yhdistää saman lähdetunnisteen perusteella eri ajoista.
@@ -916,12 +937,12 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 1. Tietomallit ja skeemat
 
-1. **Skeemojen tarkat rakenteet:** JSON Schema -tiedostojen täydelliset kenttärakenteet, pakollisuus- ja rajaehdot, yhteisten osaskeemojen tarkka jako ja nimeäminen sekä skeemojen välisten viittausten ja validointikoodin toteutus.
-2. **Laaduntarkistusten parametrit:** yksittäisten tarkistusten konkreettiset parametrit, tarkistuskohtaiset parametriskeemat ja niiden validointiehdot.
-3. **Raportoitavien havaintojen kategoriat:** tehtävätyyppikohtaiset luokittelut, sallitut arvot ja kategorioiden tarkemmat ehdot.
-4. **Tiedostoroolien parametrit:** roolikohtaisten `parameters`-kenttien sisältö, tiedostoroolien tarkat skeemat ja mahdolliset lisäehdot.
-5. **Toimitusmetatietojen täydentäminen:** vielä määrittelemättömien metatietoryhmien tarkat kentät ja valinnaisten tuottajan tietojen rakenne.
-6. **Vastaanottajan ajotietomallit:** kanonisen `run.json)-tietueen tarkat kentät, `events.jsonl)-tapahtumatyypit sekä tuottajan metatietojen, vastaanottajan ajotietueen ja tapahtumahistorian tarkat keskinäiset viittaukset ja validointisäännöt.
+1. **Skeemojen tarkat rakenteet:** yksittäisten skeematiedostojen täydelliset kenttärakenteet, pakollisuus- ja rajaehdot, taulukoiden täsmälliset rajat, yhteisten osaskeemojen lopullinen jako ja nimeäminen sekä skeemojen välisten viittausten ja validointikoodin toteutus. Hyväksytty hakemistorakenne ja yleiset sulkevuus- ja virheraportointiperiaatteet eivät kuulu enää avoimeen kohtaan.
+2. **Laaduntarkistusten parametrit:** yksittäisten tarkistusten konkreettiset parametrit, tarkistuskohtaiset parametriskeemat ja niiden validointiehdot. Yleiset `parameters`-objektin säännöt ja oletusarvojen vastuu on päätetty.
+3. **Raportoitavien havaintojen kategoriat:** tehtävätyyppikohtaiset kategoriatunnisteet, nimet, kuvaukset ja sallitut arvot. Kategoriat määritellään tehtävätyypeittäin; yleistä kaikille tehtävätyypeille yhteistä luokittelua ei muodosteta.
+4. **Tiedostoroolien parametrit:** roolikohtaisten `parameters`-kenttien konkreettiset parametrit ja niiden skeemat. `parameters` on aina objekti, ja tuntemattomat parametrit hylätään.
+5. **Toimitusmetatietojen täydentäminen:** muiden kuin jo päätettyjen tietoryhmien mahdolliset täsmennykset. Tuottajan tietojen `producer`-ryhmän perusrakenne, valinnaisuus ja `producer_type`-arvot on päätetty.
+6. **Vastaanottajan ajotietomallit:** `run.json`-tietueen kenttien täsmälliset nimet, tyypit ja tilaluokat, `events.jsonl`-tapahtumien täydellinen luettelo ja kunkin `details`-rakenteen skeema sekä tietokokonaisuuksien täsmälliset viittauskentät ja validointisäännöt.
 
 ### 2. Lähderekisteri ja lähdetilastot
 
@@ -950,6 +971,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 20. **Myöhempi käyttöoikeuksien tekninen toteutus:** julkisen ja rajatun tiedon erottelu sekä käyttöoikeuksien toteutus, jos myöhemmässä vaiheessa tarvitaan luottamuksellisen tiedon käsittelyä. Tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria### Versiohistoria
+
+- **0.3.85 (24.11.2026):** kirjattiin hyväksytty tietomalli- ja skeematyön ehdotuspaketti: skeemahakemiston vastuualuejako, tietomallikohtaiset skeemat ja validointiperiaatteet, tehtävätyyppikohtaiset raportoitavien havaintojen kategoriat, tiedostoroolien `parameters`-objektin säännöt, `producer`-ryhmän perusrakenne sekä vastaanottajan `run.json`- ja `events.jsonl`-mallien tietoryhmät, tapahtumien yhteiset kentät, tunnistevastuut ja append-only-kirjaamissäännöt. Avoimet kohdat rajattiin jäljellä oleviin kenttä- ja skeemakohtaisiin yksityiskohtiin. Skeemoja, toteutusta, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.3.84 (24.11.2026):** synkronoitiin avoimien teknisten yksityiskohtien luettelo vaatimusmäärittelyn kanssa. Yhteinen luettelo kattaa tietomallit ja skeemat, lähderekisterin, lähdetilastot, integraatiot, ajonhallinnan, raportintekijän, käyttöliittymät, siirtymän ja käyttöönoton.
 
