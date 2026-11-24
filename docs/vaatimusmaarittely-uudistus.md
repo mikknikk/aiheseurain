@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.42  
+**Versio:** 0.12.43  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -165,6 +165,21 @@ Ennen rekisteriin lisäämistä uuden lähteen perustiedot ja vähintään yksi 
 Markdown-ohjeita ei validoida JSON Scheman avulla. Niiden tarkistuksiin kuuluvat yksilöllinen ohjetunniste, tiedoston olemassaolo oikeassa repositoriossa ja kiinnitetyssä commitissa, repositoriojuureen suhteutettu turvallinen polku, ohjeiden oikea järjestys ja duplikaattien puuttuminen. Ohjeiden sisällön tulee olla ristiriidaton koneellisten määritysten kanssa. Ohjeiden metatietoa ei kahdenneta Markdown-etusivulla, vaan se pidetään JSON-määrityksissä ja tehtäväpyynnön viittauksissa.
 
 #### Skeemakokonaisuuden rakenne ja validointiperiaatteet
+
+Skeemahakemisto jaetaan neljään tietomallien vastuualueeseen yhteisten osaskeemojen lisäksi:
+
+```text
+schemas/
+  common/
+  configuration/
+  task/
+  delivery/
+  receiver/
+```
+
+`common/` sisältää uudelleenkäytettävät osaskeemat. `configuration/` sisältää tehtävätyyppien, asetusten, profiilien, aihekohtaisten määritysten ja lähderekisterin skeemat. `task/` sisältää tehtäväpyynnön ja sen rakenteisten syötteiden skeemat. `delivery/` sisältää tuottajan toimitusmetatietojen, toimituspaketin, raportoitavien havaintojen, lähdetarkistusten ja laaduntarkistusten tulosten skeemat. `receiver/` sisältää vastaanottajan kanonisen ajotietueen ja tapahtumahistorian skeemat. Jokaisella itsenäisesti validoitavalla tietotyypillä on oma pääskeemansa; yhteiset kenttärakenteet toteutetaan paikallisilla `$ref`-viittauksilla.
+
+Objektien sallitut kentät määritellään eksplisiittisesti ja tuntemattomat kentät hylätään myös sisäkkäisissä rakenteissa. Taulukoille määritellään `minItems`- ja `maxItems`-rajat silloin, kun tietomallin tarkoitus asettaa sellaisen rajan. Tunnisteiden yksilöllisyys, viittausten eheys ja muut usean tietueen väliset ehdot tarkistetaan rakenteellisen skeemavalidoinnin jälkeen toiminnallisessa validoinnissa. Skeemojen `description`-kuvausten tulee auttaa ylläpitäjää ymmärtämään kenttien tarkoitus ja rajoitteet. Validointivirheestä raportoidaan tiedosto, virheellisen arvon polku ja virheen syy; korjausehdotus annetaan, kun se voidaan muodostaa luotettavasti. Skeemat määritellään ja viimeistellään tietomalli kerrallaan, ei yhtenä suurena yleisskeemana.
 
 JSON Schema Draft 2020-12 on kaikkien rakenteisten määritysten ja tietosopimusten rakenteellisen validoinnin standardi. Skeemat kuuluvat yhteiseen ohjelmistorepoon; instanssirepoon kuuluvat niiden avulla validoitavat varsinaiset määritykset ja aineistot. Jokaisella itsenäisellä tietotyypillä on oma pääskeemansa. Yhteisiä rakenteita varten käytetään uudelleenkäytettäviä osaskeemoja, esimerkiksi tunnisteille, Git-revisioille, aikaleimoille, tiedostoviittauksille, lähde- ja kanavaviittauksille sekä virhekuvauksille.
 
@@ -345,7 +360,13 @@ Ajon tiedot jaetaan kolmeen erilliseen, toisiinsa viitattuun tietokokonaisuuteen
 
 Tietokokonaisuudet liittyvät samaan ajoon `run_id`-tunnisteen avulla ja niissä käytetään toimituksen sekä käsittely-yrityksen tunnisteita silloin, kun ne ovat kyseisessä kokonaisuudessa tarpeen. Tuottajan tulostila (`success`, `partial`, `no_report` tai tuottajan ilmoittama `failed`) ja vastaanottajan ajon lopputila/käsittelytila ovat eri tietoja ja niiden alkuperä säilytetään.
 
-Tapahtumahistoria sisältää esimerkiksi ajon käynnistymisen, määräajan ylittymisen, toimituksen vastaanoton, validoinnin, hyväksynnän tai hylkäyksen, julkaisun sekä uudelleenyritysten ja myöhäisten toimitusten käsittelyn. Tapahtumien tarkat tyypit, kentät, järjestämisen tekniset säännöt ja tietokokonaisuuksien väliset tarkat viittaukset määritellään myöhemmässä teknisessä suunnittelussa.
+Tapahtumahistoria sisältää esimerkiksi ajon käynnistymisen, määräajan ylittymisen, toimituksen vastaanoton, validoinnin, hyväksynnän tai hylkäyksen, julkaisun sekä uudelleenyritysten ja myöhäisten toimitusten käsittelyn. `run.json` on vastaanottajan ylläpitämä nykytilan yhteenveto. Sen tietoryhmät ovat ajon tunnisteet (`run_id`, `topic_id`, `task_type`), käytetyt ohjelmisto- ja instanssirevisiot, tehtävän ajankohdat ja `period`, vastaanottajan nykyinen käsittely- ja lopputila, hyväksyttyyn toimitukseen ja metadataan viittaaminen, viimeisin validointitulos virheineen, julkaisun tila ja RSS-itemin viittaus sekä tietueen luonti- ja viimeisin varmennettu päivitysaikaleima. Tuottajan metatietoja ei kopioida `run.json`-tiedostoon. Tuottajan `status` ja vastaanottajan ajon tila pysyvät erillisinä; tuottajan `success` ei yksin tarkoita vastaanoton tai julkaisun onnistumista, eikä puuttuvasta toimituksesta päätellä tuottajan tilaa.
+
+`events.jsonl` sisältää yhden JSON-tapahtuman kullakin rivillä. Tapahtuman yhteiset kentät ovat `event_id`, `run_id`, `sequence`, `event_type`, `occurred_at`, `actor` ja `details`. Esimerkkejä tapahtumatyypeistä ovat `run_created`, `task_issued`, `deadline_exceeded`, `delivery_received`, `delivery_validation_started`, `delivery_accepted`, `delivery_rejected`, `publication_started`, `publication_completed`, `run_completed` ja `run_failed`. Kunkin tapahtumatyypin `details`-kentän sallitut tiedot määritellään tapahtumatyypin mukaan.
+
+Tapahtumahistoriaan lisätään vain uusia rivejä; aiempia tapahtumia ei muuteta eikä poisteta. `sequence` on yhden ajon sisällä yksilöllinen ja kasvava, ja `event_id` on yksilöllinen. Aikaleimat noudattavat yhteistä ISO 8601 - ja UTC-offset-mallia. Tapahtuma kuvaa vain todennettua tapahtumaa, ei oletusta. `run.json` muodostetaan tapahtumahistorian ja hyväksyttyjen toimitustietojen perusteella.
+
+Tunnisteiden merkitykset pidetään erillään: `run_id` yksilöi loogisen ajon, `delivery_id` tuottajan toimituksen, `attempt_id` vastaanottajan käsittely-yrityksen ja `event_id` yksittäisen tapahtuman. Tapahtumat viittaavat aina `run_id`-tunnisteeseen; toimitukseen liittyvä tapahtuma voi lisäksi viitata `delivery_id`-tunnisteeseen ja käsittely-yritykseen liittyvä tapahtuma `attempt_id`-tunnisteeseen. Tunnisteita ei käytetä ristiin eikä muodosteta uudelleen saman kohteen uudelleenyrityksissä. Tapahtumien tarkat tyypit, kenttien yksityiskohtaiset rajat ja tietokokonaisuuksien viittauspolut täsmennetään skeematyössä.
 
 Tuottajan toimitusmetatietojen sisältö jäsennetään seuraaviin tietoryhmiin:
 
@@ -359,6 +380,21 @@ Lähdetarkistusten tietoryhmä jäsentyy kolmeen osaan: (1) ajossa käytetyt lä
 Tarkistusyrityksestä tallennetaan vähintään tarkistusajankohta, tarkistuksen tulos, tieto siitä löytyikö uutta tai tehtävän kannalta relevanttia sisältöä, saatavilla oleva tekninen tulos (esimerkiksi HTTP-tilakoodi) sekä mahdolliset virhe- ja huomiotiedot. Teknisen tarkistuksen onnistuminen erotetaan sisällöllisestä tuloksesta: onnistunut tarkistus ilman uutta sisältöä ei ole epäonnistuminen. Tietoryhmän tarkka kenttärakenne ja sallitut tulosarvot täsmennetään myöhemmin.
 - **Havainnot ja laadunvarmistus:** raportoitavien havaintojen yhteenveto ja laaduntarkistuksen tulokset.
 - **Tuottajan tiedot:** valinnaiset tiedot käytetystä raportintuottajasta.
+
+Tuottajan tiedot -ryhmän ehdotettu rakenne on:
+
+```json
+{
+  "producer": {
+    "producer_id": "example-producer",
+    "producer_type": "ai",
+    "name": "Esimerkkituottaja",
+    "version": "1.2.0"
+  }
+}
+```
+
+`producer`-ryhmä on valinnainen, ellei tehtävätyyppi sitä erikseen vaadi. Jos ryhmä toimitetaan, `producer_type` on pakollinen ja sen arvo on `human`, `ai`, `software` tai `other`. `producer_id`, `name` ja `version` ovat valinnaisia. Tunniste on pysyvä tuottajan tunniste, nimi ihmiselle luettava kuvaus ja versio käytetyn ohjelmiston tai mallin versiotieto. Ryhmään ei sisällytetä salasanoja, käyttöoikeustunnuksia, henkilötietoja tai muita salaisuuksia.
 
 Ensimmäiseen tietoryhmään kuuluvat seuraavat kentät:
 
@@ -768,12 +804,12 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### 1. Tietomallit ja skeemat
 
-1. **Skeemojen tarkat rakenteet:** JSON Schema -tiedostojen täydelliset kenttärakenteet, pakollisuus- ja rajaehdot, yhteisten osaskeemojen tarkka jako ja nimeäminen sekä skeemojen välisten viittausten ja validointikoodin toteutus.
-2. **Laaduntarkistusten parametrit:** yksittäisten tarkistusten konkreettiset parametrit, tarkistuskohtaiset parametriskeemat ja niiden validointiehdot.
-3. **Raportoitavien havaintojen kategoriat:** tehtävätyyppikohtaiset luokittelut, sallitut arvot ja kategorioiden tarkemmat ehdot.
-4. **Tiedostoroolien parametrit:** roolikohtaisten `parameters`-kenttien sisältö, tiedostoroolien tarkat skeemat ja mahdolliset lisäehdot.
-5. **Toimitusmetatietojen täydentäminen:** vielä määrittelemättömien metatietoryhmien tarkat kentät ja valinnaisten tuottajan tietojen rakenne.
-6. **Vastaanottajan ajotietomallit:** kanonisen `run.json)-tietueen tarkat kentät, `events.jsonl)-tapahtumatyypit sekä tuottajan metatietojen, vastaanottajan ajotietueen ja tapahtumahistorian tarkat keskinäiset viittaukset ja validointisäännöt.
+1. **Skeemojen tarkat rakenteet:** yksittäisten skeematiedostojen täydelliset kenttärakenteet, pakollisuus- ja rajaehdot, taulukoiden täsmälliset rajat, yhteisten osaskeemojen lopullinen jako ja nimeäminen sekä skeemojen välisten viittausten ja validointikoodin toteutus. Hyväksytty hakemistorakenne ja yleiset sulkevuus- ja virheraportointiperiaatteet eivät kuulu enää avoimeen kohtaan.
+2. **Laaduntarkistusten parametrit:** yksittäisten tarkistusten konkreettiset parametrit, tarkistuskohtaiset parametriskeemat ja niiden validointiehdot. Yleiset `parameters`-objektin säännöt ja oletusarvojen vastuu on päätetty.
+3. **Raportoitavien havaintojen kategoriat:** tehtävätyyppikohtaiset kategoriatunnisteet, nimet, kuvaukset ja sallitut arvot. Kategoriat määritellään tehtävätyypeittäin; yleistä kaikille tehtävätyypeille yhteistä luokittelua ei muodosteta.
+4. **Tiedostoroolien parametrit:** roolikohtaisten `parameters`-kenttien konkreettiset parametrit ja niiden skeemat. `parameters` on aina objekti, ja tuntemattomat parametrit hylätään.
+5. **Toimitusmetatietojen täydentäminen:** muiden kuin jo päätettyjen tietoryhmien mahdolliset täsmennykset. Tuottajan tietojen `producer`-ryhmän perusrakenne, valinnaisuus ja `producer_type`-arvot on päätetty.
+6. **Vastaanottajan ajotietomallit:** `run.json`-tietueen kenttien täsmälliset nimet, tyypit ja tilaluokat, `events.jsonl`-tapahtumien täydellinen luettelo ja kunkin `details`-rakenteen skeema sekä tietokokonaisuuksien täsmälliset viittauskentät ja validointisäännöt.
 
 ### 2. Lähderekisteri ja lähdetilastot
 
@@ -812,6 +848,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.43 – 24.11.2026:** hyväksyttiin tietomalli- ja skeematyön kuuden avoimen kohdan ehdotuspaketti: skeemahakemiston nelijako (`common`, `configuration`, `task`, `delivery`, `receiver`), tietomallikohtaiset pääskeemat ja tarkemmat validointiperiaatteet; raportoitavien havaintojen tehtävätyyppikohtaiset kategoriat; tiedostoroolien `parameters`-objektin yleissäännöt; valinnaisen `producer`-ryhmän rakenne; sekä vastaanottajan `run.json`- ja `events.jsonl`-tietomallien perusrakenne, tunnisteiden vastuut ja append-only-tapahtumahistorian säännöt. Aiemmin hyväksyttyjä laaduntarkistusten parametriperiaatteita täsmennettiin avoimien kohtien kuvauksessa. Skeemoja, toteutusta, testejä tai automaatioita ei luotu tai muutettu.
 
 - **0.12.42 – 24.11.2026:** synkronoitiin avoimien suunnittelukohtien luettelo toteutussuunnitelman kanssa. Yhdistetty luettelo kattaa tietomallit ja skeemat, lähderekisterin, lähdetilastot, integraatiot, ajonhallinnan, raportintekijän, käyttöliittymät, siirtymän ja käyttöönoton. Aiemmin eri dokumenteissa erillisinä esitetyt aiheet yhdenmukaistettiin.
 
