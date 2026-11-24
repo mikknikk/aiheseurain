@@ -24,7 +24,7 @@ Nykyiset [GitHub Pages -sivut](https://mikknikk.github.io/aiheseurain/) säilyv�
 
 Kehitysjonon aiempi selainkäyttöliittymä, JSON-välimuisti, niiden muodostus- ja riippuvuusautomaatiot, testit sekä tekniset ohjeet on siirretty palautettavina tiedostoina hakemistoon [archive/kehitysjono-2026-11-20](archive/kehitysjono-2026-11-20/).
 
-Aiempi laajempi toteutus ja julkaistu RSS-/raporttihistoria on säilytetty hakemistossa [archive/legacy-implementation-2026-11-20](archive/legacy-implementation-2026-11-20/). Julkaistua RSS-historiaa ei ole muutettu.
+Aiempi laajempi toteutus ja julkaistu RSS-/raporttihistoria on säilytetty hakemistossa [archive/legacy-implementation-2026-11-20](archive/legacy-implementation-2026-11-20/) vain historiallisena arkistona. Arkistoa ei käytetä uuden Aiheseuraimen suunnittelun tai toteutuksen lähteenä, mallina tai lähtökohtana; uutta järjestelmää ei rakenneta sen osien päälle eikä siitä siirretä sisältöä tai toteutusta. Julkaistu RSS-historia säilytetään muuttamattomana.
 
 Ajastettujen ChatGPT-kehotteiden uusi kanoninen versiohallinta sijaitsee aktiivisessa [prompts-hakemistossa](prompts/). GitHub Actionsin aktiiviset työnkulut on rajattu nykyisiin toimintoihin; arkistoidut työnkulut eivät käynnisty.
 
