@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.47  
+**Versio:** 0.12.48  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -635,25 +635,25 @@ Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään t
 
 ### 9.2 Ensimmäisen version toimituskanava ja luottamusraja
 
-Ensimmäisessä versiossa raportintuottaja toimittaa kokonaisen toimituspaketin Git pushilla GitHub App -integraation kautta erilliseen vastaanottohaaraan, esimerkiksi `raportit-inbox`. Vastaanottohaaran tarkka nimi ja hakemistorakenne täsmennetään toteutussuunnittelussa. Tuottaja ei kirjoita suoraan `main`-haaraan eikä julkaistaviin RSS-tiedostoihin.
+Ensimmäisessä versiossa raportintuottajana toimii ChatGPT:n ajastettu tehtävä, joka toimittaa valmiin toimituspaketin GitHubiin ChatGPT:n Codex Connector -yhteyden kautta. Toimitukset tehdään instanssirepositorion erilliseen vastaanottohaaraan `raportit-inbox`; tuottaja ei kirjoita suoraan `main`-haaraan eikä julkaistaviin RSS-tiedostoihin. Toimituspaketin polku on `toimitukset/{run_id}/{delivery_id}/`, ja paketti sisältää vähintään tulostilan edellyttämät tiedostot, kuten `metadata.json` ja tarvittaessa `item.xml`.
 
-GitHub App -integraatio on ensimmäisen version tekninen toimituskanava ja käyttöoikeusraja. Erillistä HTTPS-vastaanottopalvelua, käyttäjäkohtaista tunnistamista tai käyttäjän erillistä tunnistautumista ei toteuteta. Toimitusketju luotetaan rajatuksi kokonaisuudeksi, koska GitHub Appin käyttö on annettu vain luotetuille tahoille ja toimitus tapahtuu tämän integraation kautta. GitHub Appin tekniset oikeudet ja niiden tosiasiallinen laajuus on silti tarkistettava. Appin käyttöoikeus ei yksin todista, kuka ihminen käynnisti toimituksen; tällaista käyttäjäkohtaista alkuperätietoa ei vaadita ensimmäisessä versiossa.
+Codex Connector on ChatGPT:n ja GitHubin välinen yhteys, ei instanssirepoon asennettava GitHub App. Käytännön toimitustestissä ajastettu ChatGPT-tehtävä pystyi luomaan testitiedoston instanssirepositorion erilliseen haaraan Codex Connectorin kautta. Testissä `main`-haara ei muuttunut. Tämä vahvistaa toimitusmallin toimivuuden kyseisessä käyttöympäristössä; tuotantokäyttöönotossa on silti varmennettava käytössä olevan yhteyden kirjoitusoikeudet ja työnkulun toiminta.
 
-Git pushin onnistuminen tarkoittaa vain toimituksen siirtymistä GitHubin vastaanottohaaraan. Se ei tarkoita toimituksen validointia, hyväksymistä tai julkaisemista. Vastaanottohaaraan tehty push käynnistää GitHub Actions -käsittelyn, joka kirjaa vastaanoton, validoi toimituspaketin ja kirjaa käsittelyn tuloksen vastaanottajan ajotietoihin ja työnkulun tulokseen. Virheellinen toimitus ei muuta julkaistuja RSS-syötteitä.
+Codex Connectorin repositoriokäyttöoikeus ei rajaudu automaattisesti yksittäiseen haaraan. Erillinen vastaanottohaara on toimitusten käsittelyraja, ei käyttöoikeusraja. Siksi `main`-haara on suojattava erikseen siten, ettei raportintuottajan toimitus voi muuttaa julkaisuhaaraa suoraan tai ohittaa sen suojausta. Suojaus ja sen tosiasiallinen toiminta on varmennettava ennen tuotantokäyttöä. Ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia; sellainen voidaan luoda uudelleen myöhemmin, jos käyttöoikeuksien eriyttämiseen syntyy tarve.
+
+Toimitus ja julkaisu ovat eri vaiheita. Vastaanottohaaraan tehty push tarkoittaa vain toimituksen siirtymistä GitHubiin, ei sen validointia, hyväksymistä tai julkaisemista. Vastaanottohaaraan tehty muutos käynnistää GitHub Actions -käsittelyn, joka kirjaa vastaanoton, validoi toimituspaketin ja kirjaa käsittelyn tuloksen vastaanottajan ajotietoihin ja työnkulun tulokseen. Vain validoitu ja hyväksytty sisältö siirretään erikseen `main`-haaraan. Virheellinen toimitus ei muuta julkaistuja RSS-syötteitä.
 
 Vastaanottaja tarkistaa vähintään, että toimitus kuuluu olemassa olevaan tehtävään, sen `run_id`- ja `delivery_id`-tunnisteet ovat johdonmukaiset, toimituspaketin rakenne ja sisältö täyttävät tehtävätyypin vaatimukset ja toimitus on eheä. Vastaanottaja muodostaa oman käsittely-yrityksen `attempt_id`-tunnisteen, laskee toimitussisällön SHA-256-tiivisteen ja säilyttää vastaanotetun alkuperäisen paketin. Kaksois- ja ristiriitatilanteissa noudatetaan kohdassa 10.2 määriteltyjä sääntöjä.
 
-Erillinen lähettävän käyttäjän tunnistaminen, HTTPS-vastaanottopalvelu, useiden tuottajien erilliset tunnistus- ja käyttöoikeusrajat sekä vahvemmat toimitusten allekirjoitusmekanismit voidaan arvioida myöhemmissä versioissa. Niitä ei rakenneta ensimmäiseen versioon ennakolta.
+Erillistä HTTPS-vastaanottopalvelua tai käyttäjäkohtaista tunnistamista ei toteuteta ensimmäisessä versiossa. Codex Connectorin käyttöoikeus perustuu ChatGPT-yhteyteen ja sen GitHubiin myönnettyihin oikeuksiin; se ei yksin tuota toimitukseen luotettavaa tietoa siitä, kuka ihminen käynnisti yksittäisen ajastetun tehtävän. Erillinen lähettäjän tunnistaminen, rajatummat käyttöoikeusrajat ja vaihtoehtoiset toimituskanavat voidaan arvioida myöhemmissä versioissa.
 
 ### 9.2.1 Julkinen instanssirepositorio ja vastaanoton käyttöoikeudet
 
-Ensimmäisen vaiheen instanssirepositorio luodaan julkiseksi. Sen RSS-syötteet julkaistaan GitHub Pagesin kautta. Julkisuus koskee koko repositoriota ja sen Git-historiaa, myös vastaanottohaaraa: kaikki sinne toimitettava aineisto käsitellään julkisena. Repositorioon, toimituspaketteihin, ajohistoriaan tai työnkulkujen tuottamiin julkisiin tiedostoihin ei saa sisällyttää salasanoja, API-avaimia, käyttöoikeustunnisteita, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
+Ensimmäisen vaiheen instanssirepositorio on julkinen. Sen RSS-syötteet julkaistaan GitHub Pagesin kautta. Julkisuus koskee koko repositoriota ja sen Git-historiaa, myös vastaanottohaaraa: kaikki sinne toimitettava aineisto käsitellään julkisena. Repositorioon, toimituspaketteihin, ajohistoriaan tai työnkulkujen tuottamiin julkisiin tiedostoihin ei saa sisällyttää salasanoja, API-avaimia, käyttöoikeustunnisteita, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
 
-Vastaanotto ja julkaisu pidetään erillään. Raportintuottaja puskee toimituspaketit erilliseen vastaanottohaaraan, esimerkiksi `raportit-inbox`. Hyväksytyt ja julkaistavat tiedot tallennetaan erikseen julkaisuhaaraan, ensimmäisessä vaiheessa `main`-haaraan. GitHub Actions käsittelee vastaanottohaaran toimitukset, validoi ne ja siirtää vain hyväksytyn sisällön julkaisuun. Vastaanottohaaraan tehty push ei itsessään hyväksy eikä julkaise toimitusta.
+Vastaanotto ja julkaisu pidetään erillään. ChatGPT:n ajastettu tehtävä toimittaa paketit Codex Connectorin kautta haaraan `raportit-inbox`. Vastaanotetut paketit tallennetaan hakemistoon `toimitukset/{run_id}/{delivery_id}/`. Hyväksytyt ja julkaistavat tiedot tallennetaan erikseen julkaisuhaaraan `main`. GitHub Actions käsittelee vastaanottohaaran toimitukset, validoi ne ja siirtää vain hyväksytyn sisällön julkaisuun. Vastaanottohaaraan tehty push ei itsessään hyväksy eikä julkaise toimitusta.
 
-Vastaanottoa varten käytetään erillistä GitHub Appia. App asennetaan vain kyseiseen instanssirepositorioon ja sille annetaan vähimmäisoikeudet: Metadata – Read-only sekä Contents – Read and write. Muita oikeuksia, kuten Actions-, Workflows-, Issues-, Pull requests-, Checks- tai Commit statuses -oikeuksia, ei anneta. Appin oikeudet rajataan näin erilleen ohjelmistorepositorion kehitysoikeuksista.
-
-Contents-kirjoitusoikeus on GitHub Appissa repositoriokohtainen eikä sellaisenaan rajaudu vain vastaanottohaaraan. Julkaisuhaaran suojaus ja vastaanottohaaran käsittelyn salliminen on siksi toteutettava ja varmennettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Ensimmäisen vaiheen käyttöönotossa on varmistettava, ettei vastaanotto-App voi ohittaa julkaisuhaaran suojauksia.
+Codex Connectorin GitHub-oikeudet ovat repositoriokohtaisia eivätkä rajaudu itsessään vain vastaanottohaaraan. Siksi `main`-julkaisuhaaran suojaus on toteutettava ja varmennettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Käyttöönotossa on varmistettava, ettei raportintuottajan käyttämä yhteys voi ohittaa julkaisuhaaran suojauksia. Ensimmäisessä versiossa ei asenneta erillistä vastaanotto-GitHub Appia.
 
 Instanssirepositorion julkisuus ja Pages-julkaisu eivät muuta yhteisen ohjelmistorepositorion ja instanssirepositorion erillistä vastuunjakoa. Julkinen instanssirepo on ensimmäisen käyttöönoton ratkaisu; luottamuksellisen aineiston käsittely tai yksityinen instanssi edellyttää myöhempää erillistä suunnittelua.
 
@@ -874,6 +874,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.48 – 24.11.2026:** hyväksyttiin ensimmäisen version toimituskanavaksi ChatGPT:n ajastettu tehtävä ja Codex Connector. Käytännön testi vahvisti toimituksen erilliseen vastaanottohaaraan muuttamatta `main`-haaraa. Määriteltiin vastaanottohaaraksi `raportit-inbox`, toimituspaketin poluksi `toimitukset/{run_id}/{delivery_id}/` sekä vastaanoton ja julkaisun erottelu. Täsmennettiin, että Codex Connectorin oikeudet eivät rajaudu haaraan ja `main` on suojattava erikseen. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa; käyttäjä on poistanut aiemman Appin. Toteutusta tai automaatioita ei muutettu.
 
 - **0.12.47 – 24.11.2026:** hyväksyttiin ensimmäisen vaiheen julkinen instanssirepositorio ja GitHub Pages -julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä erillinen vain instanssirepoon asennettava GitHub App (Metadata read, Contents read/write). Täsmennettiin, että koko instanssirepon sisältö ja historia ovat julkisia ja että Contents-kirjoitusoikeus on repositoriotasoinen; julkaisuhaaran suojaus on toteutettava ja varmennettava erikseen. Toteutusta, repositoriota, Appia tai automaatioita ei luotu tai muutettu.
 
