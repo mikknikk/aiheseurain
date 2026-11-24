@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.45  
+**Versio:** 0.12.46  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -833,7 +833,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 ### 3. Integraatiot ja ajonhallinta
 
 9. **Vastaanottorajapinta:** ensimmäisen version GitHub App -pohjaisen toimituksen vastaanottohaaran ja hakemistorakenteen täsmentäminen, työnkulun käynnistyminen, Appin tosiasiallisten käyttöoikeuksien tarkistaminen sekä vastaanoton kirjaamisen yksityiskohdat.
-10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main)-haaran suojauksen ja käyttöönoton yhteensovittaminen.
+10. **GitHub App -yhteys ja käyttöoikeudet:** nykyisen yhteyden tosiasiallisten oikeuksien tarkistaminen sekä `main`-haaran suojauksen ja käyttöönoton yhteensovittaminen.
 11. **Ajojen käynnistäminen:** käynnistimien, yhteisen tarkistustyönkulun ja aihekohtaisten erääntymisten tekninen yhteensovitus.
 12. **Jonon ja uudelleenyritysten tarkat rajat:** aikakatkaisut, uudelleenyritysten määrät ja odotusajat sekä keskeytyneestä tehtävästä palautumisen tekniset yksityiskohdat.
 13. **Toimituspakettien säilytys:** vastaanottohaaran toimituspakettien säilytysajat, siivouksen ehdot sekä keskeneräisten ja palautettavien ajojen aineiston säilyttäminen.
@@ -862,6 +862,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.46 – 24.11.2026:** yhdenmukaistettiin vastaanottorajapinnan avoimen suunnittelukohdan sanamuoto toteutussuunnitelman kanssa ja korjattiin `main`-haaran nimen kirjoitusasu. Aiemmin hyväksyttyjä teknisiä ratkaisuja ei muutettu.
 
 - **0.12.45 – 24.11.2026:** hyväksyttiin ensimmäisen version toimituskanavaksi GitHub Appin kautta tehtävä Git push erilliseen vastaanottohaaraan. Rajattiin erillinen HTTPS-vastaanottopalvelu ja käyttäjäkohtainen tunnistaminen ensimmäisen version ulkopuolelle. Täsmennettiin GitHub Appin teknisten oikeuksien tarkistaminen, vastaanoton ja hyväksymisen erottaminen, GitHub Actions -käsittely sekä myöhempiin versioihin jätettävät laajemmat tunnistus- ja integraatiomallit. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
