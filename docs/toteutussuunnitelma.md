@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.93  
+**Versio:** 0.3.94  
 **Päiväys:** 24.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.50](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.51](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -888,11 +888,13 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### Versiohistoria
 
-- **0.3.93 (24.11.2026):** synkronoitiin vaatimusmäärittelyn avoimet vastaanottoa ja käyttöoikeuksia koskevat suunnittelukysymykset Codex Connector -toimitusmalliin. Korjattiin myöhempiin versioihin jätettyjen GitHub App - ja tunnistautumiskuvausten ristiriidat. Toteutusta ei aloitettu.
+- **0.3.94 (24.11.2026):** synkronoitiin toteutussuunnitelman perustaviittaus vaatimusmäärittelyn uusimpaan versioon 0.12.51. Avoimien suunnittelukysymysten luettelo vastaa nyt täsmälleen vaatimusmäärittelyä.
 
-- **0.3.93 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+- **0.3.94 (24.11.2026):** synkronoitiin vaatimusmäärittelyn avoimet vastaanottoa ja käyttöoikeuksia koskevat suunnittelukysymykset Codex Connector -toimitusmalliin. Korjattiin myöhempiin versioihin jätettyjen GitHub App - ja tunnistautumiskuvausten ristiriidat. Toteutusta ei aloitettu.
 
-- **0.3.93 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+- **0.3.94 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
+
+- **0.3.94 (24.11.2026):** yhdenmukaistettiin repositorioiden dokumentoidut hakemistonimet englanninkielisiksi. Toimituspakettien polku muutettiin muotoon `deliveries/{run_id}/{delivery_id}/`, ja ajohistorian esimerkkirakenteen `deliveries/` säilytettiin saman käytännön mukaisena. Hakemistojen nimeämiskäytäntö kirjattiin. Repositorioiden todellista sisältöä tai toteutusta ei muutettu.
 
 - **0.3.91 (24.11.2026):** hyväksyttiin ensimmäisen vaiheen raportintuottajaksi ChatGPT:n ajastettu tehtävä ja toimituskanavaksi Codex Connector. Käytännön testi vahvisti toimituksen erilliseen vastaanottohaaraan muuttamatta `main`-haaraa. Määriteltiin vastaanottohaaraksi `raportit-inbox`, toimituspaketin hakemistorakenne sekä vastaanoton ja julkaisun erottelu. Täsmennettiin Codex Connectorin repositoriotasoisen käyttöoikeuden vuoksi `main`-haaran erillinen suojaustarve. Erillistä vastaanotto-GitHub Appia ei käytetä ensimmäisessä versiossa; aiempi App on poistettu. Toteutusta, skeemoja, testejä tai automaatioita ei luotu tai muutettu.
 
