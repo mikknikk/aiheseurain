@@ -188,27 +188,18 @@ Skeemakokonaisuuden alustava hakemistorakenne on:
 ```text
 schemas/
   common/
-    identifier.schema.json
-    revision.schema.json
-    timestamp.schema.json
-    file-reference.schema.json
-    source-reference.schema.json
-    error.schema.json
-  definitions/
-    task-type.schema.json
-    task-config.schema.json
-    profile.schema.json
-    topic.schema.json
-    source-registry.schema.json
-  contracts/
-    task-request.schema.json
-    delivery-metadata.schema.json
-    delivery-package.schema.json
-    run-record.schema.json
-  examples/
+    ...
+  configuration/
+    ...
+  task/
+    ...
+  delivery/
+    ...
+  receiver/
+    ...
 ```
 
-Rakenne on suunnitteluratkaisu; yksittäisten tiedostojen tarkka sisältö ja lopullinen sijoittelu määritellään toteutussuunnittelun skeematyössä. Tiedostonimet ovat englanninkielisiä, pienaakkosin ja yhdysmerkein, ja skeematiedostojen pääte on `.schema.json`. Skeemoilla on vakaat `$id`-tunnisteet, jotka eivät riipu repositorion nimestä tai tiedostopolusta. Ajon aikainen validointi ei hae skeemoja ulkoisista verkkopalveluista, vaan käyttää ohjelmistorevision mukana toimitettua skeemakokonaisuutta.
+Hakemistojako on hyväksytty; yksittäisten skeematiedostojen nimet ja tarkka sisältö määritellään tietomalli kerrallaan. `configuration/` sisältää tehtävätyypin, asetusten, profiilien, aiheen ja lähderekisterin skeemat; `task/` tehtäväpyynnön ja sen rakenteisten syötteiden skeemat; `delivery/` toimitusmetatietojen, toimituspaketin, havaintojen, lähdetarkistusten ja laaduntarkistusten tulosten skeemat; `receiver/` vastaanottajan ajotietueen ja tapahtumahistorian skeemat. Tiedostonimet ovat englanninkielisiä, pienaakkosin ja yhdysmerkein, ja skeematiedostojen pääte on `.schema.json`. Skeemoilla on vakaat `$id`-tunnisteet, jotka eivät riipu repositorion nimestä tai tiedostopolusta. Ajon aikainen validointi ei hae skeemoja ulkoisista verkkopalveluista, vaan käyttää ohjelmistorevision mukana toimitettua skeemakokonaisuutta.
 
 Skeemojen vastuut jakautuvat seuraavasti:
 
