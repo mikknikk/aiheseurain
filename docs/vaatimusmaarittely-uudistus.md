@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.53  
+**Versio:** 0.12.54  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -902,6 +902,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.54 – 24.11.2026:** täsmennettiin RSS-julkaisemisen sääntöjä: toimitustiedosto sisältää yhden `<item>`-elementin, `<link>`-elementin puuttuminen on kiinteä sääntö ja lähteet linkitetään raportin sisällössä. Rajattiin vastaanottoprosessin avoin RSS-kohta jäljellä oleviin HTML-, GUID- ja elementtikohtaisiin yksityiskohtiin.
 
 - **0.12.53 – 24.11.2026:** täsmennettiin RSS-itemin toimitusmuoto yhdeksi `<item>`-elementiksi ilman `<link>`-elementtiä ja määriteltiin lähteiden linkitys raporttisisällössä. Päätettiin aloittaa toteutus puhtaalta pöydältä käyttämättä vanhaa arkistoitua toteutusta; poistettiin vanhaan toteutukseen liittyvä inventaario- ja siirtymäkysymys avoimista suunnittelutehtävistä.
 
