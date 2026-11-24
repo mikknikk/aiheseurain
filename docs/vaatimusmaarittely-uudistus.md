@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.46  
+**Versio:** 0.12.47  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 24.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -645,6 +645,18 @@ Vastaanottaja tarkistaa vähintään, että toimitus kuuluu olemassa olevaan teh
 
 Erillinen lähettävän käyttäjän tunnistaminen, HTTPS-vastaanottopalvelu, useiden tuottajien erilliset tunnistus- ja käyttöoikeusrajat sekä vahvemmat toimitusten allekirjoitusmekanismit voidaan arvioida myöhemmissä versioissa. Niitä ei rakenneta ensimmäiseen versioon ennakolta.
 
+### 9.2.1 Julkinen instanssirepositorio ja vastaanoton käyttöoikeudet
+
+Ensimmäisen vaiheen instanssirepositorio luodaan julkiseksi. Sen RSS-syötteet julkaistaan GitHub Pagesin kautta. Julkisuus koskee koko repositoriota ja sen Git-historiaa, myös vastaanottohaaraa: kaikki sinne toimitettava aineisto käsitellään julkisena. Repositorioon, toimituspaketteihin, ajohistoriaan tai työnkulkujen tuottamiin julkisiin tiedostoihin ei saa sisällyttää salasanoja, API-avaimia, käyttöoikeustunnisteita, yksityisiä tietoja tai muuta luottamuksellista sisältöä.
+
+Vastaanotto ja julkaisu pidetään erillään. Raportintuottaja puskee toimituspaketit erilliseen vastaanottohaaraan, esimerkiksi `raportit-inbox`. Hyväksytyt ja julkaistavat tiedot tallennetaan erikseen julkaisuhaaraan, ensimmäisessä vaiheessa `main`-haaraan. GitHub Actions käsittelee vastaanottohaaran toimitukset, validoi ne ja siirtää vain hyväksytyn sisällön julkaisuun. Vastaanottohaaraan tehty push ei itsessään hyväksy eikä julkaise toimitusta.
+
+Vastaanottoa varten käytetään erillistä GitHub Appia. App asennetaan vain kyseiseen instanssirepositorioon ja sille annetaan vähimmäisoikeudet: Metadata – Read-only sekä Contents – Read and write. Muita oikeuksia, kuten Actions-, Workflows-, Issues-, Pull requests-, Checks- tai Commit statuses -oikeuksia, ei anneta. Appin oikeudet rajataan näin erilleen ohjelmistorepositorion kehitysoikeuksista.
+
+Contents-kirjoitusoikeus on GitHub Appissa repositoriokohtainen eikä sellaisenaan rajaudu vain vastaanottohaaraan. Julkaisuhaaran suojaus ja vastaanottohaaran käsittelyn salliminen on siksi toteutettava ja varmennettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Ensimmäisen vaiheen käyttöönotossa on varmistettava, ettei vastaanotto-App voi ohittaa julkaisuhaaran suojauksia.
+
+Instanssirepositorion julkisuus ja Pages-julkaisu eivät muuta yhteisen ohjelmistorepositorion ja instanssirepositorion erillistä vastuunjakoa. Julkinen instanssirepo on ensimmäisen käyttöönoton ratkaisu; luottamuksellisen aineiston käsittely tai yksityinen instanssi edellyttää myöhempää erillistä suunnittelua.
+
 ## 10. Virhetilanteet ja uudelleenyritykset
 
 Virhetilanteet käsitellään yksinkertaisella ja yksiselitteisellä tavalla:
@@ -862,6 +874,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.47 – 24.11.2026:** hyväksyttiin ensimmäisen vaiheen julkinen instanssirepositorio ja GitHub Pages -julkaisu, vastaanotto- ja julkaisuhaarojen erottaminen sekä erillinen vain instanssirepoon asennettava GitHub App (Metadata read, Contents read/write). Täsmennettiin, että koko instanssirepon sisältö ja historia ovat julkisia ja että Contents-kirjoitusoikeus on repositoriotasoinen; julkaisuhaaran suojaus on toteutettava ja varmennettava erikseen. Toteutusta, repositoriota, Appia tai automaatioita ei luotu tai muutettu.
 
 - **0.12.46 – 24.11.2026:** yhdenmukaistettiin vastaanottorajapinnan avoimen suunnittelukohdan sanamuoto toteutussuunnitelman kanssa ja korjattiin `main`-haaran nimen kirjoitusasu. Aiemmin hyväksyttyjä teknisiä ratkaisuja ei muutettu.
 
