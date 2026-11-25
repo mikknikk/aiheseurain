@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.115  
+**Versio:** 0.3.116  
 **Päiväys:** 25.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.71](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.72](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -914,14 +914,22 @@ Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi,
 - Arkistointi varmennetaan lukemalla tallennetut tiedot takaisin ennen toimituksen poistamista `raportit-inbox`-haarasta. Jos arkistointi epäonnistuu tai sitä ei voida varmentaa, toimitus jätetään inboxiin turvallista uudelleenyritystä varten.
 - `main` sisältää toimituksista vain hyväksytyt RSS-itemit ja syötetiedostot. Alkuperäisiä toimituspaketteja, hylättyjä toimituksia, kanonisia ajotietueita tai käsittelylokeja ei kopioida `main`-haaraan.
 - Valvomo lukee vastaanottojen ja käsittelyjen historian `raportit-arkisto`-haarasta. Se ei rakenna historiatietoja inbox-haaran nykyisestä käsittelyjonosta. Arkiston raakaa sisältöä tai sisäistä tapahtumahistoriaa ei sisällytetä Pages-artifactiin.
-- Raportintuottajan sallittu kirjoituskohde on vain `raportit-inbox`. `raportit-arkisto`- ja `main`-haarojen muutokset ovat yksinomaan vastaanottajan vastuulla. Codex Connectorin tekninen oikeusraja on silti varmennettava A10.3–A10.4-kohdissa ennen käyttöönottoa.
+- Tuotantoajossa raportintuottajan sallittu kirjoituskohde on vain `raportit-inbox`; `raportit-arkisto`- ja `main`-haarojen tuotantosisällön muutoksista vastaa vastaanottaja. Tämä tuotantoroolien raja ei estä käyttäjän erikseen valtuuttamaa kehitysvaiheen ylläpitotyötä: kehitysvaiheessa avustaja saa tehdä tarpeellisia muutoksia kaikkiin haaroihin. Kehitysvaiheen ylläpitomuutokset on erotettava raportintuottajan tuotantotoimituksista ja arkiston varsinaisista ajotapahtumista. Arkiston tuotantotapahtumahistoria säilyy append-only-periaatteella.
 - Koska instanssirepo on julkinen, paketeissa ei saa olla salaisuuksia tai yksityisiä tietoja.
 
 ## 3. Kehitysympäristön hyväksytty tavoitetila
 
 Toteutussuunnitelmaan sisältyvät seuraavat käyttäjän hyväksymät GitHub-käytännöt:
 
-1. `main`-haaran suojaus: estetään poistaminen ja force push. Suojaus ei tässä vaiheessa pakota pull request -työskentelyyn, koska suora työskentely `main`-haaraan on edelleen sovittu käytäntö.
+1. `main`-haaran suojaus: estetään haaran poistaminen ja force push. Suorat kirjoitukset sallitaan kehitysvaiheessa; pull request ei ole yleinen pakollinen ehto. Kaikki muutokset käynnistävät soveltuvat automaattiset tarkistukset. Julkaisu ei saa edetä, jos julkaisukohtaiset validoinnit epäonnistuvat. Dokumentaatiomuutosten tarkistuksiin kuuluvat vähintään dokumenttilinkkien sekä versio- ja README-viittausten johdonmukaisuus.
+
+
+`raportit-arkisto` suojataan poistamista ja force pushia vastaan samalla perustasolla kuin `main`. Lisäksi arkiston tuotantotietojen append-only-eheys varmennetaan automaattisesti: uusi käsittely saa lisätä tietoja, mutta aiempia arkistoituja tuotantotapahtumia tai alkuperäisiä toimituspaketteja ei saa muuttaa tai poistaa. Pelkkä force pushin esto ei riitä tämän ehdon toteuttamiseen. Arkistoinnin takaisinlukutarkistus tehdään ennen inbox-toimituksen poistamista. Kehitysvaiheessa avustaja saa käyttäjän valtuutuksella kirjoittaa kaikkiin haaroihin, myös `raportit-arkisto`-haaraan; tämä ylläpito-oikeus ei muuta tuotantoajojen vastuunjakoa eikä oikeuta muuttamaan tuotantohistoriaa jälkikäteen.
+
+`main`-haaran pakolliset julkaisuehdot ovat toimituspaketin ja sen tunnisteiden validointi, skeema- ja eheystarkistukset, RSS/XML-rakenteen kelvollisuus, oikean syötetiedoston ja GUIDin tarkistus sekä sen varmistaminen, että julkaisu sisältää vain hyväksytyn toimituksen julkistettavan sisällön. Tarkistusten tulee valmistua ennen julkaisua; julkaisun jälkeinen tarkistus varmentaa julkaistun sisällön. Käyttöliittymä- tai muut toisistaan riippumattomat testit eivät saa muodostua seurantavalidoinnin tarpeettomaksi riippuvuudeksi.
+
+Tarkistuksen ohittaminen ei ole normaali virheenkäsittelykeino. Jos poikkeus on välttämätön, siitä kirjataan vähintään ohituksen syy, tekijä, ajankohta, vaikutus ja hyväksyntä. Julkaisun turvallisuutta, toimituksen eheyttä tai arkiston muuttumattomuutta varmistavaa tarkistusta ei saa ohittaa siten, että virheellinen tai varmentamaton sisältö pääsee julkaisuun tai arkistohistoria muuttuu huomaamatta. Jos pakollinen tarkistus ei ole käytettävissä, julkaisu keskeytetään.
+
 2. Dependabot seuraa käytössä olevia riippuvuuksia. Päivitykset tulevat ehdotuksina, eivät automaattisesti tuotantoon.
 3. GitHub Actions -riippuvuudet kiinnitetään commit-SHA:han ja työnkulkujen oikeudet rajataan vähimmäistarpeeseen.
 4. `SECURITY.md` kuvaa haavoittuvuuksien ilmoitus- ja käsittelytavan.
@@ -1140,6 +1148,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.116 (25.11.2026):** päätettiin A10.3:ssa `main`- ja `raportit-arkisto`-haarojen suojausperiaatteet: molempien poistaminen ja force push estetään; `main`-haaraan sallitaan suorat kehitysvaiheen kirjoitukset ja muutokset tarkistetaan, julkaisu edellyttää onnistunutta validointia, ja arkiston tuotantotietojen append-only-eheys varmennetaan erikseen. Tarkistusten ohitus rajattiin dokumentoituihin poikkeuksiin. Käyttäjä valtuutti avustajan tekemään kehitysvaiheessa muutoksia kaikkiin haaroihin; tämä ei muuta tuotantoroolien vastuunjakoa eikä arkiston tuotantohistorian muuttumattomuutta. GitHub-asetusten tekninen käyttöönotto ja Codex Connectorin oikeuksien varmennus jäivät avoimiksi. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.115 (25.11.2026):** päätettiin A10.2:ssa kirjoitusvastuiden raja: raportintuottaja saa toimittaa vain `raportit-inbox`-haaraan, ja vastaanottaja vastaa yksin `raportit-arkisto`- ja `main`-haarojen muutoksista. Täsmennettiin, että tämä on toimintaperiaate, jonka tekninen toteutettavuus Codex Connectorin repositoriotasoisten oikeuksien kanssa on vielä varmennettava A10.3–A10.4-kohdissa. Korjattiin vanhat ristiriitaiset säilytys- ja Valvomon tietolähdekuvaukset. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
