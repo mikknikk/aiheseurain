@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.108  
-**Päiväys:** 24.11.2026  
+**Versio:** 0.3.109  
+**Päiväys:** 25.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.64](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.65](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -496,6 +496,18 @@ Codex Connectorin GitHub-oikeus ei rajaudu automaattisesti yksittäiseen haaraan
 
 #### Vastaanottoprosessin hyväksytyt toimintaperiaatteet
 
+**Validoinnin järjestys ja keskeyttäminen.** Seitsemän validointivaihetta suoritetaan määritellyssä järjestyksessä. Samassa vaiheessa voidaan kirjata useita riippumattomia virheitä, mutta seuraavaan vaiheeseen ei siirrytä, jos sen turvalliset tai loogiset edellytykset eivät täyty. Turvattomasti käsiteltävä pakettirakenne keskeyttää käsittelyn. Toimitettua aineistoa ei korjata eikä muuteta.
+
+**Tunnisteet, revisiot ja skeemat.** `run_id`-, `delivery_id`- ja tehtävätunnisteiden on vastattava toimituspolkua, metatietoja ja vastaanottajan ajotietoja. Skeemaversion on oltava tuettu; tuntematonta tai puuttuvaa versiota ei arvata. `software_revision`- ja `instance_revision`-arvojen on vastattava ajon käynnistyksessä kiinnitettyjä revisioita, ja tehtävätyypin määritysten on oltava saman ajon käyttämää revisiokokonaisuutta. Ristiriita estää hyväksymisen.
+
+**Tiedostoluettelo ja eheys.** `metadata.json` luettelee kaikki toimitetut sisältötiedostot mutta ei itseään, jotta vältetään itseensä kohdistuva tiiviste- ja kehäsuhde. Vastaanottaja tarkistaa roolit ja polut, pakolliset ja kielletyt tiedostot, puuttuvat ja odottamattomat tiedostot, kaksoisviittaukset, tiedostojen olemassaolon, koon ja SHA-256-tiivisteen. Tiedostomäärän ja -koon rajat tarkistetaan ennen sisällön käsittelyä.
+
+**XML-, RSS- ja HTML-turvallisuus.** XML-parseri ei käsittele DTD:tä tai ulkoisia entiteettejä eikä hae ulkoisia resursseja. `item.xml` validoidaan yhden `<item>`-elementin toimitussopimusta, järjestystä, pakollisuutta, attribuutteja ja item-elementin `content`-nimiavaruutta vasten. HTML tarkistetaan sallitun elementti- ja attribuuttiluettelon sekä linkkien osoitemuotojen perusteella. Kiellettyä sisältöä ei poisteta hiljaisesti eikä sisältöä korjata automaattisesti; toimitus hylätään yksilöidyllä virheellä.
+
+**Keskinäiset viittaukset.** Tiedostoviittausten on osoitettava olemassa oleviin luetteloituihin tiedostoihin. Roolien, polkujen, tunnisteiden ja ajotietojen on oltava johdonmukaisia. GUIDin on oltava yksilöllinen julkaisu- ja historiatiedoissa. Korjaus- tai täydennysitemin alkuperäisen GUID-viittauksen on osoitettava olemassa olevaan julkaisuun ja suhteen tyypin oltava sallittu.
+
+**Virheet ja hyväksymisen raja.** Rakenteelliset, tunniste-, revisio-, skeema-, tiedosto-, eheys- ja sisältövirheet ovat pysyviä ja johtavat hylkäykseen. Tilapäinen suoritusympäristö- tai GitHub-virhe voi johtaa rajattuun uudelleenyritykseen; määrät ja viiveet ratkaistaan kohdassa 9.7. Virheestä tallennetaan koneellinen luokka, ihmiselle luettava kuvaus sekä mahdollisuuksien mukaan tiedosto tai polku. Varoitukset eivät ohita pakollisia tarkistuksia. Hyväksyntä edellyttää kaikkien soveltuvien pakollisten tarkistusten läpäisyä eikä itsessään tarkoita julkaisua. Vastaanottajan virhe ei muuta tuottajan tulostilaa.
+
 Vastaanottoprosessin toiminnalliset periaatteet on hyväksytty. Vastaanotto käsittelee vain `raportit-inbox`-haaran toimituksia polussa `deliveries/{run_id}/{delivery_id}/`. Jokainen toimitus käsitellään itsenäisesti, alkuperäistä pakettia muuttamatta. Vastaanotto, hyväksyntä ja julkaisu ovat erillisiä tapahtumia, eikä vastaanottovirhe estä muiden toimitusten käsittelyä.
 
 Vastaanottaja varmistaa, että toimituksen `run_id` ja `delivery_id` vastaavat polkua ja metatietoja, ajo on olemassa ja ajo liittyy tunnettuun tehtävään. Tehtävän, ajon ja toimituksen tunnisteiden sekä aikaleimojen on oltava johdonmukaisia. Tuntemattomaan ajoon tai tehtävään viittaava toimitus hylätään; puuttuvaa ajoa ei luoda toimituksen perusteella.
@@ -964,12 +976,11 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
    - 9.3 **Raportin HTML-perusrakenne:** määritellään yhteiset rakenneosat, otsikkohierarkia, metatietojen ja lähdeviitteiden esitys, saavutettavuus sekä aihekohtaisen vaihtelun rajat.
-   - 9.5 **Vastaanoton validointi:** täsmennetään tarkistusjärjestys ja hyväksymisehdot tunnisteille, revisioille, metatiedoille, tiedostoille, viittauksille, XML:lle, HTML:lle ja RSS-sopimukselle.
    - 9.6 **Vastaanoton ja julkaisun työnkulku:** määritellään tilasiirtymät, vaiheiden vastuut, atomisen tallennuksen rajat, julkaisemisen järjestys ja odotustilat.
    - 9.7 **Idempotenssi ja virhetilanteet:** määritellään uudelleenyrityksen tunnistaminen, jo käsitellyn toimituksen vaste, ristiriitaisten toimitusten käsittely sekä pysyvien ja tilapäisten virheiden luokittelu.
    - 9.8 **Julkaisun varmennus:** määritellään itemin tallentumisen, GUIDin ja ajotietueen yhtäpitävyyden, RSS-luettavuuden ja Pages-julkaisun valmistumisen tarkistukset.
    - 9.9 **Käyttöönoton hyväksymiskriteerit:** määritellään päästä päähän -skenaariot, palautumis- ja virhetestit, havaittavuus sekä käyttöönottovalmiuden ehdot.
-   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3) ja toimituspaketin rajapinta (9.4) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
+   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3), toimituspaketin rajapinta (9.4) sekä vastaanoton validointijärjestys ja hyväksymisehdot (9.5) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - 10.1 Määritellään instanssirepositorion lopullinen hakemistorakenne ja Pages-julkaisun lähdepolut.
@@ -1061,6 +1072,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.109 (25.11.2026):** hyväksyttiin vastaanoton validoinnin järjestys ja keskeyttämisehdot, tunnisteiden ja ajolle kiinnitettyjen revisioiden vastaavuus, tiedostoluettelon rajaus (metadata.json ei sisälly omaan luetteloonsa), eheystarkistukset, XML/HTML/RSS-turvallisuus, keskinäisten viittausten tarkistus, pysyvien ja tilapäisten virheiden erottelu sekä hyväksymisen raja. Kohta 9.5 poistettiin avoimista kohdista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.108 (24.11.2026):** hyväksyttiin toimituspaketin rajapinta: `metadata.json` kuvaa toimituksen ja tiedostoluettelon, `item.xml` sisältää koko raportin `<content:encoded>`-elementissä eikä erillistä HTML-raporttitiedostoa toimiteta. Täsmennettiin tiedostojen rooli- ja polkuyksilöinti sekä korjaus- ja täydennysitemien viittaus alkuperäiseen UUIDv4-GUIDiin; alkuperäinen julkaisu säilyy muuttumattomana. Kohta 9.4 poistettiin avoimien kohtien luettelosta. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
