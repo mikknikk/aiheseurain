@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.68  
+**Versio:** 0.12.69  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 25.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -759,6 +759,8 @@ Ensimmäisen vaiheen instanssirepositorio on julkinen. Sen RSS-syötteet julkais
 
 Vastaanotto ja julkaisu pidetään erillään. ChatGPT:n ajastettu tehtävä toimittaa paketit Codex Connectorin kautta haaraan `raportit-inbox`. Vastaanotetut paketit tallennetaan hakemistoon `deliveries/{run_id}/{delivery_id}/`. Hyväksytyt ja julkaistavat tiedot tallennetaan erikseen julkaisuhaaraan `main`. GitHub Actions käsittelee vastaanottohaaran toimitukset, validoi ne ja siirtää vain hyväksytyn sisällön julkaisuun. Vastaanottohaaraan tehty push ei itsessään hyväksy eikä julkaise toimitusta.
 
+Vastaanottohaaraan säilytetään kaikki sinne vastaanotetut toimituspaketit, myös validoinnissa hylätyt ja muutoin hyväksymättä jääneet toimitukset. Alkuperäinen paketti säilytetään muuttumattomana, eikä hylättyä toimitusta siirretä `main`-haaraan. Säilytys mahdollistaa toimitusten jälkikäteisen tarkastelun ja Valvomon virhetilanteiden seurannan. Valvomon tulee pystyä näyttämään myös hylättyjen toimitusten tila, validointitulokset ja virhetiedot. Valvomon tarvitsemien tietojen lukutapa ja turvallinen esitysmuoto täsmennetään A10:n jäljellä olevissa kohdissa; vastaanottohaaran raakaa toimituspakettia tai sisäistä tapahtumahistoriaa ei tämän päätöksen perusteella julkaista Pages-sivustolle.
+
 Codex Connectorin GitHub-oikeudet ovat repositoriokohtaisia eivätkä rajaudu itsessään vain vastaanottohaaraan. Siksi `main`-julkaisuhaaran suojaus on toteutettava ja varmennettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Käyttöönotossa on varmistettava, ettei raportintuottajan käyttämä yhteys voi ohittaa julkaisuhaaran suojauksia. Ensimmäisessä versiossa ei asenneta erillistä vastaanotto-GitHub Appia.
 
 Instanssirepositorion julkisuus ja Pages-julkaisu eivät muuta yhteisen ohjelmistorepositorion ja instanssirepositorion erillistä vastuunjakoa. Julkinen instanssirepo on ensimmäisen käyttöönoton ratkaisu; luottamuksellisen aineiston käsittely tai yksityinen instanssi edellyttää myöhempää erillistä suunnittelua.
@@ -769,7 +771,7 @@ RSS-syötteen identiteetti muodostuu aiheen ja tehtävätyypin yhdistelmästä. 
 
 GitHub Pages -sivustoa ei julkaista suoraan instanssirepositorion raakasisällöstä. Erillinen rakennusvaihe muodostaa julkaisuartifactin vain hyväksytystä ja julkaistavaksi tarkoitetusta sisällöstä. Raaka toimituspaketti, vastaanottoaineisto ja sisäinen ajohistoria eivät päädy Pages-artifactiin vahingossa. Julkaistavan artifactin sisältö tarkistetaan ennen Pages-julkaisua.
 
-Alkuperäinen toimituspaketti säilytetään vastaanoton jälkeen myös `main`-haarassa, kun toimitus on hyväksytty. Paketti säilytetään alkuperäisessä muodossaan auditointia ja jäljitettävyyttä varten; vastaanottajan kanoniset ajotiedot, tapahtumahistoria ja julkaistut RSS-tiedostot tallennetaan siitä erillisinä tietokokonaisuuksina. Hylättyä tai hyväksymätöntä toimitusta ei kopioida `main`-haaraan. Kaikki instanssirepoon tallennettava aineisto on julkista, joten toimituspaketti ei saa sisältää salaisuuksia tai yksityisiä tietoja.
+Kaikki vastaanottohaaraan saapuneet alkuperäiset toimituspaketit säilytetään siellä muuttumattomina, myös hylätyt ja hyväksymättä jääneet toimitukset. Kun toimitus hyväksytään, sen alkuperäinen paketti kopioidaan lisäksi `main`-haaraan auditointia ja jäljitettävyyttä varten. `main`-haaraan ei kopioida hylättyjä tai hyväksymättömiä toimituksia. Vastaanottajan kanoniset ajotiedot, tapahtumahistoria ja julkaistut RSS-tiedostot ovat alkuperäisestä toimituspaketista erillisiä tietokokonaisuuksia. Valvomon tulee saada näkyviinsä myös vastaanottohaaraan jääneiden hylättyjen toimitusten tilat, validointitulokset ja virhetiedot; niiden tarkka lukutapa ja esitysmuoto ratkaistaan A10:n jäljellä olevassa suunnittelussa. Kaikki instanssirepoon tallennettava aineisto on julkista, joten toimituspaketti ei saa sisältää salaisuuksia tai yksityisiä tietoja.
 
 ## 10. Virhetilanteet ja uudelleenyritykset
 
@@ -1155,6 +1157,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.69 – 25.11.2026:** täsmennettiin vastaanottohaaran säilytysperiaatetta: kaikki vastaanotetut toimituspaketit, myös hylätyt, säilytetään alkuperäisinä vastaanottohaarassa; vain hyväksytyt toimituspaketit kopioidaan lisäksi `main`-haaraan. Valvomon tulee näyttää myös hylättyjen toimitusten tilat, validointitulokset ja virhetiedot; niiden tekninen lukutapa ja esitysmuoto jätettiin A10:n jatkosuunnitteluun. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.68 – 25.11.2026:** hyväksyttiin RSS-syötteen identiteetin muodostaminen aiheen ja tehtävätyypin yhdistelmästä sekä aihe-/tehtävätyyppikohtainen hakemistorakenne `feeds/{topic_id}/{task_type_id}.xml`. Hyväksyttiin Pages-sivuston muodostaminen erillisessä rakennusvaiheessa vain hyväksytystä sisällöstä sekä hyväksytyn alkuperäisen toimituspaketin säilyttäminen myös `main`-haarassa auditointia varten. Synkronoitiin avoimien suunnittelukysymysten tunnisteet A-etuliitteisiksi, poistettiin ratkaistu A10.1 avoimista tehtävistä ja yhdenmukaistettiin luettelot toteutussuunnitelman kanssa. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
