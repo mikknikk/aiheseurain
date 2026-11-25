@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.114  
+**Versio:** 0.3.115  
 **Päiväys:** 25.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.70](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.71](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -480,11 +480,11 @@ Ensimmäisen vaiheen instanssirepositorio on julkinen. RSS-syötteet julkaistaan
 
 Ensimmäisen version ainoa raportintuottaja on ChatGPT:n ajastettu tehtävä. Se toimittaa kokonaisen toimituspaketin Git pushina GitHubiin Codex Connector -yhteyden kautta. Käytännön testissä ajastettu tehtävä loi testitiedoston instanssirepositorion erilliseen haaraan; testissä `main`-haara ei muuttunut. Testi osoittaa, että toimitus toimii tässä käyttöympäristössä. Tuotantokäyttöönotossa on silti varmennettava yhteyden oikeudet, vastaanoton työnkulku ja julkaisuhaaran suojaus.
 
-Toimitukset tehdään erilliseen vastaanottohaaraan `raportit-inbox`. Toimituspaketin polku on `deliveries/{run_id}/{delivery_id}/`, ja paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot, kuten `item.xml`. Vastaanottohaara on käsittelyjono: sen nykyisessä puussa säilytetään vain käsittelemättömät toimitukset. Kun toimitus on käsitelty, sen alkuperäinen paketti, vastaanottajan käsittelytietueet ja tapahtumahistoria arkistoidaan haaraan `raportit-arkisto`, riippumatta siitä, hyväksyttiinkö vai hylättiinkö toimitus. Arkistointi varmennetaan lukemalla tallennetut tiedot takaisin ennen kuin käsitelty toimitus poistetaan `raportit-inbox`-haarasta. Jos arkistointi epäonnistuu tai sen onnistumista ei voida varmentaa, toimitus jätetään vastaanottohaaraan myöhempää turvallista uudelleenyritystä varten. `raportit-arkisto` on Valvomon vastaanotto- ja käsittelyhistorian ensisijainen tietolähde. `main`-haaraan siirretään toimituksista vain hyväksytyt RSS-itemit oikeisiin syötetiedostoihin; vastaanottopaketteja, ajotietueita tai tapahtumalokeja ei julkaista siellä. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
+Toimitukset tehdään erilliseen vastaanottohaaraan `raportit-inbox`. Toimituspaketin polku on `deliveries/{run_id}/{delivery_id}/`, ja paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot, kuten `item.xml`. Raportintuottajan sallittu kirjoituskohde on yksinomaan `raportit-inbox`: se ei muuta `raportit-arkisto`- eikä `main`-haaraa eikä kirjoita julkaistaviin RSS-tiedostoihin. Vastaanottaja vastaa yksin arkisto- ja julkaisuhaarojen kaikista muutoksista. `raportit-inbox` on käsittelyjono: sen nykyisessä puussa säilytetään vain käsittelemättömät toimitukset. Kun toimitus on käsitelty, sen alkuperäinen paketti, vastaanottajan käsittelytietueet ja tapahtumahistoria arkistoidaan haaraan `raportit-arkisto`, riippumatta siitä, hyväksyttiinkö vai hylättiinkö toimitus. Arkistointi varmennetaan lukemalla tallennetut tiedot takaisin ennen kuin käsitelty toimitus poistetaan `raportit-inbox`-haarasta. Jos arkistointi epäonnistuu tai sen onnistumista ei voida varmentaa, toimitus jätetään vastaanottohaaraan myöhempää turvallista uudelleenyritystä varten. `raportit-arkisto` on Valvomon vastaanotto- ja käsittelyhistorian ensisijainen tietolähde. `main`-haaraan siirretään toimituksista vain hyväksytyt RSS-itemit oikeisiin syötetiedostoihin; vastaanottopaketteja, ajotietueita tai tapahtumalokeja ei julkaista siellä.
 
 Codex Connector on ChatGPT:n ja GitHubin välinen yhteys, ei instanssirepoon asennettava GitHub App. Ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia. Aiempi vastaanotto-App on poistettu; sen luomista uudelleen voidaan harkita myöhemmin, jos käyttöoikeuksien eriyttämiseen syntyy tarve.
 
-Codex Connectorin GitHub-oikeus ei rajaudu automaattisesti yksittäiseen haaraan. Vastaanottohaara on toimitusten käsittelyraja, ei käyttöoikeusraja. Siksi `main`-julkaisuhaaran suojaus on toteutettava ja varmennettava erillisillä haara- tai ruleset-asetuksilla sekä työnkulun tarkistuksilla. Käyttöönotossa on varmistettava, ettei raportintuottajan käyttämä yhteys voi ohittaa julkaisuhaaran suojauksia. Dokumentaatio ei oleta suojauksen olevan käytössä ennen kuin se on teknisesti asetettu ja tarkistettu.
+Codex Connectorin GitHub-oikeus ei rajaudu automaattisesti yksittäiseen haaraan. Siksi edellä määritelty raportintuottajan yksinomaan `raportit-inbox`-haaraan rajattu kirjoitusvastuu on ensin toimintaperiaate, jonka tekninen toteutettavuus ja valvonta varmennetaan A10.3–A10.4-kohdissa. Vastaanottohaara on toimitusten käsittelyraja, ei itsessään tekninen käyttöoikeusraja. Käyttöönotossa on osoitettava, ettei tuottajan käyttämä yhteys voi muuttaa `raportit-arkisto`- tai `main`-haaraa eikä ohittaa julkaisuhaaran suojauksia. Jos tätä ei voida teknisesti taata nykyisellä yhteydellä, jäljelle jäävä riski ja tarvittavat korvaavat suojaukset on ratkaistava ennen käyttöönottoa; periaatetta ei saa tulkita jo teknisesti varmennetuksi.
 
 - GitHub Actions käynnistää toimituksen käsittelyn vastaanottohaaraan tehdyn pushin perusteella.
 - Actions tarkistaa paketin ennen kuin mitään julkaistaan tai tallennetaan hyväksyttyihin tuotantotietoihin.
@@ -910,9 +910,11 @@ Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi,
 
 - RSS-syötteen yksilöivä avain on aiheen ja tehtävätyypin yhdistelmä. Instanssirepon syötetiedostot sijoitetaan muotoon `feeds/{topic_id}/{task_type_id}.xml`; jokaisella yhdistelmällä on oma tiedostonsa. Syöteluettelo tuotetaan instanssin määrityksistä tai niitä vastaavasta indeksistä, ei käyttöliittymään kovakoodatuista aiheista.
 - GitHub Pages julkaistaan erillisessä rakennusvaiheessa muodostetusta artifactista. Rakennus ottaa mukaan vain hyväksytyn ja julkaisukelpoisen sisällön; instanssirepon raakasisältöä, toimituspaketteja tai sisäistä ajohistoriaa ei julkaista suoraan.
-- Kaikki vastaanottohaaraan `raportit-inbox` saapuneet alkuperäiset toimituspaketit säilytetään siellä muuttumattomina, myös validoinnissa hylätyt ja muutoin hyväksymättä jääneet toimitukset. Vastaanottohaara toimii siten myös toimitusten auditointi- ja selvitysaineiston säilytyspaikkana.
-- Hyväksytty alkuperäinen toimituspaketti kopioidaan lisäksi `main`-haaraan alkuperäisessä muodossaan auditointia ja jäljitettävyyttä varten. Hylättyjä tai hyväksymättömiä toimituksia ei siirretä `main`-haaraan. Alkuperäinen toimituspaketti säilyy erillään vastaanottajan kanonisesta ajotietueesta, tapahtumahistoriasta ja RSS-julkaisuista.
-- Valvomon tulee pystyä näyttämään kaikkien vastaanotettujen toimitusten tilat, mukaan lukien hylättyjen toimitusten validointitulokset ja virhetiedot. Valvomon tietojen tekninen lukutapa ja turvallinen esitysmuoto täsmennetään A10:n jäljellä olevissa kohdissa. Vastaanottohaaran raakaa toimituspakettia tai sisäistä tapahtumahistoriaa ei tämän päätöksen perusteella sisällytetä Pages-artifactiin.
+- `raportit-inbox` sisältää vain käsittelemättömät toimitukset. Käsittelyn valmistuttua vastaanottaja arkistoi alkuperäisen toimituspaketin, hyväksymis- tai hylkäyspäätöksen, kanonisen ajotietueen, kaikki käsittelyn välitulokset, validointihavainnot, virheet ja uudelleenyritysten tapahtumat `raportit-arkisto`-haaraan. Aiemmat tapahtumat säilytetään muuttumattomina.
+- Arkistointi varmennetaan lukemalla tallennetut tiedot takaisin ennen toimituksen poistamista `raportit-inbox`-haarasta. Jos arkistointi epäonnistuu tai sitä ei voida varmentaa, toimitus jätetään inboxiin turvallista uudelleenyritystä varten.
+- `main` sisältää toimituksista vain hyväksytyt RSS-itemit ja syötetiedostot. Alkuperäisiä toimituspaketteja, hylättyjä toimituksia, kanonisia ajotietueita tai käsittelylokeja ei kopioida `main`-haaraan.
+- Valvomo lukee vastaanottojen ja käsittelyjen historian `raportit-arkisto`-haarasta. Se ei rakenna historiatietoja inbox-haaran nykyisestä käsittelyjonosta. Arkiston raakaa sisältöä tai sisäistä tapahtumahistoriaa ei sisällytetä Pages-artifactiin.
+- Raportintuottajan sallittu kirjoituskohde on vain `raportit-inbox`. `raportit-arkisto`- ja `main`-haarojen muutokset ovat yksinomaan vastaanottajan vastuulla. Codex Connectorin tekninen oikeusraja on silti varmennettava A10.3–A10.4-kohdissa ennen käyttöönottoa.
 - Koska instanssirepo on julkinen, paketeissa ei saa olla salaisuuksia tai yksityisiä tietoja.
 
 ## 3. Kehitysympäristön hyväksytty tavoitetila
@@ -1050,7 +1052,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 **A10.** **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - *Rajaus:* A10.1:n hakemistorakenteen, syöteidentiteetin ja Pages-julkaisun periaatteet on päätetty.
-   - **A10.2** Määritellään vastaanotto- ja julkaisuhaarojen vastuut ja sallittu tiedonsiirto.
+   - **A10.2 – päätetty:** raportintuottaja kirjoittaa vain `raportit-inbox`-haaraan; vastaanottaja hallitsee yksin `raportit-arkisto`- ja `main`-haarojen muutoksia. Inbox sisältää vain käsittelemättömät toimitukset, arkisto kaikki käsittelyn tulokset ja välivaiheet, ja `main` vain hyväksytyt RSS-itemit ja syötetiedostot. Arkistointi varmennetaan ennen inboxista poistamista. Teknisen oikeusrajan varmennus jatkuu kohdissa A10.3–A10.4.
    - **A10.3** Määritellään main-haaran suojaussäännöt, pakolliset tarkistukset ja poikkeusmenettely.
    - **A10.4** Varmennetaan Codex Connectorin repositoriotasoisten oikeuksien vaikutus haarasuojaukseen.
    - **A10.5** Määritellään Pages-julkaisun käynnistys, virheellisen julkaisun esto ja palautus.
@@ -1138,6 +1140,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.115 (25.11.2026):** päätettiin A10.2:ssa kirjoitusvastuiden raja: raportintuottaja saa toimittaa vain `raportit-inbox`-haaraan, ja vastaanottaja vastaa yksin `raportit-arkisto`- ja `main`-haarojen muutoksista. Täsmennettiin, että tämä on toimintaperiaate, jonka tekninen toteutettavuus Codex Connectorin repositoriotasoisten oikeuksien kanssa on vielä varmennettava A10.3–A10.4-kohdissa. Korjattiin vanhat ristiriitaiset säilytys- ja Valvomon tietolähdekuvaukset. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.114 (25.11.2026):** muutettiin vastaanotto- ja arkistointimallia: `raportit-inbox` sisältää vain käsittelemättömät toimitukset; kaikki käsitellyt toimitukset alkuperäispaketteineen, hyväksyttyinä tai hylättyinä, sekä välituloksineen ja virhetietoineen siirretään `raportit-arkisto`-haaraan. Valvomo käyttää arkistohaaraa vastaanotto- ja käsittelyhistorian lähteenä. Arkistointi varmennetaan ennen inbox-toimituksen poistamista. `main`-haaraan julkaistaan toimituksista vain hyväksytyt RSS-itemit ja syötetiedostot. Tämä päätös korvaa aiemman 0.3.113-version säilytysmallin. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
