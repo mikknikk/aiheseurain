@@ -1061,8 +1061,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 **A10.** **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - *Rajaus:* A10.1:n hakemistorakenteen, syöteidentiteetin ja Pages-julkaisun periaatteet on päätetty.
    - **A10.2 – päätetty:** raportintuottaja kirjoittaa vain `raportit-inbox`-haaraan; vastaanottaja hallitsee yksin `raportit-arkisto`- ja `main`-haarojen muutoksia. Inbox sisältää vain käsittelemättömät toimitukset, arkisto kaikki käsittelyn tulokset ja välivaiheet, ja `main` vain hyväksytyt RSS-itemit ja syötetiedostot. Arkistointi varmennetaan ennen inboxista poistamista. Teknisen oikeusrajan varmennus jatkuu kohdissa A10.3–A10.4.
-   - **A10.3** Määritellään main-haaran suojaussäännöt, pakolliset tarkistukset ja poikkeusmenettely.
-   - **A10.4** Varmennetaan Codex Connectorin repositoriotasoisten oikeuksien vaikutus haarasuojaukseen.
+   - **A10.3 – periaatteet päätetty:** `main`- ja `raportit-arkisto`-haarojen poistaminen ja force push estetään. `main`-haaraan sallitaan suorat kehitysvaiheen kirjoitukset, mutta kaikki muutokset tarkistetaan ja julkaisu edellyttää onnistunutta validointia. Arkiston tuotantotietojen append-only-eheys varmennetaan erikseen. Tarkistusten ohitus edellyttää dokumentoitua poikkeusta. Käyttäjä valtuutti avustajan kirjoittamaan kehitysvaiheessa kaikkiin haaroihin. GitHub-asetusten tekninen käyttöönotto ja varmennus ovat avoinna.
+   - **A10.4** Varmennetaan Codex Connectorin repositoriotasoisten oikeuksien vaikutus haarasuojaukseen sekä kehitysvaiheen ylläpito-oikeuden erottaminen tuotantoroolien oikeuksista.
    - **A10.5** Määritellään Pages-julkaisun käynnistys, virheellisen julkaisun esto ja palautus.
    - **A10.6** Määritellään käyttöönoton oikeus- ja suojaustestit.
    - *Rajaus:* ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia.
