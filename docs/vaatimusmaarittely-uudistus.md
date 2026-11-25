@@ -725,7 +725,7 @@ Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään t
 ### 9.1 Jaettava ohjelmisto ja instanssikohtainen käyttö
 
 - Yhteisen ohjelmiston tulee olla julkaistavissa ja jaettavissa erillään yksittäisen käyttöönoton tiedoista.
-- Kaikki instanssirepositoriossa tarvittavat GitHub Actions -työnkulut ja muu suoritettava tai ylläpidettävä ohjelmistokoodi on oltava saatavilla yhteisestä ohjelmistorepositoriosta. Ohjelmistorepo on jaettavan lähdekoodin ja versioidun jakelun ensisijainen lähde.
+- Kaikkien instanssirepositoriossa tarvittavien GitHub Actions -työnkulkujen ja muun suoritettavan tai ylläpidettävän ohjelmistokoodin on oltava saatavilla yhteisestä ohjelmistorepositoriosta. Ohjelmistorepo on jaettavan lähdekoodin ja versioidun jakelun ensisijainen lähde.
 - Ohjelmistorepon mukana on toimitettava täsmälliset asennus-, käyttöönotto-, päivitys- ja palautusohjeet, joiden avulla tarvittavat työnkulut ja koodi asennetaan tai synkronoidaan instanssirepoon. Ohjeiden on yksilöitävä yhteensopivat ohjelmisto- ja instanssiversiot sekä tarvittavat asetukset ja käyttöoikeudet. Instanssirepoon asennetut kopiot eivät saa muodostua dokumentoimattomaksi rinnakkaiseksi lähdekoodiksi.
 - Yhden instanssin omat aiheet, seurantatehtävät, määritykset, profiilit, lähderekisterit, ajohistoria, RSS-syötteet ja muut käyttöönoton tiedot kuuluvat instanssille. Niitä ei käsitellä jaettavan ohjelmiston lähdekoodina tai ohjelmistoversion sisältönä.
 - Ohjelmiston tulee pystyä lukemaan ja käsittelemään instanssin tietoja määritellyn rajapinnan ja tietosopimusten kautta. Se ei saa olettaa, että ohjelmistokoodi ja instanssin tiedot sijaitsevat samassa Git-repositoriossa tai määrätyissä suhteellisissa tiedostopoluissa.
