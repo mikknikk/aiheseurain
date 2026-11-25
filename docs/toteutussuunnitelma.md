@@ -754,6 +754,27 @@ runs/
 
 RSS-julkaisu, kanonisen ajotietueen päivitys ja tarvittavat uudet tapahtumat tallennetaan samaan atomiseen Git-commitiin. Toimitusmetatiedot säilyvät erillisenä tuottajan toimittamana aineistona, ja niiden vastaanotto/hyväksyntä kirjataan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
+#### 2.6.1.1 Vastaanottajan ajotietueen ja tapahtumahistorian tietomalli
+
+`run.json` on vastaanottajan ylläpitämä ajon nykytilan yhteenveto. Sen tietoryhmät ovat:
+
+- ajon tunnisteet: `run_id`, `topic_id` ja `task_type`;
+- ohjelmisto- ja instanssirevisiot;
+- tehtävän ajankohdat ja `period`;
+- vastaanottajan nykyinen käsittely- ja lopputila;
+- hyväksyttyyn toimitukseen ja sen metadataan viittaaminen;
+- viimeisin validointitulos ja mahdolliset virheet;
+- julkaisun tila ja RSS-itemin viittaus;
+- tietueen luonti- ja viimeisin varmennettu päivitysaikaleima.
+
+Tuottajan metatietoja ei kopioida `run.json`-tiedostoon. Tuottajan `status` ja vastaanottajan ajon tila ovat eri tietoja: tuottajan `success` ei yksin merkitse vastaanoton tai julkaisun onnistumista. Jos toimitusta ei saada, tuottajan tilaa ei päätellä.
+
+`events.jsonl` sisältää yhden JSON-tapahtuman kullakin rivillä. Yhteiset kentät ovat `event_id`, `run_id`, `sequence`, `event_type`, `occurred_at`, `actor` ja `details`. Esimerkkitapahtumia ovat `run_created`, `task_issued`, `deadline_exceeded`, `delivery_received`, `delivery_validation_started`, `delivery_accepted`, `delivery_rejected`, `publication_started`, `publication_completed`, `run_completed` ja `run_failed`. Kunkin tapahtumatyypin `details`-kentän sallittu sisältö määritellään erikseen.
+
+Tapahtumahistoriaan lisätään vain uusia rivejä. Aiemmat tapahtumat eivät muutu eivätkä katoa. `sequence` on yhden ajon sisällä yksilöllinen ja kasvava; `event_id` on yksilöllinen. Aikaleimat noudattavat yhteistä ISO 8601 -muotoa numeerisine UTC-offsetteineen. Tapahtuma kuvaa todennettua tapahtumaa, ei oletusta. `run.json` muodostetaan tapahtumahistorian ja hyväksyttyjen toimitustietojen perusteella.
+
+Tunnisteiden vastuut ovat erilliset: `run_id` yksilöi loogisen ajon, `delivery_id` tuottajan toimituksen, `attempt_id` vastaanottajan käsittely-yrityksen ja `event_id` yksittäisen tapahtuman. Jokainen tapahtuma viittaa `run_id`-tunnisteeseen; toimitukseen liittyvä tapahtuma voi viitata lisäksi `delivery_id`-tunnisteeseen ja käsittely-yritykseen liittyvä tapahtuma `attempt_id`-tunnisteeseen. Tunnisteita ei käytetä ristiin eikä muodosteta uudelleen saman kohteen uudelleenyrityksissä.
+
 #### 2.6.1.2 Vastaanoton ja julkaisun työnkulku
 
 Vastaanoton ja julkaisun käsittely etenee seuraavien tilojen kautta. Tilat kuvaavat vastaanottajan käsittelyä, eivät raportintuottajan ilmoittamaa tulostilaa:
@@ -782,27 +803,6 @@ Julkaisu tallennetaan yhtenä atomisena repositoriomuutoksena. Samaan Git-commit
 Määräajan umpeutuminen ei estä myöhäisen toimituksen vastaanottamista. Myöhäinen toimitus liitetään alkuperäiseen `run_id`-ajoon. Määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä tai hylkäys sekä mahdollinen julkaisu kirjataan erillisinä tapahtumina. Myöhempi onnistuminen ei poista aiempaa määräajan ylitystä eikä muuta tapahtumahistorian aikajärjestystä. Julkaisukelpoinen toimitus odottaa julkaisutyönkulkua; jos julkaisu epäonnistuu, tilanne kirjataan ja sitä käsitellään tilapäisenä tai pysyvänä virheenä virheluokituksen mukaisesti.
 
 Tämä työnkulku erottaa toisistaan toimituksen hyväksymisen, julkaisukelpoisuuden ja toteutuneen julkaisun. Näin hyväksyttyä mutta vielä julkaisematta olevaa toimitusta ei esitetä julkaistuna, ja myös julkaisuvaiheen epäonnistuminen jää jäljitettäväksi.
-#### 2.6.1.1 Vastaanottajan ajotietueen ja tapahtumahistorian tietomalli
-
-`run.json` on vastaanottajan ylläpitämä ajon nykytilan yhteenveto. Sen tietoryhmät ovat:
-
-- ajon tunnisteet: `run_id`, `topic_id` ja `task_type`;
-- ohjelmisto- ja instanssirevisiot;
-- tehtävän ajankohdat ja `period`;
-- vastaanottajan nykyinen käsittely- ja lopputila;
-- hyväksyttyyn toimitukseen ja sen metadataan viittaaminen;
-- viimeisin validointitulos ja mahdolliset virheet;
-- julkaisun tila ja RSS-itemin viittaus;
-- tietueen luonti- ja viimeisin varmennettu päivitysaikaleima.
-
-Tuottajan metatietoja ei kopioida `run.json`-tiedostoon. Tuottajan `status` ja vastaanottajan ajon tila ovat eri tietoja: tuottajan `success` ei yksin merkitse vastaanoton tai julkaisun onnistumista. Jos toimitusta ei saada, tuottajan tilaa ei päätellä.
-
-`events.jsonl` sisältää yhden JSON-tapahtuman kullakin rivillä. Yhteiset kentät ovat `event_id`, `run_id`, `sequence`, `event_type`, `occurred_at`, `actor` ja `details`. Esimerkkitapahtumia ovat `run_created`, `task_issued`, `deadline_exceeded`, `delivery_received`, `delivery_validation_started`, `delivery_accepted`, `delivery_rejected`, `publication_started`, `publication_completed`, `run_completed` ja `run_failed`. Kunkin tapahtumatyypin `details`-kentän sallittu sisältö määritellään erikseen.
-
-Tapahtumahistoriaan lisätään vain uusia rivejä. Aiemmat tapahtumat eivät muutu eivätkä katoa. `sequence` on yhden ajon sisällä yksilöllinen ja kasvava; `event_id` on yksilöllinen. Aikaleimat noudattavat yhteistä ISO 8601 -muotoa numeerisine UTC-offsetteineen. Tapahtuma kuvaa todennettua tapahtumaa, ei oletusta. `run.json` muodostetaan tapahtumahistorian ja hyväksyttyjen toimitustietojen perusteella.
-
-Tunnisteiden vastuut ovat erilliset: `run_id` yksilöi loogisen ajon, `delivery_id` tuottajan toimituksen, `attempt_id` vastaanottajan käsittely-yrityksen ja `event_id` yksittäisen tapahtuman. Jokainen tapahtuma viittaa `run_id`-tunnisteeseen; toimitukseen liittyvä tapahtuma voi viitata lisäksi `delivery_id`-tunnisteeseen ja käsittely-yritykseen liittyvä tapahtuma `attempt_id`-tunnisteeseen. Tunnisteita ei käytetä ristiin eikä muodosteta uudelleen saman kohteen uudelleenyrityksissä.
-
 #### 2.6.2 Lähdekohtaiset avaus- ja käyttötilastot
 
 Raportintekijä ilmoittaa jokaisesta lähteestä, jonka avaamista se tosiasiallisesti yritti, lähderekisterin vakaan tunnisteen, yrityksen tuloksen ja mahdollisuuksien mukaan epäonnistumisen luokan. Avaamisen onnistuminen erotetaan sisällön saatavuudesta, laadusta, relevanssista ja raportoitavan tiedon löytymisestä. Avaamatta jääneitä lähteitä ei lasketa onnistuneiksi eikä epäonnistuneiksi avausyrityksiksi. Vastaanottaja validoi lähdehavainnot ja tallentaa ne kanoniseen ajohistoriaan siten, että tilastot voidaan yhdistää saman lähdetunnisteen perusteella eri ajoista.
