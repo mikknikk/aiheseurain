@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.111  
+**Versio:** 0.3.112  
 **Päiväys:** 25.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.67](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.68](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -907,6 +907,10 @@ Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi,
 - Jos myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, tietojen erottelu ja käyttöoikeuksien tekninen toteutus suunnitellaan erikseen ennen tällaisen tiedon käyttöönottoa.
 - Repositorioiden nimet, täsmällinen hakemistorakenne, ohjelmiston jakelukanava ja instanssin käyttöönoton tekninen toteutus ratkaistaan myöhemmässä teknisessä suunnittelussa. Niitä ei lukita tällä arkkitehtuuriperiaatteella.
 
+- RSS-syötteen yksilöivä avain on aiheen ja tehtävätyypin yhdistelmä. Instanssirepon syötetiedostot sijoitetaan muotoon `feeds/{topic_id}/{task_type_id}.xml`; jokaisella yhdistelmällä on oma tiedostonsa. Syöteluettelo tuotetaan instanssin määrityksistä tai niitä vastaavasta indeksistä, ei käyttöliittymään kovakoodatuista aiheista.
+- GitHub Pages julkaistaan erillisessä rakennusvaiheessa muodostetusta artifactista. Rakennus ottaa mukaan vain hyväksytyn ja julkaisukelpoisen sisällön; instanssirepon raakasisältöä, toimituspaketteja tai sisäistä ajohistoriaa ei julkaista suoraan.
+- Hyväksytty alkuperäinen toimituspaketti kopioidaan ja säilytetään myös `main`-haarassa alkuperäisessä muodossaan. Se toimii auditointi- ja jäljitettävyysaineistona, mutta on erillään vastaanottajan kanonisesta ajotietueesta, tapahtumahistoriasta ja RSS-julkaisuista. Hylättyjä tai hyväksymättömiä toimituksia ei siirretä `main`-haaraan. Koska instanssirepo on julkinen, paketeissa ei saa olla salaisuuksia tai yksityisiä tietoja.
+
 ## 3. Kehitysympäristön hyväksytty tavoitetila
 
 Toteutussuunnitelmaan sisältyvät seuraavat käyttäjän hyväksymät GitHub-käytännöt:
@@ -962,9 +966,9 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 
 Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sama vaatimusmäärittelyssä ja toteutussuunnitelmassa, jotta suunnittelun tilanne pysyy yhdenmukaisena.
 
-### 1. Tietomallit ja skeemat
+### A1. Tietomallit ja skeemat
 
-1. **Skeemojen tarkat rakenteet**
+**A1.**Skeemojen tarkat rakenteet**
    - 1.1 Määritellään pääskeemojen täydelliset kenttäluettelot, tietotyypit ja pakollisuus.
    - 1.2 Määritellään kenttäkohtaiset rajat, sallitut arvot ja taulukoiden täsmälliset rajat.
    - 1.3 Ratkaistaan yhteisten osaskeemojen lopullinen jako, nimet ja uudelleenkäyttö.
@@ -972,7 +976,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 1.5 Täsmennetään rakenteellisen ja toiminnallisen validoinnin työnjako, virheraportointi ja validointikoodin vastuut.
    - *Rajaus:* skeemahakemiston jako, JSON Schema -versio ja yleiset sulkevuusperiaatteet on päätetty.
 
-2. **Laaduntarkistusten parametrit**
+**A2.**Laaduntarkistusten parametrit**
    - 2.1 Luetellaan kunkin tarkistuksen tarvitsemat parametrit ja niiden tarkoitus.
    - 2.2 Määritellään parametrien nimet, tyypit, pakollisuus, rajat ja sallitut arvot.
    - 2.3 Määritellään tarkistuskohtaiset parametriskeemat ja niiden validointiehdot.
@@ -980,7 +984,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 2.5 Määritellään keskinäisten riippuvuuksien ja virheellisten yhdistelmien käsittely.
    - *Rajaus:* parameters on aina objekti, asetukseton arvo on tyhjä objekti ja tuntemattomat parametrit hylätään.
 
-3. **Raportoitavien havaintojen kategoriat**
+**A3.**Raportoitavien havaintojen kategoriat**
    - 3.1 Tunnistetaan kunkin tehtävätyypin tarvitsemat kategoriat.
    - 3.2 Määritellään tehtävätyyppikohtaiset pysyvät kategoriatunnisteet.
    - 3.3 Määritellään kategorioiden nimet, kuvaukset ja käyttörajat.
@@ -988,7 +992,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 3.5 Määritellään kategorioiden muuttamisen ja käytöstä poistamisen säännöt.
    - *Rajaus:* yhteistä kaikkien tehtävätyyppien luokittelua ei muodosteta.
 
-4. **Tiedostoroolien parametrit**
+**A4.**Tiedostoroolien parametrit**
    - 4.1 Luetteloidaan toimituspaketin tiedostoroolit ja niiden tarkoitukset.
    - 4.2 Määritellään roolikohtaiset parametrit, tyypit ja pakollisuus.
    - 4.3 Määritellään roolikohtaiset parametriskeemat ja oletusarvot.
@@ -996,7 +1000,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 4.5 Määritellään puuttuvien, toistuvien ja ristiriitaisten roolien käsittely.
    - *Rajaus:* parameters on aina objekti ja tuntemattomat parametrit hylätään.
 
-5. **Toimitusmetatietojen täydentäminen**
+**A5.**Toimitusmetatietojen täydentäminen**
    - 5.1 Käydään kuusi hyväksyttyä tietoryhmää läpi ja tunnistetaan jäljellä olevat täsmennystarpeet.
    - 5.2 Määritellään lähde-, kanava- ja tarkistusyritystietojen kentät, tyypit ja viittaukset.
    - 5.3 Määritellään havaintoyhteenvedon kentät ja niiden suhde tehtävätyypin kategorioihin.
@@ -1005,7 +1009,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 5.6 Varmistetaan tuottajan ja vastaanottajan tietojen sekä tunnisteiden selkeä erottelu.
    - *Rajaus:* kuusi tietoryhmää sekä producer-ryhmän perusrakenne, valinnaisuus ja producer_type-arvot on päätetty.
 
-6. **Vastaanottajan ajotietomallit**
+**A6.**Vastaanottajan ajotietomallit**
    - 6.1 Määritellään run.json-tietueen kentät, tyypit, pakollisuus ja sallitut arvot.
    - 6.2 Määritellään ajon, tuottajan tuloksen, vastaanoton ja julkaisun tilaluokat ja siirtymät.
    - 6.3 Määritellään events.jsonl-tapahtumien täydellinen tapahtumatyyppiluettelo.
@@ -1014,9 +1018,9 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 6.6 Määritellään tapahtumien järjestys-, aikaleima-, yksilöllisyys- ja append-only-säännöt.
    - 6.7 Määritellään puuttuvien, ristiriitaisten ja tuntemattomiin toimituksiin viittaavien tietojen käsittely.
 
-### 2. Lähderekisteri ja lähdetilastot
+### A2. Lähderekisteri ja lähdetilastot
 
-7. **Rekisterin ulkopuolisten lähteiden ehdotukset**
+**A7.**Rekisterin ulkopuolisten lähteiden ehdotukset**
    - 7.1 Määritellään ehdotustietueen kentät, tyypit ja pakollisuus.
    - 7.2 Määritellään lähde- ja kanavaehdotusten väliset viittaukset.
    - 7.3 Täsmennetään alkuperä-, löytämis- ja perustelutietojen sisältö.
@@ -1025,7 +1029,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 7.6 Määritellään hyväksytyn ehdotuksen siirto rekisteriin ja rekisterirevision päivitys.
    - 7.7 Arvioidaan myöhemmän käyttöliittymän tarve; ensimmäisen version GitHub-käsittely säilyy lähtökohtana.
 
-8. **Lähdekohtaiset tilastot**
+**A8.**Lähdekohtaiset tilastot**
    - 8.1 Määritellään tilastotietueen kentät ja suhde sisältökanavien tarkistusyrityksiin.
    - 8.2 Määritellään tilastojen laskenta ja päivitys kanonisesta ajohistoriasta.
    - 8.3 Täsmennetään 30 ja 90 päivän sekä koko historian tunnuslukujen laskentasäännöt.
@@ -1035,12 +1039,12 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 8.7 Määritellään laskennan oikeellisuuden testaus.
    - *Rajaus:* tilastojen perusperiaatteet, tarkastelujaksot ja ylläpitäjän arvioitavat huomautukset on päätetty.
 
-### 3. Integraatiot ja ajonhallinta
+### A3. Integraatiot ja ajonhallinta
 
-9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
+**A9.**Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
    - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3), toimituspaketin rajapinta (9.4), vastaanoton validointijärjestys ja hyväksymisehdot (9.5) sekä vastaanoton ja julkaisun työnkulku, tilat, vastuut, atominen tallennus ja myöhäisten toimitusten kirjaaminen (9.6) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
-10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
+**A10.**Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - 10.1 Määritellään instanssirepositorion lopullinen hakemistorakenne ja Pages-julkaisun lähdepolut.
    - 10.2 Määritellään vastaanotto- ja julkaisuhaarojen vastuut ja sallittu tiedonsiirto.
    - 10.3 Määritellään main-haaran suojaussäännöt, pakolliset tarkistukset ja poikkeusmenettely.
@@ -1049,7 +1053,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 10.6 Määritellään käyttöönoton oikeus- ja suojaustestit.
    - *Rajaus:* ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia.
 
-11. **Ajojen käynnistäminen**
+**A11.**Ajojen käynnistäminen**
    - 11.1 Määritellään 15 minuutin yhteisen tarkistusvälin ajastustapa ja GitHub Actionsin viiveiden käsittely.
    - 11.2 Määritellään manuaalisen käynnistyksen käyttäytyminen ja yhteiset käsittelysäännöt.
    - 11.3 Määritellään aihekohtaisten erääntymisten laskenta, aikavyöhyke ja aikavälirajat.
@@ -1058,7 +1062,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 11.6 Määritellään käynnistysvirheiden ja väliin jääneiden käynnistysten havaitseminen ja kirjaaminen.
    - *Rajaus:* erillistä laaduntarkistusajoa ei käynnistetä.
 
-12. **Jonon ja uudelleenyritysten tarkat rajat**
+**A12.**Jonon ja uudelleenyritysten tarkat rajat**
    - 12.1 Määritellään tehtävän muodostuksen, tuottajan suorituksen, vastaanoton ja julkaisun aikakatkaisut.
    - 12.2 Määritellään uudelleenyritysten enimmäismäärät vaiheittain ja virheluokittain.
    - 12.3 Määritellään odotusajat, mahdollinen kasvava viive ja enimmäisodotusaika.
@@ -1067,7 +1071,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 12.6 Määritellään keskeytyneen tehtävän tunnistaminen, tilan palautus ja turvallinen jatkaminen.
    - 12.7 Määritellään manuaalisen uudelleenyrityksen oikeudet, vaikutukset ja jäljitettävyys.
 
-13. **Toimituspakettien säilytys**
+**A13.**Toimituspakettien säilytys**
    - 13.1 Määritellään vastaanottohaaran alkuperäisten pakettien säilytysajat.
    - 13.2 Määritellään hyväksyttyjen, hylättyjen ja keskeneräisten pakettien säilytyserot.
    - 13.3 Määritellään siivouksen käynnistysehdot, ajastus ja poistoperusteet.
@@ -1075,9 +1079,9 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 13.5 Määritellään auditointi-, palautus- ja poikkeustilanteiden säilytystarpeet.
    - 13.6 Määritellään tallennustilan seuranta ja toiminta säilytysrajojen ylittyessä.
 
-### 4. Raportintekijä ja käyttöliittymät
+### A4. Raportintekijä ja käyttöliittymät
 
-14. **Yhteinen raportintekijän perusprompti**
+**A14.**Yhteinen raportintekijän perusprompti**
    - 14.1 Määritellään promptin rakenne ja yleiset vastuut suhteessa tehtäväpyyntöön.
    - 14.2 Määritellään tehtäväpyynnön, ohjeiden ja rakenteisten syötteiden lukemisjärjestys.
    - 14.3 Täsmennetään lähteiden käyttöä, epävarmuutta, lähteistämistä ja toimituspaketin muodostamista koskevat ohjeet.
@@ -1085,7 +1089,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 14.5 Määritellään versionhallinta, revisioviittaus ja yhteensopivuusperiaatteet.
    - 14.6 Määritellään testitapaukset, arviointikriteerit ja sovittaminen tuottajaintegraatioon.
 
-15. **Valvomon toteutus**
+**A15.**Valvomon toteutus**
    - 15.1 Määritellään yleiskuvan tietosisältö, järjestys, päivittyminen ja poikkeamat.
    - 15.2 Määritellään aihelistan kentät, suodatus, järjestäminen ja tilan esitys.
    - 15.3 Määritellään ajohistorian suodatus, tapahtumien tarkastelu ja virheiden esitys.
@@ -1094,7 +1098,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 15.6 Määritellään tietojen päivitystapa ja riippuvuus instanssin julkisista tiedostoista.
    - 15.7 Määritellään saavutettavuus-, responsiivisuus- ja käytettävyyskriteerit sekä testaus.
 
-16. **Julkisten käyttöliittymien tietoturvatarkistukset**
+**A16.**Julkisten käyttöliittymien tietoturvatarkistukset**
    - 16.1 Luetteloidaan julkisiin tiedostoihin ja rajapintoihin päätyvät tietolähteet.
    - 16.2 Määritellään salaisuuksien, käyttöoikeustunnusten ja yksityisten tietojen tunnistusmenetelmät.
    - 16.3 Määritellään tarkistusten kattavuus lähdekoodille, määrityksille, ajotiedoille ja julkaistulle sisällölle.
@@ -1102,9 +1106,9 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 16.5 Määritellään väärien positiivisten käsittely, poikkeusten hyväksyntä ja auditointijälki.
    - 16.6 Määritellään CI- ja julkaisuprosessin tarkistukset sekä niiden testaus.
 
-### 5. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
+### A5. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
-17. **Historiatietojen säilytys**
+**A17.**Historiatietojen säilytys**
    - 17.1 Määritellään ajotietueiden ja tapahtumahistorioiden säilytysajat.
    - 17.2 Määritellään lokien, virhetietojen ja diagnostiikka-aineistojen säilytysajat.
    - 17.3 Määritellään väliaineistojen suhde toimituspakettien erilliseen säilytyspolitiikkaan.
@@ -1112,7 +1116,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 17.5 Määritellään historian palautus, tarkastelu ja raportointikäyttö säilytysajan aikana.
    - 17.6 Määritellään poistojen jäljitettävyys ja säilytyspoikkeukset.
 
-18. **Ohjelmiston ja instanssin toimitusmalli**
+**A18.**Ohjelmiston ja instanssin toimitusmalli**
    - 18.1 Vahvistetaan ohjelmisto- ja instanssirepositorion vastuut ja hakemistorakenteet.
    - 18.2 Määritellään jakelukanava ja instanssin käyttämän ohjelmistoversion kiinnitystapa.
    - 18.3 Määritellään päivitysten hyväksyntä, käyttöönotto, palautus ja yhteensopivuuden tarkistus.
@@ -1120,7 +1124,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - 18.5 Määritellään ohjelmisto-, skeema- ja instanssirevisioiden yhteensopivuussäännöt.
    - 18.6 Määritellään uuden instanssin perustamisen, päivittämisen ja palauttamisen käytännöt.
 
-19. **Myöhempi käyttöoikeuksien tekninen toteutus**
+**A19.**Myöhempi käyttöoikeuksien tekninen toteutus**
    - 19.1 Tunnistetaan luottamukselliset tietoluokat ja tilanteet, joissa julkinen malli ei riitä.
    - 19.2 Määritellään julkisen ja rajatun tiedon erottelu repositorioissa, tiedostoissa ja käyttöliittymissä.
    - 19.3 Arvioidaan tunnistautumisen, roolien ja käyttöoikeuksien hallinnan tarpeet.
@@ -1130,6 +1134,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.112 (25.11.2026):** hyväksyttiin aiheen ja tehtävätyypin yhdistelmään perustuva RSS-syötteen identiteetti ja polkurakenne, Pages-artifactin erillinen muodostaminen vain hyväksytystä sisällöstä sekä hyväksytyn alkuperäisen toimituspaketin säilyttäminen `main`-haarassa. Synkronoitiin avoimien teknisten yksityiskohtien tunnisteet A-etuliitteisiksi, poistettiin ratkaistu A10.1 avoimista tehtävistä ja yhdenmukaistettiin luettelot vaatimusmäärittelyn kanssa. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.111 (25.11.2026):** hyväksyttiin idempotenssin ja virhetilanteiden käsittelyperiaatteet, julkaisun repositoriotason ja julkisen saatavuuden erillinen varmennus sekä vastaanotto- ja julkaisuprosessin päästä päähän -hyväksymiskriteerit. Avoimien kohtien luettelosta poistettiin jo aiemmin hyväksytty 9.3 sekä nyt hyväksytyt 9.7–9.9. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.3.110 (25.11.2026):** hyväksyttiin vastaanoton ja julkaisun työnkulun tilat ja poikkeustilat, vastaanotto- ja julkaisutyönkulkujen vastuut, julkaisun atomisen Git-commitin rajaus sekä myöhäisten toimitusten erillinen tapahtumakirjaus. Kohta 9.6 poistettiin avoimista kohdista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
