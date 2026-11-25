@@ -979,7 +979,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### A1. Tietomallit ja skeemat
 
-**A1.**Skeemojen tarkat rakenteet**
+**A1.** Skeemojen tarkat rakenteet**
    - **A1.1** Määritellään pääskeemojen täydelliset kenttäluettelot, tietotyypit ja pakollisuus.
    - **A1.2** Määritellään kenttäkohtaiset rajat, sallitut arvot ja taulukoiden täsmälliset rajat.
    - **A1.3** Ratkaistaan yhteisten osaskeemojen lopullinen jako, nimet ja uudelleenkäyttö.
@@ -987,7 +987,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A1.5** Täsmennetään rakenteellisen ja toiminnallisen validoinnin työnjako, virheraportointi ja validointikoodin vastuut.
    - *Rajaus:* skeemahakemiston jako, JSON Schema -versio ja yleiset sulkevuusperiaatteet on päätetty.
 
-**A2.**Laaduntarkistusten parametrit**
+**A2.** Laaduntarkistusten parametrit**
    - **A2.1** Luetellaan kunkin tarkistuksen tarvitsemat parametrit ja niiden tarkoitus.
    - **A2.2** Määritellään parametrien nimet, tyypit, pakollisuus, rajat ja sallitut arvot.
    - **A2.3** Määritellään tarkistuskohtaiset parametriskeemat ja niiden validointiehdot.
@@ -995,7 +995,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A2.5** Määritellään keskinäisten riippuvuuksien ja virheellisten yhdistelmien käsittely.
    - *Rajaus:* parameters on aina objekti, asetukseton arvo on tyhjä objekti ja tuntemattomat parametrit hylätään.
 
-**A3.**Raportoitavien havaintojen kategoriat**
+**A3.** Raportoitavien havaintojen kategoriat**
    - **A3.1** Tunnistetaan kunkin tehtävätyypin tarvitsemat kategoriat.
    - **A3.2** Määritellään tehtävätyyppikohtaiset pysyvät kategoriatunnisteet.
    - **A3.3** Määritellään kategorioiden nimet, kuvaukset ja käyttörajat.
@@ -1003,7 +1003,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A3.5** Määritellään kategorioiden muuttamisen ja käytöstä poistamisen säännöt.
    - *Rajaus:* yhteistä kaikkien tehtävätyyppien luokittelua ei muodosteta.
 
-**A4.**Tiedostoroolien parametrit**
+**A4.** Tiedostoroolien parametrit**
    - **A4.1** Luetteloidaan toimituspaketin tiedostoroolit ja niiden tarkoitukset.
    - **A4.2** Määritellään roolikohtaiset parametrit, tyypit ja pakollisuus.
    - **A4.3** Määritellään roolikohtaiset parametriskeemat ja oletusarvot.
@@ -1011,7 +1011,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A4.5** Määritellään puuttuvien, toistuvien ja ristiriitaisten roolien käsittely.
    - *Rajaus:* parameters on aina objekti ja tuntemattomat parametrit hylätään.
 
-**A5.**Toimitusmetatietojen täydentäminen**
+**A5.** Toimitusmetatietojen täydentäminen**
    - **A5.1** Käydään kuusi hyväksyttyä tietoryhmää läpi ja tunnistetaan jäljellä olevat täsmennystarpeet.
    - **A5.2** Määritellään lähde-, kanava- ja tarkistusyritystietojen kentät, tyypit ja viittaukset.
    - **A5.3** Määritellään havaintoyhteenvedon kentät ja niiden suhde tehtävätyypin kategorioihin.
@@ -1020,7 +1020,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A5.6** Varmistetaan tuottajan ja vastaanottajan tietojen sekä tunnisteiden selkeä erottelu.
    - *Rajaus:* kuusi tietoryhmää sekä producer-ryhmän perusrakenne, valinnaisuus ja producer_type-arvot on päätetty.
 
-**A6.**Vastaanottajan ajotietomallit**
+**A6.** Vastaanottajan ajotietomallit**
    - **A6.1** Määritellään run.json-tietueen kentät, tyypit, pakollisuus ja sallitut arvot.
    - **A6.2** Määritellään ajon, tuottajan tuloksen, vastaanoton ja julkaisun tilaluokat ja siirtymät.
    - **A6.3** Määritellään events.jsonl-tapahtumien täydellinen tapahtumatyyppiluettelo.
@@ -1031,7 +1031,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### A2. Lähderekisteri ja lähdetilastot
 
-**A7.**Rekisterin ulkopuolisten lähteiden ehdotukset**
+**A7.** Rekisterin ulkopuolisten lähteiden ehdotukset**
    - **A7.1** Määritellään ehdotustietueen kentät, tyypit ja pakollisuus.
    - **A7.2** Määritellään lähde- ja kanavaehdotusten väliset viittaukset.
    - **A7.3** Täsmennetään alkuperä-, löytämis- ja perustelutietojen sisältö.
@@ -1040,7 +1040,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A7.6** Määritellään hyväksytyn ehdotuksen siirto rekisteriin ja rekisterirevision päivitys.
    - **A7.7** Arvioidaan myöhemmän käyttöliittymän tarve; ensimmäisen version GitHub-käsittely säilyy lähtökohtana.
 
-**A8.**Lähdekohtaiset tilastot**
+**A8.** Lähdekohtaiset tilastot**
    - **A8.1** Määritellään tilastotietueen kentät ja suhde sisältökanavien tarkistusyrityksiin.
    - **A8.2** Määritellään tilastojen laskenta ja päivitys kanonisesta ajohistoriasta.
    - **A8.3** Täsmennetään 30 ja 90 päivän sekä koko historian tunnuslukujen laskentasäännöt.
@@ -1052,10 +1052,11 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### A3. Integraatiot ja ajonhallinta
 
-**A9.**Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
+**A9.** Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
    - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3), toimituspaketin rajapinta (9.4), vastaanoton validointijärjestys ja hyväksymisehdot (9.5) sekä vastaanoton ja julkaisun työnkulku, tilat, vastuut, atominen tallennus ja myöhäisten toimitusten kirjaaminen (9.6) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
-**A10.**Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
+**A10.** Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
+   - *Rajaus:* A10.1:n hakemistorakenteen, syöteidentiteetin ja Pages-julkaisun periaatteet on päätetty.
    - **A10.2** Määritellään vastaanotto- ja julkaisuhaarojen vastuut ja sallittu tiedonsiirto.
    - **A10.3** Määritellään main-haaran suojaussäännöt, pakolliset tarkistukset ja poikkeusmenettely.
    - **A10.4** Varmennetaan Codex Connectorin repositoriotasoisten oikeuksien vaikutus haarasuojaukseen.
@@ -1063,7 +1064,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A10.6** Määritellään käyttöönoton oikeus- ja suojaustestit.
    - *Rajaus:* ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia.
 
-**A11.**Ajojen käynnistäminen**
+**A11.** Ajojen käynnistäminen**
    - **A11.1** Määritellään 15 minuutin yhteisen tarkistusvälin ajastustapa ja GitHub Actionsin viiveiden käsittely.
    - **A11.2** Määritellään manuaalisen käynnistyksen käyttäytyminen ja yhteiset käsittelysäännöt.
    - **A11.3** Määritellään aihekohtaisten erääntymisten laskenta, aikavyöhyke ja aikavälirajat.
@@ -1072,7 +1073,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A11.6** Määritellään käynnistysvirheiden ja väliin jääneiden käynnistysten havaitseminen ja kirjaaminen.
    - *Rajaus:* erillistä laaduntarkistusajoa ei käynnistetä.
 
-**A12.**Jonon ja uudelleenyritysten tarkat rajat**
+**A12.** Jonon ja uudelleenyritysten tarkat rajat**
    - **A12.1** Määritellään tehtävän muodostuksen, tuottajan suorituksen, vastaanoton ja julkaisun aikakatkaisut.
    - **A12.2** Määritellään uudelleenyritysten enimmäismäärät vaiheittain ja virheluokittain.
    - **A12.3** Määritellään odotusajat, mahdollinen kasvava viive ja enimmäisodotusaika.
@@ -1081,7 +1082,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A12.6** Määritellään keskeytyneen tehtävän tunnistaminen, tilan palautus ja turvallinen jatkaminen.
    - **A12.7** Määritellään manuaalisen uudelleenyrityksen oikeudet, vaikutukset ja jäljitettävyys.
 
-**A13.**Toimituspakettien säilytys**
+**A13.** Toimituspakettien säilytys**
    - **A13.1** Määritellään vastaanottohaaran alkuperäisten pakettien säilytysajat.
    - **A13.2** Määritellään hyväksyttyjen, hylättyjen ja keskeneräisten pakettien säilytyserot.
    - **A13.3** Määritellään siivouksen käynnistysehdot, ajastus ja poistoperusteet.
@@ -1091,7 +1092,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### A4. Raportintekijä ja käyttöliittymät
 
-**A14.**Yhteinen raportintekijän perusprompti**
+**A14.** Yhteinen raportintekijän perusprompti**
    - **A14.1** Määritellään promptin rakenne ja yleiset vastuut suhteessa tehtäväpyyntöön.
    - **A14.2** Määritellään tehtäväpyynnön, ohjeiden ja rakenteisten syötteiden lukemisjärjestys.
    - **A14.3** Täsmennetään lähteiden käyttöä, epävarmuutta, lähteistämistä ja toimituspaketin muodostamista koskevat ohjeet.
@@ -1099,7 +1100,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A14.5** Määritellään versionhallinta, revisioviittaus ja yhteensopivuusperiaatteet.
    - **A14.6** Määritellään testitapaukset, arviointikriteerit ja sovittaminen tuottajaintegraatioon.
 
-**A15.**Valvomon toteutus**
+**A15.** Valvomon toteutus**
    - **A15.1** Määritellään yleiskuvan tietosisältö, järjestys, päivittyminen ja poikkeamat.
    - **A15.2** Määritellään aihelistan kentät, suodatus, järjestäminen ja tilan esitys.
    - **A15.3** Määritellään ajohistorian suodatus, tapahtumien tarkastelu ja virheiden esitys.
@@ -1108,7 +1109,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A15.6** Määritellään tietojen päivitystapa ja riippuvuus instanssin julkisista tiedostoista.
    - **A15.7** Määritellään saavutettavuus-, responsiivisuus- ja käytettävyyskriteerit sekä testaus.
 
-**A16.**Julkisten käyttöliittymien tietoturvatarkistukset**
+**A16.** Julkisten käyttöliittymien tietoturvatarkistukset**
    - **A16.1** Luetteloidaan julkisiin tiedostoihin ja rajapintoihin päätyvät tietolähteet.
    - **A16.2** Määritellään salaisuuksien, käyttöoikeustunnusten ja yksityisten tietojen tunnistusmenetelmät.
    - **A16.3** Määritellään tarkistusten kattavuus lähdekoodille, määrityksille, ajotiedoille ja julkaistulle sisällölle.
@@ -1118,7 +1119,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### A5. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
-**A17.**Historiatietojen säilytys**
+**A17.** Historiatietojen säilytys**
    - **A17.1** Määritellään ajotietueiden ja tapahtumahistorioiden säilytysajat.
    - **A17.2** Määritellään lokien, virhetietojen ja diagnostiikka-aineistojen säilytysajat.
    - **A17.3** Määritellään väliaineistojen suhde toimituspakettien erilliseen säilytyspolitiikkaan.
@@ -1126,7 +1127,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A17.5** Määritellään historian palautus, tarkastelu ja raportointikäyttö säilytysajan aikana.
    - **A17.6** Määritellään poistojen jäljitettävyys ja säilytyspoikkeukset.
 
-**A18.**Ohjelmiston ja instanssin toimitusmalli**
+**A18.** Ohjelmiston ja instanssin toimitusmalli**
    - **A18.1** Vahvistetaan ohjelmisto- ja instanssirepositorion vastuut ja hakemistorakenteet.
    - **A18.2** Määritellään jakelukanava ja instanssin käyttämän ohjelmistoversion kiinnitystapa.
    - **A18.3** Määritellään päivitysten hyväksyntä, käyttöönotto, palautus ja yhteensopivuuden tarkistus.
@@ -1134,7 +1135,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A18.5** Määritellään ohjelmisto-, skeema- ja instanssirevisioiden yhteensopivuussäännöt.
    - **A18.6** Määritellään uuden instanssin perustamisen, päivittämisen ja palauttamisen käytännöt.
 
-**A19.**Myöhempi käyttöoikeuksien tekninen toteutus**
+**A19.** Myöhempi käyttöoikeuksien tekninen toteutus**
    - **A19.1** Tunnistetaan luottamukselliset tietoluokat ja tilanteet, joissa julkinen malli ei riitä.
    - **A19.2** Määritellään julkisen ja rajatun tiedon erottelu repositorioissa, tiedostoissa ja käyttöliittymissä.
    - **A19.3** Arvioidaan tunnistautumisen, roolien ja käyttöoikeuksien hallinnan tarpeet.
