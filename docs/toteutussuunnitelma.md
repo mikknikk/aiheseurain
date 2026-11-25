@@ -1,6 +1,6 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.112  
+**Versio:** 0.3.113  
 **Päiväys:** 25.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
 **Perusta:** [Vaatimusmäärittely 0.12.68](vaatimusmaarittely-uudistus.md)
@@ -909,7 +909,10 @@ Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi,
 
 - RSS-syötteen yksilöivä avain on aiheen ja tehtävätyypin yhdistelmä. Instanssirepon syötetiedostot sijoitetaan muotoon `feeds/{topic_id}/{task_type_id}.xml`; jokaisella yhdistelmällä on oma tiedostonsa. Syöteluettelo tuotetaan instanssin määrityksistä tai niitä vastaavasta indeksistä, ei käyttöliittymään kovakoodatuista aiheista.
 - GitHub Pages julkaistaan erillisessä rakennusvaiheessa muodostetusta artifactista. Rakennus ottaa mukaan vain hyväksytyn ja julkaisukelpoisen sisällön; instanssirepon raakasisältöä, toimituspaketteja tai sisäistä ajohistoriaa ei julkaista suoraan.
-- Hyväksytty alkuperäinen toimituspaketti kopioidaan ja säilytetään myös `main`-haarassa alkuperäisessä muodossaan. Se toimii auditointi- ja jäljitettävyysaineistona, mutta on erillään vastaanottajan kanonisesta ajotietueesta, tapahtumahistoriasta ja RSS-julkaisuista. Hylättyjä tai hyväksymättömiä toimituksia ei siirretä `main`-haaraan. Koska instanssirepo on julkinen, paketeissa ei saa olla salaisuuksia tai yksityisiä tietoja.
+- Kaikki vastaanottohaaraan `raportit-inbox` saapuneet alkuperäiset toimituspaketit säilytetään siellä muuttumattomina, myös validoinnissa hylätyt ja muutoin hyväksymättä jääneet toimitukset. Vastaanottohaara toimii siten myös toimitusten auditointi- ja selvitysaineiston säilytyspaikkana.
+- Hyväksytty alkuperäinen toimituspaketti kopioidaan lisäksi `main`-haaraan alkuperäisessä muodossaan auditointia ja jäljitettävyyttä varten. Hylättyjä tai hyväksymättömiä toimituksia ei siirretä `main`-haaraan. Alkuperäinen toimituspaketti säilyy erillään vastaanottajan kanonisesta ajotietueesta, tapahtumahistoriasta ja RSS-julkaisuista.
+- Valvomon tulee pystyä näyttämään kaikkien vastaanotettujen toimitusten tilat, mukaan lukien hylättyjen toimitusten validointitulokset ja virhetiedot. Valvomon tietojen tekninen lukutapa ja turvallinen esitysmuoto täsmennetään A10:n jäljellä olevissa kohdissa. Vastaanottohaaran raakaa toimituspakettia tai sisäistä tapahtumahistoriaa ei tämän päätöksen perusteella sisällytetä Pages-artifactiin.
+- Koska instanssirepo on julkinen, paketeissa ei saa olla salaisuuksia tai yksityisiä tietoja.
 
 ## 3. Kehitysympäristön hyväksytty tavoitetila
 
@@ -1134,6 +1137,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.113 (25.11.2026):** täsmennettiin, että vastaanottohaaraan säilytetään kaikki vastaanotetut alkuperäiset toimituspaketit muuttumattomina, myös hylätyt toimitukset. Vain hyväksytyt paketit kopioidaan lisäksi `main`-haaraan. Valvomon tulee näyttää myös hylättyjen toimitusten tilat, validointitulokset ja virhetiedot; tietojen tekninen lukutapa ja esitysmuoto jätettiin A10:n jatkosuunnitteluun. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.112 (25.11.2026):** hyväksyttiin aiheen ja tehtävätyypin yhdistelmään perustuva RSS-syötteen identiteetti ja polkurakenne, Pages-artifactin erillinen muodostaminen vain hyväksytystä sisällöstä sekä hyväksytyn alkuperäisen toimituspaketin säilyttäminen `main`-haarassa. Synkronoitiin avoimien teknisten yksityiskohtien tunnisteet A-etuliitteisiksi, poistettiin ratkaistu A10.1 avoimista tehtävistä ja yhdenmukaistettiin luettelot vaatimusmäärittelyn kanssa. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
