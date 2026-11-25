@@ -347,34 +347,6 @@ Tehtäväpyynnön tunnisteet, aikaleimat, repositorioviittaukset ja profiilien s
 
 ## 6. Ajon tulos ja ajotiedot
 
-### 6.1.1 Vastaanoton ja julkaisun työnkulku
-
-Vastaanoton ja julkaisun käsittely etenee seuraavien tilojen kautta. Tilat kuvaavat vastaanottajan käsittelyä, eivät raportintuottajan ilmoittamaa tulostilaa:
-
-1. **Ajo odottaa toimitusta:** vastaanottaja on luonut ajotietueen ja tehtäväpyyntö on annettu tuottajalle. Ajo odottaa toimitusta. Määräajan umpeutuminen kirjataan erillisenä tapahtumana, eikä se itsessään estä myöhempää toimitusta.
-2. **Vastaanotettu:** toimitus on saapunut vastaanottohaaraan. Vastaanottaja kirjaa toimitustunnisteet, vastaanottoajan ja toimituksen sijainnin.
-3. **Tarkistuksessa:** vastaanottaja suorittaa kohdan 9.5 mukaiset validointivaiheet.
-4. **Hyväksytty:** kaikki pakolliset validointitarkistukset ovat läpäisseet. Hyväksyminen ei vielä tarkoita, että sisältö olisi julkaistu.
-5. **Julkaisukelpoinen:** hyväksytty toimitus sisältää tehtävätyypin ja tuottajan tulostilan edellyttämän julkaistavan RSS-itemin, ja se voidaan siirtää julkaisukäsittelyyn.
-6. **Julkaistu:** RSS-item, kanonisen ajotietueen julkaisutietojen päivitys ja kyseiseen julkaisuun liittyvät uudet tapahtumahistoriatapahtumat on tallennettu samaan atomiseen Git-commitiin ja tallennuksen sisältö on varmennettu.
-
-Poikkeustilat ja julkaisematta päättyvät käsittelyt ovat:
-
-- **Hylätty:** toimituksessa on pysyvä validointivirhe, joka estää hyväksymisen.
-- **Tilapäistä uudelleenyritystä odottava:** tilapäinen tekninen virhe estää käsittelyn jatkamisen. Uudelleenyritysten tarkat määrät ja viiveet määritellään kohdassa 9.7.
-- **Käsitelty ilman julkaisua:** toimitus on hyväksytty ja käsitelty, mutta tehtävätyyppi tai tuottajan tulostila ei edellytä RSS-itemiä, esimerkiksi `no_report`-tuloksessa. Tällöin ajoa ei merkitä julkaistuksi eikä sille synny RSS-itemiä.
-
-Vastuut erotetaan seuraavasti:
-
-- **Vastaanottotyönkulku** vastaanottaa toimituksen, kirjaa sen, validoi sen, tekee hyväksymis- tai hylkäyspäätöksen ja toteaa, onko toimitus julkaisukelpoinen.
-- **Julkaisutyönkulku** käsittelee vain hyväksytyn ja julkaisukelpoiseksi todetun toimituksen. Se tallentaa julkaisun ja varmentaa tallennuksen.
-- Vastaanottava järjestelmä ylläpitää ajon kanonista nykytilaa ja tapahtumahistoriaa. Tapahtumahistoriaan kirjataan toteutuneet vaiheet ja poikkeamat; aiempia tapahtumia ei poisteta tai ylikirjoiteta.
-
-Julkaisu tallennetaan yhtenä atomisena repositoriomuutoksena. Samaan Git-commitiin kuuluvat julkaistava RSS-item, kanonisen ajotietueen päivitys sekä kyseiseen julkaisuun liittyvät tapahtumahistorian lisäykset. Commitin syntyminen ja sen sisältö varmennetaan ennen kuin ajo merkitään julkaistuksi. Jos commitia ei synny, julkaisua ei ole tapahtunut. Jos commitin tulos jää teknisen virheen vuoksi epäselväksi, vastaanottaja tarkistaa repositorion todellisen tilan ennen uutta yritystä.
-
-Määräajan umpeutuminen ei estä myöhäisen toimituksen vastaanottamista. Myöhäinen toimitus liitetään alkuperäiseen `run_id`-ajoon. Määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä tai hylkäys sekä mahdollinen julkaisu kirjataan erillisinä tapahtumina. Myöhempi onnistuminen ei poista aiempaa määräajan ylitystä eikä muuta tapahtumahistorian aikajärjestystä. Julkaisukelpoinen toimitus odottaa julkaisutyönkulkua; jos julkaisu epäonnistuu, tilanne kirjataan ja sitä käsitellään tilapäisenä tai pysyvänä virheenä virheluokituksen mukaisesti.
-
-Tämä työnkulku erottaa toisistaan toimituksen hyväksymisen, julkaisukelpoisuuden ja toteutuneen julkaisun. Näin hyväksyttyä mutta vielä julkaisematta olevaa toimitusta ei esitetä julkaistuna, ja myös julkaisuvaiheen epäonnistuminen jää jäljitettäväksi.
 ### 6.1 Ajotietue, toimitusmetatiedot ja tapahtumahistoria
 
 Ajon tiedot jaetaan kolmeen erilliseen, toisiinsa viitattuun tietokokonaisuuteen, joiden omistajuus ja tehtävät pidetään erillään:
@@ -568,6 +540,34 @@ Vastaanottaja tarkistaa toimituspaketin eheyden: vaaditut tiedostot ovat mukana,
 
 Raporttia ei tuoteta uudelleen vastaanottavassa järjestelmässä eikä tuottaja palauta koko RSS-syötettä.
 
+### 6.1.1 Vastaanoton ja julkaisun työnkulku
+
+Vastaanoton ja julkaisun käsittely etenee seuraavien tilojen kautta. Tilat kuvaavat vastaanottajan käsittelyä, eivät raportintuottajan ilmoittamaa tulostilaa:
+
+1. **Ajo odottaa toimitusta:** vastaanottaja on luonut ajotietueen ja tehtäväpyyntö on annettu tuottajalle. Ajo odottaa toimitusta. Määräajan umpeutuminen kirjataan erillisenä tapahtumana, eikä se itsessään estä myöhempää toimitusta.
+2. **Vastaanotettu:** toimitus on saapunut vastaanottohaaraan. Vastaanottaja kirjaa toimitustunnisteet, vastaanottoajan ja toimituksen sijainnin.
+3. **Tarkistuksessa:** vastaanottaja suorittaa kohdan 9.5 mukaiset validointivaiheet.
+4. **Hyväksytty:** kaikki pakolliset validointitarkistukset ovat läpäisseet. Hyväksyminen ei vielä tarkoita, että sisältö olisi julkaistu.
+5. **Julkaisukelpoinen:** hyväksytty toimitus sisältää tehtävätyypin ja tuottajan tulostilan edellyttämän julkaistavan RSS-itemin, ja se voidaan siirtää julkaisukäsittelyyn.
+6. **Julkaistu:** RSS-item, kanonisen ajotietueen julkaisutietojen päivitys ja kyseiseen julkaisuun liittyvät uudet tapahtumahistoriatapahtumat on tallennettu samaan atomiseen Git-commitiin ja tallennuksen sisältö on varmennettu.
+
+Poikkeustilat ja julkaisematta päättyvät käsittelyt ovat:
+
+- **Hylätty:** toimituksessa on pysyvä validointivirhe, joka estää hyväksymisen.
+- **Tilapäistä uudelleenyritystä odottava:** tilapäinen tekninen virhe estää käsittelyn jatkamisen. Uudelleenyritysten tarkat määrät ja viiveet määritellään kohdassa 9.7.
+- **Käsitelty ilman julkaisua:** toimitus on hyväksytty ja käsitelty, mutta tehtävätyyppi tai tuottajan tulostila ei edellytä RSS-itemiä, esimerkiksi `no_report`-tuloksessa. Tällöin ajoa ei merkitä julkaistuksi eikä sille synny RSS-itemiä.
+
+Vastuut erotetaan seuraavasti:
+
+- **Vastaanottotyönkulku** vastaanottaa toimituksen, kirjaa sen, validoi sen, tekee hyväksymis- tai hylkäyspäätöksen ja toteaa, onko toimitus julkaisukelpoinen.
+- **Julkaisutyönkulku** käsittelee vain hyväksytyn ja julkaisukelpoiseksi todetun toimituksen. Se tallentaa julkaisun ja varmentaa tallennuksen.
+- Vastaanottava järjestelmä ylläpitää ajon kanonista nykytilaa ja tapahtumahistoriaa. Tapahtumahistoriaan kirjataan toteutuneet vaiheet ja poikkeamat; aiempia tapahtumia ei poisteta tai ylikirjoiteta.
+
+Julkaisu tallennetaan yhtenä atomisena repositoriomuutoksena. Samaan Git-commitiin kuuluvat julkaistava RSS-item, kanonisen ajotietueen päivitys sekä kyseiseen julkaisuun liittyvät tapahtumahistorian lisäykset. Commitin syntyminen ja sen sisältö varmennetaan ennen kuin ajo merkitään julkaistuksi. Jos commitia ei synny, julkaisua ei ole tapahtunut. Jos commitin tulos jää teknisen virheen vuoksi epäselväksi, vastaanottaja tarkistaa repositorion todellisen tilan ennen uutta yritystä.
+
+Määräajan umpeutuminen ei estä myöhäisen toimituksen vastaanottamista. Myöhäinen toimitus liitetään alkuperäiseen `run_id`-ajoon. Määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä tai hylkäys sekä mahdollinen julkaisu kirjataan erillisinä tapahtumina. Myöhempi onnistuminen ei poista aiempaa määräajan ylitystä eikä muuta tapahtumahistorian aikajärjestystä. Julkaisukelpoinen toimitus odottaa julkaisutyönkulkua; jos julkaisu epäonnistuu, tilanne kirjataan ja sitä käsitellään tilapäisenä tai pysyvänä virheenä virheluokituksen mukaisesti.
+
+Tämä työnkulku erottaa toisistaan toimituksen hyväksymisen, julkaisukelpoisuuden ja toteutuneen julkaisun. Näin hyväksyttyä mutta vielä julkaisematta olevaa toimitusta ei esitetä julkaistuna, ja myös julkaisuvaiheen epäonnistuminen jää jäljitettäväksi.
 ### 6.2 Ajotietojen vähimmäissisältö
 
 Ajotuloksen tietosopimus versioidaan. Jokaisessa toimitetussa tuloksessa ovat pakollisia:
