@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.109  
+**Versio:** 0.3.110  
 **Päiväys:** 25.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.65](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.66](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -754,6 +754,34 @@ runs/
 
 RSS-julkaisu, kanonisen ajotietueen päivitys ja tarvittavat uudet tapahtumat tallennetaan samaan atomiseen Git-commitiin. Toimitusmetatiedot säilyvät erillisenä tuottajan toimittamana aineistona, ja niiden vastaanotto/hyväksyntä kirjataan vastaanottajan ajotietueeseen ja tapahtumahistoriaan.
 
+#### 2.6.1.2 Vastaanoton ja julkaisun työnkulku
+
+Vastaanoton ja julkaisun käsittely etenee seuraavien tilojen kautta. Tilat kuvaavat vastaanottajan käsittelyä, eivät raportintuottajan ilmoittamaa tulostilaa:
+
+1. **Ajo odottaa toimitusta:** vastaanottaja on luonut ajotietueen ja tehtäväpyyntö on annettu tuottajalle. Ajo odottaa toimitusta. Määräajan umpeutuminen kirjataan erillisenä tapahtumana, eikä se itsessään estä myöhempää toimitusta.
+2. **Vastaanotettu:** toimitus on saapunut vastaanottohaaraan. Vastaanottaja kirjaa toimitustunnisteet, vastaanottoajan ja toimituksen sijainnin.
+3. **Tarkistuksessa:** vastaanottaja suorittaa kohdan 9.5 mukaiset validointivaiheet.
+4. **Hyväksytty:** kaikki pakolliset validointitarkistukset ovat läpäisseet. Hyväksyminen ei vielä tarkoita, että sisältö olisi julkaistu.
+5. **Julkaisukelpoinen:** hyväksytty toimitus sisältää tehtävätyypin ja tuottajan tulostilan edellyttämän julkaistavan RSS-itemin, ja se voidaan siirtää julkaisukäsittelyyn.
+6. **Julkaistu:** RSS-item, kanonisen ajotietueen julkaisutietojen päivitys ja kyseiseen julkaisuun liittyvät uudet tapahtumahistoriatapahtumat on tallennettu samaan atomiseen Git-commitiin ja tallennuksen sisältö on varmennettu.
+
+Poikkeustilat ja julkaisematta päättyvät käsittelyt ovat:
+
+- **Hylätty:** toimituksessa on pysyvä validointivirhe, joka estää hyväksymisen.
+- **Tilapäistä uudelleenyritystä odottava:** tilapäinen tekninen virhe estää käsittelyn jatkamisen. Uudelleenyritysten tarkat määrät ja viiveet määritellään kohdassa 9.7.
+- **Käsitelty ilman julkaisua:** toimitus on hyväksytty ja käsitelty, mutta tehtävätyyppi tai tuottajan tulostila ei edellytä RSS-itemiä, esimerkiksi `no_report`-tuloksessa. Tällöin ajoa ei merkitä julkaistuksi eikä sille synny RSS-itemiä.
+
+Vastuut erotetaan seuraavasti:
+
+- **Vastaanottotyönkulku** vastaanottaa toimituksen, kirjaa sen, validoi sen, tekee hyväksymis- tai hylkäyspäätöksen ja toteaa, onko toimitus julkaisukelpoinen.
+- **Julkaisutyönkulku** käsittelee vain hyväksytyn ja julkaisukelpoiseksi todetun toimituksen. Se tallentaa julkaisun ja varmentaa tallennuksen.
+- Vastaanottava järjestelmä ylläpitää ajon kanonista nykytilaa ja tapahtumahistoriaa. Tapahtumahistoriaan kirjataan toteutuneet vaiheet ja poikkeamat; aiempia tapahtumia ei poisteta tai ylikirjoiteta.
+
+Julkaisu tallennetaan yhtenä atomisena repositoriomuutoksena. Samaan Git-commitiin kuuluvat julkaistava RSS-item, kanonisen ajotietueen päivitys sekä kyseiseen julkaisuun liittyvät tapahtumahistorian lisäykset. Commitin syntyminen ja sen sisältö varmennetaan ennen kuin ajo merkitään julkaistuksi. Jos commitia ei synny, julkaisua ei ole tapahtunut. Jos commitin tulos jää teknisen virheen vuoksi epäselväksi, vastaanottaja tarkistaa repositorion todellisen tilan ennen uutta yritystä.
+
+Määräajan umpeutuminen ei estä myöhäisen toimituksen vastaanottamista. Myöhäinen toimitus liitetään alkuperäiseen `run_id`-ajoon. Määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä tai hylkäys sekä mahdollinen julkaisu kirjataan erillisinä tapahtumina. Myöhempi onnistuminen ei poista aiempaa määräajan ylitystä eikä muuta tapahtumahistorian aikajärjestystä. Julkaisukelpoinen toimitus odottaa julkaisutyönkulkua; jos julkaisu epäonnistuu, tilanne kirjataan ja sitä käsitellään tilapäisenä tai pysyvänä virheenä virheluokituksen mukaisesti.
+
+Tämä työnkulku erottaa toisistaan toimituksen hyväksymisen, julkaisukelpoisuuden ja toteutuneen julkaisun. Näin hyväksyttyä mutta vielä julkaisematta olevaa toimitusta ei esitetä julkaistuna, ja myös julkaisuvaiheen epäonnistuminen jää jäljitettäväksi.
 #### 2.6.1.1 Vastaanottajan ajotietueen ja tapahtumahistorian tietomalli
 
 `run.json` on vastaanottajan ylläpitämä ajon nykytilan yhteenveto. Sen tietoryhmät ovat:
@@ -976,11 +1004,10 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
    - 9.3 **Raportin HTML-perusrakenne:** määritellään yhteiset rakenneosat, otsikkohierarkia, metatietojen ja lähdeviitteiden esitys, saavutettavuus sekä aihekohtaisen vaihtelun rajat.
-   - 9.6 **Vastaanoton ja julkaisun työnkulku:** määritellään tilasiirtymät, vaiheiden vastuut, atomisen tallennuksen rajat, julkaisemisen järjestys ja odotustilat.
    - 9.7 **Idempotenssi ja virhetilanteet:** määritellään uudelleenyrityksen tunnistaminen, jo käsitellyn toimituksen vaste, ristiriitaisten toimitusten käsittely sekä pysyvien ja tilapäisten virheiden luokittelu.
    - 9.8 **Julkaisun varmennus:** määritellään itemin tallentumisen, GUIDin ja ajotietueen yhtäpitävyyden, RSS-luettavuuden ja Pages-julkaisun valmistumisen tarkistukset.
    - 9.9 **Käyttöönoton hyväksymiskriteerit:** määritellään päästä päähän -skenaariot, palautumis- ja virhetestit, havaittavuus sekä käyttöönottovalmiuden ehdot.
-   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3), toimituspaketin rajapinta (9.4) sekä vastaanoton validointijärjestys ja hyväksymisehdot (9.5) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
+   - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3), toimituspaketin rajapinta (9.4), vastaanoton validointijärjestys ja hyväksymisehdot (9.5) sekä vastaanoton ja julkaisun työnkulku, tilat, vastuut, atominen tallennus ja myöhäisten toimitusten kirjaaminen (9.6) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
    - 10.1 Määritellään instanssirepositorion lopullinen hakemistorakenne ja Pages-julkaisun lähdepolut.
@@ -1072,6 +1099,8 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.110 (25.11.2026):** hyväksyttiin vastaanoton ja julkaisun työnkulun tilat ja poikkeustilat, vastaanotto- ja julkaisutyönkulkujen vastuut, julkaisun atomisen Git-commitin rajaus sekä myöhäisten toimitusten erillinen tapahtumakirjaus. Kohta 9.6 poistettiin avoimista kohdista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.109 (25.11.2026):** hyväksyttiin vastaanoton validoinnin järjestys ja keskeyttämisehdot, tunnisteiden ja ajolle kiinnitettyjen revisioiden vastaavuus, tiedostoluettelon rajaus (metadata.json ei sisälly omaan luetteloonsa), eheystarkistukset, XML/HTML/RSS-turvallisuus, keskinäisten viittausten tarkistus, pysyvien ja tilapäisten virheiden erottelu sekä hyväksymisen raja. Kohta 9.5 poistettiin avoimista kohdista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
