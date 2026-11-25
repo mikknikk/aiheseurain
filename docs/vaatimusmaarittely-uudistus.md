@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.66  
+**Versio:** 0.12.67  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 25.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -819,6 +819,41 @@ Toimitusten käsittelyssä noudatetaan seuraavia sääntöjä:
 
 Tunnisteiden vastuut pidetään erillään: `run_id` seuraa ajoa, `delivery_id` tuottajan toimitusta ja `attempt_id` vastaanottajan käsittely-yritystä. Tämä malli ei muuta ensimmäisen version sarjallista käsittelyä eikä edellytä rinnakkaisten tuottajien varaus- tai lukitusmekanismia.
 
+
+### 10.3 Julkaisun ja julkisen saatavuuden varmennus
+
+Julkaisun onnistumista ei päätellä pelkästään siitä, että tallennuspyyntö tai GitHub Actions -vaihe ilmoittaa onnistumisesta. Varmennus erottaa repositorioon tallentamisen ja sisällön julkisen saatavuuden:
+
+- **Git-tallennus:** julkaisun sisältävä commit on syntynyt ja sen sisältö on luettu takaisin tai muuten luotettavasti varmennettu.
+- **Tiedostojen eheys:** RSS-item, kanonisen ajotietueen julkaisutiedot ja kyseisen julkaisun tapahtumahistoria vastaavat samaa ajoa ja toimitusta.
+- **GUID:** RSS-itemin GUID vastaa ajotietueeseen atomisesti tallennettua GUIDia eikä sama GUID esiinny toisessa julkaistussa itemissä.
+- **RSS-sisältö:** julkaistu syöte on kelvollista XML:ää ja sisältää odotetun itemin oikeassa aihekohtaisessa syötteessä.
+- **Pages-julkaisutyönkulku:** GitHub Pages -julkaisun valmistuminen tarkistetaan erillisenä vaiheena.
+- **Julkinen saatavuus:** julkaistusta Pages-osoitteesta haetaan RSS-syöte ja tarkistetaan, että odotettu item on saatavilla.
+
+Repositorioon julkaiseminen ja julkinen saatavuus ovat eri tiloja. Jos atominen Git-commit ja sen sisältö on varmennettu mutta Pages-julkaisu viivästyy tai epäonnistuu, RSS-item on julkaistu repositorioon, mutta sitä ei vielä ilmoiteta julkisesti saatavilla olevaksi. Pages-ongelma kirjataan erikseen ja sen selvittämistä voidaan jatkaa ilman uuden RSS-itemin luomista tai jo tehdyn julkaisun toistamista.
+
+### 10.4 Vastaanotto- ja julkaisuprosessin hyväksymiskriteerit
+
+Koko prosessin hyväksymistä varten testataan vähintään seuraavat skenaariot:
+
+| Skenaario | Hyväksymisehto |
+|---|---|
+| Normaali raportti | Toimitus validoidaan ja julkaistaan täsmälleen kerran. |
+| Ei raportoitavaa sisältöä | Ajo käsitellään ilman RSS-itemiä eikä sitä merkitä julkaistuksi. |
+| Saman toimituksen uudelleenlähetys | Kaksoistoimitus tunnistetaan eikä uutta julkaisua synny. |
+| Ristiriitainen toimitus | Ristiriita havaitaan ja aiemmin hyväksytty sisältö säilyy muuttumattomana. |
+| Virheellinen toimitus | Toimitus hylätään eikä RSS-syöte muutu. |
+| Tilapäinen tekninen virhe | Käsittely voidaan käynnistää uudelleen turvallisesti ilman kaksoisjulkaisua. |
+| Epäselvä commit-tulos | Repositorion todellinen tila tarkistetaan ennen mahdollista uutta kirjoitusta. |
+| Myöhäinen toimitus | Toimitus liitetään alkuperäiseen ajoon ja kaikki tapahtumat säilyvät jäljitettävinä. |
+| Pages-julkaisun viive tai virhe | Repositorioon julkaiseminen ja julkinen saatavuus erotetaan toisistaan. |
+| Julkaisun eheys | RSS-item, GUID, ajotietue ja tapahtumahistoria vastaavat toisiaan. |
+
+Hyväksymiskriteereihin kuuluu lisäksi, että jokainen käsittelyvaihe on jäljitettävissä, virheestä jää riittävät tiedot selvittämistä ja palautumista varten, aiemmin hyväksyttyä tai julkaistua sisältöä ei korvata vahingossa eikä julkaisu voi tapahtua pakollisen validoinnin epäonnistuttua. Eri aiheiden RSS-sisältöjä ei saa sekoittaa.
+
+Näiden kriteerien määrittely ei vielä tarkoita testien toteuttamista, tuotantokäyttöönottoa tai toteutussuunnitelman hyväksymistä kokonaisuutena.
+
 ## 11. Turvallisuus, eheys ja testaus
 
 - Testit eivät saa kirjoittaa tuotannon RSS-syötteisiin tai muuttaa tuotannon seurantatilaa.
@@ -1010,10 +1045,6 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 ### 3. Integraatiot ja ajonhallinta
 
 9. **Vastaanottoprosessin tekninen viimeistely ja käyttöönotto**
-   - 9.3 **Raportin HTML-perusrakenne:** määritellään yhteiset rakenneosat, otsikkohierarkia, metatietojen ja lähdeviitteiden esitys, saavutettavuus sekä aihekohtaisen vaihtelun rajat.
-   - 9.7 **Idempotenssi ja virhetilanteet:** määritellään uudelleenyrityksen tunnistaminen, jo käsitellyn toimituksen vaste, ristiriitaisten toimitusten käsittely sekä pysyvien ja tilapäisten virheiden luokittelu.
-   - 9.8 **Julkaisun varmennus:** määritellään itemin tallentumisen, GUIDin ja ajotietueen yhtäpitävyyden, RSS-luettavuuden ja Pages-julkaisun valmistumisen tarkistukset.
-   - 9.9 **Käyttöönoton hyväksymiskriteerit:** määritellään päästä päähän -skenaariot, palautumis- ja virhetestit, havaittavuus sekä käyttöönottovalmiuden ehdot.
    - *Rajaus:* RSS-itemin täydellinen elementtirakenne ja järjestys (9.1), yhden item-elementin toimitus, link-elementin kielto, vastaanottajan UUIDv4-GUID, atominen tallennus ja GUIDin idempotentti uudelleenkäyttö sekä raportin HTML-perusrakenne ja aikavälin ulkopuolisten merkittävien täydennysten esityssäännöt (9.3), toimituspaketin rajapinta (9.4), vastaanoton validointijärjestys ja hyväksymisehdot (9.5) sekä vastaanoton ja julkaisun työnkulku, tilat, vastuut, atominen tallennus ja myöhäisten toimitusten kirjaaminen (9.6) on päätetty. Sisällöllinen laaduntarkistus tehdään jokaisella seurantakierroksella; erillistä laaduntarkistusajoa ei ole.
 
 10. **Instanssirepositorion ja julkaisusuojauksen käyttöönotto**
@@ -1116,6 +1147,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.67 – 25.11.2026:** hyväksyttiin idempotenssin ja virhetilanteiden käsittelyperiaatteet, julkaisun repositoriotason ja julkisen saatavuuden erillinen varmennus sekä vastaanotto- ja julkaisuprosessin päästä päähän -hyväksymiskriteerit. Avoimien kohtien luettelosta poistettiin jo aiemmin hyväksytty 9.3 sekä nyt hyväksytyt 9.7–9.9. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.66 – 25.11.2026:** hyväksyttiin vastaanoton ja julkaisun työnkulun tilat ja poikkeustilat, vastaanotto- ja julkaisutyönkulkujen vastuut, julkaisun atomisen Git-commitin rajaus sekä myöhäisten toimitusten erillinen tapahtumakirjaus. Kohta 9.6 poistettiin avoimista kohdista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
