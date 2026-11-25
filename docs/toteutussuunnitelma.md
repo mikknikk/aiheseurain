@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.113  
+**Versio:** 0.3.114  
 **Päiväys:** 25.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet ja ensimmäisen vaiheen tehtävänjakomalli kirjattu, tekniset yksityiskohdat avoinna  
-**Perusta:** [Vaatimusmäärittely 0.12.68](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.70](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -480,7 +480,7 @@ Ensimmäisen vaiheen instanssirepositorio on julkinen. RSS-syötteet julkaistaan
 
 Ensimmäisen version ainoa raportintuottaja on ChatGPT:n ajastettu tehtävä. Se toimittaa kokonaisen toimituspaketin Git pushina GitHubiin Codex Connector -yhteyden kautta. Käytännön testissä ajastettu tehtävä loi testitiedoston instanssirepositorion erilliseen haaraan; testissä `main`-haara ei muuttunut. Testi osoittaa, että toimitus toimii tässä käyttöympäristössä. Tuotantokäyttöönotossa on silti varmennettava yhteyden oikeudet, vastaanoton työnkulku ja julkaisuhaaran suojaus.
 
-Toimitukset tehdään erilliseen vastaanottohaaraan `raportit-inbox`. Toimituspaketin polku on `deliveries/{run_id}/{delivery_id}/`, ja paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot, kuten `item.xml`. Julkaisu tapahtuu erikseen `main`-haaraan. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
+Toimitukset tehdään erilliseen vastaanottohaaraan `raportit-inbox`. Toimituspaketin polku on `deliveries/{run_id}/{delivery_id}/`, ja paketti sisältää `metadata.json`-tiedoston sekä tehtävätyypin edellyttämät sisältötiedostot, kuten `item.xml`. Vastaanottohaara on käsittelyjono: sen nykyisessä puussa säilytetään vain käsittelemättömät toimitukset. Kun toimitus on käsitelty, sen alkuperäinen paketti, vastaanottajan käsittelytietueet ja tapahtumahistoria arkistoidaan haaraan `raportit-arkisto`, riippumatta siitä, hyväksyttiinkö vai hylättiinkö toimitus. Arkistointi varmennetaan lukemalla tallennetut tiedot takaisin ennen kuin käsitelty toimitus poistetaan `raportit-inbox`-haarasta. Jos arkistointi epäonnistuu tai sen onnistumista ei voida varmentaa, toimitus jätetään vastaanottohaaraan myöhempää turvallista uudelleenyritystä varten. `raportit-arkisto` on Valvomon vastaanotto- ja käsittelyhistorian ensisijainen tietolähde. `main`-haaraan siirretään toimituksista vain hyväksytyt RSS-itemit oikeisiin syötetiedostoihin; vastaanottopaketteja, ajotietueita tai tapahtumalokeja ei julkaista siellä. Tuottaja ei kirjoita suoraan julkaisuhaaraan eikä julkaistaviin RSS-tiedostoihin.
 
 Codex Connector on ChatGPT:n ja GitHubin välinen yhteys, ei instanssirepoon asennettava GitHub App. Ensimmäisessä versiossa ei käytetä erillistä vastaanotto-GitHub Appia. Aiempi vastaanotto-App on poistettu; sen luomista uudelleen voidaan harkita myöhemmin, jos käyttöoikeuksien eriyttämiseen syntyy tarve.
 
@@ -490,6 +490,7 @@ Codex Connectorin GitHub-oikeus ei rajaudu automaattisesti yksittäiseen haaraan
 - Actions tarkistaa paketin ennen kuin mitään julkaistaan tai tallennetaan hyväksyttyihin tuotantotietoihin.
 - Vain validoitu ja hyväksytty sisältö siirretään julkaisuhaaraan; virheellinen toimitus ei muuta julkaistuja RSS-syötteitä.
 - Git pushin onnistuminen vahvistaa vain toimituksen siirtymisen vastaanottohaaraan; se ei merkitse toimituksen hyväksymistä tai julkaisua.
+- Käsittelyn jälkeen vastaanottaja arkistoi alkuperäisen toimituspaketin, kanonisen ajotietueen ja append-only-tapahtumahistorian `raportit-arkisto`-haaraan. Arkistointi ja takaisinluvun varmennus tehdään ennen inbox-toimituksen poistamista; käsittelemätön tai arkistoinnin epäonnistumisen vuoksi keskeneräiseksi jäänyt toimitus säilyy inboxissa.
 - Vastaanoton ja validoinnin tulokset kirjataan GitHub Actions -työnkulun sekä vastaanottajan ajotietueen ja tapahtumahistorian avulla. Erillistä HTTP-kuittausrajapintaa ei tarvita ensimmäisessä versiossa.
 - Vastaanottaja tarkistaa toimituksen kuulumisen olemassa olevaan ajoon, tunnisteiden johdonmukaisuuden, toimituspaketin rakenteen ja sisällön sekä eheyden. Vastaanottaja muodostaa `attempt_id`-tunnisteen, laskee SHA-256-tiivisteen ja säilyttää alkuperäisen toimituspaketin. Aiemmin hyväksytyt kaksois- ja ristiriitasäännöt koskevat myös GitHubin kautta tehtyjä uudelleenlähetyksiä.
 - Codex Connectorin käyttöoikeuksia tai tunnistetietoja ei kopioida raportintuottajan ohjeisiin tai toimituspaketteihin.
@@ -659,7 +660,7 @@ Ajotiedot tallennetaan tässä vaiheessa julkiseen GitHub-repositorioon. Tämä 
 
 Julkiseen tallennukseen saa sisällyttää vain tarkoitukseen sopivia ajotietoja. Sinne ei tallenneta salaisuuksia, käyttöoikeustunnuksia, tarpeettomia henkilötietoja, raakaa keskustelusisältöä tai tarpeettomasti kopioitua lähdesisältöä.
 
-Tallennusmuoto ja hakemistorakenne noudattavat kohdassa 2.6.1 hyväksyttyä periaateratkaisua: ajon tiedot jaetaan tuottajan toimitusmetatietoihin, vastaanottajan kanoniseen ajotietueeseen ja vastaanottajan append-only-tapahtumahistoriaan. Ehdotettu hakemistorakenne on `runs/{run_id}/`; tarkat tietosisällöt ja viittaukset täsmennetään myöhemmin. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
+Tallennusmuoto ja hakemistorakenne noudattavat kohdassa 2.6.1 hyväksyttyä periaateratkaisua: ajon tiedot jaetaan tuottajan toimitusmetatietoihin, vastaanottajan kanoniseen ajotietueeseen ja vastaanottajan append-only-tapahtumahistoriaan. Käsiteltyjen toimitusten alkuperäispaketit sekä kaikki vastaanottajan käsittelytiedot tallennetaan `raportit-arkisto`-haaraan hakemistoon `runs/{run_id}/`; tarkat tietosisällöt ja viittaukset täsmennetään myöhemmin. Arkistoon kuuluvat hyväksytyt ja hylätyt toimitukset, käsittelyn välitulokset, validointihavainnot, virheet ja uudelleenyritysten tapahtumat. Aiemmat tapahtumat säilyvät muuttumattomina. Valvomo lukee ajojen ja toimitusten historiatiedot tästä haarasta. `main`-haara sisältää julkaistavat RSS-syötteet, eikä sitä käytetä käsittelyhistorian tietovarastona. Tavoitteena on yksi kanoninen ajohistoria, ei rinnakkaisia tietovarastoja. Julkisen tallennuksen soveltuvuutta arvioidaan uudelleen, jos tietosisältö tai käyttöoikeustarpeet muuttuvat.
 
 #### 2.6.1 Kanoninen ajotietue, toimitusmetatiedot ja tapahtumahistoria
 
@@ -1138,7 +1139,9 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
 
 ### Versiohistoria
 
-- **0.3.113 (25.11.2026):** täsmennettiin, että vastaanottohaaraan säilytetään kaikki vastaanotetut alkuperäiset toimituspaketit muuttumattomina, myös hylätyt toimitukset. Vain hyväksytyt paketit kopioidaan lisäksi `main`-haaraan. Valvomon tulee näyttää myös hylättyjen toimitusten tilat, validointitulokset ja virhetiedot; tietojen tekninen lukutapa ja esitysmuoto jätettiin A10:n jatkosuunnitteluun. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
+- **0.3.114 (25.11.2026):** muutettiin vastaanotto- ja arkistointimallia: `raportit-inbox` sisältää vain käsittelemättömät toimitukset; kaikki käsitellyt toimitukset alkuperäispaketteineen, hyväksyttyinä tai hylättyinä, sekä välituloksineen ja virhetietoineen siirretään `raportit-arkisto`-haaraan. Valvomo käyttää arkistohaaraa vastaanotto- ja käsittelyhistorian lähteenä. Arkistointi varmennetaan ennen inbox-toimituksen poistamista. `main`-haaraan julkaistaan toimituksista vain hyväksytyt RSS-itemit ja syötetiedostot. Tämä päätös korvaa aiemman 0.3.113-version säilytysmallin. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
+
+- **0.3.113 (25.11.2026):** täsmennettiin, että vastaanottohaaraan säilytetään kaikki vastaanotetut alkuperäiset toimituspaketit muuttumattomina, myös hylätyt toimitukset. Vain hyväksytyt paketit kopioidaan lisäksi `main`-haaraan. Valvomon tulee näyttää myös hylättyjen toimitusten tilat, validointitulokset ja virhetiedot; tietojen tekninen lukutapa ja esitysmuoto jätettiin A10:n jatkosuunnitteluun. Tämä säilytysmalli korvattiin versiossa 0.3.114.
 
 - **0.3.112 (25.11.2026):** hyväksyttiin aiheen ja tehtävätyypin yhdistelmään perustuva RSS-syötteen identiteetti ja polkurakenne, Pages-artifactin erillinen muodostaminen vain hyväksytystä sisällöstä sekä hyväksytyn alkuperäisen toimituspaketin säilyttäminen `main`-haarassa. Synkronoitiin avoimien teknisten yksityiskohtien tunnisteet A-etuliitteisiksi, poistettiin ratkaistu A10.1 avoimista tehtävistä ja yhdenmukaistettiin luettelot vaatimusmäärittelyn kanssa. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
