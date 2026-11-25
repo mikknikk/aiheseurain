@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.73  
+**Versio:** 0.12.74  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 25.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -725,6 +725,8 @@ Vastaanottavan järjestelmän validointi on julkaisun portinvartija. Minkään t
 ### 9.1 Jaettava ohjelmisto ja instanssikohtainen käyttö
 
 - Yhteisen ohjelmiston tulee olla julkaistavissa ja jaettavissa erillään yksittäisen käyttöönoton tiedoista.
+- Kaikki instanssirepositoriossa tarvittavat GitHub Actions -työnkulut ja muu suoritettava tai ylläpidettävä ohjelmistokoodi on oltava saatavilla yhteisestä ohjelmistorepositoriosta. Ohjelmistorepo on jaettavan lähdekoodin ja versioidun jakelun ensisijainen lähde.
+- Ohjelmistorepon mukana on toimitettava täsmälliset asennus-, käyttöönotto-, päivitys- ja palautusohjeet, joiden avulla tarvittavat työnkulut ja koodi asennetaan tai synkronoidaan instanssirepoon. Ohjeiden on yksilöitävä yhteensopivat ohjelmisto- ja instanssiversiot sekä tarvittavat asetukset ja käyttöoikeudet. Instanssirepoon asennetut kopiot eivät saa muodostua dokumentoimattomaksi rinnakkaiseksi lähdekoodiksi.
 - Yhden instanssin omat aiheet, seurantatehtävät, määritykset, profiilit, lähderekisterit, ajohistoria, RSS-syötteet ja muut käyttöönoton tiedot kuuluvat instanssille. Niitä ei käsitellä jaettavan ohjelmiston lähdekoodina tai ohjelmistoversion sisältönä.
 - Ohjelmiston tulee pystyä lukemaan ja käsittelemään instanssin tietoja määritellyn rajapinnan ja tietosopimusten kautta. Se ei saa olettaa, että ohjelmistokoodi ja instanssin tiedot sijaitsevat samassa Git-repositoriossa tai määrätyissä suhteellisissa tiedostopoluissa.
 - Tehtävän ja sen tuloksen jäljitettävyyden tulee erottaa käytetty ohjelmistorevisio ja instanssidatan revisio toisistaan. Ohjelmistorevisio yksilöi tehtävän käsittelyssä käytetyn ohjelmistokoodin, yhteiset skeemat ja ohjelmiston yleiset ohjeet; instanssidatan revisio yksilöi käytetyt aiheet, tehtävät, profiilit, lähderekisterit, instanssikohtaiset ohjeet sekä RSS-historian lähtötilan.
@@ -788,6 +790,10 @@ Tarkistuksen ohittaminen edellyttää dokumentoitua poikkeusta, josta kirjataan 
 RSS-syötteen identiteetti muodostuu aiheen ja tehtävätyypin yhdistelmästä. Jokaisella aihe–tehtävätyyppi-yhdistelmällä on oma erillinen RSS-tiedostonsa; saman aiheen eri tehtävätyypit eivät saa päätyä samaan syötteeseen. Syötteet sijoitetaan aihekohtaisiin hakemistoihin muodossa `feeds/{topic_id}/{task_type_id}.xml`. Esimerkiksi intialaisen elokuvan uutiset ja näytösseuranta ovat eri tehtävätyyppejä ja saavat eri syötetiedostot. Syöteluettelo muodostetaan instanssin määrityksistä tai niitä vastaavasta indeksistä, eikä aiheita tai syötteitä kovakoodata yhteiseen käyttöliittymään.
 
 GitHub Pages -sivustoa ei julkaista suoraan instanssirepositorion raakasisällöstä. Erillinen rakennusvaihe muodostaa julkaisuartifactin vain hyväksytystä ja julkaistavaksi tarkoitetusta sisällöstä. Raaka toimituspaketti, vastaanottoaineisto ja sisäinen ajohistoria eivät päädy Pages-artifactiin vahingossa. Julkaistavan artifactin sisältö tarkistetaan ennen Pages-julkaisua.
+
+Pages-julkaisu käynnistyy automaattisesti julkaistavan `main`-sisällön muutoksista tai manuaalisesti. Molemmat käynnistystavat käyttävät samoja tarkistuksia. Rakennus sidotaan yksilöityyn commit-revisioon ja kopioi vain eksplisiittisesti sallittuja julkisia tiedostoja puhtaaseen artifactiin; koko repositoriota ei julkaista. Pakolliset tarkistukset kattavat lähderevision, artifactin sallitun sisällön, RSS/XML-rakenteen ja GUIDien yksilöllisyyden, indeksien ja tiedostoviittausten eheyden sekä muut julkaisukohtaiset validoinnit. Jos yksikin pakollinen tarkistus epäonnistuu, julkaisu estetään ja viimeisin onnistunut Pages-versio säilyy.
+
+Pages-julkaisut suoritetaan sarjallisesti. Vanhempaan lähdecommit-revisioon perustuva julkaisu ei saa korvata uudempaa julkaistavaa tilaa. Julkaisun jälkeen tarkistetaan julkisen Pages-sivuston ja RSS-sisällön saatavuus ja vastaavuus hyväksyttyyn sisältöön. Virheellinen julkaisu palautetaan uutena korjaavana commitina normaalin rakennus-, validointi- ja julkaisuketjun kautta; force pushia tai aiemmin julkaistujen RSS-itemien jälkikäteistä muuttamista ei käytetä.
 
 `raportit-arkisto` sisältää käsiteltyjen toimitusten alkuperäispaketit, hyväksytyt ja hylätyt päätökset, kanoniset ajotietueet sekä append-only-tapahtumahistorian välituloksineen ja virhetietoineen. `main`-haaraan julkaistaan toimituksista vain hyväksytyt RSS-itemit ja syötetiedostot; sinne ei kopioida alkuperäisiä toimituspaketteja, hylättyjä toimituksia tai käsittelyhistoriaa. Valvomo lukee kaikkien vastaanottojen ja käsittelyjen historian `raportit-arkisto`-haarasta. Arkistoinnin varmennus tehdään ennen inbox-toimituksen poistamista. Kaikki instanssirepoon tallennettava aineisto on julkista, joten toimituspaketti ei saa sisältää salaisuuksia tai yksityisiä tietoja.
 
@@ -1080,7 +1086,7 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - **A10.2 – päätetty:** raportintuottajan sallittu kirjoituskohde on vain `raportit-inbox`; vastaanottaja vastaa yksin `raportit-arkisto`- ja `main`-haarojen muutoksista. Teknisen oikeusrajan varmennus jatkuu kohdissa A10.3–A10.4.
    - **A10.3 – periaatteet päätetty:** `main`- ja `raportit-arkisto`-haarojen poistaminen ja force push estetään. `main`-haaraan sallitaan suorat kehitysvaiheen kirjoitukset, mutta kaikki muutokset tarkistetaan ja julkaisu edellyttää onnistunutta validointia. Arkiston tuotantotietojen append-only-eheys varmennetaan erikseen. Tarkistusten ohitus edellyttää dokumentoitua poikkeusta. Käyttäjä valtuutti avustajan kirjoittamaan kehitysvaiheessa kaikkiin haaroihin. GitHub-asetusten tekninen käyttöönotto ja varmennus ovat avoinna.
    - **A10.4 – tavoitemalli päätetty:** tuotantotuottajalle luodaan oma GitHub App -identiteetti, jonka kirjoitusoikeus rajataan `raportit-inbox`-haaraan. Vastaanottajan tunnistautuminen erotetaan tuottajan Appista ja kehitysvaiheen Codex Connector -ylläpitoyhteydestä; ensisijaisesti selvitetään Actionsin rajattujen `GITHUB_TOKEN`-oikeuksien riittävyys ja tarvittaessa käytetään vastaanottajan omaa Appia. GitHub rulesetit rajaavat haarojen päivitysoikeudet, ja arkiston append-only-eheys tarkistetaan erikseen. Tekninen toteutettavuus, oikeuksien konfigurointi ja testaus ovat vielä avoinna.
-   - **A10.5** Määritellään Pages-julkaisun käynnistys, virheellisen julkaisun esto ja palautus.
+   - **A10.5 – tavoitemalli päätetty:** Pages-julkaisu käynnistyy julkaistavan `main`-sisällön muutoksista tai manuaalisesti samoilla ehdoilla. Rajattu artifact rakennetaan yksilöidystä commitista, pakolliset tarkistukset estävät virheellisen julkaisun, julkaisut sarjallistetaan ja onnistunut julkaisu varmennetaan julkisesta osoitteesta. Palautus tehdään uutena korjaavana commitina normaalin julkaisuketjun kautta. Teknistä toteutusta ja testausta ei ole vielä tehty.
    - **A10.6** Määritellään käyttöönoton oikeus- ja suojaustestit.
    - *Rajaus:* vastaanottajan omaa GitHub Appia ei käytetä oletuksena, jos Actionsin rajatut oikeudet riittävät; tuotantotuottajan erillinen GitHub App kuuluu hyväksyttyyn tavoitemalliin.
 
@@ -1175,6 +1181,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.74 – 25.11.2026:** hyväksyttiin A10.5:n Pages-julkaisun tavoitemalli: automaattinen ja manuaalinen käynnistys samoilla ehdoilla, yksilöityyn commit-revisioon sidottu rajattu artifact, pakolliset julkaisua estävät tarkistukset, julkaisujen sarjallisuus, julkisen sisällön jälkivarmennus sekä palautus uutena korjaavana commitina normaalin julkaisuketjun kautta. Lisäksi asetettiin vaatimus, että kaikki instanssirepossa tarvittavat Actions-työnkulut ja muu koodi ovat saatavilla ohjelmistoreposta asennus-, käyttöönotto-, päivitys- ja palautusohjeineen. Teknistä toteutusta, työnkulkuja, asetuksia tai testejä ei muutettu.
 
 - **0.12.73 – 25.11.2026:** hyväksyttiin A10.4:n oikeuksien tavoitemalli: tuotantotuottajalle luodaan erillinen GitHub App, jonka kirjoitusoikeus rajataan `raportit-inbox`-haaraan; vastaanottajan tunnistautuminen erotetaan tuottajan Appista ja kehitysvaiheen Codex Connector -ylläpitoyhteydestä. Vastaanottajalle käytetään ensisijaisesti GitHub Actionsin rajattuja `GITHUB_TOKEN`-oikeuksia ja tarvittaessa omaa Appia. GitHub ruleseteillä rajataan haarapäivitykset, ja arkiston append-only-eheys tarkistetaan erikseen. Tekninen toteutettavuus, asetukset ja oikeustestit ovat avoinna. Toteutusta, tunnistautumisia, automaatioita tai GitHub-asetuksia ei muutettu.
 
