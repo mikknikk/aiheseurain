@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.82  
+**Versio:** 0.12.83  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 26.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -983,6 +983,21 @@ Myöhäinen toimitus kirjataan alkuperäiselle `run_id`-ajolle uutena tapahtuman
 
 Ensimmäisessä versiossa ei toteuteta rinnakkaisten raportointiajojen käsittelyä, tapahtumahistorian jälkikäteistä uudelleenkirjoittamista, automaattista ristiriitojen korjaamista, tapahtumahistorian tiivistämistä tai poistamista, erillistä tietokantaa tai ulkoista tapahtumapalvelua eikä yleistä manuaalista tilanmuokkausta. Tuottajan lähdetarkistuksia ei kopioida vastaanottajan tapahtumahistoriaan eikä tuntemattomasta toimituksesta muodosteta automaattisesti uutta ajoa. Lopulliset skeemat, kenttäkohtaiset validointiehdot, tilasiirtymien koneelliset säännöt ja testitapaukset ratkaistaan myöhemmissä skeema- ja toteutustehtävissä.
 
+### 10.2.5 Tuottajan toimitusmetatietojen täydennetty tietomalli
+
+Tuottajan toimitusmetatiedot muodostavat kuuden hyväksytyn tietoryhmän kokonaisuuden. Ne ovat erillään vastaanottajan kanonisesta ajotietueesta ja tapahtumahistoriasta.
+
+1. **Tunnisteet ja versiot:** \`schema_version\`, \`run_id\`, \`delivery_id\`, \`topic_id\`, \`task_type\`, \`software_revision\` ja \`instance_revision\`. Tehtäväpyynnöstä saadut tunnisteet ja revisiot säilytetään muuttumattomina. Tuottaja muodostaa \`delivery_id\`-tunnisteen ja käyttää samaa tunnistetta uudelleenlähetyksissä. Vastaanottajan \`attempt_id\` ei kuulu tuottajan metatietoihin.
+2. **Tehtävän kuvaus:** \`period\`-objekti, jossa ovat \`from\`- ja \`to\`-ajankohdat. \`to\` voi olla \`null\`, jos päätepistettä ei ole ennalta määritelty.
+3. **Tuottajan tulos:** \`status\` (\`success\`, \`partial\`, \`no_report\` tai \`failed\`), \`started_at\` ja \`completed_at\`. Aikaleimat ovat tehtäväpyynnön \`resolved_config.timezone\`-asetuksen mukaisia paikallisia ISO 8601 -aikaleimoja numeerisine UTC-offseteineen. Puuttuvaa toimitusta ei tulkita tuottajan ilmoittamaksi epäonnistumiseksi.
+4. **Lähdetarkistukset:** erilliset \`sources\`, \`channels\`, \`external_sources\`, \`external_channels\` ja \`check_attempts\` -tietuejoukot. Rekisterilähteet ja -kanavat viitataan vakailla tunnisteilla ja tarvittavilla revisiotiedoilla. Rekisterin ulkopuoliset lähteet kuvataan toimituskohtaisesti riittävillä perustiedoilla, eikä niitä rekisteröidä automaattisesti. Tarkistusyritys sisältää \`check_attempt_id\`, \`source_ref\`, \`channel_ref\`, \`checked_at\`, \`technical_status\`, saatavilla olevan \`http_status\`- ja \`response_time_ms\`-tiedon, \`new_content_found\`, \`relevant_content_found\` sekä tarvittaessa \`error_code\`, \`error_message\` ja \`notes\`. Tekninen onnistuminen erotetaan sisällöllisestä tuloksesta; arvioimaton tulos ei ole sama kuin \`false\`. \`check_attempt_id\` ei ole vastaanottajan \`attempt_id\`.
+5. **Havainnot ja laadunvarmistus:** havaintoyhteenveto sisältää \`summary\`, \`finding_count\`, \`category_counts\`, \`limitations\`, \`uncertainties\` ja \`coverage_gaps\`. Kategoriat määrittelee tehtävätyyppi; yksittäisellä havainnolla on yksi ensisijainen kategoria. Yksittäiset havainnot toimitetaan tarvittaessa erillisessä \`findings.json\`-tiedostossa, ja yhteenvedon lukumäärien on vastattava niitä. Laadunvarmistuksen tarkistustietueet säilyttävät kentät \`check_id\`, \`result\`, \`checked_at\`, \`findings\`, valinnaisen \`notes\` ja tilanteen mukaan \`reason\`; tulos- ja vakavuusarvot ovat aiemmin määritellyt. Tehtävätyypin määritys määrittelee vaaditut tarkistukset.
+6. **Tuottajan tiedot:** valinnainen \`producer\`-objekti. Jos objekti toimitetaan, \`producer_type\` on pakollinen ja sen arvot ovat \`human\`, \`ai\`, \`software\` tai \`other\`. \`producer_id\`, \`name\` ja \`version\` ovat valinnaisia.
+
+Pakollisen kentän puuttuminen, tuntematon kenttä, virheellinen arvo tai ristiriitainen viittaus hylätään validoinnissa; valinnaisen tiedon puuttuminen hyväksytään. Tyhjä taulukko tarkoittaa nollaa tietuetta, ei tuntematonta tietoa. \`null\` sallitaan vain kentissä, joissa sillä on määritelty merkitys. Tuntematonta tai arvioimatonta tulosta ei esitetä tyhjänä merkkijonona tai määrittelemättömänä \`null\`-arvona. Lähde- ja kanavaviittaukset tarkistetaan tunnisteiden ja instanssirevision perusteella. Tarkistusyrityksen tulee viitata olemassa olevaan lähteeseen ja sen sisältökanavaan. Havaintojen lukumäärät tarkistetaan yksittäisiä havaintoja vasten silloin, kun ne toimitetaan.
+
+Tuottajan tulos, tuottajan laadunvarmistus ja vastaanottajan käsittelytilat ovat erillisiä. Vastaanottaja tarkistaa toimituksen kattavuuden ja rakenteen, mutta ei muuta tuottajan ilmoittamia tietoja. Tämä täsmennys ei muuta A6:n, A13:n tai A17:n hyväksyttyjä vastuita eikä ratkaise A7:n automaattista lähderekisteröintiä. JSON Schema -kenttärakenteet, tekniset rajat ja testit kuuluvat myöhempään skeema- ja toteutustyöhön.
+
 ### 10.3 Julkaisun ja julkisen saatavuuden varmennus
 
 Julkaisun onnistumista ei päätellä pelkästään siitä, että tallennuspyyntö tai GitHub Actions -vaihe ilmoittaa onnistumisesta. Varmennus erottaa repositorioon tallentamisen ja sisällön julkisen saatavuuden:
@@ -1166,15 +1181,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A4.5** Määritellään puuttuvien, toistuvien ja ristiriitaisten roolien käsittely.
    - *Rajaus:* parameters on aina objekti ja tuntemattomat parametrit hylätään.
 
-**A5.** **Toimitusmetatietojen täydentäminen**
-   - **A5.1** Käydään kuusi hyväksyttyä tietoryhmää läpi ja tunnistetaan jäljellä olevat täsmennystarpeet.
-   - **A5.2** Määritellään lähde-, kanava- ja tarkistusyritystietojen kentät, tyypit ja viittaukset.
-   - **A5.3** Määritellään havaintoyhteenvedon kentät ja niiden suhde tehtävätyypin kategorioihin.
-   - **A5.4** Täsmennetään valinnaisten tuottajatietojen sisältö ja rajat.
-   - **A5.5** Määritellään kenttien pakollisuus, tyhjien arvojen käsittely ja ryhmien johdonmukaisuussäännöt.
-   - **A5.6** Varmistetaan tuottajan ja vastaanottajan tietojen sekä tunnisteiden selkeä erottelu.
-   - *Rajaus:* kuusi tietoryhmää sekä producer-ryhmän perusrakenne, valinnaisuus ja producer_type-arvot on päätetty.
-
 ### A2. Lähderekisteri ja lähdetilastot
 
 **A7.** **Rekisterin ulkopuolisten lähteiden ehdotukset**
@@ -1254,7 +1260,11 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
-## 18. Muutosloki
+## 18. Muutokset
+
+- **0.12.83 – 26.11.2026:** kirjattiin hyväksytty A5:n toimitusmetatietojen täydennetty malli pysyvään lukuun 10.2.5. Täsmennettiin kuusi tietoryhmää, lähde-, sisältökanava- ja tarkistusyritystietueet, havaintoyhteenveto, yksittäisten havaintojen erillinen tiedosto, pakollisuus- ja johdonmukaisuussäännöt sekä tuottajan ja vastaanottajan tietojen rajat. A5 poistettiin avoimista suunnittelukokonaisuuksista. Skeemat ja testit jäivät myöhempään toteutustyöhön.
+
+i
 
 - **0.12.82 – 26.11.2026:** korjattiin A6:n aikaleimasäännöt aiemmin hyväksytyn järjestelmätason aikavyöhykemallin mukaisiksi: kaikki Aiheseuraimen muodostamat ja tallentamat aikaleimat, myös `events.jsonl`-tapahtumien `occurred_at` ja RSS-itemin `pubDate`, esitetään muutettavan yleisen `timezone`-asetuksen paikallisena aikana ja numeerisella UTC-offsetilla. Oletus on `Europe/Helsinki`; aihe-, profiili- ja tehtävätyyppikohtaiset asetukset eivät voi ylikirjoittaa järjestelmän aikavyöhykettä. UTC:tä käytetään tarvittaessa vain sisäiseen ajanhetkien vertailuun.
 - **0.12.81 – 26.11.2026:** hyväksyttiin A6:n vastaanottajan ajotietomallit: erotettiin tuottajan toimitusmetatiedot, kanoninen run.json-ajotietue ja append-only events.jsonl-tapahtumahistoria; määriteltiin erilliset tuottajan, vastaanoton, julkaisun ja ajon kokonaislopputilan näkökulmat, tunnisteiden tehtävät, tapahtumien perusrakenne ja tyyppiryhmät, aikaleima- ja järjestyssäännöt sekä ristiriitojen ja puuttuvien tietojen varovainen käsittely. A6 siirrettiin pysyväksi vaatimukseksi ja poistettiin avoimista suunnittelukokonaisuuksista. Lopulliset skeemat ja validointitoteutus jäivät myöhempään skeematyöhön. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
