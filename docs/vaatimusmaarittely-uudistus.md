@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.78  
+**Versio:** 0.12.79  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 26.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -895,6 +895,24 @@ Tässä luvussa kuvattu toimintamalli on hyväksytty ja täydentää kohdassa 4.
 
 Ensimmäisen version ulkopuolelle rajataan rinnakkaiset tehtävät, tuottajan tutkimustyön automaattinen uudelleenkäynnistys, erillinen lease-/heartbeat-/lukituspalvelu, takautuvien ajojen jono, erillinen DLQ, aihekohtainen pakotettu uudelleenajo ja erillinen laaduntarkistusajo. Uudelleenyritykset eivät laajenna tuottajan oikeuksia: tuottaja kirjoittaa vain `raportit-inbox`-haaraan ja vastaanottaja vastaa arkistosta sekä `main`-julkaisusta. Epäselvän Git-toiminnon jälkeen todellinen tila tarkistetaan ennen uutta kirjoitusta. Uudelleenyritys ei ohita validointeja, haararajoja tai arkiston append-only-eheyttä. Jos välttämätöntä suojausta ei pystytä todentamaan, suojausta tarvitsevaa tuotantotoimintoa ei oteta käyttöön.
 
+### 10.2.2 Toimituspakettien säilytys
+
+Toimituspakettien säilytys erotetaan väliaikaiseen vastaanottojonoon ja alkuperäisten pakettien arkistoon:
+
+- `raportit-inbox` sisältää käsittelemättömät toimitukset. Toimitus säilyy siellä käsittelyn ajan ja siihen asti, kunnes arkistointi on varmennettu.
+- `raportit-arkisto` säilyttää alkuperäiset toimituspaketit sekä niiden käsittelyhistorian. Arkisto on append-only, ja ensimmäisessä versiossa alkuperäisiä paketteja tai niiden käsittelyhistoriaa ei poisteta automaattisesti. Niitä säilytetään toistaiseksi ilman automaattista vanhenemista.
+- Arkistoon tallennetaan toimitukset käsittelytuloksesta riippumatta. Hyväksytyt, hylätyt ja epäselvät toimitukset säilytetään alkuperäisine paketteineen; arkisto toimii myös karanteenina. Erillistä DLQ-haaraa ei toteuteta.
+- Keskeneräisiä, keskeytyneitä, uudelleenyritystä odottavia, myöhäisiä tai muuten palautumisen kannalta tarpeellisia toimituksia ei poisteta pelkän iän tai aikakatkaisun perusteella.
+- Inbox-toimituksen saa poistaa vasta, kun alkuperäinen paketti ja käsittelyn edellyttämät tiedot on tallennettu arkistoon ja arkistointi on varmennettu takaisinlukemalla. Varmennus kattaa tunnisteet, paketin tiedostot ja sisällön eheyden sekä käytettävissä olevat SHA-256-tiivisteet. Poisto on idempotentti.
+- Jos arkistoinnin, takaisinluvun tai poiston tulos on epäselvä, vastaanottaja tarkistaa repositorion todellisen tilan ennen uutta kirjoitusta tai poistoyritystä. Siivous ei perustu yksin toimituksen ikään.
+- Toimitusta ei saa poistaa, jos käsittely tai uudelleenyritys on käynnissä, toimitus odottaa ylläpitäjän toimenpidettä tai myöhäisen toimituksen arviointia, GitHub-kirjoituksen lopputulos on epäselvä tai aineistoa tarvitaan ajon palautumiseen.
+- Arkistoon säilytetään alkuperäispaketin lisäksi jäljitettävyyden edellyttämät tunnisteet (`run_id`, `delivery_id`, `attempt_id`), aikaleimat, sisällön tiivisteet, validointi- ja käsittelytulokset, hyväksymisen tai hylkäämisen perustelut sekä arkistoinnin varmennus- ja poikkeamatiedot. Täsmälliset tietue- ja tapahtumarakenteet määritellään niitä koskevissa tietomalleissa.
+- A13 koskee toimituspaketteja ja niiden käsittelyaineistoa. Kanonisten ajotietueiden, tapahtumahistorioiden, lokien ja diagnostiikkatietojen säilytys määritellään erikseen A17:ssä. A13:n tai A17:n mukainen siivous ei saa poistaa toisen säilytyspolitiikan tai palautumisen edellyttämää aineistoa.
+- Arkiston ja inboxin kokoa sekä kasvua seurataan. Varoitus- ja toimintarajojen numeeriset arvot määritellään myöhemmässä määritys- ja skeematyössä. Varoitus tuodaan ylläpidon näkyviin. Jos kapasiteetti uhkaa estää turvallisen vastaanoton tai arkistoinnin, uusien tehtävien muodostaminen ja uusien toimitusten vastaanotto keskeytetään hallitusti. Jo vastaanotettuja toimituksia ei poisteta tilan vapauttamiseksi; normaali toiminta jatkuu vasta kapasiteettiongelman ratkettua.
+- Ensimmäisessä versiossa ei toteuteta arkistopakettien määräaikaista automaattista poistamista, automaattista tiivistämistä tai muuttamista eikä erillistä DLQ-haaraa. Säilytyspolitiikan myöhempi muuttaminen edellyttää erillistä suunnittelupäätöstä.
+
+Toimituspakettien säilytys ei määritä kanonisten ajotietueiden tai tapahtumahistorioiden täsmällisiä säilytysaikoja. Ne ratkaistaan erillisessä historiatietojen säilytyksen kokonaisuudessa.
+
 ### 10.3 Julkaisun ja julkisen saatavuuden varmennus
 
 Julkaisun onnistumista ei päätellä pelkästään siitä, että tallennuspyyntö tai GitHub Actions -vaihe ilmoittaa onnistumisesta. Varmennus erottaa repositorioon tallentamisen ja sisällön julkisen saatavuuden:
@@ -1117,15 +1135,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A8.7** Määritellään laskennan oikeellisuuden testaus.
    - *Rajaus:* tilastojen perusperiaatteet, tarkastelujaksot ja ylläpitäjän arvioitavat huomautukset on päätetty.
 
-### A3. Integraatiot ja ajonhallinta
-
-**A13.** **Toimituspakettien säilytys**
-   - **A13.1** Määritellään vastaanottohaaran alkuperäisten pakettien säilytysajat.
-   - **A13.2** Määritellään hyväksyttyjen, hylättyjen ja keskeneräisten pakettien säilytyserot.
-   - **A13.3** Määritellään siivouksen käynnistysehdot, ajastus ja poistoperusteet.
-   - **A13.4** Määritellään keskeneräisten ja palautettavien ajojen aineiston suojaaminen.
-   - **A13.5** Määritellään auditointi-, palautus- ja poikkeustilanteiden säilytystarpeet.
-   - **A13.6** Määritellään tallennustilan seuranta ja toiminta säilytysrajojen ylittyessä.
 
 ### A4. Raportintekijä ja käyttöliittymät
 
@@ -1192,6 +1201,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.79 – 26.11.2026:** hyväksyttiin A13:n toimituspakettien säilytysmalli: inboxin siivous vasta varmennetun arkistoinnin jälkeen, alkuperäispakettien toistaiseksi jatkuva säilytys append-only-arkistossa, palautumisen suojaus sekä kapasiteettipaineen hallittu pysäytys. A13 siirrettiin pysyväksi vaatimukseksi ja poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.78 – 26.11.2026:** siirrettiin hyväksytyt A9–A12-kokonaisuuksien ratkaisut niiden pysyviin aihepiirilukuihin ja poistettiin A9–A12 aktiivisista avoimista suunnittelukokonaisuuksista. Avoimien suunnittelukysymysten luettelo rajattiin päätöksiin, joita tarvitaan ennen toteutussuunnitelman viimeistelyä ja toteutustikettien muodostamista. Toteutus-, testaus- ja käyttöönottotyöt erotettiin suunnittelupäätöksistä. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
