@@ -1133,11 +1133,11 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - *Rajaus:* vastaanottajan omaa GitHub Appia ei käytetä oletuksena, jos Actionsin rajatut oikeudet riittävät; erillinen tuotantotuottajan GitHub App kuuluu myöhempien versioiden tavoitemalliin, ei ensimmäiseen versioon. A10.6 määrittelee testit ja hyväksymisperiaatteet, ei vielä toteuta testejä tai GitHub-asetuksia.
 
 **A11.** **Ajojen käynnistäminen – päätetty**
-   - *Päätös:* yhteinen 15 minuutin tarkistustyönkulku, erillinen tuottajan noutoajastus, manuaalisen ja ajastetun käynnistyksen yhteiset säännöt, yhdistelmäkohtainen suoritusväli, aikavyöhyke- ja aikavälirajat, reilu yhden tehtävän valinta, sarjallisuus sekä tarkistustapahtumien jäljitettävyys on määritelty kohdassa 2.2.1.3. A11.1–A11.6 eivät ole enää avoimia suunnittelutehtäviä.
+   - *Päätös:* yhteinen 15 minuutin tarkistustyönkulku, erillinen tuottajan noutoajastus, manuaalisen ja ajastetun käynnistyksen yhteiset säännöt, yhdistelmäkohtainen suoritusväli, aikavyöhyke- ja aikavälirajat, reilu yhden tehtävän valinta, sarjallisuus sekä tarkistustapahtumien jäljitettävyys on määritelty vaatimusmäärittelyn kohdassa 4.5. A11.1–A11.6 eivät ole enää avoimia suunnittelutehtäviä.
    - *Rajaus:* rinnakkaisia raportointitehtäviä tai aihekohtaisia pakotettuja käynnistyksiä ei toteuteta ensimmäisessä versiossa.
 
 **A12.** **Jonon ja uudelleenyritysten tarkat rajat – päätetty**
-   - *Päätös:* vaihekohtaiset aikarajat ja yritysrajat, kasvava viive ja jitter, virheiden luokittelu, epäonnistuneen aiheen palautuminen normaaliin jonoon, idempotenssi, keskeytyksistä palautuminen, myöhäisten tulosten käsittely, manuaalisen toiminnan rajat, arkistokaranteeni ja Valvomon havaittavuus on määritelty kohdassa 2.6.7. A12.1–A12.7 eivät ole enää avoimia suunnittelutehtäviä.
+   - *Päätös:* vaihekohtaiset aikarajat ja yritysrajat, kasvava viive ja jitter, virheiden luokittelu, epäonnistuneen aiheen palautuminen normaaliin jonoon, idempotenssi, keskeytyksistä palautuminen, myöhäisten tulosten käsittely, manuaalisen toiminnan rajat, arkistokaranteeni ja Valvomon havaittavuus on määritelty kohdassa 10.2.1. A12.1–A12.7 eivät ole enää avoimia suunnittelutehtäviä.
    - *Rajaus:* lukuarvot ja sallitut arvovälit määritellään myöhemmässä tehtävätyyppien määritys- ja skeematyössä; tässä hyväksyttiin toimintaperiaatteet.
 
 **A13.** **Toimituspakettien säilytys**
