@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.124  
+**Versio:** 0.3.125  
 **Päiväys:** 26.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu; avoimien teknisten yksityiskohtien luettelo sisältää vain vielä päätettävät asiat  
-**Perusta:** [Vaatimusmäärittely 0.12.80](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.81](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -961,6 +961,104 @@ A13 koskee alkuperäisiä toimituspaketteja ja niiden käsittelyaineistoa. Kanon
 
 **Ensimmäisen version rajaukset.** Ensimmäisessä versiossa ei toteuteta arkistopaketin määräaikaista automaattista poistamista, arkistosisällön automaattista tiivistämistä tai muuttamista eikä erillistä DLQ-haaraa. Arkisto toimii myös karanteenina. Myöhempi säilytysajan, poistamisen tai arkiston rakenteen muutos edellyttää erillistä suunnittelupäätöstä ja palautus- sekä auditointivaikutusten arviointia.
 
+#### 2.6.10 Vastaanottajan ajotietomallit
+
+Tässä luvussa kuvattu vastaanottajan ajotietomalli on hyväksytty A6-suunnittelukokonaisuuden ratkaisuksi. Se täydentää kohtien 2.6.7–2.6.9 uudelleenyritys-, toimituspaketti- ja historiatietojen säilytysmalleja. Tässä luvussa päätetään tietojen vastuunjako, looginen rakenne ja käsittelyperiaatteet; lopulliset skeemat, kenttäkohtaiset rajat ja validointitoteutus kuuluvat myöhempään skeematyöhön.
+
+**Tietokokonaisuuksien vastuunjako.** Vastaanottajan ajotietomalli koostuu kolmesta toisiaan täydentävästä kokonaisuudesta:
+
+- Tuottajan toimitusmetatiedot kuvaavat tuottajan ilmoittamaa tulosta, lähde- ja kanavatarkistuksia, havaintoja sekä muita toimitussopimuksen mukaisia tulostietoja. Ne kuuluvat yksittäiseen toimitukseen, eikä vastaanottaja muuta tuottajan ilmoittamaa tulosta omien teknisten käsittelyvirheidensä perusteella.
+- `run.json` on vastaanottajan ylläpitämä kanoninen ajotietue ja ajon nykytilan yhteenveto. Se sisältää ajon tunnisteet, käytettyjen määritysten revisiot, aikaleimat, erilliset käsittelytilat, toimitus- ja julkaisuviittaukset sekä ajon kokonaislopputilan.
+- `events.jsonl` on vastaanottajan ylläpitämä ajon append-only-tapahtumahistoria. Se kuvaa käsittelyssä havaitut tapahtumat järjestyksessä. Tapahtumahistoriaa ei käytetä tuottajan toimitusmetatietojen tarpeettomana kopiona.
+
+Tietoja ei kopioida tarpeettomasti tietokokonaisuudesta toiseen. Ajotietueeseen tallennetaan toimitusmetatietojen viittaukset ja tarpeelliset käsittelytilat, ei koko tuottajan tulosaineistoa tai `resolved_config`-sisältöä. Käytettyjen määritysten yksilöivät revisiot ja repositorio- sekä tiedostoviittaukset säilytetään jäljitettävyyttä varten.
+
+**Kanonisen ajotietueen rakenne.** `run.json` sisältää seuraavat tietoryhmät:
+
+| Tietoryhmä | Sisältö |
+|---|---|
+| `schema_version` | Ajotietueen skeemaversio |
+| `run_id` | Loogisen ajon pysyvä yksilöivä tunniste |
+| `task` | Tehtävän, aiheen ja tehtävätyypin tunnisteet |
+| `revisions` | Käytettyjen ohjelmisto-, instanssi-, tehtävä-, profiili- ja muiden määritysten revisiot sekä tarpeelliset tiedostoviittaukset |
+| `timing` | Ajon luonti-, tehtävänanto-, käynnistys-, määräaika- ja päättymisajankohdat |
+| `producer` | Tuottajan ilmoittaman tuloksen tila ja toimituksiin liittyvät viittaukset |
+| `receiver` | Vastaanottajan käsittelytila ja viimeisimmän käsittely-yrityksen tiedot |
+| `publication` | Julkaisun tila, RSS-GUID sekä commit- ja varmennusviittaukset |
+| `deliveries` | Ajoon liittyvien toimitusten tunnisteet ja käsittelytilat |
+| `outcome` | Ajon kokonaislopputila |
+| `updated_at` | Ajotietueen viimeisin päivitysajankohta |
+
+Ajotietueen tilat kuvaavat nykyistä vahvistettua tilannetta. Tietueen päivittäminen ei saa hävittää tapahtumahistoriaa tai muuttaa aiempia tapahtumia. Tarkat kenttien nimet, tyypit, pakollisuus, sallitut arvot ja objektien sisäiset rakenteet määritellään skeemoissa.
+
+**Erilliset tilanäkökulmat.** Yhteistä, kaikkia vaiheita kuvaavaa yhtä `status`-kenttää ei käytetä. Ajotietue erottaa seuraavat tilat:
+
+- **Tuottajan tulos:** `pending`, `completed`, `partial`, `no_report` tai `failed`. Tila kuvaa tuottajan ilmoittamaa tulosta, ei vastaanottajan käsittelyn onnistumista.
+- **Vastaanoton käsittely:** `awaiting_delivery`, `received`, `validating`, `accepted`, `rejected`, `retry_wait`, `processing` tai `completed`. Tila kuvaa vastaanottajan toimitus- ja validointikäsittelyä.
+- **Julkaisu:** `not_started`, `not_required`, `pending`, `publishing`, `published` tai `failed`. `not_required` kattaa esimerkiksi hyväksytyn `no_report`-tuloksen, josta ei muodostu RSS-itemiä.
+- **Ajon kokonaislopputila:** `active`, `succeeded`, `partial`, `no_report`, `failed`, `rejected` tai `timed_out`.
+
+Tilojen sallitut siirtymät määritellään erikseen skeema- ja käsittelysäännöissä. Yhden näkökulman tila ei yksin määrää muiden näkökulmien tilaa. Esimerkiksi toimituksen hyväksyminen ei tarkoita julkaisun onnistumista. Tuottajan ilmoittamaa tulosta ei muuteta vastaanottajan teknisen virheen perusteella. A12:n mukainen ajon vapauttaminen edellyttää, että lopputila ja siihen kuuluvat tapahtumat on kirjattu.
+
+**Tapahtumahistorian yhteinen rakenne.** `events.jsonl` on JSON Lines -tiedosto, jossa kukin rivi on yksi itsenäinen JSON-objekti. Jokaisessa tapahtumassa on seuraavat yhteiset tiedot:
+
+- `event_id`: tapahtuman yksilöllinen UUIDv4-tunniste;
+- `run_id`: ajo, johon tapahtuma kuuluu;
+- `sequence`: ajon sisäinen kasvava järjestysnumero;
+- `event_type`: pysyvä tapahtumatyyppitunniste;
+- `occurred_at`: tapahtuman havaitsemisajankohta UTC-ajassa;
+- `actor`: tapahtuman kirjannut järjestelmän osa tai toimija;
+- `references`: tarvittaessa viittaukset toimitukseen, käsittely-yritykseen, julkaisuun tai muuhun aineistoon;
+- `details`: tapahtumatyypin mukaiset rakenteiset lisätiedot.
+
+**Tapahtumatyypit.** Ensimmäisen version tapahtumatyyppien perusluettelo on:
+
+| Ryhmä | Tapahtumatyypit |
+|---|---|
+| Ajon muodostaminen ja tehtävänanto | `run_created`, `task_issued` |
+| Tuottajan määräaika | `producer_deadline_reached` |
+| Toimituksen vastaanotto ja eheys | `delivery_received`, `delivery_digest_verified`, `delivery_duplicate_detected`, `delivery_conflict_detected` |
+| Validointi | `validation_started`, `validation_passed`, `validation_failed` |
+| Hyväksyminen ja hylkääminen | `delivery_accepted`, `delivery_rejected` |
+| Uudelleenyritykset | `retry_scheduled`, `retry_started` |
+| Julkaisu | `publication_started`, `publication_committed`, `publication_verified`, `publication_failed` |
+| Arkistointi ja inboxin siivous | `delivery_archived`, `inbox_cleanup_completed` |
+| Ajon päättäminen | `run_completed`, `run_failed` |
+| Säilytyksen hallinta | `retention_exception_set`, `retention_exception_released`, `managed_artifact_deleted` |
+
+Tapahtumatyypin `details` on tapahtumakohtainen, rakenteinen ja myöhemmin skeemassa määritelty. Se sisältää vain tapahtuman todentamiseen ja käsittelyyn tarvittavat tiedot. Esimerkiksi validointitapahtuma sisältää virheluokan, virhekoodin, tiedostopolun ja kuvauksen; uudelleenyritystapahtuma käsittelyvaiheen, virheluokan ja seuraavan yrityksen ajankohdan; julkaisun varmennustapahtuma commitin, GUIDin, polun ja varmennustuloksen. Arkistointi- ja poistotapahtumat sisältävät A13:n ja A17:n edellyttämät viittaukset, perustelut ja varmennustiedot. Lähdekohtaisia tarkistusyrityksiä ei kopioida tapahtumahistoriaan, vaan ne säilyvät tuottajan toimitusmetatiedoissa.
+
+**Tunnisteet ja viittaukset.** Tunnisteet ovat erillisiä ja niiden tehtävät pysyviä:
+
+- `run_id` yksilöi yhden loogisen raportointiajon. Saman ajon tekniset uudelleenyritykset käyttävät samaa tunnistetta.
+- `delivery_id` yksilöi yhden toimituspaketin. Saman toimituksen uudelleenlähetys säilyttää tunnisteen.
+- `attempt_id` yksilöi yhden vastaanottajan käsittely-yrityksen. Jokainen uusi käsittely-yritys saa uuden tunnisteen.
+- RSS-GUID yksilöi julkaistun RSS-itemin ja on erillinen ajo- ja toimitustunnisteista. Vastaanottaja luo UUIDv4-GUIDin ja tallentaa sen julkaisun kanssa atomisesti.
+
+Yksi ajo voi viitata useaan toimitukseen A12:n käsittelymallin sallimissa rajoissa. Jokainen tapahtuma kuuluu täsmälleen yhteen ajoon. Tuntemattomaan ajoon viittaava toimitus ei luo automaattisesti uutta ajoa. Sama toimitustunniste eri sisällöllä on ristiriita, jota ei ratkaista ylikirjoituksella. Tietueiden viittausten tulee osoittaa yksilöityyn tietolähteeseen, repositorioon, revisioon ja tiedostoon silloin, kun nämä ovat jäljitettävyyden kannalta tarpeen.
+
+**Aikaleimat, järjestys ja muuttumattomuus.** Kaikki tallennetut ajankohdat esitetään UTC-aikana ISO 8601 -muodossa. Tapahtumat järjestetään `sequence`-kentän perusteella, ei pelkän aikaleiman mukaan. Järjestysnumero alkaa yhdestä ja kasvaa saman ajon sisällä yhdellä. `event_id` on yksilöllinen. Tapahtumarivi on itsenäinen ja skeemaa vasten validoitava. Aiemmin kirjattua tapahtumaa ei muuteta, poisteta tai järjestetä uudelleen; korjaus tai uusi tieto kirjataan uutena tapahtumana, joka viittaa tarvittaessa aiempaan tapahtumaan. `run.json` ja sitä vastaavat tapahtumalisäykset tallennetaan A12:n mukaisesti atomisesti.
+
+**Tietolähteiden ensisijaisuus ja palautuminen.** `events.jsonl` on ajon tapahtumien muuttumaton kronologinen historia ja `run.json` ajon nykytilan yhteenveto. Tuottajan toimitusmetatiedot ovat tuottajan ilmoittaman tuloksen lähde. Alkuperäinen arkistoitu toimituspaketti on toimitetun aineiston alkuperäiskappale. Julkaisuhaaran todellinen Git-tila ja julkaistun sisällön varmennus ovat julkaisutuloksen lähde. Ristiriitaa ei ratkaista arvaamalla tai muuttamalla historiaa, vaan tarkistamalla tapahtumat, alkuperäinen toimitus ja repositorioiden todellinen tila. Puuttuva tai epäselvä tieto esitetään puuttuvana ja käsittely pysäytetään tarvittaessa selvitystä varten.
+
+Myöhäinen toimitus kirjataan alkuperäiselle `run_id`-ajolle uutena vastaanottotapahtumana. A12:n myöhäisen toimituksen hyväksymis- ja julkaisurajoja ei muuteta eikä jo päätettyä ajoa avata uudelleen. Keskeytyksestä palautuminen perustuu kanoniseen ajotietueeseen, tapahtumahistoriaan, alkuperäiseen toimituspakettiin sekä arkisto- ja julkaisuhaarojen todelliseen tilaan.
+
+**Tallennuksen looginen sijoittelu.** Ajon kanoninen tietue ja tapahtumahistoria kuuluvat samaan pysyvään ajokohtaiseen tietokokonaisuuteen. Looginen hakemistorakenne voi olla esimerkiksi:
+
+```text
+runs/
+  <run_id>/
+    run.json
+    events.jsonl
+    deliveries/
+      <delivery_id>/
+        metadata.json
+```
+
+Tämä on looginen rakenne-ehdotus, ei vielä päätös fyysisestä tietovarastosta tai lopullisista tiedostopoluista. Alkuperäinen toimituspaketti ja sen A13:n mukainen arkistointi säilyvät erillisinä. Ajotietueiden ja tapahtumahistorioiden pysyvä säilytys noudattaa A17:ää.
+
+**Ensimmäisen version rajaukset.** Ensimmäisessä versiossa ei toteuteta rinnakkaisten raportointiajojen käsittelyä, tapahtumahistorian jälkikäteistä uudelleenkirjoittamista, automaattista ristiriitojen korjaamista, tapahtumahistorian tiivistämistä tai poistamista, erillistä tietokantaa tai ulkoista tapahtumapalvelua eikä yleistä manuaalista tilanmuokkausta. Tuottajan lähdetarkistuksia ei kopioida vastaanottajan tapahtumahistoriaan. Tuntemattomasta toimituksesta ei muodosteta automaattisesti uutta ajoa. Täsmälliset skeemat, kenttäkohtaiset validointiehdot, tilasiirtymien koneelliset säännöt ja testitapaukset määritellään erillisissä skeema- ja toteutustehtävissä.
+
 #### 2.6.9 Historiatietojen säilytys
 
 Tässä luvussa kuvattu historiatietojen säilytysmalli on hyväksytty. Se täydentää kohtien 2.6.7 ja 2.6.8 toimitus-, vastaanotto-, arkistointi- ja palautumisperiaatteita. A17 on ratkaistu suunnittelukokonaisuus. Täsmälliset tietue- ja tapahtumarakenteet, säilytyspolitiikan koneellinen määritysrakenne sekä tekninen toteutus käsitellään niitä koskevissa myöhemmissä suunnittelu- ja toteutustehtävissä.
@@ -1147,15 +1245,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A5.6** Varmistetaan tuottajan ja vastaanottajan tietojen sekä tunnisteiden selkeä erottelu.
    - *Rajaus:* kuusi tietoryhmää sekä producer-ryhmän perusrakenne, valinnaisuus ja producer_type-arvot on päätetty.
 
-**A6.** **Vastaanottajan ajotietomallit**
-   - **A6.1** Määritellään run.json-tietueen kentät, tyypit, pakollisuus ja sallitut arvot.
-   - **A6.2** Määritellään ajon, tuottajan tuloksen, vastaanoton ja julkaisun tilaluokat ja siirtymät.
-   - **A6.3** Määritellään events.jsonl-tapahtumien täydellinen tapahtumatyyppiluettelo.
-   - **A6.4** Määritellään tapahtumatyyppien details-rakenteet ja pakolliset tiedot.
-   - **A6.5** Määritellään tietueiden ja toimitusmetatietojen viittauskentät.
-   - **A6.6** Määritellään tapahtumien järjestys-, aikaleima-, yksilöllisyys- ja append-only-säännöt.
-   - **A6.7** Määritellään puuttuvien, ristiriitaisten ja tuntemattomiin toimituksiin viittaavien tietojen käsittely.
-
 ### A2. Lähderekisteri ja lähdetilastot
 
 **A7.** **Rekisterin ulkopuolisten lähteiden ehdotukset**
@@ -1226,6 +1315,8 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
 ### Versiohistoria
+
+- **0.3.125 (26.11.2026):** hyväksyttiin A6:n vastaanottajan ajotietomallit: erotettiin tuottajan toimitusmetatiedot, kanoninen run.json-ajotietue ja append-only events.jsonl-tapahtumahistoria; määriteltiin erilliset tuottajan, vastaanoton, julkaisun ja ajon kokonaislopputilan näkökulmat, tunnisteiden tehtävät, tapahtumien perusrakenne ja tyyppiryhmät, aikaleima- ja järjestyssäännöt sekä ristiriitojen ja puuttuvien tietojen varovainen käsittely. A6 siirrettiin pysyväksi periaatteeksi ja poistettiin avoimista suunnittelukokonaisuuksista. Lopulliset skeemat ja validointitoteutus jäivät myöhempään skeematyöhön. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.124 (26.11.2026):** hyväksyttiin A17:n historiatietojen säilytysmalli: kanoniset ajotietueet ja tapahtumahistoriat säilytetään pysyvästi, tavalliset tekniset lokit 90 päivää ja yksityiskohtainen diagnostiikka 30 päivää ajon päättymisestä, palautumisen väliaineistoa suojataan ja muut väliaineistot siivotaan tarpeen päätyttyä. Määriteltiin historian palautus- ja raportointikäyttö, poistojen pysyvä jäljitettävyys, säilytyspoikkeukset sekä keskitetyn versionoidun säilytyspolitiikan periaate. A17 siirrettiin pysyväksi periaatteeksi ja poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
