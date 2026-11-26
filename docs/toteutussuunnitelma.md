@@ -1107,52 +1107,52 @@ Tämä on looginen rakenne-ehdotus, ei vielä päätös fyysisestä tietovarasto
 
 #### 2.6.11 Tuottajan toimitusmetatietojen täydennetty tietomalli
 
-Tuottajan toimitusmetatiedot säilyvät erillään vastaanottajan kanonisesta \`run.json\`-tietueesta ja \`events.jsonl\`-tapahtumahistoriasta. Tässä kohdassa täsmennetään kuuden jo hyväksytyn tietoryhmän kenttärakenne ja keskinäiset säännöt. Tuottajan ilmoittamia tietoja ei kopioida tarpeettomasti vastaanottajan ajotietueeseen, eikä vastaanottaja muuta tuottajan ilmoittamia tuloksia.
+Tuottajan toimitusmetatiedot säilyvät erillään vastaanottajan kanonisesta `run.json`-tietueesta ja `events.jsonl`-tapahtumahistoriasta. Tässä kohdassa täsmennetään kuuden jo hyväksytyn tietoryhmän kenttärakenne ja keskinäiset säännöt. Tuottajan ilmoittamia tietoja ei kopioida tarpeettomasti vastaanottajan ajotietueeseen, eikä vastaanottaja muuta tuottajan ilmoittamia tuloksia.
 
 **1. Tunnisteet ja versiot**
 
-Ryhmä sisältää kentät \`schema_version\`, \`run_id\`, \`delivery_id\`, \`topic_id\`, \`task_type\`, \`software_revision\` ja \`instance_revision\`. Tehtäväpyynnöstä saadut tunnisteet ja revisiot säilytetään muuttumattomina. Tuottaja muodostaa \`delivery_id\`-tunnisteen toimitukselle ja käyttää samaa tunnistetta sen uudelleenlähetyksissä. Vastaanottajan \`attempt_id\` ei kuulu tuottajan metatietoihin.
+Ryhmä sisältää kentät `schema_version`, `run_id`, `delivery_id`, `topic_id`, `task_type`, `software_revision` ja `instance_revision`. Tehtäväpyynnöstä saadut tunnisteet ja revisiot säilytetään muuttumattomina. Tuottaja muodostaa `delivery_id`-tunnisteen toimitukselle ja käyttää samaa tunnistetta sen uudelleenlähetyksissä. Vastaanottajan `attempt_id` ei kuulu tuottajan metatietoihin.
 
 **2. Tehtävän kuvaus**
 
-\`period\`-objekti sisältää \`from\`- ja \`to\`-ajankohdat. \`to\` voi olla \`null\`, jos seurannan päätepistettä ei ole ennalta määritelty. Aihetta tai tehtävätyyppiä ei toisteta tässä ryhmässä.
+`period`-objekti sisältää `from`- ja `to`-ajankohdat. `to` voi olla `null`, jos seurannan päätepistettä ei ole ennalta määritelty. Aihetta tai tehtävätyyppiä ei toisteta tässä ryhmässä.
 
 **3. Tuottajan tulos**
 
-Ryhmä sisältää \`status\`-kentän (\`success\`, \`partial\`, \`no_report\` tai \`failed\`) sekä \`started_at\`- ja \`completed_at\`-aikaleimat. Aikaleimat ovat tehtäväpyynnön \`resolved_config.timezone\`-asetuksen mukaisia paikallisia ISO 8601 -aikaleimoja, joissa on oikea numeerinen UTC-offset. Jos toimitusta ei saada, tuottajan tulos jää puuttuvaksi; vastaanottaja ei päättele sitä omasta käsittelytilastaan.
+Ryhmä sisältää `status`-kentän (`success`, `partial`, `no_report` tai `failed`) sekä `started_at`- ja `completed_at`-aikaleimat. Aikaleimat ovat tehtäväpyynnön `resolved_config.timezone`-asetuksen mukaisia paikallisia ISO 8601 -aikaleimoja, joissa on oikea numeerinen UTC-offset. Jos toimitusta ei saada, tuottajan tulos jää puuttuvaksi; vastaanottaja ei päättele sitä omasta käsittelytilastaan.
 
 **4. Lähdetarkistukset**
 
 Lähdetarkistukset muodostuvat erillisistä lähde-, sisältökanava- ja tarkistusyritystietueista:
 
-- \`sources\` viittaa käytettyihin lähderekisterin lähteisiin vakailla tunnisteilla ja tarvittavilla revisiotiedoilla.
-- \`channels\` viittaa käytettyihin sisältökanaviin niiden vakailla tunnisteilla sekä lähdeviittauksella.
-- \`external_sources\` sisältää rekisterin ulkopuolisten lähteiden toimituskohtaiset perustiedot, kuten nimen ja osoitteen. Niitä ei merkitä rekisteriin kuuluviksi eikä lisätä rekisteriin automaattisesti.
-- \`external_channels\` kuvaa tarvittaessa ulkoisten lähteiden sisältökanavia.
-- \`check_attempts\` sisältää kanavakohtaiset tarkistusyritykset.
+- `sources` viittaa käytettyihin lähderekisterin lähteisiin vakailla tunnisteilla ja tarvittavilla revisiotiedoilla.
+- `channels` viittaa käytettyihin sisältökanaviin niiden vakailla tunnisteilla sekä lähdeviittauksella.
+- `external_sources` sisältää rekisterin ulkopuolisten lähteiden toimituskohtaiset perustiedot, kuten nimen ja osoitteen. Niitä ei merkitä rekisteriin kuuluviksi eikä lisätä rekisteriin automaattisesti.
+- `external_channels` kuvaa tarvittaessa ulkoisten lähteiden sisältökanavia.
+- `check_attempts` sisältää kanavakohtaiset tarkistusyritykset.
 
-Tarkistusyrityksen kentät ovat \`check_attempt_id\`, \`source_ref\`, \`channel_ref\`, \`checked_at\`, \`technical_status\`, valinnainen \`http_status\`, valinnainen \`response_time_ms\`, \`new_content_found\`, \`relevant_content_found\`, valinnaiset \`error_code\`, \`error_message\` ja \`notes\`. \`check_attempt_id\` yksilöi tuottajan lähdetarkistusyrityksen eikä ole sama tunniste kuin vastaanottajan \`attempt_id\`.
+Tarkistusyrityksen kentät ovat `check_attempt_id`, `source_ref`, `channel_ref`, `checked_at`, `technical_status`, valinnainen `http_status`, valinnainen `response_time_ms`, `new_content_found`, `relevant_content_found`, valinnaiset `error_code`, `error_message` ja `notes`. `check_attempt_id` yksilöi tuottajan lähdetarkistusyrityksen eikä ole sama tunniste kuin vastaanottajan `attempt_id`.
 
-Tekninen tulos erotetaan sisällöllisestä tuloksesta. Onnistunut tarkistus ilman uutta sisältöä on teknisesti onnistunut. Jos sisältötulosta ei voida arvioida, sitä ei merkitä virheellisesti arvoksi \`false\`; käytetään erikseen määriteltyä arvioimatonta tilaa. Jokainen tarkistusyritys viittaa olemassa olevaan lähteeseen ja kyseisen lähteen sisältökanavaan.
+Tekninen tulos erotetaan sisällöllisestä tuloksesta. Onnistunut tarkistus ilman uutta sisältöä on teknisesti onnistunut. Jos sisältötulosta ei voida arvioida, sitä ei merkitä virheellisesti arvoksi `false`; käytetään erikseen määriteltyä arvioimatonta tilaa. Jokainen tarkistusyritys viittaa olemassa olevaan lähteeseen ja kyseisen lähteen sisältökanavaan.
 
 **5. Havainnot ja laadunvarmistus**
 
-Havaintojen yhteenveto sisältää kentät \`summary\`, \`finding_count\`, \`category_counts\`, \`limitations\`, \`uncertainties\` ja \`coverage_gaps\`. Kategoriat määritellään tehtävätyypin määrityksessä, eikä yleinen järjestelmä kovakoodaa niitä. Jokaisella yksittäisellä havainnolla on yksi ensisijainen kategoria, jotta kategoriakohtaiset lukumäärät voidaan tarkistaa kokonaismäärää vasten.
+Havaintojen yhteenveto sisältää kentät `summary`, `finding_count`, `category_counts`, `limitations`, `uncertainties` ja `coverage_gaps`. Kategoriat määritellään tehtävätyypin määrityksessä, eikä yleinen järjestelmä kovakoodaa niitä. Jokaisella yksittäisellä havainnolla on yksi ensisijainen kategoria, jotta kategoriakohtaiset lukumäärät voidaan tarkistaa kokonaismäärää vasten.
 
-Yksittäiset havainnot toimitetaan erillisessä \`findings.json\`-tiedostossa silloin, kun tehtävätyyppi edellyttää niiden toimittamista; \`metadata.json\` sisältää yhteenvedon eikä kopioi yksittäisiä havaintoja. Kun yksittäiset havainnot toimitetaan, \`finding_count\`- ja \`category_counts\`-arvojen on vastattava niitä.
+Yksittäiset havainnot toimitetaan erillisessä `findings.json`-tiedostossa silloin, kun tehtävätyyppi edellyttää niiden toimittamista; `metadata.json` sisältää yhteenvedon eikä kopioi yksittäisiä havaintoja. Kun yksittäiset havainnot toimitetaan, `finding_count`- ja `category_counts`-arvojen on vastattava niitä.
 
-Laadunvarmistuksen tarkistustietueiden aiemmin hyväksytty rakenne säilyy: \`check_id\`, \`result\`, \`checked_at\`, \`findings\`, valinnainen \`notes\` ja tilanteen mukaan \`reason\`. Tulokset ovat \`passed\`, \`issues_found\`, \`not_run\`, \`not_applicable\` ja \`execution_error\`; havaintojen vakavuudet ovat \`critical\`, \`major\`, \`minor\` ja \`info\`. Tehtävätyypin määritys ratkaisee vaaditut tarkistukset. Puuttuva tarkistustietue ei merkitse onnistumista. Vastaanottaja tarkistaa tarkistusten kattavuuden ja rakenteellisen kelvollisuuden muuttamatta tuottajan tuloksia.
+Laadunvarmistuksen tarkistustietueiden aiemmin hyväksytty rakenne säilyy: `check_id`, `result`, `checked_at`, `findings`, valinnainen `notes` ja tilanteen mukaan `reason`. Tulokset ovat `passed`, `issues_found`, `not_run`, `not_applicable` ja `execution_error`; havaintojen vakavuudet ovat `critical`, `major`, `minor` ja `info`. Tehtävätyypin määritys ratkaisee vaaditut tarkistukset. Puuttuva tarkistustietue ei merkitse onnistumista. Vastaanottaja tarkistaa tarkistusten kattavuuden ja rakenteellisen kelvollisuuden muuttamatta tuottajan tuloksia.
 
 **6. Tuottajan tiedot**
 
-Valinnainen \`producer\`-objekti sisältää pakollisen \`producer_type\`-kentän, jos objekti on mukana. Sallitut arvot ovat \`human\`, \`ai\`, \`software\` ja \`other\`. Valinnaisia kenttiä ovat \`producer_id\`, \`name\` ja \`version\`. Ryhmään ei sisällytetä henkilötietoja, salasanoja, käyttöoikeustunnuksia tai muita salaisuuksia.
+Valinnainen `producer`-objekti sisältää pakollisen `producer_type`-kentän, jos objekti on mukana. Sallitut arvot ovat `human`, `ai`, `software` ja `other`. Valinnaisia kenttiä ovat `producer_id`, `name` ja `version`. Ryhmään ei sisällytetä henkilötietoja, salasanoja, käyttöoikeustunnuksia tai muita salaisuuksia.
 
 **Pakollisuus, tyhjät arvot ja johdonmukaisuus**
 
 - Pakollisen kentän puuttuminen hylkää toimituksen validoinnissa; valinnainen puuttuva tieto jätetään pois.
 - Tyhjä taulukko tarkoittaa, ettei tietueita ole; se ei tarkoita tuntematonta tietoa.
-- \`null\` sallitaan vain kentissä, joissa sillä on määritelty merkitys, kuten \`period.to\`-kentässä.
-- Tuntematonta tai arvioimatonta tulosta ei esitetä tyhjänä merkkijonona tai määrittelemättömänä \`null\`-arvona.
+- `null` sallitaan vain kentissä, joissa sillä on määritelty merkitys, kuten `period.to`-kentässä.
+- Tuntematonta tai arvioimatonta tulosta ei esitetä tyhjänä merkkijonona tai määrittelemättömänä `null`-arvona.
 - Tuntemattomat kentät, virheelliset arvot ja ristiriitaiset viittaukset hylätään; vastaanottaja ei korjaa niitä automaattisesti.
 - Lähde- ja kanavaviittaukset tarkistetaan toimituksen tunnisteiden ja käytetyn instanssirevision perusteella. Tarkistusyrityksen on viitattava olemassa olevaan lähteeseen ja sen sisältökanavaan.
 - Havaintojen kokonaismäärän ja kategoriakohtaisten määrien on vastattava toimitettuja yksittäisiä havaintoja silloin, kun ne toimitetaan.
