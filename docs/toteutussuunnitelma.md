@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.122  
+**Versio:** 0.3.123  
 **Päiväys:** 26.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu; avoimien teknisten yksityiskohtien luettelo sisältää vain vielä päätettävät asiat  
-**Perusta:** [Vaatimusmäärittely 0.12.78](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.79](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -936,6 +936,31 @@ Myöhäinen toimitus käsitellään alkuperäisellä `run_id`-tunnisteella. Se v
 
 Ensimmäisen version ulkopuolelle rajataan rinnakkaiset raportointitehtävät, tuottajan tutkimustyön automaattinen uudelleenkäynnistys, erillinen lease-/heartbeat-/lukituspalvelu, takautuvien ajojen jono, erillinen DLQ, aihekohtainen pakotettu uudelleenajo ja erillinen laaduntarkistusajo. Uudelleenyritykset eivät laajenna tuottajan oikeuksia: tuottaja toimittaa vain `raportit-inbox`-haaraan ja vastaanottaja vastaa arkistosta sekä `main`-julkaisuista. Epäselvän Git-toiminnon jälkeen todellinen tila tarkistetaan ennen uutta kirjoitusta. Uudelleenyritys ei ohita validointeja, haararajoja tai arkiston append-only-eheyttä. Jos välttämätöntä suojausta ei pystytä todentamaan kohdassa 3 määriteltyjen suojaus- ja hyväksymisperiaatteiden mukaisesti, kyseistä tuotantotoimintoa ei oteta käyttöön.
 
+#### 2.6.8 Toimituspakettien säilytys
+
+Tässä luvussa kuvattu toimituspakettien säilytysmalli on hyväksytty. Se täydentää kohtien 2.6.7 ja 2.7 vastaanotto-, arkistointi- ja palautumisperiaatteita. A13 on ratkaistu suunnittelukokonaisuus; sen toteuttaminen, säilytyksen tekniset rajat ja mahdolliset myöhemmät säilytyspolitiikan muutokset käsitellään erikseen.
+
+**Säilytyspaikkojen vastuut.** Toimituspaketin säilytys erotetaan kahteen vaiheeseen:
+
+- `raportit-inbox` on väliaikainen vastaanottojono. Se sisältää käsittelemättömät toimitukset siihen asti, kunnes niiden käsittely ja arkistointi on varmennettu.
+- `raportit-arkisto` on alkuperäisten toimituspakettien ja niiden käsittelyhistorian arkisto. Se toimii myös hyväksyttyjen, hylättyjen ja epäselvien toimitusten karanteenina.
+
+Ensimmäisessä versiossa arkisto on append-only. Sinne lisätään toimituksia ja käsittelytietoja, mutta arkistoituja alkuperäispaketteja tai niiden käsittelyhistoriaa ei muuteta eikä poisteta normaalilla automaattisella siivouksella. Alkuperäinen toimitus säilytetään arkistossa toistaiseksi ilman automaattista vanhenemista. Tämä koskee myös hylättyjä ja epäselviä toimituksia.
+
+**Toimituksen tilan mukainen käsittely.** Käsittelemätön tai käsittelyssä oleva toimitus säilytetään inboxissa. Hyväksytty, hylätty tai muuten päätökseen käsitelty toimitus arkistoidaan alkuperäisine sisältöineen ja käsittelytietoineen. Myös keskeneräiset, keskeytyneet ja palautumista odottavat toimitukset säilytetään; niitä ei poisteta pelkän iän tai aikakatkaisun perusteella. Arkistointi ei riipu hyväksymistuloksesta: hylkäys ei ole peruste alkuperäisen paketin hävittämiselle.
+
+**Inboxin siivous ja arkistoinnin varmennus.** Inbox-toimituksen saa poistaa vasta, kun vastaava alkuperäinen paketti ja käsittelyn edellyttämät tiedot on tallennettu arkistoon ja arkistointi on varmennettu takaisinlukemalla. Varmennuksessa tarkistetaan toimituksen tunnisteet, paketin tiedostot ja sisällön eheys, mukaan lukien käytettävissä olevat SHA-256-tiivisteet. Poisto tehdään idempotentisti. Siivous ei perustu yksin ikään eikä sitä tehdä ennen arkistoinnin varmennusta. Jos arkistoinnin, takaisinluvun tai poiston lopputulos on epäselvä, vastaanottaja tarkistaa repositorion todellisen tilan ennen uutta kirjoitusta tai poistoyritystä.
+
+**Keskeneräisten ja palautettavien ajojen suojaus.** Toimitusta ei saa poistaa inboxista eikä arkistosta, jos käsittely tai uudelleenyritys on käynnissä, toimitus odottaa ylläpitäjän toimenpidettä, myöhäinen toimitus on arvioitavana, GitHub-kirjoituksen lopputulos on epäselvä tai aineistoa tarvitaan ajon palautumiseen. A12:n mukainen palautuminen perustuu tehtäväpyyntöön, kanoniseen ajotietueeseen, append-only-tapahtumahistoriaan, toimituksiin sekä arkisto- ja julkaisuhaarojen todelliseen tilaan. A13:n siivous ei saa poistaa näistä palautumisen kannalta tarpeellista aineistoa.
+
+**Auditointi ja jäljitettävyys.** Arkistoon säilytetään alkuperäisen toimituspaketin lisäksi käsittelyn jäljittämiseen tarvittavat tiedot: `run_id`, `delivery_id` ja käsittely-yritysten `attempt_id`-tunnisteet, vastaanoton ja käsittelyn aikaleimat, sisällön tiivisteet, validoinnin ja käsittelyn tulokset, hyväksymisen tai hylkäämisen perustelut sekä arkistoinnin varmennus- ja mahdolliset siivous- ja poikkeamatapahtumat. Täsmälliset tietue- ja tapahtumarakenteet määritellään niitä koskevissa tietomallikokonaisuuksissa; A13 ei luo rinnakkaista historiatietomallia.
+
+A13 koskee alkuperäisiä toimituspaketteja ja niiden käsittelyaineistoa. Kanonisten ajotietueiden, tapahtumahistorioiden, lokien ja diagnostiikkatietojen säilytyspolitiikka määritellään erikseen A17:ssä. A13:n siivous ei saa poistaa A17:n edellyttämää aineistoa, eikä A17:n myöhempi siivous saa hävittää toimituspakettia, jota tarvitaan auditointiin tai palautumiseen.
+
+**Tallennustilan seuranta ja kapasiteettirajat.** Arkiston ja vastaanottojonon kokoa sekä kasvua seurataan. Varoitus- ja toimintarajojen numeeriset arvot määritellään myöhemmässä määritys- ja skeematyössä; niitä ei kovakoodata tässä suunnittelupäätöksessä. Varoitusrajan ylittyminen tuodaan ylläpidon näkyviin. Jos vapaa tila uhkaa estää turvallisen vastaanoton tai arkistoinnin, uusien tehtävien muodostaminen ja uusien toimitusten vastaanotto keskeytetään hallitusti siltä osin kuin se on tarpeen. Jo vastaanotettuja toimituksia ei hylätä tai poisteta tilan vapauttamiseksi. Normaali toiminta jatkuu vasta, kun kapasiteettiongelma on ratkaistu ja turvallinen käsittely voidaan varmistaa.
+
+**Ensimmäisen version rajaukset.** Ensimmäisessä versiossa ei toteuteta arkistopaketin määräaikaista automaattista poistamista, arkistosisällön automaattista tiivistämistä tai muuttamista eikä erillistä DLQ-haaraa. Arkisto toimii myös karanteenina. Myöhempi säilytysajan, poistamisen tai arkiston rakenteen muutos edellyttää erillistä suunnittelupäätöstä ja palautus- sekä auditointivaikutusten arviointia.
+
 ### 2.7 Jaettava ohjelmisto ja erilliset instanssit
 
 Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi, jonka käyttäjäkohtaiset instanssit ovat siitä erillisiä. Ohjelmiston ja instanssin erottaminen on arkkitehtuurin perusratkaisu, ei myöhempään monen käyttäjän palvelualustaan varautuva lisäominaisuus.
@@ -1106,15 +1131,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A8.7** Määritellään laskennan oikeellisuuden testaus.
    - *Rajaus:* tilastojen perusperiaatteet, tarkastelujaksot ja ylläpitäjän arvioitavat huomautukset on päätetty.
 
-### A3. Integraatiot ja ajonhallinta
-
-**A13.** **Toimituspakettien säilytys**
-   - **A13.1** Määritellään vastaanottohaaran alkuperäisten pakettien säilytysajat.
-   - **A13.2** Määritellään hyväksyttyjen, hylättyjen ja keskeneräisten pakettien säilytyserot.
-   - **A13.3** Määritellään siivouksen käynnistysehdot, ajastus ja poistoperusteet.
-   - **A13.4** Määritellään keskeneräisten ja palautettavien ajojen aineiston suojaaminen.
-   - **A13.5** Määritellään auditointi-, palautus- ja poikkeustilanteiden säilytystarpeet.
-   - **A13.6** Määritellään tallennustilan seuranta ja toiminta säilytysrajojen ylittyessä.
 
 ### A4. Raportintekijä ja käyttöliittymät
 
@@ -1172,6 +1188,7 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 
 ### Versiohistoria
 
+- **0.3.123 (26.11.2026):** hyväksyttiin A13:n toimituspakettien säilytysmalli: inbox on väliaikainen jono, arkisto append-only ja alkuperäispaketit säilytetään toistaiseksi; inboxista poistaminen edellyttää varmennettua arkistointia ja takaisinlukua. Keskeneräisiä ja palautumisen kannalta tarpeellisia toimituksia suojataan, kapasiteettipaine johtaa hallittuun pysäytykseen eikä arkiston automaattiseen poistamiseen. A13 siirrettiin pysyväksi periaatteeksi ja poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 - **0.3.120 (26.11.2026):** hyväksyttiin A11:n ajojen käynnistämisen toimintamalli: yhteinen 15 minuutin tarkistus, erillinen raportintuottajan noutoajastus, sama logiikka manuaalisille käynnistyksille, yhdistelmäkohtainen suoritusväli samassa seurattavan aihe-/profiili-/tehtävätyyppiyhdistelmän määrityksessä, aikavyöhyke- ja aikavälirajat, reilu yhden tehtävän valinta, sarjallisuus sekä käynnistystapahtumien jäljitettävyys. Täsmennettiin, että ensimmäinen versio käyttää nykyistä Codex Connector -yhteyttä ilman erillistä tuottajan GitHub Appia; App-malli jää myöhempien versioiden vaihtoehdoksi. Toteutusta, automaatioita tai GitHub-asetuksia ei muutettu.
 - **0.3.119 (25.11.2026):** hyväksyttiin A10.6:n käyttöönoton oikeus- ja suojaustestien tavoitemalli: testataan identiteettien sallitut ja kielletyt toiminnot eristetyssä ympäristössä, arkiston append-only-eheys, julkaisun validointi- ja palautusketju sekä ohjelmistorepon käytön versionlukitus ja ohjeistus. Päätettiin, että vaikeasti tai suhteettoman monimutkaisesti toteutettavat suojaukset voidaan siirtää myöhempään versioon; turvallisuutta ei tällöin kierretä laajentamalla oikeuksia, vaan suojausta tarvitseva toiminto rajataan pois ensimmäisestä versiosta, kunnes sen turvallisuus voidaan todentaa. Samalla tarkennettiin A10.5:n ohjelmistojakelua: instanssin Actions voi kutsua ohjelmistorepon uudelleenkäytettäviä työnkulkuja tai ladata koodin lukitusta revisiosta ilman yhteisen koodin kopiointia instanssirepoon. Toteutusta, testejä, tunnistautumisia tai GitHub-asetuksia ei muutettu.
 - **0.3.118 (25.11.2026):** hyväksyttiin A10.5:n Pages-julkaisun tavoitemalli: automaattinen ja manuaalinen käynnistys samoilla ehdoilla, yksilöityyn commit-revisioon sidottu rajattu artifact, pakolliset julkaisua estävät tarkistukset, julkaisujen sarjallisuus, julkisen sisällön jälkivarmennus sekä palautus uutena korjaavana commitina normaalin julkaisuketjun kautta. Lisäksi päätettiin, että kaikki instanssirepossa tarvittavat Actions-työnkulut ja muu koodi ovat saatavilla ohjelmistoreposta asennus-, käyttöönotto-, päivitys- ja palautusohjeineen. Teknistä toteutusta, työnkulkuja, asetuksia tai testejä ei muutettu.
