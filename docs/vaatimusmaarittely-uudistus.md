@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.76  
+**Versio:** 0.12.77  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 26.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -268,7 +268,7 @@ Tehtävien ajastuksessa erotetaan kaksi asiaa: järjestelmän yhteinen tarkistus
 
 Yhteisen tarkistustyönkulun voi käynnistää myös manuaalisesti esimerkiksi ylläpitoa tai tilanteen selvittämistä varten. Manuaalinen käynnistys käyttää samoja jono-, määräaika-, validointi- ja sarjallisuussääntöjä kuin ajastettu käynnistys. Se ei ohita aktiivista tehtävää, käynnistä rinnakkaista tehtävää eikä pakota tiettyä aihetta ajoon näiden sääntöjen vastaisesti.
 
-Ajon epäonnistuminen ei saa merkitä aihetta onnistuneesti käsitellyksi eikä antaa sille perusteetonta etua jonossa. Epäonnistunut ajo tallennetaan, ja uuden yrityksen ajankohta ratkaistaan yksinkertaisella, hallitulla säännöllä. Yhden ongelmallisen aiheen toistuvat yritykset eivät saa estää muiden erääntyneiden aiheiden etenemistä.
+Ajon epäonnistuminen ei merkitse aihetta onnistuneesti käsitellyksi eikä anna sille etuoikeutettua uusintavuoroa. Epäonnistunut ajo tallennetaan, ja aihe palaa A11:n normaaliin erääntyneiden yhdistelmien valintaan. Seuraava erääntymishetki perustuu suunniteltuihin aikataulurajoihin; epäonnistuminen ei nollaa eikä siirrä aikataulua. Yhden ongelmallisen aiheen käsittely ei saa estää muiden erääntyneiden aiheiden etenemistä.
 
 Käyttäjän erikseen käynnistämä ajo voidaan erottaa ajastetusta ajosta. Käynnistystapa ja tuottaja kirjataan ajotietoihin, kun ne ovat tiedossa. Nykyisten automaatioiden asetuksia ei muuteta tämän määrittelyn perusteella.
 
@@ -317,7 +317,7 @@ Ajo päättyy vastaanottajan aktiivisen käsittelyn kannalta, kun jokin seuraavi
 
 Aktiivinen tehtävä vapautetaan vasta, kun vastaanottajan käsittely on päätetty ja ajon lopputila on kirjattu kanoniseen ajohistoriaan. Seuraavaa tehtävää ei käynnistetä ennen tätä. Yksittäinen epäonnistunut käsittely-yritys ei vapauta tehtävää, jos käsittelyä voidaan vielä jatkaa. Kun käsittely on päätetty, jono voi edetä myös epäonnistumisen jälkeen. Epäonnistuminen ei itsessään käynnistä uutta tehtävää.
 
-Uudelleenyritysten määrä, yritysten laskentatapa, määräajat ja muut vastaavat käsittelyrajat ovat konfiguroitavia toimintaparametreja. Niitä ei kovakoodata kiinteiksi lukumääriksi tai aikarajoiksi. Soveltuva tehtävätyypin määritys ja tarvittaessa profiili määrittävät arvot; asetusten yhdistämisen jälkeen käytetyt arvot sisältyvät tehtäväpyynnön `resolved_config`-kokoonpanoon. Yhteinen toteutus noudattaa ratkaistuja arvoja eikä keksi niille omia oletuksia. Konfiguraation sallitut tyypit, rajat ja oletusarvot määritellään tehtävätyypin skeemassa ja määrityksissä. Jos pakollinen arvo puuttuu tai on virheellinen, tehtävää ei muodosteta.
+Uudelleenyritysten määrä, yritysten laskentatapa, vaihekohtaiset määräajat ja viiveet ovat konfiguroitavia toimintaparametreja. Niitä ei kovakoodata. Soveltuva tehtävätyypin määritys määrittää arvot ja sallitut rajat; käytetyt arvot sisältyvät tehtäväpyynnön `resolved_config`-kokoonpanoon. Yhteinen toteutus noudattaa ratkaistuja arvoja eikä keksi niille omia oletuksia. Jos pakollinen arvo puuttuu tai on virheellinen, tehtävää ei muodosteta. A12:n hyväksytty toimintamalli erottaa tehtävän muodostamisen, tuottajan toimitusmääräajan, vastaanoton/validoinnin ja julkaisun aikarajat.
 
 Kun käsittely päättyy epäonnistuneena, vastaanottaja kirjaa havaitun syyn ja siihenastiset tapahtumat. Tuottajan tulosta ei päätellä vastaanottajan havainnoista. Ajohistoriasta on voitava erottaa tehtävän käynnistys ja määräaika, toimituksen saapuminen, tuottajan ilmoittama tulos, vastaanottajan käsittelyvaiheet, validointi, julkaisu, ajon lopputila sekä aktiivisen käsittelyn vapautushetki. Tapahtumat säilytetään aikajärjestyksessä; myöhemmät tapahtumat eivät korvaa aiempia.
 
@@ -524,7 +524,7 @@ Vastaanottoprosessi käsittelee vain vastaanottohaaraan `raportit-inbox` toimite
 
 **Keskinäiset viittaukset.** Tiedostoviittausten on osoitettava olemassa oleviin luetteloituihin tiedostoihin. Roolien, polkujen, tunnisteiden ja ajotietojen on oltava johdonmukaisia. GUIDin on oltava yksilöllinen julkaisu- ja historiatiedoissa. Korjaus- tai täydennysitemin alkuperäisen GUID-viittauksen on osoitettava olemassa olevaan julkaisuun ja suhteen tyypin oltava sallittu.
 
-**Virheet ja hyväksymisen raja.** Rakenteelliset, tunniste-, revisio-, skeema-, tiedosto-, eheys- ja sisältövirheet ovat pysyviä ja johtavat hylkäykseen. Tilapäinen suoritusympäristö- tai GitHub-virhe voi johtaa rajattuun uudelleenyritykseen; määrät ja viiveet ratkaistaan kohdassa 9.7. Virheestä tallennetaan koneellinen luokka, ihmiselle luettava kuvaus sekä mahdollisuuksien mukaan tiedosto tai polku. Varoitukset eivät ohita pakollisia tarkistuksia. Hyväksyntä edellyttää kaikkien soveltuvien pakollisten tarkistusten läpäisyä eikä itsessään tarkoita julkaisua. Vastaanottajan virhe ei muuta tuottajan tulostilaa.
+**Virheet ja hyväksymisen raja.** Rakenteelliset, tunniste-, revisio-, skeema-, tiedosto-, eheys- ja sisältövirheet ovat pysyviä ja johtavat hylkäykseen. Tilapäinen suoritusympäristö- tai GitHub-virhe voi johtaa rajattuun uudelleenyritykseen; määrät, viiveet ja virheluokkakohtaiset rajat on määritelty A12:ssa. Virheestä tallennetaan koneellinen luokka, ihmiselle luettava kuvaus sekä mahdollisuuksien mukaan tiedosto tai polku. Varoitukset eivät ohita pakollisia tarkistuksia. Hyväksyntä edellyttää kaikkien soveltuvien pakollisten tarkistusten läpäisyä eikä itsessään tarkoita julkaisua. Vastaanottajan virhe ei muuta tuottajan tulostilaa.
 
 Vastaanottaja tunnistaa toimituksen sen hakemistopolun ja toimitusmetatietojen perusteella. Se tarkistaa, että `run_id` ja `delivery_id` ovat johdonmukaisia, että ajo on olemassa ja että ajo kuuluu tunnetulle tehtävälle. Tehtävän ja ajon välisten tunnisteiden sekä aikaleimojen on oltava keskenään johdonmukaisia. Tuntemattomaan ajoon tai tehtävään viittaava toimitus hylätään; vastaanottaja ei luo puuttuvia ajoja tai tehtäviä toimituksen perusteella.
 
@@ -575,7 +575,7 @@ Vastaanoton ja julkaisun käsittely etenee seuraavien tilojen kautta. Tilat kuva
 Poikkeustilat ja julkaisematta päättyvät käsittelyt ovat:
 
 - **Hylätty:** toimituksessa on pysyvä validointivirhe, joka estää hyväksymisen.
-- **Tilapäistä uudelleenyritystä odottava:** tilapäinen tekninen virhe estää käsittelyn jatkamisen. Uudelleenyritysten tarkat määrät ja viiveet määritellään kohdassa 9.7.
+- **Tilapäistä uudelleenyritystä odottava:** tilapäinen tekninen virhe estää käsittelyn jatkamisen. Uudelleenyritysten tarkat määrät ja viiveet määräytyvät A12:ssa hyväksyttyjen periaatteiden mukaisesti tehtävätyyppien määrityksistä ja skeemoista.
 - **Käsitelty ilman julkaisua:** toimitus on hyväksytty ja käsitelty, mutta tehtävätyyppi tai tuottajan tulostila ei edellytä RSS-itemiä, esimerkiksi `no_report`-tuloksessa. Tällöin ajoa ei merkitä julkaistuksi eikä sille synny RSS-itemiä.
 
 Vastuut erotetaan seuraavasti:
@@ -876,6 +876,25 @@ Toimitusten käsittelyssä noudatetaan seuraavia sääntöjä:
 Tunnisteiden vastuut pidetään erillään: `run_id` seuraa ajoa, `delivery_id` tuottajan toimitusta ja `attempt_id` vastaanottajan käsittely-yritystä. Tämä malli ei muuta ensimmäisen version sarjallista käsittelyä eikä edellytä rinnakkaisten tuottajien varaus- tai lukitusmekanismia.
 
 
+### 10.2.1 A12 – Jonon ja uudelleenyritysten tarkat rajat
+
+A12:n toimintamalli on hyväksytty ja täydentää A11:n yhteistä tarkistus- ja valintamallia. Ensimmäisessä versiossa käsitellään yksi aktiivinen tehtävä kerrallaan. Tehtävän muodostaminen, raportintuottajan suoritus, toimituksen vastaanotto/validointi ja julkaisu ovat erillisiä vaiheita, joilla on omat konfiguroitavat aikarajansa.
+
+- Tehtävän muodostamisen aikaraja koskee yhteistä tarkistustyönkulkua. Jos tehtäväpyyntöä ei muodosteta, raportointiajoa ei katsota käynnistetyksi. Tuottajan toimitusmääräaika alkaa `issued_at`-hetkestä ja päättyy `deadline_at`-hetkellä. Vastaanoton/validoinnin ja julkaisun aikarajat ovat erillisiä eivätkä käynnistä tuottajan määräaikaa uudelleen.
+- Aikarajojen, yritysmäärien, viiveiden ja niiden sallittujen rajojen arvot määritellään tehtävätyypin määrityksissä ja skeemoissa. Ajossa käytetyt arvot sisältyvät muuttumattomaan `resolved_config`-snapshotiin; yhteinen toteutus ei keksi puuttuvia oletusarvoja.
+- Yritysrajat määritellään vaihe- ja virheluokkakohtaisesti tehtävän muodostukselle, vastaanotolle/validoinnille ja julkaisulle. Alkuperäinen yritys erotetaan uudelleenyrityksistä. Muodostuksen epäonnistumisen jälkeen seuraava tarkistus voi yrittää uudelleen vain, jos tehtävää ei ole jo muodostettu.
+- Tuottajan oma noutoajastus on erillinen. Aiheseurain ei käynnistä tuottajaa eikä käynnistä sen varsinaista tutkimus- ja raportointityötä automaattisesti uudelleen ensimmäisessä versiossa. Uusi tutkimus olisi uusi looginen suoritus ja saisi uuden `run_id`-tunnisteen.
+- Vastaanoton ja julkaisun teknisissä uudelleenyrityksissä käytetään kasvavaa viivettä, viiveen enimmäisarvoa ja rajattua jitteriä. Yritykset päättyvät, kun vaihekohtainen yritysraja tai kokonaisaikaraja täyttyy. Toteutuneet yritykset ja odotukset kirjataan tapahtumahistoriaan.
+- Tilapäinen tekninen virhe voi johtaa rajattuun uudelleenyritykseen. Pysyvä virhe, kuten virheellinen rakenne, skeema, tunniste tai toimituskohde, hylätään ilman saman virheen automaattista toistamista. Toimenpidettä vaativa tai tuntematon virhe pysäyttää automaattiset yritykset ja edellyttää ylläpitäjän arviota; tuntematonta virhettä ei oleteta tilapäiseksi.
+- Epäonnistuminen ei nollaa eikä siirrä yhdistelmän aikataulua. Epäonnistunut yhdistelmä palaa normaaliin erääntyneiden yhdistelmien valintaan ilman etuoikeutettua uusintavuoroa tai erillistä takautuvien ajojen jonoa. A11:n pisimpään erääntyneenä olleen valinta ja tallennettu kiertojärjestys säilyvät. Aktiivinen tehtävä vapautetaan vasta, kun ajon lopputila ja tapahtumat on kirjattu; yhden aiheen epäonnistuminen ei pysäytä muita aiheita.
+- `run_id` pysyy samana saman loogisen ajon yrityksissä, `delivery_id` saman toimituksen uudelleenlähetyksissä ja jokainen vastaanottajan käsittely-yritys saa uuden `attempt_id`-tunnisteen. Saman toimituksen uudelleenkäsittely on idempotenttia: tunnisteet, SHA-256-tiiviste ja repositorion todellinen tila tarkistetaan ennen kirjoitusta. Ristiriitainen sisältö hylätään eikä hyväksyttyä toimitusta tai julkaistua itemiä korvata. Julkaisun uudelleenyritys käyttää samaa tallennettua UUIDv4-GUIDia.
+- Keskeytyksestä palaudutaan lukemalla tehtäväpyyntö, kanoninen ajotietue, append-only-tapahtumahistoria, toimitukset sekä arkisto- ja julkaisuhaarojen todellinen tila. Ensimmäiseen versioon ei rakenneta erillistä lease-, heartbeat-, varaus- tai lukituspalvelua.
+- Myöhäinen toimitus käsitellään alkuperäisellä `run_id`-tunnisteella. Se voidaan hyväksyä vain, jos myöhempää saman aiheen ja tehtävätyypin ajoa ei ole käynnistetty ja kaikki normaalit hyväksymisehdot täyttyvät. Muussa tapauksessa se hylätään julkaisemisen osalta. Myöhäinen toimitus ei avaa vapautettua tehtävää uudelleen eikä muuta myöhempää ajoa. Määräajan ylitys, myöhäinen vastaanotto, validointi, hyväksyntä/hylkäys ja mahdollinen julkaisu kirjataan erillisinä tapahtumina.
+- Manuaalinen jonotarkistus käyttää A11:n normaalia tarkistustyönkulkua eikä pakota aihetta, muuta aikataulua tai ohita aktiivista tehtävää. Ensimmäisessä versiossa ei ole aihekohtaista pakotettua uudelleenajoa. Vastaanottajan tekninen uudelleenyritys käyttää alkuperäisiä ajo- ja toimitustunnisteita sekä uutta yritystunnistetta.
+- Erillistä DLQ:ta ei toteuteta. Hyväksytyt, hylätyt ja epäselvät toimitukset alkuperäispaketteineen ja täydellisine käsittelyhistorioineen säilytetään A10:n mukaisesti arkistohaarassa, joka toimii myös karanteenina. Valvomo näyttää aktiivisen tehtävän, määräajan, tuottajan tuloksen ja vastaanottajan käsittelyn erikseen, käsittelyvaiheen, yritykset, seuraavan yrityksen ajankohdan, virheluokan, aikakatkaisut, myöhäiset toimitukset ja ylläpitäjän toimenpidettä vaativat tapaukset. Hälytykset kattavat määräajan ylittymisen, yritysten loppumisen, pysyvän tai tuntemattoman virheen ja epäonnistuneen palautumisen. Tiedot johdetaan kanonisesta ajohistoriasta.
+
+Ensimmäisen version ulkopuolelle rajataan rinnakkaiset tehtävät, tuottajan tutkimustyön automaattinen uudelleenkäynnistys, erillinen lease-/heartbeat-/lukituspalvelu, takautuvien ajojen jono, erillinen DLQ, aihekohtainen pakotettu uudelleenajo ja erillinen laaduntarkistusajo. Uudelleenyritykset eivät laajenna tuottajan oikeuksia: tuottaja kirjoittaa vain `raportit-inbox`-haaraan ja vastaanottaja vastaa arkistosta sekä `main`-julkaisusta. Epäselvän Git-toiminnon jälkeen todellinen tila tarkistetaan ennen uutta kirjoitusta. Uudelleenyritys ei ohita validointeja, haararajoja tai arkiston append-only-eheyttä. Jos välttämätöntä suojausta ei pystytä todentamaan, suojausta tarvitsevaa tuotantotoimintoa ei oteta käyttöön.
+
 ### 10.3 Julkaisun ja julkisen saatavuuden varmennus
 
 Julkaisun onnistumista ei päätellä pelkästään siitä, että tallennuspyyntö tai GitHub Actions -vaihe ilmoittaa onnistumisesta. Varmennus erottaa repositorioon tallentamisen ja sisällön julkisen saatavuuden:
@@ -1113,23 +1132,13 @@ Seuraavat tekniset ja toiminnalliset yksityiskohdat ovat avoinna. Luettelo on sa
    - Jos suojaus osoittautuu teknisesti vaikeaksi, suhteettoman monimutkaiseksi tai käytettävissä olevilla GitHub-ominaisuuksilla toteuttamiskelvottomaksi, sitä ei korvata laajemmilla oikeuksilla eikä sen toteutumista väitetä. Suojaus tai siitä riippuva toiminto voidaan siirtää myöhempään versioon. Ensimmäisessä versiossa otetaan käyttöön vain toiminnot, joiden välttämättömät oikeusrajat ja turvallisuus voidaan todentaa; suojausta tarvitseva toiminto jätetään pois käytöstä, kunnes puute on ratkaistu.
    - *Rajaus:* vastaanottajan omaa GitHub Appia ei käytetä oletuksena, jos Actionsin rajatut oikeudet riittävät; erillinen tuotantotuottajan GitHub App kuuluu myöhempien versioiden tavoitemalliin, ei ensimmäiseen versioon. A10.6 määrittelee testit ja hyväksymisperiaatteet, ei vielä toteuta testejä tai GitHub-asetuksia.
 
-**A11.** **Ajojen käynnistäminen**
-   - **A11.1** Määritellään 15 minuutin yhteisen tarkistusvälin ajastustapa ja GitHub Actionsin viiveiden käsittely.
-   - **A11.2** Määritellään manuaalisen käynnistyksen käyttäytyminen ja yhteiset käsittelysäännöt.
-   - **A11.3** Määritellään aihekohtaisten erääntymisten laskenta, aikavyöhyke ja aikavälirajat.
-   - **A11.4** Määritellään enintään yhden erääntyneen aiheen valinta ja valinnan reiluus.
-   - **A11.5** Määritellään päällekkäisten käynnistysten esto ja sarjallisuuden tekninen toteutus.
-   - **A11.6** Määritellään käynnistysvirheiden ja väliin jääneiden käynnistysten havaitseminen ja kirjaaminen.
-   - *Rajaus:* erillistä laaduntarkistusajoa ei käynnistetä.
+**A11.** **Ajojen käynnistäminen – päätetty**
+   - *Päätös:* yhteinen 15 minuutin tarkistustyönkulku, erillinen tuottajan noutoajastus, manuaalisen ja ajastetun käynnistyksen yhteiset säännöt, yhdistelmäkohtainen suoritusväli, aikavyöhyke- ja aikavälirajat, reilu yhden tehtävän valinta, sarjallisuus sekä tarkistustapahtumien jäljitettävyys on määritelty kohdassa 2.2.1.3. A11.1–A11.6 eivät ole enää avoimia suunnittelutehtäviä.
+   - *Rajaus:* rinnakkaisia raportointitehtäviä tai aihekohtaisia pakotettuja käynnistyksiä ei toteuteta ensimmäisessä versiossa.
 
-**A12.** **Jonon ja uudelleenyritysten tarkat rajat**
-   - **A12.1** Määritellään tehtävän muodostuksen, tuottajan suorituksen, vastaanoton ja julkaisun aikakatkaisut.
-   - **A12.2** Määritellään uudelleenyritysten enimmäismäärät vaiheittain ja virheluokittain.
-   - **A12.3** Määritellään odotusajat, mahdollinen kasvava viive ja enimmäisodotusaika.
-   - **A12.4** Määritellään pysyvien, tilapäisten ja käyttäjän toimenpidettä vaativien virheiden käsittely.
-   - **A12.5** Määritellään epäonnistuneen aiheen uusi jonotus ja vaikutus muiden aiheiden etenemiseen.
-   - **A12.6** Määritellään keskeytyneen tehtävän tunnistaminen, tilan palautus ja turvallinen jatkaminen.
-   - **A12.7** Määritellään manuaalisen uudelleenyrityksen oikeudet, vaikutukset ja jäljitettävyys.
+**A12.** **Jonon ja uudelleenyritysten tarkat rajat – päätetty**
+   - *Päätös:* vaihekohtaiset aikarajat ja yritysrajat, kasvava viive ja jitter, virheiden luokittelu, epäonnistuneen aiheen palautuminen normaaliin jonoon, idempotenssi, keskeytyksistä palautuminen, myöhäisten tulosten käsittely, manuaalisen toiminnan rajat, arkistokaranteeni ja Valvomon havaittavuus on määritelty kohdassa 2.6.7. A12.1–A12.7 eivät ole enää avoimia suunnittelutehtäviä.
+   - *Rajaus:* lukuarvot ja sallitut arvovälit määritellään myöhemmässä tehtävätyyppien määritys- ja skeematyössä; tässä hyväksyttiin toimintaperiaatteet.
 
 **A13.** **Toimituspakettien säilytys**
    - **A13.1** Määritellään vastaanottohaaran alkuperäisten pakettien säilytysajat.
@@ -1204,6 +1213,9 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.77 – 26.11.2026:** hyväksyttiin A12:n jonon ja uudelleenyritysten vaatimukset: vaihekohtaiset aikarajat ja yritysrajat, kasvava viive ja jitter, virheluokat, epäonnistuneen aiheen reilu uudelleenjonotus, idempotenssi, keskeytyksistä palautuminen, myöhäiset toimitukset, manuaalisen toiminnan rajat, arkistokaranteeni ja Valvomon havaittavuus. A11:n ja A12:n ratkaistut alatehtävät poistettiin avoimien tehtävien luettelosta; jäljelle jäävien tunnisteita ei muutettu. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
+
 
 - **0.12.76 – 26.11.2026:** hyväksyttiin A11:n ajojen käynnistämisen ja valinnan vaatimukset: yhteinen 15 minuutin tarkistus, erillinen tuottajan noutoajastus, manuaalisen käynnistyksen yhteiset säännöt, yhdistelmäkohtainen suoritusväli samassa seurattavan yhdistelmän määrityksessä, aikavyöhyke- ja aikavälirajat, reilu valinta, sarjallisuus sekä käynnistystapahtumien jäljitettävyys. Täsmennettiin, että ensimmäinen versio käyttää nykyistä Codex Connector -yhteyttä ilman erillistä tuotantotuottajan GitHub Appia. Toteutusta tai automaatioita ei muutettu.
 - **0.12.75 – 25.11.2026:** hyväksyttiin A10.6:n käyttöönoton oikeus- ja suojaustestien tavoitemalli sekä periaate, että vaikeasti tai suhteettoman monimutkaisesti toteutettavat suojaukset voidaan siirtää myöhempään versioon. Turvallisuutta ei kierretä laajentamalla oikeuksia, vaan suojausta tarvitseva toiminto jätetään ensimmäisestä versiosta pois, kunnes sen turvallisuus voidaan todentaa. Lisäksi tarkennettiin A10.5:n ohjelmistojakelua: instanssin Actions voi kutsua ohjelmistorepon uudelleenkäytettäviä työnkulkuja tai ladata koodin lukitusta revisiosta ilman yhteisen koodin kopiointia instanssirepoon. Toteutusta, testejä tai GitHub-asetuksia ei muutettu.
