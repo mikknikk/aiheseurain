@@ -3,7 +3,7 @@
 **Versio:** 0.3.122  
 **Päiväys:** 26.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu; avoimien teknisten yksityiskohtien luettelo sisältää vain vielä päätettävät asiat  
-**Perusta:** [Vaatimusmäärittely 0.12.77](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.78](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -1283,6 +1283,8 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 - **0.3.48 (22.11.2026):** yhtenäistettiin vaatimusmäärittelyn kanssa tehtävän muodostuksen, määräajan valvonnan ja toimituksen vastaanoton yhteinen sarjallisuusvaatimus.
 
 - **0.3.47 (22.11.2026):** täsmennettiin, että tehtävän muodostus, määräajan valvonta ja toimituksen vastaanotto/käsittely kuuluvat yhteisen instanssikohtaisen sarjallisuuden hallinnan piiriin. Tekninen koordinointitapa jätettiin myöhempään suunnitteluun.
+
+- **0.3.122 (26.11.2026):** siirrettiin hyväksytyt A9–A12-kokonaisuuksien ratkaisut niiden pysyviin aihepiirilukuihin ja poistettiin A9–A12 aktiivisista avoimista suunnittelukokonaisuuksista. Avoimien teknisten yksityiskohtien luettelo rajattiin kysymyksiin, joista tarvitaan vielä päätös ennen toteutussuunnitelman viimeistelyä ja toteutustikettien muodostamista. Toteutus-, testaus- ja käyttöönottotyöt erotettiin suunnittelupäätöksistä. Päätösten sisältöä, toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.121 (26.11.2026):** hyväksyttiin A12:n jonon ja uudelleenyritysten toimintamalli: vaihekohtaiset aikarajat ja yritysrajat, kasvava viive ja jitter, virheluokat, epäonnistuneen aiheen palautuminen normaaliin erääntymisvalintaan, idempotenssi, keskeytyksistä palautuminen, myöhäiset toimitukset, manuaalisen toiminnan rajat, arkistokaranteeni, Valvomon havaittavuus ja ensimmäisen version rajaukset. A11:n ja A12:n ratkaistut alatehtävät poistettiin avoimien tehtävien luettelosta; jäljelle jäävien tunnisteita ei muutettu. Synkronoitiin vaatimusmäärittely ja README. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
