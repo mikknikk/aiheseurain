@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.79  
+**Versio:** 0.12.80  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 26.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -913,6 +913,25 @@ Toimituspakettien säilytys erotetaan väliaikaiseen vastaanottojonoon ja alkupe
 
 Toimituspakettien säilytys ei määritä kanonisten ajotietueiden tai tapahtumahistorioiden täsmällisiä säilytysaikoja. Ne ratkaistaan erillisessä historiatietojen säilytyksen kokonaisuudessa.
 
+### 10.2.3 Historiatietojen säilytys
+
+Historiatietojen säilytys erottaa kanoniset ajotietueet ja tapahtumahistorian, tekniset lokit ja diagnostiikka-aineistot sekä käsittelyn väliaineistot toisistaan.
+
+- Kanoniset ajotietueet ja tapahtumahistoriat säilytetään ensimmäisessä versiossa pysyvästi ilman automaattista vanhenemista tai poistamista. Säilytys koskee onnistuneita, epäonnistuneita, keskeytyneitä ja julkaisematta jääneitä ajoja sekä no_report-tuloksia. Tapahtumahistoria on append-only: aiempia tapahtumia ei muokata tai poisteta, vaan myöhempi tieto kirjataan uutena tapahtumana.
+- Tavalliset tekniset suorituslokit säilytetään 90 päivää ajon päättymisestä. Yksityiskohtaiset debug- ja diagnostiikka-aineistot säilytetään 30 päivää ajon päättymisestä. Aktiiviseen virheen selvittämiseen tai palautumiseen tarvittavaa aineistoa säilytetään, kunnes selvitys ja palautuminen on saatettu päätökseen. Pysyvä tapahtumahistoria säilyttää olennaisen tiedon virheestä myös yksityiskohtaisen selvitysaineiston poistamisen jälkeen.
+- Teknisiin lokeihin kirjataan vain käsittelyn ja ylläpidon kannalta tarpeelliset tiedot. Niihin ei kopioida tarpeettomasti kokonaisia toimituspaketteja, raportteja tai tapahtumahistorioita. Kanoniset historiatiedot tallennetaan pysyvään historiavarastoon; teknisten lokien ja diagnostiikan tarkka tallennuspaikka ratkaistaan toteutussuunnittelussa.
+- A13:n mukaiset alkuperäiset toimituspaketit ja niiden käsittelyaineisto säilytetään raportit-arkisto-haarassa toistaiseksi ilman automaattista vanhenemista. A17 ei muuta tätä politiikkaa. Palautumisen ja keskeneräisen käsittelyn väliaineistoja ei poisteta ennen kuin niiden käyttötarve on päättynyt ja tarvittava tieto on varmennettu pysyvästi tallennetuksi. Muut käsittelykopiot, välitulokset ja uudelleen muodostettavat välimuistit voidaan poistaa, kun niitä ei enää tarvita.
+- Ennen poistamista tarkistetaan aineiston luokka, säilytysajan päättyminen, aktiivinen käyttö, keskeneräiset käsittelyt ja uudelleenyritykset, palautumisen tarve, pysyvän tiedon varmennus ja säilytyspoikkeukset. Epäselvässä tilanteessa aineistoa ei poisteta. Poisto on rajattu ja idempotentti.
+- Ensimmäisessä versiossa ei toteuteta automaattista anonymisointia. Jos tietosisältö tai käyttötarve muuttuu, anonymisointi arvioidaan erillisessä suunnittelupäätöksessä.
+- Palautuminen perustuu kanoniseen ajotietueeseen, append-only-tapahtumahistoriaan, alkuperäiseen toimituspakettiin sekä arkisto- ja julkaisuhaarojen todelliseen tilaan. Valvomo näyttää ajon tilan, aikaleimat, käsittely- ja uudelleenyritystapahtumat, olennaiset virheet, julkaisu- ja varmennustiedot sekä viittauksen toimituspakettiin. Poistetun yksityiskohtaisen lokin puuttuminen ilmaistaan selvästi.
+- Tilastot ja pitkän aikavälin raportointi muodostetaan kanonisista historiatiedoista; niitä ei pidetä erillisenä ensisijaisena tietolähteenä.
+- Hallinnoidun aineiston automaattisesta tai manuaalisesta poistosta kirjataan pysyvään tapahtumahistoriaan poistotapahtuma, joka yksilöi ajankohdan, aineistoluokan, tunnisteen tai polun, syyn, säilytyspolitiikan version, käynnistäneen prosessin, tuloksen ja mahdollisen virheen tai poikkeaman.
+- Poisto estetään aktiivisen ajon, keskeneräisen toimituksen, uudelleenyrityksen, epäselvän arkistoinnin tai kirjoituksen, keskeneräisen palautumisen ja aktiivisen virheen selvittämisen aikana. Ylläpito voi asettaa yksittäiselle ajolle, toimitukselle tai aineistokokonaisuudelle säilytyspoikkeuksen, josta kirjataan kohde, perustelu, asettamis- ja mahdollinen päättymisajankohta sekä poikkeuksen päättäminen.
+- Säilytysajat ja poistamisen ehdot määritellään myöhemmin yhdessä keskitetysti hallitussa, koneellisesti luettavassa ja versioidussa määrityksessä; niitä ei kovakoodata eri toteutuksiin. Politiikan muutos ei muuta historiaa tai aiempia poistotapahtumia takautuvasti.
+- Pysyvän historiatiedon määrää ja kasvua seurataan. Pysyvää ajotietuetta tai tapahtumahistoriaa ei poisteta kapasiteetin vapauttamiseksi. Jos turvallinen tallentaminen ei onnistu, uusien tehtävien muodostaminen tai toimitusten vastaanotto keskeytetään hallitusti tarvittavassa laajuudessa.
+
+Ensimmäisen version ulkopuolelle rajataan kanonisten ajotietueiden ja tapahtumahistorioiden automaattinen vanheneminen, automaattinen anonymisointi ja erillinen monimutkainen säilytyslukitusjärjestelmä. Täsmälliset tietue- ja tapahtumaskeemat, säilytyspolitiikan koneellinen rakenne, tekniset tallennuspalvelut, numeeriset kapasiteettirajat ja siivouksen toteutus ratkaistaan erillisissä suunnittelu- ja toteutustehtävissä.
+
 ### 10.3 Julkaisun ja julkisen saatavuuden varmennus
 
 Julkaisun onnistumista ei päätellä pelkästään siitä, että tallennuspyyntö tai GitHub Actions -vaihe ilmoittaa onnistumisesta. Varmennus erottaa repositorioon tallentamisen ja sisällön julkisen saatavuuden:
@@ -1165,13 +1184,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 
 ### A5. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
-**A17.** **Historiatietojen säilytys**
-   - **A17.1** Määritellään ajotietueiden ja tapahtumahistorioiden säilytysajat.
-   - **A17.2** Määritellään lokien, virhetietojen ja diagnostiikka-aineistojen säilytysajat.
-   - **A17.3** Määritellään väliaineistojen suhde toimituspakettien erilliseen säilytyspolitiikkaan.
-   - **A17.4** Määritellään arkistointi, siivous, poisto ja mahdollinen anonymisointi.
-   - **A17.5** Määritellään historian palautus, tarkastelu ja raportointikäyttö säilytysajan aikana.
-   - **A17.6** Määritellään poistojen jäljitettävyys ja säilytyspoikkeukset.
 
 **A18.** **Ohjelmiston ja instanssin toimitusmalli**
    - **A18.1** Vahvistetaan ohjelmisto- ja instanssirepositorion vastuut ja hakemistorakenteet.
@@ -1201,6 +1213,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutosloki
+
+- **0.12.80 – 26.11.2026:** hyväksyttiin A17:n historiatietojen säilytysmalli: kanoniset ajotietueet ja tapahtumahistoriat säilytetään pysyvästi, tavalliset tekniset lokit 90 päivää ja yksityiskohtainen diagnostiikka 30 päivää ajon päättymisestä, palautumisen väliaineistoa suojataan ja muut väliaineistot siivotaan tarpeen päätyttyä. Määriteltiin historian palautus- ja raportointikäyttö, poistojen pysyvä jäljitettävyys, säilytyspoikkeukset sekä keskitetyn versionoidun säilytyspolitiikan periaate. A17 siirrettiin pysyväksi vaatimukseksi ja poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.79 – 26.11.2026:** hyväksyttiin A13:n toimituspakettien säilytysmalli: inboxin siivous vasta varmennetun arkistoinnin jälkeen, alkuperäispakettien toistaiseksi jatkuva säilytys append-only-arkistossa, palautumisen suojaus sekä kapasiteettipaineen hallittu pysäytys. A13 siirrettiin pysyväksi vaatimukseksi ja poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
