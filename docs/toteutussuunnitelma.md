@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.130  
+**Versio:** 0.3.131  
 **Päiväys:** 27.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu; avoimien teknisten yksityiskohtien luettelo sisältää vain vielä päätettävät asiat  
-**Perusta:** [Vaatimusmäärittely 0.12.86](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.87](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -1286,9 +1286,9 @@ Luetteloa ylläpidetään suunnittelun edetessä. Kun myöhemmäksi jätetty asi
 
 ## 6. Avoimet tekniset yksityiskohdat
 
-Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvitaan vielä päätös ennen kuin toteutussuunnitelma voidaan viimeistellä ja toteutustiketit muodostaa. Jokainen A-kokonaisuus ja sen alakohdat kuvaavat päätettävää asiaa, eivät toteutustyötä. Kun ratkaisu hyväksytään, se siirretään tämän luettelon sijasta asianomaiseen aihepiirilukuun; toteutuksen, testien ja käyttöönoton tehtävät kirjataan myöhemmin erikseen GitHub Issuesiin. Luettelo pidetään yhdenmukaisena vaatimusmäärittelyn kanssa.
+Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvitaan vielä päätös ennen kuin toteutussuunnitelma voidaan viimeistellä ja toteutustiketit muodostaa. Jokainen A-kokonaisuus ja sen alakohdat kuvaavat päätettävää asiaa, eivät toteutustyötä. Ryhmäotsikoiden tunnisteet ovat R1–R5; yksittäisten avointen tehtävien tunnisteet ovat erikseen A1–A20. Näitä tunnisteavaruuksia ei sekoiteta. Kun ratkaisu hyväksytään, se siirretään tämän luettelon sijasta asianomaiseen aihepiirilukuun; toteutuksen, testien ja käyttöönoton tehtävät kirjataan myöhemmin erikseen GitHub Issuesiin. Luettelo pidetään yhdenmukaisena vaatimusmäärittelyn kanssa.
 
-### A1. Tietomallit ja skeemat
+### R1. Tietomallit ja skeemat
 
 **A1.** **Skeemojen tarkat rakenteet**
    - **A1.1** Määritellään pääskeemojen täydelliset kenttäluettelot, tietotyypit ja pakollisuus.
@@ -1322,9 +1322,9 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A4.5** Määritellään puuttuvien, toistuvien ja ristiriitaisten roolien käsittely.
    - *Rajaus:* parameters on aina objekti ja tuntemattomat parametrit hylätään.
 
-### A2. Lähderekisteri ja lähdetilastot
+### R2. Lähderekisteri ja lähdetilastot
 
-### A4. Raportintekijä ja käyttöliittymät
+### R3. Raportintekijä ja käyttöliittymät
 
 **A14.** **Yhteinen raportintekijän perusprompti**
    - **A14.1** Määritellään promptin rakenne ja yleiset vastuut suhteessa tehtäväpyyntöön.
@@ -1351,7 +1351,7 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A16.5** Määritellään väärien positiivisten käsittely, poikkeusten hyväksyntä ja auditointijälki.
    - **A16.6** Määritellään CI- ja julkaisuprosessin tarkistukset sekä niiden testaus.
 
-### A5. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
+### R4. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
 
 **A18.** **Ohjelmiston ja instanssin toimitusmalli**
@@ -1371,7 +1371,7 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A19.6** Rajataan myöhemmät ratkaisut niin, etteivät ne monimutkaista ensimmäistä versiota tarpeettomasti.
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
-### A6. Älykäs ylläpito ja automaattiset ylläpitopäätökset
+### R5. Älykäs ylläpito ja automaattiset ylläpitopäätökset
 
 **A20.** **Yleinen älykkään ylläpidon toimintamalli**
    - **A20.1** Määritellään, millaisia aiheista riippumattomia ylläpitotehtäviä älykäs ylläpito voi käsitellä.
@@ -1385,6 +1385,8 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - *Rajaus:* älykäs ylläpito ei muodosta rinnakkaista tehtäväjonoa eikä ohita yhteistä sarjallisuutta tai deterministisiä suojatarkistuksia.
 
 ### Versiohistoria
+
+- **0.3.131 (27.11.2026):** erotettiin avoimien suunnittelukysymysten ryhmäotsikoiden tunnisteet R1–R5 yksittäisten tehtävien A1–A20-tunnisteista. Yksittäisten tehtävien tunnisteita, sisältöä tai järjestystä ei muutettu. Synkronoitiin vaatimusmäärittely ja README.
 
 - **0.3.130 (27.11.2026):** kirjattiin yleinen periaate, jonka mukaan toiminnan muuttamiseen tarkoitetut numeeriset raja-arvot, aikavälit ja säilytysajat määritellään konfiguraatiossa, ellei niiden kiinteyttä ole erikseen hyväksytty. Täsmennettiin A17:n teknisten suorituslokien 90 päivän ja yksityiskohtaisen diagnostiikan 30 päivän säilytysajat keskitetyn säilytyspolitiikan oletusarvoiksi ja konfiguroitaviksi arvoiksi. Pysyvä ajohistoria ja toimituspakettiarkiston säilytysperiaatteet sekä A11:n kiinteä 15 minuutin tarkistusväli säilytettiin ennallaan. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
