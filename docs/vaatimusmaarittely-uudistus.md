@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.87  
+**Versio:** 0.12.88  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 27.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -46,6 +46,17 @@ Tämä on vaatimusmäärittely, ei tekninen toteutussuunnitelma. Se ei lukitse t
 12. **Vaiheiden selkeä vastuunjako:** tuottajan tutkimustulos, vastaanoton validointi, tallennus ja julkaisu ovat erillisiä tiloja.
 13. **Ohjelmiston ja instanssin erillisyys:** jaettava yhteinen ohjelmisto ei ole sidottu yhden käyttöönoton määrityksiin tai käyttödatan sijaintiin.
 14. **Hallitut ohjelmistopäivitykset:** instanssi käyttää yksilöityä ohjelmistoversiota, ja version vaihtaminen on ylläpitäjän hallitsema toimenpide.
+15. **Muuttumattomat ohjelmistorevisiot ja yhteensopivuus:** ohjelmistojulkaisut, skeemat ja instanssin määritykset versioidaan erikseen, ja niiden yhteensopivuus tarkistetaan ennen käyttöönottoa.
+
+### Ohjelmisto- ja instanssirepositorion toimitusmalli
+
+Yhteinen, uudelleenkäytettävä ohjelmisto ylläpidetään erillisessä ohjelmistorepositoriossa. Se sisältää yhteisen ohjelmakoodin, GitHub Actions -työnkulut, skeemat ja tietosopimukset, käyttöliittymien lähdekoodin, testit sekä kehittäjä- ja käyttöönottodokumentaation. Instanssirepositorio sisältää yhden käyttöönoton aiheet, tehtävätyypit, profiilit, lähderekisterit, asetukset ja tilan sekä RSS-syötteet, raportit ja ajohistorian. Yhteistä ohjelmistokoodia ei kopioida instanssirepositorioon ylläpidettäväksi. Ohjelmiston ja instanssin välinen tiedonsiirto perustuu versioituihin, dokumentoituihin rajapintoihin ja tietosopimuksiin.
+
+Ohjelmisto jaetaan GitHub Releases -julkaisuina käyttäen semanttista versionumerointia. Jokainen julkaisu sidotaan muuttumattomaan Git-commit-SHA:han, ja instanssi kiinnittää käyttämänsä ohjelmistoversion tähän tunnisteeseen. Liikkuvaa haaraa tai muuttuvaa tunnistetta ei käytetä tuotantoajon version yksilöintiin. Julkaisu ei päivitä instanssia automaattisesti: ylläpitäjä hyväksyy päivityksen ja sen käyttöönoton.
+
+Ennen päivitystä tarkistetaan ohjelmiston, skeemojen ja instanssin asetusten yhteensopivuus sekä tarvittavat migraatiot. Yhteensopimaton yhdistelmä estetään. Palautus aiempaan ohjelmistoversioon huomioi myös mahdolliset tietomuutokset ja edellyttää yhteensopivaa tietojen palautusta tai erikseen määriteltyä käänteistä migraatiota. Tehtävien käyttämät ohjelmisto- ja instanssirevisiot sekä `resolved_config`-snapshot säilyttävät aiempien ajojen lähtötilan muuttumattomana.
+
+Uuden instanssin perustamiseen ja palauttamiseen käytetään vakioitua aloituspohjaa, joka luo tarvittavan instanssirakenteen ja oletusasetukset, kiinnittää valitun ohjelmistoversion sekä tarkistaa GitHub-asetukset, käyttöoikeudet ja versioiden yhteensopivuuden. Aloituspohja ei kopioi ohjelmiston lähdekoodia instanssirepositorioon. Ensimmäisen version julkiseen instanssirepositorioon ei tallenneta salaisuuksia tai yksityisiä tietoja.
 
 Instanssin yleinen aikavyöhyke määritetään muutettavalla järjestelmätason `timezone`-asetuksella, jonka oletusarvo on `Europe/Helsinki` ja jonka arvo on IANA-aikavyöhyketunniste. Asetus välitetään tehtäväpyynnön `resolved_config.timezone`-kentässä, eikä tehtävätyyppikohtainen määritys, profiili tai aihekohtainen määritys voi ylikirjoittaa sitä. Kaikki Aiheseuraimen muodostamat ja tallentamat aikaleimat esitetään tämän aikavyöhykkeen paikallisena aikana ISO 8601 -muodossa ja aina oikean numeerisen UTC-offsetin kanssa (`YYYY-MM-DDTHH:mm:ss±HH:mm`). Sama koskee RSS-itemin `<pubDate>`-arvoa, joka esitetään RSS:n päivämäärämuodossa järjestelmän aikavyöhykkeen offsetilla. Aikaleimoja voidaan verrata sisäisesti yksiselitteisinä ajanhetkinä UTC-muodossa, mutta tallennettu ja käyttäjälle näytettävä aikaleima säilyttää paikallisen ajan ja offsetin. Kesä- ja talviaika määräytyvät asetetun IANA-aikavyöhykkeen sääntöjen mukaan. Aikavyöhykettä ei päätellä suoritusympäristöstä tai käyttäjän sijainnista.
 
@@ -1233,14 +1244,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 ### R4. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
 
-**A18.** **Ohjelmiston ja instanssin toimitusmalli**
-   - **A18.1** Vahvistetaan ohjelmisto- ja instanssirepositorion vastuut ja hakemistorakenteet.
-   - **A18.2** Määritellään jakelukanava ja instanssin käyttämän ohjelmistoversion kiinnitystapa.
-   - **A18.3** Määritellään päivitysten hyväksyntä, käyttöönotto, palautus ja yhteensopivuuden tarkistus.
-   - **A18.4** Määritellään määritysten, aineistojen ja raporttipakettien viittaus- ja siirtomalli.
-   - **A18.5** Määritellään ohjelmisto-, skeema- ja instanssirevisioiden yhteensopivuussäännöt.
-   - **A18.6** Määritellään uuden instanssin perustamisen, päivittämisen ja palauttamisen käytännöt.
-
 **A19.** **Myöhempi käyttöoikeuksien tekninen toteutus**
    - **A19.1** Tunnistetaan luottamukselliset tietoluokat ja tilanteet, joissa julkinen malli ei riitä.
    - **A19.2** Määritellään julkisen ja rajatun tiedon erottelu repositorioissa, tiedostoissa ja käyttöliittymissä.
@@ -1274,6 +1277,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutokset
+
+- **0.12.88 – 27.11.2026:** kirjattiin hyväksytty A18:n ohjelmisto- ja instanssirepositorion toimitusmalli suunnitteluperiaatteisiin. Määriteltiin yhteisen ohjelmiston ja instanssikohtaisten tietojen vastuunjako, GitHub Releases -jakelu, semanttinen versionumerointi ja muuttumattomaan commit-SHA:han kiinnittäminen, ylläpitäjän hyväksymät päivitykset, versioyhteensopivuus ja migraatiot, tietomuutokset huomioiva palautus sekä uuden instanssin aloituspohja. A18 poistettiin avoimista suunnittelukysymyksistä. Toteutusta, skeemoja, testejä, työnkulkuja tai automaatioita ei muutettu.
 
 - **0.12.87 – 27.11.2026:** erotettiin avoimien suunnittelukysymysten ryhmäotsikoiden tunnisteet R1–R5 yksittäisten tehtävien A1–A20-tunnisteista. Yksittäisten tehtävien tunnisteita, sisältöä tai järjestystä ei muutettu. Synkronoitiin toteutussuunnitelma ja README.
 
