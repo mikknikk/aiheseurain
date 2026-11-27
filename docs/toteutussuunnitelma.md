@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.129  
+**Versio:** 0.3.130  
 **Päiväys:** 27.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu; avoimien teknisten yksityiskohtien luettelo sisältää vain vielä päätettävät asiat  
-**Perusta:** [Vaatimusmäärittely 0.12.85](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.86](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -983,7 +983,7 @@ A13 koskee alkuperäisiä toimituspaketteja ja niiden käsittelyaineistoa. Kanon
 
 #### 2.6.9 Historiatietojen säilytys
 
-Tässä luvussa kuvattu historiatietojen säilytysmalli on hyväksytty. Se täydentää kohtien 2.6.7 ja 2.6.8 toimitus-, vastaanotto-, arkistointi- ja palautumisperiaatteita. A17 on ratkaistu suunnittelukokonaisuus. Täsmälliset tietue- ja tapahtumarakenteet, säilytyspolitiikan koneellinen määritysrakenne sekä tekninen toteutus käsitellään niitä koskevissa myöhemmissä suunnittelu- ja toteutustehtävissä.
+Tässä luvussa kuvattu historiatietojen säilytysmalli on hyväksytty. Se täydentää kohtien 2.6.7 ja 2.6.8 toimitus-, vastaanotto-, arkistointi- ja palautumisperiaatteita. A17 on ratkaistu suunnittelukokonaisuus. Toiminnan muuttamiseen tarkoitetut numeeriset raja-arvot, aikavälit ja säilytysajat määritellään konfiguraatiossa, ellei niiden kiinteyttä ole erikseen hyväksytty tekniseksi tai toiminnalliseksi vaatimukseksi. Täsmälliset tietue- ja tapahtumarakenteet, säilytyspolitiikan koneellinen määritysrakenne sekä tekninen toteutus käsitellään niitä koskevissa myöhemmissä suunnittelu- ja toteutustehtävissä.
 
 **Säilytettävien tietojen ryhmät.** Säilytysmallissa erotetaan toisistaan kanoniset ajotietueet, tapahtumahistoria, tekniset suorituslokit ja diagnostiikka-aineistot sekä käsittelyn väliaineistot. Kanoninen ajotietue kuvaa ajon viimeisimmän vahvistetun kokonaiskuvan. Tapahtumahistoria kuvaa ajon tapahtumat aikajärjestyksessä. Teknisiä lokeja ja diagnostiikka-aineistoja käytetään suoritusvirheiden tutkimiseen. Väliaineistoja ovat käsittelyn työskentelytiedostot, välitulokset ja välimuistit, joiden säilytystarve riippuu niiden käyttötarkoituksesta.
 
@@ -991,8 +991,9 @@ Tässä luvussa kuvattu historiatietojen säilytysmalli on hyväksytty. Se täyd
 
 **Tekniset lokit ja diagnostiikka-aineistot.** Pysyvä tapahtumahistoria säilyttää tiedon olennaisista virheistä, niiden luokista, ajankohdista ja käsittelyn lopputuloksista. Yksityiskohtaisia teknisiä lokeja ja diagnostiikka-aineistoja ei sen sijaan tarvitse säilyttää pysyvästi:
 
-- Tavalliset tekniset suorituslokit säilytetään 90 päivää ajon päättymisestä.
-- Yksityiskohtaiset debug- ja diagnostiikka-aineistot säilytetään 30 päivää ajon päättymisestä.
+- Tavallisten teknisten suorituslokien säilytysajan oletusarvo on 90 päivää ajon päättymisestä.
+- Yksityiskohtaisten debug- ja diagnostiikka-aineistojen säilytysajan oletusarvo on 30 päivää ajon päättymisestä.
+- Molemmat säilytysajat ovat keskitetyn, koneellisesti luettavan ja versioidun säilytyspolitiikan konfiguroitavia arvoja. Oletusarvot eivät ole kovakoodattuja vakioita.
 - Aktiiviseen virheen selvittämiseen tai palautumiseen tarvittava aineisto säilytetään, kunnes selvitys ja palautuminen on saatettu päätökseen. Määräajan päättyminen ei oikeuta poistamaan aktiivisesti tarvittavaa aineistoa.
 - Pysyvässä tapahtumahistoriassa säilytetään virheen tapahtuminen, luokka, ajankohta ja olennainen lopputulos myös sen jälkeen, kun yksityiskohtainen tekninen selvitysaineisto on poistettu.
 
@@ -1384,6 +1385,8 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - *Rajaus:* älykäs ylläpito ei muodosta rinnakkaista tehtäväjonoa eikä ohita yhteistä sarjallisuutta tai deterministisiä suojatarkistuksia.
 
 ### Versiohistoria
+
+- **0.3.130 (27.11.2026):** kirjattiin yleinen periaate, jonka mukaan toiminnan muuttamiseen tarkoitetut numeeriset raja-arvot, aikavälit ja säilytysajat määritellään konfiguraatiossa, ellei niiden kiinteyttä ole erikseen hyväksytty. Täsmennettiin A17:n teknisten suorituslokien 90 päivän ja yksityiskohtaisen diagnostiikan 30 päivän säilytysajat keskitetyn säilytyspolitiikan oletusarvoiksi ja konfiguroitaviksi arvoiksi. Pysyvä ajohistoria ja toimituspakettiarkiston säilytysperiaatteet sekä A11:n kiinteä 15 minuutin tarkistusväli säilytettiin ennallaan. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.129 (27.11.2026):** kirjattiin hyväksytty A8:n lähdekohtaisten tilastojen malli pysyvään lähdetilastojen suunnitteluosioon. Täsmennettiin yksittäisen avausyrityksen tunniste, idempotentti laskenta, lähde- ja kanavakohtainen koonti, avaus- ja ajokohtaiset onnistumisasteet, kanoniseen ajohistoriaan perustuva laskenta, konfiguroitavat tarkastelujaksot ja hälytysrajat sekä sovelluksen yleisen aikavyöhykkeen käyttö kaikissa aikarajauksissa. A8 poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
