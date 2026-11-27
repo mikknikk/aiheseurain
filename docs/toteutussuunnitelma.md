@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.128  
+**Versio:** 0.3.129  
 **Päiväys:** 27.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu; avoimien teknisten yksityiskohtien luettelo sisältää vain vielä päätettävät asiat  
-**Perusta:** [Vaatimusmäärittely 0.12.83](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.85](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -354,11 +354,23 @@ Ehdotuksen tilat ovat `pending`, `approved`, `rejected` ja `merged`. `decision` 
 
 Vastaanottaja tarkistaa ehdotuksen rakenteen, pakolliset tiedot, lähde- ja kanava-URL-osoitteet, viittausten johdonmukaisuuden sekä duplikaatit sekä rekisteriä että muita ehdotuksia vasten. Jos uusi kanava kuuluu jo rekisterissä olevaan lähteeseen, sitä käsitellään olemassa olevan lähteen kanavan lisäyksenä eikä luoda rinnakkaista lähdetietuetta. Ehdotuksen lähde- ja kanavatunnisteet annetaan vasta rekisteriin siirrettäessä. `propose`-tilassa rekisterimuutos edellyttää ylläpitäjän hyväksyntää; `automatic`-tila ei ohita rakenteellista validointia tai duplikaattitarkistuksia. Hyväksytty rekisterimuutos vaikuttaa vasta myöhemmin muodostettaviin tehtäväpyyntöihin. Ensimmäisessä versiossa ehdotuksia käsitellään GitHubissa tiedostoina, eikä erillistä käyttöliittymää toteuteta.
 
-Lähdekohtaiset ajohavainnot sisältävät lähteen tunnisteen, tarkistuksen tilan (`attempted` tai `not_attempted`) ja yksittäiset avausyritykset. Yritys sisältää tunnisteen, ajankohdan, pyydetyn URL-osoitteen, avauksen tuloksen (`opened` tai `failed`), epäonnistumisen syyluokan silloin kun avaus epäonnistui sekä sisällön luettavuuden (`readable`, `partial`, `unreadable` tai `not_assessed`). `not_attempted` ei ole epäonnistuminen eikä kuulu avausyritysten onnistumisprosentin nimittäjään. Avaamisen onnistuminen erotetaan sisällön luettavuudesta ja hyödyllisyydestä. Valvomo laskee tilastot alkuperäisistä havainnoista eikä luota tuottajan valmiiksi laskemiin prosentteihin. Sekä yrityskohtainen että ajokohtainen onnistumisaste esitetään otoskoon ja tarkastelujakson yhteydessä.
+Lähdekohtaiset ajohavainnot sisältävät lähteen tunnisteen, tarkistuksen tilan (`attempted` tai `not_attempted`) ja yksittäiset avausyritykset. Jokaisella yrityksellä on pysyvä, yksilöllinen `check_attempt_id`, lähde- ja sisältökanavatunnisteet, `run_id`, ajankohta, pyydetty URL-osoite, avauksen tulos (`opened` tai `failed`), epäonnistumisen syyluokka silloin kun se voidaan tunnistaa sekä sisällön luettavuus (`readable`, `partial`, `unreadable` tai `not_assessed`). Sama yritys lasketaan tilastoihin vain kerran myös silloin, kun ajoaineisto käsitellään uudelleen. `not_attempted` ei ole avausyritys eikä epäonnistuminen, eikä sitä lasketa onnistumisasteen nimittäjään. Avaamisen tekninen onnistuminen, sisällön luettavuus sekä sisällön hyödyllisyys tai relevanssi ovat erillisiä tuloksia.
 
-Tilastoinnin yksikkö on sisältökanavan avausyritys. Yleiset epäonnistumisen syyluokat ovat `timeout`, `connection_error`, `dns_error`, `tls_error`, `http_client_error`, `http_server_error`, `rate_limited`, `access_restricted`, `content_error` ja `unknown`. Tuntematonta syytä ei arvata, ja tarkempi tekninen tulos säilytetään mahdollisuuksien mukaan. Valvomon oletustarkastelujaksot ovat 30 päivää, 90 päivää ja koko tallennettu historia; tilastoja voidaan suodattaa aiheen, tehtävätyypin, lähteen ja kanavan mukaan. Näytettäviin tunnuslukuihin kuuluvat yritysten, onnistumisten ja epäonnistumisten määrät, onnistumisaste osoittajineen ja nimittäjineen, viimeisimmät onnistumiset ja epäonnistumiset, virheluokkien jakauma ja kehitys tarkastelujaksolla. Prosenttia ei näytetä ilman luotettavaa nimittäjää, ja otoskoko esitetään aina.
+Tilastoinnin perusyksikkö on sisältökanavan yksittäinen avausyritys. Lähdekohtaiset tunnusluvut muodostetaan laskemalla yhteen lähteen kaikkien sisältökanavien yritykset; kanavakohtaisia prosentteja ei keskiarvoisteta. Avausyritysten onnistumisaste lasketaan kaavalla onnistuneet avaukset / (onnistuneet avaukset + epäonnistuneet avaukset) × 100. Vain `opened` on onnistuminen ja `failed` epäonnistuminen. Puuttuva tai tuntematon tulos ei muutu onnistumiseksi eikä epäonnistumiseksi. Ajokohtainen onnistumisaste lasketaan niiden ajojen osuutena, joissa vähintään yksi sisältökanavan avaus onnistui, kaikista ajoista, joissa vähintään yhtä kanavaa yritettiin avata. Molempien tunnuslukujen yhteydessä näytetään osoittaja, nimittäjä ja otoskoko.
 
-Toistuvan epäonnistumisen alustava nostokriteeri on vähintään viisi avausyritystä vähintään kolmessa eri ajossa ja alle 50 prosentin onnistumisaste viimeisten 30 päivän aikana. Viimeisimmät peräkkäiset epäonnistumiset voidaan näyttää erillisenä huomiona. Kriteerit ovat ylläpitäjän arviointipyynnön muodostamista varten, eivät automaattisia käyttörajoituksia tai rekisterimuutoksia. Lähdettä ei poisteta tai poisteta käytöstä tilastojen perusteella.
+Yleiset epäonnistumisen syyluokat ovat `timeout`, `connection_error`, `dns_error`, `tls_error`, `http_client_error`, `http_server_error`, `rate_limited`, `access_restricted`, `content_error` ja `unknown`. Tarkempi tekninen tulos, kuten HTTP-status, säilytetään mahdollisuuksien mukaan. Tuntematonta syytä ei arvata.
+
+Valvomo johtaa tilastot kanoniseen ajohistoriaan tallennetuista alkuperäisistä avausyrityksistä; raportintuottajan valmiiksi laskemia prosentteja ei käytetä lähdetietona. Tilastot lasketaan deterministisesti alkuperäisistä havainnoista, eikä laskenta muuta ajohistoriaa. Uudet kanoniset havainnot tulevat mukaan seuraavaan laskentaan. Mahdollinen suorituskykyvälimuisti on johdettua, uudelleen rakennettavaa tietoa eikä tilastojen auktoritatiivinen lähde.
+
+Tarkastelujaksojen oletusarvot ovat viimeiset 30 päivää, viimeiset 90 päivää ja koko tallennettu historia. Sovelluksen yleisessä konfiguraatiossa määritellään kaikki tilastojen laskentaan ja huomautusten muodostamiseen vaikuttavat numeeriset arvot, mukaan lukien tarkastelujaksojen pituudet, vähimmäisotoskoot, vähimmäisajojen määrät ja onnistumisasteen raja-arvot. Oletusarvot 30 päivää, 90 päivää, viisi avausyritystä, kolme eri ajoa ja 50 prosentin onnistumisaste ovat lähtöarvoja, eivät kovakoodattuja vakioita. Konfiguraation arvot validoidaan, ja samaa asetusta käytetään johdonmukaisesti sekä laskennassa että Valvomon esityksessä.
+
+Kaikki tilastojen aikaleimat, laskentahetket ja tarkastelujaksojen rajat määräytyvät sovelluksen yleisessä konfiguraatiossa määritellyn IANA-aikavyöhykkeen (`timezone`) mukaisesti. Aikavyöhykettä ei määritellä erikseen tilastoille eikä sitä päätellä käyttäjän tai suoritusympäristön sijainnista. Tarkastelujakson alku- ja loppurajat muodostetaan tämän aikavyöhykkeen sääntöjen mukaan; kesä- ja talviaika huomioidaan. Rajaus on alkupäästä mukaan ottava ja loppupäästä poissulkeva (`[start, end)`). Aikaleimoja voidaan verrata sisäisesti yksiselitteisinä ajanhetkinä, mutta näytettävä aika ja jakson rajat esitetään sovelluksen aikavyöhykkeessä offsetin kanssa. Valvomo näyttää käytetyn tarkastelujakson ja viimeisimmän laskenta-ajankohdan.
+
+Tilastoja voidaan suodattaa aiheen, tehtävätyypin, lähteen, sisältökanavan ja tarkastelujakson mukaan. Näytettäviä tietoja ovat yritysten, onnistumisten ja epäonnistumisten määrät, onnistumisaste osoittajineen ja nimittäjineen, viimeisin onnistuminen ja epäonnistuminen, virheluokkien jakauma, ajokohtainen onnistumisaste sekä kehitys tarkastelujaksolla. Prosenttia ei näytetä ilman luotettavaa nimittäjää, ja otoskoko näytetään aina. Puuttuva tai keskeneräinen historia ilmaistaan puuttuvana tietona, ei nollatuloksena.
+
+Toistuvan epäonnistumisen alustava nostokriteeri käyttää sovelluksen konfiguraatiossa määriteltyjä raja-arvoja. Oletusarvoisesti huomautus muodostetaan, kun lähteellä on vähintään viisi avausyritystä vähintään kolmessa eri ajossa ja onnistumisaste on alle 50 prosenttia viimeisten 30 päivän aikana. Viimeisimmät peräkkäiset epäonnistumiset voidaan näyttää erillisenä huomiona. Pienet otokset, käyttörajoitukset, tilapäiset virheet ja puutteellinen historia tuodaan näkyviin. Huomautus pyytää ylläpitäjää arvioimaan tilanteen; se ei muuta lähteen luotettavuusluokitusta, käyttöasetuksia tai rekisteriä eikä poista tai poista käytöstä lähdettä automaattisesti.
+
+Valvomon tulee esittää lähdetilastojen yhteenveto ja suodatettavat lähde- ja kanavakohtaiset tiedot sekä toistuvien epäonnistumisten huomautukset. A8 määrittelee tietosisällön ja laskennan; näkymien tarkka asettelu ratkaistaan Valvomon käyttöliittymäsuunnittelussa. Laskennan oikeellisuus varmennetaan myöhemmissä testeissä deterministisillä testiaineistoilla. Testien tulee kattaa onnistumis- ja epäonnistumismäärät, `not_attempted`-tilan poissulkeminen, yrityksen kaksoislaskennan esto, lähde- ja kanavakohtainen koonti, tarkastelujaksojen rajat ja aikavyöhykkeen kesä-/talviaikamuutokset, ajokohtainen onnistumisaste, tuntemattomat virheluokat, puuttuva tai keskeneräinen historia sekä konfiguroitavien nostokriteerien rajatapaukset.
 
 Lähdevalinnan tasot ovat tehtävätyypin `default_sources` ja `required_sources` sekä aiheen ja tehtävätyypin yhdistelmän `source_selection`. Pakolliset lähteet yksilöidään täsmällisinä lähde–kanava-pareina, ja niiden on löydyttävä oletuslähteistä. Aihekohtainen valinta käyttää `inherit`-, `extend`- tai `replace`-toimintatapaa. `inherit` säilyttää oletukset sellaisinaan; `extend` (oletus) säilyttää oletukset ja sallii lisäykset sekä käyttöasetusten tarkentamisen; `replace` korvaa valinnaiset oletukset aihekohtaisella listalla, mutta pakolliset lähde–kanava-parit säilyvät aina. Puuttuvat pakolliset parit lisätään `replace`-tilassa alkuperäisine oletusasetuksineen. Listajärjestys määräytyy toimintatavan mukaan ja on erillinen tärkeysarvosta. Sama lähde–kanava-pari esiintyy lopullisessa listassa vain kerran. Lähteen perustiedot, tehtäväkohtaiset käyttöasetukset ja ajokohtaiset havainnot pidetään erillään.
 
@@ -1311,15 +1323,7 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 
 ### A2. Lähderekisteri ja lähdetilastot
 
-**A8.** **Lähdekohtaiset tilastot**
-   - **A8.1** Määritellään tilastotietueen kentät ja suhde sisältökanavien tarkistusyrityksiin.
-   - **A8.2** Määritellään tilastojen laskenta ja päivitys kanonisesta ajohistoriasta.
-   - **A8.3** Täsmennetään 30 ja 90 päivän sekä koko historian tunnuslukujen laskentasäännöt.
-   - **A8.4** Määritellään virheluokkien ryhmittely ja onnistumisen laskenta.
-   - **A8.5** Täsmennetään toistuvien epäonnistumisten huomautusten nostokriteerit.
-   - **A8.6** Määritellään tilastojen ja huomautusten esitys Valvomossa sekä puuttuvan aineiston ilmaisu.
-   - **A8.7** Määritellään laskennan oikeellisuuden testaus.
-   - *Rajaus:* tilastojen perusperiaatteet, tarkastelujaksot ja ylläpitäjän arvioitavat huomautukset on päätetty.
+
 
 
 ### A4. Raportintekijä ja käyttöliittymät
@@ -1383,6 +1387,8 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - *Rajaus:* älykäs ylläpito ei muodosta rinnakkaista tehtäväjonoa eikä ohita yhteistä sarjallisuutta tai deterministisiä suojatarkistuksia.
 
 ### Versiohistoria
+
+- **0.3.129 (27.11.2026):** kirjattiin hyväksytty A8:n lähdekohtaisten tilastojen malli pysyvään lähdetilastojen suunnitteluosioon. Täsmennettiin yksittäisen avausyrityksen tunniste, idempotentti laskenta, lähde- ja kanavakohtainen koonti, avaus- ja ajokohtaiset onnistumisasteet, kanoniseen ajohistoriaan perustuva laskenta, konfiguroitavat tarkastelujaksot ja hälytysrajat sekä sovelluksen yleisen aikavyöhykkeen käyttö kaikissa aikarajauksissa. A8 poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.3.128 (27.11.2026):** hyväksyttiin A7:n lähde-ehdotuksen täydennetty tietomalli, mukaan lukien raportintuottajan valinnainen luotettavuusarvio, ehdotuksen alkuperä- ja perustelutiedot, tunnisteiden luonti vasta rekisteriin siirrettäessä, duplikaattien käsittely sekä hyväksynnän ja varmennetun rekisteriin siirron erottaminen. Lisäksi hyväksyttiin yleisen Codex-pohjaisen älykkään ylläpidon hybridiperiaate: ylläpitoarvio voi täydentää tuottajan arviota, mutta deterministiset tarkistukset säilyvät pakollisina ja ylläpitoajot kuuluvat samaan sarjalliseen tehtäväjonoon. A7 poistettiin avoimista suunnittelukokonaisuuksista ja yleinen ylläpitomalli lisättiin uutena A20-kokonaisuutena. Toteutusta, skeemoja, testejä, automaatioita tai käyttöoikeuksia ei muutettu.
 
