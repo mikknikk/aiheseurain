@@ -1203,9 +1203,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 
 ### A2. Lähderekisteri ja lähdetilastot
 
-
-
-
 ### A4. Raportintekijä ja käyttöliittymät
 
 **A14.** **Yhteinen raportintekijän perusprompti**
