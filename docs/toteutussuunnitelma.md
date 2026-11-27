@@ -1,9 +1,9 @@
 # Aiheseuraimen toteutussuunnitelma
 
-**Versio:** 0.3.131  
+**Versio:** 0.3.132  
 **Päiväys:** 27.11.2026  
 **Tila:** suunnitteluluonnos – hyväksytyt arkkitehtuuriperiaatteet kirjattu; avoimien teknisten yksityiskohtien luettelo sisältää vain vielä päätettävät asiat  
-**Perusta:** [Vaatimusmäärittely 0.12.87](vaatimusmaarittely-uudistus.md)
+**Perusta:** [Vaatimusmäärittely 0.12.88](vaatimusmaarittely-uudistus.md)
 
 > Tämä dokumentti kokoaa keskustelussa hyväksytyt tekniset suunnitteluratkaisut. Se ei ole lupa toteuttaa järjestelmää, muuttaa nykyisiä automaatioita tai niiden ajastuksia eikä ottaa uutta tuotantoprosessia käyttöön. Toteutustiketit muodostetaan vasta, kun toteutussuunnitelma on kokonaisuutena tarkistettu ja hyväksytty.
 
@@ -1198,7 +1198,19 @@ Aiheseurain suunnitellaan alusta lähtien julkiseksi, jaettavaksi ohjelmistoksi,
 - Ensimmäisessä versiossa sekä Valvomo että RSS-lukija julkaistaan julkisina ilman kirjautumista tai käyttöoikeusjärjestelmää. Tämä on mahdollista, koska ensimmäisen version käyttötarkoitukseen ei kuulu salaisten tai yksityisten tietojen käsittely.
 - Julkisen Valvomon ja RSS-lukijan käyttämät tiedostot, rajapinnat ja selaimelle toimitettava sisältö eivät saa sisältää salaisuuksia, käyttöoikeustunnuksia, yksityisiä tietoja tai muuta luottamuksellista sisältöä. Tietojen piilottaminen pelkästään käyttöliittymän esitystasolla ei riitä.
 - Jos myöhempi käyttötarve edellyttää luottamuksellisen tiedon käsittelyä, tietojen erottelu ja käyttöoikeuksien tekninen toteutus suunnitellaan erikseen ennen tällaisen tiedon käyttöönottoa.
-- Repositorioiden nimet, täsmällinen hakemistorakenne, ohjelmiston jakelukanava ja instanssin käyttöönoton tekninen toteutus ratkaistaan myöhemmässä teknisessä suunnittelussa. Niitä ei lukita tällä arkkitehtuuriperiaatteella.
+- Repositorioiden nimet ja täsmälliset hakemistorakenteet ratkaistaan myöhemmässä teknisessä suunnittelussa. Ohjelmiston jakelumalliksi on kuitenkin päätetty GitHub Releases ja semanttinen versionumerointi; julkaisujen tekninen työnkulku ja yksittäiset migraatiototeutukset täsmennetään toteutussuunnittelussa.
+
+#### Julkaisut, versioiden kiinnittäminen ja yhteensopivuus
+
+Ohjelmisto julkaistaan GitHub Releases -julkaisuina semanttisesti versioituina kokonaisuuksina. Jokainen julkaisu sidotaan yksiselitteiseen, muuttumattomaan Git-commit-SHA:han. Instanssirepositorio tallentaa käytössä olevan ohjelmistoversion kiinnityksenä kyseiseen commit-SHA:han; tuotantoajo ei käytä liikkuvaa haaraa eikä pelkkää muuttuvaa tunnistetta. Tehtäväpyynnön `software_revision` vastaa käytössä olevaa kiinnitettyä ohjelmistorevisiota.
+
+Uusi ohjelmistojulkaisu ei muuta instanssin versiota automaattisesti. Instanssin ylläpitäjä hyväksyy päivityksen ja sen ajankohdan. Ennen käyttöönottoa tarkistetaan ohjelmiston, skeemojen ja instanssin asetusten yhteensopivuus sekä suoritetaan tarvittavat validoinnit. Ohjelmistojulkaisu ilmoittaa tukemansa skeema- ja instanssiasetusversiot sekä mahdolliset migraatiovaatimukset. Ohjelmisto-, skeema- ja instanssiversiot pidetään erillisinä tunnisteina; yhteensopimaton yhdistelmä estetään eikä tuntemattomia versioita tulkita arvaamalla.
+
+Tietomallien tai asetusten muutokset, jotka edellyttävät migraatiota, otetaan käyttöön hallitusti ja jäljitettävästi. Palautuminen aiempaan ohjelmistoversioon huomioi myös päivityksen aikana tehdyt tietomuutokset: pelkkä ohjelmistoversion vaihtaminen ei riitä, jos tietorakenne ei ole vanhan version kanssa yhteensopiva. Palautus tehdään yhteensopivan tietojen palautuksen tai erikseen määritellyn käänteisen migraation avulla.
+
+Kaikki ohjelmiston ja instanssin väliset tiedostoviittaukset yksilöidään repositorion, repositoriojuureen suhteutetun polun ja tarvittavan muuttumattoman revision avulla. Ohjelmiston yhteiset skeemat ja ohjeet haetaan `software_revision`-revisiosta; instanssin määritykset ja aineistot haetaan `instance_revision`-revisiosta. `resolved_config` säilytetään ajokohtaisena muuttumattomana tilannekuvana. Raporttipaketit ja ajohistoria säilyttävät viittauksensa niiden tuottamisessa käytettyihin revisioihin. Ohjelmiston päivitys ei muuta aiempien ajojen lähtötietoja.
+
+Uuden instanssin perustamista ja palauttamista varten ylläpidetään vakioitua aloituspohjaa ja menettelyä. Se luo instanssirepositorion hakemistorakenteen ja oletusasetukset, valitsee ja kiinnittää ohjelmistoversion, tarkistaa tarvittavat GitHub-asetukset ja käyttöoikeudet sekä validoi rakenteen ja versioiden yhteensopivuuden. Aloituspohja ei kopioi yhteisen ohjelmiston lähdekoodia instanssirepositorioon.
 
 - RSS-syötteen yksilöivä avain on aiheen ja tehtävätyypin yhdistelmä. Instanssirepon syötetiedostot sijoitetaan muotoon `feeds/{topic_id}/{task_type_id}.xml`; jokaisella yhdistelmällä on oma tiedostonsa. Syöteluettelo tuotetaan instanssin määrityksistä tai niitä vastaavasta indeksistä, ei käyttöliittymään kovakoodatuista aiheista.
 - GitHub Pages julkaistaan erillisessä rakennusvaiheessa muodostetusta artifactista. Rakennus ottaa mukaan vain hyväksytyn ja julkaisukelpoisen sisällön; instanssirepon raakasisältöä, toimituspaketteja tai sisäistä ajohistoriaa ei julkaista suoraan.
@@ -1354,14 +1366,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 ### R4. Historiatiedot, toimitusmalli ja myöhemmät käyttöoikeudet
 
 
-**A18.** **Ohjelmiston ja instanssin toimitusmalli**
-   - **A18.1** Vahvistetaan ohjelmisto- ja instanssirepositorion vastuut ja hakemistorakenteet.
-   - **A18.2** Määritellään jakelukanava ja instanssin käyttämän ohjelmistoversion kiinnitystapa.
-   - **A18.3** Määritellään päivitysten hyväksyntä, käyttöönotto, palautus ja yhteensopivuuden tarkistus.
-   - **A18.4** Määritellään määritysten, aineistojen ja raporttipakettien viittaus- ja siirtomalli.
-   - **A18.5** Määritellään ohjelmisto-, skeema- ja instanssirevisioiden yhteensopivuussäännöt.
-   - **A18.6** Määritellään uuden instanssin perustamisen, päivittämisen ja palauttamisen käytännöt.
-
 **A19.** **Myöhempi käyttöoikeuksien tekninen toteutus**
    - **A19.1** Tunnistetaan luottamukselliset tietoluokat ja tilanteet, joissa julkinen malli ei riitä.
    - **A19.2** Määritellään julkisen ja rajatun tiedon erottelu repositorioissa, tiedostoissa ja käyttöliittymissä.
@@ -1385,6 +1389,8 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - *Rajaus:* älykäs ylläpito ei muodosta rinnakkaista tehtäväjonoa eikä ohita yhteistä sarjallisuutta tai deterministisiä suojatarkistuksia.
 
 ### Versiohistoria
+
+- **0.3.132 (27.11.2026):** kirjattiin hyväksytty A18:n ohjelmisto- ja instanssirepositorion toimitusmalli pysyvään arkkitehtuuriosioon. Määriteltiin GitHub Releases -jakelu, semanttinen versionumerointi ja commit-SHA:han kiinnittäminen, ylläpitäjän hyväksymät päivitykset, yhteensopivuus- ja migraatiotarkistukset, tietomuutokset huomioiva palautus, repositorio- ja revisiokohtaiset tiedostoviittaukset sekä uuden instanssin aloituspohja. A18 poistettiin avoimista suunnittelukysymyksistä. Toteutusta, skeemoja, testejä, työnkulkuja tai automaatioita ei muutettu.
 
 - **0.3.131 (27.11.2026):** erotettiin avoimien suunnittelukysymysten ryhmäotsikoiden tunnisteet R1–R5 yksittäisten tehtävien A1–A20-tunnisteista. Yksittäisten tehtävien tunnisteita, sisältöä tai järjestystä ei muutettu. Synkronoitiin vaatimusmäärittely ja README.
 
