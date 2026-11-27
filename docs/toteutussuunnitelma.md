@@ -1369,6 +1369,19 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A19.6** Rajataan myöhemmät ratkaisut niin, etteivät ne monimutkaista ensimmäistä versiota tarpeettomasti.
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
+### A6. Älykäs ylläpito ja automaattiset ylläpitopäätökset
+
+**A20.** **Yleinen älykkään ylläpidon toimintamalli**
+   - **A20.1** Määritellään, millaisia aiheista riippumattomia ylläpitotehtäviä älykäs ylläpito voi käsitellä.
+   - **A20.2** Määritellään ylläpitotehtävien liittyminen samaan tehtäväjonoon ja yhden aktiivisen tehtävän sarjalliseen käsittelyyn.
+   - **A20.3** Päätetään neuvovan, osittain automaattisen ja itsenäisemmän ylläpidon toimintatasot sekä niiden valinta- ja rajausehdot.
+   - **A20.4** Määritellään luottamuksen, epävarmuuden ja lisätietotarpeen arviointi sekä ihmiskäsittelyyn eskalointi.
+   - **A20.5** Rajataan älykkään ylläpitäjän sallitut päätökset, rekisteri- ja tiedostomuutokset sekä muut käyttöoikeudet.
+   - **A20.6** Määritellään päätösten perustelut, lähteet, tekijä, ajankohta ja muu auditointijälki.
+   - **A20.7** Määritellään determinististen validointien, duplikaattitarkistusten ja eheysvaatimusten pakollisuus kaikilla toimintatasoilla.
+   - **A20.8** Määritellään virhetilanteet, keskeyttäminen, palautuminen ja ihmisen tekemän korjauksen menettely.
+   - *Rajaus:* älykäs ylläpito ei muodosta rinnakkaista tehtäväjonoa eikä ohita yhteistä sarjallisuutta tai deterministisiä suojatarkistuksia.
+
 ### Versiohistoria
 
 - **0.3.128 (27.11.2026):** hyväksyttiin A7:n lähde-ehdotuksen täydennetty tietomalli, mukaan lukien raportintuottajan valinnainen luotettavuusarvio, ehdotuksen alkuperä- ja perustelutiedot, tunnisteiden luonti vasta rekisteriin siirrettäessä, duplikaattien käsittely sekä hyväksynnän ja varmennetun rekisteriin siirron erottaminen. Lisäksi hyväksyttiin yleisen Codex-pohjaisen älykkään ylläpidon hybridiperiaate: ylläpitoarvio voi täydentää tuottajan arviota, mutta deterministiset tarkistukset säilyvät pakollisina ja ylläpitoajot kuuluvat samaan sarjalliseen tehtäväjonoon. A7 poistettiin avoimista suunnittelukokonaisuuksista ja yleinen ylläpitomalli lisättiin uutena A20-kokonaisuutena. Toteutusta, skeemoja, testejä, automaatioita tai käyttöoikeuksia ei muutettu.
