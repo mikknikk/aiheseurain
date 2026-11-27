@@ -1,6 +1,6 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.84  
+**Versio:** 0.12.85  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
 **Päiväys:** 27.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
@@ -630,11 +630,23 @@ Valvomon lähdetilastojen tulee voida esittää lähdekohtaisesti tarkistusyrity
 
 Lähdetilastot perustuvat raportintekijän ilmoittamiin lähdekohtaisiin havaintoihin, jotka vastaanottaja validoi ja tallentaa osaksi ajon kanonista historiaa. Sama lähde yksilöidään lähderekisterin vakaalla tunnisteella, jotta tilastoja voidaan koota eri ajoista. Lähteen URL:n tai nimen muuttuminen ei saa huomaamatta yhdistää eri lähteitä tai katkaista tunnistetta.
 
-Tilastoinnin yksikkö on sisältökanavan yksittäinen avausyritys. Yrityksestä tallennetaan vähintään lähde- ja kanavatunnisteet, `run_id`, ajankohta, pyydetty osoite, avauksen tulos (`opened` tai `failed`), epäonnistumisen luokka silloin kun se voidaan tunnistaa sekä sisällön luettavuus (`readable`, `partial`, `unreadable` tai `not_assessed`). `not_attempted` kuvaa avaamatta jäänyttä kanavaa eikä ole avausyritys tai epäonnistuminen. Sama yritys lasketaan tilastoihin vain kerran. Avaamisen tekninen onnistuminen, sisällön luettavuus ja sisällön hyödyllisyys tai relevanssi ovat erillisiä tuloksia.
+Tilastoinnin yksikkö on sisältökanavan yksittäinen avausyritys. Jokaisella yrityksellä on pysyvä, yksilöllinen `check_attempt_id`, lähde- ja sisältökanavatunnisteet, `run_id`, ajankohta, pyydetty osoite, avauksen tulos (`opened` tai `failed`), epäonnistumisen luokka silloin kun se voidaan tunnistaa sekä sisällön luettavuus (`readable`, `partial`, `unreadable` tai `not_assessed`). Sama yritys lasketaan tilastoihin vain kerran. `not_attempted` kuvaa avaamatta jäänyttä kanavaa eikä ole avausyritys tai epäonnistuminen, joten sitä ei lasketa onnistumisasteen nimittäjään. Avaamisen tekninen onnistuminen, sisällön luettavuus ja sisällön hyödyllisyys tai relevanssi ovat erillisiä tuloksia.
+
+Lähdekohtaiset tunnusluvut muodostetaan laskemalla yhteen lähteen kaikkien sisältökanavien yritykset; kanavakohtaisia prosentteja ei keskiarvoisteta. Avausyritysten onnistumisaste lasketaan kaavalla onnistuneet avaukset / (onnistuneet avaukset + epäonnistuneet avaukset) × 100. Vain `opened` on onnistuminen ja `failed` epäonnistuminen. Puuttuva tai tuntematon tulos ei muutu onnistumiseksi eikä epäonnistumiseksi. Ajokohtainen onnistumisaste lasketaan niiden ajojen osuutena, joissa vähintään yksi sisältökanavan avaus onnistui, kaikista ajoista, joissa vähintään yhtä kanavaa yritettiin avata. Onnistumisasteen yhteydessä näytetään aina osoittaja, nimittäjä ja otoskoko.
 
 Yleiset epäonnistumisen luokat ovat `timeout`, `connection_error`, `dns_error`, `tls_error`, `http_client_error`, `http_server_error`, `rate_limited`, `access_restricted`, `content_error` ja `unknown`. Tarkempi tekninen tulos, kuten HTTP-status, säilytetään mahdollisuuksien mukaan. Luokkaa ei päätellä, jos syy ei ole tiedossa.
 
-Valvomo johtaa tilastot kanoniseen ajohistoriaan tallennetuista alkuperäisistä yrityksistä; tuottajan valmiiksi laskemia prosentteja ei käytetä lähdetietona. Tarkastelujaksot ovat oletusarvoisesti viimeiset 30 päivää, viimeiset 90 päivää ja koko tallennettu historia. Tilastoja voidaan suodattaa aiheen, tehtävätyypin, lähteen ja sisältökanavan mukaan. Näytettäviä tietoja ovat yritysten määrä, onnistuneet ja epäonnistuneet avaukset, onnistumisaste osoittajineen ja nimittäjineen, viimeisin onnistuminen ja epäonnistuminen, virheluokkien jakauma sekä kehitys tarkastelujaksolla. Prosenttia ei esitetä ilman luotettavaa nimittäjää, ja otoskoko näytetään aina prosenttiluvun yhteydessä.
+Valvomo johtaa tilastot kanoniseen ajohistoriaan tallennetuista alkuperäisistä yrityksistä; tuottajan valmiiksi laskemia prosentteja ei käytetä lähdetietona. Laskenta on deterministinen eikä muuta ajohistoriaa. Uudet kanoniset havainnot sisältyvät seuraavaan laskentaan. Mahdollinen suorituskykyvälimuisti on johdettua ja uudelleen rakennettavaa tietoa, ei auktoritatiivinen lähde.
+
+Tarkastelujaksojen oletusarvot ovat viimeiset 30 päivää, viimeiset 90 päivää ja koko tallennettu historia. Kaikki tilastojen laskentaan ja huomautusten muodostamiseen vaikuttavat numeeriset arvot ovat sovelluksen yleisessä konfiguraatiossa määriteltäviä. Tämä koskee tarkastelujaksojen pituuksia, vähimmäisotoskokoja, vähimmäisajojen määriä ja onnistumisasteen raja-arvoja. Oletusarvot 30 päivää, 90 päivää, viisi avausyritystä, kolme eri ajoa ja 50 prosentin onnistumisaste ovat konfiguraation lähtöarvoja, eivät kovakoodattuja vakioita. Konfiguraation arvot validoidaan.
+
+Kaikki tilastojen aikaleimat, laskentahetket ja tarkastelujaksojen rajat määräytyvät sovelluksen konfiguraatiossa määritellyn yleisen IANA-aikavyöhykkeen (`timezone`) mukaisesti. Tilastoille ei määritellä erillistä aikavyöhykettä. Tarkastelujakson alku- ja loppurajat muodostetaan tämän aikavyöhykkeen sääntöjen mukaan ja kesä-/talviaika huomioiden. Rajaus on alkupäästä mukaan ottava ja loppupäästä poissulkeva (`[start, end)`). Aikaleimoja voidaan verrata sisäisesti yksiselitteisinä ajanhetkinä, mutta Valvomossa ajat ja jaksojen rajat esitetään sovelluksen aikavyöhykkeessä UTC-offsetin kanssa. Näytetään myös käytetty tarkastelujakso ja viimeisin laskenta-ajankohta.
+
+Tilastoja voidaan suodattaa aiheen, tehtävätyypin, lähteen, sisältökanavan ja tarkastelujakson mukaan. Näytettäviä tietoja ovat yritysten määrä, onnistuneet ja epäonnistuneet avaukset, onnistumisaste osoittajineen ja nimittäjineen, viimeisin onnistuminen ja epäonnistuminen, virheluokkien jakauma, ajokohtainen onnistumisaste sekä kehitys tarkastelujaksolla. Prosenttia ei esitetä ilman luotettavaa nimittäjää, ja otoskoko näytetään aina. Puuttuva tai keskeneräinen historia ilmaistaan puuttuvana tietona, ei nollatuloksena.
+
+Toistuvan epäonnistumisen alustava nostokriteeri käyttää sovelluksen konfiguraatiossa määriteltyjä numeerisia raja-arvoja. Oletusarvoisesti huomautus muodostetaan, kun lähteellä on vähintään viisi avausyritystä vähintään kolmessa eri ajossa ja onnistumisaste on alle 50 prosenttia viimeisten 30 päivän aikana. Viimeisimmät peräkkäiset epäonnistumiset voidaan näyttää erillisenä huomiona. Pienet otokset, käyttörajoitukset, tilapäiset virheet ja puutteellinen historia huomioidaan. Huomautus on ylläpitäjän arviointipyyntö, ei automaattinen käyttörajoitus tai rekisterimuutos; lähdettä ei poisteta tai poisteta käytöstä tilastojen perusteella.
+
+Valvomon tulee näyttää lähdetilastojen yhteenveto, suodatettavat lähde- ja kanavakohtaiset tiedot sekä toistuvien epäonnistumisten huomautukset. Tarkka käyttöliittymäasettelu määritellään erikseen Valvomon suunnittelussa. Tilastolaskennan oikeellisuus varmennetaan myöhemmissä testeissä deterministisillä testiaineistoilla. Testien tulee kattaa onnistumis- ja epäonnistumismäärät, `not_attempted`-tilan poissulkeminen, kaksoislaskennan esto, lähde- ja kanavakohtainen koonti, tarkastelujaksojen rajat ja aikavyöhykkeen kesä-/talviaikamuutokset, ajokohtainen onnistumisaste, tuntemattomat virheluokat, puuttuva tai keskeneräinen historia sekä konfiguroitavien nostokriteerien rajatapaukset.
 
 ### 6.3 Tuloksen ja käsittelyn tilat
 
@@ -1191,15 +1203,7 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 
 ### A2. Lähderekisteri ja lähdetilastot
 
-**A8.** **Lähdekohtaiset tilastot**
-   - **A8.1** Määritellään tilastotietueen kentät ja suhde sisältökanavien tarkistusyrityksiin.
-   - **A8.2** Määritellään tilastojen laskenta ja päivitys kanonisesta ajohistoriasta.
-   - **A8.3** Täsmennetään 30 ja 90 päivän sekä koko historian tunnuslukujen laskentasäännöt.
-   - **A8.4** Määritellään virheluokkien ryhmittely ja onnistumisen laskenta.
-   - **A8.5** Täsmennetään toistuvien epäonnistumisten huomautusten nostokriteerit.
-   - **A8.6** Määritellään tilastojen ja huomautusten esitys Valvomossa sekä puuttuvan aineiston ilmaisu.
-   - **A8.7** Määritellään laskennan oikeellisuuden testaus.
-   - *Rajaus:* tilastojen perusperiaatteet, tarkastelujaksot ja ylläpitäjän arvioitavat huomautukset on päätetty.
+
 
 
 ### A4. Raportintekijä ja käyttöliittymät
@@ -1273,6 +1277,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutokset
+
+- **0.12.85 – 27.11.2026:** kirjattiin hyväksytty A8:n lähdekohtaisten tilastojen malli pysyvään lähdetilastojen vaatimusosioon. Täsmennettiin yksittäisen avausyrityksen tunniste, idempotentti laskenta, lähde- ja kanavakohtainen koonti, avaus- ja ajokohtaiset onnistumisasteet, kanoniseen ajohistoriaan perustuva laskenta, konfiguroitavat tarkastelujaksot ja hälytysrajat sekä sovelluksen yleisen aikavyöhykkeen käyttö kaikissa aikarajauksissa. A8 poistettiin avoimista suunnittelukokonaisuuksista. Toteutusta, skeemoja, testejä tai automaatioita ei muutettu.
 
 - **0.12.84 – 27.11.2026:** täsmennettiin A7:n lähde-ehdotuksen tietomalli ja hyväksyttiin raportintuottajan valinnainen, perusteltu luotettavuusarvio erillisenä alustavana arviona; rekisterin virallinen luokitus säilyy erillisen ylläpitokäsittelyn vastuulla. Määriteltiin ehdotuksen alkuperä-, näyttö- ja perustelutiedot, ehdotuksen ja rekisteritunnisteiden erottelu, duplikaattien käsittely sekä hyväksynnän ja varmennetun rekisteriin siirron eri tilat. Hyväksyttiin lisäksi yleisen Codex-pohjaisen älykkään ylläpidon hybridiperiaate, jossa älykäs arviointi täydentää raportintuottajan työtä mutta ei korvaa deterministisiä tarkistuksia; ylläpitoajot kuuluvat samaan sarjalliseen tehtäväjonoon. A7 poistettiin avoimista suunnittelukokonaisuuksista ja A20 lisättiin yleisen ylläpitomallin jatkosuunnittelua varten. Toteutusta, skeemoja, testejä, automaatioita tai käyttöoikeuksia ei muutettu.
 
