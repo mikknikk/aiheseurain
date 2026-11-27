@@ -1,8 +1,8 @@
 # Aiheseuraimen vaatimusmäärittely – uudistettu tavoitetila
 
-**Versio:** 0.12.83  
+**Versio:** 0.12.84  
 **Tila:** luonnos – yksinkertaistettu toimintamalli hyväksytty suunnittelun pohjaksi; ei toteutuslupa  
-**Päiväys:** 26.11.2026  
+**Päiväys:** 27.11.2026  
 **Raporttituottaja:** tuottajariippumaton  
 **Suunnitteluperiaate:** mahdollisimman yksinkertainen ja luotettava  
 **Kohderepositorio:** `mikknikk/aiheseurain`
@@ -164,9 +164,13 @@ Tehtäväpyynnön `instance_revision` yksilöi ajossa käytettävän muuttumatto
 
 Ennen rekisteriin lisäämistä uuden lähteen perustiedot ja vähintään yksi sisältökanava validoidaan. Lisäksi tarkistetaan, ettei lähde tai kanava ole jo rekisterissä: vertailussa hyödynnetään vähintään julkaisijaa, kanavan ja kotisivun URL-osoitteita sekä muita käytettävissä olevia lähdetietoja, jotta samaa lähdettä ei lisätä rinnakkaisina tietueina. Jos vastaava lähde tai kanava löytyy, ehdotus yhdistetään olemassa olevaan tietueeseen hallitusti eikä luoda duplikaattia. Automaattisesti lisätyn lähteen `reliability` on `unassessed`, ellei sen toimituksellista luotettavuutta ole erikseen arvioitu. Lähteen alkuperä ja löytämisajankohta säilytetään jäljitettävyyttä varten. Rekisteröinti ei itsessään tarkoita lähteen luotettavaksi hyväksymistä. Rekisterin ulkopuoliset lähteet ja niiden käytön perusteet on voitava erottaa rekisteriin kuuluvista lähteistä ajon raportoinnissa ja jälkikäteisessä tarkastelussa.
 
-Rekisterin ulkopuolisesta lähteestä muodostettava ehdotus on lähdekohtainen kokonaisuus, joka sisältää pysyvän `proposal_id`, lähteen perustiedot, vähintään yhden sisältökanavan, mahdolliset kieli- ja aluetiedot, alustavan luotettavuusluokituksen, löytämisajankohdan ja -alkuperän, ehdotuksen perustelun sekä viittauksen sitä tuottaneeseen `run_id`-ajoon. Ehdotuksen lähde- ja kanavatiedot noudattavat lähderekisterin vastaavia tietomalliperiaatteita. Puuttuvia tai varmentamattomia tietoja ei täydennetä arvauksilla; arvioimattoman lähteen luokitus on `unassessed`.
+Rekisterin ulkopuolisesta lähteestä muodostettava ehdotus on lähdekohtainen tietue, jossa ovat `schema_version`, vastaanottajan luoma pysyvä `proposal_id`, `status`, `source`, `channels`, `provenance` ja `rationale` sekä valinnainen `producer_assessment` ja käsittelyvaiheessa muodostuva `decision`. Yksi ehdotus koskee yhtä lähdettä ja sisältää vähintään yhden sisältökanavan. Ehdotuksen lähdetiedoista jätetään pois rekisteriin lisättäessä annettavat `id` ja `reliability`; kanavista jätetään pois rekisteriin lisättäessä annettavat `channel_id`-tunnisteet. Kanavat kuuluvat ehdotuksen lähteeseen rakenteensa perusteella. Muut lähde- ja kanavatiedot noudattavat lähderekisterin vastaavia tietomalliperiaatteita.
 
-Ehdotukset tallennetaan erillisinä tiedostoina hakemistoon `data/source-proposals/{proposal_id}.json`, eivätkä ne kuulu lähderekisteriin ennen hyväksyntää. Ehdotuksen tilat ovat `pending`, `approved`, `rejected` ja `merged`. Vastaanottaja validoi ehdotuksen rakenteen, lähde- ja kanavatiedot sekä duplikaatit ennen ylläpitäjän käsittelyä. Ylläpitäjä voi hyväksyä ehdotuksen, hylätä sen tai yhdistää sen olemassa olevaan lähteeseen. Käsittelyajankohta ja perustelu säilytetään. Hyväksytty lähde lisätään rekisteriin hallitulla muutoksella; muutos vaikuttaa vain myöhemmin muodostettaviin tehtäväpyyntöihin. Ensimmäisessä versiossa ehdotukset tarkistetaan ja käsitellään GitHubissa tiedostoina; erillistä käyttöliittymää ei edellytetä. `propose` on ensimmäisen version suositeltu oletustila. `automatic`-tila säilyy mahdollisena erikseen määritettynä toimintatapana, mutta se ei ohita validointia tai duplikaattitarkistusta.
+`provenance` sisältää vähintään `discovered_at`-, `discovery_method`- ja `run_id`-tiedot. Se voi sisältää lisäksi `discovered_via`-tiedon (löytämiseen johtanut lähde tai kanava ja URL) sekä tarkistettavissa olevat `evidence`-havainnot. `run_id` tallennetaan vain `provenance`-ryhmään eikä sitä toisteta erillisessä kentässä. `rationale` kuvaa lähteen soveltuvuutta seurattavaan aiheeseen, sen tuomaa lisäarvoa ja käytön rajoitteita. Puuttuvia tai varmentamattomia tietoja ei täydennetä arvauksilla.
+
+Raportintuottaja voi valinnaisesti toimittaa ehdotuksen yhteydessä `producer_assessment`-objektin, joka sisältää alustavan luotettavuusluokan (`high`, `medium` tai `low`), arvion varmuustason (`low`, `medium` tai `high`), perustelun, arviointia tukevat lähteet tai muut todennettavat havainnot sekä tunnistetut epävarmuudet. Arvio on raportintuottajan perusteltu ehdotus, ei lähderekisterin virallinen luotettavuusluokitus eikä tae yksittäisen sisällön oikeellisuudesta. Arvion voi jättää pois. Rekisteriin siirrettävän lähteen virallinen `reliability` määritetään erikseen ylläpitokäsittelyssä; jos luotettavuutta ei ole arvioitu riittävästi, arvo on `unassessed`. Tuottajan arviota ei käsitellä automaattisesti vahvistettuna tosiasiana.
+
+Ehdotukset tallennetaan erillisinä tiedostoina hakemistoon `data/source-proposals/{proposal_id}.json`, eivätkä ne kuulu lähderekisteriin ennen rekisteriin siirtoa. Ehdotuksen tilat ovat `pending`, `approved`, `rejected` ja `merged`. `decision` säilyttää ratkaisijan, ratkaisuajan ja perustelun; yhdistämisessä se yksilöi myös olemassa olevan kohdelähteen. `approved` tarkoittaa hyväksyttyä ehdotusta, jonka rekisterimuutos on vielä tekemättä tai varmentamatta. `merged` asetetaan vasta varmennetun rekisterimuutoksen jälkeen. Epäonnistunutta rekisteripäivitystä ei merkitä valmiiksi. Vastaanottaja validoi rakenteen, lähde- ja kanavatiedot, URL-osoitteet sekä duplikaatit rekisteriä ja muita ehdotuksia vasten. Jos uusi kanava kuuluu jo rekisterissä olevaan lähteeseen, se lisätään kyseiseen lähteeseen eikä luoda duplikaattia. Lähde- ja kanavatunnisteet annetaan vasta rekisteriin siirrettäessä. `propose` edellyttää ylläpitäjän hyväksyntää; `automatic` ei ohita validointia tai duplikaattitarkistusta. Hyväksytty rekisterimuutos vaikuttaa vain myöhemmin muodostettaviin tehtäväpyyntöihin. Ensimmäisessä versiossa ehdotukset käsitellään GitHubissa tiedostoina ilman erillistä käyttöliittymää.
 
 Markdown-ohjeita ei validoida JSON Scheman avulla. Niiden tarkistuksiin kuuluvat yksilöllinen ohjetunniste, tiedoston olemassaolo oikeassa repositoriossa ja kiinnitetyssä commitissa, repositoriojuureen suhteutettu turvallinen polku, ohjeiden oikea järjestys ja duplikaattien puuttuminen. Ohjeiden sisällön tulee olla ristiriidaton koneellisten määritysten kanssa. Ohjeiden metatietoa ei kahdenneta Markdown-etusivulla, vaan se pidetään JSON-määrityksissä ja tehtäväpyynnön viittauksissa.
 
@@ -1183,15 +1187,6 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
 
 ### A2. Lähderekisteri ja lähdetilastot
 
-**A7.** **Rekisterin ulkopuolisten lähteiden ehdotukset**
-   - **A7.1** Määritellään ehdotustietueen kentät, tyypit ja pakollisuus.
-   - **A7.2** Määritellään lähde- ja kanavaehdotusten väliset viittaukset.
-   - **A7.3** Täsmennetään alkuperä-, löytämis- ja perustelutietojen sisältö.
-   - **A7.4** Määritellään skeema-, URL- ja duplikaattitarkistusten ehdot.
-   - **A7.5** Täsmennetään elinkaaren tilasiirtymät, hyväksyntä, hylkäys ja jäljitettävyys.
-   - **A7.6** Määritellään hyväksytyn ehdotuksen siirto rekisteriin ja rekisterirevision päivitys.
-   - **A7.7** Arvioidaan myöhemmän käyttöliittymän tarve; ensimmäisen version GitHub-käsittely säilyy lähtökohtana.
-
 **A8.** **Lähdekohtaiset tilastot**
    - **A8.1** Määritellään tilastotietueen kentät ja suhde sisältökanavien tarkistusyrityksiin.
    - **A8.2** Määritellään tilastojen laskenta ja päivitys kanonisesta ajohistoriasta.
@@ -1250,6 +1245,19 @@ Luettelo sisältää vain ne tekniset ja toiminnalliset kysymykset, joista tarvi
    - **A19.6** Rajataan myöhemmät ratkaisut niin, etteivät ne monimutkaista ensimmäistä versiota tarpeettomasti.
    - *Rajaus:* tämä ei ole ensimmäisen version vaatimus.
 
+### A6. Älykäs ylläpito ja automaattiset ylläpitopäätökset
+
+**A20.** **Yleinen älykkään ylläpidon toimintamalli**
+   - **A20.1** Määritellään, millaisia aiheista riippumattomia ylläpitotehtäviä älykäs ylläpito voi käsitellä.
+   - **A20.2** Määritellään ylläpitotehtävien liittyminen samaan tehtäväjonoon ja yhden aktiivisen tehtävän sarjalliseen käsittelyyn.
+   - **A20.3** Päätetään neuvovan, osittain automaattisen ja itsenäisemmän ylläpidon toimintatasot sekä niiden valinta- ja rajausehdot.
+   - **A20.4** Määritellään luottamuksen, epävarmuuden ja lisätietotarpeen arviointi sekä ihmiskäsittelyyn eskalointi.
+   - **A20.5** Rajataan älykkään ylläpitäjän sallitut päätökset, rekisteri- ja tiedostomuutokset sekä muut käyttöoikeudet.
+   - **A20.6** Määritellään päätösten perustelut, lähteet, tekijä, ajankohta ja muu auditointijälki.
+   - **A20.7** Määritellään determinististen validointien, duplikaattitarkistusten ja eheysvaatimusten pakollisuus kaikilla toimintatasoilla.
+   - **A20.8** Määritellään virhetilanteet, keskeyttäminen, palautuminen ja ihmisen tekemän korjauksen menettely.
+   - *Rajaus:* älykäs ylläpito ei muodosta rinnakkaista tehtäväjonoa eikä ohita yhteistä sarjallisuutta tai deterministisiä suojatarkistuksia.
+
 ## 17. Raportintekijän yhteinen perusprompti ja tuottajakohtaiset ohjeet
 
 Yhteinen raportintekijän perusprompti kuuluu jaettavaan ohjelmistoon ja on versionhallittu osa käytettyä `software_revision`-versiota. Tehtäväpyyntö viittaa siihen `instructions`-taulukon ensimmäisenä ohjeena. Perusprompti määrittelee raportintekijän yleiset vastuut ja rajat, tehtäväpyynnön lukemisen, ohjeiden noudattamisen, lähdeaineiston käsittelyn, epävarmuuden ilmaisemisen, raportin muodostamisen ja toimituspaketin vaatimusten noudattamisen.
@@ -1261,6 +1269,8 @@ Peruspromptin tulee ohjata raportintekijää käsittelemään lähdeaineistoa ti
 Tuottajakohtaiset toteutusohjeet ja integraation tekniset asetukset voivat täydentää yhteistä peruspromptia, mutta ne eivät saa muuttaa yhteistä tietosopimusta, tehtäväpyynnön määrityksiä tai vastaanottavan järjestelmän julkaisuehtoja. Tuottajakohtaiset tekniset integraatio-ohjeet, ajastukset ja käyttöönottotiedot dokumentoidaan erikseen.
 
 ## 18. Muutokset
+
+- **0.12.84 – 27.11.2026:** täsmennettiin A7:n lähde-ehdotuksen tietomalli ja hyväksyttiin raportintuottajan valinnainen, perusteltu luotettavuusarvio erillisenä alustavana arviona; rekisterin virallinen luokitus säilyy erillisen ylläpitokäsittelyn vastuulla. Määriteltiin ehdotuksen alkuperä-, näyttö- ja perustelutiedot, ehdotuksen ja rekisteritunnisteiden erottelu, duplikaattien käsittely sekä hyväksynnän ja varmennetun rekisteriin siirron eri tilat. Hyväksyttiin lisäksi yleisen Codex-pohjaisen älykkään ylläpidon hybridiperiaate, jossa älykäs arviointi täydentää raportintuottajan työtä mutta ei korvaa deterministisiä tarkistuksia; ylläpitoajot kuuluvat samaan sarjalliseen tehtäväjonoon. A7 poistettiin avoimista suunnittelukokonaisuuksista ja A20 lisättiin yleisen ylläpitomallin jatkosuunnittelua varten. Toteutusta, skeemoja, testejä, automaatioita tai käyttöoikeuksia ei muutettu.
 
 - **0.12.83 – 26.11.2026:** kirjattiin hyväksytty A5:n toimitusmetatietojen täydennetty malli pysyvään lukuun 10.2.5. Täsmennettiin kuusi tietoryhmää, lähde-, sisältökanava- ja tarkistusyritystietueet, havaintoyhteenveto, yksittäisten havaintojen erillinen tiedosto, pakollisuus- ja johdonmukaisuussäännöt sekä tuottajan ja vastaanottajan tietojen rajat. A5 poistettiin avoimista suunnittelukokonaisuuksista. Skeemat ja testit jäivät myöhempään toteutustyöhön.
 
